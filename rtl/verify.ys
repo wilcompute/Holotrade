@@ -1,0 +1,42 @@
+# ======================================================================
+# Formal equivalence proof for the Holotrade routing primitive.
+#
+#   py -3 -c "from yowasp_yosys import run_yosys as r; r(['-s','rtl/verify.ys'])"
+#
+# Two independently written implementations of the symplectic form are
+# proved equal over the ENTIRE 16-bit input space by SAT -- not sampled,
+# not simulated. If any of the 65,536 address pairs disagreed on either
+# the form or the adjacency bit, the miter would be satisfiable and this
+# script would fail.
+#
+# This is the "address is route" claim, discharged as a proof obligation
+# rather than asserted.
+# ======================================================================
+
+read_verilog rtl/holotrade_admit.v
+
+# --- gold: the behavioural reference (integer arithmetic, one modulo)
+hierarchy -top w33_form_golden
+proc; opt; flatten; opt -full
+rename w33_form_golden gold
+design -stash gold
+
+# --- gate: the staged F_3 implementation (the one we would ship)
+read_verilog rtl/holotrade_admit.v
+hierarchy -top w33_form
+proc; opt; flatten; opt -full
+rename w33_form gate
+design -stash gate
+
+# --- miter and prove
+design -copy-from gold -as gold gold
+design -copy-from gate -as gate gate
+miter -equiv -flatten -make_assert gold gate miter
+hierarchy -top miter
+proc; opt -full
+
+# Exhaustive: 8 bits of u times 8 bits of v is the whole space.
+# -verify makes an unproved property a hard failure.
+sat -verify -prove-asserts -show-ports miter
+
+stat

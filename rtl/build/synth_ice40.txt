@@ -1,0 +1,1596 @@
+
+yosys> synth_ice40 -top holotrade_admit
+
+14. Executing SYNTH_ICE40 pass.
+
+yosys> read_verilog -D ICE40_HX -lib -specify +/ice40/cells_sim.v
+
+14.1. Executing Verilog-2005 frontend: /share/ice40/cells_sim.v
+Parsing Verilog input from `/share/ice40/cells_sim.v' to AST representation.
+Generating RTLIL representation for module `\SB_IO'.
+Generating RTLIL representation for module `\SB_GB_IO'.
+Generating RTLIL representation for module `\SB_GB'.
+Generating RTLIL representation for module `\SB_LUT4'.
+Generating RTLIL representation for module `\SB_CARRY'.
+Generating RTLIL representation for module `\SB_DFF'.
+Generating RTLIL representation for module `\SB_DFFE'.
+Generating RTLIL representation for module `\SB_DFFSR'.
+Generating RTLIL representation for module `\SB_DFFR'.
+Generating RTLIL representation for module `\SB_DFFSS'.
+Generating RTLIL representation for module `\SB_DFFS'.
+Generating RTLIL representation for module `\SB_DFFESR'.
+Generating RTLIL representation for module `\SB_DFFER'.
+Generating RTLIL representation for module `\SB_DFFESS'.
+Generating RTLIL representation for module `\SB_DFFES'.
+Generating RTLIL representation for module `\SB_DFFN'.
+Generating RTLIL representation for module `\SB_DFFNE'.
+Generating RTLIL representation for module `\SB_DFFNSR'.
+Generating RTLIL representation for module `\SB_DFFNR'.
+Generating RTLIL representation for module `\SB_DFFNSS'.
+Generating RTLIL representation for module `\SB_DFFNS'.
+Generating RTLIL representation for module `\SB_DFFNESR'.
+Generating RTLIL representation for module `\SB_DFFNER'.
+Generating RTLIL representation for module `\SB_DFFNESS'.
+Generating RTLIL representation for module `\SB_DFFNES'.
+Generating RTLIL representation for module `\SB_RAM40_4K'.
+Generating RTLIL representation for module `\SB_RAM40_4KNR'.
+Generating RTLIL representation for module `\SB_RAM40_4KNW'.
+Generating RTLIL representation for module `\SB_RAM40_4KNRNW'.
+Generating RTLIL representation for module `\ICESTORM_LC'.
+Generating RTLIL representation for module `\SB_PLL40_CORE'.
+Generating RTLIL representation for module `\SB_PLL40_PAD'.
+Generating RTLIL representation for module `\SB_PLL40_2_PAD'.
+Generating RTLIL representation for module `\SB_PLL40_2F_CORE'.
+Generating RTLIL representation for module `\SB_PLL40_2F_PAD'.
+Generating RTLIL representation for module `\SB_WARMBOOT'.
+Generating RTLIL representation for module `\SB_SPRAM256KA'.
+Generating RTLIL representation for module `\SB_HFOSC'.
+Generating RTLIL representation for module `\SB_LFOSC'.
+Generating RTLIL representation for module `\SB_RGBA_DRV'.
+Generating RTLIL representation for module `\SB_LED_DRV_CUR'.
+Generating RTLIL representation for module `\SB_RGB_DRV'.
+Generating RTLIL representation for module `\SB_I2C'.
+Generating RTLIL representation for module `\SB_SPI'.
+Generating RTLIL representation for module `\SB_LEDDA_IP'.
+Generating RTLIL representation for module `\SB_FILTER_50NS'.
+Generating RTLIL representation for module `\SB_IO_I3C'.
+Generating RTLIL representation for module `\SB_IO_OD'.
+Generating RTLIL representation for module `\SB_MAC16'.
+Generating RTLIL representation for module `\ICESTORM_RAM'.
+Successfully finished Verilog frontend.
+
+yosys> hierarchy -check -top holotrade_admit
+
+14.2. Executing HIERARCHY pass (managing design hierarchy).
+
+14.2.1. Analyzing design hierarchy..
+Top module:  \holotrade_admit
+Used module:     \w33_form
+Used module:         \f3_add
+Used module:         \f3_neg
+Used module:         \f3_mul
+Used module:         \f3_norm
+
+14.2.2. Analyzing design hierarchy..
+Top module:  \holotrade_admit
+Used module:     \w33_form
+Used module:         \f3_add
+Used module:         \f3_neg
+Used module:         \f3_mul
+Used module:         \f3_norm
+Removed 0 unused modules.
+
+yosys> proc -latches warn
+
+14.3. Executing PROC pass (convert processes to netlists).
+
+yosys> proc_clean
+
+14.3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+yosys> proc_rmdead
+
+14.3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed a total of 0 dead cases.
+
+yosys> proc_prune
+
+14.3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 0 assignments to connections.
+
+yosys> proc_init
+
+14.3.4. Executing PROC_INIT pass (extract init attributes).
+
+yosys> proc_arst
+
+14.3.5. Executing PROC_ARST pass (detect async resets in processes).
+
+yosys> proc_rom
+
+14.3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+
+yosys> proc_mux
+
+14.3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+
+yosys> proc_dlatch -latches warn
+
+14.3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+yosys> proc_dff
+
+14.3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+
+yosys> proc_memwr
+
+14.3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+yosys> proc_clean
+
+14.3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+yosys> opt_expr -keepdc
+
+14.3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+<suppressed ~6 debug messages>
+Optimizing module w33_form.
+<suppressed ~1 debug messages>
+Optimizing module f3_mul.
+<suppressed ~2 debug messages>
+Optimizing module f3_neg.
+<suppressed ~1 debug messages>
+Optimizing module f3_add.
+Optimizing module f3_norm.
+
+yosys> check
+
+14.4. Executing CHECK pass (checking for obvious problems).
+Checking module holotrade_admit...
+Checking module w33_form...
+Checking module f3_mul...
+Checking module f3_neg...
+Checking module f3_add...
+Checking module f3_norm...
+Found and reported 0 problems.
+
+yosys> flatten
+
+14.5. Executing FLATTEN pass (flatten design).
+Deleting now unused module w33_form.
+Deleting now unused module f3_mul.
+Deleting now unused module f3_neg.
+Deleting now unused module f3_add.
+Deleting now unused module f3_norm.
+<suppressed ~18 debug messages>
+
+yosys> tribuf -logic
+
+14.6. Executing TRIBUF pass.
+
+yosys> deminout
+
+14.7. Executing DEMINOUT pass (demote inout ports to input or output).
+
+yosys> opt_expr
+
+14.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+<suppressed ~3 debug messages>
+
+yosys> opt_clean
+
+14.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Removed 4 unused cells and 33 unused wires.
+<suppressed ~8 debug messages>
+
+yosys> check
+
+14.10. Executing CHECK pass (checking for obvious problems).
+Checking module holotrade_admit...
+Found and reported 0 problems.
+
+yosys> opt -nodffe -nosdff
+
+14.11. Executing OPT pass (performing simple optimizations).
+
+yosys> opt_expr
+
+14.11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge -nomux
+
+14.11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_muxtree
+
+14.11.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~54 debug messages>
+
+yosys> opt_reduce
+
+14.11.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+Performed a total of 0 changes.
+
+yosys> opt_merge
+
+14.11.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff -nodffe -nosdff
+
+14.11.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.11.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> opt_expr
+
+14.11.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+14.11.9. Finished fast OPT passes. (There is nothing left to do.)
+
+yosys> fsm
+
+14.12. Executing FSM pass (extract and optimize FSM).
+
+yosys> fsm_detect
+
+14.12.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+yosys> fsm_extract
+
+14.12.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+yosys> fsm_opt
+
+14.12.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+yosys> opt_clean
+
+14.12.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> fsm_opt
+
+14.12.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+yosys> fsm_recode
+
+14.12.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+yosys> fsm_info
+
+14.12.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+yosys> fsm_map
+
+14.12.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+
+yosys> opt
+
+14.13. Executing OPT pass (performing simple optimizations).
+
+yosys> opt_expr
+
+14.13.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge -nomux
+
+14.13.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_muxtree
+
+14.13.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~54 debug messages>
+
+yosys> opt_reduce
+
+14.13.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+Performed a total of 0 changes.
+
+yosys> opt_merge
+
+14.13.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.13.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.13.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> opt_expr
+
+14.13.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+14.13.9. Finished fast OPT passes. (There is nothing left to do.)
+
+yosys> wreduce
+
+14.14. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 4) from mux cell holotrade_admit.$ternary$rtl/holotrade_admit.v:184$506 ($mux).
+Removed top 1 bits (of 3) from port B of cell holotrade_admit.$flatten\geom.\a2.$ge$rtl/holotrade_admit.v:61$474 ($ge).
+Removed top 1 bits (of 3) from port B of cell holotrade_admit.$flatten\geom.\a1.$ge$rtl/holotrade_admit.v:61$474 ($ge).
+Removed top 1 bits (of 3) from port B of cell holotrade_admit.$flatten\geom.\a0.$ge$rtl/holotrade_admit.v:61$474 ($ge).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\g3.$eq$rtl/holotrade_admit.v:66$479 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\g1.$eq$rtl/holotrade_admit.v:66$479 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m3.$eq$rtl/holotrade_admit.v:72$485 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m3.$eq$rtl/holotrade_admit.v:73$486 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m2.$eq$rtl/holotrade_admit.v:72$485 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m2.$eq$rtl/holotrade_admit.v:73$486 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m1.$eq$rtl/holotrade_admit.v:72$485 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m1.$eq$rtl/holotrade_admit.v:73$486 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m0.$eq$rtl/holotrade_admit.v:72$485 ($eq).
+Removed top 1 bits (of 2) from port B of cell holotrade_admit.$flatten\geom.\m0.$eq$rtl/holotrade_admit.v:73$486 ($eq).
+Removed top 1 bits (of 3) from port A of cell holotrade_admit.$flatten\geom.\a2.$add$rtl/holotrade_admit.v:60$473 ($add).
+Removed top 1 bits (of 3) from port B of cell holotrade_admit.$flatten\geom.\a2.$add$rtl/holotrade_admit.v:60$473 ($add).
+Removed top 1 bits (of 3) from port A of cell holotrade_admit.$flatten\geom.\a1.$add$rtl/holotrade_admit.v:60$473 ($add).
+Removed top 1 bits (of 3) from port B of cell holotrade_admit.$flatten\geom.\a1.$add$rtl/holotrade_admit.v:60$473 ($add).
+Removed top 1 bits (of 3) from port A of cell holotrade_admit.$flatten\geom.\a0.$add$rtl/holotrade_admit.v:60$473 ($add).
+Removed top 1 bits (of 3) from port B of cell holotrade_admit.$flatten\geom.\a0.$add$rtl/holotrade_admit.v:60$473 ($add).
+Removed top 1 bits (of 4) from wire holotrade_admit.$ternary$rtl/holotrade_admit.v:184$506_Y.
+
+yosys> peepopt
+
+14.15. Executing PEEPOPT pass (run peephole optimizers).
+
+yosys> opt_clean
+
+14.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+yosys> share
+
+14.17. Executing SHARE pass (SAT-based resource sharing).
+
+yosys> techmap -map +/cmp2lut.v -D LUT_WIDTH=4
+
+14.18. Executing TECHMAP pass (map to technology primitives).
+
+14.18.1. Executing Verilog-2005 frontend: /share/cmp2lut.v
+Parsing Verilog input from `/share/cmp2lut.v' to AST representation.
+Generating RTLIL representation for module `\_90_lut_cmp_'.
+Successfully finished Verilog frontend.
+
+14.18.2. Continuing TECHMAP pass.
+Using template $paramod$c007e08929458199fba5a42550659350d0289be2\_90_lut_cmp_ for cells of type $ge.
+No more expansions possible.
+<suppressed ~38 debug messages>
+
+yosys> opt_expr
+
+14.19. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_clean
+
+14.20. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Removed 0 unused cells and 9 unused wires.
+<suppressed ~1 debug messages>
+
+yosys> alumacc
+
+14.21. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module holotrade_admit:
+  creating $macc model for $flatten\geom.\a0.$add$rtl/holotrade_admit.v:60$473 ($add).
+  creating $macc model for $flatten\geom.\a1.$add$rtl/holotrade_admit.v:60$473 ($add).
+  creating $macc model for $flatten\geom.\a2.$add$rtl/holotrade_admit.v:60$473 ($add).
+  creating $macc model for $flatten\geom.\a0.$sub$rtl/holotrade_admit.v:61$475 ($sub).
+  creating $macc model for $flatten\geom.\a1.$sub$rtl/holotrade_admit.v:61$475 ($sub).
+  creating $macc model for $flatten\geom.\a2.$sub$rtl/holotrade_admit.v:61$475 ($sub).
+  creating $alu model for $macc $flatten\geom.\a2.$sub$rtl/holotrade_admit.v:61$475.
+  creating $alu model for $macc $flatten\geom.\a1.$sub$rtl/holotrade_admit.v:61$475.
+  creating $alu model for $macc $flatten\geom.\a0.$sub$rtl/holotrade_admit.v:61$475.
+  creating $alu model for $macc $flatten\geom.\a2.$add$rtl/holotrade_admit.v:60$473.
+  creating $alu model for $macc $flatten\geom.\a1.$add$rtl/holotrade_admit.v:60$473.
+  creating $alu model for $macc $flatten\geom.\a0.$add$rtl/holotrade_admit.v:60$473.
+  creating $alu cell for $flatten\geom.\a0.$add$rtl/holotrade_admit.v:60$473: $auto$alumacc.cc:548:replace_alu$986
+  creating $alu cell for $flatten\geom.\a1.$add$rtl/holotrade_admit.v:60$473: $auto$alumacc.cc:548:replace_alu$989
+  creating $alu cell for $flatten\geom.\a2.$add$rtl/holotrade_admit.v:60$473: $auto$alumacc.cc:548:replace_alu$992
+  creating $alu cell for $flatten\geom.\a0.$sub$rtl/holotrade_admit.v:61$475: $auto$alumacc.cc:548:replace_alu$995
+  creating $alu cell for $flatten\geom.\a1.$sub$rtl/holotrade_admit.v:61$475: $auto$alumacc.cc:548:replace_alu$998
+  creating $alu cell for $flatten\geom.\a2.$sub$rtl/holotrade_admit.v:61$475: $auto$alumacc.cc:548:replace_alu$1001
+  created 6 $alu and 0 $macc cells.
+
+yosys> opt
+
+14.22. Executing OPT pass (performing simple optimizations).
+
+yosys> opt_expr
+
+14.22.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge -nomux
+
+14.22.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_muxtree
+
+14.22.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~54 debug messages>
+
+yosys> opt_reduce
+
+14.22.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+Performed a total of 0 changes.
+
+yosys> opt_merge
+
+14.22.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.22.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.22.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> opt_expr
+
+14.22.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+14.22.9. Finished fast OPT passes. (There is nothing left to do.)
+
+yosys> memory -nomap
+
+14.23. Executing MEMORY pass.
+
+yosys> opt_mem
+
+14.23.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+yosys> opt_mem_priority
+
+14.23.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+yosys> opt_mem_feedback
+
+14.23.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+yosys> memory_bmux2rom
+
+14.23.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+yosys> memory_dff
+
+14.23.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+yosys> opt_clean
+
+14.23.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> memory_share
+
+14.23.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+yosys> opt_mem_widen
+
+14.23.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+yosys> opt_clean
+
+14.23.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> memory_collect
+
+14.23.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+yosys> opt_clean
+
+14.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> memory_libmap -lib +/ice40/brams.txt -lib +/ice40/spram.txt -no-auto-huge
+
+14.25. Executing MEMORY_LIBMAP pass (mapping memories to cells).
+
+yosys> techmap -map +/ice40/brams_map.v -map +/ice40/spram_map.v
+
+14.26. Executing TECHMAP pass (map to technology primitives).
+
+14.26.1. Executing Verilog-2005 frontend: /share/ice40/brams_map.v
+Parsing Verilog input from `/share/ice40/brams_map.v' to AST representation.
+Generating RTLIL representation for module `$__ICE40_RAM4K_'.
+Successfully finished Verilog frontend.
+
+14.26.2. Executing Verilog-2005 frontend: /share/ice40/spram_map.v
+Parsing Verilog input from `/share/ice40/spram_map.v' to AST representation.
+Generating RTLIL representation for module `$__ICE40_SPRAM_'.
+Successfully finished Verilog frontend.
+
+14.26.3. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~4 debug messages>
+
+yosys> ice40_braminit
+
+14.27. Executing ICE40_BRAMINIT pass.
+
+yosys> opt -fast -mux_undef -undriven -fine
+
+14.28. Executing OPT pass (performing simple optimizations).
+
+yosys> opt_expr -mux_undef -undriven -fine
+
+14.28.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge
+
+14.28.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.28.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.28.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+14.28.5. Finished fast OPT passes.
+
+yosys> memory_map
+
+14.29. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+yosys> opt -undriven -fine
+
+14.30. Executing OPT pass (performing simple optimizations).
+
+yosys> opt_expr -undriven -fine
+
+14.30.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge -nomux
+
+14.30.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_muxtree
+
+14.30.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~54 debug messages>
+
+yosys> opt_reduce -fine
+
+14.30.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+    Consolidated identical input bits for $mux cell $ternary$rtl/holotrade_admit.v:184$507:
+      Old ports: A={ 1'0 $auto$wreduce.cc:514:run$980 [2:0] }, B=4'0110, Y=\ray_cost
+      New ports: A=$auto$wreduce.cc:514:run$980 [2:0], B=3'110, Y=\ray_cost [2:0]
+      New connections: \ray_cost [3] = 1'0
+    Consolidated identical input bits for $mux cell $ternary$rtl/holotrade_admit.v:184$506:
+      Old ports: A=3'101, B=3'011, Y=$auto$wreduce.cc:514:run$980 [2:0]
+      New ports: A=2'10, B=2'01, Y=$auto$wreduce.cc:514:run$980 [2:1]
+      New connections: $auto$wreduce.cc:514:run$980 [0] = 1'1
+    Consolidated identical input bits for $mux cell $ternary$rtl/holotrade_admit.v:173$499:
+      Old ports: A=3'000, B=3'110, Y=$ternary$rtl/holotrade_admit.v:173$499_Y
+      New ports: A=1'0, B=1'1, Y=$ternary$rtl/holotrade_admit.v:173$499_Y [1]
+      New connections: { $ternary$rtl/holotrade_admit.v:173$499_Y [2] $ternary$rtl/holotrade_admit.v:173$499_Y [0] } = { $ternary$rtl/holotrade_admit.v:173$499_Y [1] 1'0 }
+  Optimizing cells in module \holotrade_admit.
+Performed a total of 3 changes.
+
+yosys> opt_merge
+
+14.30.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.30.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.30.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> opt_expr -undriven -fine
+
+14.30.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+14.30.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+yosys> opt_muxtree
+
+14.30.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~54 debug messages>
+
+yosys> opt_reduce -fine
+
+14.30.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+Performed a total of 0 changes.
+
+yosys> opt_merge
+
+14.30.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 100 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.30.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.30.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys> opt_expr -undriven -fine
+
+14.30.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+14.30.16. Finished fast OPT passes. (There is nothing left to do.)
+
+yosys> ice40_wrapcarry
+
+14.31. Executing ICE40_WRAPCARRY pass (wrap carries).
+
+yosys> techmap -map +/techmap.v -map +/ice40/arith_map.v
+
+14.32. Executing TECHMAP pass (map to technology primitives).
+
+14.32.1. Executing Verilog-2005 frontend: /share/techmap.v
+Parsing Verilog input from `/share/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+14.32.2. Executing Verilog-2005 frontend: /share/ice40/arith_map.v
+Parsing Verilog input from `/share/ice40/arith_map.v' to AST representation.
+Generating RTLIL representation for module `\_80_ice40_alu'.
+Successfully finished Verilog frontend.
+
+14.32.3. Continuing TECHMAP pass.
+Using template $paramod$649fc39eef2451024566705288528c8671211199\_80_ice40_alu for cells of type $alu.
+Using template $paramod$7e708ae28ab761f11d0fb59d3ffc72f6a4baf5d9\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $logic_and.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $eq.
+Using extmapper simplemap for cells of type $lut.
+Using extmapper simplemap for cells of type $logic_or.
+Using extmapper simplemap for cells of type $xor.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000010 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000010 for cells of type $lcu.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $and.
+No more expansions possible.
+<suppressed ~452 debug messages>
+
+yosys> opt -fast
+
+14.33. Executing OPT pass (performing simple optimizations).
+
+yosys> opt_expr
+
+14.33.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+<suppressed ~174 debug messages>
+
+yosys> opt_merge
+
+14.33.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 235 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Computing hashes of 232 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+<suppressed ~9 debug messages>
+Removed a total of 3 cells.
+
+yosys> opt_dff
+
+14.33.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.33.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Removed 34 unused cells and 248 unused wires.
+<suppressed ~36 debug messages>
+
+14.33.5. Finished fast OPT passes.
+
+yosys> ice40_opt
+
+14.34. Executing ICE40_OPT pass (performing simple optimizations).
+
+14.34.1. Running ICE40 specific optimizations.
+Optimized $__ICE40_CARRY_WRAPPER cell back to logic (without SB_CARRY) holotrade_admit.$auto$alumacc.cc:548:replace_alu$986.slice[2].carry: CO=1'0
+Optimized $__ICE40_CARRY_WRAPPER cell back to logic (without SB_CARRY) holotrade_admit.$auto$alumacc.cc:548:replace_alu$989.slice[2].carry: CO=1'0
+Optimized $__ICE40_CARRY_WRAPPER cell back to logic (without SB_CARRY) holotrade_admit.$auto$alumacc.cc:548:replace_alu$992.slice[2].carry: CO=1'0
+
+yosys> opt_expr -mux_undef -undriven
+
+14.34.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge
+
+14.34.3. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 198 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.34.4. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.34.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Removed 0 unused cells and 3 unused wires.
+<suppressed ~1 debug messages>
+
+14.34.6. Rerunning OPT passes. (Removed registers in this run.)
+
+14.34.7. Running ICE40 specific optimizations.
+
+yosys> opt_expr -mux_undef -undriven
+
+14.34.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge
+
+14.34.9. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 198 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.34.10. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.34.11. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+14.34.12. Finished OPT passes. (There is nothing left to do.)
+
+yosys> dfflegalize -cell $_DFF_?_ 0 -cell $_DFFE_?P_ 0 -cell $_DFF_?P?_ 0 -cell $_DFFE_?P?P_ 0 -cell $_SDFF_?P?_ 0 -cell $_SDFFCE_?P?P_ 0 -cell $_DLATCH_?_ x -mince -1
+
+14.35. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+
+yosys> techmap -map +/ice40/ff_map.v
+
+14.36. Executing TECHMAP pass (map to technology primitives).
+
+14.36.1. Executing Verilog-2005 frontend: /share/ice40/ff_map.v
+Parsing Verilog input from `/share/ice40/ff_map.v' to AST representation.
+Generating RTLIL representation for module `$_DFF_N_'.
+Generating RTLIL representation for module `$_DFF_P_'.
+Generating RTLIL representation for module `$_DFFE_NP_'.
+Generating RTLIL representation for module `$_DFFE_PP_'.
+Generating RTLIL representation for module `$_DFF_NP0_'.
+Generating RTLIL representation for module `$_DFF_NP1_'.
+Generating RTLIL representation for module `$_DFF_PP0_'.
+Generating RTLIL representation for module `$_DFF_PP1_'.
+Generating RTLIL representation for module `$_DFFE_NP0P_'.
+Generating RTLIL representation for module `$_DFFE_NP1P_'.
+Generating RTLIL representation for module `$_DFFE_PP0P_'.
+Generating RTLIL representation for module `$_DFFE_PP1P_'.
+Generating RTLIL representation for module `$_SDFF_NP0_'.
+Generating RTLIL representation for module `$_SDFF_NP1_'.
+Generating RTLIL representation for module `$_SDFF_PP0_'.
+Generating RTLIL representation for module `$_SDFF_PP1_'.
+Generating RTLIL representation for module `$_SDFFCE_NP0P_'.
+Generating RTLIL representation for module `$_SDFFCE_NP1P_'.
+Generating RTLIL representation for module `$_SDFFCE_PP0P_'.
+Generating RTLIL representation for module `$_SDFFCE_PP1P_'.
+Successfully finished Verilog frontend.
+
+14.36.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~22 debug messages>
+
+yosys> opt_expr -mux_undef
+
+14.37. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> simplemap
+
+14.38. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+Mapping holotrade_admit.$auto$alumacc.cc:548:replace_alu$986.slice[2].carry ($lut).
+Mapping holotrade_admit.$auto$alumacc.cc:548:replace_alu$989.slice[2].carry ($lut).
+Mapping holotrade_admit.$auto$alumacc.cc:548:replace_alu$992.slice[2].carry ($lut).
+
+yosys> ice40_opt -full
+
+14.39. Executing ICE40_OPT pass (performing simple optimizations).
+
+14.39.1. Running ICE40 specific optimizations.
+
+yosys> opt_expr -mux_undef -undriven -full
+
+14.39.2. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+<suppressed ~83 debug messages>
+
+yosys> opt_merge
+
+14.39.3. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 195 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.39.4. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.39.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Removed 0 unused cells and 12 unused wires.
+<suppressed ~1 debug messages>
+
+14.39.6. Rerunning OPT passes. (Removed registers in this run.)
+
+14.39.7. Running ICE40 specific optimizations.
+
+yosys> opt_expr -mux_undef -undriven -full
+
+14.39.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+yosys> opt_merge
+
+14.39.9. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 195 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys> opt_dff
+
+14.39.10. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+14.39.11. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+14.39.12. Finished OPT passes. (There is nothing left to do.)
+
+yosys> check -latchonly -assert
+
+14.40. Executing CHECK pass (checking for obvious problems).
+Checking module holotrade_admit...
+Found and reported 0 problems.
+
+yosys> techmap -map +/ice40/latches_map.v
+
+14.41. Executing TECHMAP pass (map to technology primitives).
+
+14.41.1. Executing Verilog-2005 frontend: /share/ice40/latches_map.v
+Parsing Verilog input from `/share/ice40/latches_map.v' to AST representation.
+Generating RTLIL representation for module `$_DLATCH_N_'.
+Generating RTLIL representation for module `$_DLATCH_P_'.
+Successfully finished Verilog frontend.
+
+14.41.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~4 debug messages>
+
+yosys> read_verilog -D ICE40_HX -icells -lib -specify +/ice40/abc9_model.v
+
+14.42. Executing Verilog-2005 frontend: /share/ice40/abc9_model.v
+Parsing Verilog input from `/share/ice40/abc9_model.v' to AST representation.
+Generating RTLIL representation for module `$__ICE40_CARRY_WRAPPER'.
+Successfully finished Verilog frontend.
+
+yosys> abc9 -W 250
+
+14.43. Executing ABC9 pass.
+
+yosys> abc9_ops -check
+
+14.43.1. Executing ABC9_OPS pass (helper functions for ABC9).
+
+yosys> abc9_ops -prep_hier
+
+14.43.2. Executing ABC9_OPS pass (helper functions for ABC9).
+
+yosys> scc -specify -set_attr abc9_scc_id {}
+
+14.43.3. Executing SCC pass (detecting logic loops).
+Found 0 SCCs in module holotrade_admit.
+Found 0 SCCs.
+
+yosys> abc9_ops -prep_bypass
+
+14.43.4. Executing ABC9_OPS pass (helper functions for ABC9).
+
+yosys> design -stash $abc9
+
+yosys> design -load $abc9_map
+
+yosys*> wbflip
+
+yosys*> techmap -autoproc -wb -map %$abc9 -map +/techmap.v A:abc9_flop
+
+14.43.5. Executing TECHMAP pass (map to technology primitives).
+
+14.43.5.1. Executing Verilog-2005 frontend: /share/techmap.v
+Parsing Verilog input from `/share/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+14.43.5.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~130 debug messages>
+
+yosys*> opt -nodffe -nosdff
+
+14.43.6. Executing OPT pass (performing simple optimizations).
+
+yosys*> opt_expr
+
+14.43.6.1. Executing OPT_EXPR pass (perform const folding).
+
+yosys*> opt_merge -nomux
+
+14.43.6.2. Executing OPT_MERGE pass (detect identical cells).
+Removed a total of 0 cells.
+
+yosys*> opt_muxtree
+
+14.43.6.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Removed 0 multiplexer ports.
+
+yosys*> opt_reduce
+
+14.43.6.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+Performed a total of 0 changes.
+
+yosys*> opt_merge
+
+14.43.6.5. Executing OPT_MERGE pass (detect identical cells).
+Removed a total of 0 cells.
+
+yosys*> opt_dff -nodffe -nosdff
+
+14.43.6.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys*> opt_clean
+
+14.43.6.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+
+yosys*> opt_expr
+
+14.43.6.8. Executing OPT_EXPR pass (perform const folding).
+
+14.43.6.9. Finished fast OPT passes. (There is nothing left to do.)
+
+yosys*> design -stash $abc9_map
+
+yosys> design -load $abc9
+
+yosys> design -delete $abc9
+
+yosys> techmap -wb -max_iter 1 -map %$abc9_map -map +/abc9_map.v a:abc9_scc_id %n
+
+14.43.7. Executing TECHMAP pass (map to technology primitives).
+
+14.43.7.1. Executing Verilog-2005 frontend: /share/abc9_map.v
+Parsing Verilog input from `/share/abc9_map.v' to AST representation.
+Successfully finished Verilog frontend.
+
+14.43.7.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~2 debug messages>
+
+yosys> design -delete $abc9_map
+
+yosys> read_verilog -icells -lib -specify +/abc9_model.v
+
+14.43.8. Executing Verilog-2005 frontend: /share/abc9_model.v
+Parsing Verilog input from `/share/abc9_model.v' to AST representation.
+Generating RTLIL representation for module `$__ABC9_DELAY'.
+Generating RTLIL representation for module `$__ABC9_SCC_BREAKER'.
+Generating RTLIL representation for module `$__DFF_N__$abc9_flop'.
+Generating RTLIL representation for module `$__DFF_P__$abc9_flop'.
+Successfully finished Verilog frontend.
+
+yosys> abc9_ops -break_scc -prep_delays -prep_xaiger
+
+14.43.9. Executing ABC9_OPS pass (helper functions for ABC9).
+<suppressed ~2 debug messages>
+
+yosys> abc9_ops -prep_lut 0
+
+14.43.10. Executing ABC9_OPS pass (helper functions for ABC9).
+
+yosys> abc9_ops -prep_box
+
+14.43.11. Executing ABC9_OPS pass (helper functions for ABC9).
+<suppressed ~2 debug messages>
+
+yosys> design -stash $abc9
+
+yosys> design -load $abc9_holes
+
+yosys*> techmap -wb -map %$abc9 -map +/techmap.v
+
+14.43.12. Executing TECHMAP pass (map to technology primitives).
+
+14.43.12.1. Executing Verilog-2005 frontend: /share/techmap.v
+Parsing Verilog input from `/share/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+14.43.12.2. Continuing TECHMAP pass.
+Using template $paramod$__ICE40_CARRY_WRAPPER\LUT=16'0110100110010110\I3_IS_CI=1'1 for cells of type $paramod$__ICE40_CARRY_WRAPPER\LUT=16'0110100110010110\I3_IS_CI=1'1.
+Using template $paramod\SB_LUT4\LUT_INIT=16'0110100110010110 for cells of type SB_LUT4.
+Using template SB_CARRY for cells of type SB_CARRY.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $logic_and.
+Using extmapper simplemap for cells of type $logic_or.
+No more expansions possible.
+<suppressed ~149 debug messages>
+
+yosys*> opt -purge
+
+14.43.13. Executing OPT pass (performing simple optimizations).
+
+yosys*> opt_expr
+
+14.43.13.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+<suppressed ~4 debug messages>
+
+yosys*> opt_merge -nomux
+
+14.43.13.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 30 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Computing hashes of 20 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Computing hashes of 18 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+<suppressed ~29 debug messages>
+Removed a total of 12 cells.
+
+yosys*> opt_muxtree
+
+14.43.13.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+yosys*> opt_reduce
+
+14.43.13.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+Performed a total of 0 changes.
+
+yosys*> opt_merge
+
+14.43.13.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 18 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys*> opt_dff
+
+14.43.13.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys*> opt_clean -purge
+
+14.43.13.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Removed 0 unused cells and 24 unused wires.
+<suppressed ~1 debug messages>
+
+yosys*> opt_expr
+
+14.43.13.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+14.43.13.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+yosys*> opt_muxtree
+
+14.43.13.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+yosys*> opt_reduce
+
+14.43.13.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+Performed a total of 0 changes.
+
+yosys*> opt_merge
+
+14.43.13.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 18 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Removed a total of 0 cells.
+
+yosys*> opt_dff
+
+14.43.13.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys*> opt_clean -purge
+
+14.43.13.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+
+yosys*> opt_expr
+
+14.43.13.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+
+14.43.13.16. Finished fast OPT passes. (There is nothing left to do.)
+
+yosys*> aigmap
+
+14.43.14. Executing AIGMAP pass (map logic to AIG).
+Module holotrade_admit: replaced 7 cells with 43 new cells, skipped 11 cells.
+  replaced 2 cell types:
+       5 $_MUX_
+       2 $_OR_
+  not replaced 3 cell types:
+       2 $_AND_
+       1 $_NOT_
+       8 $specify2
+
+yosys*> design -stash $abc9_holes
+
+yosys> design -load $abc9
+
+yosys> design -delete $abc9
+
+yosys> aigmap
+
+14.43.15. Executing AIGMAP pass (map logic to AIG).
+Module holotrade_admit: replaced 98 cells with 527 new cells, skipped 97 cells.
+  replaced 3 cell types:
+      34 $_MUX_
+      53 $_OR_
+      11 $_XOR_
+  not replaced 4 cell types:
+      31 $_AND_
+      42 $_NOT_
+      18 $scopeinfo
+       6 $paramod$__ICE40_CARRY_WRAPPER\LUT=16'0110100110010110\I3_IS_CI=1'1
+
+yosys*> abc9_ops -write_lut /tmp/yosys-abc-000000/input.lut
+
+14.43.15.1. Executing ABC9_OPS pass (helper functions for ABC9).
+
+yosys*> abc9_ops -write_box /tmp/yosys-abc-000000/input.box
+
+14.43.15.2. Executing ABC9_OPS pass (helper functions for ABC9).
+
+yosys*> write_xaiger -map /tmp/yosys-abc-000000/input.sym /tmp/yosys-abc-000000/input.xaig
+
+14.43.15.3. Executing XAIGER backend.
+<suppressed ~11 debug messages>
+Extracted 219 AND gates and 656 wires from module `holotrade_admit' to a netlist network with 26 inputs and 11 outputs.
+
+yosys*> abc9_exe -W 250 -cwd /tmp/yosys-abc-000000 -lut /tmp/yosys-abc-000000/input.lut -box /tmp/yosys-abc-000000/input.box
+
+14.43.15.4. Executing ABC9_EXE pass (technology mapping using ABC9).
+
+14.43.15.5. Executing ABC9.
+Running ABC command: "/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+
+yosys*> read_aiger -xaiger -module_name holotrade_admit$abc9 /tmp/yosys-abc-000000/output.aig
+
+14.43.15.6. Executing AIGER frontend.
+
+yosys> clean
+<suppressed ~10 debug messages>
+Removed 173 unused cells and 251 unused wires.
+
+yosys*> abc_ops_reintegrate -map /tmp/yosys-abc-000000/input.sym
+
+14.43.15.7. Executing ABC_OPS_REINTEGRATE pass (reintegrate ABC mapped design into module).
+ABC RESULTS:              $lut cells:       33
+ABC RESULTS:   $paramod$__ICE40_CARRY_WRAPPER\LUT=16'0110100110010110\I3_IS_CI=1'1 cells:        6
+ABC RESULTS:           input signals:        9
+ABC RESULTS:          output signals:        5
+<suppressed ~74 debug messages>
+Removing temp directory.
+
+yosys> techmap -wb -map %$abc9_unmap -map +/abc9_unmap.v
+
+14.43.16. Executing TECHMAP pass (map to technology primitives).
+
+14.43.16.1. Executing Verilog-2005 frontend: /share/abc9_unmap.v
+Parsing Verilog input from `/share/abc9_unmap.v' to AST representation.
+Generating RTLIL representation for module `$__DFF_x__$abc9_flop'.
+Generating RTLIL representation for module `$__ABC9_SCC_BREAKER'.
+Successfully finished Verilog frontend.
+
+14.43.16.2. Continuing TECHMAP pass.
+Using template $paramod$__ICE40_CARRY_WRAPPER\LUT=16'0110100110010110\I3_IS_CI=1'1 for cells of type $paramod$__ICE40_CARRY_WRAPPER\LUT=16'0110100110010110\I3_IS_CI=1'1.
+No more expansions possible.
+<suppressed ~12 debug messages>
+
+yosys> design -delete $abc9_unmap
+
+yosys> design -delete $abc9_holes
+
+yosys> setattr -mod -unset abc9_box_id
+
+yosys> ice40_wrapcarry -unwrap
+
+14.44. Executing ICE40_WRAPCARRY pass (wrap carries).
+
+yosys> techmap -map +/ice40/ff_map.v
+
+14.45. Executing TECHMAP pass (map to technology primitives).
+
+14.45.1. Executing Verilog-2005 frontend: /share/ice40/ff_map.v
+Parsing Verilog input from `/share/ice40/ff_map.v' to AST representation.
+Generating RTLIL representation for module `$_DFF_N_'.
+Generating RTLIL representation for module `$_DFF_P_'.
+Generating RTLIL representation for module `$_DFFE_NP_'.
+Generating RTLIL representation for module `$_DFFE_PP_'.
+Generating RTLIL representation for module `$_DFF_NP0_'.
+Generating RTLIL representation for module `$_DFF_NP1_'.
+Generating RTLIL representation for module `$_DFF_PP0_'.
+Generating RTLIL representation for module `$_DFF_PP1_'.
+Generating RTLIL representation for module `$_DFFE_NP0P_'.
+Generating RTLIL representation for module `$_DFFE_NP1P_'.
+Generating RTLIL representation for module `$_DFFE_PP0P_'.
+Generating RTLIL representation for module `$_DFFE_PP1P_'.
+Generating RTLIL representation for module `$_SDFF_NP0_'.
+Generating RTLIL representation for module `$_SDFF_NP1_'.
+Generating RTLIL representation for module `$_SDFF_PP0_'.
+Generating RTLIL representation for module `$_SDFF_PP1_'.
+Generating RTLIL representation for module `$_SDFFCE_NP0P_'.
+Generating RTLIL representation for module `$_SDFFCE_NP1P_'.
+Generating RTLIL representation for module `$_SDFFCE_PP0P_'.
+Generating RTLIL representation for module `$_SDFFCE_PP1P_'.
+Successfully finished Verilog frontend.
+
+14.45.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~22 debug messages>
+
+yosys> clean
+Removed 14 unused cells and 779 unused wires.
+
+yosys> opt_lut -tech ice40
+
+14.46. Executing OPT_LUT pass (optimize LUTs).
+Discovering LUTs.
+Number of LUTs:       39
+  2-LUT                9
+  3-LUT               11
+  4-LUT               19
+  with \SB_CARRY    (#0)    6
+  with \SB_CARRY    (#1)    3
+
+Eliminating LUTs.
+Number of LUTs:       39
+  2-LUT                9
+  3-LUT               11
+  4-LUT               19
+  with \SB_CARRY    (#0)    6
+  with \SB_CARRY    (#1)    3
+
+Combining LUTs.
+Number of LUTs:       39
+  2-LUT                9
+  3-LUT               11
+  4-LUT               19
+  with \SB_CARRY    (#0)    6
+  with \SB_CARRY    (#1)    3
+
+Eliminated 0 LUTs.
+Combined 0 LUTs.
+<suppressed ~152 debug messages>
+
+yosys> techmap -map +/ice40/cells_map.v
+
+14.47. Executing TECHMAP pass (map to technology primitives).
+
+14.47.1. Executing Verilog-2005 frontend: /share/ice40/cells_map.v
+Parsing Verilog input from `/share/ice40/cells_map.v' to AST representation.
+Generating RTLIL representation for module `$lut'.
+Successfully finished Verilog frontend.
+
+14.47.2. Continuing TECHMAP pass.
+Using template $paramod$391a92c6f41472c7f233a3dce6bbecee0b610a5f$lut for cells of type $lut.
+Using template $paramod$57d2e1295b919a454ae47602f82b8a48fd5aaeec$lut for cells of type $lut.
+Using template $paramod$fd904e9e35cfd343a9df248824bd3f1408724879$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'0100 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'10101110 for cells of type $lut.
+Using template $paramod$fca001e3e0b52158a872e76e56c01ec10dfbb1de$lut for cells of type $lut.
+Using template $paramod$8d7a8d6e3356de09670738ba85f2c6b874f6b06d$lut for cells of type $lut.
+Using template $paramod$df196ed0a1da5c4a58c5e08a1dac304fd3fccaab$lut for cells of type $lut.
+Using template $paramod$7d35f3eb4056e6484203c99fe42cfcf1dfaba704$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'0111 for cells of type $lut.
+Using template $paramod$5ed6b8f280bee316232f3fc4078d34cbac6d14da$lut for cells of type $lut.
+Using template $paramod$658b9ed803f0d3d335616d3858b53e0a2522f1e8$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'0001 for cells of type $lut.
+Using template $paramod$2d52a1d6cf603c98ba7b908cd4e344a0536dbeca$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'1101 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'01000001 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'1000 for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000010\LUT=4'0010 for cells of type $lut.
+Using template $paramod$feac1814a13647ff95d85e23385825c648d6c2ee$lut for cells of type $lut.
+Using template $paramod$lut\WIDTH=32'00000000000000000000000000000011\LUT=8'01000000 for cells of type $lut.
+Using template $paramod$7ea2352f8f054781a715aeddf3e67f1db65f005a$lut for cells of type $lut.
+No more expansions possible.
+<suppressed ~315 debug messages>
+
+yosys> clean
+Removed 0 unused cells and 91 unused wires.
+
+yosys> autoname
+
+14.48. Executing AUTONAME pass.
+Renamed 68 objects in module holotrade_admit.
+<suppressed ~68 debug messages>
+
+yosys> hierarchy -check
+
+14.49. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `holotrade_admit'. Setting top module to holotrade_admit.
+
+14.49.1. Analyzing design hierarchy..
+Top module:  \holotrade_admit
+
+14.49.2. Analyzing design hierarchy..
+Top module:  \holotrade_admit
+Removed 0 unused modules.
+
+yosys> stat
+
+14.50. Printing statistics.
+
+=== holotrade_admit ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       50 wires
+      135 wire bits
+       50 public wires
+      135 public wire bits
+       14 ports
+       37 port bits
+       18 cells
+       18   $scopeinfo
+       45 submodules
+        6   SB_CARRY
+       39   SB_LUT4
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+       18 holotrade_admit
+
+        +----------Count including submodules.
+        | 
+       50 wires
+      135 wire bits
+       50 public wires
+      135 public wire bits
+       14 ports
+       37 port bits
+        - memories
+        - memory bits
+        - processes
+       18 cells
+       18   $scopeinfo
+       45 submodules
+        6   SB_CARRY
+       39   SB_LUT4
+
+
+yosys> check -noinit
+
+14.51. Executing CHECK pass (checking for obvious problems).
+Checking module holotrade_admit...
+Found and reported 0 problems.
+
+yosys> blackbox =A:whitebox
+
+yosys> stat
+
+15. Printing statistics.
+
+=== holotrade_admit ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       50 wires
+      135 wire bits
+       50 public wires
+      135 public wire bits
+       14 ports
+       37 port bits
+       63 cells
+       18   $scopeinfo
+        6   SB_CARRY
+       39   SB_LUT4
+

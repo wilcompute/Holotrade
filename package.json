@@ -1,0 +1,18 @@
+{
+  "name": "holotrade",
+  "version": "0.1.0",
+  "description": "An exchange for compute. Node-seconds priced on live energy, node genetics, health, and fabric coherence.",
+  "main": "js/app.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/core.test.js",
+    "serve": "node -e \"const h=require('http'),f=require('fs'),p=require('path');h.createServer((q,s)=>{let u=q.url.split('?')[0];if(u==='/')u='/index.html';const fp=p.join(process.cwd(),u);f.readFile(fp,(e,d)=>{if(e){s.writeHead(404);return s.end('not found');}const t={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json'}[p.extname(fp)]||'text/plain';s.writeHead(200,{'Content-Type':t});s.end(d);});}).listen(8080,()=>console.log('Holotrade on http://localhost:8080'))\"",
+    "verify:rtl": "py -3 -c \"from yowasp_yosys import run_yosys as r; import sys; sys.exit(r(['-s','rtl/verify.ys']))\"",
+    "synth:rtl": "py -3 -c \"from yowasp_yosys import run_yosys as r; import sys; sys.exit(r(['-s','rtl/synth.ys']))\"",
+    "paper": "C:/Users/wiljd/tools/tectonic/tectonic.exe docs/holotrade.tex --outdir docs"
+  },
+  "keywords": ["compute-exchange", "microvm", "energy-pricing", "datacenter", "marketplace", "w33", "substrate"],
+  "author": "Wil Dahn",
+  "license": "MIT",
+  "private": true
+}

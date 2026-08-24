@@ -1,0 +1,10 @@
+node_modules/
+.scratch/
+*.log
+*.aux
+*.out
+*.toc
+*.synctex.gz
+rtl/build/*.json
+.DS_Store
+Thumbs.db

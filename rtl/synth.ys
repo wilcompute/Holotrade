@@ -1,0 +1,31 @@
+# ======================================================================
+# Synthesis of the Holotrade admission + routing primitive.
+#
+#   py -3 -c "from yowasp_yosys import run_yosys as r; r(['-s','rtl/synth.ys'])"
+#
+# Reports cell counts on two targets. Cell counts are facts about a
+# netlist and are reported. TIMING IS NOT REPORTED: a frequency is a
+# fact about a specific part after place-and-route, and this design has
+# been neither placed nor routed. Quoting an Fmax here would be a
+# modelled number dressed as a measurement.
+# ======================================================================
+
+read_verilog rtl/holotrade_admit.v
+hierarchy -top holotrade_admit
+proc; opt; fsm; opt; memory; opt
+
+echo on
+
+# --- generic gate-level, technology independent -----------------------
+tee -o rtl/build/synth_generic.txt techmap; tee -a rtl/build/synth_generic.txt opt -full
+tee -a rtl/build/synth_generic.txt stat
+
+design -reset
+read_verilog rtl/holotrade_admit.v
+hierarchy -top holotrade_admit
+
+# --- iCE40 HX8K, the part the substrate programme's RTL uses ----------
+tee -o rtl/build/synth_ice40.txt synth_ice40 -top holotrade_admit
+tee -a rtl/build/synth_ice40.txt stat
+
+write_json rtl/build/holotrade_admit.json

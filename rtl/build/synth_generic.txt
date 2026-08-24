@@ -1,0 +1,424 @@
+
+yosys> techmap
+
+9. Executing TECHMAP pass (map to technology primitives).
+
+9.1. Executing Verilog-2005 frontend: /share/techmap.v
+Parsing Verilog input from `/share/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+9.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $eq.
+Using extmapper simplemap for cells of type $mux.
+Running "alumacc" on wrapper $extern:wrap:$add:Y_WIDTH=3:B_WIDTH=3:A_WIDTH=3:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$add:Y_WIDTH=3:B_WIDTH=3:A_WIDTH=3:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$add:Y_WIDTH=3:B_WIDTH=3:A_WIDTH=3:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Running "alumacc" on wrapper $extern:wrap:$ge:Y_WIDTH=1:B_WIDTH=3:A_WIDTH=3:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$ge:Y_WIDTH=1:B_WIDTH=3:A_WIDTH=3:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$ge:Y_WIDTH=1:B_WIDTH=3:A_WIDTH=3:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Running "alumacc" on wrapper $extern:wrap:$sub:Y_WIDTH=2:B_WIDTH=2:A_WIDTH=2:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $extern:wrap:$sub:Y_WIDTH=2:B_WIDTH=2:A_WIDTH=2:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$sub:Y_WIDTH=2:B_WIDTH=2:A_WIDTH=2:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
+Using template $paramod$78e969f2586efcf3a5b0b0440bcca0db83d5cca2\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $reduce_and.
+Using extmapper simplemap for cells of type $reduce_or.
+Using template $paramod$7e708ae28ab761f11d0fb59d3ffc72f6a4baf5d9\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000011 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000011 for cells of type $lcu.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000010 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000010 for cells of type $lcu.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $logic_or.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $logic_and.
+No more expansions possible.
+<suppressed ~614 debug messages>
+
+yosys> opt -full
+
+10. Executing OPT pass (performing simple optimizations).
+
+yosys> opt_expr -full
+
+10.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+<suppressed ~21 debug messages>
+Optimizing module w33_form.
+Optimizing module f3_mul.
+<suppressed ~9 debug messages>
+Optimizing module f3_neg.
+<suppressed ~9 debug messages>
+Optimizing module f3_add.
+<suppressed ~67 debug messages>
+Optimizing module f3_norm.
+<suppressed ~6 debug messages>
+
+yosys> opt_merge -nomux
+
+10.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 42 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Finding identical cells in module `\w33_form'.
+Computing hashes of 19 cells of `\w33_form'.
+Finding duplicate cells in `\w33_form'.
+Finding identical cells in module `\f3_mul'.
+Computing hashes of 17 cells of `\f3_mul'.
+Finding duplicate cells in `\f3_mul'.
+Finding identical cells in module `\f3_neg'.
+Computing hashes of 8 cells of `\f3_neg'.
+Finding duplicate cells in `\f3_neg'.
+Computing hashes of 7 cells of `\f3_neg'.
+Finding duplicate cells in `\f3_neg'.
+<suppressed ~3 debug messages>
+Finding identical cells in module `\f3_add'.
+Computing hashes of 27 cells of `\f3_add'.
+Finding duplicate cells in `\f3_add'.
+Computing hashes of 23 cells of `\f3_add'.
+Finding duplicate cells in `\f3_add'.
+Computing hashes of 22 cells of `\f3_add'.
+Finding duplicate cells in `\f3_add'.
+<suppressed ~15 debug messages>
+Finding identical cells in module `\f3_norm'.
+Computing hashes of 6 cells of `\f3_norm'.
+Finding duplicate cells in `\f3_norm'.
+Removed a total of 6 cells.
+
+yosys> opt_muxtree
+
+10.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \w33_form..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_mul..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_neg..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_add..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_norm..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+yosys> opt_reduce -full
+
+10.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+  Optimizing cells in module \w33_form.
+  Optimizing cells in module \f3_mul.
+  Optimizing cells in module \f3_neg.
+  Optimizing cells in module \f3_add.
+  Optimizing cells in module \f3_norm.
+Performed a total of 0 changes.
+
+yosys> opt_merge
+
+10.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 42 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Finding identical cells in module `\w33_form'.
+Computing hashes of 19 cells of `\w33_form'.
+Finding duplicate cells in `\w33_form'.
+Finding identical cells in module `\f3_mul'.
+Computing hashes of 17 cells of `\f3_mul'.
+Finding duplicate cells in `\f3_mul'.
+Finding identical cells in module `\f3_neg'.
+Computing hashes of 7 cells of `\f3_neg'.
+Finding duplicate cells in `\f3_neg'.
+Finding identical cells in module `\f3_add'.
+Computing hashes of 22 cells of `\f3_add'.
+Finding duplicate cells in `\f3_add'.
+Finding identical cells in module `\f3_norm'.
+Computing hashes of 6 cells of `\f3_norm'.
+Finding duplicate cells in `\f3_norm'.
+Removed a total of 0 cells.
+
+yosys> opt_share
+
+10.6. Executing OPT_SHARE pass.
+
+yosys> opt_dff
+
+10.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+10.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Finding unused cells or wires in module \w33_form..
+Finding unused cells or wires in module \f3_mul..
+Finding unused cells or wires in module \f3_neg..
+Finding unused cells or wires in module \f3_add..
+Finding unused cells or wires in module \f3_norm..
+Removed 8 unused cells and 160 unused wires.
+<suppressed ~14 debug messages>
+
+yosys> opt_expr -full
+
+10.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+Optimizing module w33_form.
+Optimizing module f3_mul.
+Optimizing module f3_neg.
+Optimizing module f3_add.
+Optimizing module f3_norm.
+
+10.10. Rerunning OPT passes. (Maybe there is more to do..)
+
+yosys> opt_muxtree
+
+10.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \holotrade_admit..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \w33_form..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_mul..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_neg..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_add..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \f3_norm..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+yosys> opt_reduce -full
+
+10.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \holotrade_admit.
+  Optimizing cells in module \w33_form.
+  Optimizing cells in module \f3_mul.
+  Optimizing cells in module \f3_neg.
+  Optimizing cells in module \f3_add.
+  Optimizing cells in module \f3_norm.
+Performed a total of 0 changes.
+
+yosys> opt_merge
+
+10.13. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\holotrade_admit'.
+Computing hashes of 41 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Finding identical cells in module `\w33_form'.
+Computing hashes of 19 cells of `\w33_form'.
+Finding duplicate cells in `\w33_form'.
+Finding identical cells in module `\f3_mul'.
+Computing hashes of 15 cells of `\f3_mul'.
+Finding duplicate cells in `\f3_mul'.
+Finding identical cells in module `\f3_neg'.
+Computing hashes of 6 cells of `\f3_neg'.
+Finding duplicate cells in `\f3_neg'.
+Finding identical cells in module `\f3_add'.
+Computing hashes of 19 cells of `\f3_add'.
+Finding duplicate cells in `\f3_add'.
+Finding identical cells in module `\f3_norm'.
+Computing hashes of 5 cells of `\f3_norm'.
+Finding duplicate cells in `\f3_norm'.
+Removed a total of 0 cells.
+
+yosys> opt_share
+
+10.14. Executing OPT_SHARE pass.
+
+yosys> opt_dff
+
+10.15. Executing OPT_DFF pass (perform DFF optimizations).
+
+yosys> opt_clean
+
+10.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \holotrade_admit..
+Finding unused cells or wires in module \w33_form..
+Finding unused cells or wires in module \f3_mul..
+Finding unused cells or wires in module \f3_neg..
+Finding unused cells or wires in module \f3_add..
+Finding unused cells or wires in module \f3_norm..
+
+yosys> opt_expr -full
+
+10.17. Executing OPT_EXPR pass (perform const folding).
+Optimizing module holotrade_admit.
+Optimizing module w33_form.
+Optimizing module f3_mul.
+Optimizing module f3_neg.
+Optimizing module f3_add.
+Optimizing module f3_norm.
+
+10.18. Finished fast OPT passes. (There is nothing left to do.)
+
+yosys> stat
+
+11. Printing statistics.
+
+=== holotrade_admit ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       28 wires
+       74 wire bits
+       15 public wires
+       38 public wire bits
+       14 ports
+       37 port bits
+       40 cells
+        8   $_AND_
+        8   $_MUX_
+        3   $_NOT_
+       13   $_OR_
+        8   $_XOR_
+        1 submodules
+        1   w33_form
+
+=== w33_form ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       21 wires
+       52 wire bits
+       20 public wires
+       51 public wire bits
+        4 ports
+       19 port bits
+        2 cells
+        1   $_NOT_
+        1   $_OR_
+       17 submodules
+        3   f3_add
+        4   f3_mul
+        2   f3_neg
+        8   f3_norm
+
+=== f3_mul ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       14 wires
+       19 wire bits
+        3 public wires
+        6 public wire bits
+        3 ports
+        6 port bits
+       15 cells
+        5   $_MUX_
+        4   $_NOT_
+        6   $_OR_
+
+=== f3_neg ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        6 wires
+        8 wire bits
+        2 public wires
+        4 public wire bits
+        2 ports
+        4 port bits
+        6 cells
+        2   $_AND_
+        2   $_NOT_
+        2   $_OR_
+
+=== f3_add ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       16 wires
+       33 wire bits
+        4 public wires
+        9 public wire bits
+        3 ports
+        6 port bits
+       19 cells
+        5   $_AND_
+        2   $_MUX_
+        4   $_NOT_
+        4   $_OR_
+        4   $_XOR_
+
+=== f3_norm ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        5 wires
+        7 wire bits
+        2 public wires
+        4 public wire bits
+        2 ports
+        4 port bits
+        5 cells
+        2   $_AND_
+        2   $_NOT_
+        1   $_OR_
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+      211 holotrade_admit
+        2 w33_form
+       19   f3_add
+       15   f3_mul
+        6   f3_neg
+        5   f3_norm
+
+        +----------Count including submodules.
+        | 
+      205 wires
+      373 wire bits
+       79 public wires
+      180 public wire bits
+       59 ports
+      138 port bits
+        - memories
+        - memory bits
+        - processes
+      211 cells
+       43   $_AND_
+       34   $_MUX_
+       52   $_NOT_
+       62   $_OR_
+       20   $_XOR_
+        1 submodules
+        1   w33_form
+
