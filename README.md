@@ -12,6 +12,11 @@ npm run verify:rtl # SAT-prove the routing primitive
 
 No build step. No dependencies at runtime. Vanilla HTML, CSS and JavaScript.
 
+**Demoing it?** [`DEMO.md`](DEMO.md) is a 6-minute walkthrough script.
+**The full argument** is in [`docs/holotrade.pdf`](docs/holotrade.pdf) — 29 pages,
+written to be read by an investor with no technical background and by an engineer
+who wants to check the arithmetic.
+
 ---
 
 ## Why not just rent VMs by the hour?
