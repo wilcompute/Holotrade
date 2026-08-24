@@ -351,5 +351,51 @@
       "source": "cli",
       "timestamp": "2026-08-24T17:43:10.169Z"
     }
+  },
+  {
+    "id": "a475f5c7-cbc4-422c-94cc-04dd37d509ea",
+    "question": "What release made HoloTrade demo-ready?",
+    "answer": "Commit 3991568 records the complete demo-ready packet: repaired responsive graphs, scoped website and paper, exact W33 certificates, paired balancer simulation, single-node lifecycle hardening, uint64 UOR, secure local server, complete RTL equivalence, synthesis artifacts, CI, and the live runbook. Verification was clean before publication.",
+    "timestamp": "2026-08-24T17:44:09.379Z",
+    "tags": [
+      "ci",
+      "commit",
+      "demo",
+      "holotrade",
+      "node",
+      "release"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "3991568",
+      "status": "active"
+    },
+    "commitHashes": [
+      "3991568"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-08-24T17:44:09.379Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-24T17:44:09.372Z"
+    }
   }
 ]
