@@ -8,3 +8,12 @@ node_modules/
 rtl/build/*.json
 .DS_Store
 Thumbs.db
+
+# Continuity AI memory — runtime state ignored, decision memory tracked
+.continuity/*
+!.continuity/decisions.jsonl
+!.continuity/decisions.json
+!.continuity/.gitattributes
+!.continuity/SESSION_NOTES.md
+!.continuity/INSTRUCTIONS.md
+SESSION_HANDOFF.md

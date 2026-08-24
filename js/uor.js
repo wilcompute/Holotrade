@@ -1,77 +1,24 @@
 // ======================================================================
-// HOLOTRADE UOR LAYER -- the asset model
+// HOLOTRADE UOR LAYER -- addresses and asset mobility policy
 //
-// Everything above this file trades. This file says WHAT a tradeable
-// thing IS, and it takes the definition from the substrate rather than
-// inventing one.
+// A UOR is an unsigned 64-bit integer. Its layout is an invertible
+// mixed-radix codec:
 //
-// ---------------------------------------------------------------------
-// THE ADDRESS
+//   cell    = point * 1,296 + coset       (0 <= cell < 51,840)
+//   raw     = payload * 51,840 + cell     (0 <= raw < 2^64)
 //
-// The forty vertices of W(3,3) are in canonical bijection with the
-// forty Sylow-3 subgroups of Sp(4,F_3) -- n_3 = v = 40, the hidden
-// Sylow bijection. So an object reference is naturally a pair (P, x):
-// a Sylow subgroup and a coset representative. A flat 64-bit address
-// space factors exactly:
+// The quotient/remainder construction is exact. It does not pretend
+// that 51,840 divides 2^64: there are 355,839,970,557,668 complete
+// payload bands and a final band containing 42,496 cells. The average
+// payload information budget is 64 - log2(51,840) = 48.338... bits,
+// not a fixed-width 48-bit field.
 //
-//     2^64  =  40          x  1,296          x  3.55e14
-//              Sylow choice   |N_G(P_3)|        contingent payload
-//
-// and 40 x 1296 = 51,840 = |Aut(W(3,3))|. Every address picks out
-// exactly one substrate element times a contingent payload.
-//
-// The payload is computed here rather than quoted: 64 - log2(51840) =
-// 48.34 bits. The source paper rounds this to ~49.2 and then states a
-// residual of 43 bits after the 21-bit Kolmogorov bootstrap kernel,
-// but 49.2 - 21 = 28.2, so those two figures do not both hold. We
-// carry the computable one and report the kernel separately rather
-// than propagate an arithmetic slip into a price.
-//
-// This is not decoration. It means an asset's identity and its position
-// in the fabric are THE SAME 64 BITS -- there is no separate registry
-// mapping ids to locations that can go stale, and no lookup to do.
-// Resolve the address and you have located the object.
-//
-// ---------------------------------------------------------------------
-// THE ASSET
-//
-// A smart asset is a self-funding, tradable workload with embedded
-// economics. At substrate scale the minimum such object is the temporal
-// Bell qutrit
-//
-//     |Omega> = q^(-1/2) SUM_j |j>_past |j>_future ,   q = 3
-//
-// whose stabiliser is a totally isotropic 2-space -- one of the forty
-// lines. From that identification three market quantities are DEFINED
-// rather than assumed:
-//
-//     tradeability  =  orbit-mobility under Aut(W)
-//     provenance    =  orbit history
-//     value         =  orbit-stabilizer co-volume
-//
-// The third is the one that earns its keep. By orbit-stabilizer,
-// |orbit| = |G| / |Stab|, so an asset with a LARGE stabiliser has a
-// SMALL orbit: few positions it can occupy, few counterparties, thin
-// market. An asset with a small stabiliser ranges over a large orbit
-// and is correspondingly liquid. Liquidity stops being a statistic
-// gathered from the tape and becomes a computable property of the
-// asset's own symmetry. The Bell-line orbit has size 40 with stabiliser
-// order 1,296, and 40 x 1296 = 51,840 checks out.
-//
-// ---------------------------------------------------------------------
-// THE LIFECYCLE
-//
-//     Projection  ->  Execution  ->  Emission
-//
-// Projection assembles data and capabilities into a container; the
-// projection definition is a stabiliser descriptor, picking out the
-// subgroup that fixes the configuration. Execution evolves it under
-// equivariant dynamics. Emission projects the result back into orbit
-// space and emits the receipt.
-//
-// That is exactly the execution-plan lifecycle in execution.js -- sign,
-// admit, run, settle -- which is why the two layers compose instead of
-// merely coexisting.
+// W(3,3) supplies the 40 x 1,296 cell labels and rank-3 routing
+// relation. It does not, by itself, determine counterparties, market
+// value, legal delivery scope, or whether a history entry is authentic.
+// Those operational properties are represented below by an explicitly
+// named venue policy mobility score. The score is a policy model, not
+// an orbit-stabilizer theorem or a measured liquidity statistic.
 // ======================================================================
 
 (function (root) {
@@ -79,55 +26,124 @@
 
   const S = root.Substrate || (typeof require !== "undefined" ? require("./substrate.js") : null);
 
-  // ---- the address-space factorisation -------------------------------
+  const UINT64_SPACE = 1n << 64n;
+  const UINT64_MAX = UINT64_SPACE - 1n;
+
+  // ---- the exact address codec ---------------------------------------
   const UOR = {
+    codec: "uint64-mixed-radix-v1",
     bits: 64,
     sylowChoices: 40,             // n_3(Sp(4,F_3)) = v
     normaliserOrder: 1296,        // |N_G(P_3)| = mu^2 * q^(q+1) = 16 * 81
     autOrder: 51840,              // 40 * 1296
     kolmogorovKernel: 21,         // K(W(3,3)) <= 21 bits
     get canonicalCells() { return this.sylowChoices * this.normaliserOrder; },
+    get addressSpaceSize() { return UINT64_SPACE; },
+    get maxValue() { return UINT64_MAX; },
+    get completePayloadBands() { return UINT64_SPACE / BigInt(this.canonicalCells); },
+    get finalPayloadBandCells() { return Number(UINT64_SPACE % BigInt(this.canonicalCells)); },
+    // Average information budget after selecting one of 51,840 cells.
+    // The mixed-radix payload is a BigInt quotient, not a fixed bitfield.
     get payloadBits() { return this.bits - Math.log2(this.canonicalCells); },
     get contingentBits() { return this.payloadBits - this.kolmogorovKernel; },
   };
 
+  function integerInRange(value, name, min, max) {
+    if (typeof value !== "number" || !Number.isInteger(value) || value < min || value > max) {
+      throw new RangeError(`${name} must be an integer in [${min}, ${max}]`);
+    }
+    return value;
+  }
+
+  function unsignedBigInt(value, name, max = UINT64_MAX) {
+    let parsed;
+    if (typeof value === "bigint") {
+      parsed = value;
+    } else if (typeof value === "number" && Number.isSafeInteger(value)) {
+      parsed = BigInt(value);
+    } else if (typeof value === "string" && /^(0|[1-9][0-9]*)$/.test(value)) {
+      parsed = BigInt(value);
+    } else {
+      throw new TypeError(`${name} must be a non-negative BigInt, safe integer, or decimal string`);
+    }
+    if (parsed < 0n || parsed > max) {
+      throw new RangeError(`${name} must be in [0, ${max}]`);
+    }
+    return parsed;
+  }
+
   // The Bose-Mesner rank-3 split of the 40-point shell as seen from any
   // one point: itself, its 12 neighbours, the 27 it cannot reach in one
   // hop. 1 + 12 + 27 = 40. This is the natural three-tier depth
-  // structure for a book quoted from a given anchor -- and it is the
-  // same triad as the three container modes (component/service/policy),
-  // because both are the q = 3 trichotomy.
+  // classification for a book quoted from a given anchor.
   const SHELL = { self: 1, adjacent: 12, distant: 27 };
 
   class UORAddress {
     /**
      * @param point    which of the 40 substrate points (the Sylow choice)
      * @param coset    coset representative in [0, 1296)
-     * @param payload  contingent state, 48.34 bits of address space
+     * @param payload  mixed-radix quotient as BigInt, safe integer, or decimal string
      */
-    constructor(point, coset, payload = 0) {
-      this.point = ((point % 40) + 40) % 40;
-      this.coset = ((coset % UOR.normaliserOrder) + UOR.normaliserOrder) % UOR.normaliserOrder;
-      this.payload = payload >>> 0;
+    constructor(point, coset, payload = 0n) {
+      this.point = integerInRange(point, "point", 0, UOR.sylowChoices - 1);
+      this.coset = integerInRange(coset, "coset", 0, UOR.normaliserOrder - 1);
+      this.payload = unsignedBigInt(payload, "payload");
+      if (this.toBigInt() > UINT64_MAX) {
+        throw new RangeError("point, coset, and payload do not fit in an unsigned 64-bit UOR");
+      }
+      Object.freeze(this);
     }
 
-    /** Derive a canonical address from any string id -- deterministic. */
+    /** Derive a stable 64-bit demo address from a non-empty identifier. */
     static from(id) {
-      const h = S.hash32(String(id));
-      const h2 = S.hash32(String(id) + "|payload");
-      return new UORAddress(h % 40, Math.floor(h / 40) % UOR.normaliserOrder, h2);
+      if (id === null || id === undefined || String(id).length === 0) {
+        throw new TypeError("id must be a non-empty identifier");
+      }
+      const text = String(id);
+      const hi = BigInt(S.hash32(`uor:v1:hi:${text}`));
+      const lo = BigInt(S.hash32(`uor:v1:lo:${text}`));
+      return UORAddress.fromBigInt((hi << 32n) | lo);
     }
 
-    /** The substrate cell index: one of the 51,840 canonical orbit cells. */
+    /** Decode an unsigned 64-bit value without losing precision. */
+    static fromBigInt(value) {
+      const raw = unsignedBigInt(value, "UOR value");
+      const radix = BigInt(UOR.canonicalCells);
+      const cell = Number(raw % radix);
+      const payload = raw / radix;
+      return new UORAddress(
+        Math.floor(cell / UOR.normaliserOrder),
+        cell % UOR.normaliserOrder,
+        payload
+      );
+    }
+
+    /** Parse the canonical wire representation: exactly `uor:` + 16 hex digits. */
+    static fromHex(encoded) {
+      if (typeof encoded !== "string" || !/^uor:[0-9a-fA-F]{16}$/.test(encoded)) {
+        throw new TypeError("UOR text must match uor:[0-9a-fA-F]{16}");
+      }
+      return UORAddress.fromBigInt(BigInt(`0x${encoded.slice(4)}`));
+    }
+
+    /** The substrate cell index: one of the 51,840 canonical routing cells. */
     get cell() {
       return this.point * UOR.normaliserOrder + this.coset;
     }
 
-    /** Render as the flat 64-bit hex address a UOR resolver would take. */
+    /** Encode as an unsigned 64-bit BigInt. */
+    toBigInt() {
+      return this.payload * BigInt(UOR.canonicalCells) + BigInt(this.cell);
+    }
+
+    /** Render the canonical 64-bit wire form. */
     toHex() {
-      const hi = (this.cell >>> 0).toString(16).padStart(8, "0");
-      const lo = (this.payload >>> 0).toString(16).padStart(8, "0");
-      return `uor:${hi}${lo}`;
+      return `uor:${this.toBigInt().toString(16).padStart(16, "0")}`;
+    }
+
+    /** JSON uses the canonical string so BigInt never reaches JSON.stringify. */
+    toJSON() {
+      return this.toHex();
     }
 
     /** The F_3^4 vector this address resolves to -- address IS route. */
@@ -141,6 +157,7 @@
      * relays). Nothing else exists; that is what rank 3 means.
      */
     relationTo(other) {
+      if (!(other instanceof UORAddress)) throw new TypeError("other must be a UORAddress");
       if (this.point === other.point) return "identity";
       return S.isAdjacent(this.point, other.point) ? "intersecting" : "disjoint";
     }
@@ -150,118 +167,184 @@
   // Smart asset
   // --------------------------------------------------------------------
 
+  // Venue policy defaults for the fraction of the 40 reference delivery
+  // regions in which an asset is expected to remain eligible. These are
+  // deliberately named scores: they are configurable policy assumptions,
+  // not subgroup orders, prices, or observed order-book liquidity.
+  const POLICY_MOBILITY_SCORE = Object.freeze({
+    "data-residency": 1 / 3,
+    "bare-metal": 1 / 2,
+    "single-tenant": 1 / 2,
+    "air-gapped": 1 / UOR.sylowChoices,
+    "gpu-affinity": 2 / 3,
+    "long-lease": 1 / 2,
+    "magic-capable": 1,
+  });
+
+  function scoreInUnitInterval(value, name) {
+    if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1) {
+      throw new RangeError(`${name} must be a finite number in [0, 1]`);
+    }
+    return value;
+  }
+
+  function policyList(value) {
+    if (!Array.isArray(value)) throw new TypeError("policies must be an array");
+    const unique = [];
+    for (const policy of value) {
+      if (typeof policy !== "string" || !Object.hasOwn(POLICY_MOBILITY_SCORE, policy)) {
+        throw new RangeError(`unknown mobility policy: ${String(policy)}`);
+      }
+      if (!unique.includes(policy)) unique.push(policy);
+    }
+    return unique;
+  }
+
+  function policyScore(policies) {
+    // Eligibility is an intersection. Without a measured overlap matrix,
+    // multiplying policy fractions would invent statistical independence;
+    // the tightest configured policy is the conservative stated estimate.
+    return policies.reduce(
+      (score, policy) => Math.min(score, POLICY_MOBILITY_SCORE[policy]),
+      1
+    );
+  }
+
+  function marketBreadthBand(score) {
+    scoreInUnitInterval(score, "marketBreadthScore");
+    if (score >= 0.8) return "broad";
+    if (score >= 0.45) return "multi-region";
+    if (score >= 0.18) return "restricted";
+    return "site-bound";
+  }
+
   class SmartAsset {
     /**
-     * A tradeable object with embedded economics. Wraps whatever is
-     * being sold -- a node, a composite, a lease, an execution plan --
-     * and gives it a substrate identity, an orbit, and a valuation
-     * derived from its symmetry rather than from its marketing.
+     * A tradeable object with a UOR identity and explicit delivery-policy
+     * metadata. `marketBreadthScore` may be supplied from measured venue
+     * eligibility; otherwise the documented policy defaults above apply.
      */
     constructor(spec) {
+      if (!spec || typeof spec !== "object") throw new TypeError("asset spec must be an object");
+      if (spec.id === null || spec.id === undefined || String(spec.id).length === 0) {
+        throw new TypeError("asset id must be a non-empty identifier");
+      }
       this.id = spec.id;
       this.kind = spec.kind;              // node | composite | plan | lease | capacity
       this.underlying = spec.underlying;
       this.address = spec.address || UORAddress.from(spec.id);
-      this.createdAt = spec.createdAt || Date.now();
-
-      // orbit history: every position this asset has occupied, in order.
-      // This IS the provenance -- not a log kept alongside the asset,
-      // but the asset's own trajectory through the automorphism group.
-      this.orbitHistory = spec.orbitHistory || [{ cell: this.address.cell, ts: this.createdAt, event: "minted" }];
-
-      // the constraints that fix this asset in place. Each one shrinks
-      // the orbit and therefore the liquidity.
-      this.constraints = spec.constraints || [];
-    }
-
-    /**
-     * Stabiliser order: how much of Aut(W) fixes this asset where it is.
-     *
-     * Every real-world constraint is a symmetry the asset does NOT have.
-     * A node pinned to one datacentre by data-residency law cannot be
-     * moved by the automorphisms that would move it; a bare-metal
-     * reservation is fixed harder still. Each constraint multiplies the
-     * stabiliser, and by orbit-stabilizer that divides the orbit.
-     */
-    stabiliserOrder() {
-      // The Bell-line stabiliser is the baseline: mu^2 * q^(q+1) = 1296.
-      let stab = UOR.normaliserOrder;
-      for (const c of this.constraints) {
-        stab *= CONSTRAINT_WEIGHT[c] || 2;
+      if (!(this.address instanceof UORAddress)) throw new TypeError("asset address must be a UORAddress");
+      this.createdAt = spec.createdAt ?? Date.now();
+      if (typeof this.createdAt !== "number" || !Number.isFinite(this.createdAt) || this.createdAt < 0) {
+        throw new RangeError("createdAt must be a non-negative finite timestamp");
       }
-      return Math.min(UOR.autOrder, stab);
+
+      this.policies = Object.freeze(policyList(spec.policies ?? spec.constraints ?? []));
+      this.constraints = this.policies; // compatibility alias
+      this.marketBreadthOverride = spec.marketBreadthScore === undefined
+        ? null
+        : scoreInUnitInterval(spec.marketBreadthScore, "marketBreadthScore");
+
+      const suppliedHistory = spec.mobilityHistory ?? spec.orbitHistory;
+      if (suppliedHistory !== undefined && !Array.isArray(suppliedHistory)) {
+        throw new TypeError("mobilityHistory must be a non-empty array");
+      }
+      this.mobilityHistory = suppliedHistory
+        ? suppliedHistory.map((entry) => ({ ...entry }))
+        : [{ cell: this.address.cell, ts: this.createdAt, event: "minted" }];
+      if (this.mobilityHistory.length === 0) {
+        throw new TypeError("mobilityHistory must be a non-empty array");
+      }
+      this.orbitHistory = this.mobilityHistory; // compatibility alias
+    }
+
+    /** Policy-estimated mobility in [0,1], or the caller's measured override. */
+    policyMobilityScore() {
+      return this.marketBreadthOverride ?? policyScore(this.policies);
+    }
+
+    /** Fraction of the venue's reference delivery regions that are eligible. */
+    marketBreadthScore() {
+      return this.policyMobilityScore();
+    }
+
+    /** Estimated eligible regions out of the 40-region reference universe. */
+    marketBreadth() {
+      return Math.round(UOR.sylowChoices * this.marketBreadthScore());
     }
 
     /**
-     * Orbit size = |G| / |Stab|. The number of distinct positions this
-     * asset can legally occupy -- which is the number of places a
-     * counterparty could take delivery. This is the asset's addressable
-     * market, computed rather than surveyed.
-     */
-    orbitSize() {
-      return Math.max(1, Math.round(UOR.autOrder / this.stabiliserOrder()));
-    }
-
-    /**
-     * VALUE = ORBIT-STABILIZER CO-VOLUME.
-     *
-     * Normalised to [0,1] against the maximal orbit. An unconstrained
-     * asset scores 1: it can be delivered anywhere in the fabric, so
-     * every participant is a potential counterparty. A fully pinned
-     * asset scores near 0: it is worth whatever its single possible
-     * counterparty will pay.
-     *
-     * This is a LIQUIDITY multiplier, and it belongs on the quote next
-     * to the six pricing multipliers. It is the honest reason a
-     * residency-pinned node in one jurisdiction should not trade at the
-     * same price as an identical unpinned node.
-     */
-    coVolume() {
-      return this.orbitSize() / (UOR.autOrder / UOR.normaliserOrder);
-    }
-
-    /**
-     * Tradeability = orbit-mobility. How much of its own orbit this
-     * asset has actually traversed. An asset that has moved is an asset
-     * with demonstrated mobility; one that has never moved may be
-     * mobile in principle and illiquid in fact.
+     * Separate the policy estimate from demonstrated movement. Neither
+     * number is a price or an order-book liquidity measurement.
      */
     tradeability() {
-      const distinct = new Set(this.orbitHistory.map((h) => h.cell)).size;
-      const potential = this.orbitSize();
+      const distinct = new Set(
+        this.mobilityHistory
+          .filter((entry) => Number.isInteger(entry.cell))
+          .map((entry) => Math.floor(entry.cell / UOR.normaliserOrder))
+      ).size;
+      const potential = this.marketBreadth();
       const demonstrated = Math.min(1, distinct / Math.max(1, Math.min(potential, 12)));
-      return { coVolume: this.coVolume(), demonstrated, moves: this.orbitHistory.length - 1 };
+      const score = this.marketBreadthScore();
+      return {
+        policyMobilityScore: this.policyMobilityScore(),
+        marketBreadthScore: score,
+        demonstratedMobilityScore: demonstrated,
+        moves: this.mobilityHistory.length - 1,
+        coVolume: score, // compatibility alias; not a mathematical co-volume
+        demonstrated,   // compatibility alias
+      };
     }
 
     /**
-     * Provenance = orbit history. Returned as a chain, so a buyer can
-     * see every position this asset has held and every event that moved
-     * it. Hallucinated or forged provenance shows up as an orbit
-     * anomaly: a transition between cells that no automorphism connects.
+     * Return recorded movement history and structural anomalies. Geometry
+     * cannot authenticate an entry because W(3,3) has diameter two; a
+     * signed audit chain is required for authenticity.
      */
     provenance() {
-      const chain = this.orbitHistory;
+      const chain = this.mobilityHistory;
       const anomalies = [];
-      for (let i = 1; i < chain.length; i++) {
-        const from = Math.floor(chain[i - 1].cell / UOR.normaliserOrder);
-        const to = Math.floor(chain[i].cell / UOR.normaliserOrder);
-        // a legal move is identity, one hop, or two hops -- diameter 2.
-        // anything else did not happen on this fabric.
-        if (from !== to && !S.isAdjacent(from, to)) {
-          const relays = S.commonNeighbours(from, to);
-          if (relays.length === 0) anomalies.push({ index: i, from, to, reason: "no path in W(3,3)" });
+      for (let i = 0; i < chain.length; i++) {
+        const entry = chain[i];
+        if (!entry || !Number.isInteger(entry.cell) || entry.cell < 0 || entry.cell >= UOR.canonicalCells) {
+          anomalies.push({ index: i, reason: "cell outside canonical range" });
+        }
+        if (!entry || typeof entry.ts !== "number" || !Number.isFinite(entry.ts) || entry.ts < 0) {
+          anomalies.push({ index: i, reason: "invalid timestamp" });
+        } else if (i > 0 && typeof chain[i - 1].ts === "number" && entry.ts < chain[i - 1].ts) {
+          anomalies.push({ index: i, reason: "timestamp precedes previous entry" });
+        }
+        if (!entry || typeof entry.event !== "string" || entry.event.trim().length === 0) {
+          anomalies.push({ index: i, reason: "missing event label" });
         }
       }
-      return { chain, anomalies, clean: anomalies.length === 0, depth: chain.length };
+      return {
+        chain: chain.map((entry) => ({ ...entry })),
+        anomalies,
+        structurallyValid: anomalies.length === 0,
+        authenticated: false,
+        clean: anomalies.length === 0, // compatibility alias: structural only
+        depth: chain.length,
+      };
     }
 
-    /** Record a move. The orbit history IS the provenance, so this is the only writer. */
+    /** Record a structurally valid movement entry. This does not sign it. */
     move(newAddress, event = "transfer") {
+      if (!(newAddress instanceof UORAddress)) throw new TypeError("newAddress must be a UORAddress");
+      if (typeof event !== "string" || event.trim().length === 0) {
+        throw new TypeError("event must be a non-empty string");
+      }
       this.address = newAddress;
-      this.orbitHistory.push({ cell: newAddress.cell, ts: Date.now(), event });
-      if (this.orbitHistory.length > 64) this.orbitHistory.shift();
+      this.mobilityHistory.push({ cell: newAddress.cell, ts: Date.now(), event: event.trim() });
+      if (this.mobilityHistory.length > 64) this.mobilityHistory.shift();
       return this;
     }
+
+    // Deprecated compatibility methods. They intentionally do not return
+    // a fabricated subgroup order. Consumers should use the named scores.
+    stabiliserOrder() { return null; }
+    orbitSize() { return this.marketBreadth(); }
+    coVolume() { return this.marketBreadthScore(); }
 
     /** Full asset card for the UI. */
     describe() {
@@ -273,33 +356,35 @@
         cell: this.address.cell,
         point: this.address.point,
         vector: this.address.vector.join(""),
-        stabiliser: this.stabiliserOrder(),
-        orbit: this.orbitSize(),
-        coVolume: t.coVolume,
-        liquidity: liquidityBand(t.coVolume),
-        constraints: this.constraints,
+        policyMobilityScore: t.policyMobilityScore,
+        marketBreadthScore: t.marketBreadthScore,
+        marketBreadth: this.marketBreadth(),
+        marketBreadthBand: marketBreadthBand(t.marketBreadthScore),
+        policies: this.policies,
         provenance: this.provenance(),
         moves: t.moves,
+        // Compatibility fields for the existing UI. `stabiliser` is null
+        // so it cannot be mistaken for a computed group order.
+        stabiliser: null,
+        orbit: this.marketBreadth(),
+        coVolume: t.marketBreadthScore,
+        liquidity: liquidityBand(t.marketBreadthScore),
+        constraints: this.policies,
       };
     }
   }
 
-  // How much each real-world constraint multiplies the stabiliser --
-  // i.e. how much market it costs you.
-  const CONSTRAINT_WEIGHT = {
-    "data-residency": 3,        // must stay in one jurisdiction
-    "bare-metal": 2,            // no migration off this chassis
-    "single-tenant": 2,         // cannot be co-scheduled
-    "air-gapped": 8,            // cannot leave the enclave at all
-    "gpu-affinity": 1.5,        // needs a specific accelerator class
-    "long-lease": 2,            // committed to one tenant for a term
-    "magic-capable": 1,         // no mobility cost; it is a capability
-  };
+  // Deprecated inverse-score adapter for the current UI table. It exists
+  // only until that view consumes POLICY_MOBILITY_SCORE directly.
+  const CONSTRAINT_WEIGHT = Object.freeze(Object.fromEntries(
+    Object.entries(POLICY_MOBILITY_SCORE).map(([policy, score]) => [policy, 1 / score])
+  ));
 
-  function liquidityBand(coVolume) {
-    if (coVolume >= 0.8) return "deep";
-    if (coVolume >= 0.45) return "liquid";
-    if (coVolume >= 0.18) return "thin";
+  /** Deprecated visual-label adapter; this is not measured liquidity. */
+  function liquidityBand(marketBreadthScore) {
+    if (marketBreadthScore >= 0.8) return "deep";
+    if (marketBreadthScore >= 0.45) return "liquid";
+    if (marketBreadthScore >= 0.18) return "thin";
     return "bilateral";
   }
 
@@ -316,19 +401,19 @@
     /** Mint (or fetch) the smart asset that wraps a node or composite. */
     forNode(node) {
       if (this.assets.has(node.id)) return this.assets.get(node.id);
-      const constraints = [];
-      if (node.hardware.kind === "photonic") constraints.push("magic-capable");
-      if (node.hardware.kind === "fpga") constraints.push("bare-metal");
+      const policies = [];
+      if (node.hardware.kind === "photonic") policies.push("magic-capable");
+      if (node.hardware.kind === "fpga") policies.push("bare-metal");
       // datacentres in regulated regions carry residency constraints
-      if (["ARN-1", "DUB-3", "SIN-2"].includes(node.dcId)) constraints.push("data-residency");
-      if (node.isComposite) constraints.push("single-tenant");
+      if (["ARN-1", "DUB-3", "SIN-2"].includes(node.dcId)) policies.push("data-residency");
+      if (node.isComposite) policies.push("single-tenant");
 
       const asset = new SmartAsset({
         id: node.id,
         kind: node.isComposite ? "composite" : "node",
         underlying: node,
         address: new UORAddress(node.cellPoint, S.hash32(node.id) % UOR.normaliserOrder, S.hash32(node.address)),
-        constraints,
+        policies,
       });
       this.assets.set(node.id, asset);
       return asset;
@@ -342,37 +427,52 @@
         kind: "plan",
         underlying: plan,
         address: UORAddress.from(plan.digest),
-        constraints: plan.magicBudget > 0 ? ["magic-capable"] : [],
+        policies: plan.magicBudget > 0 ? ["magic-capable"] : [],
       });
       this.assets.set(plan.id, asset);
       return asset;
     }
 
-    /**
-     * The liquidity map: how the listed fleet distributes across the
-     * four bands. A venue whose inventory is mostly "bilateral" has an
-     * inventory problem, not a marketing problem, and this says so.
-     */
-    liquidityProfile() {
-      const bands = { deep: 0, liquid: 0, thin: 0, bilateral: 0 };
-      let totalCoVolume = 0;
+    /** Policy-estimated delivery breadth across the listed fleet. */
+    marketBreadthProfile() {
+      const bands = { broad: 0, "multi-region": 0, restricted: 0, "site-bound": 0 };
+      let totalScore = 0;
       let n = 0;
       for (const node of this.fleet.listedNodes()) {
         const a = this.forNode(node);
-        const cv = a.coVolume();
-        bands[liquidityBand(cv)]++;
-        totalCoVolume += cv;
+        const score = a.marketBreadthScore();
+        bands[marketBreadthBand(score)]++;
+        totalScore += score;
         n++;
       }
-      return { bands, meanCoVolume: n ? totalCoVolume / n : 0, count: n };
+      return { bands, meanMarketBreadthScore: n ? totalScore / n : 0, count: n };
+    }
+
+    /** Deprecated shape retained for the existing dashboard. */
+    liquidityProfile() {
+      const bands = { deep: 0, liquid: 0, thin: 0, bilateral: 0 };
+      let totalScore = 0;
+      let n = 0;
+      for (const node of this.fleet.listedNodes()) {
+        const score = this.forNode(node).marketBreadthScore();
+        bands[liquidityBand(score)]++;
+        totalScore += score;
+        n++;
+      }
+      const meanMarketBreadthScore = n ? totalScore / n : 0;
+      return {
+        bands,
+        meanMarketBreadthScore,
+        meanCoVolume: meanMarketBreadthScore,
+        count: n,
+      };
     }
 
     /**
      * Rank-3 depth from an anchor: the book as the substrate sees it.
-     * 1 self, 12 intersecting, 27 disjoint. Every quote in the venue
-     * falls into exactly one of three tiers relative to where your data
-     * already is, and the tier is a fact about the geometry rather than
-     * a routing heuristic.
+     * 1 self, 12 intersecting, 27 disjoint for the 40 geometric points.
+     * Listed-node counts need not have that ratio because a fleet may
+     * place zero, one, or many nodes at each point.
      */
     shellFrom(anchorNode) {
       const anchor = this.forNode(anchorNode).address;
@@ -382,9 +482,11 @@
         tiers[anchor.relationTo(a.address)].push(node);
       }
       const total = tiers.identity.length + tiers.intersecting.length + tiers.disjoint.length;
-      // The absolute counts depend on how many nodes are listed; the
-      // RATIOS are the substrate fact and should hold at any fleet
-      // size. 1 : 12 : 27 out of 40 is 2.5% / 30% / 67.5%.
+      const geometryRatios = {
+        identity: SHELL.self / UOR.sylowChoices,
+        intersecting: SHELL.adjacent / UOR.sylowChoices,
+        disjoint: SHELL.distant / UOR.sylowChoices,
+      };
       return {
         tiers,
         counts: {
@@ -399,63 +501,63 @@
               disjoint: tiers.disjoint.length / total,
             }
           : null,
-        expectedRatios: {
-          identity: SHELL.self / 40,
-          intersecting: SHELL.adjacent / 40,
-          disjoint: SHELL.distant / 40,
-        },
-        expected: SHELL,
+        geometryRatios,
+        expectedRatios: geometryRatios, // compatibility alias; not a fleet expectation
+        geometryShell: SHELL,
+        expected: SHELL, // compatibility alias
         total,
       };
     }
   }
 
   // --------------------------------------------------------------------
-  // Venue capacity -- the substrate's throughput identities
+  // Venue capacity -- dimensionally explicit dashboard transforms
   // --------------------------------------------------------------------
 
   /**
-   * What a venue running on this substrate can actually do, at a given
-   * transaction rate. These are not projections; they are the substrate
-   * identities evaluated at T, and every one of them is a CEILING that
-   * a deployment claiming more has broken something to get.
-   *
-   *   conjugacy cadence   T * |Sp(4,3)|/h(E8)  =  T * 1728
-   *                       and 1728 = k^3 = j(i), the modular
-   *                       j-invariant at tau = i -- the venue's tempo
-   *                       is a CM value
-   *   logical rate        T * q^(q+1)/|E|      =  T * 27/80
-   *                       the CSS [[240,81,4,3]]_3 rate cap. Claiming
-   *                       more means you dropped substrate-coherent
-   *                       encoding or measured a non-logical metric.
-   *   coherence blocks    T / tau(O)           =  T / 384
-   *                       the rate at which self-healing convergence
-   *                       can be paid for
-   *
-   * And two hard floors:
-   *   settlement latency  h(E8) ms = 30 ms. A 55-validator committee on
-   *                       a planetary fabric should not converge faster;
-   *                       anything that claims to has lost an invariant.
-   *   logical error       q^(-mu^4) = 3^-256 ~ 1e-122.
+   * Apply the prototype's documented dimensionless factors to a supplied
+   * transaction rate T (transactions/second). These are model outputs,
+   * not measured ceilings or deployment guarantees. A scan of N cells at
+   * T transactions/second takes N/T seconds.
    */
   function venueCapacity(tps) {
-    const T = tps || 70e6;
+    const T = tps === undefined ? 70e6 : tps;
+    if (typeof T !== "number" || !Number.isFinite(T) || T <= 0) {
+      throw new RangeError("tps must be a positive finite number");
+    }
+    const fullCellScanSeconds = UOR.canonicalCells / T;
+    const illustrativeTransforms = {
+      // Dimensionless display factors applied to T. These values are not
+      // measured throughput, protocol limits, or service-level objectives.
+      conjugacyScale: UOR.autOrder / S.CONST.coxeterE8,
+      conjugacyScaledRate: T * (UOR.autOrder / S.CONST.coxeterE8),
+      logicalScale: S.CONST.cssRate,
+      logicalScaledRate: T * S.CONST.cssRate,
+      coherenceScale: 1 / S.CONST.tauO,
+      coherenceScaledRate: T / S.CONST.tauO,
+    };
     return {
       tps: T,
-      conjugacyCadence: T * (UOR.autOrder / S.CONST.coxeterE8),   // T * 1728
-      cadencePrefactor: UOR.autOrder / S.CONST.coxeterE8,
-      logicalRate: T * S.CONST.cssRate,                            // T * 27/80
-      coherenceBlocks: T / S.CONST.tauO,                           // T / 384
-      settlementFloorMs: S.CONST.coxeterE8,                        // 30 ms
-      logicalErrorRate: Math.pow(3, -256),
-      bftCommittee: 55,
-      bftThreshold: 1 / 3,
-      // full traversal of Aut(W) at this rate, in seconds
-      fullOrbitSeconds: UOR.autOrder / (T * 1e9),
+      illustrativeTransforms,
+      fullCellScanSeconds,
+      // Compatibility name with corrected units: 51,840 transactions / T tx/s.
+      fullOrbitSeconds: fullCellScanSeconds,
     };
   }
 
-  const API = { UOR, SHELL, UORAddress, SmartAsset, AssetRegistry, CONSTRAINT_WEIGHT, liquidityBand, venueCapacity };
+  const API = {
+    UOR,
+    SHELL,
+    UORAddress,
+    SmartAsset,
+    AssetRegistry,
+    POLICY_MOBILITY_SCORE,
+    marketBreadthBand,
+    venueCapacity,
+    // Deprecated compatibility exports.
+    CONSTRAINT_WEIGHT,
+    liquidityBand,
+  };
   root.HolotradeUOR = API;
   root.UORAddress = UORAddress;
   root.SmartAsset = SmartAsset;

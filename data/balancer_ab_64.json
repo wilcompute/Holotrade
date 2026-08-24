@@ -1,0 +1,43 @@
+{
+  "schema": "holotrade.balancer-ab.v1",
+  "evidence": "SIMULATION",
+  "generatedAt": "2026-08-24T17:19:01.951Z",
+  "generator": "node experiments/balancer_ab.js --summary",
+  "design": {
+    "paired": true,
+    "seeds": 64,
+    "fleetSize": 220,
+    "steps": 500,
+    "stepSeconds": 60,
+    "simulatedHoursPerArm": 8.333333333333334,
+    "changedVariable": "PricingEngine.balancerEnabled",
+    "workloadId": "llm-train"
+  },
+  "summary": {
+    "on": {
+      "mean": 0.06458458763548999,
+      "sampleSd": 0.01661856235068806,
+      "ci95": [0.06043339427255949, 0.0687357809984205]
+    },
+    "off": {
+      "mean": 0.1610963434826224,
+      "sampleSd": 0.02619072949685075,
+      "ci95": [0.15455409390872146, 0.16763859305652332]
+    },
+    "pairedDifference": {
+      "mean": 0.09651175584713247,
+      "sampleSd": 0.013945722191546106,
+      "ci95": [0.0930282180909064, 0.09999529360335853]
+    },
+    "relativeReduction": {
+      "mean": 0.6033545180362602,
+      "sampleSd": 0.057539499012190166,
+      "ci95": [0.5889815788273604, 0.61772745724516],
+      "min": 0.4806840588395914,
+      "max": 0.7980269887882836
+    },
+    "improvedSeeds": 64,
+    "allSeedsImproved": true
+  },
+  "rowsSha256": "1cdc21978a1715bb47e7be3d5a57b75a13b50734bb73f4447b424387fb522b8a"
+}

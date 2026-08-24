@@ -1,10 +1,9 @@
 // ======================================================================
 // HOLOTRADE FABRIC MARKET
 //
-// The single most consequential fact about this substrate for a trading
-// venue: THE COMPUTER IS THE NETWORK AND THE NETWORK IS THE COMPUTER.
-// Routing a packet is applying a gate is addressing memory. That is an
-// algebraic identity on W(3,3), not an analogy.
+// HoloTrade's fabric model prices a requested topology alongside
+// compute. The exact object is the level-1 W(3,3) graph; physical links,
+// congestion and recursive product graphs remain implementation work.
 //
 // Every conventional compute marketplace assumes the opposite. It sells
 // you compute, then sells you network, then sells you egress, because
@@ -28,11 +27,9 @@
 //                  internally-disjoint paths between any non-adjacent
 //                  pair, because mu = 4. No configuration.
 //
-// So the tradeable object at scale is a SUBGRAPH, and its price is
-// superlinear in its coherence, not linear in its node count. The whole
-// really is worth more than the sum of its parts, and here that is a
-// measurable quantity rather than a slogan: it is the realised
-// bisection of what you actually hold.
+// So the prototype can quote a SUBGRAPH rather than only a node count.
+// For partial baskets it reports induced edges and connectivity; it
+// never calls an edge-density proxy a measured bisection bandwidth.
 //
 // ---------------------------------------------------------------------
 // THE MECHANISM THAT FALLS OUT: A DEFRAGMENTATION MARKET
@@ -52,17 +49,9 @@
 // ---------------------------------------------------------------------
 // AND THE MARKET IS ITSELF FRACTAL
 //
-// A level-n holonet is 40^n leaves at routing diameter 8n, built by
-// replacing each point of one W(3,3) with a whole copy of the level
-// below. So a complete subtree at any level is, as one object, a single
-// computer -- which means it can be LISTED AS ONE NODE on the level
-// above it. An operator's whole campus becomes one tradeable instrument
-// at the parent level. Orders at level n aggregate into liquidity at
-// level n+1, and the book has the same shape at every zoom.
-//
-// This also gives structural service levels. "Diameter 16" is not an
-// SLA somebody promises you and pays penalties for missing. It is a
-// theorem about the shape you bought.
+// A level-n address namespace has 40^n leaves. Composition is useful as
+// a software interface, but its metric is only a model until a physical
+// product graph and router are built and measured.
 // ======================================================================
 
 (function (root) {
@@ -104,9 +93,12 @@
       }
       for (const cell of map.values()) {
         cell.occupancy = cell.points.size / S.CONST.points;
-        cell.bisection = this.realisedBisection(cell.nodes);
+        cell.edgeCoherence = this.edgeCoherenceProxy(cell.nodes);
+        cell.bisection = cell.edgeCoherence; // compatibility alias; not a measured bisection
         cell.coherence = this.coherence(cell.nodes);
-        cell.diameter = this.realisedDiameter(cell.nodes);
+        const graph = this.inducedGraphStats(cell.nodes);
+        cell.diameter = graph.connected ? graph.diameter : Infinity;
+        cell.components = graph.components;
       }
       return [...map.values()].sort((a, b) => b.nodes.length - a.nodes.length);
     }
@@ -115,37 +107,38 @@
     // Shape metrics
     // ------------------------------------------------------------------
 
-    /**
-     * Realised bisection: the number of substrate edges actually present
-     * inside a basket, crossing a balanced halving.
-     *
-     * A full cell hits exactly 100 -- the spectral lower bound
-     * (n/4)(k - lambda_2) = (40/4)(12 - 2), met by an explicit 20|20
-     * cut. A basket that holds no two adjacent nodes hits zero, and
-     * every byte it moves has to leave the fabric.
-     */
-    realisedBisection(nodes) {
+    /** Count exact level-1 edges induced by the points a basket holds. */
+    inducedEdges(nodes) {
       const byPrefix = new Map();
       for (const n of nodes) {
         const p = n.addr.slice(0, -1).join(".");
-        if (!byPrefix.has(p)) byPrefix.set(p, []);
-        byPrefix.get(p).push(n);
+        if (!byPrefix.has(p)) byPrefix.set(p, new Set());
+        byPrefix.get(p).add(n.cellPoint);
       }
       let total = 0;
       for (const group of byPrefix.values()) {
-        const pts = group.map((n) => n.cellPoint);
-        // count internal edges, then take the balanced-cut share
-        let edges = 0;
+        const pts = [...group];
         for (let i = 0; i < pts.length; i++)
           for (let j = i + 1; j < pts.length; j++)
-            if (S.isAdjacent(pts[i], pts[j])) edges++;
-        // The collinearity graph has 240 undirected edges (40 x 12 / 2)
-        // and a minimum bisection of exactly 100, so the share of edges
-        // crossing a balanced cut is 100/240. A partial subgraph
-        // inherits that share in proportion to the edges it holds.
-        total += edges * (S.CONST.bisection / S.CONST.edges);
+            if (S.isAdjacent(pts[i], pts[j])) total++;
       }
       return total;
+    }
+
+    /**
+     * A normalized induced-edge proxy on the historical 0..100 scale.
+     * It equals 100 for the full graph because 240 induced edges are
+     * scaled by the exact full-cell bisection 100/240. For a partial
+     * basket it is explicitly a coherence proxy, not a cut or a link
+     * throughput measurement.
+     */
+    edgeCoherenceProxy(nodes) {
+      return this.inducedEdges(nodes) * (S.CONST.bisection / S.CONST.edges);
+    }
+
+    /** Backwards-compatible name retained for saved UI state. */
+    realisedBisection(nodes) {
+      return this.edgeCoherenceProxy(nodes);
     }
 
     /**
@@ -171,26 +164,75 @@
       if (!nodes || nodes.length < 2) return 0;
       const ideal = this.idealBisection(nodes.length);
       if (ideal <= 0) return 0;
-      return Math.max(0, Math.min(1, this.realisedBisection(nodes) / ideal));
+      return Math.max(0, Math.min(1, this.edgeCoherenceProxy(nodes) / ideal));
     }
 
     /**
-     * Worst-case hops inside the basket. Inside one cell this is 2 by
-     * theorem. Across d address digits it is 8d, because each recursive
-     * digit costs 8 reversible moves. Disconnected baskets report
-     * Infinity -- they are not one computer, and the UI should say so.
+     * Exact connectivity of the induced level-1 graph. Nodes in
+     * different cell prefixes have no constructed physical edge in this
+     * prototype and therefore form different components.
      */
-    realisedDiameter(nodes) {
-      if (!nodes || nodes.length < 2) return 0;
-      let worst = 0;
-      const sample = nodes.length > 60 ? nodes.filter((_, i) => i % Math.ceil(nodes.length / 60) === 0) : nodes;
-      for (let i = 0; i < sample.length; i++) {
-        for (let j = i + 1; j < sample.length; j++) {
-          const d = S.fabricDistance(sample[i].addr, sample[j].addr);
-          if (d.hops > worst) worst = d.hops;
+    inducedGraphStats(nodes) {
+      const vertices = [];
+      const byKey = new Map();
+      for (const n of nodes || []) {
+        const key = `${n.addr.slice(0, -1).join(".")}|${n.cellPoint}`;
+        if (!byKey.has(key)) {
+          byKey.set(key, vertices.length);
+          vertices.push({ key, prefix: n.addr.slice(0, -1).join("."), point: n.cellPoint });
         }
       }
-      return worst;
+      if (vertices.length === 0) return { vertices: 0, edges: 0, components: 0, connected: false, diameter: null, minDegree: 0 };
+
+      const adj = vertices.map(() => []);
+      for (let i = 0; i < vertices.length; i++) {
+        for (let j = i + 1; j < vertices.length; j++) {
+          if (vertices[i].prefix === vertices[j].prefix && S.isAdjacent(vertices[i].point, vertices[j].point)) {
+            adj[i].push(j);
+            adj[j].push(i);
+          }
+        }
+      }
+
+      let components = 0;
+      const seen = new Set();
+      for (let start = 0; start < vertices.length; start++) {
+        if (seen.has(start)) continue;
+        components++;
+        const queue = [start];
+        seen.add(start);
+        while (queue.length) {
+          const u = queue.shift();
+          for (const v of adj[u]) if (!seen.has(v)) { seen.add(v); queue.push(v); }
+        }
+      }
+
+      let diameter = components === 1 ? 0 : null;
+      if (components === 1) {
+        for (let start = 0; start < vertices.length; start++) {
+          const dist = Array(vertices.length).fill(-1);
+          dist[start] = 0;
+          const queue = [start];
+          while (queue.length) {
+            const u = queue.shift();
+            for (const v of adj[u]) if (dist[v] < 0) { dist[v] = dist[u] + 1; queue.push(v); }
+          }
+          diameter = Math.max(diameter, ...dist);
+        }
+      }
+      return {
+        vertices: vertices.length,
+        edges: adj.reduce((sum, row) => sum + row.length, 0) / 2,
+        components,
+        connected: components === 1,
+        diameter,
+        minDegree: Math.min(...adj.map((row) => row.length)),
+      };
+    }
+
+    realisedDiameter(nodes) {
+      const graph = this.inducedGraphStats(nodes);
+      return graph.connected ? graph.diameter : Infinity;
     }
 
     /**
@@ -217,13 +259,14 @@
       const quotes = nodes
         .map((n) => this.pricing.quote(n, opts))
         .filter((q) => q.serviceable && q.price != null);
-      if (!quotes.length) return null;
+      if (!quotes.length || quotes.length !== nodes.length) return null;
 
       const sumParts = quotes.reduce((a, q) => a + q.price, 0);
       const C = this.coherenceMultiplier(nodes);
       const coherence = this.coherence(nodes);
-      const bisection = this.realisedBisection(nodes);
-      const diameter = this.realisedDiameter(nodes);
+      const edgeCoherence = this.edgeCoherenceProxy(nodes);
+      const graph = this.inducedGraphStats(nodes);
+      const diameter = graph.connected ? graph.diameter : Infinity;
 
       return {
         nodes: nodes.length,
@@ -232,16 +275,20 @@
         coherenceMultiplier: C,
         price: sumParts * C,
         premium: sumParts * (C - 1),
-        bisection,
+        bisection: edgeCoherence, // compatibility alias
+        edgeCoherence,
+        inducedEdges: graph.edges,
         idealBisection: this.idealBisection(nodes.length),
         diameter,
-        // what you are structurally guaranteed, as a theorem not an SLA
+        graph,
+        // Computed properties of the induced prototype graph. These are
+        // not availability, crash-fault or Byzantine-consensus SLAs.
         guarantees: {
-          maxHops: Number.isFinite(diameter) ? diameter : null,
-          disjointPaths: coherence > 0.6 ? S.CONST.mu : 1,
-          crashTolerance: coherence > 0.8 ? S.CONST.degree - 1 : 0,
-          byzantineTolerance: coherence > 0.8 ? 5 : 0,
-          tableFree: coherence > 0.9,
+          connected: graph.connected,
+          components: graph.components,
+          certifiedDiameter: graph.connected ? graph.diameter : null,
+          minInducedDegree: graph.minDegree,
+          directAdjacencyFromAddress: true,
         },
         effectiveTflops: nodes.reduce((a, n) => a + n.effectiveTflops, 0),
       };
@@ -317,7 +364,9 @@
           }
           if (!best) continue;
 
-          const myBisGain = this.realisedBisection(best.after) - this.realisedBisection(myNodes);
+          const counterpartyGain = this.mirrorGain(best.cand, orphan);
+          if (!(counterpartyGain > 0)) continue;
+          const myBisGain = this.edgeCoherenceProxy(best.after) - this.edgeCoherenceProxy(myNodes);
           proposals.push({
             id: `SWP-${S.hash32(orphan.id + best.cand.id).toString(16).slice(0, 6)}`,
             give: orphan,
@@ -327,7 +376,7 @@
             counterparty: best.cand.operator,
             // the counterparty's mirror gain: they consolidate into the
             // cell my orphan is sitting in
-            counterpartyGain: this.mirrorGain(best.cand, orphan),
+            counterpartyGain,
             cashAdjustment: this.swapCashAdjustment(orphan, best.cand),
           });
         }
@@ -360,18 +409,39 @@
     }
 
     executeSwap(proposal, positions) {
-      const pos = positions.find((p) => p.nodeId === proposal.give.id);
+      if (!proposal || !proposal.give || !proposal.get) return { ok: false, reason: "malformed proposal" };
+      const give = this.fleet.get(proposal.give.id);
+      const get = this.fleet.get(proposal.get.id);
+      if (!give || !get || give.id === get.id) return { ok: false, reason: "proposal nodes are stale" };
+      if (!get.listed || get.health.inService) return { ok: false, reason: "counterparty node unavailable" };
+      if (give.hardware.class !== get.hardware.class) return { ok: false, reason: "hardware class changed" };
+      const pos = positions.find((p) => p.nodeId === give.id);
       if (!pos) return { ok: false, reason: "position not held" };
-      pos.nodeId = proposal.get.id;
-      pos.node = proposal.get;
+      if (positions.some((p) => p.nodeId === get.id)) return { ok: false, reason: "counterparty node already held" };
+
+      const held = positions.map((p) => this.fleet.get(p.nodeId)).filter(Boolean);
+      const before = this.coherence(held);
+      const afterNodes = held.filter((n) => n.id !== give.id).concat([get]);
+      const userGain = this.coherence(afterNodes) - before;
+      const counterpartyGain = this.mirrorGain(get, give);
+      if (!(userGain > 0) || !(counterpartyGain > 0)) {
+        return { ok: false, reason: "proposal no longer benefits both sides" };
+      }
+
+      const cashAdjustment = this.swapCashAdjustment(give, get);
+      pos.nodeId = get.id;
+      pos.node = get;
       this.swapHistory.unshift({
         ...proposal,
+        coherenceGain: userGain,
+        counterpartyGain,
+        cashAdjustment,
         ts: Date.now(),
-        gave: proposal.give.id,
-        got: proposal.get.id,
+        gave: give.id,
+        got: get.id,
       });
       if (this.swapHistory.length > 100) this.swapHistory.pop();
-      return { ok: true, cash: -proposal.cashAdjustment };
+      return { ok: true, cash: -cashAdjustment, coherenceGain: userGain, counterpartyGain };
     }
 
     // ------------------------------------------------------------------
@@ -425,16 +495,9 @@
     /**
      * Splice: how a node joins.
      *
-     * Joining is a LOCAL operation -- you graft a W(3,3) copy into the
-     * incidence structure at one point and nothing else in the fabric
-     * has to be told. There is no rebalancing pass, no consistent-hash
-     * ring to rotate, no global reconfiguration. Because W(E6) is
-     * transitive on leaves, the new node is immediately
-     * indistinguishable from every other node under the automorphism
-     * group -- it does not have to earn a place in a topology.
-     *
-     * For a two-sided market that is the difference between "list your
-     * idle machine" costing nothing and costing a fleet-wide event.
+     * The prototype assigns the first unused point in a named cell.
+     * Physical onboarding, identity re-keying, cabling, discovery and
+     * routing convergence are outside this local registry operation.
      */
     splice(node, atPrefix) {
       const prefix = S.parseAddress(atPrefix);
@@ -455,7 +518,7 @@
         ts: Date.now(),
         nodeId: node.id,
         address: node.address,
-        cost: "O(1) -- local graft, no global reconfiguration",
+        cost: "one local registry assignment (physical integration unmodelled)",
         neighbours: S.ADJ[point].length,
       };
       this.spliceLog.unshift(entry);
@@ -468,27 +531,9 @@
     // ------------------------------------------------------------------
 
     /**
-     * The venue does not need a matching-engine bottleneck.
-     *
-     * W(E6) acts transitively on the leaves, so no node is
-     * architecturally privileged and leader election has nothing to
-     * elect. Agreement is two hops plus a neighbour-averaging round
-     * that contracts disagreement by 1/3 per step -- about 19 rounds
-     * for a part in 1e9 -- and the committee tolerates 5 lying nodes
-     * out of 40. Six breaks the tested configuration; that is a
-     * measured boundary, not a margin.
-     *
-     * The energy contrast is the part that matters commercially:
-     * proof-of-work spends on the order of 1e9 J of dissipated work per
-     * transaction. Here the only irreducible cost is the Landauer
-     * syndrome export at ~2.6e-19 J. Twenty-seven orders of magnitude,
-     * because security is a group-membership check rather than burned
-     * electricity.
-     *
-     * Honest scope: this is a property of the substrate as specified.
-     * No physical holonet exists, so today the clearing loop runs as
-     * the classical Clifford emulation -- which is polynomial-time and
-     * runs anywhere, and is what this simulation actually executes.
+     * A neighbour-averaging toy model contracts a scalar disagreement by
+     * the declared factor 1/3. It is not a consensus protocol and makes
+     * no crash, Byzantine, leader-election or energy guarantee.
      */
     clearingRounds(precision = 1e-9) {
       // disagreement contracts by 1/3 per averaging round
@@ -498,15 +543,11 @@
     clearingProfile() {
       const rounds = this.clearingRounds();
       return {
-        hops: 2,
+        cellGraphDiameter: S.CONST.cellDiameter,
         rounds,
         contractionPerRound: 1 / 3,
-        byzantineTolerance: 5,
-        byzantineBreaks: 6,
-        leaderless: true,
-        joulesPerClear: S.landauerFloorPerCycle(300),
-        pathOfWorkComparison: 1e9,
-        ordersOfMagnitude: Math.round(Math.log10(1e9 / S.landauerFloorPerCycle(300))),
+        status: "TOY_AVERAGING_MODEL",
+        consensusProtocolBuilt: false,
       };
     }
 
@@ -518,7 +559,7 @@
     fabricStats(positions) {
       const cells = this.cells();
       const listed = this.fleet.listedNodes();
-      const totalBisection = this.realisedBisection(listed);
+      const totalBisection = this.edgeCoherenceProxy(listed);
       const completeCells = cells.filter((c) => c.occupancy >= 0.95).length;
       return {
         cells: cells.length,
@@ -710,16 +751,17 @@
       return spec;
     }
 
-    /** Structural guarantees of the composed shape -- theorems, not SLAs. */
+    /** Computed prototype metrics; physical topology remains unbuilt. */
     guarantees() {
+      const graph = this.fabric.inducedGraphStats(this.flatten());
       return {
         level: this.level,
         leaves: this.leaves,
-        maxHops: S.diameterAtLevel(this.level),
-        bisection: this.fabric.realisedBisection(this.flatten()),
-        disjointPaths: this.coherence > 0.6 ? S.CONST.mu : 1,
-        crashTolerance: this.coherence > 0.8 ? S.CONST.degree - 1 : 0,
-        byzantineTolerance: this.coherence > 0.8 ? 5 : 0,
+        modelDistanceUpperBound: S.diameterAtLevel(this.level),
+        edgeCoherence: this.fabric.edgeCoherenceProxy(this.flatten()),
+        connected: graph.connected,
+        components: graph.components,
+        certifiedDiameter: graph.connected ? graph.diameter : null,
         coherence: this.coherence,
       };
     }

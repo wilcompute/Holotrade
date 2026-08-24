@@ -10,35 +10,34 @@
 // more often than anything else in the system, so they are the part
 // worth putting on silicon.
 //
-// The claim being made concrete here is "ADDRESS IS ROUTE". In a
-// conventional fabric, deciding whether two machines are adjacent means
-// consulting a routing table that has to be built, distributed,
-// converged and kept fresh. Here it is:
+// The claim made concrete here is narrower: ADDRESS DETERMINES DIRECT
+// ADJACENCY. A complete physical router still needs link state,
+// congestion handling and relay selection. The exact level-1 predicate is:
 //
 //     <u,v>  =  u0*v1 - u1*v0 + u2*v3 - u3*v2   (mod 3)
 //     adjacent  <=>  <u,v> == 0
 //
-// which is what this module computes, combinationally, in a handful of
-// gates. No table, no memory, no convergence, no churn.
+// which this module computes combinationally without a route-table RAM.
 //
 // ----------------------------------------------------------------------
 // ENCODING
 //
-// A W(3,3) address is a point of PG(3,F_3): four coordinates in
-// {0,1,2}, two bits each, eight bits per address. The encoding 2'b11 is
-// not a valid F_3 element; the module treats it as 0 rather than
-// producing a don't-care, so a corrupted address cannot silently alias
-// onto a legal route. That is a deliberate cost of a few gates.
+// A W(3,3) address is a canonical representative of a point of
+// PG(3,F_3): four coordinates in {0,1,2}, two bits each, eight bits per
+// address, nonzero, with first nonzero coordinate equal to 1. The form
+// datapath is total and normalises 2'b11 to zero, but the admission gate
+// rejects every illegal/noncanonical address with R_BAD_ADDR. Without
+// that gate, 2'b11 would silently alias a legal zero coordinate.
 //
 // ----------------------------------------------------------------------
 // SCOPE
 //
-// This is verified, not merely written: `make verify` proves it
-// equivalent to an independent behavioural model by SAT over the whole
-// 16-bit input space, and `make synth` reports the cell count. Timing
-// is NOT reported here, because timing is part-specific and this design
-// has not been placed or routed. A cell count is a fact about the
-// netlist; a frequency is a fact about a part, and would need naming.
+// `npm run verify:rtl` proves every output equivalent to an independent
+// behavioural model by SAT over all 2^25 complete-module inputs;
+// `npm run synth:rtl` reports technology mapping. Cryptographic
+// signature verification and generation of policy predicates are outside
+// this module. Timing is not reported because it has not been placed or
+// routed on a named part.
 // ======================================================================
 
 `default_nettype none
@@ -122,15 +121,15 @@ endmodule
 // ----------------------------------------------------------------------
 // The admission gate.
 //
-// Five refusal conditions, checked in priority order and reported as a
+// Eight outcomes (admit plus six policy refusals and BAD_ADDR), checked
+// in priority order and reported as a
 // code rather than a bare zero. The gate REFUSES rather than degrading:
 // there is no best-effort output here, because a silent fallback is how
 // a security posture becomes decorative.
 //
-// The magic-budget check is the one that matters most for correctness.
-// A plan with t > 0 non-Clifford gates cannot be served by Clifford-only
-// hardware at any price -- not slowly, not approximately, not at all --
-// and hardware is the right place to make that non-negotiable.
+// `magic_budget` is a declared prototype capability policy. This circuit
+// enforces the declaration; it does not establish a universal 9^t cost
+// law or verify the physical capability of a node.
 // ----------------------------------------------------------------------
 
 module holotrade_admit (
@@ -138,7 +137,7 @@ module holotrade_admit (
   input  wire [7:0] node_addr,      // candidate node
   input  wire [3:0] magic_budget,   // t, non-Clifford gate count
   input  wire       node_magic,     // node can serve t > 0
-  input  wire       sig_ok,         // Ed25519 envelope matched the content
+  input  wire       sig_ok,         // upstream signature-policy predicate; not verified here
   input  wire       nonce_fresh,    // nonce not in the replay store
   input  wire       in_window,      // inside [validFrom, validUntil]
   input  wire       pins_ok,        // no artefact pin drift
@@ -157,6 +156,7 @@ module holotrade_admit (
   localparam [2:0] R_PIN_DRIFT    = 3'd4;
   localparam [2:0] R_NO_MAGIC     = 3'd5;
   localparam [2:0] R_IN_SERVICE   = 3'd6;
+  localparam [2:0] R_BAD_ADDR     = 3'd7;
 
   w33_form geom (
     .u(plan_addr), .v(node_addr), .form(form), .adjacent(adjacent)
@@ -165,7 +165,25 @@ module holotrade_admit (
   wire same_point = (plan_addr == node_addr);
   wire needs_magic = (magic_budget != 4'd0);
 
+  // Canonical projective encoding: legal trits, nonzero vector, and
+  // first nonzero coordinate exactly 1. This rejects both illegal 2'b11
+  // fields and the scalar-doubled representative 2*x of the same point.
+  wire plan_trits_ok = (plan_addr[1:0] != 2'd3) && (plan_addr[3:2] != 2'd3) &&
+                       (plan_addr[5:4] != 2'd3) && (plan_addr[7:6] != 2'd3);
+  wire node_trits_ok = (node_addr[1:0] != 2'd3) && (node_addr[3:2] != 2'd3) &&
+                       (node_addr[5:4] != 2'd3) && (node_addr[7:6] != 2'd3);
+  wire plan_canonical = (plan_addr[1:0] == 2'd1) ||
+                        ((plan_addr[1:0] == 2'd0) && (plan_addr[3:2] == 2'd1)) ||
+                        ((plan_addr[3:0] == 4'd0) && (plan_addr[5:4] == 2'd1)) ||
+                        ((plan_addr[5:0] == 6'd0) && (plan_addr[7:6] == 2'd1));
+  wire node_canonical = (node_addr[1:0] == 2'd1) ||
+                        ((node_addr[1:0] == 2'd0) && (node_addr[3:2] == 2'd1)) ||
+                        ((node_addr[3:0] == 4'd0) && (node_addr[5:4] == 2'd1)) ||
+                        ((node_addr[5:0] == 6'd0) && (node_addr[7:6] == 2'd1));
+  wire addresses_ok = plan_trits_ok && node_trits_ok && plan_canonical && node_canonical;
+
   assign reason = (!sig_ok)                    ? R_BAD_SIG
+                : (!addresses_ok)              ? R_BAD_ADDR
                 : (!nonce_fresh)               ? R_REPLAY
                 : (!in_window)                 ? R_WINDOW
                 : (!pins_ok)                   ? R_PIN_DRIFT
@@ -217,6 +235,69 @@ module w33_form_golden (
   wire [7:0] raw = (u0 * v1) + (u2 * v3) + 8'd9 - (u1 * v0) - (u3 * v2);
   assign form = raw % 8'd3;
   assign adjacent = (form == 2'd0);
+endmodule
+
+// ----------------------------------------------------------------------
+// Independent behavioural reference for the COMPLETE admission primitive.
+// The symplectic form comes from the integer/modulo reference above; policy
+// ordering and canonical-address checks are written as direct expressions.
+// The formal miter compares every output for all 2^25 input assignments.
+// ----------------------------------------------------------------------
+
+module holotrade_admit_golden (
+  input  wire [7:0] plan_addr,
+  input  wire [7:0] node_addr,
+  input  wire [3:0] magic_budget,
+  input  wire       node_magic,
+  input  wire       sig_ok,
+  input  wire       nonce_fresh,
+  input  wire       in_window,
+  input  wire       pins_ok,
+  input  wire       node_in_service,
+  output wire       admit,
+  output wire [2:0] reason,
+  output wire [1:0] form,
+  output wire       adjacent,
+  output wire [3:0] ray_cost
+);
+  localparam [2:0] R_OK           = 3'd0;
+  localparam [2:0] R_BAD_SIG      = 3'd1;
+  localparam [2:0] R_REPLAY       = 3'd2;
+  localparam [2:0] R_WINDOW       = 3'd3;
+  localparam [2:0] R_PIN_DRIFT    = 3'd4;
+  localparam [2:0] R_NO_MAGIC     = 3'd5;
+  localparam [2:0] R_IN_SERVICE   = 3'd6;
+  localparam [2:0] R_BAD_ADDR     = 3'd7;
+
+  w33_form_golden geom (
+    .u(plan_addr), .v(node_addr), .form(form), .adjacent(adjacent)
+  );
+
+  wire p_trits = (plan_addr[1:0] != 2'd3) && (plan_addr[3:2] != 2'd3) &&
+                  (plan_addr[5:4] != 2'd3) && (plan_addr[7:6] != 2'd3);
+  wire n_trits = (node_addr[1:0] != 2'd3) && (node_addr[3:2] != 2'd3) &&
+                  (node_addr[5:4] != 2'd3) && (node_addr[7:6] != 2'd3);
+  wire p_canon = (plan_addr[1:0] == 2'd1) ||
+                 ((plan_addr[1:0] == 2'd0) && (plan_addr[3:2] == 2'd1)) ||
+                 ((plan_addr[3:0] == 4'd0) && (plan_addr[5:4] == 2'd1)) ||
+                 ((plan_addr[5:0] == 6'd0) && (plan_addr[7:6] == 2'd1));
+  wire n_canon = (node_addr[1:0] == 2'd1) ||
+                 ((node_addr[1:0] == 2'd0) && (node_addr[3:2] == 2'd1)) ||
+                 ((node_addr[3:0] == 4'd0) && (node_addr[5:4] == 2'd1)) ||
+                 ((node_addr[5:0] == 6'd0) && (node_addr[7:6] == 2'd1));
+  wire addr_ok = p_trits && n_trits && p_canon && n_canon;
+  wire needs_magic = |magic_budget;
+
+  assign reason = (!sig_ok)                    ? R_BAD_SIG
+                : (!addr_ok)                   ? R_BAD_ADDR
+                : (!nonce_fresh)               ? R_REPLAY
+                : (!in_window)                 ? R_WINDOW
+                : (!pins_ok)                   ? R_PIN_DRIFT
+                : (needs_magic && !node_magic) ? R_NO_MAGIC
+                : (node_in_service)            ? R_IN_SERVICE
+                :                                R_OK;
+  assign admit = (reason == R_OK);
+  assign ray_cost = (plan_addr == node_addr) ? 4'd6 : (adjacent ? 4'd3 : 4'd5);
 endmodule
 
 `default_nettype wire

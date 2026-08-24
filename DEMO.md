@@ -1,210 +1,199 @@
-# Holotrade — 6-minute demo script
+# HoloTrade — live demo runbook
+
+This is the reliable six-minute path through the prototype. It separates what is
+live, what is simulated, and what is exact, while still landing the product
+story: a transparent quote becomes a bounded execution contract, then a meter
+and a receipt.
+
+## Preflight
+
+Run this once before the meeting:
 
 ```bash
-npm run serve     # http://localhost:8080
+npm test
+npm run verify:rtl
+npm run synth:rtl
+npm run experiment:balancer
+npm run serve
 ```
 
-Everything below is live. Nothing is a recording, and the simulation is seeded so
-it behaves the same way every time you run it.
+Open <http://127.0.0.1:8080>, reload once, and leave the speed at **1×**. The
+fleet and market use a deterministic seed, so reload is the reset button.
 
-**Top-right controls:** `1×` cycles the clock speed (1 → 2 → 5 → 15). Push it to
-**5×** before you start so the market visibly moves while you talk. `Pause`
-freezes everything if someone asks a question mid-flow.
+The expected headline checks are:
 
----
+- 56 software tests pass;
+- the RTL miter passes over all \(2^{25}=33,554,432\) input assignments;
+- iCE40 synthesis reports 49 LUT4 cells and 6 carry cells;
+- the paired 64-seed simulation reports a 60.34% terminal-Gini reduction, with
+  all 64 pairs improving.
 
-## 0:00 — The one-line pitch
+If you only have three minutes, do **Exchange → Fabric → Execution**.
 
-> *"Every compute marketplace sells the same thing: a box, by the hour. The hour
-> is a billing artefact — it exists because provisioning used to take minutes.
-> A microVM boots in 171 milliseconds. So we sell node-seconds, and that lets us
-> price four things the hour was throwing away."*
+## 0:00 — One sentence
 
----
+> “HoloTrade is a topology-aware compute broker: it shows the capacity behind a
+> quote, binds a job to a named machine and policy envelope, meters node-seconds,
+> and reconciles the result into a receipt.”
 
-## 0:30 — Exchange · the price has parts
+Point to the evidence strip at the top. The labels are part of the product:
+**EXACT**, **FORMAL**, **SYNTHESIZED**, **REGRESSION**, **SIMULATION**, and
+**PROTOTYPE** do not mean the same thing.
 
-Land on **Exchange**. Point at the order book.
+## 0:25 — Exchange: inspect before buying
 
-> *"The ask side isn't a market maker. It **is** the pricing engine — every
-> listed machine posts an offer at its own clearing price."*
+On **Exchange**, start with the ticket and “Best quote, decomposed.”
 
-Point to **Best quote, decomposed** on the right.
+> “The headline rate is an hourly-equivalent comparison quote. The actual
+> execution unit is a node-second. The decomposition exposes energy,
+> specialization, demand, health, declared capability, locality, and the
+> operator floor instead of hiding them in one opaque price.”
 
-> *"So every line in that book takes apart. Six multipliers over a hardware
-> base. Energy is the live wholesale price at that site this second. Genetics is
-> what that machine has **learned**. Demand is the balancer. Health is wear.
-> Quantum is 1 for everything classical. Locality is distance in the fabric."*
+Use the two interactive graphs:
 
-Then the floor, underneath:
+1. Move across **Depth** and switch between **Liquid**, **50%**, and **Full
+   book**. Change quantity from 4 to 12 and point out expected fill, VWAP, and
+   slippage. The chart is cumulative executable depth, not decorative volume.
+2. Hover **Value frontier**. Highlight that HoloTrade compares delivered
+   throughput per dollar across unlike hardware; frontier points are offers not
+   dominated on both price and capacity.
 
-> *"And a floor: electricity plus maintenance reserve plus capital recovery. We
-> refuse to clear below it. A discount that doesn't repay the machine isn't a
-> discount, it's a loss the operator hasn't noticed yet."*
+Return quantity to **4** and click **Buy**.
 
-**Buy something** — click **Buy** with the default 4 node-hours. You'll get a
-fill toast and orders appear. This seeds the Portfolio and Fabric views later.
+> “This fill creates a `SIMULATED_QUOTE_RECEIPT`. It proves what this seeded
+> market quoted; it does not pretend a workload ran.”
 
----
+That fill also seeds Portfolio and Fabric for the next sections.
 
-## 1:30 — Balance · the result that pays for the design
+## 1:30 — Balance: show the frozen result, then the live model
 
-Go to **Balance**. This is the strongest thing in the demo — don't rush it.
+Go to **Balance**.
 
-> *"The naive way to price demand is one-sided: busy machine costs more. That
-> leaves half your fleet idle, still aging, still drawing power, still due for
-> the same service visit. So our demand term is two-sided — premium above a
-> target band, **discount** below it."*
+> “One-sided scarcity pricing makes busy capacity dearer but gives cold capacity
+> no reason to attract work. This modeled policy is two-sided: premium above the
+> target band and discount below it, bounded by an operating floor.”
 
-Point at the **Utilisation Gini** tile (should read ~0.08).
+Lead with the frozen experiment card, not a number inferred from the animation:
 
-> *"Gini is the standard inequality measure. Zero means every machine equally
-> loaded. Watch this."*
+- same 64 seeds in both arms;
+- 220 modeled nodes;
+- 500 one-minute steps;
+- balancer-on terminal Gini 0.06458;
+- balancer-off terminal Gini 0.16110;
+- paired reduction 60.34%, 95% CI [58.90%, 61.77%];
+- 64/64 pairs improved.
 
-**Flip the "Balancer ON" toggle off.** Wait ~15 seconds at 5× speed. The Gini
-climbs and the line on the chart rises visibly.
+Toggle **Balancer OFF**, let the live chart move, then restore it.
 
-> *"0.083 to 0.164. Dispersion doubles. And here's the part that matters —
-> nothing in that loop pushes utilisation toward the band. A machine's target
-> comes from its **price** relative to its own hardware class, and that price
-> came from its utilisation. The band is where the loop settles, not where it's
-> aimed."*
+> “The chart is a deterministic live simulation. The 60.34% result comes from
+> the separately reproducible paired packet, not from eyeballing this run. It is
+> evidence about this model, not production telemetry or proof of longer silicon
+> life.”
 
-**Flip it back on.** Watch it fall.
+## 2:25 — Fabric: topology is part of the capacity
 
-Then scroll to the amber box:
+Go to **Fabric** and click a point in the W(3,3) graph. Hover points and choose a
+From/To pair.
 
-> *"And this isn't just capital efficiency. Thermal cycling — not duty cycle —
-> is what physically kills silicon. A machine held flat at 70% wears slower than
-> one swinging between idle and pinned at the same average. Evenly loaded fleet,
-> longer hardware life, service events spread across the calendar instead of
-> arriving in a clump you have to staff for."*
+> “At level one the address space is an exact 40-vertex graph:
+> SRG(40,12,2,4), 240 edges, diameter two. Direct adjacency is one symplectic
+> inner-product test. The software finds a relay by a bounded scan of the forty
+> points.”
 
----
+Point to the bisection certificate.
 
-## 3:00 — Fabric · you buy shapes, not counts
+> “This explicit 20|20 cut has exactly 100 crossing edges, meeting the spectral
+> lower bound. That is an exact graph certificate—not a claim about a deployed
+> cable plant, congestion, failures, or physical throughput.”
 
-Go to **Fabric**. Click a node on the W(3,3) diagram — it lights its 12 neighbours.
+Then show **Portfolio** or the Fabric cell table.
 
-> *"Our machines are addressed by position in a finite geometry. Forty points,
-> 240 connections, diameter two — any machine reaches any other in at most two
-> hops regardless of traffic. And routing is one arithmetic test on the address."*
+> “For a partial basket we compute the graph it actually owns: induced edges,
+> components, minimum degree, and diameter only when connected. A two-node
+> holding cannot borrow an unowned relay and call itself diameter two.”
 
-Use the **From/To** dropdowns. Point at `⟨x,y⟩ mod 3`.
+If the swap book has a proposal, execute one and show that both owners’
+coherence improves. If it is empty, say that this seeded holding is already
+locally coherent; the system refuses to manufacture a one-sided swap for the
+demo.
 
-> *"That's the entire forwarding decision. No routing table. Nothing to build,
-> distribute, converge, or keep fresh. Which is why locality is a **number** we
-> can price per order instead of a heuristic about availability zones."*
-
-Then the consequence:
-
-> *"And because routing and computing are the same operation here, compute and
-> bandwidth are one provisioned quantity. Forty scattered machines and forty
-> wired as one cell have the same count and completely different value. So we
-> price the **shape**."*
-
-Scroll to **The recursion closes**:
-
-> *"A network of computers is a computer. So a network of those is a computer.
-> A composite implements the same interface a single machine does — so there is
-> **one order book and one pricing engine at every level**. The engine can't tell
-> a GPU from a campus and doesn't need to."*
-
-Point at the level table — H1 quotes, H2 quotes, H3 quotes, same engine.
-
-Then the **swap book** at the bottom (populated because you bought earlier):
-
-> *"Trading fragments ownership. After a month everyone holds confetti and the
-> market's total bandwidth has collapsed, even though every position looks fine.
-> So: swap book. I give you my orphan in your cell, you give me yours in mine.
-> No cash. It's disk defragmentation, except the value recovered is bandwidth —
-> and both sides gain, which is why anyone takes the other side."*
-
-Click a **Swap**. Coherence goes up.
-
----
-
-## 4:15 — Execution · what's actually being sold
+## 3:35 — Execution: contract, refusal, delivery
 
 Go to **Execution**.
 
-> *"The node is the asset. The **plan** is the contract. The node-second is the
-> unit."*
+Start by pointing at **Nodes**, which is visibly locked to one.
 
-Click **Sign plan**. Placements appear.
+> “Multi-node delivery is not implemented, so the browser cannot submit that
+> request and the engine rejects it if called directly. HoloTrade does not
+> multiply one VM’s meter by two and call that gang execution.”
 
-> *"Signed before anything boots — names the exact software by fingerprint, the
-> only address it may contact, the window it's valid for. That's the difference
-> between renting a machine and buying a guarantee about what happened on it."*
+Create the successful path:
 
-Point at the placement table.
+1. Set **Nodes** to 1 and **Seconds** to 120.
+2. Leave egress blank to deny network access.
+3. Use the supplied full example artifact digest.
+4. Click **Seal demo plan**, then launch the best placement.
 
-> *"Ranked by **total** cost, not headline rate — boot cost and migration
-> distance both enter. Cold start is real work, so we charge it once,
-> explicitly, instead of smearing it into the rate."*
+> “This is deliberately called a demo integrity seal. It binds owner, nonce,
+> artifact, validity window, cap, workload, and anchor into a deterministic
+> digest so we can exercise lifecycle semantics. It is not a digital signature,
+> remote attestation, or proof that these bytes ran.”
 
-Click **Launch**. A VM appears and the meter starts ticking every second.
+Point to total modeled cost: boot cost and locality are explicit. Let the meter
+advance, then click **Halt** if the plan has not already settled.
 
-Now switch the workload class to **Lattice / QCD simulation** (t=12) and sign
-another plan:
+> “The engine rechecks the live price cap, clips the last interval so it cannot
+> overbill the requested duration, includes boot overhead, and emits a delivery
+> receipt. The local audit checker recomputes every body and every link; it is
+> still not externally authenticated.”
 
-> *"This one needs capability ordinary hardware doesn't have. Watch."*
+## 4:55 — Assets and receipts: identity without invented liquidity
 
-Try to launch it on a classical node — it refuses with `NO_MAGIC`.
+On **Assets & UOR**, show a reference moving through the exact unsigned 64-bit
+codec and back.
 
-> *"It refuses and says why. It doesn't quietly substitute something that won't
-> work. That refusal is in software, in the tests, and in the hardware."*
+> “The object reference is an invertible mixed-radix identifier across the full
+> unsigned-64 range. Policy mobility estimates how many configured delivery
+> regions still accept an asset. We do not relabel group-orbit arithmetic as
+> market liquidity.”
 
-Point at the **audit chain** — INTACT, every entry committing to the last.
+On **Receipts**, contrast the two surfaces:
 
----
+- a market fill emits a `SIMULATED_QUOTE_RECEIPT`;
+- execution produces the separate metered delivery record;
+- neither is presented as attestation.
 
-## 5:15 — Genetics · where the margin actually is
+## 5:35 — Close
 
-Go to **Genetics**.
+> “What exists today is a research prototype with an unusually explicit trust
+> boundary: exact topology, exhaustive RTL equivalence, reproducible simulation,
+> and a complete single-node lifecycle. The next product step is to replace the
+> demo seal and seeded telemetry with signed inventory, real attestation, and a
+> reservation ledger—without changing the buyer-facing flow you just saw.”
 
-> *"Spot node-hours are a commodity, and commodities converge to marginal cost —
-> which is exactly our floor. **There's no durable business selling
-> undifferentiated node-hours.**"*
-
-> *"Trained cores are not a commodity. A machine that's run genomics for six
-> months is a strictly better genomics machine than the identical chassis next to
-> it, and the gap widens. That's the spread."*
-
-Point at the breeding console:
-
-> *"And the prediction is stated **before** the cross, and comes in below the
-> better parent on purpose — a merge is lossy and a fresh core has no track
-> record. We don't credit it with its parents' completions."*
-
----
-
-## 5:45 — Close on the honest scope
-
-Go to **The Model**, scroll to the bottom three grey boxes.
-
-> *"Last thing. Everything geometric here is proved and machine-checked — run
-> `npm test`, 45 tests. The fleet and the grid prices are simulation, and we say
-> so. And the physics programme this is built on top of? **Holotrade doesn't
-> depend on any of it being true.** Everything we price is finite mathematics
-> that holds regardless."*
-
----
-
-## If someone asks a hard question
+## Questions you are likely to get
 
 | Question | Answer |
 |---|---|
-| *"Is the geometry real or marketing?"* | `npm test` — 45 tests. SRG(40,12,2,4), 240 edges, diameter 2, bisection exactly 100 against the spectral bound. And `npm run verify:rtl` SAT-proves the routing primitive over all 65,536 inputs. |
-| *"Have you found bugs in your own model?"* | Two, both by the test suite. A doubled bisection figure (wrong edge denominator) and a non-monotone demand curve where a machine got *cheaper by becoming busier* — directly arbitrageable. Both documented in the source beside the fix. |
-| *"What's the hardware story?"* | 39 LUT4s and 6 carries on an iCE40 — the whole routing and admission decision. Formally verified. We deliberately don't quote a clock speed: that's a fact about a placed-and-routed part and we haven't placed or routed it. |
-| *"What's the biggest risk?"* | The genome premium is a hypothesis with a good mechanism, not a measurement on production workloads. It's where the durable margin lives, so it's the first thing to validate. It's stated as a risk in the paper. |
-| *"Why not just undercut on price?"* | Because that's the commodity trap. The floor is where undifferentiated node-hours end up, and we've made it explicit. The product is the differentiation the hourly rate was flattening. |
-| *"Is this a blockchain?"* | No. Hash-chained audit logs, which is one idea from that family and the useful one. No token, no mining, no consensus overhead. |
+| “Is the geometry marketing?” | No. Tests enumerate SRG(40,12,2,4), 240 edges, diameter 2, and the explicit cut of size 100. Those are graph facts; physical network performance remains unclaimed. |
+| “What is formally verified?” | The complete admission/locality RTL is compared with an independently written behavioral reference across all \(2^{25}\) inputs and every output, including invalid addresses and refusal priority. |
+| “Is the plan signed?” | No. `DEMO_INTEGRITY_SEAL` is an unkeyed deterministic checksum. Production needs canonical serialization, signatures, attestation, freshness, key lifecycle, and an external transparency or settlement service. |
+| “Is 60.34% a customer result?” | No. It is the paired result of the checked-in deterministic simulator: 64 seeds, 220 nodes, 500 one-minute steps. It motivates a field experiment; it does not replace one. |
+| “What did synthesis prove?” | Technology mapping uses 49 `SB_LUT4` and 6 `SB_CARRY` cells. There is no place-and-route timing, board test, or network benchmark yet. |
+| “Why node-seconds?” | The demo’s modeled boot distribution makes fine-grained settlement useful, and the meter supports it. The specific boot values are model inputs, not measurements from a deployed HoloTrade fleet. |
+| “Is this a blockchain?” | No token, mining, or consensus layer is built. The prototype has a locally checked checksum chain; production settlement architecture remains open. |
+| “Can it run a distributed job?” | Not yet. Single-node execution is complete; multi-node requests are explicitly rejected until atomic reservation, launch, metering, and failure handling exist. |
 
----
+## Recovery during a live demo
 
-## Reset between demos
-
-Reload the page. The simulation is seeded — you get the identical starting fleet,
-the same prices, the same everything.
+- **Want a clean state:** reload the page.
+- **Chart looks crowded:** choose the Liquid depth zoom or narrow the ticket
+  quantity.
+- **No swap proposal:** explain that swaps require a live improvement for both
+  owners; do not force one.
+- **No admissible placement:** return to a classical workload, Nodes = 1, and a
+  blank egress grant.
+- **Question interrupts motion:** click Pause; it freezes the simulation without
+  discarding state.
+- **Need proof without the browser:** keep a terminal ready with `npm run verify`
+  and `npm run experiment:balancer`.

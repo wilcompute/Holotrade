@@ -236,7 +236,7 @@
      * Full price decomposition for one node against one workload class.
      * Every field here is meant to be shown to the buyer.
      */
-    quote(node, { workloadId = "llm-train", anchorAddress = null } = {}) {
+    quote(node, { workloadId = "llm-train", anchorAddress = null, record = false } = {}) {
       const dc = this.energy.datacenters.find((d) => d.id === node.dcId);
       const base = node.hardware.baseRate;
 
@@ -280,7 +280,7 @@
 
       this.quotes.set(node.id, q);
       node.lastPrice = q.price;
-      if (q.price != null) {
+      if (record && q.price != null) {
         node.priceHistory.push(q.price);
         if (node.priceHistory.length > 240) node.priceHistory.shift();
       }
@@ -331,7 +331,7 @@
       const workloadId = opts.workloadId || "llm-train";
 
       const quotes = nodes
-        .map((n) => ({ node: n, q: this.quote(n, { workloadId }) }))
+        .map((n) => ({ node: n, q: this.quote(n, { workloadId, record: true }) }))
         .filter((x) => x.q.serviceable && x.q.price != null);
       if (!quotes.length) return;
 
@@ -374,16 +374,18 @@
           node,
           this.workloads.find((w) => w.id === workloadId) || this.workloads[0]
         );
-        // Note what is and is not happening here: the target is set by
-        // the node's PRICE relative to the market, and the price came
-        // from its utilisation. Nothing pushes utilisation toward the
-        // band directly. The band is where the loop settles, not where
-        // it is aimed -- which is why the Gini result is a finding
-        // rather than an animation.
+        // This is a controlled policy simulation: bandCentre is an
+        // explicit target scale, modulated by relative price and the
+        // node's modeled specialization. The paired experiment measures
+        // this model; it is not an uncontrolled market observation.
         const target = clamp01(bandCentre * marketDrive * pull * genePull);
 
-        // First-order lag: real workloads take minutes to move, not ticks.
-        const tau = 0.10;
+        // First-order lag scaled by elapsed simulation time. The time
+        // constant is chosen so a one-minute step retains the historical
+        // 0.10 response, while 15 small steps approximate one large step.
+        const responseHours = -(1 / 60) / Math.log(0.9);
+        const elapsedHours = Math.max(0, Number(dtHours) || 0);
+        const tau = 1 - Math.exp(-elapsedHours / responseHours);
         node.utilisation = clamp01(node.utilisation + (target - node.utilisation) * tau);
         node.currentWorkload = workloadId;
       }

@@ -7,22 +7,22 @@
 //
 // Why a compute exchange cares:
 //
-//   1. ADDRESS IS ROUTE. Two nodes are adjacent iff the symplectic
-//      inner product of their addresses vanishes mod 3. Forwarding is
-//      one modular inner product -- no routing table, no BGP, no churn.
-//      That makes *locality* a closed-form number, so the exchange can
-//      price it per order instead of guessing at "same-AZ" heuristics.
+//   1. ADDRESS DETERMINES ADJACENCY. Two nodes are adjacent iff the
+//      symplectic inner product of their addresses vanishes mod 3.
+//      Direct adjacency is therefore a closed-form predicate. A
+//      two-hop relay can be found by checking the other 38 points; the
+//      current prototype does that bounded scan rather than claiming a
+//      complete physical routing protocol.
 //
 //   2. DIAMETER 2. Any two of the 40 nodes in a cell are one hop apart
 //      or share exactly mu = 4 common neighbours. Four-way multipath,
 //      zero configuration. A buyer never pays for more than two hops
 //      inside a cell.
 //
-//   3. FRACTAL CAPACITY. Replace each point with a whole copy and you
-//      get H_n: 40^n leaves at routing diameter 8n. The whole planet
-//      fits at n = 7 with a 56-hop worst case. Capacity and bisection
-//      bandwidth are the same provisioned quantity, so the exchange
-//      quotes ONE price rather than compute + network + egress.
+//   3. RECURSIVE ADDRESS MODEL. An n-digit namespace has 40^n leaves.
+//      Under the prototype's descent metric, equal-depth addresses are
+//      at most 16n-14 logical moves apart. This is a software metric,
+//      not yet the diameter of a constructed physical product graph.
 //
 //   4. THE MIGRATION PRICE LAW. Moving a workload to a neighbouring
 //      node costs strictly LESS than reconfiguring it in place
@@ -30,12 +30,10 @@
 //      lit-set overlap spectrum of the 360 ground states. It is why
 //      Holotrade's balancer prefers migration to re-vectoring.
 //
-// Scope note: the geometry, the group order, the bisection, the
-// diameter law and the overlap spectrum are exact finite facts.
-// The photonic hardware that would realise them at the quantum layer
-// does not exist yet; Holotrade runs the classical (Clifford) layer,
-// which is polynomial-time on any computer, and prices the quantum
-// advantage separately as the 9^t magic dial.
+// Scope note: the level-1 geometry, group order, and explicit bisection
+// certificate are exact finite facts. Recursive distance, migration
+// rays, contextual receipts, and the 9^t dial are declared prototype
+// models until a physical fabric and workload calibration exist.
 // ======================================================================
 
 (function (root) {
@@ -52,7 +50,7 @@
     mu: 4,                   // non-adjacent pairs share 4 -> 4-way multipath
     autOrder: 51840,         // |Sp(4,3)| = |W(E6)|
     projOrder: 25920,        // |PSp(4,3)|
-    bisection: 100,          // exact: (n/4)(k - lambda2) = (40/4)(12-2)
+    bisection: 100,          // exact: spectral lower bound + explicit 20|20 cut
     lambda2: 2,              // second eigenvalue (Ramanujan bound 6.63)
     cssRate: 27 / 80,        // [[240,81,4,3]]_3 logical-qutrit rate cap
     contextualFraction: 0.1, // (40-36)/40 -- the Kochen-Specker budget
@@ -60,7 +58,8 @@
     tauO: 384,               // coherence-block denominator
     syndromeQutrits: 58,     // n-k for [[66,8,3]]_3: the irreversible step
     magicRobustness: 3,      // R = 3, so classical emulation costs 9^t
-    hopsPerDigit: 8,         // reversible moves per recursive address digit
+    hopsPerDigit: 8,         // declared descent cost per side and remaining digit
+    cellDiameter: 2,         // exact diameter of the level-1 point graph
   };
 
   const K_BOLTZMANN = 1.380649e-23;
@@ -115,17 +114,27 @@
   const ADJ_SET = ADJ.map((row) => new Set(row));
 
   function isAdjacent(a, b) {
-    return a !== b && ADJ_SET[a].has(b);
-  }
-
-  /** The mu = 4 internally disjoint two-hop relays between non-adjacent points. */
-  function commonNeighbours(a, b) {
-    return ADJ[a].filter((x) => ADJ_SET[b].has(x));
+    return Number.isInteger(a) && Number.isInteger(b) &&
+      a >= 0 && a < POINTS.length && b >= 0 && b < POINTS.length &&
+      a !== b && symplecticForm(POINTS[a].vec, POINTS[b].vec) === 0;
   }
 
   /**
-   * Route inside one cell. Address is route: no table is consulted.
-   * Returns the hop list and every equal-cost alternative.
+   * The mu = 4 internally disjoint two-hop relays between non-adjacent
+   * points. This bounded scan is derived from the address predicate; it
+   * does not consult an externally maintained route table.
+   */
+  function commonNeighbours(a, b) {
+    return POINTS
+      .map((p) => p.index)
+      .filter((x) => x !== a && x !== b && isAdjacent(a, x) && isAdjacent(x, b));
+  }
+
+  /**
+   * Route inside one cell. Direct edges and candidate relays are
+   * derived from coordinates. Returns one hop list and every equal-cost
+   * alternative; congestion, link health and physical forwarding are
+   * deliberately outside this combinatorial routine.
    */
   function route(a, b) {
     if (a === b) return { hops: [a], distance: 0, alternates: [] };
@@ -162,6 +171,43 @@
 
   const LINES = buildLines();
 
+  // An explicit balanced cut attaining the spectral lower bound 100.
+  // The indices refer to POINTS in the canonical enumeration above.
+  // GAP independently checked the 20|20 balance and all crossing edges.
+  const BISECTION_LEFT = Object.freeze([
+    2, 4, 5, 7, 8, 9, 11, 12, 16, 17,
+    19, 21, 23, 24, 28, 29, 32, 35, 38, 39,
+  ]);
+
+  function cutSize(left = BISECTION_LEFT) {
+    const side = new Set(left);
+    if (side.size !== left.length || [...side].some((p) => !Number.isInteger(p) || p < 0 || p >= 40)) {
+      throw new RangeError("cut must contain unique W(3,3) point indices");
+    }
+    let crossing = 0;
+    for (let i = 0; i < POINTS.length; i++) {
+      for (let j = i + 1; j < POINTS.length; j++) {
+        if (isAdjacent(i, j) && side.has(i) !== side.has(j)) crossing++;
+      }
+    }
+    return crossing;
+  }
+
+  function bisectionCertificate() {
+    const left = [...BISECTION_LEFT];
+    const right = POINTS.map((p) => p.index).filter((p) => !BISECTION_LEFT.includes(p));
+    const lowerBound = (CONST.points / 4) * (CONST.degree - CONST.lambda2);
+    return {
+      left,
+      right,
+      leftKeys: left.map((p) => POINTS[p].key),
+      rightKeys: right.map((p) => POINTS[p].key),
+      crossingEdges: cutSize(left),
+      spectralLowerBound: lowerBound,
+      exact: cutSize(left) === lowerBound,
+    };
+  }
+
   // ---- fractal addressing: H_n --------------------------------------
   //
   // A level-n address is n digits in base 40. Level 1 is one rack of 40.
@@ -178,14 +224,30 @@
   }
 
   function diameterAtLevel(n) {
-    return CONST.hopsPerDigit * n;
+    const depth = Math.max(1, Math.trunc(Number(n) || 1));
+    // Two moves at the first divergent cell, then (n-1) descents on
+    // each side at eight moves apiece: 2 + 2*8*(n-1).
+    return CONST.cellDiameter + 2 * CONST.hopsPerDigit * (depth - 1);
   }
 
   function parseAddress(str) {
-    return String(str)
-      .split(".")
-      .map((d) => parseInt(d, 10))
-      .filter((d) => Number.isFinite(d) && d >= 0 && d < 40);
+    if (Array.isArray(str)) {
+      if (!str.every((d) => Number.isInteger(d) && d >= 0 && d < 40)) {
+        throw new RangeError("address digits must be integers in [0,39]");
+      }
+      return [...str];
+    }
+    const text = String(str).trim();
+    if (!text) return [];
+    const raw = text.split(".");
+    if (!raw.every((d) => /^\d+$/.test(d))) {
+      throw new TypeError("address must be dot-separated decimal digits");
+    }
+    const digits = raw.map(Number);
+    if (!digits.every((d) => Number.isInteger(d) && d >= 0 && d < 40)) {
+      throw new RangeError("address digits must be integers in [0,39]");
+    }
+    return digits;
   }
 
   function formatAddress(digits) {
@@ -270,11 +332,10 @@
 
   // ---- the magic dial -------------------------------------------------
   //
-  // The Clifford layer is the stabilizer formalism: polynomial time on
-  // any classical machine (Gottesman-Knill). That is routing, memory,
-  // fault tolerance -- everything structural, and it is FREE.
-  // Quantum advantage is the priced dial: each non-Clifford (cubic E6)
-  // gate multiplies the classical emulation cost by R^2 = 9.
+  // The prototype exposes 9^t as an illustrative declared-workload
+  // multiplier. Stabilizer circuits are classically simulable, but that
+  // theorem does not make routing, memory or fault tolerance free, nor
+  // does it make 9^t a universal runtime law.
 
   function magicMultiplier(t) {
     return Math.pow(CONST.magicRobustness * CONST.magicRobustness, Math.max(0, t || 0));
@@ -302,23 +363,21 @@
   }
 
   /**
-   * How many orders of magnitude above the thermodynamic floor a node
-   * actually runs. Today's accelerators sit 6-7 orders up. This is the
-   * single most honest efficiency number a datacentre can publish,
-   * because the denominator is a law rather than a vendor benchmark.
+   * Ratio to the modeled syndrome-cycle floor. The numerator is valid
+   * only when it measures the SAME functional cycle. A vendor's J/op
+   * cannot be compared to J/syndrome-cycle without a workload mapping.
    */
-  function thermodynamicDecades(joulesPerOp, kelvin) {
+  function thermodynamicDecades(joulesPerFunctionalCycle, kelvin) {
     const floor = landauerFloorPerCycle(kelvin || 300);
-    if (!(joulesPerOp > 0)) return 0;
-    return Math.log10(joulesPerOp / floor);
+    if (!(joulesPerFunctionalCycle > 0)) return 0;
+    return Math.log10(joulesPerFunctionalCycle / floor);
   }
 
   // ---- receipts / attestation ----------------------------------------
   //
-  // Contextuality is tamper-evidence: a KS budget of 36/40 means any
-  // intervention that classicalises the statistics MOVES AN INTEGER.
-  // A receipt carries the measured contextual fraction; 0.10 is clean,
-  // 0 means the channel was classicalised somewhere.
+  // A model-only classifier for synthetic contextual-fraction samples.
+  // It is not an attestation primitive and must not be presented as
+  // evidence that a workload or channel was untampered.
 
   function attestationVerdict(measuredFraction) {
     const target = CONST.contextualFraction;
@@ -358,11 +417,14 @@
     POINT_INDEX,
     LINES,
     ADJ,
+    BISECTION_LEFT,
     mod3,
     symplecticForm,
     isAdjacent,
     commonNeighbours,
     route,
+    cutSize,
+    bisectionCertificate,
     levelFor,
     capacityAtLevel,
     diameterAtLevel,

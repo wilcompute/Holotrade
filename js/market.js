@@ -1,8 +1,9 @@
 // ======================================================================
 // HOLOTRADE MARKET
 //
-// The exchange itself: an order book per instrument, a matching engine,
-// a settlement ledger, and the attested receipt that closes every fill.
+// A prototype order book and matching simulation. Spot capacity is the
+// executable path; forward, option, lease and supply tabs are labelled
+// design sketches until their delivery state machines exist.
 //
 // ---------------------------------------------------------------------
 // WHY NOT JUST "RENT A VM"
@@ -24,12 +25,10 @@
 // ---------------------------------------------------------------------
 // SETTLEMENT
 //
-// Every fill closes with a receipt. The receipt carries the measured
-// contextual fraction of the channel it ran on -- 0.10 is the substrate
-// target, and any intervention that classicalises the channel MOVES AN
-// INTEGER rather than shifting a probability. So tampering is detectable
-// in principle rather than statistically. Classical fills carry an
-// attestation of the Clifford trace instead; the receipt says which.
+// Every simulated fill closes with a quote receipt binding the displayed
+// terms and node provenance. It is deliberately marked SYNTHETIC: only
+// the execution engine can later emit a delivery receipt, and neither is
+// a remote-attestation implementation yet.
 // ======================================================================
 
 (function (root) {
@@ -37,7 +36,84 @@
 
   const S = root.Substrate || (typeof require !== "undefined" ? require("./substrate.js") : null);
 
+  /**
+   * Non-mutating execution preview for the ask side of a book.
+   *
+   * Quotes are hourly-equivalent rates and qty is a capacity-lot count.
+   * The caller decides the lot duration; this function only answers the
+   * market-microstructure question: how much fills, at what VWAP, and how
+   * many price levels are consumed?
+   */
+  function sweepAsks(asks, requestedQty, limitPrice = Infinity) {
+    const requested = Number(requestedQty);
+    if (!Number.isFinite(requested) || requested <= 0) {
+      return {
+        requested: 0, filled: 0, remaining: 0, cost: 0, average: 0,
+        worst: 0, best: 0, levelsTouched: 0, complete: true, slippageBps: 0,
+      };
+    }
+
+    const rows = (asks || [])
+      .filter((row) => Number.isFinite(row.price) && row.price >= 0 && Number.isFinite(row.qty) && row.qty > 0)
+      .slice()
+      .sort((a, b) => a.price - b.price);
+    const cap = Number.isFinite(Number(limitPrice)) ? Number(limitPrice) : Infinity;
+    let remaining = requested;
+    let cost = 0;
+    let worst = 0;
+    let levelsTouched = 0;
+    const best = rows.length ? rows[0].price : 0;
+
+    for (const row of rows) {
+      if (remaining <= 0 || row.price > cap) break;
+      const take = Math.min(remaining, row.qty);
+      if (take <= 0) continue;
+      cost += take * row.price;
+      worst = row.price;
+      remaining -= take;
+      levelsTouched++;
+    }
+
+    const filled = requested - remaining;
+    const average = filled > 0 ? cost / filled : 0;
+    return {
+      requested,
+      filled,
+      remaining,
+      cost,
+      average,
+      worst,
+      best,
+      levelsTouched,
+      complete: remaining <= 1e-12,
+      slippageBps: filled > 0 && best > 0 ? (average / best - 1) * 10000 : 0,
+    };
+  }
+
+  /**
+   * Pareto frontier for a typed compute menu: minimise hourly-equivalent
+   * price while maximising delivered throughput. Equal-price ties keep only
+   * the fastest point, so no returned point is dominated by another return.
+   */
+  function paretoFrontier(points) {
+    const rows = (points || [])
+      .filter((p) => Number.isFinite(p.price) && p.price >= 0 && Number.isFinite(p.tflops) && p.tflops > 0)
+      .slice()
+      .sort((a, b) => a.price - b.price || b.tflops - a.tflops);
+    const out = [];
+    let bestThroughput = -Infinity;
+    for (const point of rows) {
+      if (point.tflops > bestThroughput) {
+        out.push(point);
+        bestThroughput = point.tflops;
+      }
+    }
+    return out;
+  }
+
   let ORDER_SEQ = 1;
+  let TRADE_SEQ = 1;
+  let POSITION_SEQ = 1;
 
   class Order {
     constructor(spec) {
@@ -107,7 +183,11 @@
         const q = this.pricing.quote(node, { workloadId, anchorAddress });
         if (!q.serviceable || q.price == null) continue;
         let price = q.price;
-        let qty = Math.max(1, Math.round((1 - node.utilisation) * 8));
+        // One spot lot represents one eighth of the node's hourly capacity.
+        // A saturated node must disappear from the ask side; Math.max(1, ...)
+        // would otherwise let it sell an unlimited sequence of phantom lots.
+        let qty = Math.max(0, Math.floor((1 - node.utilisation + 1e-12) * 8));
+        if (qty === 0) continue;
 
         if (instrumentId === "forward") {
           const f = this.pricing.forwardPrice(node, opts.days || 30, workloadId);
@@ -172,7 +252,7 @@
       }
       // keep the user's own live bids in the book
       const mine = this.userOrders.filter(
-        (o) => o.instrument === instrumentId && o.side === "bid" && o.status === "open"
+        (o) => o.instrument === instrumentId && o.side === "bid" && (o.status === "open" || o.status === "partial")
       ).map((o) => ({
         id: o.id, side: "bid", price: o.limitPrice, qty: o.remaining,
         instrument: instrumentId, maker: "YOU", mine: true, order: o,
@@ -212,6 +292,11 @@
         });
       };
       return { bids: acc("bid", b.bids), asks: acc("ask", b.asks) };
+    }
+
+    /** Preview a buy without mutating the book, cash, positions, or fleet. */
+    previewBuy(instrumentId = "spot", qty = 1, limitPrice = Infinity) {
+      return sweepAsks(this.book(instrumentId).asks, qty, limitPrice);
     }
 
     // ------------------------------------------------------------------
@@ -275,7 +360,7 @@
     recordFill(order, ask, qty, cost) {
       const node = ask.node;
       const trade = {
-        id: `T${String(this.trades.length + 1).padStart(6, "0")}`,
+        id: `T${String(TRADE_SEQ++).padStart(6, "0")}`,
         ts: Date.now(),
         instrument: order.instrument,
         nodeId: ask.nodeId,
@@ -304,7 +389,7 @@
         existing.qty = totalQty;
       } else {
         this.positions.push({
-          id: `P${this.positions.length + 1}`,
+          id: `P${String(POSITION_SEQ++).padStart(6, "0")}`,
           nodeId: trade.nodeId,
           node,
           instrument: trade.instrument,
@@ -318,7 +403,7 @@
 
       // put the bought capacity to work
       if (node && order.instrument === "spot") {
-        node.utilisation = Math.min(1, node.utilisation + qty * 0.04);
+        node.utilisation = Math.min(1, node.utilisation + qty * 0.125);
         node.currentWorkload = order.workloadId;
       }
 
@@ -326,9 +411,7 @@
       return trade;
     }
 
-    /**
-     * Sell / close a position at the current bid.
-     */
+    /** Sell/close a position by walking displayed external bid depth. */
     submitSell({ positionId, qty = null }) {
       const pos = this.positions.find((p) => p.id === positionId);
       if (!pos) return { ok: false, reason: "no such position" };
@@ -337,36 +420,47 @@
       this.rebuildBids(pos.instrument);
       const bids = this.book(pos.instrument).bids.filter((b) => !b.mine);
       if (!bids.length) return { ok: false, reason: "no bid" };
-      const price = bids[0].price;
-      const proceeds = price * size;
-      this.cash += proceeds;
-      const pnl = (price - pos.avgPrice) * size;
-      this.realised += pnl;
-      pos.qty -= size;
-      if (pos.qty <= 0) this.positions = this.positions.filter((p) => p.id !== positionId);
-
-      const trade = {
-        id: `T${String(this.trades.length + 1).padStart(6, "0")}`,
-        ts: Date.now(),
-        instrument: pos.instrument,
-        nodeId: pos.nodeId,
-        nodeAddress: pos.node ? pos.node.address : "-",
-        hardware: pos.node ? pos.node.hardware.class : "-",
-        dcId: pos.node ? pos.node.dcId : "-",
-        qty: size,
-        price,
-        cost: -proceeds,
-        workloadId: pos.workloadId,
-        side: "sell",
-        maker: bids[0].maker,
-        pnl,
-      };
-      this.trades.unshift(trade);
-      if (this.trades.length > this.maxTrades) this.trades.pop();
-      if (pos.node && pos.instrument === "spot") {
-        pos.node.utilisation = Math.max(0, pos.node.utilisation - size * 0.04);
+      let remaining = size;
+      let proceeds = 0;
+      let pnl = 0;
+      const fills = [];
+      for (const bid of bids) {
+        if (remaining <= 0) break;
+        const take = Math.min(remaining, Math.max(0, bid.qty || 0));
+        if (take <= 0) continue;
+        const fillProceeds = bid.price * take;
+        const fillPnl = (bid.price - pos.avgPrice) * take;
+        const fill = {
+          id: `T${String(TRADE_SEQ++).padStart(6, "0")}`,
+          ts: Date.now(), instrument: pos.instrument, nodeId: pos.nodeId,
+          nodeAddress: pos.node ? pos.node.address : "-",
+          hardware: pos.node ? pos.node.hardware.class : "-",
+          dcId: pos.node ? pos.node.dcId : "-", qty: take, price: bid.price,
+          cost: -fillProceeds, workloadId: pos.workloadId, side: "sell",
+          maker: bid.maker, pnl: fillPnl,
+        };
+        fills.push(fill);
+        this.trades.unshift(fill);
+        bid.qty -= take;
+        proceeds += fillProceeds;
+        pnl += fillPnl;
+        remaining -= take;
       }
-      return { ok: true, trade, pnl };
+      if (!fills.length) return { ok: false, reason: "no displayed bid depth" };
+      while (this.trades.length > this.maxTrades) this.trades.pop();
+      const sold = size - remaining;
+      this.cash += proceeds;
+      this.realised += pnl;
+      pos.qty -= sold;
+      if (pos.qty <= 1e-12) this.positions = this.positions.filter((p) => p.id !== positionId);
+      if (pos.node && pos.instrument === "spot") {
+        pos.node.utilisation = Math.max(0, pos.node.utilisation - sold * 0.125);
+      }
+      const trade = {
+        ...fills[0], id: fills.length === 1 ? fills[0].id : `SWEEP-${fills[0].id}`,
+        qty: sold, price: proceeds / sold, cost: -proceeds, pnl,
+      };
+      return { ok: true, trade, fills, pnl, unfilledQty: remaining };
     }
 
     cancel(orderId) {
@@ -378,28 +472,44 @@
     }
 
     // ------------------------------------------------------------------
-    // Receipts and attestation
+    // Synthetic quote receipts
     // ------------------------------------------------------------------
 
     /**
-     * Every fill emits a receipt. Photonic (magic-capable) nodes carry a
-     * measured contextual fraction; the substrate target is 1/10 and a
-     * channel that has been classicalised reads near zero. Classical
-     * nodes attest their Clifford trace instead -- a stabilizer tableau
-     * digest, which is checkable in polynomial time by anyone.
+     * Every fill emits a synthetic quote receipt for demo provenance.
+     * No workload has run at fill time, so this routine cannot honestly
+     * claim contextual measurement, Clifford verification, or delivery.
      */
     issueReceipt(trade, node) {
       const photonic = node && node.hardware.magicCapable;
       const measured = photonic
         ? S.CONST.contextualFraction + (this.rand() - 0.5) * 0.016
         : 0;
-      const verdict = photonic
-        ? S.attestationVerdict(measured)
-        : { ok: true, label: "CLIFFORD", detail: "stabilizer trace verified in poly time" };
+      const verdict = {
+        ok: null,
+        label: "SYNTHETIC_SAMPLE",
+        detail: "model-generated quote sample; not execution evidence",
+      };
 
-      const digest = S.hash32(
-        `${trade.id}|${trade.nodeId}|${trade.price.toFixed(6)}|${trade.qty}|${trade.ts}`
-      ).toString(16).padStart(8, "0");
+      const receiptBody = JSON.stringify({
+        tradeId: trade.id,
+        nodeId: trade.nodeId,
+        instrument: trade.instrument,
+        workloadId: trade.workloadId,
+        price: trade.price,
+        qty: trade.qty,
+        ts: trade.ts,
+        lane: photonic ? "substrate" : "clifford",
+        contextualFraction: measured,
+        verdict: verdict.label,
+        provenance: node ? {
+          generation: node.lineage.generation,
+          forkedFrom: node.lineage.forkedFrom,
+          jobsCompleted: node.jobsCompleted,
+          fitness: this.fleet.fitness(node),
+        } : null,
+      });
+      const digest = S.hash32(receiptBody).toString(16).padStart(8, "0");
 
       const receipt = {
         id: `R-${digest}`,
@@ -415,6 +525,7 @@
         contextualFraction: measured,
         verdict: verdict.label,
         verdictOk: verdict.ok,
+        evidenceMode: "SIMULATED_QUOTE_RECEIPT",
         detail: verdict.detail,
         // provenance: the orbit history of the capacity you bought
         provenance: node ? {
@@ -512,9 +623,10 @@
       const idx = Math.floor(Math.pow(this.rand(), 2) * Math.min(asks.length, 30));
       const ask = asks[idx];
       if (!ask) return null;
-      const qty = 1 + Math.floor(this.rand() * 6);
+      const qty = Math.min(ask.qty, 1 + Math.floor(this.rand() * 6));
+      if (qty <= 0) return null;
       const trade = {
-        id: `T${String(this.trades.length + 1).padStart(6, "0")}`,
+        id: `T${String(TRADE_SEQ++).padStart(6, "0")}`,
         ts: Date.now(),
         instrument: instrumentId,
         nodeId: ask.nodeId,
@@ -532,7 +644,8 @@
       this.trades.unshift(trade);
       if (this.trades.length > this.maxTrades) this.trades.pop();
       if (ask.node) {
-        ask.node.utilisation = Math.min(1, Math.max(0, ask.node.utilisation + (trade.side === "buy" ? 0.012 : -0.01) * qty));
+        ask.node.utilisation = Math.min(1, Math.max(0,
+          ask.node.utilisation + (trade.side === "buy" ? 0.125 : -0.125) * qty));
       }
       return trade;
     }
@@ -547,7 +660,7 @@
     }
   }
 
-  const API = { Market, Order };
+  const API = { Market, Order, sweepAsks, paretoFrontier };
   root.Market = Market;
   root.HolotradeMarket = API;
   if (typeof module !== "undefined" && module.exports) module.exports = API;

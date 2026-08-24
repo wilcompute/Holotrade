@@ -7,30 +7,29 @@
 // ---------------------------------------------------------------------
 // It is not a VM node.
 //
-// Selling "a VM node for an hour" is the obvious design and it is the
-// wrong one, for three reasons that are all measurable:
+// Selling only "a VM node for an hour" hides useful execution detail.
+// This module explores three reasons to expose a finer contract:
 //
 //   1. The hour is a billing artefact, not a physical one. It exists
 //      because provisioning a conventional VM takes minutes, so an
 //      hour is the smallest slice worth the scheduling overhead.
-//      A microVM boots in ~171 ms (p50; p99 178 ms, measured on
-//      Firecracker over rotational storage -- a deliberately
-//      pessimistic baseline). Once the unit boots in under a fifth of
-//      a second, the hour has no physical justification left, and
-//      per-second settlement becomes not just possible but correct.
+//      The simulator uses 171.5 ms as a declared cold-start assumption.
+//      Firecracker benchmarks are hardware- and guest-dependent. The
+//      boot charge is itemised, so the demo does not hide it inside an
+//      hourly rate.
 //
 //   2. An hour cannot express the thing that actually varies. Grid
 //      prices move every five minutes and go negative at 3 a.m. on
 //      ERCOT. If your settlement granularity is an hour you have
 //      thrown away the signal before you can price it. Per-second
 //      energy pricing -- the core idea this exchange is built around --
-//      REQUIRES a sub-second execution unit or it is theatre.
+//      benefits from a settlement unit finer than the quote horizon.
 //
-//   3. "A node for an hour" is not auditable. You cannot prove what
-//      ran on it, against which artefacts, with which grants. A signed
-//      execution plan can: it names the artefact digests, the network
-//      grants, the secret references, and the validity window BEFORE
-//      anything boots, and the audit log chains every event to the last.
+//   3. "A node for an hour" does not specify execution intent. A plan
+//      can name artefact digests, network grants, secret references and
+//      a validity window before boot. This prototype uses a deterministic
+//      integrity seal to exercise those semantics; it is NOT a digital
+//      signature or remote-attestation implementation.
 //
 // ---------------------------------------------------------------------
 // So Holotrade's atomic tradeable unit is the NODE-SECOND, and its
@@ -38,35 +37,29 @@
 //
 //     asset     the node        -- durable, has a genome and a health
 //                                  record, is what you lease or own
-//     contract  the plan        -- signed, content-addressed, scoped,
+//     contract  the plan        -- integrity-sealed, scoped,
 //                                  time-boxed, tradeable before it runs
-//     unit      the node-second -- what settles, metered against real
-//                                  energy at the second it was drawn
+//     unit      the node-second -- what settles against the seeded
+//                                  energy and node model
 //
-// A plan is a smart asset in the exact sense the substrate papers use:
-// content-addressed identity, a projection that assembles capabilities
-// into a container, and an emission that produces output plus a
-// verifiable receipt. Projection -> Execution -> Emission. It is
-// tradeable BEFORE it executes, which is what makes forwards and
-// options on compute meaningful rather than notional.
+// A plan is a prototype contract object with a declared artifact digest,
+// explicit grants and a metered receipt. Forward/option semantics are a
+// design direction; this module does not implement those state machines.
 //
 // ---------------------------------------------------------------------
 // ISOLATION AND DENSITY
 //
-// Each plan runs in its own microVM: a real kernel under a real
-// hypervisor, not a shared-kernel container. Deny-all-by-default
-// networking, a single vsock channel out, a sealed immutable rootfs.
-// That is what makes it safe to run a stranger's job on your node --
-// which is the precondition for a two-sided market existing at all.
-// Without it, "sell your idle nodes" is a request to be compromised.
+// The browser simulates one isolated-microVM lifecycle per plan. A real
+// deployment would still need a hypervisor, measured boot, immutable
+// rootfs, deny-by-default networking, attestation and host hardening.
 //
 // Density comes from nested state: a uniform root over six levels
-// denotes ~4.2 billion addressable stateful VMs using seven unique
+// denotes ~4.2 billion address labels using seven unique model blobs,
 // state blobs, because untouched siblings keep their digests and a
 // content-identical replay reuses every key. Copy-on-write over a
 // content-addressed store, with mailbox delivery costing seven path
 // blobs plus one receipt. That is a structural upper bound from the
-// reference runtime, not a throughput measurement.
+// state grammar, not a built runtime or throughput measurement.
 // ======================================================================
 
 (function (root) {
@@ -74,12 +67,13 @@
 
   const S = root.Substrate || (typeof require !== "undefined" ? require("./substrate.js") : null);
 
-  // Measured microVM boot distribution (Firecracker, pessimistic disk).
-  // Used to price cold starts and to bound settlement granularity.
+  // Declared simulator boot distribution. This is not a measurement of
+  // the current host or a portable Firecracker benchmark.
   const BOOT_MS = { p50: 171.5, p95: 176.0, p99: 178.0, target: 150 };
 
-  // Settlement granularity. One second, because the boot cost is two
-  // orders below it -- so a one-second slice is >99% useful work.
+  // Settlement granularity. A 171.5 ms fresh boot is 17.15% of a
+  // one-second allocation, which is why cold start is itemised rather
+  // than hidden. It falls below 1% of runtime after 17.15 seconds.
   const SETTLE_SECONDS = 1;
 
   let PLAN_SEQ = 1;
@@ -102,7 +96,8 @@
       this.name = spec.name || "unnamed plan";
       this.owner = spec.owner || "YOU";
 
-      // content-addressed artefacts: pinned by digest, re-verified at boot
+      // Declared artifact references. The prototype binds these strings
+      // into the plan; it does not fetch or hash artifact bytes.
       this.artifacts = spec.artifacts || [];
 
       // deny-all by default; every grant is explicit and narrow
@@ -125,6 +120,11 @@
       this.anchorAddress = spec.anchorAddress || null;
       this.magicBudget = spec.magicBudget || 0;
 
+      // Security status is explicit. `signature` below is only a stable
+      // prototype integrity seal; production needs a canonical encoding,
+      // a real signing key, and a standard signature such as Ed25519.
+      this.securityMode = "DEMO_INTEGRITY_SEAL";
+
       this.status = "signed";   // signed | scheduled | running | settled | expired | rejected
       this.digest = this.computeDigest();
       this.signature = this.sign();
@@ -137,13 +137,18 @@
      */
     computeDigest() {
       const preimage = JSON.stringify({
+        id: this.id,
+        owner: this.owner,
         w: this.workloadId,
         a: this.artifacts.map((x) => x.digest).sort(),
         g: this.grants,
         vf: this.validFrom,
         vu: this.validUntil,
+        nonce: this.nonce,
         s: this.requestedSeconds,
         n: this.nodeCount,
+        max: this.maxPricePerNodeSecond,
+        anchor: this.anchorAddress,
         t: this.magicBudget,
       });
       return S.hash32(preimage).toString(16).padStart(8, "0") +
@@ -154,7 +159,7 @@
       return `sig:${S.hash32(this.digest + this.owner).toString(16).padStart(8, "0")}`;
     }
 
-    /** Verify nothing has been edited since signature. */
+    /** Verify nothing covered by the prototype integrity seal was edited. */
     verify() {
       return this.digest === this.computeDigest() &&
              this.signature === `sig:${S.hash32(this.digest + this.owner).toString(16).padStart(8, "0")}`;
@@ -173,10 +178,10 @@
      *   1. signature envelope matches the content
      *   2. nonce has not been seen (replay)
      *   3. inside the validity window
-     *   4. no pin drift -- every artefact digest still resolves to the
-     *      bytes it was pinned to at signing time
-     *   5. the node can physically serve it: magic budget t > 0 needs
-     *      magic-capable hardware, always, with no substitution
+     *   4. no declared pin drift -- when the caller supplies an observed
+     *      digest, it must match the declared digest
+     *   5. the node declares the required capability: magic budget t > 0
+     *      needs a magic-capable catalogue class, with no substitution
      */
     admissible(node, ts = Date.now(), replayStore = null) {
       if (!this.verify()) return { ok: false, code: "BAD_SIGNATURE", reason: "signature does not match content" };
@@ -192,10 +197,9 @@
     }
 
     /**
-     * Pin-drift check. Artefacts are content-addressed and re-verified
-     * at admission, not only at fetch -- a mutable tag that moved
-     * between signing and boot is exactly the supply-chain hole this
-     * closes. Returns the name of the first drifted artefact, or null.
+     * Prototype pin-drift hook. This compares declared and caller-supplied
+     * observed digest strings; no artifact is fetched or hashed here.
+     * Returns the name of the first mismatch, or null.
      */
     pinDrift() {
       for (const a of this.artifacts) {
@@ -245,7 +249,7 @@
 
       this.plans = [];
       this.vms = [];
-      this.auditLog = [];        // chain-signed, newest first
+      this.auditLog = [];        // checksum-chained, newest first
       this.maxAudit = 400;
       this.lastChainHash = "0".repeat(8);
       this.replayStore = new Set();   // nonces already admitted
@@ -257,28 +261,36 @@
     // -- audit chain ---------------------------------------------------
 
     /**
-     * Chain-signed, tamper-evident log. Each entry commits to the
-     * previous entry's hash, so removing or editing any entry breaks
-     * every entry after it. Cheap, standard, and the reason a receipt
-     * from this exchange means something.
+     * Checksum-chained demo log. Each entry commits to its complete body
+     * and the previous entry. This detects accidental/tampered edits in
+     * the running prototype, but hash32 is not collision resistant and
+     * this is not an externally anchored production audit log.
      */
     append(kind, detail, refs = {}) {
       const prev = this.lastChainHash;
-      const body = JSON.stringify({ kind, detail, refs, ts: Date.now() });
+      const ts = Date.now();
+      const seq = this.auditLog.length + 1;
+      const body = JSON.stringify({ seq, kind, detail, refs, ts });
       const hash = S.hash32(prev + body).toString(16).padStart(8, "0");
-      const entry = { seq: this.auditLog.length + 1, ts: Date.now(), kind, detail, refs, prev, hash };
+      const entry = { seq, ts, kind, detail, refs, prev, hash };
       this.lastChainHash = hash;
       this.auditLog.unshift(entry);
       if (this.auditLog.length > this.maxAudit) this.auditLog.pop();
       return entry;
     }
 
-    /** Walk the chain and confirm nothing has been altered. */
+    /** Walk the chain, recompute every body checksum, and verify links. */
     verifyChain() {
       const ordered = [...this.auditLog].reverse();
-      for (let i = 1; i < ordered.length; i++) {
-        if (ordered[i].prev !== ordered[i - 1].hash) {
-          return { ok: false, brokenAt: ordered[i].seq };
+      for (let i = 0; i < ordered.length; i++) {
+        const entry = ordered[i];
+        const expectedPrev = i === 0 ? entry.prev : ordered[i - 1].hash;
+        const body = JSON.stringify({
+          seq: entry.seq, kind: entry.kind, detail: entry.detail, refs: entry.refs, ts: entry.ts,
+        });
+        const expectedHash = S.hash32(entry.prev + body).toString(16).padStart(8, "0");
+        if (entry.prev !== expectedPrev || entry.hash !== expectedHash) {
+          return { ok: false, brokenAt: entry.seq };
         }
       }
       return { ok: true, length: ordered.length };
@@ -319,7 +331,7 @@
         if (!q.serviceable || q.price == null) continue;
 
         const perSecond = q.price / 3600;
-        const boot = this.bootCostFor(node, q);
+        const boot = this.bootCostFor(node, q, plan.digest);
         const total = perSecond * plan.requestedSeconds * plan.nodeCount + boot.cost * plan.nodeCount;
 
         if (plan.maxPricePerNodeSecond != null && perSecond > plan.maxPricePerNodeSecond) continue;
@@ -339,9 +351,9 @@
     }
 
     /**
-     * Cold-start cost. Boot is real work: the kernel comes up, the
-     * sealed rootfs is verity-checked, the artefact digests are
-     * re-verified. It draws power and it occupies the node.
+     * Declared cold-start cost model. A production implementation would
+     * boot a kernel, verify a rootfs and rehash artifacts; this browser
+     * charges modeled time and energy for those assumed operations.
      *
      * At 171 ms against a one-second settlement slice that is a 17%
      * overhead on a single second and 0.005% on an hour -- so the
@@ -349,13 +361,15 @@
      * into the rate. A buyer running many short plans can SEE what
      * their fan-out costs them.
      */
-    bootCostFor(node, quote) {
-      const jitter = 1 + (this.rand() - 0.5) * 0.06;
+    bootCostFor(node, quote, placementKey = "preview") {
+      // Deterministic for a plan/node pair so preview and launch cannot
+      // disagree during a demo merely because jitter was sampled twice.
+      const sample = S.rng(`${placementKey}|${node.id}|boot`)();
+      const jitter = 1 + (sample - 0.5) * 0.06;
       const ms = (node.hardware.kind === "photonic" ? BOOT_MS.p50 * 0.55 : BOOT_MS.p50) * jitter;
       const seconds = ms / 1000;
       const perSecond = quote.price / 3600;
-      // verity + artefact re-verification is CPU-bound, so it runs the
-      // node near peak for its duration
+      // The model assumes validation work runs the node near peak.
       return {
         ms,
         seconds,
@@ -372,6 +386,17 @@
      * a reason.
      */
     launch(plan, node) {
+      // The current runtime starts exactly one VM on exactly one node.
+      // Reject a gang request instead of billing nodeCount copies of a
+      // single VM and calling that a multi-node launch.
+      if (plan.nodeCount !== 1) {
+        plan.status = "rejected";
+        const reason = "multi-node gang placement is not implemented";
+        this.append("plan.failed", `UNSUPPORTED_NODE_COUNT: ${reason}`, {
+          planId: plan.id, nodeId: node.id, requestedNodes: plan.nodeCount,
+        });
+        return { ok: false, reason, code: "UNSUPPORTED_NODE_COUNT" };
+      }
       const adm = plan.admissible(node, Date.now(), this.replayStore);
       if (!adm.ok) {
         plan.status = "rejected";
@@ -380,17 +405,31 @@
         });
         return { ok: false, reason: adm.reason, code: adm.code };
       }
-      this.replayStore.add(plan.nonce);
-      this.append("plan.admitted", `${plan.name} -> ${node.id}`, {
-        planId: plan.id, nodeId: node.id, digest: plan.digest, nonce: plan.nonce,
-      });
       const q = this.pricing.quote(node, {
         workloadId: plan.workloadId,
         anchorAddress: plan.anchorAddress,
       });
-      const boot = this.bootCostFor(node, q);
+      if (!q.serviceable || q.price == null) {
+        const reason = "node is no longer serviceable at launch";
+        plan.status = "rejected";
+        this.append("plan.failed", `UNSERVICEABLE: ${reason}`, { planId: plan.id, nodeId: node.id });
+        return { ok: false, reason, code: "UNSERVICEABLE" };
+      }
+      const livePerSecond = q.price / 3600;
+      if (plan.maxPricePerNodeSecond != null && livePerSecond > plan.maxPricePerNodeSecond) {
+        const reason = `live rate ${livePerSecond.toFixed(8)} exceeded cap ${plan.maxPricePerNodeSecond.toFixed(8)}`;
+        plan.status = "rejected";
+        this.append("plan.failed", `PRICE_CAP: ${reason}`, { planId: plan.id, nodeId: node.id });
+        return { ok: false, reason, code: "PRICE_CAP" };
+      }
+      this.replayStore.add(plan.nonce);
+      this.append("plan.admitted", `${plan.name} -> ${node.id}`, {
+        planId: plan.id, nodeId: node.id, digest: plan.digest, nonce: plan.nonce,
+      });
+      const boot = this.bootCostFor(node, q, plan.digest);
       const vm = new MicroVM(plan, node, boot.ms);
       vm.cost += boot.cost;
+      this.meteredSpend += boot.cost;
       vm.state = "running";
       this.vms.unshift(vm);
       plan.status = "running";
@@ -407,13 +446,11 @@
     }
 
     /**
-     * Meter every running VM for dt seconds of wall clock.
+     * Integrate every simulated run for dt seconds.
      *
-     * This is the per-second billing loop and it is the point of the
-     * whole design: the price applied to each second is the price that
-     * second actually cost, at that datacentre, at that grid price,
-     * on that node's current health and utilisation. Not an average.
-     * Not an hourly rate divided by 3600.
+     * Each integration interval uses the current modeled quote at that
+     * site and node. The hourly-equivalent comparison rate is converted
+     * to the delivered node-second unit for settlement.
      */
     meter(dtSeconds = 1) {
       const settled = [];
@@ -427,19 +464,38 @@
           workloadId: plan.workloadId,
           anchorAddress: plan.anchorAddress,
         });
-        if (!q.serviceable || q.price == null) continue;
+        if (!q.serviceable || q.price == null) {
+          settled.push(this.settle(vm, plan, node, {
+            status: "service_halt",
+            reason: "node became unserviceable during delivery",
+          }));
+          continue;
+        }
 
         const perSecond = q.price / 3600;
-        const slice = perSecond * dtSeconds * plan.nodeCount;
+        if (plan.maxPricePerNodeSecond != null && perSecond > plan.maxPricePerNodeSecond) {
+          settled.push(this.settle(vm, plan, node, {
+            status: "price_cap_halt",
+            reason: `live rate ${perSecond.toFixed(8)} exceeded cap ${plan.maxPricePerNodeSecond.toFixed(8)}`,
+          }));
+          continue;
+        }
+        const remaining = Math.max(0, plan.requestedSeconds - vm.secondsRun);
+        const deliveredSeconds = Math.min(Math.max(0, Number(dtSeconds) || 0), remaining);
+        if (deliveredSeconds <= 0) {
+          settled.push(this.settle(vm, plan, node));
+          continue;
+        }
+        const slice = perSecond * deliveredSeconds * plan.nodeCount;
         vm.cost += slice;
-        vm.secondsRun += dtSeconds;
+        vm.secondsRun += deliveredSeconds;
 
         const dc = this.energy.datacenters.find((d) => d.id === node.dcId);
         const kw = (node.hardware.tdp / 1000) * (dc ? dc.pue : 1.2) * (0.32 + 0.68 * node.utilisation);
-        const joules = kw * 1000 * dtSeconds * plan.nodeCount;
+        const joules = kw * 1000 * deliveredSeconds * plan.nodeCount;
         vm.energyJoules += joules;
 
-        this.meteredSeconds += dtSeconds * plan.nodeCount;
+        this.meteredSeconds += deliveredSeconds * plan.nodeCount;
         this.meteredSpend += slice;
         this.meteredJoules += joules;
 
@@ -454,15 +510,15 @@
      * Settlement. Emits the receipt, closes the VM, and writes the
      * final chained audit entry.
      *
-     * The receipt reports what the buyer actually got, in the units
-     * that matter: node-seconds delivered, dollars drawn, joules drawn,
-     * grams of CO2e, and how far above the Landauer floor the work ran.
-     * The last one is the honest efficiency figure, because its
-     * denominator is a thermodynamic law rather than a benchmark.
+     * The receipt reports what this simulator delivered: node-seconds,
+     * modeled spend, energy and carbon. A thermodynamic comparison is
+     * emitted only when the energy model can supply one with compatible
+     * operation boundaries; the current catalogue deliberately returns
+     * null rather than compare unlike units.
      */
-    settle(vm, plan, node) {
+    settle(vm, plan, node, outcome = { status: "settled", reason: null }) {
       vm.state = "halted";
-      plan.status = "settled";
+      plan.status = outcome.status === "settled" ? "settled" : "rejected";
       const dc = this.energy.datacenters.find((d) => d.id === node.dcId);
 
       const receipt = {
@@ -485,12 +541,15 @@
         magicBudget: plan.magicBudget,
         emulationCostAvoided: plan.magicBudget > 0 ? S.magicMultiplier(plan.magicBudget) : 1,
         stateBlobs: vm.stateBlobs,
+        outcome: outcome.status,
+        outcomeReason: outcome.reason || null,
         ts: Date.now(),
       };
 
       const entry = this.append(
-        "plan.settled",
-        `${plan.name}: ${receipt.nodeSeconds.toFixed(0)} node-s, $${vm.cost.toFixed(4)}`,
+        outcome.status === "settled" ? "plan.settled" : "plan.halted",
+        `${plan.name}: ${receipt.nodeSeconds.toFixed(0)} node-s, $${vm.cost.toFixed(4)}` +
+          (outcome.reason ? `; ${outcome.reason}` : ""),
         { planId: plan.id, vmId: vm.id, nodeId: node.id, digest: plan.digest }
       );
       receipt.chainHash = entry.hash;
@@ -515,17 +574,16 @@
     // -- density -------------------------------------------------------
 
     /**
-     * Nested microVM density from the fractal state model. A uniform
-     * root at depth n denotes 40^n addressable leaf VMs plus the
-     * internal network VMs above them, and -- because untouched
+     * Nested namespace density from the fractal state model. A uniform
+     * root at depth n denotes 40^n addressable leaf labels plus the
+     * internal labels above them, and -- because untouched
      * siblings retain their digests under copy-on-write -- the whole
      * tree is denoted by n+1 unique state blobs.
      *
-     * At n = 6 that is 4,096,000,000 leaf VMs and 105,025,641 internal
-     * ones, 4,201,025,641 stateful VMs in total, from seven blobs.
-     * This is a structural bound from the reference runtime -- a
-     * statement about the state grammar, not a benchmark of any
-     * running fleet.
+     * At n = 6 that is 4,096,000,000 leaf labels and 105,025,641
+     * internal ones, 4,201,025,641 model objects in total, from seven
+     * blobs. This is an illustrative state-grammar count, not a built
+     * runtime, capacity claim, or benchmark of a running fleet.
      */
     densityAt(level) {
       const leaves = Math.pow(40, level);

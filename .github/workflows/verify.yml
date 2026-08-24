@@ -1,0 +1,49 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node-tests:
+    name: Node tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+
+  rtl:
+    name: RTL formal and synthesis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install portable Yosys
+        run: python -m pip install yowasp-yosys==0.67.0.0.post1190
+      - name: Prove RTL equivalence
+        run: npm run verify:rtl
+      - name: Synthesize RTL targets
+        run: npm run synth:rtl
+      - name: Check synthesis artifacts
+        run: |
+          test -s rtl/build/synth_generic.txt
+          test -s rtl/build/synth_ice40.txt
+          test -s rtl/build/holotrade_admit.json

@@ -4,15 +4,12 @@
 // Compute is bought in dollars but paid for in joules. This module is
 // the joule side: a per-second wholesale grid price for every
 // datacentre, the carbon intensity that rides along with it, and the
-// thermodynamic floor every node is scored against.
+// modeled thermodynamic reference shown separately from node telemetry.
 //
-// The floor matters. A modern accelerator dissipates ~1e-15 J per
-// operation. The Landauer bound for the substrate's only irreversible
-// step -- exporting 58 syndrome qutrits at kT ln 3 -- is 2.6e-19 J per
-// cycle at 300 K. That is six to seven orders of headroom, and it is
-// the honest denominator for an efficiency score, because it is a law
-// rather than a vendor benchmark. Holotrade publishes each node's
-// distance from it in decades.
+// Exporting 58 modeled syndrome qutrits has a Landauer lower bound of
+// 2.6e-19 J per syndrome cycle at 300 K. Catalog hardware reports J/op,
+// a different functional unit, so HoloTrade does not divide one by the
+// other without a workload-specific mapping.
 //
 // The IEA projects ~945 TWh of datacentre demand by 2030 on the
 // assumption of incremental CMOS. That number is a technology choice,
@@ -144,13 +141,11 @@
       return (kwh * this.carbonFor(dc.id)) / 1000;
     }
 
-    /**
-     * How far above the thermodynamic floor this node actually runs,
-     * in orders of magnitude. Lower is better. Nothing built today is
-     * below ~2 decades; conventional silicon sits at 6-7.
-     */
+    /** Cross-unit comparison intentionally unavailable. */
     decadesAboveFloor(node, dc) {
-      return S.thermodynamicDecades(node.hardware.joulesPerOp, dc.ambient);
+      void node;
+      void dc;
+      return null;
     }
 
     /** Fleet-wide roll-up for the energy view. */

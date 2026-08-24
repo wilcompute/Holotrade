@@ -1,7 +1,7 @@
 # ======================================================================
 # Synthesis of the Holotrade admission + routing primitive.
 #
-#   py -3 -c "from yowasp_yosys import run_yosys as r; r(['-s','rtl/synth.ys'])"
+#   npm run synth:rtl
 #
 # Reports cell counts on two targets. Cell counts are facts about a
 # netlist and are reported. TIMING IS NOT REPORTED: a frequency is a

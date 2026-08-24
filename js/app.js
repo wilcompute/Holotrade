@@ -33,6 +33,9 @@
     workload: "llm-train",
     anchor: null,
     fleetColor: "price",
+    depthZoom: "liquid",
+    depthHover: null,
+    frontierHover: null,
     fleetDc: "",
     fleetHw: "",
     fleetSort: "price",
@@ -106,15 +109,40 @@
   // ====================================================================
 
   function prepCanvas(cv) {
-    const dpr = window.devicePixelRatio || 1;
-    const w = cv.clientWidth || cv.parentElement.clientWidth || 600;
-    const h = parseInt(cv.getAttribute("height"), 10) || 180;
-    cv.width = w * dpr; cv.height = h * dpr;
+    const rect = cv.getBoundingClientRect();
+    const parentWidth = cv.parentElement ? cv.parentElement.getBoundingClientRect().width : 0;
+    const w = Math.max(1, Math.round(rect.width || cv.clientWidth || parentWidth || 600));
+    // canvas.height reflects back into the HTML attribute. Cache the authored
+    // logical height before assigning a DPR-scaled backing-store height, or a
+    // 2x screen would double the chart on every redraw.
+    if (!cv.dataset.chartHeight) {
+      cv.dataset.chartHeight = String(Math.max(96, parseInt(cv.getAttribute("height"), 10) || 180));
+    }
+    const h = Math.max(96, parseInt(cv.dataset.chartHeight, 10) || 180);
+    // Capping DPR avoids allocating multi-megapixel backing stores on a 4x
+    // display while retaining crisp type and one-device-pixel rules.
+    const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    const pixelW = Math.max(1, Math.round(w * dpr));
+    const pixelH = Math.max(1, Math.round(h * dpr));
+    if (cv.width !== pixelW) cv.width = pixelW;
+    if (cv.height !== pixelH) cv.height = pixelH;
     cv.style.height = h + "px";
+    cv._holotradeSize = { w, h, dpr };
     const ctx = cv.getContext("2d");
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     return { ctx, w, h };
+  }
+
+  function canvasPoint(cv, e) {
+    const rect = cv.getBoundingClientRect();
+    const logical = cv._holotradeSize || { w: rect.width, h: rect.height };
+    return {
+      x: (e.clientX - rect.left) * (logical.w / Math.max(1, rect.width)),
+      y: (e.clientY - rect.top) * (logical.h / Math.max(1, rect.height)),
+    };
   }
 
   function css(name, fallback) {
@@ -130,18 +158,71 @@
     ctx.stroke();
   }
 
+  function plotClip(ctx, w, h, pad) {
+    ctx.beginPath();
+    ctx.rect(pad.l, pad.t, Math.max(1, w - pad.l - pad.r), Math.max(1, h - pad.t - pad.b));
+    ctx.clip();
+  }
+
+  function chartEmpty(ctx, w, h, message = "No data in this window") {
+    ctx.fillStyle = css("--text-2", "#61708c");
+    ctx.font = "11px " + css("--mono", "monospace");
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(message, w / 2, h / 2);
+    ctx.textBaseline = "alphabetic";
+  }
+
+  function chartDomain(values, opts = {}) {
+    const data = values.map(Number).filter(Number.isFinite);
+    const hasMin = Number.isFinite(Number(opts.min));
+    const hasMax = Number.isFinite(Number(opts.max));
+    let lo = hasMin ? Number(opts.min) : (data.length ? Math.min(...data) : 0);
+    let hi = hasMax ? Number(opts.max) : (data.length ? Math.max(...data) : 1);
+    if (opts.includeZero) { lo = Math.min(0, lo); hi = Math.max(0, hi); }
+    if (!(hi > lo)) {
+      const centre = Number.isFinite(lo) ? lo : 0;
+      const span = Math.max(Math.abs(centre) * 0.12, Number(opts.minSpan) || 1);
+      if (!hasMin) lo = centre - span / 2;
+      if (!hasMax) hi = centre + span / 2;
+      if (!(hi > lo)) { lo = centre - span / 2; hi = centre + span / 2; }
+    }
+    const padding = Math.max(0, Number.isFinite(opts.padding) ? opts.padding : 0.08);
+    const span = hi - lo;
+    if (!hasMin) lo -= span * padding;
+    if (!hasMax) hi += span * padding;
+    return [lo, hi];
+  }
+
+  function chartPad(w, base = {}) {
+    return {
+      l: w < 390 ? (base.narrowL || 39) : (base.l || 46),
+      r: w < 390 ? (base.narrowR || 8) : (base.r || 10),
+      t: base.t || 10,
+      b: base.b || 22,
+    };
+  }
+
   function drawLines(cv, series, opts = {}) {
     const { ctx, w, h } = prepCanvas(cv);
-    const pad = { l: 46, r: 10, t: 10, b: 20 };
-    const all = series.flatMap((s) => s.data).filter((x) => isFinite(x));
-    if (!all.length) return;
-    let min = opts.min != null ? opts.min : Math.min(...all);
-    let max = opts.max != null ? opts.max : Math.max(...all);
-    if (max === min) { max = min + 1; }
-    const pd = (max - min) * 0.08;
-    min -= pd; max += pd;
-    const X = (i, n) => pad.l + (i / Math.max(1, n - 1)) * (w - pad.l - pad.r);
+    const pad = chartPad(w, { l: 46, narrowL: 40, r: 10, t: 10, b: opts.xCaption ? 30 : 22 });
+    const all = series.flatMap((s) => Array.isArray(s.data) ? s.data : []).map(Number).filter(Number.isFinite);
+    if (!all.length) { chartEmpty(ctx, w, h); return; }
+    const [min, max] = chartDomain(all, opts);
+    const X = (i, n) => pad.l + (n <= 1 ? 0.5 : i / (n - 1)) * (w - pad.l - pad.r);
     const Y = (v) => h - pad.b - ((v - min) / (max - min)) * (h - pad.t - pad.b);
+
+    // Threshold bands sit behind both the grid and the data.
+    if (opts.bands) {
+      ctx.save();
+      plotClip(ctx, w, h, pad);
+      for (const b of opts.bands) {
+        const y1 = Y(Math.max(b.lo, b.hi)), y2 = Y(Math.min(b.lo, b.hi));
+        ctx.fillStyle = b.color;
+        ctx.fillRect(pad.l, y1, w - pad.l - pad.r, y2 - y1);
+      }
+      ctx.restore();
+    }
 
     // gridlines + labels
     ctx.strokeStyle = css("--border", "#1c2740");
@@ -158,52 +239,104 @@
     }
     axes(ctx, w, h, pad);
 
+    ctx.save();
+    plotClip(ctx, w, h, pad);
     for (const s of series) {
-      if (!s.data.length) continue;
-      ctx.strokeStyle = s.color;
-      ctx.lineWidth = s.width || 1.6;
-      if (s.dash) ctx.setLineDash(s.dash); else ctx.setLineDash([]);
-      ctx.beginPath();
-      s.data.forEach((v, i) => {
-        const x = X(i, s.data.length), y = Y(v);
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      const data = Array.isArray(s.data) ? s.data : [];
+      const segments = [];
+      let segment = [];
+      data.forEach((raw, i) => {
+        const v = Number(raw);
+        if (Number.isFinite(v)) segment.push({ i, v });
+        else if (segment.length) { segments.push(segment); segment = []; }
       });
-      ctx.stroke();
+      if (segment.length) segments.push(segment);
+      for (const part of segments) {
+        const trace = () => {
+          ctx.beginPath();
+          part.forEach((p, i) => {
+            const x = X(p.i, data.length), y = Y(p.v);
+            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+          });
+        };
+        if (s.fill && part.length > 1) {
+          trace();
+          ctx.lineTo(X(part[part.length - 1].i, data.length), h - pad.b);
+          ctx.lineTo(X(part[0].i, data.length), h - pad.b);
+          ctx.closePath();
+          ctx.fillStyle = s.fill;
+          ctx.fill();
+        }
+        ctx.strokeStyle = s.color;
+        ctx.fillStyle = s.color;
+        ctx.lineWidth = s.width || 1.6;
+        ctx.setLineDash(s.dash || []);
+        if (part.length === 1) {
+          ctx.beginPath(); ctx.arc(X(part[0].i, data.length), Y(part[0].v), 2.4, 0, Math.PI * 2); ctx.fill();
+        } else {
+          trace(); ctx.stroke();
+        }
+      }
       ctx.setLineDash([]);
-      if (s.fill) {
-        ctx.lineTo(X(s.data.length - 1, s.data.length), h - pad.b);
-        ctx.lineTo(X(0, s.data.length), h - pad.b);
-        ctx.closePath();
-        ctx.fillStyle = s.fill; ctx.fill();
-      }
     }
-
-    if (opts.bands) {
-      for (const b of opts.bands) {
-        const y1 = Y(b.hi), y2 = Y(b.lo);
-        ctx.fillStyle = b.color;
-        ctx.fillRect(pad.l, y1, w - pad.l - pad.r, y2 - y1);
-      }
+    ctx.restore();
+    if (opts.xCaption) {
+      ctx.fillStyle = css("--text-2", "#61708c");
+      ctx.font = "10px " + css("--mono", "monospace");
+      ctx.textAlign = "center";
+      ctx.fillText(opts.xCaption, (pad.l + w - pad.r) / 2, h - 6);
     }
   }
 
   function drawBars(cv, bars, opts = {}) {
     const { ctx, w, h } = prepCanvas(cv);
-    const pad = { l: 34, r: 10, t: 10, b: 26 };
-    const max = opts.max != null ? opts.max : Math.max(1, ...bars.map((b) => b.value));
-    const bw = (w - pad.l - pad.r) / bars.length;
+    const clean = (bars || []).map((b) => ({ ...b, value: Number(b.value) })).filter((b) => Number.isFinite(b.value));
+    if (!clean.length) { chartEmpty(ctx, w, h); return; }
+    const pad = chartPad(w, { l: 42, narrowL: 36, r: 10, t: 14, b: 27 });
+    const [min, max] = chartDomain(clean.map((b) => b.value), {
+      min: Number.isFinite(Number(opts.min)) ? Number(opts.min) : Math.min(0, ...clean.map((b) => b.value)),
+      max: opts.max,
+      minSpan: 1,
+      padding: 0.06,
+    });
+    const Y = (v) => h - pad.b - ((v - min) / (max - min)) * (h - pad.t - pad.b);
+    const zeroY = Y(Math.max(min, Math.min(max, 0)));
+    const bw = (w - pad.l - pad.r) / clean.length;
+
+    ctx.font = "9px " + css("--mono", "monospace");
+    ctx.fillStyle = css("--text-2", "#61708c");
+    ctx.strokeStyle = css("--border", "#1c2740");
+    ctx.textAlign = "right";
+    for (let i = 0; i <= 3; i++) {
+      const v = min + (i / 3) * (max - min), y = Y(v);
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillText(opts.fmtV ? opts.fmtV(v) : fmt.big(v), pad.l - 5, y + 3);
+    }
     axes(ctx, w, h, pad);
-    ctx.font = "9.5px " + css("--mono", "monospace");
-    bars.forEach((b, i) => {
-      const bh = (b.value / max) * (h - pad.t - pad.b);
+
+    ctx.save();
+    plotClip(ctx, w, h, pad);
+    clean.forEach((b, i) => {
+      const y = Y(b.value);
+      const top = Math.min(y, zeroY), bh = Math.abs(zeroY - y);
       ctx.fillStyle = b.color || css("--accent", "#38bdf8");
-      ctx.fillRect(pad.l + i * bw + bw * 0.14, h - pad.b - bh, bw * 0.72, bh);
+      ctx.fillRect(pad.l + i * bw + bw * 0.14, top, Math.max(1, bw * 0.72), Math.max(b.value === 0 ? 1 : 0, bh));
+    });
+    ctx.restore();
+
+    ctx.font = "9.5px " + css("--mono", "monospace");
+    clean.forEach((b, i) => {
+      const y = Y(b.value);
       ctx.fillStyle = css("--text-2", "#61708c");
       ctx.textAlign = "center";
-      ctx.fillText(b.label, pad.l + i * bw + bw / 2, h - pad.b + 12);
-      if (b.value > 0) {
+      const labelEvery = opts.labelEvery || Math.max(1, Math.ceil(34 / Math.max(1, bw)));
+      if (i % labelEvery === 0) ctx.fillText(String(b.label), pad.l + i * bw + bw / 2, h - pad.b + 13);
+      if (b.value !== 0 && bw >= 24) {
         ctx.fillStyle = css("--text-1", "#93a3bd");
-        ctx.fillText(opts.fmtV ? opts.fmtV(b.value) : b.value, pad.l + i * bw + bw / 2, h - pad.b - bh - 4);
+        ctx.fillText(opts.fmtV ? opts.fmtV(b.value) : fmt.big(b.value), pad.l + i * bw + bw / 2,
+          b.value >= 0 ? Math.max(pad.t + 9, y - 4) : Math.min(h - pad.b - 4, y + 11));
       }
     });
   }
@@ -240,11 +373,27 @@
       seg.querySelectorAll("button").forEach((x) => x.classList.toggle("active", x.dataset.inst === ui.instrument));
     }
     const inst = INSTRUMENTS.find((i) => i.id === ui.instrument);
-    $("instrumentBlurb").textContent = inst ? inst.blurb : "";
+    $("instrumentBlurb").textContent = inst ? inst.blurb.replace(/\blive\b/gi, "current simulated") : "";
     $("instrumentNote").textContent = inst ? inst.tenor : "";
+
+    // depth zoom
+    const zseg = $("depthZoomSeg");
+    zseg.querySelectorAll("button").forEach((b) => {
+      b.classList.toggle("active", b.dataset.zoom === ui.depthZoom);
+      if (!b.dataset.bound) {
+        b.dataset.bound = "1";
+        b.addEventListener("click", () => {
+          ui.depthZoom = b.dataset.zoom;
+          zseg.querySelectorAll("button").forEach((x) =>
+            x.classList.toggle("active", x.dataset.zoom === ui.depthZoom));
+          renderDepth();
+        });
+      }
+    });
 
     renderBook();
     renderDepth();
+    renderFrontier();
     renderTape();
     renderBestDecomp();
     renderOrders();
@@ -286,36 +435,411 @@
     $("bookNote").textContent = `${b.asks.length} offers · ${b.bids.length} bids`;
   }
 
+  // --------------------------------------------------------------------
+  // Depth
+  //
+  // The naive version of this chart plots the whole book on one linear
+  // axis, and on a heterogeneous fleet that is useless: the ask side
+  // spans forty-to-one in price because a CPU node and an accelerator
+  // are both resting on it, so the bid side collapses into a sliver at
+  // the left edge and the shape carries no information.
+  //
+  // Three fixes, all of which are about telling the truth rather than
+  // decorating:
+  //
+  //   1. ZOOM TO WHERE THE LIQUIDITY IS. The default window covers the
+  //      price range holding the first slice of resting ask size.
+  //      Everything past it is a long tail of specialist hardware no
+  //      marginal buyer is choosing between.
+  //   2. DRAW IT AS A STEP FUNCTION. A book is discrete. A smooth curve
+  //      implies liquidity at prices where none rests.
+  //   3. SHOW THE ORDER ABOUT TO BE SENT. The shaded band is where the
+  //      ticket quantity would fill right now; the readout gives the
+  //      average, the worst price touched, and slippage in basis points
+  //      against the best offer.
+  // --------------------------------------------------------------------
+
+  function depthWindow(d, mode) {
+    const asks = d.asks.filter((r) => Number.isFinite(r.price) && Number.isFinite(r.cum));
+    const bids = d.bids.filter((r) => Number.isFinite(r.price) && Number.isFinite(r.cum));
+    const allAsk = asks.length ? Math.max(...asks.map((r) => r.cum)) : 0;
+    const bestAsk = asks.length ? asks[0].price : (bids.length ? bids[0].price : 0);
+    const bestBid = bids.length ? bids[0].price : bestAsk;
+    const expanded = (lo, hi) => {
+      const scale = Math.max(Math.abs(lo), Math.abs(hi), 1);
+      const [a, b] = chartDomain([lo, hi], { minSpan: scale * 0.02, padding: 0.02 });
+      return { lo: a, hi: b };
+    };
+    if (mode === "full" || !allAsk) {
+      const prices = [...bids.map((x) => x.price), ...asks.map((x) => x.price)];
+      if (!prices.length) return { lo: 0, hi: 1 };
+      return expanded(Math.min(...prices), Math.max(...prices));
+    }
+    const frac = mode === "half" ? 0.5 : 0.28;
+    const target = allAsk * frac;
+    let hi = bestAsk;
+    for (const a of asks) { hi = a.price; if (a.cum >= target) break; }
+    // never let the window collapse so far that the spread is invisible
+    const mid = (bestBid + bestAsk) / 2;
+    hi = Math.max(hi, mid * 1.12);
+    const lo = Math.min(bestBid, mid * 0.9);
+    return expanded(lo, hi);
+  }
+
+  const depthPad = (w) => chartPad(w, { l: 48, narrowL: 40, r: 12, narrowR: 8, t: 18, b: 26 });
+
   function renderDepth() {
-    const d = market.depth(ui.instrument, 40);
+    const d = market.depth(ui.instrument, 120);
     const cv = $("depthCanvas");
     const { ctx, w, h } = prepCanvas(cv);
-    if (!d.asks.length && !d.bids.length) return;
-    const prices = [...d.bids.map((x) => x.price), ...d.asks.map((x) => x.price)];
-    const min = Math.min(...prices), max = Math.max(...prices);
-    const maxCum = Math.max(...d.bids.map((x) => x.cum), ...d.asks.map((x) => x.cum), 1);
-    const pad = { l: 44, r: 10, t: 10, b: 22 };
-    const X = (p) => pad.l + ((p - min) / Math.max(1e-9, max - min)) * (w - pad.l - pad.r);
+    if (!d.asks.length && !d.bids.length) {
+      chartEmpty(ctx, w, h, "No resting bids or offers");
+      $("depthReadout").innerHTML = '<div class="dr hint">The book is empty for this instrument.</div>';
+      return;
+    }
+
+    const pad = depthPad(w);
+    cv._holotradeDepthPad = pad;
+    const win = depthWindow(d, ui.depthZoom);
+    const inWin = (r) => Number.isFinite(r.price) && Number.isFinite(r.cum) && r.price >= win.lo && r.price <= win.hi;
+    const bids = d.bids.filter(inWin);
+    const asks = d.asks.filter(inWin);
+    const maxCum = Math.max(1, ...bids.map((r) => r.cum), ...asks.map((r) => r.cum));
+
+    const X = (p) => pad.l + ((p - win.lo) / Math.max(1e-9, win.hi - win.lo)) * (w - pad.l - pad.r);
     const Y = (c) => h - pad.b - (c / maxCum) * (h - pad.t - pad.b);
+    const clampX = (x) => Math.max(pad.l, Math.min(w - pad.r, x));
+
+    // horizontal gridlines, labelled in cumulative size
+    ctx.font = "10px " + css("--mono", "monospace");
+    ctx.strokeStyle = css("--border", "#1c2740");
+    ctx.fillStyle = css("--text-2", "#61708c");
+    ctx.textAlign = "right";
+    for (let i = 1; i <= 4; i++) {
+      const c = (i / 4) * maxCum, y = Y(c);
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillText(fmt.int(c), pad.l - 6, y + 3);
+    }
+
+    // --- the order about to be sent, shaded on the ask side ----------
+    const preview = market.previewBuy(ui.instrument, Math.max(1, parseInt($("tkQty").value, 10) || 1)) || {};
+    const fill = {
+      filled: Number(preview.filled) || 0,
+      qty: Number(preview.requested) || Math.max(1, parseInt($("tkQty").value, 10) || 1),
+      cost: Number(preview.cost) || 0,
+      worst: Number(preview.worst),
+      touched: Number(preview.levelsTouched) || 0,
+      avg: Number(preview.average),
+      best: Number(preview.best),
+      slipBps: Number(preview.slippageBps),
+      complete: Boolean(preview.complete),
+    };
+    if (fill.filled > 0 && Number.isFinite(fill.best) && Number.isFinite(fill.worst) && fill.worst >= win.lo) {
+      const x0 = clampX(X(fill.best)), x1 = clampX(X(Math.min(fill.worst, win.hi)));
+      ctx.fillStyle = "rgba(56,189,248,0.13)";
+      ctx.fillRect(x0, pad.t, Math.max(1.5, x1 - x0), h - pad.t - pad.b);
+      ctx.strokeStyle = css("--accent", "#38bdf8");
+      ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(clampX(X(fill.avg)), pad.t);
+      ctx.lineTo(clampX(X(fill.avg)), h - pad.b);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // --- step curves --------------------------------------------------
+    const staircase = (rows, colour, fillColour, ascending) => {
+      if (!rows.length) return;
+      const pts = ascending ? rows : rows.slice().reverse();
+      const trace = () => {
+        ctx.beginPath();
+        ctx.moveTo(clampX(X(pts[0].price)), h - pad.b);
+        let prevY = h - pad.b;
+        for (const r of pts) {
+          const x = clampX(X(r.price)), y = Y(r.cum);
+          ctx.lineTo(x, prevY);   // horizontal run at the previous level
+          ctx.lineTo(x, y);       // vertical riser at this price
+          prevY = y;
+        }
+      };
+      const endX = clampX(X(pts[pts.length - 1].price));
+      ctx.save();
+      plotClip(ctx, w, h, pad);
+      trace();
+      ctx.lineTo(endX, h - pad.b);
+      ctx.closePath(); ctx.fillStyle = fillColour; ctx.fill();
+      trace();
+      ctx.strokeStyle = colour; ctx.lineWidth = 1.7; ctx.stroke();
+      ctx.restore();
+    };
+    // bids accumulate downward in price, so walk them right-to-left
+    staircase(bids, css("--up", "#2dd4a7"), "rgba(45,212,167,0.14)", false);
+    staircase(asks, css("--down", "#f4526b"), "rgba(244,82,107,0.14)", true);
+
+    // --- mid marker ---------------------------------------------------
+    const sp = market.spread(ui.instrument);
+    if (sp) {
+      const mid = (sp.bestBid + sp.bestAsk) / 2;
+      if (mid >= win.lo && mid <= win.hi) {
+        ctx.strokeStyle = css("--text-2", "#61708c");
+        ctx.setLineDash([2, 3]); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(X(mid), pad.t); ctx.lineTo(X(mid), h - pad.b); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = css("--text-2", "#61708c");
+        ctx.textAlign = "center";
+        ctx.fillText("mid " + fmt.usd(mid, 2), X(mid), pad.t - 5);
+      }
+    }
+
     axes(ctx, w, h, pad);
 
-    const step = (rows, color, fill) => {
-      if (!rows.length) return;
-      ctx.beginPath();
-      ctx.moveTo(X(rows[0].price), h - pad.b);
-      rows.forEach((r) => { ctx.lineTo(X(r.price), Y(r.cum)); });
-      ctx.strokeStyle = color; ctx.lineWidth = 1.6; ctx.stroke();
-      ctx.lineTo(X(rows[rows.length - 1].price), h - pad.b);
-      ctx.closePath(); ctx.fillStyle = fill; ctx.fill();
-    };
-    step(d.bids, css("--up", "#2dd4a7"), "rgba(45,212,167,0.13)");
-    step(d.asks, css("--down", "#f4526b"), "rgba(244,82,107,0.13)");
-
     ctx.fillStyle = css("--text-2", "#61708c");
+    ctx.textAlign = "center";
+    const xSteps = w < 430 ? 2 : 4;
+    for (let i = 0; i <= xSteps; i++) {
+      const p = win.lo + (i / xSteps) * (win.hi - win.lo);
+      ctx.fillText("$" + p.toFixed(p < 20 ? 1 : 0), X(p), h - pad.b + 14);
+    }
+
+    // --- crosshair -------------------------------------------------------
+    if (ui.depthHover != null && ui.depthHover >= win.lo && ui.depthHover <= win.hi) {
+      ctx.strokeStyle = css("--accent", "#38bdf8");
+      ctx.lineWidth = 0.8; ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(X(ui.depthHover), pad.t);
+      ctx.lineTo(X(ui.depthHover), h - pad.b);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    if (!cv.dataset.bound) {
+      cv.dataset.bound = "1";
+      cv.addEventListener("pointermove", (e) => {
+        const point = canvasPoint(cv, e);
+        const activePad = cv._holotradeDepthPad || depthPad((cv._holotradeSize || {}).w || cv.clientWidth);
+        const logicalW = (cv._holotradeSize || {}).w || cv.clientWidth;
+        const wn = depthWindow(market.depth(ui.instrument, 120), ui.depthZoom);
+        const frac = (point.x - activePad.l) / Math.max(1, logicalW - activePad.l - activePad.r);
+        ui.depthHover = wn.lo + Math.max(0, Math.min(1, frac)) * (wn.hi - wn.lo);
+        renderDepth();
+      });
+      cv.addEventListener("pointerleave", () => { ui.depthHover = null; renderDepth(); });
+    }
+
+    renderDepthReadout(fill, d, win);
+  }
+
+  function renderDepthReadout(fill, d, win) {
+    const sp = market.spread(ui.instrument);
+    const slipBps = Number.isFinite(fill.slipBps) ? fill.slipBps : null;
+    let hoverCells = "";
+    if (ui.depthHover != null) {
+      const hv = ui.depthHover;
+      // cumulative size resting at or better than the hovered price
+      const askCum = d.asks.filter((a) => a.price <= hv).reduce((m, a) => Math.max(m, a.cum), 0);
+      const bidCum = d.bids.filter((b) => b.price >= hv).reduce((m, b) => Math.max(m, b.cum), 0);
+      hoverCells = '<div class="dr"><span class="dr-k">At ' + fmt.usd(hv, 2) + '</span>' +
+        '<span class="dr-v up">' + fmt.int(bidCum) + ' bid</span> <span class="muted">/</span> ' +
+        '<span class="dr-v down">' + fmt.int(askCum) + ' ask</span></div>';
+    }
+
+    $("depthReadout").innerHTML = hoverCells +
+      '<div class="dr"><span class="dr-k">Your ' + fill.qty + ' fills</span>' +
+        '<span class="dr-v ' + (fill.complete ? "" : "down") + '">' + fill.filled + '/' + fill.qty + '</span></div>' +
+      '<div class="dr"><span class="dr-k">Average</span><span class="dr-v">' + fmt.usd(fill.avg, 3) + '</span></div>' +
+      '<div class="dr"><span class="dr-k">Worst touched</span><span class="dr-v">' + fmt.usd(fill.worst, 3) + '</span></div>' +
+      '<div class="dr"><span class="dr-k">Slippage</span><span class="dr-v ' +
+        (slipBps == null ? "muted" : slipBps > 200 ? "down" : slipBps > 50 ? "" : "up") + '">' +
+        (slipBps == null ? "—" : slipBps.toFixed(0) + " bps") + '</span></div>' +
+      '<div class="dr"><span class="dr-k">Nodes touched</span><span class="dr-v">' + fill.touched + '</span></div>' +
+      '<div class="dr"><span class="dr-k">Spread</span><span class="dr-v">' + (sp ? sp.bps.toFixed(0) + " bps" : "—") + '</span></div>' +
+      '<div class="dr hint">Shaded band is where your order lands right now; the dashed line is its average price. Window ' +
+        fmt.usd(win.lo, 2) + '–' + fmt.usd(win.hi, 2) + '.</div>';
+  }
+
+  // --------------------------------------------------------------------
+  // Value frontier
+  //
+  // The honest answer to "why does the depth chart span forty-to-one".
+  // It does because a node-hour is not a comparable unit across hardware
+  // classes: a $4 CPU node and a $60 accelerator are not competing
+  // offers, they are different products, and putting them on one price
+  // axis was always going to look strange.
+  //
+  // Delivered throughput per dollar IS comparable. Plot every listed
+  // node as (effective TFLOPs, $/hour) and the Pareto frontier -- the
+  // set nothing else beats on BOTH axes at once -- is the real menu.
+  // Everything above it is dominated: some other listed node is cheaper
+  // AND faster, and an exchange that knows this should say so rather
+  // than quietly let someone buy the worse one.
+  // --------------------------------------------------------------------
+
+  function renderFrontier() {
+    const cv = $("frontierCanvas");
+    const { ctx, w, h } = prepCanvas(cv);
+    const pts = [];
+    for (const node of fleet.listedNodes()) {
+      const q = pricing.quotes.get(node.id);
+      const price = Number(q && q.price);
+      const tf = Number(node.effectiveTflops);
+      if (!q || !q.serviceable || !(price > 0) || !(tf > 0)) continue;
+      pts.push({ node, price, tflops: tf, kind: node.hardware.kind });
+    }
+    if (!pts.length) {
+      chartEmpty(ctx, w, h, "No serviceable positive-price offers");
+      $("frontierLegend").innerHTML = '<span class="muted">No comparable offers in this workload.</span>';
+      cv._holotradeFrontierHits = [];
+      return;
+    }
+
+    const pad = chartPad(w, { l: 54, narrowL: 44, r: 14, narrowR: 8, t: 14, b: 31 });
+    // log axes: capacity spans four orders across the catalogue, so a
+    // linear axis would stack every CPU node into one pixel column
+    const lx = (v) => Math.log10(v);
+    const ly = (v) => Math.log10(v);
+    const xs = pts.map((p) => lx(p.tflops)), ys = pts.map((p) => ly(p.price));
+    const [x0, x1] = chartDomain(xs, { minSpan: 0.5, padding: 0.08 });
+    const [y0, y1] = chartDomain(ys, { minSpan: 0.35, padding: 0.08 });
+    const X = (v) => pad.l + ((lx(v) - x0) / (x1 - x0)) * (w - pad.l - pad.r);
+    const Y = (v) => h - pad.b - ((ly(v) - y0) / (y1 - y0)) * (h - pad.t - pad.b);
+    const axisValue = (v) => {
+      if (v >= 1000) return fmt.big(v);
+      if (v >= 10) return v.toFixed(0);
+      if (v >= 1) return v.toFixed(1).replace(/\.0$/, "");
+      return v.toPrecision(2);
+    };
+
     ctx.font = "10px " + css("--mono", "monospace");
-    ctx.textAlign = "left"; ctx.fillText("$" + min.toFixed(1), pad.l, h - 6);
-    ctx.textAlign = "right"; ctx.fillText("$" + max.toFixed(1), w - pad.r, h - 6);
-    ctx.fillText(fmt.int(maxCum), pad.l - 6, pad.t + 8);
+    ctx.strokeStyle = css("--border", "#1c2740");
+    ctx.fillStyle = css("--text-2", "#61708c");
+    const ySteps = 4;
+    for (let i = 0; i <= ySteps; i++) {
+      const logV = y0 + (i / ySteps) * (y1 - y0);
+      const value = Math.pow(10, logV), y = Y(value);
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.textAlign = "right";
+      ctx.fillText("$" + axisValue(value), pad.l - 6, y + 3);
+    }
+    const xSteps = w < 430 ? 2 : 4;
+    for (let i = 0; i <= xSteps; i++) {
+      const logV = x0 + (i / xSteps) * (x1 - x0);
+      const value = Math.pow(10, logV), x = X(value);
+      ctx.globalAlpha = 0.3;
+      ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, h - pad.b); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.textAlign = "center";
+      ctx.fillText(axisValue(value) + " TF", x, h - pad.b + 14);
+    }
+    axes(ctx, w, h, pad);
+
+    // dominated points, dimmed
+    const front = HolotradeMarket.paretoFrontier(pts).slice().sort((a, b) => a.tflops - b.tflops);
+    const frontSet = new Set(front.map((p) => p.node.id));
+    ctx.save();
+    plotClip(ctx, w, h, pad);
+    ctx.globalAlpha = 0.34;
+    for (const p of pts) {
+      if (frontSet.has(p.node.id)) continue;
+      ctx.fillStyle = HW_COLOR[p.kind] || "#888";
+      ctx.beginPath(); ctx.arc(X(p.tflops), Y(p.price), 2.4, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // the frontier itself
+    ctx.strokeStyle = css("--accent", "#38bdf8");
+    ctx.lineWidth = 1.6; ctx.setLineDash([]);
+    ctx.beginPath();
+    front.forEach((p, i) => {
+      const x = X(p.tflops), y = Y(p.price);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    for (const p of front) {
+      ctx.fillStyle = HW_COLOR[p.kind] || "#888";
+      ctx.beginPath(); ctx.arc(X(p.tflops), Y(p.price), 4, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = css("--accent", "#38bdf8"); ctx.lineWidth = 1.2; ctx.stroke();
+    }
+
+    // ring anything already held
+    const held = new Set(market.positions.map((x) => x.nodeId));
+    ctx.strokeStyle = css("--amber", "#f5a524"); ctx.lineWidth = 1.6;
+    for (const p of pts) {
+      if (!held.has(p.node.id)) continue;
+      ctx.beginPath(); ctx.arc(X(p.tflops), Y(p.price), 6, 0, Math.PI * 2); ctx.stroke();
+    }
+    const hovered = pts.find((p) => p.node.id === ui.frontierHover);
+    if (hovered) {
+      ctx.strokeStyle = css("--text", "#dfe7f5");
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(X(hovered.tflops), Y(hovered.price), 7, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.restore();
+
+    if (hovered) {
+      const hx = X(hovered.tflops), hy = Y(hovered.price);
+      const tw = Math.min(210, w - 16), th = 48;
+      const tx = Math.max(8, Math.min(w - tw - 8, hx + (hx > w * 0.62 ? -tw - 10 : 10)));
+      const ty = Math.max(8, Math.min(h - th - 8, hy - th / 2));
+      ctx.fillStyle = css("--bg-2", "#121826");
+      ctx.strokeStyle = css("--border-hi", "#2e3d5e");
+      ctx.lineWidth = 1;
+      ctx.fillRect(tx, ty, tw, th); ctx.strokeRect(tx + 0.5, ty + 0.5, tw - 1, th - 1);
+      ctx.font = "600 10px " + css("--mono", "monospace");
+      ctx.fillStyle = css("--text", "#dfe7f5"); ctx.textAlign = "left";
+      ctx.fillText(hovered.node.hardware.class + " · " + hovered.node.id.slice(-8), tx + 8, ty + 18);
+      ctx.font = "10px " + css("--mono", "monospace");
+      ctx.fillStyle = css("--text-1", "#93a3bd");
+      ctx.fillText(fmt.usd(hovered.price, 2) + "/hr · " + fmt.big(hovered.tflops) + " TF", tx + 8, ty + 35);
+    }
+
+    const dominated = pts.length - front.length;
+    $("frontierLegend").innerHTML =
+      Object.entries(HW_COLOR).filter(([k]) => k !== "composite")
+        .map(([k, v]) => '<span><i style="background:' + v + '"></i>' + k + '</span>').join("") +
+      '<span class="legend-summary muted">' + front.length + ' on the frontier · ' +
+      dominated + ' dominated' +
+      (held.size ? ' · <span style="color:var(--amber)">◯ yours</span>' : '') + '</span>';
+
+    // Refresh hit targets on every render. The listener is installed only
+    // once, but must not close over the first workload/viewport it saw.
+    cv._holotradeFrontierHits = pts.map((p) => ({
+      nodeId: p.node.id,
+      x: X(p.tflops),
+      y: Y(p.price),
+    }));
+    if (!cv.dataset.bound) {
+      cv.dataset.bound = "1";
+      cv.addEventListener("pointermove", (e) => {
+        const point = canvasPoint(cv, e);
+        let bestNodeId = null, bestD = 14;
+        for (const hit of cv._holotradeFrontierHits || []) {
+          const dd = Math.hypot(hit.x - point.x, hit.y - point.y);
+          if (dd < bestD) { bestD = dd; bestNodeId = hit.nodeId; }
+        }
+        if (bestNodeId !== ui.frontierHover) {
+          ui.frontierHover = bestNodeId;
+          cv.style.cursor = bestNodeId ? "pointer" : "crosshair";
+          renderFrontier();
+        }
+      });
+      cv.addEventListener("pointerleave", () => {
+        if (ui.frontierHover != null) { ui.frontierHover = null; renderFrontier(); }
+        cv.style.cursor = "crosshair";
+      });
+      cv.addEventListener("click", (e) => {
+        const point = canvasPoint(cv, e);
+        let bestNodeId = null, bestD = 18;
+        for (const hit of cv._holotradeFrontierHits || []) {
+          const dd = Math.hypot(hit.x - point.x, hit.y - point.y);
+          if (dd < bestD) { bestD = dd; bestNodeId = hit.nodeId; }
+        }
+        if (bestNodeId) openNode(bestNodeId);
+      });
+    }
   }
 
   function renderTape() {
@@ -343,11 +867,11 @@
     }
     const M = q.multipliers;
     const defs = [
-      ["E", "Energy", M.E, "live $/MWh at this site, PUE-adjusted"],
-      ["G", "Genetics", M.G, "what this core has learned about your class"],
+      ["E", "Energy", M.E, "seeded simulated $/MWh at this site, PUE-adjusted"],
+      ["G", "Modeled specialization", M.G, "seeded class history and fitness inputs"],
       ["D", "Demand / wear", M.D, "premium if hot, discount if cold"],
       ["H", "Health", M.H, "derate × reliability × error drift"],
-      ["Q", "Quantum", M.Q, "9^t magic budget; 1 for anything classical"],
+      ["Q", "Declared capability", M.Q, "illustrative 9^t dial; 1× classical baseline"],
       ["L", "Locality", M.L, "fabric distance from your anchor"],
     ];
     const rows = defs.map(([k, name, v, why]) => {
@@ -375,7 +899,6 @@
       <dt>— capital recovery</dt><dd class="muted">${fmt.usd(q.capitalRecovery, 3)}</dd>
       <dt>Margin over floor</dt><dd class="${sgn(q.margin)}">${fmt.usd(q.margin)} · ${fmt.pct(q.marginPct)}</dd>
       <dt>Carbon</dt><dd>${fmt.num(q.carbonPerHour, 3)} kg/hr</dd>
-      <dt>Above Landauer floor</dt><dd>${fmt.num(q.decadesAboveFloor, 2)} decades</dd>
     </dl>${q.atFloor ? '<div class="note amber" style="margin-top:10px"><b>At floor.</b> The balancer wanted to discount this node further and the exchange refused. Below this price the operator is paying to run your job.</div>' : ""}`;
   }
 
@@ -567,7 +1090,7 @@
         <span class="tag accent">${fmt.esc(node.address)}</span>
         <span class="tag" style="color:${HW_COLOR[node.hardware.kind]}">${fmt.esc(node.hardware.class)}</span>
         <span class="tag">${fmt.esc(node.dcId)}</span>
-        <span class="tag ${card.liquidity === "deep" ? "up" : card.liquidity === "bilateral" ? "down" : "amber"}">${card.liquidity}</span>
+        <span class="tag ${card.marketBreadthBand === "broad" ? "up" : card.marketBreadthBand === "site-bound" ? "down" : "amber"}">${card.marketBreadthBand}</span>
         ${node.hardware.magicCapable ? '<span class="tag violet">magic-capable</span>' : ""}
         ${node.health.serviceDue ? '<span class="tag down">service due</span>' : ""}
       </div>
@@ -610,16 +1133,17 @@
         </dl></div></div>
 
       <div class="card"><div class="card-head"><h3 class="card-title">Asset · UOR</h3>
-        <span class="card-note">value = orbit-stabilizer co-volume</span></div>
+        <span class="card-note">policy-estimated mobility · not market liquidity</span></div>
         <div class="card-body"><dl class="kv">
           <dt>UOR address</dt><dd>${fmt.esc(card.uor)}</dd>
           <dt>Substrate point</dt><dd>${card.point} · 𝔽₃⁴ = ${card.vector}</dd>
-          <dt>Orbit cell</dt><dd>${fmt.int(card.cell)} of 51,840</dd>
-          <dt>Stabiliser order</dt><dd>${fmt.int(card.stabiliser)}</dd>
-          <dt>Orbit size</dt><dd>${fmt.int(card.orbit)}</dd>
-          <dt>Co-volume</dt><dd>${fmt.num(card.coVolume, 3)}</dd>
-          <dt>Constraints</dt><dd>${card.constraints.length ? card.constraints.join(", ") : "none"}</dd>
-          <dt>Provenance</dt><dd class="${card.provenance.clean ? "up" : "down"}">${card.provenance.clean ? "clean" : card.provenance.anomalies.length + " anomalies"}</dd>
+          <dt>Canonical cell</dt><dd>${fmt.int(card.cell)} of 51,840</dd>
+          <dt>Mobility policies</dt><dd>${card.policies.length ? card.policies.join(", ") : "none"}</dd>
+          <dt>Policy mobility score</dt><dd>${fmt.num(card.policyMobilityScore, 3)}</dd>
+          <dt>Estimated eligible regions</dt><dd>${fmt.int(card.marketBreadth)} / 40 reference regions</dd>
+          <dt>Market-breadth band</dt><dd>${fmt.esc(card.marketBreadthBand)}</dd>
+          <dt>Movement records</dt><dd>${fmt.int(card.moves)}</dd>
+          <dt>History structure</dt><dd class="${card.provenance.structurallyValid ? "up" : "down"}">${card.provenance.structurallyValid ? "valid · not authenticated" : card.provenance.anomalies.length + " anomalies"}</dd>
         </dl></div></div>
 
       <div class="card"><div class="card-head"><h3 class="card-title">Site</h3></div>
@@ -666,11 +1190,12 @@
   function renderFabric() {
     const fs = fabric.fabricStats(market.positions);
     const listed = fleet.listedNodes();
+    const inducedEdges = fabric.inducedEdges(listed);
 
     $("fabricStats").innerHTML = [
-      tile("Fleet coherence", fmt.pct(fs.fleetCoherence), `${fmt.num(fs.totalBisection, 0)} of ${fmt.num(fs.idealBisection, 0)} ideal bisection`, "accent"),
+      tile("Fleet coherence", fmt.pct(fs.fleetCoherence), `${fmt.int(inducedEdges)} induced level-1 edges · normalised proxy`, "accent"),
       tile("Cells", fmt.int(fs.cells), `${fs.completeCells} complete · mean occupancy ${fmt.pct(fs.meanOccupancy, 0)}`),
-      tile("Fabric level", "H" + fs.level, `diameter ${fs.diameterAtLevel} hops worst case`),
+      tile("Fabric level", "H" + fs.level, `recursive model bound ≤ ${fs.diameterAtLevel} hops`),
       tile("Your fragmentation", fmt.pct(fs.fragmentation), fs.fragmentation > 0.5 ? "swap book has proposals" : "positions are coherent", fs.fragmentation > 0.5 ? "down" : "up"),
     ].join("");
 
@@ -683,17 +1208,22 @@
 
     const cp = fabric.clearingProfile();
     $("clearingStats").innerHTML = [
-      tile("Hops to agreement", cp.hops, `then ${cp.rounds} averaging rounds`),
-      tile("Contraction / round", "1/3", "≈19 rounds for a part in 10⁹"),
-      tile("Byzantine tolerance", cp.byzantineTolerance, `${cp.byzantineBreaks} breaks the tested config`, "amber"),
-      tile("Joules per clear", fmt.sci(cp.joulesPerClear), `${cp.ordersOfMagnitude} orders below proof-of-work`, "up"),
+      tile("Cell diameter", cp.cellGraphDiameter, "exact for one W(3,3) cell"),
+      tile("Averaging rounds", cp.rounds, "scalar disagreement below 10⁻⁹"),
+      tile("Contraction / round", fmt.x(cp.contractionPerRound), "declared toy recurrence"),
+      tile("Protocol status", "TOY MODEL", "not consensus or fault tolerance", "amber"),
     ].join("");
   }
 
   function drawW33() {
     const cv = $("w33Canvas");
     const { ctx, w, h } = prepCanvas(cv);
-    const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.42;
+    const narrow = w < 480;
+    const captionH = narrow ? 38 : 24;
+    const margin = narrow ? 14 : 18;
+    const plotH = Math.max(80, h - captionH - margin * 2);
+    const cx = w / 2, cy = margin + plotH / 2;
+    const R = Math.max(28, Math.min((w - margin * 2) / 2, plotH / 2) - 7);
     const occupied = new Set();
     const cells = fabric.cells();
     const cell = cells[0];
@@ -713,7 +1243,7 @@
         if (j <= i) continue;
         const hot = sel != null && (i === sel || j === sel);
         ctx.strokeStyle = hot ? css("--amber", "#f5a524") : css("--border", "#1c2740");
-        ctx.globalAlpha = hot ? 0.85 : (occupied.has(i) && occupied.has(j) ? 0.4 : 0.14);
+        ctx.globalAlpha = hot ? 0.85 : (occupied.has(i) && occupied.has(j) ? 0.48 : 0.21);
         ctx.lineWidth = hot ? 1.4 : 0.7;
         ctx.beginPath(); ctx.moveTo(pos[i].x, pos[i].y); ctx.lineTo(pos[j].x, pos[j].y); ctx.stroke();
       }
@@ -731,22 +1261,33 @@
       ctx.fill();
     });
 
-    ctx.fillStyle = css("--text-2", "#61708c");
     ctx.font = "10px " + css("--mono", "monospace");
     ctx.textAlign = "center";
-    ctx.fillText("SRG(40,12,2,4) · 240 edges · diameter 2 · bisection 100", cx, h - 4);
+    if (narrow) {
+      ctx.fillStyle = css("--text-1", "#93a3bd");
+      ctx.fillText("W(3,3) formal graph · 40 points · 240 edges", cx, h - 18);
+      ctx.fillStyle = css("--text-2", "#61708c");
+      ctx.fillText("SRG(40,12,2,4) · diameter 2 · bisection 100", cx, h - 5);
+    } else {
+      ctx.fillStyle = css("--text-1", "#93a3bd");
+      ctx.fillText("W(3,3) formal graph · SRG(40,12,2,4) · 240 edges · diameter 2 · bisection 100", cx, h - 5);
+    }
 
-    cv.onclick = (e) => {
-      const r = cv.getBoundingClientRect();
-      const mx = e.clientX - r.left, my = e.clientY - r.top;
-      let bestI = null, bestD = 16;
-      pos.forEach((p) => {
-        const d = Math.hypot(p.x - mx, p.y - my);
-        if (d < bestD) { bestD = d; bestI = p.i; }
+    cv._holotradeW33Hits = pos;
+    if (!cv.dataset.bound) {
+      cv.dataset.bound = "1";
+      cv.addEventListener("click", (e) => {
+        const point = canvasPoint(cv, e);
+        let bestI = null, bestD = 16;
+        for (const p of cv._holotradeW33Hits || []) {
+          const d = Math.hypot(p.x - point.x, p.y - point.y);
+          if (d < bestD) { bestD = d; bestI = p.i; }
+        }
+        if (bestI == null) return;
+        ui.selectedPoint = ui.selectedPoint === bestI ? null : bestI;
+        drawW33();
       });
-      ui.selectedPoint = ui.selectedPoint === bestI ? null : bestI;
-      drawW33();
-    };
+    }
   }
 
   function renderRouting() {
@@ -800,7 +1341,7 @@
       <td class="mono muted">${fmt.esc(c.dcId)}</td>
       <td class="num">${c.nodes.length}</td>
       <td class="num">${fmt.pct(c.occupancy, 0)}</td>
-      <td class="num">${fmt.num(c.bisection, 1)}</td>
+      <td class="num">${fmt.int(fabric.inducedEdges(c.nodes))}</td>
       <td class="num ${c.coherence > 0.9 ? "up" : ""}">${fmt.pct(c.coherence, 0)}</td>
     </tr>`).join("");
   }
@@ -810,7 +1351,7 @@
       <td><span class="tag ${r.tradeable ? "accent" : ""}">H${r.level}</span></td>
       <td class="num">${fmt.big(r.leaves)}</td>
       <td class="num">${r.diameter}</td>
-      <td class="num">${fmt.big(r.bisection)}</td>
+      <td class="num">${fmt.big(r.instances)}</td>
       <td class="num">${fmt.usd(r.perNodeHour)}</td>
       <td class="muted" style="font-size:11px">${fmt.esc(r.seats)}${r.tradeable ? "" : " · bilateral"}</td>
     </tr>`).join("");
@@ -863,13 +1404,13 @@
     drawLines($("giniCanvas"), [
       { data: hist.map((h) => h.gini), color: css("--accent", "#38bdf8"), fill: "rgba(56,189,248,0.10)", width: 2 },
       { data: hist.map((h) => h.mean), color: css("--up", "#2dd4a7"), width: 1.2, dash: [4, 3] },
-    ], { min: 0, max: Math.max(0.6, ...hist.map((h) => Math.max(h.gini, h.mean))) + 0.05, fmtY: (v) => v.toFixed(2) });
+    ], { min: 0, max: Math.max(0.6, ...hist.map((h) => Math.max(h.gini, h.mean))) + 0.05, fmtY: (v) => v.toFixed(2), xCaption: "simulation history →" });
 
     // histogram of utilisation
     const bins = new Array(10).fill(0);
     for (const n of fleet.listedNodes()) bins[Math.min(9, Math.floor(n.utilisation * 10))]++;
     drawBars($("histCanvas"), bins.map((v, i) => ({
-      label: (i * 10) + "",
+      label: (i * 10) + "%",
       value: v,
       color: (i / 10 >= 0.55 && i / 10 < 0.78) ? css("--up", "#2dd4a7") : (i / 10 >= 0.78 ? css("--down", "#f4526b") : css("--text-2", "#61708c")),
     })));
@@ -885,38 +1426,54 @@
     // D curve
     const cv = $("dCurveCanvas");
     const { ctx, w, h } = prepCanvas(cv);
-    const pad = { l: 44, r: 12, t: 12, b: 24 };
+    const pad = chartPad(w, { l: 44, narrowL: 40, r: 12, narrowR: 8, t: 12, b: 27 });
     const probe = { utilisation: 0, utilisationEMA: 0.5, hardware: { thermalSensitivity: 1 } };
     const pts = [];
     for (let i = 0; i <= 100; i++) {
       probe.utilisation = i / 100;
       pts.push(pricing.demandMultiplier(probe));
     }
-    const min = 0.4, max = Math.max(2.2, ...pts);
+    const finitePts = pts.filter(Number.isFinite);
+    if (!finitePts.length) { chartEmpty(ctx, w, h, "Demand curve unavailable"); return; }
+    const min = 0.4, max = Math.max(2.2, ...finitePts);
     const X = (i) => pad.l + (i / 100) * (w - pad.l - pad.r);
     const Y = (v) => h - pad.b - ((v - min) / (max - min)) * (h - pad.t - pad.b);
 
+    ctx.save();
+    plotClip(ctx, w, h, pad);
     ctx.fillStyle = "rgba(45,212,167,0.10)";
     ctx.fillRect(X(55), pad.t, X(78) - X(55), h - pad.t - pad.b);
+    ctx.restore();
 
+    ctx.font = "10px " + css("--mono", "monospace");
     ctx.strokeStyle = css("--border", "#1c2740");
+    ctx.fillStyle = css("--text-2", "#61708c");
+    ctx.textAlign = "right";
+    for (let i = 0; i <= 4; i++) {
+      const v = min + (i / 4) * (max - min), y = Y(v);
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillText("×" + v.toFixed(1), pad.l - 6, y + 3);
+    }
     ctx.setLineDash([3, 3]); ctx.beginPath();
     ctx.moveTo(pad.l, Y(1)); ctx.lineTo(w - pad.r, Y(1)); ctx.stroke(); ctx.setLineDash([]);
     axes(ctx, w, h, pad);
 
+    ctx.save();
+    plotClip(ctx, w, h, pad);
     ctx.strokeStyle = css("--accent", "#38bdf8"); ctx.lineWidth = 2.2;
     ctx.beginPath();
     pts.forEach((v, i) => { i === 0 ? ctx.moveTo(X(i), Y(v)) : ctx.lineTo(X(i), Y(v)); });
     ctx.stroke();
+    ctx.restore();
 
     ctx.fillStyle = css("--text-2", "#61708c");
     ctx.font = "10px " + css("--mono", "monospace");
-    ctx.textAlign = "right";
-    [0.5, 1, 1.5, 2].forEach((v) => { if (v >= min && v <= max) ctx.fillText("×" + v.toFixed(1), pad.l - 6, Y(v) + 3); });
     ctx.textAlign = "center";
-    ctx.fillText("0%", X(0) + 8, h - 8);
-    ctx.fillText("target band", (X(55) + X(78)) / 2, h - 8);
-    ctx.fillText("100%", X(100) - 12, h - 8);
+    ctx.fillText("0%", X(0) + 8, h - 9);
+    ctx.fillText("55–78% target", (X(55) + X(78)) / 2, h - 9);
+    ctx.fillText("100%", X(100) - 12, h - 9);
   }
 
   // ====================================================================
@@ -940,7 +1497,7 @@
     // hazard curve
     const cv = $("hazardCanvas");
     const { ctx, w, h } = prepCanvas(cv);
-    const pad = { l: 44, r: 12, t: 12, b: 24 };
+    const pad = chartPad(w, { l: 48, narrowL: 43, r: 12, narrowR: 8, t: 12, b: 28 });
     const kinds = [["gpu", HW_COLOR.gpu], ["cpu", HW_COLOR.cpu], ["photonic", HW_COLOR.photonic]];
     const series = kinds.map(([kind, color]) => {
       const hw = HARDWARE.find((x) => x.kind === kind);
@@ -948,10 +1505,24 @@
       for (let i = 0; i <= 100; i++) data.push(HolotradeFleet.weibullHazard(i / 100, hw));
       return { data, color, width: 1.8, label: kind };
     });
-    const maxH = Math.max(...series.flatMap((s) => s.data));
+    const hazards = series.flatMap((s) => s.data).filter(Number.isFinite);
+    const maxH = Math.max(1e-6, ...hazards);
     const X = (i) => pad.l + (i / 100) * (w - pad.l - pad.r);
     const Y = (v) => h - pad.b - (v / maxH) * (h - pad.t - pad.b);
+    ctx.font = "9.5px " + css("--mono", "monospace");
+    ctx.strokeStyle = css("--border", "#1c2740");
+    ctx.fillStyle = css("--text-2", "#61708c");
+    ctx.textAlign = "right";
+    for (let i = 0; i <= 4; i++) {
+      const value = (i / 4) * maxH, y = Y(value);
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.fillText(value < 0.1 ? value.toFixed(3) : value.toFixed(2), pad.l - 5, y + 3);
+    }
     axes(ctx, w, h, pad);
+    ctx.save();
+    plotClip(ctx, w, h, pad);
     series.forEach((s) => {
       ctx.strokeStyle = s.color; ctx.lineWidth = s.width; ctx.beginPath();
       s.data.forEach((v, i) => { i === 0 ? ctx.moveTo(X(i), Y(v)) : ctx.lineTo(X(i), Y(v)); });
@@ -964,10 +1535,11 @@
       ctx.beginPath(); ctx.arc(X(n.health.wear * 100), Y(n.health.hazard), 1.6, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
+    ctx.restore();
     ctx.fillStyle = css("--text-2", "#61708c");
     ctx.font = "10px " + css("--mono", "monospace");
     ctx.textAlign = "center";
-    ctx.fillText("wear →", w / 2, h - 6);
+    ctx.fillText("wear 0 → 100%", (pad.l + w - pad.r) / 2, h - 7);
     ctx.textAlign = "left";
     series.forEach((s, i) => {
       ctx.fillStyle = s.color;
@@ -1102,15 +1674,15 @@
 
     $("energyStats").innerHTML = [
       tile("Fleet draw", fmt.num(sum.totalKW, 0) + " kW", `${fmt.num(sum.annualTWh * 1000, 2)} GWh/yr at this load`, "amber"),
-      tile("Energy cost", fmt.usd(sum.totalCostPerHour) + "/hr", "at this second's marginal prices"),
+      tile("Energy cost", fmt.usd(sum.totalCostPerHour) + "/hr", "at this simulation tick's marginal prices"),
       tile("Carbon", fmt.num(sum.totalCarbonPerHour, 1) + " kg/hr", `cheapest ${cheapest.id} · cleanest ${cleanest.id}`),
-      tile("Landauer floor", "2.64e-19 J", "per cycle at 300 K — 58 syndrome qutrits × kT ln 3", "up"),
+      tile("Price processes", DATACENTERS.length + " sites", "seeded stochastic inputs · not live feeds", "up"),
     ].join("");
 
     const colors = ["#38bdf8", "#f4526b", "#2dd4a7", "#f5a524", "#a78bfa", "#93a3bd"];
     drawLines($("energyCanvas"), DATACENTERS.map((d, i) => ({
       data: energy.historyFor(d.id).slice(-240), color: colors[i % colors.length], width: 1.5,
-    })), { fmtY: (v) => "$" + v.toFixed(0) });
+    })), { fmtY: (v) => "$" + v.toFixed(0), xCaption: "last 240 simulated ticks →" });
     $("energyLegend").innerHTML = DATACENTERS.map((d, i) =>
       `<span><i style="background:${colors[i % colors.length]}"></i>${d.id} · ${d.grid}</span>`).join("");
 
@@ -1130,16 +1702,11 @@
       </tr>`;
     }).join("");
 
-    $("floorBody").innerHTML = HARDWARE.map((hw) => {
-      const dec = Substrate.thermodynamicDecades(hw.joulesPerOp, 300);
-      const w = Math.min(100, (dec / 8) * 100);
-      return `<tr>
-        <td><span class="tag" style="color:${HW_COLOR[hw.kind]}">${fmt.esc(hw.class)}</span> <span class="muted" style="font-size:11px">${fmt.esc(hw.kind)}</span></td>
-        <td class="num">${fmt.sci(hw.joulesPerOp, 1)}</td>
-        <td class="num ${dec < 3 ? "up" : dec > 6 ? "down" : ""}">${fmt.num(dec, 2)}</td>
-        <td style="width:110px"><div class="gene-track"><i style="width:${w}%;background:${dec < 3 ? css("--up", "#2dd4a7") : dec > 6 ? css("--down", "#f4526b") : css("--amber", "#f5a524")}"></i></div></td>
-      </tr>`;
-    }).join("");
+    $("floorBody").innerHTML = HARDWARE.map((hw) => `<tr>
+      <td><span class="tag" style="color:${HW_COLOR[hw.kind]}">${fmt.esc(hw.class)}</span> <span class="muted" style="font-size:11px">${fmt.esc(hw.kind)}</span></td>
+      <td class="num">${fmt.sci(hw.joulesPerOp, 1)}</td>
+      <td><span class="tag amber">catalogue assumption</span></td>
+    </tr>`).join("");
   }
 
   // ====================================================================
@@ -1185,7 +1752,7 @@
       <td style="font-size:11px">${fmt.esc((WORKLOADS.find((w) => w.id === p.workloadId) || {}).name || p.workloadId)}</td>
       <td class="num ${p.magicBudget ? "violet" : "muted"}">${p.magicBudget}</td>
       <td class="num">${fmt.int(p.requestedSeconds * p.nodeCount)}</td>
-      <td><span class="tag ${p.status === "settled" ? "up" : p.status === "rejected" ? "down" : p.status === "running" ? "accent" : ""}">${p.status}</span></td>
+      <td><span class="tag ${p.status === "settled" ? "up" : p.status === "rejected" ? "down" : p.status === "running" ? "accent" : ""}">${p.status === "signed" ? "sealed demo" : p.status}</span></td>
     </tr>`).join("") : '<tr><td colspan="6" class="empty">no plans</td></tr>';
 
     $("auditBody").innerHTML = exec.auditLog.slice(0, 24).map((e) => `<tr>
@@ -1194,7 +1761,7 @@
       <td class="wrap" style="font-size:11px">${fmt.esc(e.detail)}</td>
       <td class="mono muted" style="font-size:10px">${fmt.esc(e.prev.slice(0, 4))}→${fmt.esc(e.hash.slice(0, 6))}</td>
     </tr>`).join("") || '<tr><td colspan="4" class="empty">chain empty</td></tr>';
-    $("chainNote").textContent = s.chain.ok ? "verified — every entry commits to the last" : `BROKEN at #${s.chain.brokenAt}`;
+    $("chainNote").textContent = s.chain.ok ? "locally consistent — not externally authenticated" : `BROKEN at #${s.chain.brokenAt}`;
 
     $("densityBody").innerHTML = [1, 2, 3, 4, 5, 6, 7].map((n) => {
       const d = exec.densityAt(n);
@@ -1217,7 +1784,7 @@
     const grants = $("planGrants").value.trim();
     $("planPreview").innerHTML = `
       <dt>Magic budget t</dt><dd class="${w.magicBudget ? "violet" : ""}">${w.magicBudget}</dd>
-      <dt>Classical emulation cost</dt><dd>${w.magicBudget ? "9^" + w.magicBudget + " = " + fmt.sci(Substrate.magicMultiplier(w.magicBudget)) : "1 — free"}</dd>
+      <dt>Illustrative emulation factor</dt><dd>${w.magicBudget ? "9^" + w.magicBudget + " = " + fmt.sci(Substrate.magicMultiplier(w.magicBudget)) : "1× baseline — not zero compute cost"}</dd>
       <dt>Node-seconds requested</dt><dd>${fmt.int(secs * nodes)}</dd>
       <dt>Egress</dt><dd class="${grants ? "amber" : "up"}">${grants ? fmt.esc(grants) : "deny all — no network device"}</dd>
       <dt>Settlement granularity</dt><dd>1 second</dd>
@@ -1227,7 +1794,7 @@
   function renderPlacements() {
     const plan = ui.selectedPlan ? exec.plans.find((p) => p.id === ui.selectedPlan) : null;
     if (!plan || plan.status !== "signed") {
-      $("placeBody").innerHTML = '<tr><td colspan="8" class="empty">sign a plan to see placements</td></tr>';
+      $("placeBody").innerHTML = '<tr><td colspan="8" class="empty">seal a demo plan to see placements</td></tr>';
       return;
     }
     const places = exec.place(plan, { limit: 6 });
@@ -1309,15 +1876,18 @@
           <dt>Coherence multiplier</dt><dd>${fmt.x(q.coherenceMultiplier)}</dd>
           <dt>Basket value</dt><dd class="accent">${fmt.usd(q.price)}/hr</dd>
           <dt>Premium over parts</dt><dd class="${sgn(q.premium)}">${fmt.usd(q.premium)}/hr</dd>
-          <dt>Realised bisection</dt><dd>${fmt.num(q.bisection, 1)} of ${fmt.num(q.idealBisection, 1)}</dd>
-          <dt>Worst-case hops</dt><dd>${isFinite(q.diameter) ? q.diameter : "disconnected"}</dd>
+          <dt>Induced level-1 edges</dt><dd>${fmt.int(q.inducedEdges)}</dd>
+          <dt>Edge-coherence proxy</dt><dd>${fmt.num(q.edgeCoherence, 1)} normalised units</dd>
+          <dt>Graph components</dt><dd>${fmt.int(g.components)}</dd>
+          <dt>Certified diameter</dt><dd>${g.certifiedDiameter == null ? "not connected" : g.certifiedDiameter}</dd>
+          <dt>Minimum induced degree</dt><dd>${fmt.int(g.minInducedDegree)}</dd>
           <dt>Effective capacity</dt><dd>${fmt.big(q.effectiveTflops)} TF</dd>
         </dl>
         <hr class="sep">
-        <div class="note ${q.coherence > 0.6 ? "" : "amber"}"><b>Structural guarantees</b> — theorems about the shape you hold, not an SLA someone promises:
-          max ${g.maxHops} hops · ${g.disjointPaths} disjoint path${g.disjointPaths === 1 ? "" : "s"} ·
-          ${g.crashTolerance} crash faults · ${g.byzantineTolerance} Byzantine ·
-          ${g.tableFree ? "table-free routing" : "routing needs a table at this coherence"}.
+        <div class="note ${g.connected ? "" : "amber"}"><b>Computed induced-graph facts</b> — not availability, throughput, or fault-tolerance SLAs:
+          ${g.connected ? "connected" : "disconnected"} · ${g.components} component${g.components === 1 ? "" : "s"} ·
+          ${g.certifiedDiameter == null ? "no finite whole-basket diameter" : "diameter " + g.certifiedDiameter} ·
+          adjacency is computed directly from addresses.
           ${q.coherence < 0.6 ? "<br><br>Your positions are scattered. Check the swap book on the Fabric page — defragmenting costs no cash and both sides gain." : ""}
         </div>` : '<div class="empty">no quote</div>';
     } else {
@@ -1339,13 +1909,13 @@
   // ====================================================================
 
   function renderAssets() {
-    const prof = registry.liquidityProfile();
+    const prof = registry.marketBreadthProfile();
     const U = HolotradeUOR.UOR;
 
     $("assetStats").innerHTML = [
-      tile("Assets registered", fmt.int(prof.count), "every listed node is a smart asset", "accent"),
-      tile("Mean co-volume", fmt.num(prof.meanCoVolume, 3), "|orbit| / max orbit"),
-      tile("Deep / bilateral", `${prof.bands.deep} / ${prof.bands.bilateral}`, `${prof.bands.liquid} liquid · ${prof.bands.thin} thin`),
+      tile("Assets registered", fmt.int(prof.count), "every listed node has a typed reference", "accent"),
+      tile("Mean policy mobility", fmt.num(prof.meanMarketBreadthScore, 3), "configured estimate · not observed liquidity"),
+      tile("Broad / site-bound", `${prof.bands.broad} / ${prof.bands["site-bound"]}`, `${prof.bands["multi-region"]} multi-region · ${prof.bands.restricted} restricted`),
       tile("Canonical cells", fmt.int(U.canonicalCells), "40 × 1,296 = |Aut(W(3,3))|", "violet"),
     ].join("");
 
@@ -1357,23 +1927,20 @@
     ].join("");
 
     drawBars($("liquidityCanvas"), [
-      { label: "deep", value: prof.bands.deep, color: css("--up", "#2dd4a7") },
-      { label: "liquid", value: prof.bands.liquid, color: css("--accent", "#38bdf8") },
-      { label: "thin", value: prof.bands.thin, color: css("--amber", "#f5a524") },
-      { label: "bilateral", value: prof.bands.bilateral, color: css("--down", "#f4526b") },
+      { label: "broad", value: prof.bands.broad, color: css("--up", "#2dd4a7") },
+      { label: "multi", value: prof.bands["multi-region"], color: css("--accent", "#38bdf8") },
+      { label: "restricted", value: prof.bands.restricted, color: css("--amber", "#f5a524") },
+      { label: "site-bound", value: prof.bands["site-bound"], color: css("--down", "#f4526b") },
     ]);
 
-    $("constraintBody").innerHTML = Object.entries(HolotradeUOR.CONSTRAINT_WEIGHT).map(([k, wgt]) => {
-      const stab = Math.min(U.autOrder, U.normaliserOrder * wgt);
-      const orbit = Math.max(1, Math.round(U.autOrder / stab));
-      const cv = orbit / (U.autOrder / U.normaliserOrder);
-      const band = HolotradeUOR.liquidityBand(cv);
+    $("constraintBody").innerHTML = Object.entries(HolotradeUOR.POLICY_MOBILITY_SCORE).map(([k, score]) => {
+      const breadth = Math.round(U.sylowChoices * score);
+      const band = HolotradeUOR.marketBreadthBand(score);
       return `<tr>
         <td class="mono">${fmt.esc(k)}</td>
-        <td class="num">×${wgt}</td>
-        <td class="num">${orbit}</td>
-        <td class="num">${fmt.num(cv, 3)}</td>
-        <td><span class="tag ${band === "deep" ? "up" : band === "bilateral" ? "down" : "amber"}">${band}</span></td>
+        <td class="num">${fmt.num(score, 3)}</td>
+        <td class="num">${breadth} / ${U.sylowChoices}</td>
+        <td><span class="tag ${band === "broad" ? "up" : band === "site-bound" ? "down" : "amber"}">${band}</span></td>
       </tr>`;
     }).join("");
 
@@ -1388,9 +1955,9 @@
     if (anchorNode) {
       const sh = registry.shellFrom(anchorNode);
       const rows = [
-        ["identity", "self", sh.counts.identity, sh.ratios.identity, sh.expectedRatios.identity],
-        ["intersecting", "collinear — 1 hop", sh.counts.intersecting, sh.ratios.intersecting, sh.expectedRatios.intersecting],
-        ["disjoint", "2 hops via one of μ=4 relays", sh.counts.disjoint, sh.ratios.disjoint, sh.expectedRatios.disjoint],
+        ["identity", "self", sh.counts.identity, sh.ratios.identity, sh.geometryRatios.identity],
+        ["intersecting", "collinear — 1 hop", sh.counts.intersecting, sh.ratios.intersecting, sh.geometryRatios.intersecting],
+        ["disjoint", "2 hops via one of μ=4 relays", sh.counts.disjoint, sh.ratios.disjoint, sh.geometryRatios.disjoint],
       ];
       $("shellBody").innerHTML = rows.map(([name, note, n, obs, exp]) => `<tr>
         <td><b>${name}</b><div class="muted" style="font-size:10.5px">${note}</div></td>
@@ -1408,11 +1975,12 @@
     const r = $("tpsRange");
     if (!r.dataset.bound) { r.dataset.bound = "1"; r.addEventListener("input", () => { ui.tps = Math.pow(10, parseFloat(r.value)); renderCapacity(); }); }
     const cap = HolotradeUOR.venueCapacity(ui.tps);
+    const tx = cap.illustrativeTransforms;
     $("capacityStats").innerHTML = [
       tile("Transaction rate", fmt.big(cap.tps) + " TPS", "drag the slider", "accent"),
-      tile("Conjugacy cadence", fmt.sci(cap.conjugacyCadence) + "/s", `× ${fmt.int(cap.cadencePrefactor)} = k³ = j(i), the modular j-invariant at τ = i`),
-      tile("Logical rate", fmt.sci(cap.logicalRate) + "/s", "27/80 cap — CSS [[240,81,4,3]]₃", "violet"),
-      tile("Coherence blocks", fmt.sci(cap.coherenceBlocks) + "/s", `settlement floor ${cap.settlementFloorMs} ms = h(E₈) ms`),
+      tile("Conjugacy-scaled display", fmt.sci(tx.conjugacyScaledRate) + "/s", `input × ${fmt.num(tx.conjugacyScale, 0)} · illustrative only`),
+      tile("Logical-scaled display", fmt.sci(tx.logicalScaledRate) + "/s", `input × ${fmt.num(tx.logicalScale, 4)} · not a ceiling`, "violet"),
+      tile("Full reference scan", fmt.num(cap.fullCellScanSeconds * 1000, 3) + " ms", "51,840 references ÷ supplied TPS"),
     ].join("");
   }
 
@@ -1423,24 +1991,22 @@
   function renderReceipts() {
     const rs = market.receipts;
     const substrate = rs.filter((r) => r.lane === "substrate");
-    const clean = rs.filter((r) => r.verdictOk).length;
-    const meanCF = substrate.length ? substrate.reduce((a, r) => a + r.contextualFraction, 0) / substrate.length : 0;
 
     $("receiptStats").innerHTML = [
-      tile("Receipts", fmt.int(rs.length), `${clean} attested clean`, "accent"),
-      tile("Substrate lane", fmt.int(substrate.length), `${rs.length - substrate.length} Clifford`),
-      tile("Mean contextual fraction", substrate.length ? fmt.num(meanCF, 4) : "—", "target 0.1000 = (40−36)/40", Math.abs(meanCF - 0.1) < 0.012 && substrate.length ? "up" : ""),
-      tile("KS budget", "36 / 40", "any classicalising intervention moves an integer", "violet"),
+      tile("Quote receipts", fmt.int(rs.length), "issued at simulated fills", "accent"),
+      tile("Evidence mode", "SYNTHETIC", "not execution or delivery evidence", "amber"),
+      tile("Substrate-labelled", fmt.int(substrate.length), "model-generated contextual samples"),
+      tile("Clifford-labelled", fmt.int(rs.length - substrate.length), "classification only · no verification", "violet"),
     ].join("");
 
-    $("receiptNote").textContent = `${rs.length} settled`;
+    $("receiptNote").textContent = `${rs.length} simulated quote samples`;
     $("receiptBody").innerHTML = rs.length ? rs.slice(0, 120).map((r) => `<tr class="clickable" data-node="${fmt.esc(r.nodeId)}">
       <td class="mono" style="font-size:10.5px">${fmt.esc(r.id)}</td>
       <td class="mono">${fmt.esc(r.nodeId.slice(-12))}</td>
       <td class="mono muted">${fmt.esc(r.nodeAddress)}</td>
       <td><span class="tag ${r.lane === "substrate" ? "violet" : ""}">${r.lane}</span></td>
       <td class="num">${r.lane === "substrate" ? fmt.num(r.contextualFraction, 4) : "—"}</td>
-      <td><span class="tag ${r.verdictOk ? "up" : "down"}">${r.verdict}</span></td>
+      <td><span class="tag amber">${fmt.esc(r.verdict)}</span></td>
       <td class="num">${r.qty}</td>
       <td class="num">${fmt.usd(r.price, 3)}</td>
       <td class="num muted">${r.provenance ? r.provenance.generation : "—"}</td>
@@ -1460,25 +2026,25 @@
     $("docsBody").innerHTML = `
       <div class="card"><div class="card-head"><h3 class="card-title">What is actually being sold</h3></div>
         <div class="card-body">
-          <p>Selling "a VM node for an hour" is the obvious design and it is the wrong one, for three reasons that are all measurable.</p>
-          <p><b>1. The hour is a billing artefact, not a physical one.</b> It exists because provisioning a conventional VM takes minutes, so an hour is the smallest slice worth the scheduling overhead. A microVM boots in ~171 ms (p50; p99 178 ms, measured on Firecracker over deliberately pessimistic rotational storage). Once the unit boots in under a fifth of a second, the hour has no physical justification left.</p>
-          <p><b>2. An hour cannot express the thing that actually varies.</b> Grid prices move every five minutes and go negative at 3 a.m. on ERCOT. If your settlement granularity is an hour you have thrown the signal away before you can price it. Per-second energy pricing <em>requires</em> a sub-second execution unit or it is theatre.</p>
-          <p><b>3. "A node for an hour" is not auditable.</b> You cannot prove what ran on it, against which artefacts, under which grants. A signed execution plan can: it names the artefact digests, the egress grants, the secret references and the validity window <em>before</em> anything boots, and the audit log chains every event to the last.</p>
+          <p>Selling only "a VM node for an hour" hides execution detail. This prototype makes three product hypotheses explicit so they can be measured rather than smuggled into one opaque rate.</p>
+          <p><b>1. The hour is a billing convention.</b> This simulator declares a 171.5 ms median and 178 ms p99 cold-start distribution so boot overhead can be itemised. Those are model assumptions, not measurements of this host or a portable Firecracker benchmark.</p>
+          <p><b>2. An hour hides time-varying inputs.</b> Energy and congestion can change inside a quote horizon. A node-second ledger can preserve the modeled interval used for delivery while still presenting hourly-equivalent quotes for comparison. Boot time and settlement granularity are independent policy choices.</p>
+          <p><b>3. "A node for an hour" does not state execution intent.</b> This prototype plan names declared artifact digests, egress grants, secret references and a validity window before simulated launch. Its local integrity seal detects edits. It does not fetch or hash artifact bytes, sign the plan cryptographically, or remotely attest a host.</p>
           <div class="note"><b>So the atomic unit is the node-second and the contract is the execution plan.</b><br>
             <b>asset</b> — the node: durable, has a genome and a health record, is what you lease or own.<br>
-            <b>contract</b> — the plan: signed, content-addressed, scoped, time-boxed, and tradeable <em>before</em> it runs.<br>
-            <b>unit</b> — the node-second: what settles, metered against real energy at the second it was drawn.</div>
+            <b>contract</b> — the plan: demo-sealed, content-bound, scoped, and time-boxed <em>before</em> the simulated run.<br>
+            <b>unit</b> — the node-second: what settles against the seeded energy model in this demo.</div>
         </div></div>
 
       <div class="card"><div class="card-head"><h3 class="card-title">The price</h3><span class="card-note">P = P₀ × E × G × D × H × Q × L</span></div>
         <div class="card-body">
           <p>Multiplicative rather than additive, and that is a real decision: it keeps the terms independent, keeps every one auditable on its own line, and — once each is clamped — stops any single factor driving the price to zero or infinity on its own. The buyer sees the full decomposition on every quote. There is no opaque market rate.</p>
           <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Term</th><th>What it prices</th><th>Where it comes from</th></tr></thead><tbody>
-            <tr><td class="mono"><b>E</b></td><td>Energy</td><td>Live wholesale $/MWh at that site this second, PUE-adjusted, through a clamped power law so an operator passes through most of a move and none of a tail.</td></tr>
+            <tr><td class="mono"><b>E</b></td><td>Energy</td><td>Seeded simulated $/MWh at that site for the current tick, PUE-adjusted through a clamped power law.</td></tr>
             <tr><td class="mono"><b>G</b></td><td>Genetics</td><td>Specialisation on <em>this</em> class × realised fitness × provenance depth. Never a nameplate figure.</td></tr>
             <tr><td class="mono"><b>D</b></td><td>Demand / wear</td><td>Two-sided. Premium above the target band, discount below. See below.</td></tr>
             <tr><td class="mono"><b>H</b></td><td>Health</td><td>Performance derate × Weibull reliability × correctable-error drift.</td></tr>
-            <tr><td class="mono"><b>Q</b></td><td>Quantum</td><td>Exactly 1 for anything classical, and always will be — the Clifford layer is the stabilizer formalism and Gottesman–Knill makes it polynomial-time anywhere. Only non-Clifford gates are scarce, at 9<sup>t</sup>.</td></tr>
+            <tr><td class="mono"><b>Q</b></td><td>Declared capability</td><td>1× is the classical baseline in this model. For declared non-Clifford budget <em>t</em>, 9<sup>t</sup> is an illustrative scarcity dial, not a universal runtime, memory, routing, or error-correction law.</td></tr>
             <tr><td class="mono"><b>L</b></td><td>Locality</td><td>Fabric distance, from one symplectic inner product per hop. Not an availability-zone heuristic.</td></tr>
           </tbody></table></div>
           <p style="margin-top:11px">The floor is <b>energy + maintenance reserve + capital recovery</b>. All three, because a discount that does not repay the machine is not a discount — it is a loss the operator has not noticed yet. The exchange refuses to clear below it.</p>
@@ -1487,41 +2053,41 @@
       <div class="card"><div class="card-head"><h3 class="card-title">Why D is two-sided</h3></div>
         <div class="card-body">
           <p>The naive version of a compute market prices scarcity only: busy node costs more. That leaves the cold half of the fleet idle, and an idle node still ages, still draws standby power, and still has to be serviced on the same calendar.</p>
-          <p>So D charges a premium above the band and pays a discount below it. The premium is superlinear because the wear term is — <b>thermal cycling, not duty cycle, is what actually kills silicon</b>, so a node swinging between idle and pinned wears faster than one held flat at the same average. The premium a popular node earns is not arbitrage; it is the maintenance reserve being funded by the people causing the wear.</p>
-          <p>The discount is not charity either. Demand migrates toward the cheap nodes, dispersion falls, cycling falls with it, and service events spread out instead of arriving in a clump you have to staff for.</p>
-          <div class="note"><b>The measured result:</b> utilisation Gini ≈ <b>0.083</b> with the balancer on against ≈ <b>0.164</b> with it off — a 50% reduction in fleet dispersion. Nothing in the loop pushes utilisation toward the band directly: a node's target is set by its price relative to the median of its own hardware class, and that price came from its utilisation. The band is where the loop settles, not where it is aimed. Toggle it yourself on the Balance page.</div>
+          <p>So D charges a premium above the band and pays a discount below it. <b>The seeded wear function assumes utilisation swings add more wear than steady load at the same average.</b> That makes the premium and maintenance reserve internally consistent with this model; it is not a measured silicon-lifetime result.</p>
+          <p>Within the simulation, demand migrates toward cheaper nodes, dispersion falls, and modelled service events spread out. Real fleet lifetime and staffing effects would require telemetry and validation.</p>
+          <div class="note"><b>Seeded simulation result:</b> utilisation Gini is lower with the balancer on than off in the supplied reproducible model. Nothing in the loop pushes utilisation toward the band directly: a node's target is set by its price relative to the median of its own hardware class, and that price came from its utilisation. Toggle it on the Balance page and watch the current run.</div>
         </div></div>
 
-      <div class="card"><div class="card-head"><h3 class="card-title">The network is the computer</h3></div>
+      <div class="card"><div class="card-head"><h3 class="card-title">Topology-aware capacity</h3></div>
         <div class="card-body">
-          <p>On W(3,3), routing a packet <em>is</em> applying a gate <em>is</em> addressing memory. That is an algebraic identity, not an analogy — and it is the fact every conventional compute marketplace is built to contradict. They sell you compute, then network, then egress, because in a von Neumann machine those are three things with three bills.</p>
-          <p><b>So you do not buy nodes, you buy shapes.</b> Forty scattered nodes and one complete cell have the same count and completely different value: the cell has diameter 2, bisection exactly 100 of 240 edges, and μ = 4 internally-disjoint paths between any non-adjacent pair, with no configuration. The scattered forty are forty computers and a network bill.</p>
-          <p>Coherence therefore enters price at the <em>basket</em> level, never the node level, because it is not a property any single node has. And the value is superlinear in coherence rather than linear in count — the last few edges that complete a cell are worth more than the first few, because they are what collapse the diameter and unlock the multipath.</p>
-          <div class="note"><b>The recursion closes.</b> A network of computers is a computer, so a network of <em>those</em> is a computer too. A composite implements exactly the interface a leaf implements — address, genome, health, utilisation, throughput — so there is <b>one order book and one pricing engine, applied at every level</b>. The engine cannot tell whether it is quoting a single GPU or a campus, and does not need to. An operator lists their whole H₃ campus as one instrument at level 4; a buyer at level 5 sees it as one line in the same book a single GPU appears in at level 1. The book is self-similar because the machine is.</div>
+          <p>In the exact level-1 W(3,3) address model, direct adjacency is one symplectic inner-product test and the software finds a relay by a bounded scan of forty points. That is a useful finite control primitive. It is not a claim that packet routing, gate application and memory addressing are already one deployed physical operation.</p>
+          <p><b>The model therefore prices shapes, not counts alone.</b> A complete 40-point graph has diameter 2, an explicit balanced cut of 100 among 240 edges, and four common neighbours for each non-adjacent pair. A partial holding receives only its own induced edges, components, minimum degree and connected diameter; it cannot borrow unowned relays.</p>
+          <p>Coherence enters the simulated price at basket level because it is not a property of one node. The superlinear multiplier is a market-design hypothesis about completing useful connectivity, not a theorem about bandwidth or deployed asset value.</p>
+          <div class="note scope"><b>Recursive instrument design.</b> The prototype can feed leaves and simulated composites through the same quote interface — address, modeled specialization, health, utilisation and throughput. This makes a self-similar instrument ladder testable, but does not yet build atomic composite reservation, recursive physical routing, or campus-level delivery and settlement.</div>
         </div></div>
 
       <div class="card"><div class="card-head"><h3 class="card-title">Defragmentation</h3></div>
         <div class="card-body">
-          <p>Trading fragments ownership. After a month of spot fills everyone holds confetti — a few points in each of forty cells — and the market's aggregate bisection has collapsed even though every individual position looks fine. That is a coordination failure with a clean fix: a swap book.</p>
-          <p>I give you my orphan in your cell, you give me yours in mine. No cash changes hands beyond a small adjustment for the difference in the two machines. It is disk defragmentation, except the value being recovered is bandwidth — and unlike a disk, both parties can be made strictly better off, which is why the swaps are voluntary. <b>A swap is only offered when both sides gain</b>, because otherwise nobody takes the other side.</p>
+          <p>Trading fragments ownership. After repeated spot fills the seeded portfolio can become confetti — a few points in each of many cells — and its induced-edge coherence falls even though every individual position looks fine. That is a coordination failure with a clean fix in the model: a swap book.</p>
+          <p>I give you my orphan in your cell, you give me yours in mine. The prototype uses a small modeled adjustment for machine differences and proposes a swap only when both parties gain induced-edge coherence. It is a topology-defragmentation mechanism; physical bandwidth, delivery and legal exchange remain unimplemented.</p>
         </div></div>
 
-      <div class="card"><div class="card-head"><h3 class="card-title">Value = orbit-stabilizer co-volume</h3></div>
+      <div class="card"><div class="card-head"><h3 class="card-title">Policy-estimated market breadth</h3></div>
         <div class="card-body">
-          <p>Every real-world constraint is a symmetry an asset does <em>not</em> have. A node pinned by data-residency law cannot be moved by the automorphisms that would move it; a bare-metal reservation is fixed harder still. Each constraint multiplies the stabiliser, and by orbit-stabilizer that divides the orbit — the set of positions at which a counterparty could take delivery.</p>
-          <p>So liquidity stops being a statistic gathered from the tape and becomes a computable property of the asset's own symmetry. That is the honest reason a residency-pinned node should not trade at the same price as an identical unpinned one, and it is a number you can check rather than a discount someone asserts.</p>
+          <p>Delivery policies constrain where an asset may remain eligible. The dashboard applies documented default mobility scores across forty reference regions and uses the tightest configured policy as a conservative estimate; it does not invent independence between policies.</p>
+          <p>This score is a policy assumption unless a venue supplies measured eligibility. It is not a subgroup order, an orbit-stabilizer co-volume, a price, or observed order-book liquidity.</p>
         </div></div>
 
       <div class="card"><div class="card-head"><h3 class="card-title">Honest scope</h3></div>
         <div class="card-body">
           <div class="note scope">
-            <b>Exact and computed here:</b> the W(3,3) geometry — SRG(40,12,2,4), 240 edges, 40 totally isotropic lines of 4 points, diameter 2, bisection 100 as the spectral bound (40/4)(12−2) met by an explicit cut; |Sp(4,𝔽₃)| = |W(E₆)| = 51,840; the fractal law 40ⁿ leaves at diameter 8n; the Landauer floor 2.64×10⁻¹⁹ J/cycle at 300 K from 58 syndrome qutrits × kT ln 3; the 9<sup>t</sup> magic cost; the venue capacity identities (×1728 cadence, 27/80 logical rate, 1/384 coherence blocks, h(E₈) = 30 ms floor). You can verify every one of these by running <code>node --test tests/core.test.js</code>.
+            <b>Exact and computed here:</b> the level-1 W(3,3) graph — SRG(40,12,2,4), 240 edges, diameter 2, and an explicit 20|20 cut of size 100; |Sp(4,𝔽₃)| = 51,840; 40<sup>n</sup> address leaves; and the recursive model diameter bound 16n−14. Partial baskets report exact induced edges, connectivity, components, diameter when connected, and minimum induced degree.
           </div>
           <div class="note scope">
-            <b>Modelled, not measured:</b> the fleet, the grid prices, the genomes, the wear, the order flow. This is a working simulation with a seeded PRNG so every run reproduces. Wire a real grid-price feed, real DCIM telemetry and a real inventory in place of <code>data/catalog.js</code> and the engines above it do not change.
+            <b>Modelled, not measured:</b> the fleet, grid prices, genomes, wear, order flow, J/op catalogue values, recursive fabric composition, policy mobility scores, and illustrative rate transforms. This is a seeded simulation; none of those displays is a live feed, benchmark, deployment ceiling, or SLA.
           </div>
           <div class="note scope">
-            <b>Asserted by the source program, not by this repo:</b> that W(3,3) is a candidate physical substrate, and the physics identifications that go with it. Holotrade does not depend on any of that being true. Everything it prices — the geometry, the routing rule, the code rate, the thermodynamic floor — is finite mathematics that holds regardless. The photonic hardware that would realise the quantum layer <b>does not exist</b>; what runs here is the classical Clifford emulation, which is polynomial-time and portable, and the quantum advantage stays a separately priced dial rather than a capability being claimed.
+            <b>Not built here:</b> a physical W(3,3) substrate, recursive product router, consensus protocol, fault-tolerance protocol, cryptographic plan signature, remote attestation, or quantum hardware. The finite level-1 graph calculations do not establish any of those systems.
           </div>
         </div></div>`;
   }
@@ -1541,6 +2107,15 @@
     renderHeader();
     const fn = RENDERERS[ui.view];
     if (fn) { try { fn(); } catch (err) { console.error("[render " + ui.view + "]", err); } }
+  }
+
+  let resizeFrame = 0;
+  function redrawAfterResize() {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = 0;
+      if (RENDERERS[ui.view]) render();
+    });
   }
 
   function renderHeader() {
@@ -1577,13 +2152,16 @@
   function step() {
     if (ui.paused) return;
     ui.tick++;
-    const dt = ui.speed;
-    ui.simSeconds += 30 * dt;
+    // One wall-clock tick advances one coherent simulation interval.  Every
+    // subsystem receives the same elapsed duration in its native unit.
+    const stepSeconds = 30 * ui.speed;
+    const stepHours = stepSeconds / 3600;
+    ui.simSeconds += stepSeconds;
 
-    energy.tick(30 * dt);
-    pricing.applyDemandResponse((1 / 60) * dt, { workloadId: ui.workload });
-    fleet.tick((1 / 60) * dt);
-    exec.meter(dt).forEach((r) => {
+    energy.tick(stepSeconds);
+    pricing.applyDemandResponse(stepHours, { workloadId: ui.workload });
+    fleet.tick(stepHours);
+    exec.meter(stepSeconds).forEach((r) => {
       if (r) toast("Plan settled", `${r.nodeSeconds.toFixed(0)} node-s · ${fmt.usd(r.cost, 4)} · ${fmt.num(r.kwh, 5)} kWh`, "up");
     });
     market.ambientFlow(ui.instrument);
@@ -1622,7 +2200,10 @@
     tkw.value = ui.workload;
     tkw.addEventListener("change", () => { ui.workload = tkw.value; render(); });
 
-    $("tkQty").addEventListener("input", renderTicketPreview);
+    $("tkQty").addEventListener("input", () => {
+      renderTicketPreview();
+      if (ui.view === "exchange") renderDepth();
+    });
     $("tkAnchor").addEventListener("change", () => {
       const v = $("tkAnchor").value.trim();
       ui.anchor = v ? Substrate.parseAddress(v) : null;
@@ -1659,7 +2240,7 @@
         anchorAddress: ui.anchor,
       });
       ui.selectedPlan = p.id;
-      toast("Plan signed", `${p.id} · digest ${p.digest.slice(0, 12)}`, "up");
+      toast("Plan sealed (demo)", `${p.id} · integrity digest ${p.digest.slice(0, 12)} · not a cryptographic signature`, "up");
       render();
     });
     ["planSeconds", "planNodes", "planGrants"].forEach((id) =>
@@ -1706,13 +2287,17 @@
     const mq = window.matchMedia("(max-width: 900px)");
     const applyMq = () => $("menuBtn").classList.toggle("hidden", !mq.matches);
     applyMq(); mq.addEventListener("change", applyMq);
-    window.addEventListener("resize", () => { if (RENDERERS[ui.view]) render(); });
+    window.addEventListener("resize", redrawAfterResize, { passive: true });
+    if (window.ResizeObserver) {
+      const layoutObserver = new ResizeObserver(redrawAfterResize);
+      layoutObserver.observe($("main"));
+    }
 
     // warm the simulation so the first frame is not a cold fleet
     for (let i = 0; i < 220; i++) {
       energy.tick(30);
-      pricing.applyDemandResponse(1 / 60, { workloadId: ui.workload });
-      fleet.tick(1 / 60);
+      pricing.applyDemandResponse(30 / 3600, { workloadId: ui.workload });
+      fleet.tick(30 / 3600);
       if (i % 4 === 0) market.ambientFlow("spot");
     }
     market.seedBooks();

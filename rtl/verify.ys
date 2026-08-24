@@ -1,31 +1,32 @@
 # ======================================================================
-# Formal equivalence proof for the Holotrade routing primitive.
+# Formal equivalence proof for the complete Holotrade admission primitive.
 #
-#   py -3 -c "from yowasp_yosys import run_yosys as r; r(['-s','rtl/verify.ys'])"
+#   npm run verify:rtl
 #
-# Two independently written implementations of the symplectic form are
-# proved equal over the ENTIRE 16-bit input space by SAT -- not sampled,
-# not simulated. If any of the 65,536 address pairs disagreed on either
-# the form or the adjacency bit, the miter would be satisfiable and this
-# script would fail.
+# Two independently written implementations are proved equal over the
+# ENTIRE 25-bit input space by SAT -- not sampled, not simulated. That is
+# 2^25 = 33,554,432 combinations of addresses, magic budget, and policy
+# predicates. The miter covers form, adjacency, address rejection, refusal
+# priority, admission, and ray cost. Cryptographic predicate generation is
+# explicitly outside this circuit; the RTL consumes those predicates.
 #
-# This is the "address is route" claim, discharged as a proof obligation
-# rather than asserted.
+# This discharges address validity, direct adjacency, migration-cost and
+# refusal-policy equivalence. It is not a proof of a complete router.
 # ======================================================================
 
 read_verilog rtl/holotrade_admit.v
 
-# --- gold: the behavioural reference (integer arithmetic, one modulo)
-hierarchy -top w33_form_golden
+# --- gold: independent behavioural full-gate reference
+hierarchy -top holotrade_admit_golden
 proc; opt; flatten; opt -full
-rename w33_form_golden gold
+rename holotrade_admit_golden gold
 design -stash gold
 
-# --- gate: the staged F_3 implementation (the one we would ship)
+# --- gate: staged F_3 implementation plus admission policy
 read_verilog rtl/holotrade_admit.v
-hierarchy -top w33_form
+hierarchy -top holotrade_admit
 proc; opt; flatten; opt -full
-rename w33_form gate
+rename holotrade_admit gate
 design -stash gate
 
 # --- miter and prove
@@ -35,7 +36,6 @@ miter -equiv -flatten -make_assert gold gate miter
 hierarchy -top miter
 proc; opt -full
 
-# Exhaustive: 8 bits of u times 8 bits of v is the whole space.
 # -verify makes an unproved property a hard failure.
 sat -verify -prove-asserts -show-ports miter
 

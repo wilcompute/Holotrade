@@ -1,274 +1,199 @@
-# Holotrade
+# HoloTrade
 
-**An exchange for compute.** Not a price list for VMs — a venue where the unit is the
-node-second, the contract is a signed execution plan, and the price of every machine
-decomposes, on screen, into six auditable terms.
+HoloTrade is a working research prototype for **topology-aware compute execution and settlement**. It connects a transparent quote to named capacity, a scoped execution plan, a hardware-checkable admission decision, per-second metering, and a receipt.
+
+The core product idea is simple: do not sell an anonymous VM-hour. Quote the machine that will run the work, expose why it costs what it costs, reserve a bounded execution contract, and reconcile what was delivered.
+
+```text
+inventory → quote → depth/impact → plan → admit → execute → meter → receipt
+                         ↘ topology-aware placement ↗
+```
+
+This repository is intentionally honest about maturity. It contains exact finite mathematics, exhaustive formal checks, deterministic simulation, and prototype software. It does **not** yet contain a production exchange, remote attestation, multi-node reservation ledger, physical Holonet, or deployed quantum hardware.
+
+## Run the demo
 
 ```bash
-npm run serve      # http://localhost:8080
-npm test           # 45 regression tests
-npm run verify:rtl # SAT-prove the routing primitive
+npm run serve
+# open http://127.0.0.1:8080
 ```
 
-No build step. No dependencies at runtime. Vanilla HTML, CSS and JavaScript.
+The site has no frontend build step and no runtime package dependencies. It starts from a deterministic seed, so reloading restores the same fleet and market. Use [DEMO.md](DEMO.md) for a short live walkthrough.
 
-**Demoing it?** [`DEMO.md`](DEMO.md) is a 6-minute walkthrough script.
-**The full argument** is in [`docs/holotrade.pdf`](docs/holotrade.pdf) — 29 pages,
-written to be read by an investor with no technical background and by an engineer
-who wants to check the arithmetic.
+For a pre-demo check:
 
----
+```bash
+npm test
+npm run verify:rtl
+npm run synth:rtl
+npm run experiment:balancer
+npm run paper
+```
 
-## Why not just rent VMs by the hour?
+## What is strongest today
 
-Selling "a node for an hour" is the obvious design and it is the wrong one, for three
-reasons that are all measurable.
+### 1. A quote the buyer can inspect
 
-**1. The hour is a billing artefact, not a physical one.** It exists because provisioning
-a conventional VM takes minutes, so an hour is the smallest slice worth the scheduling
-overhead. A microVM boots in ~171 ms (p50; p99 178 ms, measured on Firecracker over
-deliberately pessimistic rotational storage). Once the unit boots in under a fifth of a
-second, the hour has no physical justification left.
+Each node quote decomposes as
 
-**2. An hour cannot express the thing that actually varies.** Grid prices move every five
-minutes and go negative at 3 a.m. on ERCOT. If your settlement granularity is an hour you
-have thrown the signal away before you can price it. Per-second energy pricing *requires* a
-sub-second execution unit or it is theatre.
+\[
+P=P_0\,E\,G\,D\,H\,Q\,L,
+\]
 
-**3. "A node for an hour" is not auditable.** You cannot prove what ran on it, against
-which artefacts, under which grants. A signed execution plan can: it names the artefact
-digests, the egress grants, the secret references and the validity window *before* anything
-boots, and the audit log chains every event to the last.
+where the terms represent modeled energy, learned specialization, demand balancing, health, declared workload capability, and locality. The UI shows every factor, the operating floor, available depth, expected fill, VWAP, slippage, and the price/throughput Pareto frontier.
 
-So:
+The quote is an **hourly-equivalent comparison rate**. Execution settles in node-seconds. Those are deliberately different concepts: the first makes heterogeneous offers comparable; the second is the delivered unit.
 
-| | |
+### 2. A complete single-node execution loop
+
+The prototype can:
+
+- create a content-bound plan with artifacts, grants, a nonce, validity window, price cap, locality anchor, duration, and workload class;
+- rank named nodes by total modeled cost;
+- refuse unsupported or invalid work with a specific reason;
+- launch one simulated microVM;
+- recheck the live price cap while running;
+- clip the final meter interval so it never over-delivers or over-bills;
+- emit a reconciled receipt and verify every body and link in the checksum chain.
+
+The current plan envelope is explicitly `DEMO_INTEGRITY_SEAL`: an unkeyed deterministic checksum for exercising lifecycle semantics. It is **not** a digital signature or remote attestation. Multi-node requests are refused until gang reservation and delivery exist, instead of multiplying one VM's bill and pretending several nodes ran.
+
+### 3. A topology-aware capacity model
+
+The level-1 substrate is the collinearity graph of \(W(3,3)\):
+
+| Exact invariant | Value |
+|---|---:|
+| points / totally isotropic lines | 40 / 40 |
+| degree | 12 |
+| edges | 240 |
+| strongly regular parameters | SRG(40,12,2,4) |
+| diameter | 2 |
+| full automorphism-group order | 51,840 |
+| exact balanced bisection | 100 |
+
+The bisection result is not just a formula in prose. `Substrate.BISECTION_LEFT` is an explicit 20-point cut with 100 crossing edges, and the spectral lower bound is also 100. Tests verify both sides of the certificate.
+
+For **partial** baskets, HoloTrade reports induced edges, connected components, minimum induced degree, and induced diameter. The historical 0–100 number is retained only as a clearly named normalized induced-edge coherence proxy; it is not called measured bisection bandwidth. A two-node basket cannot inherit a two-hop route through a relay it does not own.
+
+Direct adjacency is derived from the symplectic form on the addresses. The software finds a relay by a bounded scan of the 40 points. Congestion control, failed-link routing, and physical forwarding remain unbuilt.
+
+### 4. A reproducible balancing result
+
+The two-sided demand policy discounts cold capacity and prices hot capacity above it. In the frozen, paired simulation packet:
+
+| 64 paired seeds, 220 nodes, 500 one-minute steps | terminal utilization Gini |
+|---|---:|
+| balancer on | 0.06458, 95% CI [0.06043, 0.06874] |
+| balancer off | 0.16110, 95% CI [0.15455, 0.16764] |
+| paired relative reduction | **60.34%**, 95% CI [58.90%, 61.77%] |
+
+All 64 paired seeds improved. This is evidence about this simulator and policy, not a production utilization measurement and not proof of longer hardware life. Regenerate it with:
+
+```bash
+node experiments/balancer_ab.js --summary
+```
+
+The frozen summary and row digest are in [data/balancer_ab_64.json](data/balancer_ab_64.json).
+
+### 5. A formally checked admission circuit
+
+`rtl/holotrade_admit.v` implements the form, adjacency predicate, migration-ray output, canonical-address validation, and seven-way admission/refusal policy.
+
+The formal miter compares the complete implementation with an independently written behavioral reference over all \(2^{25}=33,554,432\) input assignments. It covers every output, illegal trits, the zero vector, noncanonical projective representatives, refusal priority, admission, form, adjacency, and ray cost.
+
+Current iCE40 synthesis reports:
+
+```text
+49 × SB_LUT4
+ 6 × SB_CARRY
+```
+
+That is synthesis evidence only. No place-and-route timing or deployable board integration is claimed. The `sig_ok` input is a policy predicate; the RTL does not implement Ed25519 or verify a software artifact.
+
+## Evidence labels
+
+HoloTrade uses scope labels because “working” means different things at different layers.
+
+| Label | What it means here |
 |---|---|
-| **asset** | the **node** — durable, has a genome and a health record, is what you lease or own |
-| **contract** | the **plan** — signed, content-addressed, scoped, time-boxed, tradeable *before* it runs |
-| **unit** | the **node-second** — what settles, metered against real energy at the second it was drawn |
+| **THEOREM / EXACT** | finite statement with a reproducible certificate or exhaustive enumeration |
+| **FORMAL** | equivalence or safety property checked over the complete declared input space |
+| **SYNTHESIZED** | technology mapping and cell count; no timing claim |
+| **REGRESSION** | executable software invariant tested in CI |
+| **SIMULATION** | deterministic modeled behavior, not field telemetry |
+| **PROTOTYPE** | end-to-end interaction exists but production trust/operations do not |
+| **DESIGN SKETCH** | interface or market concept whose state machine is not built yet |
 
----
+This distinction is load-bearing. A graph theorem is not a network SLA; a checksum is not a signature; a synthetic contextual sample is not attestation; a model coefficient is not a market measurement.
 
-## The price
+## What the website demonstrates
 
-```
-P  =  P₀ × E × G × D × H × Q × L
-```
+- **Exchange:** typed compute quotes, order-book depth, execution impact, slippage, and Pareto-efficient offers.
+- **Balance:** live two-sided policy behavior with a separately reproducible paired experiment.
+- **Fabric:** exact \(W(3,3)\) graph exploration, the bisection certificate, induced-basket connectivity, composition, and mutually beneficial defragmentation proposals.
+- **Execution:** plan creation, named placement, explicit refusal, deterministic boot estimate, node-second metering, price-cap halt, and checksum-chain verification.
+- **Fleet / Energy / Genetics:** the modeled state that feeds the quote, with seeded provenance and specialization.
+- **Evidence:** a visible boundary between exact, formal, synthesized, simulated, prototype, and unbuilt claims.
 
-Multiplicative, not additive — which keeps the terms independent, keeps each auditable on
-its own line, and (once each is clamped) stops any single factor driving the price to zero
-or infinity on its own. The buyer sees the full decomposition on every quote. There is no
-opaque "market rate".
+Fill-time market receipts are marked `SIMULATED_QUOTE_RECEIPT`. They bind the quote and provenance shown in the demo but do not claim a workload ran. Execution receipts are the separate delivery surface.
 
-| Term | Prices | Source |
-|---|---|---|
-| **E** — energy | live wholesale $/MWh at that site, this second, PUE-adjusted | clamped power law, so an operator passes through most of a move and none of a tail |
-| **G** — genetics | what the node's AI core has **learned** about your workload class | specialisation × realised fitness × provenance depth. Never a nameplate figure |
-| **D** — demand/wear | the balancer: premium above the target band, **discount below it** | two-sided; superlinear premium because thermal cycling is |
-| **H** — health | derate × Weibull reliability × correctable-error drift | a worn node should be visibly cheaper, not quietly slower |
-| **Q** — quantum | exactly **1** for anything classical, and always will be | Gottesman–Knill: the Clifford layer is polynomial-time anywhere. Only non-Clifford gates are scarce, at 9ᵗ |
-| **L** — locality | fabric distance from your data | one symplectic inner product per hop — not an availability-zone heuristic |
+## Recursive and research layers
 
-The **floor** is energy + maintenance reserve + capital recovery. All three, because a
-discount that does not repay the machine is not a discount — it is a loss the operator has
-not noticed yet. The exchange refuses to clear below it.
+An \(n\)-digit address namespace contains \(40^n\) leaves. Under the current software descent metric, equal-depth addresses have upper bound
 
-### The measured result
+\[
+d_n=2+16(n-1)=16n-14.
+\]
 
-The naive design prices scarcity only: busy node costs more. That leaves the cold half of
-the fleet idle, and an idle node still ages, still draws standby power, and still has to be
-serviced on the same calendar. So `D` charges a premium above the band and pays a discount
-below it.
+That bound now agrees with `fabricDistance` and has explicit witnesses in the tests. It remains a **recursive address model**, not the diameter of a constructed physical product graph.
 
-> **Utilisation Gini ≈ 0.083 with the balancer on, ≈ 0.164 with it off — a 50% reduction in
-> fleet dispersion.**
+Likewise, \(9^t\) is an illustrative declared-workload cost model. Gottesman–Knill establishes efficient classical simulation for stabilizer circuits; it does not make memory, routing, error correction, or all Clifford computation free, and it does not make \(9^t\) a universal runtime law.
 
-Nothing in the loop pushes utilisation toward the band directly. A node's target is set by
-its *price* relative to the median of its own hardware class, and that price came from its
-utilisation. The band is where the loop settles, not where it is aimed. Toggle it on the
-Balance page and watch the Gini climb.
+The E8-to-W33 refinement is a promising future topology compiler only after an explicit, complete certificate exists. The truncated external JSON previously considered for this repo is intentionally not imported.
 
-Why dispersion is the thing to minimise: **thermal cycling, not duty cycle, is what kills
-silicon.** A node held flat at 70% wears slower than one swinging between idle and pinned at
-the same average. An evenly loaded fleet does not merely use its capital better — it
-physically lasts longer, and its service events arrive spread out instead of in a clump you
-have to staff for.
+## Product boundary
 
----
+The most credible path is an **attested compute broker and reconciliation layer**:
 
-## The network is the computer
+1. normalize inventory, telemetry, and quotes;
+2. reserve a named capacity/SLO bundle;
+3. sign a canonical execution contract;
+4. run and meter it;
+5. bind evidence, output, invoice, and settlement into one receipt;
+6. optimize placement and defragmentation using measured topology;
+7. add forward/option semantics only after delivery windows, collateral, exercise, and default are implemented.
 
-On W(3,3) — the symplectic generalized quadrangle over 𝔽₃⁴, 40 points and 240 edges —
-routing a packet *is* applying a gate *is* addressing memory. That is an algebraic identity,
-not an analogy, and it is the fact every conventional compute marketplace is built to
-contradict. They sell you compute, then network, then egress, because in a von Neumann
-machine those are three things with three bills.
+The spot interaction is a prototype. Forward, option, lease, and supply screens are research/design surfaces, not a claim that a regulated venue or complete derivatives engine already exists.
 
-**So you do not buy nodes, you buy shapes.** Forty scattered nodes and one complete cell
-have the same count and completely different value:
+## Repository map
 
-| | scattered 40 | one cell |
-|---|---|---|
-| what it is | 40 computers + a network bill | **one** computer |
-| diameter | whatever the internet gives you | **2** |
-| bisection | ~0 | **exactly 100** of 240 edges — the spectral bound (40/4)(12−2), met by an explicit 20\|20 cut |
-| multipath | configure it | **μ = 4** internally-disjoint paths, free |
-
-Coherence therefore enters price at the **basket** level, never the node level, because it
-is not a property any single node has. And it is superlinear: the last few edges that
-complete a cell are worth more than the first few, because they are what collapse the
-diameter and unlock the multipath.
-
-### The recursion closes
-
-A network of computers is a computer, so a network of *those* is a computer too — the
-fractal substitution law `Hₙ`: 40ⁿ leaves at routing diameter 8n.
-
-A `Composite` implements exactly the interface a leaf `Node` implements — address, genome,
-health, utilisation, throughput — so **there is one order book and one pricing engine, and
-they apply at every level.** The engine cannot tell whether it is quoting a single GPU or a
-campus, and does not need to. An operator lists their whole H₃ campus as one instrument at
-level 4; a buyer at level 5 sees it as one line in the same book a single GPU appears in at
-level 1. The book is self-similar because the machine is. There is a test for it.
-
-| n | leaves | diameter | seats |
-|---|---|---|---|
-| 1 | 40 | 8 | a rack |
-| 4 | 2,560,000 | 32 | a city pilot |
-| 7 | 163,840,000,000 | **56** | everyone + every device |
-
-"Diameter 16" is not an SLA someone promises you and pays penalties for missing. It is a
-theorem about the shape you bought.
-
-### Defragmentation
-
-Trading fragments ownership. After a month of spot fills everyone holds confetti — a few
-points in each of forty cells — and the market's aggregate bisection has collapsed even
-though every individual position looks fine.
-
-The fix is a **swap book**: I give you my orphan in your cell, you give me yours in mine.
-No cash beyond a small adjustment for the difference in the two machines. It is disk
-defragmentation, except the value recovered is bandwidth — and unlike a disk, both parties
-can be made strictly better off. **A swap is only offered when both sides gain**, because
-otherwise nobody takes the other side.
-
----
-
-## Instruments
-
-Five, because the risks a compute buyer actually carries are five different risks. Only the
-first is a VM.
-
-| | tenor | what it is for |
-|---|---|---|
-| **Spot node-hour** | immediate | you need it now and accept today's price |
-| **Forward block** | 1–90 d | you need it in March and cannot carry an ERCOT heat dome |
-| **Burst option** | 1–30 d | you *might* need 400 nodes on launch day; you want the right, not the obligation |
-| **Genome lease** | 7–365 d | you want a **core that already knows your workload class** — priced on fitness, not silicon |
-| **Supply offer** | open | you own idle nodes and want the exchange to sell them |
-
-Spot node-hours are a commodity and commodities converge to marginal cost — which is
-exactly the floor. **Trained cores are not a commodity.** They are heterogeneous, their
-quality is observable, and their value compounds with use. That is where the spread lives.
-
-A genome lease states its own caveat on the quote: a leased core keeps specialising toward
-whatever *you* feed it. You are buying a starting point, not a frozen asset, and by the end
-of a long lease you will have changed the thing you rented.
-
----
-
-## Value = orbit-stabilizer co-volume
-
-Every real-world constraint is a symmetry an asset does *not* have. A node pinned by
-data-residency law cannot be moved by the automorphisms that would move it; a bare-metal
-reservation is fixed harder still. Each constraint multiplies the stabiliser, and by
-orbit-stabilizer that divides the orbit — the set of positions at which a counterparty could
-take delivery.
-
-So **liquidity is a computable property of the asset's own symmetry**, not a statistic
-gathered from the tape. That is the honest reason a residency-pinned node should not trade
-at the same price as an identical unpinned one, and it is a number you can check rather than
-a discount someone asserts.
-
-The address carries it: 2⁶⁴ = 40 (Sylow choice) × 1,296 (|N_G(P₃)|) × payload, and
-40 × 1,296 = 51,840 = |Aut(W(3,3))|. **An asset's identity and its position in the fabric
-are the same 64 bits** — no separate registry to go stale, no lookup to do.
-
----
-
-## The RTL
-
-The exchange's hot path is in `rtl/holotrade_admit.v`: the symplectic form, the adjacency
-test that *is* the routing decision, the migration price law, and the five-condition
-admission gate.
-
-```
-SAT proof finished - no model found: SUCCESS!
+```text
+index.html                  application shell and evidence labels
+css/styles.css              responsive visual system
+data/catalog.js             deterministic demo inventory
+data/balancer_ab_64.json    frozen paired simulation summary
+experiments/                reproducible modeled experiments
+js/substrate.js             exact level-1 geometry and address metric
+js/pricing.js               quote factors, floor, balancing policy
+js/market.js                depth, impact, matching simulation, quote receipts
+js/fabric.js                induced topology, coherence, swaps, composition
+js/execution.js             plan, admission, meter, delivery receipt, chain
+js/fleet.js                 hardware, health, utilization, provenance
+js/energy.js                simulated grid/carbon process
+js/genetics.js              specialization and lineage model
+js/uor.js                   64-bit object-reference codec and policy scores
+js/app.js                   browser orchestration and chart rendering
+rtl/holotrade_admit.v       admission/locality datapath + golden reference
+rtl/verify.ys               complete 2^25-output formal miter
+rtl/synth.ys                reproducible iCE40 synthesis
+tests/core.test.js          exact facts and engine contracts
+docs/holotrade.tex          paper source
+docs/holotrade.pdf          compiled paper
 ```
 
-Two independently written implementations of the form — one staged 𝔽₃ operators, one plain
-integer arithmetic with a single modulo — are proved equivalent **over the entire 16-bit
-input space** by SAT, not sampled and not simulated. Then `tests/core.test.js` closes the
-loop from the other side, checking the RTL's exact encoding against the W(3,3) graph the
-software builds, over all 1,600 ordered pairs. Proving gate ≡ gold is necessary and not
-sufficient: both could agree and both be wrong about the geometry.
+## Paper
 
-Synthesised to iCE40 HX8K: **39 × SB_LUT4 + 6 × SB_CARRY**. The whole routing and admission
-decision, in thirty-nine logic cells, with no table to build, distribute, converge or keep
-fresh.
+[docs/holotrade.pdf](docs/holotrade.pdf) develops the product argument, evidence taxonomy, topology certificate, pricing and execution model, paired simulation, formal hardware boundary, limitations, and primary-source bibliography.
 
-Timing is deliberately **not** reported. A cell count is a fact about a netlist; a frequency
-is a fact about a specific part after place-and-route, and this design has been neither
-placed nor routed.
-
----
-
-## Layout
-
-```
-index.html            twelve views, no build step
-css/styles.css        design system, dark-first, theme-aware
-data/catalog.js       seed data — sites, hardware, workloads, instruments
-js/substrate.js       W(3,3) geometry, addressing, routing, migration law, Landauer
-js/energy.js          per-second grid prices, carbon, thermodynamic floor
-js/fleet.js           nodes: hardware, genome, health, wear, lineage
-js/pricing.js         the six multipliers, the floor, the balancer feedback loop
-js/fabric.js          coherence, swap book, composition — the recursion
-js/genetics.js        lineage, fitness, breeding, drift forecasting
-js/uor.js             addresses, smart assets, co-volume, venue capacity
-js/execution.js       signed plans, admission gate, microVMs, per-second meter, audit chain
-js/market.js          order books, matching, instruments, receipts
-js/app.js             orchestration and rendering only — invents no quantities
-rtl/                  the routing primitive, its SAT proof, its synthesis script
-tests/core.test.js    45 tests: substrate facts and engine contracts
-docs/holotrade.tex    the full paper
-```
-
----
-
-## Honest scope
-
-**Exact and computed here.** The W(3,3) geometry — SRG(40,12,2,4), 240 edges, 40 totally
-isotropic lines of 4 points, diameter 2, bisection 100 as the spectral bound met by an
-explicit cut; |Sp(4,𝔽₃)| = |W(E₆)| = 51,840; the fractal law 40ⁿ at diameter 8n; the
-Landauer floor 2.64×10⁻¹⁹ J/cycle at 300 K from 58 syndrome qutrits × kT ln 3; the 9ᵗ magic
-cost; the venue capacity identities (×1728 cadence, 27/80 logical rate, 1/384 coherence
-blocks, h(E₈) = 30 ms floor). Run `npm test` and check every one.
-
-**Modelled, not measured.** The fleet, the grid prices, the genomes, the wear, the order
-flow. A working simulation with a seeded PRNG, so every run reproduces. Wire a real
-grid-price feed, real DCIM telemetry and a real inventory in place of `data/catalog.js` and
-the engines above it do not change.
-
-**Asserted by the source programme, not by this repo.** That W(3,3) is a candidate physical
-substrate, and the physics identifications that go with it. **Holotrade does not depend on
-any of that being true.** Everything it prices — the geometry, the routing rule, the code
-rate, the thermodynamic floor — is finite mathematics that holds regardless. The photonic
-hardware that would realise the quantum layer **does not exist**; what runs here is the
-classical Clifford emulation, which is polynomial-time and portable, and the quantum
-advantage stays a separately priced dial rather than a capability being claimed.
-
----
-
-MIT. Built on the W(3,3)–E₈ substrate programme.
+MIT licensed.

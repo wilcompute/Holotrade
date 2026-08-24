@@ -24,6 +24,7 @@
 const assert = require("node:assert/strict");
 const test = require("node:test");
 const path = require("node:path");
+const fs = require("node:fs");
 
 global.window = global;
 const root = path.resolve(__dirname, "..");
@@ -36,7 +37,9 @@ const { FabricMarket } = require(path.join(root, "js/fabric.js"));
 const { GeneticsEngine } = require(path.join(root, "js/genetics.js"));
 const U = require(path.join(root, "js/uor.js"));
 const { ExecutionEngine } = require(path.join(root, "js/execution.js"));
-const { Market } = require(path.join(root, "js/market.js"));
+const { Market, sweepAsks, paretoFrontier } = require(path.join(root, "js/market.js"));
+const { runExperiment } = require(path.join(root, "experiments/balancer_ab.js"));
+const { SECURITY_HEADERS, resolveRequestPath } = require(path.join(root, "scripts/serve.js"));
 
 function build(size = 200, seed = "test") {
   const energy = new EnergyEngine(catalog.DATACENTERS, seed + "-e");
@@ -131,16 +134,33 @@ test("the migration price law: a neighbour is cheaper than staying put", () => {
   assert.equal(S.migrationCost([3, 1], [11, 30]).pageBill, 9);
 });
 
-test("fractal scaling: 40^n leaves at diameter 8n", () => {
+test("recursive address model: 40^n leaves at a 16n-14 distance bound", () => {
   for (let n = 1; n <= 7; n++) {
     assert.equal(S.capacityAtLevel(n), Math.pow(40, n));
-    assert.equal(S.diameterAtLevel(n), 8 * n);
+    assert.equal(S.diameterAtLevel(n), 16 * n - 14);
   }
-  // level 7 seats humanity and every device with 56 hops worst case
-  assert.equal(S.diameterAtLevel(7), 56);
+  assert.equal(S.diameterAtLevel(1), 2, "the base cell keeps its exact diameter");
+  assert.equal(S.diameterAtLevel(7), 98);
   assert.ok(S.capacityAtLevel(7) > 1.6e11, "1.638e11 leaf slots at level 7");
   assert.equal(S.levelFor(8e9), 7, "8 billion people need level 7");
   assert.equal(S.levelFor(40), 1);
+  for (let n = 1; n <= 4; n++) {
+    const far = S.fabricDistance(Array(n).fill(0), Array(n).fill(1));
+    assert.equal(far.hops, S.diameterAtLevel(n), `metric witness attains level-${n} bound`);
+  }
+  assert.throws(() => S.parseAddress("03.bad.17.99"), /address/,
+    "malformed addresses are rejected rather than silently shortened");
+});
+
+test("the exact W(3,3) bisection has a machine-readable 20|20 certificate", () => {
+  const cert = S.bisectionCertificate();
+  assert.equal(cert.left.length, 20);
+  assert.equal(cert.right.length, 20);
+  assert.equal(new Set(cert.left.concat(cert.right)).size, 40);
+  assert.equal(cert.crossingEdges, 100);
+  assert.equal(cert.spectralLowerBound, 100);
+  assert.equal(cert.exact, true, "an explicit cut attains the spectral lower bound");
+  assert.equal(S.cutSize(cert.left), 100);
 });
 
 test("the Landauer floor is 58 syndrome qutrits at kT ln 3", () => {
@@ -149,10 +169,14 @@ test("the Landauer floor is 58 syndrome qutrits at kT ln 3", () => {
     `2.64e-19 J/cycle at 300 K, got ${floor300.toExponential(3)}`);
   // linear in temperature
   assert.ok(Math.abs(S.landauerFloorPerCycle(600) / floor300 - 2) < 1e-9);
-  // a modern accelerator sits 6-7 orders above it
-  const gpu = catalog.HARDWARE.find((h) => h.class === "GX-H");
-  const decades = S.thermodynamicDecades(gpu.joulesPerOp, 300);
-  assert.ok(decades > 3 && decades < 8, `plausible headroom, got ${decades.toFixed(2)}`);
+  const sameUnitProbe = floor300 * 1e6;
+  assert.ok(Math.abs(S.thermodynamicDecades(sameUnitProbe, 300) - 6) < 1e-9,
+    "the ratio is valid when numerator and denominator share the same functional cycle");
+  const { energy, fleet } = build(20, "units");
+  const node = fleet.nodes[0];
+  const dc = catalog.DATACENTERS.find((d) => d.id === node.dcId);
+  assert.equal(energy.decadesAboveFloor(node, dc), null,
+    "catalog J/op is not divided by modeled J/syndrome-cycle");
 });
 
 test("the magic dial is exactly 9^t", () => {
@@ -162,20 +186,27 @@ test("the magic dial is exactly 9^t", () => {
   assert.ok(S.magicMultiplier(20) > 1e19, "at t=20 no classical fleet can help");
 });
 
-test("venue capacity identities reproduce the substrate figures", () => {
+test("venue dashboard transforms keep units explicit", () => {
   const cap = U.venueCapacity(70e6);
-  assert.equal(cap.cadencePrefactor, 1728, "|Sp(4,3)|/h(E8) = 1728 = k^3 = j(i)");
-  assert.ok(Math.abs(cap.conjugacyCadence - 1.2096e11) / 1.2096e11 < 1e-6);
-  assert.ok(Math.abs(cap.logicalRate - 2.3625e7) / 2.3625e7 < 1e-6, "27/80 rate cap");
-  assert.ok(Math.abs(cap.coherenceBlocks - 182291.67) < 1, "TPS / 384");
-  assert.equal(cap.settlementFloorMs, 30, "h(E8) ms settlement floor");
-  assert.ok(Math.abs(cap.fullOrbitSeconds - 7.41e-13) / 7.41e-13 < 0.01);
+  assert.equal(cap.illustrativeTransforms.conjugacyScale, 1728);
+  assert.equal(cap.illustrativeTransforms.logicalScale, 27 / 80);
+  assert.equal(cap.illustrativeTransforms.coherenceScale, 1 / 384);
+  assert.equal(cap.fullCellScanSeconds, 51840 / 70e6,
+    "51,840 transactions divided by tx/s has units of seconds");
+  assert.equal(cap.fullOrbitSeconds, cap.fullCellScanSeconds, "legacy name keeps corrected units");
+  assert.equal(Object.hasOwn(cap, "settlementFloorMs"), false,
+    "a dimensionless Coxeter number is not relabelled as milliseconds");
 });
 
-test("UOR address space factors as 40 x 1296 = |Aut(W(3,3))|", () => {
+test("UOR uses an exact uint64 mixed-radix codec over 51,840 cells", () => {
   assert.equal(U.UOR.sylowChoices * U.UOR.normaliserOrder, 51840);
   assert.equal(U.UOR.canonicalCells, S.CONST.autOrder);
-  // payload is computed, not quoted
+  assert.equal(U.UOR.addressSpaceSize, 1n << 64n);
+  assert.equal(
+    U.UOR.completePayloadBands * BigInt(U.UOR.canonicalCells) + BigInt(U.UOR.finalPayloadBandCells),
+    U.UOR.addressSpaceSize,
+    "the non-dividing final band is represented exactly"
+  );
   assert.ok(Math.abs(U.UOR.payloadBits - (64 - Math.log2(51840))) < 1e-9);
   // and the rank-3 shell sums to the point count
   assert.equal(U.SHELL.self + U.SHELL.adjacent + U.SHELL.distant, 40);
@@ -188,6 +219,13 @@ test("UOR addresses round-trip and classify by the rank-3 relation", () => {
   assert.equal(a.cell, b.cell, "deterministic");
   assert.ok(a.cell < 51840, "inside the canonical cell space");
   assert.match(a.toHex(), /^uor:[0-9a-f]{16}$/);
+  for (const raw of [0n, 1n, (1n << 32n) + 17n, (1n << 64n) - 1n]) {
+    const decoded = U.UORAddress.fromBigInt(raw);
+    assert.equal(decoded.toBigInt(), raw);
+    assert.equal(U.UORAddress.fromHex(decoded.toHex()).toBigInt(), raw);
+  }
+  assert.throws(() => U.UORAddress.fromHex("uor:123"), /must match/);
+  assert.throws(() => U.UORAddress.fromBigInt(1n << 64n), /must be in/);
 
   const rels = new Set();
   for (let i = 0; i < 40; i++) {
@@ -195,6 +233,17 @@ test("UOR addresses round-trip and classify by the rank-3 relation", () => {
   }
   assert.deepEqual([...rels].sort(), ["disjoint", "identity", "intersecting"],
     "rank 3 means exactly three relations exist");
+});
+
+test("asset mobility is labelled as policy score, not orbit-stabilizer arithmetic", () => {
+  const asset = new U.SmartAsset({ id: "regulated-gpu", kind: "node", policies: ["data-residency", "gpu-affinity"] });
+  const card = asset.describe();
+  assert.equal(card.policyMobilityScore, 1 / 3);
+  assert.equal(card.marketBreadth, Math.round(40 / 3));
+  assert.equal(card.stabiliser, null);
+  assert.equal(asset.stabiliserOrder(), null);
+  assert.equal(asset.provenance().authenticated, false,
+    "geometry validates structure but does not authenticate history");
 });
 
 // ======================================================================
@@ -290,10 +339,10 @@ test("two-sided pricing reduces fleet dispersion", () => {
   // Asserted as a strict inequality on the Gini, not a target value --
   // the coefficients should be free to change without breaking this.
   const run = (balancerOn) => {
-    const { fleet, pricing, energy } = build(220, "gini-" + balancerOn);
+    const { fleet, pricing, energy } = build(220, "gini-paired");
     pricing.balancerEnabled = balancerOn;
     for (let i = 0; i < 500; i++) {
-      energy.tick(30);
+      energy.tick(60);
       pricing.applyDemandResponse(1 / 60, { workloadId: "llm-train" });
       fleet.tick(1 / 60);
     }
@@ -303,6 +352,31 @@ test("two-sided pricing reduces fleet dispersion", () => {
   const off = run(false);
   assert.ok(on < off, `balancer must reduce dispersion: on=${on.toFixed(4)} off=${off.toFixed(4)}`);
   assert.ok(on >= 0 && on <= 1, "Gini is a coefficient in [0,1]");
+});
+
+test("the frozen 64-seed balancer packet is reproducible and explicitly simulated", () => {
+  const packet = JSON.parse(fs.readFileSync(path.join(root, "data/balancer_ab_64.json"), "utf8"));
+  assert.equal(packet.evidence, "SIMULATION");
+  assert.equal(packet.design.paired, true);
+  assert.equal(packet.design.seeds, 64);
+  assert.equal(packet.summary.improvedSeeds, 64);
+  assert.equal(packet.summary.allSeedsImproved, true);
+  assert.ok(packet.summary.relativeReduction.mean > 0.5);
+
+  // The demo surface must show the frozen result rather than invite a
+  // presenter to infer a headline number from the live animation.
+  const site = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  assert.match(site, /Paired simulation certificate/);
+  assert.match(site, /60\.34%/);
+  assert.match(site, /64 \/ 64/);
+  assert.match(site, new RegExp(packet.rowsSha256.slice(0, 12)));
+
+  // Fast smoke reproduction uses fewer seeds/steps; the complete packet
+  // is regenerated with `npm run experiment:balancer`.
+  const smoke = runExperiment({ seeds: 3, size: 80, steps: 80, stepSeconds: 60 });
+  assert.equal(smoke.design.paired, true);
+  assert.equal(smoke.rows.length, 3);
+  assert.ok(smoke.rows.every((row) => row.seed && Number.isFinite(row.on) && Number.isFinite(row.off)));
 });
 
 test("the Gini coefficient itself is correct on known inputs", () => {
@@ -350,6 +424,29 @@ test("a full W(3,3) cell delivers exactly the spectral bisection bound", () => {
   assert.ok(Math.abs(bis - S.CONST.bisection) < 1e-6,
     `bisection 100 = (40/4)(12-2), got ${bis}`);
   assert.ok(Math.abs(fabric.coherence(complete) - 1) < 0.02, "a complete cell is fully coherent");
+  const graph = fabric.inducedGraphStats(complete);
+  assert.deepEqual(
+    { vertices: graph.vertices, edges: graph.edges, components: graph.components, diameter: graph.diameter, minDegree: graph.minDegree },
+    { vertices: 40, edges: 240, components: 1, diameter: 2, minDegree: 12 }
+  );
+});
+
+test("partial baskets report induced connectivity, not full-fabric paths or fault claims", () => {
+  const { fabric } = build(40, "induced");
+  const mk = (p) => ({ addr: [7, p], cellPoint: p, hardware: {}, id: `n${p}` });
+  const adjacent = S.ADJ[0][0];
+  const distant = S.POINTS.find((p) => p.index !== 0 && !S.isAdjacent(0, p.index)).index;
+
+  const edgePair = fabric.inducedGraphStats([mk(0), mk(adjacent)]);
+  assert.equal(edgePair.connected, true);
+  assert.equal(edgePair.diameter, 1);
+  assert.equal(edgePair.edges, 1);
+
+  const disconnected = fabric.inducedGraphStats([mk(0), mk(distant)]);
+  assert.equal(disconnected.connected, false);
+  assert.equal(disconnected.components, 2);
+  assert.equal(disconnected.diameter, null,
+    "the two-hop path through an unowned relay is not attributed to the basket");
 });
 
 test("swaps are only proposed when BOTH sides gain", () => {
@@ -366,6 +463,7 @@ test("swaps are only proposed when BOTH sides gain", () => {
   const props = fabric.proposeSwaps(mine, { limit: 8 });
   for (const p of props) {
     assert.ok(p.coherenceGain > 0, "I must gain coherence");
+    assert.ok(p.counterpartyGain > 0, "the counterparty must also gain coherence");
     assert.ok(p.give.id !== p.get.id, "a swap moves something");
     assert.equal(p.give.hardware.class, p.get.hardware.class,
       "like for like -- the cash adjustment settles quality, not class");
@@ -428,7 +526,7 @@ test("splicing a node in is a local operation", () => {
   const before = fleet.nodes.map((n) => n.address);
   const r = fabric.splice(node, "05.03");
   if (r.ok) {
-    assert.equal(r.cost, "O(1) -- local graft, no global reconfiguration");
+    assert.equal(r.cost, "one local registry assignment (physical integration unmodelled)");
     assert.equal(r.neighbours, S.CONST.degree, "the new node lands with 12 neighbours");
     // nothing else moved
     const after = fleet.nodes.map((n) => n.address);
@@ -455,6 +553,19 @@ test("an execution plan is immutable after signing", () => {
 
   plan.requestedSeconds = 10;     // restore
   assert.ok(plan.verify(), "and restoring it repairs the match");
+
+  for (const [field, value] of [
+    ["nonce", `${plan.nonce}ff`],
+    ["anchorAddress", "01.02"],
+    ["maxPricePerNodeSecond", 0.123],
+    ["owner", "MALLORY"],
+  ]) {
+    const before = plan[field];
+    plan[field] = value;
+    assert.equal(plan.verify(), false, `editing ${field} breaks the integrity seal`);
+    plan[field] = before;
+    assert.equal(plan.verify(), true, `${field} can be restored for the next mutation check`);
+  }
 });
 
 test("the admission gate refuses for a stated reason, never silently", () => {
@@ -482,10 +593,20 @@ test("the admission gate refuses for a stated reason, never silently", () => {
   assert.equal(good.admissible(node, Date.now(), store).code, "REPLAY");
 });
 
-test("metering is per-second and settles at the requested duration", () => {
+test("multi-node requests are refused until gang placement exists", () => {
+  const { exec, fleet } = build();
+  const plan = exec.createPlan({ name: "gang", workloadId: "llm-train", requestedSeconds: 30, nodeCount: 2 });
+  const node = fleet.listedNodes()[0];
+  const result = exec.launch(plan, node);
+  assert.equal(result.ok, false);
+  assert.equal(result.code, "UNSUPPORTED_NODE_COUNT");
+  assert.equal(exec.runningVMs().length, 0);
+});
+
+test("metering clips the final slice and settles exactly at requested duration", () => {
   const { fleet, exec } = build();
   const plan = exec.createPlan({
-    name: "meter", workloadId: "llm-train", requestedSeconds: 30, nodeCount: 2,
+    name: "meter", workloadId: "llm-train", requestedSeconds: 30, nodeCount: 1,
   });
   const places = exec.place(plan, { limit: 1 });
   assert.ok(places.length, "there is somewhere to run it");
@@ -493,13 +614,34 @@ test("metering is per-second and settles at the requested duration", () => {
   assert.ok(r.ok);
   assert.ok(r.boot.ms > 50 && r.boot.ms < 400, `microVM boot in ms, got ${r.boot.ms.toFixed(1)}`);
 
-  let settled = null;
-  for (let i = 0; i < 40 && !settled; i++) settled = exec.meter(1)[0] || null;
+  const settled = exec.meter(45)[0];
   assert.ok(settled, "the plan settles once it has run its seconds");
-  assert.equal(settled.nodeSeconds, 30 * 2, "node-seconds = seconds x nodes");
+  assert.equal(settled.nodeSeconds, 30, "a coarse tick cannot over-deliver or over-bill");
+  assert.equal(exec.meteredSeconds, 30);
   assert.ok(settled.cost > 0);
   assert.ok(settled.kwh > 0, "and reports the joules actually drawn");
+  assert.equal(exec.meteredSpend, settled.cost, "boot and runtime cost reconcile to the receipt");
   assert.equal(plan.status, "settled");
+});
+
+test("a live price-cap breach halts instead of silently repricing", () => {
+  const { exec, pricing } = build();
+  const probe = exec.createPlan({ name: "probe", workloadId: "llm-train", requestedSeconds: 10 });
+  const placement = exec.place(probe, { limit: 1 })[0];
+  assert.ok(placement);
+  const cap = placement.perSecond * 1.05;
+  const plan = exec.createPlan({
+    name: "capped", workloadId: "llm-train", requestedSeconds: 10,
+    maxPricePerNodeSecond: cap,
+  });
+  const launch = exec.launch(plan, placement.node);
+  assert.equal(launch.ok, true);
+  const originalQuote = pricing.quote.bind(pricing);
+  pricing.quote = (node, opts) => ({ ...originalQuote(node, opts), serviceable: true, price: cap * 3600 * 2 });
+  const receipt = exec.meter(1)[0];
+  assert.equal(receipt.outcome, "price_cap_halt");
+  assert.equal(receipt.nodeSeconds, 0);
+  assert.match(receipt.outcomeReason, /exceeded cap/);
 });
 
 test("the audit chain detects tampering", () => {
@@ -511,6 +653,12 @@ test("the audit chain detects tampering", () => {
 
   assert.ok(exec.verifyChain().ok, "an untouched chain verifies");
   assert.ok(exec.auditLog.length >= 3);
+
+  const original = exec.auditLog[1].detail;
+  exec.auditLog[1].detail = `${original} edited`;
+  assert.equal(exec.verifyChain().ok, false, "editing an entry body breaks its checksum");
+  exec.auditLog[1].detail = original;
+  assert.equal(exec.verifyChain().ok, true, "restoring the body restores the chain");
 
   // remove a middle entry -- every entry after it should now be orphaned
   exec.auditLog.splice(1, 1);
@@ -536,10 +684,44 @@ test("nested density is the fractal law, from n+1 blobs", () => {
   assert.equal(d6.internal, 105_025_641);
   assert.equal(d6.total, 4_201_025_641);
   assert.equal(d6.uniqueBlobs, 7, "seven unique state blobs denote the whole tree");
-  assert.equal(d6.diameter, 48);
+  assert.equal(d6.diameter, 82);
 });
 
 // ---- market ----------------------------------------------------------
+
+test("depth sweep reports VWAP, slippage and unfilled quantity without mutation", () => {
+  const asks = [
+    { price: 10, qty: 2 },
+    { price: 12, qty: 3 },
+    { price: 20, qty: 9 },
+  ];
+  const before = JSON.stringify(asks);
+  const fill = sweepAsks(asks, 4, 15);
+  assert.equal(fill.filled, 4);
+  assert.equal(fill.remaining, 0);
+  assert.equal(fill.cost, 44);
+  assert.equal(fill.average, 11);
+  assert.equal(fill.worst, 12);
+  assert.equal(fill.levelsTouched, 2);
+  assert.ok(Math.abs(fill.slippageBps - 1000) < 1e-9);
+  assert.equal(JSON.stringify(asks), before, "preview is non-mutating");
+
+  const capped = sweepAsks(asks, 8, 12);
+  assert.equal(capped.filled, 5);
+  assert.equal(capped.remaining, 3);
+  assert.equal(capped.complete, false);
+});
+
+test("typed-compute Pareto frontier contains no dominated offer", () => {
+  const points = [
+    { id: "slow", price: 10, tflops: 5 },
+    { id: "tie-fast", price: 10, tflops: 8 },
+    { id: "dominated", price: 12, tflops: 7 },
+    { id: "middle", price: 15, tflops: 12 },
+    { id: "fast", price: 30, tflops: 40 },
+  ];
+  assert.deepEqual(paretoFrontier(points).map((p) => p.id), ["tie-fast", "middle", "fast"]);
+});
 
 test("the ask side is the pricing engine, node for node", () => {
   const { fleet, pricing, market } = build();
@@ -552,6 +734,22 @@ test("the ask side is the pricing engine, node for node", () => {
   }
   // sorted best-first
   for (let i = 1; i < asks.length; i++) assert.ok(asks[i].price >= asks[i - 1].price);
+});
+
+test("spot inventory is bounded by a node's free eighth-capacity lots", () => {
+  const { fleet, market } = build(80, "inventory");
+  const node = fleet.listedNodes().find((n) => n.utilisation < 0.75);
+  assert.ok(node);
+  const initialLots = Math.floor((1 - node.utilisation + 1e-12) * 8);
+  let filled = 0;
+  for (let i = 0; i < 16; i++) {
+    filled += market.submitBuy({ instrument: "spot", qty: 1, workloadId: "llm-train", nodeId: node.id }).filledQty;
+  }
+  assert.ok(filled <= initialLots, `sold ${filled} lots from ${initialLots} initially free`);
+  assert.ok(node.utilisation <= 1 + 1e-12);
+  node.utilisation = 1;
+  assert.equal(market.rebuildAsks("spot").some((a) => a.nodeId === node.id), false,
+    "a saturated node disappears from the ask book");
 });
 
 test("a fill names the machine and issues a receipt", () => {
@@ -570,7 +768,7 @@ test("a fill names the machine and issues a receipt", () => {
   assert.ok(r.provenance, "and carries the capacity's provenance");
 });
 
-test("a substrate-lane receipt carries the contextual fraction", () => {
+test("fill-time receipts are visibly synthetic, not execution attestations", () => {
   const { fleet, market } = build();
   const photonic = fleet.listedNodes().find((n) => n.hardware.magicCapable);
   if (!photonic) return;   // seed-dependent; the fleet may hold none listed
@@ -580,7 +778,9 @@ test("a substrate-lane receipt carries the contextual fraction", () => {
   assert.equal(r.lane, "substrate");
   assert.ok(Math.abs(r.contextualFraction - S.CONST.contextualFraction) < 0.02,
     "measured near the 1/10 = (40-36)/40 target");
-  assert.equal(r.verdict, "ATTESTED");
+  assert.equal(r.verdict, "SYNTHETIC_SAMPLE");
+  assert.equal(r.evidenceMode, "SIMULATED_QUOTE_RECEIPT");
+  assert.equal(r.verdictOk, null);
 });
 
 test("selling closes the position and books the P&L", () => {
@@ -717,7 +917,7 @@ test("the whole simulation is reproducible from its seed", () => {
   const runOnce = () => {
     const { fleet, pricing, energy } = build(160, "determinism");
     for (let i = 0; i < 60; i++) {
-      energy.tick(30);
+      energy.tick(60);
       pricing.applyDemandResponse(1 / 60, { workloadId: "llm-train" });
       fleet.tick(1 / 60);
     }
@@ -731,6 +931,16 @@ test("the whole simulation is reproducible from its seed", () => {
   assert.deepEqual(a.ids, b.ids, "the same fleet is built");
   assert.deepEqual(a.util, b.util, "and evolves identically");
   assert.equal(a.gini, b.gini);
+});
+
+test("the demo server is localhost-only in use and rejects traversal paths", () => {
+  assert.equal(path.basename(resolveRequestPath("/")), "index.html");
+  assert.equal(path.basename(resolveRequestPath("/js/app.js?v=1")), "app.js");
+  for (const target of ["/../README.md", "/%2e%2e/README.md", "/..%2fREADME.md", "/js\\app.js"]) {
+    assert.throws(() => resolveRequestPath(target), /forbidden|bad request/);
+  }
+  assert.match(SECURITY_HEADERS["Content-Security-Policy"], /default-src 'self'/);
+  assert.equal(SECURITY_HEADERS["X-Content-Type-Options"], "nosniff");
 });
 
 // ======================================================================
@@ -802,8 +1012,9 @@ test("the RTL ray_cost implements the migration price law", () => {
 
 test("the RTL admission gate refuses in the same priority order as software", () => {
   // reason codes, from the Verilog localparams
-  const R = { OK: 0, BAD_SIG: 1, REPLAY: 2, WINDOW: 3, PIN_DRIFT: 4, NO_MAGIC: 5, IN_SERVICE: 6 };
+  const R = { OK: 0, BAD_SIG: 1, REPLAY: 2, WINDOW: 3, PIN_DRIFT: 4, NO_MAGIC: 5, IN_SERVICE: 6, BAD_ADDR: 7 };
   const gate = (s) => !s.sig_ok ? R.BAD_SIG
+    : !s.addresses_ok ? R.BAD_ADDR
     : !s.nonce_fresh ? R.REPLAY
     : !s.in_window ? R.WINDOW
     : !s.pins_ok ? R.PIN_DRIFT
@@ -811,9 +1022,10 @@ test("the RTL admission gate refuses in the same priority order as software", ()
     : s.node_in_service ? R.IN_SERVICE
     : R.OK;
 
-  const ok = { sig_ok: 1, nonce_fresh: 1, in_window: 1, pins_ok: 1, magic_budget: 0, node_magic: 0, node_in_service: 0 };
+  const ok = { sig_ok: 1, addresses_ok: 1, nonce_fresh: 1, in_window: 1, pins_ok: 1, magic_budget: 0, node_magic: 0, node_in_service: 0 };
   assert.equal(gate(ok), R.OK);
   assert.equal(gate({ ...ok, sig_ok: 0 }), R.BAD_SIG);
+  assert.equal(gate({ ...ok, addresses_ok: 0 }), R.BAD_ADDR);
   assert.equal(gate({ ...ok, nonce_fresh: 0 }), R.REPLAY);
   assert.equal(gate({ ...ok, in_window: 0 }), R.WINDOW);
   assert.equal(gate({ ...ok, pins_ok: 0 }), R.PIN_DRIFT);
@@ -824,4 +1036,20 @@ test("the RTL admission gate refuses in the same priority order as software", ()
   // signature failure outranks everything: a tampered plan is never
   // reported as merely out-of-window
   assert.equal(gate({ ...ok, sig_ok: 0, in_window: 0, magic_budget: 9 }), R.BAD_SIG);
+  assert.equal(gate({ ...ok, sig_ok: 0, addresses_ok: 0 }), R.BAD_SIG,
+    "signature failure remains highest priority");
+});
+
+test("the RTL address policy rejects illegal, zero and noncanonical projective words", () => {
+  const canonical = (word) => {
+    const trits = [word & 3, (word >> 2) & 3, (word >> 4) & 3, (word >> 6) & 3];
+    if (trits.some((t) => t === 3)) return false;
+    const first = trits.find((t) => t !== 0);
+    return first === 1;
+  };
+  const encode = (v) => v[0] | (v[1] << 2) | (v[2] << 4) | (v[3] << 6);
+  assert.equal(canonical(0), false, "zero is not a projective point");
+  assert.equal(canonical(3), false, "2'b11 is an illegal trit");
+  assert.equal(canonical(encode([2, 0, 0, 0])), false, "scalar-doubled representative is rejected");
+  for (const point of S.POINTS) assert.equal(canonical(encode(point.vec)), true, point.key);
 });

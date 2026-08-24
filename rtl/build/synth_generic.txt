@@ -42,11 +42,11 @@ Using template $extern:wrap:$ge:Y_WIDTH=1:B_WIDTH=3:A_WIDTH=3:B_SIGNED=0:A_SIGNE
 Running "alumacc" on wrapper $extern:wrap:$sub:Y_WIDTH=2:B_WIDTH=2:A_WIDTH=2:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
 Using template $extern:wrap:$sub:Y_WIDTH=2:B_WIDTH=2:A_WIDTH=2:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47 for cells of type $extern:wrap:$sub:Y_WIDTH=2:B_WIDTH=2:A_WIDTH=2:B_SIGNED=0:A_SIGNED=0:394426c56d1a028ba8fdd5469b163e04011def47.
 Using template $paramod$78e969f2586efcf3a5b0b0440bcca0db83d5cca2\_90_alu for cells of type $alu.
-Using extmapper simplemap for cells of type $not.
-Using extmapper simplemap for cells of type $or.
-Using extmapper simplemap for cells of type $reduce_and.
-Using extmapper simplemap for cells of type $reduce_or.
 Using template $paramod$7e708ae28ab761f11d0fb59d3ffc72f6a4baf5d9\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_or.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $reduce_and.
+Using extmapper simplemap for cells of type $or.
 Using extmapper simplemap for cells of type $xor.
 Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000011 for cells of type $fa.
 Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000011 for cells of type $lcu.
@@ -57,9 +57,10 @@ Using extmapper simplemap for cells of type $and.
 Using extmapper simplemap for cells of type $logic_not.
 Using extmapper simplemap for cells of type $logic_or.
 Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $ne.
 Using extmapper simplemap for cells of type $logic_and.
 No more expansions possible.
-<suppressed ~614 debug messages>
+<suppressed ~658 debug messages>
 
 yosys> opt -full
 
@@ -69,7 +70,7 @@ yosys> opt_expr -full
 
 10.1. Executing OPT_EXPR pass (perform const folding).
 Optimizing module holotrade_admit.
-<suppressed ~21 debug messages>
+<suppressed ~53 debug messages>
 Optimizing module w33_form.
 Optimizing module f3_mul.
 <suppressed ~9 debug messages>
@@ -84,8 +85,13 @@ yosys> opt_merge -nomux
 
 10.2. Executing OPT_MERGE pass (detect identical cells).
 Finding identical cells in module `\holotrade_admit'.
-Computing hashes of 42 cells of `\holotrade_admit'.
+Computing hashes of 138 cells of `\holotrade_admit'.
 Finding duplicate cells in `\holotrade_admit'.
+Computing hashes of 124 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+Computing hashes of 122 cells of `\holotrade_admit'.
+Finding duplicate cells in `\holotrade_admit'.
+<suppressed ~48 debug messages>
 Finding identical cells in module `\w33_form'.
 Computing hashes of 19 cells of `\w33_form'.
 Finding duplicate cells in `\w33_form'.
@@ -109,7 +115,7 @@ Finding duplicate cells in `\f3_add'.
 Finding identical cells in module `\f3_norm'.
 Computing hashes of 6 cells of `\f3_norm'.
 Finding duplicate cells in `\f3_norm'.
-Removed a total of 6 cells.
+Removed a total of 22 cells.
 
 yosys> opt_muxtree
 
@@ -149,7 +155,7 @@ yosys> opt_merge
 
 10.5. Executing OPT_MERGE pass (detect identical cells).
 Finding identical cells in module `\holotrade_admit'.
-Computing hashes of 42 cells of `\holotrade_admit'.
+Computing hashes of 122 cells of `\holotrade_admit'.
 Finding duplicate cells in `\holotrade_admit'.
 Finding identical cells in module `\w33_form'.
 Computing hashes of 19 cells of `\w33_form'.
@@ -185,7 +191,7 @@ Finding unused cells or wires in module \f3_mul..
 Finding unused cells or wires in module \f3_neg..
 Finding unused cells or wires in module \f3_add..
 Finding unused cells or wires in module \f3_norm..
-Removed 8 unused cells and 160 unused wires.
+Removed 8 unused cells and 202 unused wires.
 <suppressed ~14 debug messages>
 
 yosys> opt_expr -full
@@ -238,7 +244,7 @@ yosys> opt_merge
 
 10.13. Executing OPT_MERGE pass (detect identical cells).
 Finding identical cells in module `\holotrade_admit'.
-Computing hashes of 41 cells of `\holotrade_admit'.
+Computing hashes of 121 cells of `\holotrade_admit'.
 Finding duplicate cells in `\holotrade_admit'.
 Finding identical cells in module `\w33_form'.
 Computing hashes of 19 cells of `\w33_form'.
@@ -295,17 +301,17 @@ yosys> stat
 
         +----------Local Count, excluding submodules.
         | 
-       28 wires
-       74 wire bits
-       15 public wires
-       38 public wire bits
+      106 wires
+      160 wire bits
+       20 public wires
+       43 public wire bits
        14 ports
        37 port bits
-       40 cells
-        8   $_AND_
-        8   $_MUX_
-        3   $_NOT_
-       13   $_OR_
+      120 cells
+       23   $_AND_
+       11   $_MUX_
+       33   $_NOT_
+       45   $_OR_
         8   $_XOR_
         1 submodules
         1   w33_form
@@ -395,7 +401,7 @@ yosys> stat
 
         +----------Count including submodules.
         | 
-      211 holotrade_admit
+      291 holotrade_admit
         2 w33_form
        19   f3_add
        15   f3_mul
@@ -404,20 +410,20 @@ yosys> stat
 
         +----------Count including submodules.
         | 
-      205 wires
-      373 wire bits
-       79 public wires
-      180 public wire bits
+      283 wires
+      459 wire bits
+       84 public wires
+      185 public wire bits
        59 ports
       138 port bits
         - memories
         - memory bits
         - processes
-      211 cells
-       43   $_AND_
-       34   $_MUX_
-       52   $_NOT_
-       62   $_OR_
+      291 cells
+       58   $_AND_
+       37   $_MUX_
+       82   $_NOT_
+       94   $_OR_
        20   $_XOR_
         1 submodules
         1   w33_form
