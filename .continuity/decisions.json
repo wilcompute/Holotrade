@@ -397,5 +397,58 @@
       "source": "cli",
       "timestamp": "2026-08-24T17:44:09.372Z"
     }
+  },
+  {
+    "id": "d126b946-4b57-4b17-8c0b-b591daa4a5ac",
+    "question": "Why were the HoloTrade CI bootstrap actions upgraded after the first green run?",
+    "answer": "GitHub's first remote run passed but warned that checkout v4, setup-node v4, and setup-python v5 targeted the deprecated Node 20 action runtime. Official releases now use Node 24, so the workflow moved to checkout v6, setup-node v6, and setup-python v6 while keeping Node 22 as the application test matrix.",
+    "timestamp": "2026-08-24T17:45:55.068Z",
+    "tags": [
+      "ci",
+      "github-actions",
+      "holotrade",
+      "maintenance",
+      "node",
+      "python",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-24T17:45:55.068Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "python",
+        "github",
+        "bootstrap"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-24T17:45:55.064Z"
+    }
   }
 ]
