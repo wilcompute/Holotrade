@@ -1,0 +1,409 @@
+// ======================================================================
+// W(3,3) SHAPE CATALOGUE — regression tests
+//
+// These lock down the classification of the sets that ATTAIN the
+// spectral bounds, not the bounds themselves (those are covered in
+// scheduler.test.js). The distinction matters: a scheduler reserves a
+// set, not an inequality.
+//
+// Everything asserted here is exact finite mathematics with no tuning
+// parameter, so any failure is a bug rather than a drifted coefficient.
+// ======================================================================
+
+"use strict";
+
+const assert = require("node:assert/strict");
+const test = require("node:test");
+const path = require("node:path");
+const fs = require("node:fs");
+
+global.window = global;
+const root = path.resolve(__dirname, "..");
+const S = require(path.join(root, "js/substrate.js"));
+const cat = require(path.join(root, "analysis/w33_shape_catalogue.js"));
+const auto = require(path.join(root, "analysis/w33_automorphisms.js"));
+
+const N = S.CONST.points;
+
+// ---------------------------------------------------------------------
+// the equality conditions
+// ---------------------------------------------------------------------
+
+test("the tight-set condition is exactly the upper spectral bound", () => {
+  // e(T) <= m(m+8)/8 with equality iff |N(v) cap T| = 2 + m/4 inside,
+  // m/4 outside. Verify the arithmetic identity on a real witness.
+  const r = cat.searchIntriguing(8, 4, 2, { collect: 1 });
+  assert.ok(r.exists, "an m=8 tight set exists");
+  const T = r.witness;
+  assert.equal(T.length, 8);
+
+  const e = cat.inducedEdges(T);
+  const b = cat.edgeBoundary(T);
+  assert.equal(e, (8 * (8 + 8)) / 8, "attains e(T) = m(m+8)/8");
+  assert.equal(2 * e + b, S.CONST.degree * 8, "2e(T) + b(T) = km");
+
+  const prof = cat.neighbourProfile(T);
+  assert.deepEqual(prof.inside, [4], "every member sees 2 + m/4 = 4 members");
+  assert.deepEqual(prof.outside, [2], "every non-member sees m/4 = 2 members");
+});
+
+test("the m-ovoid condition is exactly the lower spectral bound", () => {
+  const r = cat.searchIntriguing(20, 4, 8, { collect: 1 });
+  assert.ok(r.exists, "the m=20 ovoid-type set exists");
+  const T = r.witness;
+  const e = cat.inducedEdges(T);
+  const b = cat.edgeBoundary(T);
+  assert.equal(e, (20 * (20 - 10)) / 5, "attains e(T) = m(m-10)/5");
+  assert.equal(b, (2 * 20 * (40 - 20)) / 5, "attains b(T) = 2m(40-m)/5");
+  const prof = cat.neighbourProfile(T);
+  assert.deepEqual(prof.inside, [4]);
+  assert.deepEqual(prof.outside, [8]);
+});
+
+// ---------------------------------------------------------------------
+// the classification itself
+// ---------------------------------------------------------------------
+
+test("densest shapes exist at every multiple of four, and nowhere else", () => {
+  for (let m = 1; m < N; m++) {
+    if (m % 4 !== 0) {
+      // non-integral neighbourhood target: no set can attain the bound
+      const tIn = 2 + m / 4;
+      assert.ok(!Number.isInteger(tIn), `m=${m} cannot attain the upper bound`);
+      continue;
+    }
+    const r = cat.searchIntriguing(m, 2 + m / 4, m / 4, { collect: 1 });
+    assert.ok(r.exists, `a densest shape exists at m=${m}`);
+    assert.ok(r.complete, `the search at m=${m} was exhaustive`);
+    assert.equal(cat.inducedEdges(r.witness), (m * (m + 8)) / 8);
+  }
+});
+
+test("the most-spread shape exists at m=20 and at no other size", () => {
+  const feasible = [];
+  for (let m = 1; m < N; m++) {
+    if ((2 * m) % 5 !== 0) continue;
+    const tIn = (2 * m) / 5 - 4, tOut = (2 * m) / 5;
+    const r = cat.searchIntriguing(m, tIn, tOut, { collect: 1 });
+    assert.ok(r.complete, `the search at m=${m} was exhaustive`);
+    if (r.exists) feasible.push(m);
+  }
+  assert.deepEqual(feasible, [20],
+    "20 is the only size admitting a perfectly spread set");
+});
+
+test("the four-point densest shapes are exactly the 40 lines", () => {
+  // brute force over every 4-subset: C(40,4) = 91,390, so this is
+  // genuinely exhaustive rather than a sample
+  const found = [];
+  for (let a = 0; a < N; a++)
+    for (let b = a + 1; b < N; b++)
+      for (let c = b + 1; c < N; c++)
+        for (let d = c + 1; d < N; d++) {
+          const T = [a, b, c, d], set = new Set(T);
+          let ok = true;
+          for (let v = 0; v < N && ok; v++) {
+            const cnt = S.ADJ[v].filter((u) => set.has(u)).length;
+            if (cnt !== (set.has(v) ? 3 : 1)) ok = false;
+          }
+          if (ok) found.push(T.join(","));
+        }
+  const lines = new Set(S.LINES.map((l) => [...l].sort((x, y) => x - y).join(",")));
+  assert.equal(found.length, 40, "exactly 40 four-point densest shapes");
+  assert.equal(lines.size, 40);
+  for (const f of found) assert.ok(lines.has(f), `${f} is a totally isotropic line`);
+  // and each is a maximum clique
+  for (const f of found) {
+    const T = f.split(",").map(Number);
+    for (const x of T) for (const y of T) {
+      if (x !== y) assert.ok(S.isAdjacent(x, y), "a line induces a K4");
+    }
+  }
+});
+
+// ---------------------------------------------------------------------
+// extremes
+// ---------------------------------------------------------------------
+
+test("clique number is 4 and attains the Hoffman bound", () => {
+  const { omega, witness } = cat.maxClique();
+  assert.equal(omega, 4);
+  assert.equal(1 - S.CONST.degree / -4, 4, "Hoffman clique bound 1 - k/s");
+  for (const x of witness) for (const y of witness) {
+    if (x !== y) assert.ok(S.isAdjacent(x, y));
+  }
+});
+
+test("independence number is 7, strictly below the Hoffman bound of 10", () => {
+  const { alpha, witness } = cat.maxIndependentSet();
+  const hoffman = (N * 4) / (S.CONST.degree + 4);
+  assert.equal(hoffman, 10, "n(-s)/(k-s) = 40*4/16");
+  assert.equal(alpha, 7);
+  assert.ok(alpha < hoffman,
+    "the ratio bound is not attained, so this quadrangle has no ovoid");
+  assert.equal(witness.length, 7);
+  const set = new Set(witness);
+  for (const v of witness) {
+    assert.ok(!S.ADJ[v].some((u) => set.has(u)), "witness has no internal edge");
+  }
+});
+
+test("no eight nodes can be placed with zero shared links", () => {
+  // the operational reading of alpha = 7: a hard ceiling on
+  // failure-independent replica placement
+  const { alpha } = cat.maxIndependentSet();
+  assert.ok(alpha < 8,
+    "a scheduler cannot promise 8 replicas with no shared link");
+});
+
+// ---------------------------------------------------------------------
+// complementation
+// ---------------------------------------------------------------------
+
+test("the complement of a densest shape is a densest shape", () => {
+  for (const m of [4, 8, 12, 16, 20]) {
+    const r = cat.searchIntriguing(m, 2 + m / 4, m / 4, { collect: 1 });
+    const T = new Set(r.witness);
+    const C = [];
+    for (let v = 0; v < N; v++) if (!T.has(v)) C.push(v);
+    const mc = C.length;
+    assert.equal(cat.inducedEdges(C), (mc * (mc + 8)) / 8,
+      `complement of the m=${m} shape attains the bound at m=${mc}`);
+    const prof = cat.neighbourProfile(C);
+    assert.deepEqual(prof.inside, [2 + mc / 4]);
+    assert.deepEqual(prof.outside, [mc / 4]);
+  }
+});
+
+test("the frozen catalogue counts are palindromic in m", () => {
+  const p = path.join(root, "data/w33_shape_catalogue.json");
+  if (!fs.existsSync(p)) return;                 // catalogue not frozen yet
+  const c = JSON.parse(fs.readFileSync(p, "utf8"));
+  const counts = c.tightSets.map((r) => r.count);
+  assert.deepEqual(counts, [...counts].reverse(),
+    "complementation forces the count at m to equal the count at 40-m");
+});
+
+// ---------------------------------------------------------------------
+// the automorphism group, and shape transport
+// ---------------------------------------------------------------------
+
+test("the transvection closure is PSp(4,3) of order 25920", () => {
+  const els = auto.generateGroup();
+  const props = auto.checkGroup(els);
+  assert.equal(props.order, 25920,
+    "projective symplectic group — NOT Sp(4,3) or W(E6), which are 51840");
+  assert.deepEqual(props.problems, []);
+  assert.ok(props.pointTransitive, "transitive on the 40 points");
+  assert.ok(props.edgeTransitive, "transitive on the 480 ordered edges");
+  assert.equal(props.pointStabiliserOrder, 648);
+  assert.ok(props.orbitStabiliserHolds, "648 * 40 = 25920");
+});
+
+test("every group element preserves adjacency", () => {
+  const els = auto.generateGroup();
+  // check a spread-out sample in full; each check is O(n^2)
+  for (let i = 0; i < els.length; i += Math.floor(els.length / 25)) {
+    assert.ok(auto.isAutomorphism(els[i]), "element is a graph automorphism");
+  }
+});
+
+test("shape transport preserves optimality exactly", () => {
+  const els = auto.generateGroup();
+  const r = cat.searchIntriguing(8, 4, 2, { collect: 1 });
+  const shape = r.witness;
+  const e0 = cat.inducedEdges(shape);
+  const b0 = cat.edgeBoundary(shape);
+
+  // Block the shape's own nodes plus a few more, and relocate it into
+  // what is left. The block size is kept inside the size this shape is
+  // measured to tolerate -- an 8-point tight set has an orbit of only
+  // 45 images, so it is rigid, and a large enough adversarial block CAN
+  // make it unplaceable. That is a real property of the shape, not a
+  // failure of transport, and it is quantified in
+  // "shapes report an honest placement capacity" below.
+  const blocked = new Set([...shape, 30, 31]);
+  const images = auto.transportShape(shape, blocked, els, { wanted: 4 });
+  assert.ok(images.length > 0, "the shape can be relocated away from busy nodes");
+  for (const img of images) {
+    assert.equal(img.length, shape.length);
+    assert.ok(img.every((v) => !blocked.has(v)), "lands entirely on free nodes");
+    assert.equal(cat.inducedEdges(img), e0, "induced edges are preserved");
+    assert.equal(cat.edgeBoundary(img), b0, "boundary is preserved");
+    const prof = cat.neighbourProfile(img);
+    assert.deepEqual(prof.inside, [4], "still an intriguing set");
+    assert.deepEqual(prof.outside, [2]);
+  }
+});
+
+test("shape orbits satisfy orbit-stabiliser against the group order", () => {
+  const els = auto.generateGroup();
+  const r = cat.searchIntriguing(4, 3, 1, { collect: 1 });
+  const images = new Set();
+  for (const g of els) images.add(r.witness.map((v) => g[v]).sort((a, b) => a - b).join(","));
+  assert.equal(images.size, 40, "the 4-point shapes form a single orbit of size 40");
+  assert.equal(els.length / images.size, 648, "set stabiliser order");
+  // and that orbit is precisely the line set
+  const lines = new Set(S.LINES.map((l) => [...l].sort((a, b) => a - b).join(",")));
+  for (const img of images) assert.ok(lines.has(img), "orbit element is a line");
+});
+
+test("shapes report an honest placement capacity, and it is not orbit size", () => {
+  // A scheduler needs to know when to STOP promising an optimal shape.
+  // The naive guess is that a shape with a large orbit is easy to place.
+  // It is not: the m=12 shape has an orbit of 1080 images and tolerates
+  // FEWER busy nodes than the m=8 shape, whose orbit is only 45. Size
+  // dominates, because a shape of m points needs m free points before
+  // any image can fit at all.
+  const els = auto.generateGroup();
+  const rand = S.rng("placement-capacity");
+
+  const measure = (m) => {
+    const r = cat.searchIntriguing(m, 2 + m / 4, m / 4, { collect: 1 });
+    const imgs = new Set();
+    for (const g of els) imgs.add(r.witness.map((v) => g[v]).sort((a, b) => a - b).join(","));
+    const images = [...imgs].map((x) => x.split(",").map(Number));
+    const rate = (B, trials = 200) => {
+      let ok = 0;
+      for (let t = 0; t < trials; t++) {
+        const blocked = new Set();
+        while (blocked.size < B) blocked.add(Math.floor(rand() * N));
+        if (images.some((im) => im.every((v) => !blocked.has(v)))) ok++;
+      }
+      return ok / trials;
+    };
+    return { m, orbit: images.length, rate };
+  };
+
+  const a = measure(8);
+  const b = measure(12);
+  assert.ok(b.orbit > a.orbit, "m=12 has the larger orbit");
+  assert.ok(b.rate(16) <= a.rate(16) + 0.1,
+    "yet it is no easier to place under load — orbit size is not the metric");
+
+  // an empty fabric always places every shape
+  for (const m of [4, 8, 12, 16, 20]) {
+    const s2 = measure(m);
+    assert.equal(s2.rate(0, 20), 1, `m=${m} always places on an empty fabric`);
+  }
+
+  // and a fabric with fewer free nodes than the shape never does
+  const s20 = measure(20);
+  assert.equal(s20.rate(21, 40), 0,
+    "21 busy nodes leaves 19 free, so a 20-point shape cannot fit at all");
+});
+
+// ======================================================================
+// scheduler/w33-shapes.js — the reservation API built on the catalogue
+// ======================================================================
+
+const shapes = require(path.join(root, "scheduler/w33-shapes.js"));
+
+test("the shape menu offers a densest shape at every multiple of four", () => {
+  const menu = shapes.shapeMenu();
+  assert.equal(menu.densest.length, 9, "m = 4,8,...,36");
+  for (const row of menu.densest) {
+    assert.equal(row.m % 4, 0);
+    assert.equal(row.maxInducedEdges, (row.m * (row.m + 8)) / 8);
+    assert.equal(row.minBoundary, (row.m * (N - row.m)) / 4);
+    assert.ok(row.placeable, `m=${row.m} places on an empty fabric`);
+  }
+  assert.equal(menu.freeNodes, N);
+  assert.equal(menu.antiAffinity.size, 7);
+  assert.equal(menu.antiAffinity.boundAttained, false);
+});
+
+test("a size with no attaining shape is refused, not silently downgraded", () => {
+  for (const m of [5, 7, 10, 13, 22]) {
+    const r = shapes.optimalShape(m);
+    assert.equal(r.ok, false, `m=${m} has no densest shape`);
+    assert.match(r.reason, /4 \| m/);
+    assert.equal(r.nearestAttainable % 4, 0, "and names a size that does");
+    assert.ok(r.gap > 0);
+  }
+  // spread sets exist only at 20
+  for (const m of [5, 10, 15, 25, 30, 35]) {
+    const r = shapes.optimalShape(m, "spread");
+    assert.equal(r.ok, false, `no perfectly spread set at m=${m}`);
+    assert.equal(r.nearestAttainable, 20);
+  }
+  assert.equal(shapes.optimalShape(20, "spread").ok, true);
+});
+
+test("reservation transports a shape and preserves its optimality exactly", () => {
+  const witness = shapes.optimalShape(8).witness;
+  const busy = new Set(witness);            // the catalogue position is taken
+  const r = shapes.reserveShape(8, { unavailable: busy, wanted: 3 });
+  assert.ok(r.ok, "the shape relocates off its catalogue position");
+  assert.ok(r.placement.every((v) => !busy.has(v)));
+  assert.equal(r.inducedEdges, (8 * 16) / 8, "still attains the bound");
+  assert.ok(r.preservesOptimality, "edges and boundary both preserved");
+  assert.deepEqual(shapes.profile(r.placement).inside, [4]);
+  for (const alt of r.alternatives) {
+    assert.equal(shapes.inducedEdges(alt), r.inducedEdges);
+  }
+});
+
+test("reservation refuses honestly when the fabric cannot hold the shape", () => {
+  // fewer free nodes than the shape needs
+  const nearlyFull = [...Array(N - 3).keys()];
+  const r1 = shapes.reserveShape(20, { unavailable: nearlyFull });
+  assert.equal(r1.ok, false);
+  assert.match(r1.reason, /cannot fit at all/);
+  assert.equal(r1.freeNodes, 3);
+
+  // enough free nodes in total, but the shape is too rigid to fit them
+  const r2 = shapes.reserveShape(12, { unavailable: [...Array(14).keys()] });
+  assert.equal(r2.ok, false, "26 free nodes is not enough for this rigid shape");
+  assert.match(r2.reason, /none of the \d+ placements/);
+  assert.ok(r2.orbitSize > 0);
+  assert.ok(r2.hint.includes("fall back"), "and it says what to do instead");
+});
+
+test("shape orbits are closed under the group and preserve all invariants", () => {
+  for (const m of [4, 8, 16]) {
+    const w = shapes.optimalShape(m).witness;
+    const orbit = shapes.shapeOrbit(w);
+    const e0 = shapes.inducedEdges(w), b0 = shapes.edgeBoundary(w);
+    assert.ok(orbit.length >= 1);
+    // orbit-stabiliser: the orbit size must divide the group order
+    assert.equal(25920 % orbit.length, 0,
+      `orbit size ${orbit.length} divides |PSp(4,3)| = 25920`);
+    for (const img of orbit) {
+      assert.equal(img.length, m);
+      assert.equal(shapes.inducedEdges(img), e0);
+      assert.equal(shapes.edgeBoundary(img), b0);
+    }
+  }
+});
+
+test("placement capacity is measured, and orbit size does not predict it", () => {
+  const c8 = shapes.placementCapacity(8, { trials: 120 });
+  const c12 = shapes.placementCapacity(12, { trials: 120 });
+  assert.ok(c8.ok && c12.ok);
+  assert.ok(c12.orbitSize > c8.orbitSize, "m=12 has the far larger orbit");
+  assert.ok(c12.alwaysPlaceableUpTo <= c8.alwaysPlaceableUpTo,
+    "yet tolerates no more busy nodes — size dominates, not orbit count");
+  assert.match(c8.method, /not exhaustive/, "and the method is labelled honestly");
+  // every curve starts at certainty and is non-increasing
+  for (const c of [c8, c12]) {
+    assert.equal(c.curve[0].placementRate, 1, "empty fabric always places");
+    for (let i = 1; i < c.curve.length; i++) {
+      assert.ok(c.curve[i].placementRate <= c.curve[i - 1].placementRate + 1e-9,
+        "placement rate is non-increasing in busy nodes");
+    }
+  }
+});
+
+test("the embedded catalogue agrees with the frozen artifact", () => {
+  const cat = shapes.frozenCatalogue();
+  for (const [m, witness] of Object.entries(cat.tight)) {
+    const size = Number(m);
+    assert.equal(witness.length, size);
+    assert.equal(shapes.inducedEdges(witness), (size * (size + 8)) / 8,
+      `frozen m=${m} witness still attains its bound`);
+  }
+  if (cat.spread[20]) {
+    assert.equal(shapes.inducedEdges(cat.spread[20]), (20 * 10) / 5);
+  }
+});

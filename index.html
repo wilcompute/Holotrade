@@ -347,6 +347,41 @@
       </div>
 
       <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Optimal reservation shapes</h3>
+          <span class="card-note" id="shapeNote">exact &middot; every witness attains its spectral bound</span>
+        </div>
+        <div class="card-body">
+          <div class="note">The spectral bounds say how dense a reservation of a given size <em>could</em> be. A scheduler cannot reserve a bound &mdash; it reserves a set. These are the sets that actually attain the bounds, found by exhaustive search and re-checked independently by eigenspace projection. <b>A densest shape exists at every multiple of four and nowhere else</b>; the four-point ones are exactly the 40 totally isotropic lines.</div>
+
+          <div class="row" style="margin-bottom:11px">
+            <label class="field none" style="min-width:190px"><span>Busy nodes (blocked)</span>
+              <input type="range" id="shapeBusy" min="0" max="34" step="1" value="0"></label>
+            <div class="none" style="align-self:center"><span class="tag accent" id="shapeBusyLabel">0 busy &middot; 40 free</span></div>
+          </div>
+
+          <div class="tbl-wrap"><table class="tbl"><thead><tr>
+            <th>Size m</th><th class="right">max e(T)</th><th class="right">min b(T)</th>
+            <th class="right">Orbit</th><th>Placeable now</th><th>Placement</th>
+          </tr></thead><tbody id="shapeMenuBody"></tbody></table></div>
+
+          <hr class="sep">
+          <div class="grid g2">
+            <div>
+              <h4 style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-2);margin:0 0 7px">Anti-affinity ceiling</h4>
+              <div class="note amber" id="antiAffinityNote"></div>
+            </div>
+            <div>
+              <h4 style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-2);margin:0 0 7px">Perfectly spread set</h4>
+              <div class="note" id="spreadNote"></div>
+            </div>
+          </div>
+
+          <div class="note scope" style="margin-top:12px">Exact finite mathematics about the level-1 point graph, verified in <code>tests/shape-catalogue.test.js</code>. Placement transports a shape by an automorphism, which preserves induced edges and boundary exactly. It reserves <em>points</em>: link-state routing, congestion, failure recovery and multi-cell placement are not modelled here.</div>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-head"><h3 class="card-title">Neighbour averaging</h3><span class="card-note">toy scalar model · not consensus</span></div>
         <div class="card-body"><div class="grid g4" id="clearingStats"></div>
           <div class="note scope" style="margin-top:12px">This is a neighbour-averaging recurrence on the exact level-1 graph. It does not implement leader election, settlement, consensus, crash tolerance, Byzantine tolerance, networking energy, or a physical holonet.</div>
@@ -773,6 +808,7 @@
 <script src="js/fabric.js"></script>
 <script src="js/genetics.js"></script>
 <script src="js/uor.js"></script>
+<script src="scheduler/w33-shapes.js"></script>
 <script src="js/execution.js"></script>
 <script src="js/market.js"></script>
 <script src="js/app.js"></script>

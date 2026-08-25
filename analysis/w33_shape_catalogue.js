@@ -363,7 +363,7 @@ function run() {
       const row = {
         m, targetIn: tIn, targetOut: tOut,
         boundInducedEdges: bound,
-        exists: r.exists, complete: r.complete, searchNodes: r.searchNodes,
+        exists: r.exists, count: r.count, complete: r.complete, searchNodes: r.searchNodes,
       };
       if (r.witness) {
         row.witness = r.witness;
@@ -383,7 +383,7 @@ function run() {
       const row = {
         m, targetIn: tIn, targetOut: tOut,
         boundInducedEdges: bound,
-        exists: r.exists, complete: r.complete, searchNodes: r.searchNodes,
+        exists: r.exists, count: r.count, complete: r.complete, searchNodes: r.searchNodes,
       };
       if (r.witness) {
         row.witness = r.witness;
@@ -475,15 +475,15 @@ if (require.main === module) {
   line(`    witness           ${JSON.stringify(res.extremes.independenceWitness)}`);
   line("");
   line("TIGHT SETS  (densest shape of each size; equality in e(T) <= m(m+8)/8)");
-  line("   m  target in/out   bound e(T)   exists  actual e(T)  boundary  complete");
+  line("   m  target in/out   bound e(T)   exists  actual e(T)  boundary      count");
   for (const r of res.tightSets) {
-    line(`  ${String(r.m).padStart(2)}  ${String(r.targetIn).padStart(6)}/${String(r.targetOut).padEnd(4)}  ${String(r.boundInducedEdges).padStart(9)}   ${r.exists ? "  yes " : "  NO  "}  ${String(r.inducedEdges ?? "-").padStart(10)}  ${String(r.boundary ?? "-").padStart(8)}  ${r.complete}`);
+    line(`  ${String(r.m).padStart(2)}  ${String(r.targetIn).padStart(6)}/${String(r.targetOut).padEnd(4)}  ${String(r.boundInducedEdges).padStart(9)}   ${r.exists ? "  yes " : "  NO  "}  ${String(r.inducedEdges ?? "-").padStart(10)}  ${String(r.boundary ?? "-").padStart(8)}  ${String(r.count).padStart(9)}`);
   }
   line("");
   line("m-OVOIDS  (most-spread shape of each size; equality in e(T) >= m(m-10)/5)");
-  line("   m  target in/out   bound e(T)   exists  actual e(T)  boundary  complete");
+  line("   m  target in/out   bound e(T)   exists  actual e(T)  boundary      count");
   for (const r of res.mOvoids) {
-    line(`  ${String(r.m).padStart(2)}  ${String(r.targetIn).padStart(6)}/${String(r.targetOut).padEnd(4)}  ${String(r.boundInducedEdges).padStart(9)}   ${r.exists ? "  yes " : "  NO  "}  ${String(r.inducedEdges ?? "-").padStart(10)}  ${String(r.boundary ?? "-").padStart(8)}  ${r.complete}`);
+    line(`  ${String(r.m).padStart(2)}  ${String(r.targetIn).padStart(6)}/${String(r.targetOut).padEnd(4)}  ${String(r.boundInducedEdges).padStart(9)}   ${r.exists ? "  yes " : "  NO  "}  ${String(r.inducedEdges ?? "-").padStart(10)}  ${String(r.boundary ?? "-").padStart(8)}  ${String(r.count).padStart(9)}`);
   }
   line("");
   line(`self-check: ${res.selfCheck.allChecksPass ? "ALL WITNESSES VERIFIED" : "PROBLEMS: " + res.selfCheck.problems.join("; ")}`);

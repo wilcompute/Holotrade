@@ -1,0 +1,336 @@
+{
+  "schema": "holotrade.w33-automorphisms.v1",
+  "construction": "closure of symplectic transvections T_{v,a}(x) = x + a<x,v>v acting on the 40 projective points",
+  "group": {
+    "order": 25920,
+    "pointTransitive": true,
+    "pointOrbitSize": 40,
+    "edgeOrbitSize": 480,
+    "orderedEdgeCount": 480,
+    "edgeTransitive": true,
+    "pointStabiliserOrder": 648,
+    "orbitStabiliserHolds": true,
+    "problems": [],
+    "identifiedAs": "PSp(4,3), the projective symplectic group",
+    "note": "a scalar acts trivially on projective points, so this is the PROJECTIVE group. Sp(4,3) and the Weyl extension W(E6) both have order 51840 and are NOT this group; the substrate notes warn specifically against conflating the three."
+  },
+  "transport": [
+    {
+      "kind": "tight",
+      "m": 4,
+      "orbitSize": 40,
+      "setStabiliserOrder": 648,
+      "resilience": [
+        {
+          "busyNodes": 0,
+          "freeNodes": 40,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 4,
+          "freeNodes": 36,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 8,
+          "freeNodes": 32,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 12,
+          "freeNodes": 28,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 16,
+          "freeNodes": 24,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 20,
+          "freeNodes": 20,
+          "placementRate": 0.925
+        },
+        {
+          "busyNodes": 24,
+          "freeNodes": 16,
+          "placementRate": 0.575
+        },
+        {
+          "busyNodes": 28,
+          "freeNodes": 12,
+          "placementRate": 0.15833333333333333
+        }
+      ]
+    },
+    {
+      "kind": "tight",
+      "m": 8,
+      "orbitSize": 45,
+      "setStabiliserOrder": 576,
+      "resilience": [
+        {
+          "busyNodes": 0,
+          "freeNodes": 40,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 4,
+          "freeNodes": 36,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 8,
+          "freeNodes": 32,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 12,
+          "freeNodes": 28,
+          "placementRate": 0.8833333333333333
+        },
+        {
+          "busyNodes": 16,
+          "freeNodes": 24,
+          "placementRate": 0.38333333333333336
+        },
+        {
+          "busyNodes": 20,
+          "freeNodes": 20,
+          "placementRate": 0.06666666666666667
+        },
+        {
+          "busyNodes": 24,
+          "freeNodes": 16,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 28,
+          "freeNodes": 12,
+          "placementRate": 0
+        }
+      ]
+    },
+    {
+      "kind": "tight",
+      "m": 12,
+      "orbitSize": 1080,
+      "setStabiliserOrder": 24,
+      "resilience": [
+        {
+          "busyNodes": 0,
+          "freeNodes": 40,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 4,
+          "freeNodes": 36,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 8,
+          "freeNodes": 32,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 12,
+          "freeNodes": 28,
+          "placementRate": 0.8833333333333333
+        },
+        {
+          "busyNodes": 16,
+          "freeNodes": 24,
+          "placementRate": 0.2916666666666667
+        },
+        {
+          "busyNodes": 20,
+          "freeNodes": 20,
+          "placementRate": 0.03333333333333333
+        },
+        {
+          "busyNodes": 24,
+          "freeNodes": 16,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 28,
+          "freeNodes": 12,
+          "placementRate": 0
+        }
+      ]
+    },
+    {
+      "kind": "tight",
+      "m": 16,
+      "orbitSize": 270,
+      "setStabiliserOrder": 96,
+      "resilience": [
+        {
+          "busyNodes": 0,
+          "freeNodes": 40,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 4,
+          "freeNodes": 36,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 8,
+          "freeNodes": 32,
+          "placementRate": 0.9416666666666667
+        },
+        {
+          "busyNodes": 12,
+          "freeNodes": 28,
+          "placementRate": 0.125
+        },
+        {
+          "busyNodes": 16,
+          "freeNodes": 24,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 20,
+          "freeNodes": 20,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 24,
+          "freeNodes": 16,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 28,
+          "freeNodes": 12,
+          "placementRate": 0
+        }
+      ]
+    },
+    {
+      "kind": "tight",
+      "m": 20,
+      "orbitSize": 3240,
+      "setStabiliserOrder": 8,
+      "resilience": [
+        {
+          "busyNodes": 0,
+          "freeNodes": 40,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 4,
+          "freeNodes": 36,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 8,
+          "freeNodes": 32,
+          "placementRate": 0.875
+        },
+        {
+          "busyNodes": 12,
+          "freeNodes": 28,
+          "placementRate": 0.058333333333333334
+        },
+        {
+          "busyNodes": 16,
+          "freeNodes": 24,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 20,
+          "freeNodes": 20,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 24,
+          "freeNodes": 16,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 28,
+          "freeNodes": 12,
+          "placementRate": 0
+        }
+      ]
+    },
+    {
+      "kind": "tight",
+      "m": 24,
+      "orbitSize": 6480,
+      "setStabiliserOrder": 4,
+      "resilience": null
+    },
+    {
+      "kind": "tight",
+      "m": 28,
+      "orbitSize": 1080,
+      "setStabiliserOrder": 24,
+      "resilience": null
+    },
+    {
+      "kind": "tight",
+      "m": 32,
+      "orbitSize": 540,
+      "setStabiliserOrder": 48,
+      "resilience": null
+    },
+    {
+      "kind": "tight",
+      "m": 36,
+      "orbitSize": 40,
+      "setStabiliserOrder": 648,
+      "resilience": null
+    },
+    {
+      "kind": "m-ovoid",
+      "m": 20,
+      "orbitSize": 432,
+      "setStabiliserOrder": 60,
+      "resilience": [
+        {
+          "busyNodes": 0,
+          "freeNodes": 40,
+          "placementRate": 1
+        },
+        {
+          "busyNodes": 4,
+          "freeNodes": 36,
+          "placementRate": 0.9416666666666667
+        },
+        {
+          "busyNodes": 8,
+          "freeNodes": 32,
+          "placementRate": 0.25
+        },
+        {
+          "busyNodes": 12,
+          "freeNodes": 28,
+          "placementRate": 0.03333333333333333
+        },
+        {
+          "busyNodes": 16,
+          "freeNodes": 24,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 20,
+          "freeNodes": 20,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 24,
+          "freeNodes": 16,
+          "placementRate": 0
+        },
+        {
+          "busyNodes": 28,
+          "freeNodes": 12,
+          "placementRate": 0
+        }
+      ]
+    }
+  ],
+  "digest": "0a9c3a410c763ad6e2312ed10bcb050401a6fa9fe10edd1233585a049a234a18"
+}

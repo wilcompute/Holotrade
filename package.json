@@ -9,11 +9,21 @@
     "serve": "node scripts/serve.js",
     "verify:rtl": "node scripts/run-yosys.js rtl/verify.ys",
     "synth:rtl": "node scripts/run-yosys.js rtl/synth.ys",
-    "verify": "npm test && npm run verify:rtl && npm run synth:rtl",
+    "verify": "npm test && npm run verify:rtl && npm run synth:rtl && npm run verify:shapes",
     "experiment:balancer": "node experiments/balancer_ab.js --summary",
-    "paper": "node scripts/run-paper.js"
+    "paper": "node scripts/run-paper.js",
+    "verify:shapes": "node analysis/w33_shape_catalogue.js && node analysis/w33_automorphisms.js",
+    "freeze:shapes": "node analysis/w33_shape_catalogue.js --write && node analysis/w33_automorphisms.js --write"
   },
-  "keywords": ["compute-exchange", "microvm", "energy-pricing", "datacenter", "marketplace", "w33", "substrate"],
+  "keywords": [
+    "compute-exchange",
+    "microvm",
+    "energy-pricing",
+    "datacenter",
+    "marketplace",
+    "w33",
+    "substrate"
+  ],
   "author": "Wil Dahn",
   "license": "MIT",
   "private": true

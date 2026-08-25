@@ -1187,6 +1187,96 @@
   // FABRIC
   // ====================================================================
 
+  // --------------------------------------------------------------------
+  // Optimal reservation shapes
+  //
+  // The spectral bounds in the scheduler say how dense a reservation of a
+  // given size COULD be. This panel shows the sets that actually attain
+  // them -- the classification in analysis/w33_shape_catalogue.js -- and
+  // whether each is still placeable given how much of the fabric is busy.
+  //
+  // The placement is a real transport: an automorphism carries the
+  // catalogue witness onto free nodes, preserving induced edges and
+  // boundary exactly. It is not a re-optimisation and not an
+  // approximation.
+  // --------------------------------------------------------------------
+  function renderShapes() {
+    const SH = window.HolotradeShapes;
+    const body = $("shapeMenuBody");
+    if (!SH || !body) return;
+
+    const busy = Math.max(0, Math.min(34, parseInt($("shapeBusy").value, 10) || 0));
+
+    // Which points count as busy. Taken from the live simulation: each
+    // point of the cell is scored by the mean utilisation of the fleet
+    // nodes sitting on it, and the busiest are blocked first. A seeded
+    // tiebreak keeps the order stable between renders so dragging the
+    // slider reveals a monotone sequence rather than reshuffling.
+    //
+    // The earlier version topped up with a contiguous index prefix,
+    // which is an unrealistic occupancy pattern. It happens not to
+    // change the answers here -- a spread block of the same size leaves
+    // just as few shapes placeable -- but a panel should not depend on
+    // that coincidence.
+    const load = new Array(SH.N).fill(0);
+    const seen = new Array(SH.N).fill(0);
+    for (const n of fleet.listedNodes()) {
+      load[n.cellPoint] += n.utilisation;
+      seen[n.cellPoint] += 1;
+    }
+    const tiebreak = Substrate.rng("shape-panel");
+    const order = [...Array(SH.N).keys()]
+      .map((v) => ({ v, score: seen[v] ? load[v] / seen[v] : 0, jitter: tiebreak() }))
+      .sort((a, b) => (b.score - a.score) || (a.jitter - b.jitter))
+      .map((x) => x.v);
+    const blocked = new Set(order.slice(0, busy));
+
+    $("shapeBusyLabel").textContent =
+      `${blocked.size} busy · ${SH.N - blocked.size} free`;
+
+    let menu;
+    try { menu = SH.shapeMenu({ unavailable: blocked }); }
+    catch (err) { console.error("[shapes]", err); return; }
+
+    body.innerHTML = menu.densest.map((r) => {
+      const place = r.placement
+        ? `<span class="mono" style="font-size:10.5px">${r.placement.slice(0, 8).join(" ")}${r.placement.length > 8 ? " …" : ""}</span>`
+        : `<span class="muted" style="font-size:10.5px">${fmt.esc(r.reason || "")}</span>`;
+      return `<tr>
+        <td><span class="tag accent">${r.m}</span></td>
+        <td class="num">${r.maxInducedEdges}</td>
+        <td class="num">${r.minBoundary}</td>
+        <td class="num muted">${r.orbitSize == null ? "—" : fmt.int(r.orbitSize)}</td>
+        <td><span class="tag ${r.placeable ? "up" : "down"}">${r.placeable ? "yes" : "no"}</span></td>
+        <td class="wrap">${place}</td>
+      </tr>`;
+    }).join("");
+
+    const aa = menu.antiAffinity;
+    $("antiAffinityNote").innerHTML =
+      `The largest set of nodes sharing <b>no link at all</b> has size <b>${aa.size}</b>. ` +
+      `The Hoffman ratio bound suggests ${aa.ratioBound}, and a set attaining it would be an ovoid of this ` +
+      `quadrangle &mdash; exhaustive search shows none exists. So <b>a scheduler cannot promise an eighth ` +
+      `failure-independent replica</b>, at any price, on any fabric of this shape.` +
+      (aa.witness ? `<br><span class="mono" style="font-size:10.5px">witness ${aa.witness.join(" ")}</span>` : "");
+
+    const sp = menu.spread;
+    $("spreadNote").innerHTML = sp.placeable
+      ? `Every node outside the set sees exactly the same number of its members. This exists at <b>m = 20 only</b> ` +
+        `&mdash; every other admissible size is impossible, not merely unfound.` +
+        `<br><span class="mono" style="font-size:10.5px">${sp.placement.join(" ")}</span>`
+      : `Exists at <b>m = 20 only</b>. Not placeable right now: <span class="muted">${fmt.esc(sp.reason || "")}</span>`;
+
+    // How many of the 40 lines survive entirely inside the free region.
+    // This is the sharpest operational reading of the panel: once it
+    // hits zero, even the smallest optimal shape is gone, and it hits
+    // zero well before the free-node count does.
+    const freeLines = Substrate.LINES.filter((l) => l.every((v) => !blocked.has(v))).length;
+    $("shapeNote").textContent =
+      `${menu.densest.filter((r) => r.placeable).length}/${menu.densest.length} placeable · `
+      + `${menu.freeNodes} free nodes · ${freeLines}/40 lines intact`;
+  }
+
   function renderFabric() {
     const fs = fabric.fabricStats(market.positions);
     const listed = fleet.listedNodes();
@@ -1205,6 +1295,7 @@
     renderCells();
     renderLadder();
     renderSwaps();
+    renderShapes();
 
     const cp = fabric.clearingProfile();
     $("clearingStats").innerHTML = [
@@ -2278,6 +2369,9 @@
       ui.speed = speeds[(speeds.indexOf(ui.speed) + 1) % speeds.length];
       $("speedBtn").textContent = ui.speed + "×";
     });
+
+    const shapeBusy = $("shapeBusy");
+    if (shapeBusy) shapeBusy.addEventListener("input", renderShapes);
 
     $("drawerClose").addEventListener("click", closeDrawer);
     $("drawerBack").addEventListener("click", closeDrawer);

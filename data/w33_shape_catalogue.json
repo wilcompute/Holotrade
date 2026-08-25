@@ -56,6 +56,7 @@
       "targetOut": 1,
       "boundInducedEdges": 6,
       "exists": true,
+      "count": 40,
       "complete": true,
       "searchNodes": 93,
       "witness": [
@@ -82,6 +83,7 @@
       "targetOut": 2,
       "boundInducedEdges": 16,
       "exists": true,
+      "count": 585,
       "complete": true,
       "searchNodes": 1763,
       "witness": [
@@ -112,6 +114,7 @@
       "targetOut": 3,
       "boundInducedEdges": 30,
       "exists": true,
+      "count": 5400,
       "complete": true,
       "searchNodes": 28659,
       "witness": [
@@ -146,6 +149,7 @@
       "targetOut": 4,
       "boundInducedEdges": 48,
       "exists": true,
+      "count": 21330,
       "complete": true,
       "searchNodes": 175659,
       "witness": [
@@ -184,6 +188,7 @@
       "targetOut": 5,
       "boundInducedEdges": 70,
       "exists": true,
+      "count": 33264,
       "complete": true,
       "searchNodes": 325275,
       "witness": [
@@ -226,6 +231,7 @@
       "targetOut": 6,
       "boundInducedEdges": 96,
       "exists": true,
+      "count": 21330,
       "complete": true,
       "searchNodes": 175659,
       "witness": [
@@ -272,6 +278,7 @@
       "targetOut": 7,
       "boundInducedEdges": 126,
       "exists": true,
+      "count": 5400,
       "complete": true,
       "searchNodes": 28659,
       "witness": [
@@ -322,6 +329,7 @@
       "targetOut": 8,
       "boundInducedEdges": 160,
       "exists": true,
+      "count": 585,
       "complete": true,
       "searchNodes": 1763,
       "witness": [
@@ -376,6 +384,7 @@
       "targetOut": 9,
       "boundInducedEdges": 198,
       "exists": true,
+      "count": 40,
       "complete": true,
       "searchNodes": 93,
       "witness": [
@@ -436,6 +445,7 @@
       "targetOut": 2,
       "boundInducedEdges": -5,
       "exists": false,
+      "count": 0,
       "complete": true
     },
     {
@@ -444,6 +454,7 @@
       "targetOut": 4,
       "boundInducedEdges": 0,
       "exists": false,
+      "count": 0,
       "complete": true,
       "searchNodes": 125
     },
@@ -453,6 +464,7 @@
       "targetOut": 6,
       "boundInducedEdges": 15,
       "exists": false,
+      "count": 0,
       "complete": true,
       "searchNodes": 3483
     },
@@ -462,6 +474,7 @@
       "targetOut": 8,
       "boundInducedEdges": 40,
       "exists": true,
+      "count": 432,
       "complete": true,
       "searchNodes": 16659,
       "witness": [
@@ -504,6 +517,7 @@
       "targetOut": 10,
       "boundInducedEdges": 75,
       "exists": false,
+      "count": 0,
       "complete": true,
       "searchNodes": 3483
     },
@@ -513,6 +527,7 @@
       "targetOut": 12,
       "boundInducedEdges": 120,
       "exists": false,
+      "count": 0,
       "complete": true,
       "searchNodes": 125
     },
@@ -522,6 +537,7 @@
       "targetOut": 14,
       "boundInducedEdges": 175,
       "exists": false,
+      "count": 0,
       "complete": true
     }
   ],
@@ -529,5 +545,5 @@
     "problems": [],
     "allChecksPass": true
   },
-  "digest": "c965c77142e310ed96143fea635e1c0a2495d7e4e6ba36c9401abf24bcc76b30"
+  "digest": "0ee4c091b8e4422197474a5ebeb9bb0fea6b60fe10f3f97dfde381c4c8a1b4a3"
 }
