@@ -121,9 +121,11 @@
       evidenceClass: attested ? E.EVIDENCE_CLASS.RUNTIME_ATTESTATION :
         (verified ? E.EVIDENCE_CLASS.EXTERNAL_VERIFIED : E.EVIDENCE_CLASS.MODEL_RESULT),
       scope: E.SCOPE.RUNTIME,
-      claim: verified
-        ? "The supplied GoMicroVM receipt signature and plan/contract binding were reported verified by the caller."
-        : "A GoMicroVM-shaped receipt was supplied, but signature/binding/success verification is incomplete.",
+      claim: attested
+        ? "The supplied GoMicroVM receipt signature, plan/contract binding, successful exit, and an additional runtime-attestation check were reported verified by the caller."
+        : verified
+          ? "The supplied GoMicroVM receipt signature, plan/contract binding, and successful exit were reported verified by the caller; no remote or hardware attestation is inferred."
+          : "A GoMicroVM-shaped receipt was supplied, but signature/binding/success verification is incomplete.",
       source: {
         adapter: SCHEMA,
         contractDigest: contract.digest,
@@ -135,9 +137,13 @@
       },
       attested,
       metadata: {
-        remotelyExecuted: true,
+        executionReportedByReceipt: true,
+        receiptSignatureVerified: signatureVerified,
+        contractBindingVerified: digestMatches,
+        successfulExitReported: successful,
         cryptographicReceiptVerified: verified,
-        hardwareAttestationVerified: attested,
+        remoteExecutionVerified: false,
+        hardwareOrRuntimeAttestationVerified: attested,
         rawReceiptExcluded: true,
       },
     };
