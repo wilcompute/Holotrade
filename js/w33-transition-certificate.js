@@ -1,62 +1,45 @@
 // ======================================================================
 // HOLOTRADE W33/UOR TRANSITION CERTIFICATE
 //
-// A cryptographic content-address + exact W(3,3) route witness for one
-// already-settled Projection -> Execution -> Emission transition.
+// Real SHA-256 content addressing + exact W(3,3) route witnesses for one
+// settled Projection -> Execution -> Emission transition.
 //
-// The top-level anatomy deliberately mirrors the existing W33-Theory
-// Holonet/UOR bridge:
-//
+// The shape intentionally mirrors W33-Theory's offline Holonet/UOR bridge:
 //   element -> transport_partition -> proof -> trace -> certificate
 //
-// but this is a HoloTrade transition certificate, not a claim of native UOR
-// certification. SHA-256 here is a real cryptographic digest (Node crypto).
-// Nothing in this module is a signature, hardware attestation, transparency
-// log proof, or proof that a physical W(3,3) network carried the workload.
+// This is NOT native UOR certification, a signature, remote/hardware
+// attestation, transparency proof, or evidence of physical W(3,3) transport.
 // ======================================================================
 
 (function (root) {
   "use strict";
 
-  const S = root.Substrate ||
-    (typeof require !== "undefined" ? require("./substrate.js") : null);
-  const E = root.HolotradeEvidence ||
-    (typeof require !== "undefined" ? require("./evidence.js") : null);
-  const U = root.HolotradeUOR ||
-    (typeof require !== "undefined" ? require("./uor.js") : null);
-  const P = root.HolotradeProjection ||
-    (typeof require !== "undefined" ? require("./projection.js") : null);
-
+  const S = root.Substrate || (typeof require !== "undefined" ? require("./substrate.js") : null);
+  const E = root.HolotradeEvidence || (typeof require !== "undefined" ? require("./evidence.js") : null);
+  const U = root.HolotradeUOR || (typeof require !== "undefined" ? require("./uor.js") : null);
+  const P = root.HolotradeProjection || (typeof require !== "undefined" ? require("./projection.js") : null);
   let crypto = null;
   if (typeof require !== "undefined") {
     try { crypto = require("node:crypto"); } catch (_) { crypto = null; }
   }
-
-  if (!S || !E || !U || !P) {
-    throw new Error("w33-transition-certificate requires substrate, evidence, uor, and projection modules");
-  }
+  if (!S || !E || !U || !P) throw new Error("W33 transition certificate dependencies missing");
 
   const SCHEMA = "holotrade.w33_uor_transition_certificate.v1";
   const CERTIFICATE_KIND = "HoloTradeW33TransitionCertificate";
   const PROOF_KIND = "HoloTradeW33TransitionProof";
   const TRACE_KIND = "HoloTradeProjectionComputationTrace";
 
-  function canonicalJson(value) {
-    return E.canonicalJson(value);
-  }
-
-  function utf8Bytes(value) {
-    if (typeof Buffer === "undefined") {
-      throw new Error("SHA-256 transition certificates currently require a Node.js runtime");
-    }
-    return Buffer.from(typeof value === "string" ? value : canonicalJson(value), "utf8");
+  function canonicalBytes(value) {
+    if (typeof Buffer === "undefined") throw new Error("transition certificates currently require Node.js");
+    if (Buffer.isBuffer(value)) return value;
+    if (value instanceof Uint8Array) return Buffer.from(value);
+    const text = typeof value === "string" ? value : E.canonicalJson(value);
+    return Buffer.from(text, "utf8");
   }
 
   function sha256Hex(value) {
-    if (!crypto) {
-      throw new Error("SHA-256 transition certificates currently require node:crypto");
-    }
-    return crypto.createHash("sha256").update(utf8Bytes(value)).digest("hex");
+    if (!crypto) throw new Error("transition certificates require node:crypto");
+    return crypto.createHash("sha256").update(canonicalBytes(value)).digest("hex");
   }
 
   function sha256Digest(value) {
@@ -65,20 +48,19 @@
 
   function pointKey(point) {
     if (!Number.isInteger(point) || point < 0 || point >= S.POINTS.length) {
-      throw new RangeError(`invalid W(3,3) point index: ${String(point)}`);
+      throw new RangeError(`invalid W(3,3) point: ${String(point)}`);
     }
     return S.POINTS[point].key;
   }
 
-  function resourceAddress(resource) {
+  function addressOf(resource) {
     if (resource && resource.address instanceof U.UORAddress) return resource.address;
     if (resource && typeof resource.address === "string") return U.UORAddress.fromHex(resource.address);
     throw new TypeError("resource is missing a canonical UOR address");
   }
 
-  function routeStep({ id, role, fromPoint, toPoint, direction }) {
-    const routed = S.route(fromPoint, toPoint);
-    const path = routed.hops;
+  function routeStep({ id, role, direction, fromPoint, toPoint }) {
+    const route = S.route(fromPoint, toPoint);
     return Object.freeze({
       id,
       role,
@@ -87,38 +69,34 @@
       dst: pointKey(toPoint),
       srcPoint: fromPoint,
       dstPoint: toPoint,
-      path: path.map(pointKey),
-      pathPoints: [...path],
-      hops: routed.distance,
-      relayAlternates: routed.alternates.length,
-      relation: routed.distance === 0 ? "identity" : routed.distance === 1 ? "intersecting" : "disjoint",
+      path: route.hops.map(pointKey),
+      pathPoints: [...route.hops],
+      hops: route.distance,
+      relayAlternates: route.alternates.length,
+      relation: route.distance === 0 ? "identity" : route.distance === 1 ? "intersecting" : "disjoint",
       symplectic: S.symplecticForm(S.POINTS[fromPoint].vec, S.POINTS[toPoint].vec),
     });
   }
 
-  function transitionTrace(projection, emission, executionPoint) {
-    const inputs = projection.inputs.map((input) => {
-      const addr = resourceAddress(input);
-      return routeStep({
-        id: input.id,
-        role: input.role,
-        direction: "input-to-execution",
-        fromPoint: addr.point,
-        toPoint: executionPoint,
-      });
-    });
-    const outputAddress = U.UORAddress.fromHex(emission.output.address);
+  function transitionSteps(projection, emission, executionPoint) {
+    const inputs = projection.inputs.map((input) => routeStep({
+      id: input.id,
+      role: input.role,
+      direction: "input-to-execution",
+      fromPoint: addressOf(input).point,
+      toPoint: executionPoint,
+    }));
     const output = routeStep({
       id: emission.output.id,
       role: emission.output.role || "output",
       direction: "execution-to-output",
       fromPoint: executionPoint,
-      toPoint: outputAddress.point,
+      toPoint: U.UORAddress.fromHex(emission.output.address).point,
     });
     return [...inputs, output];
   }
 
-  function transportPartition(steps) {
+  function partition(steps) {
     const buckets = { units: [], irreducibles: [], reducibles: [], exterior: [] };
     for (const step of steps) {
       if (step.hops === 0) buckets.units.push(step);
@@ -134,19 +112,20 @@
         transition_ids: rows.map((row) => `${row.direction}:${row.id}`),
       };
     }
-    const cardinalitySum = Object.values(buckets).reduce((sum, rows) => sum + rows.length, 0);
+    const cardinality = Object.values(buckets).reduce((sum, rows) => sum + rows.length, 0);
     return {
       kind: "HoloTradeW33TransportPartition",
       uor_native_boundary:
         "Transport analog of UOR partition/Partition over exact W(3,3) route classes; not a native UOR ring partition.",
       components,
-      cardinality_sum: cardinalitySum,
-      complete: cardinalitySum === steps.length && buckets.exterior.length === 0,
+      cardinality_sum: cardinality,
+      complete: cardinality === steps.length && buckets.exterior.length === 0,
     };
   }
 
   function historicalDecision(plan) {
-    if (!plan.evidenceDecision || typeof plan.evidenceDecision !== "object") {
+    const d = plan.evidenceDecision;
+    if (!d || typeof d !== "object") {
       return {
         present: false,
         ok: (plan.evidencePolicy || E.POLICY.DEMO) === E.POLICY.DEMO,
@@ -157,10 +136,10 @@
     }
     return {
       present: true,
-      ok: plan.evidenceDecision.ok === true,
-      digest: plan.evidenceDecision.digest || null,
-      policy: plan.evidenceDecision.policy || plan.evidencePolicy || E.POLICY.DEMO,
-      refs: [...(plan.evidenceDecision.refs || plan.evidenceRefs || [])],
+      ok: d.ok === true,
+      digest: d.digest || null,
+      policy: d.policy || plan.evidencePolicy || E.POLICY.DEMO,
+      refs: [...(d.refs || plan.evidenceRefs || [])],
     };
   }
 
@@ -168,27 +147,27 @@
     if (!executionEngine || typeof executionEngine.evidenceDecision !== "function") {
       return { available: false, ok: null, digest: null, blockers: [] };
     }
-    const decision = executionEngine.evidenceDecision(plan);
+    const d = executionEngine.evidenceDecision(plan);
     return {
       available: true,
-      ok: decision.ok,
-      digest: decision.digest,
-      policy: decision.policy,
-      refs: decision.refs,
-      blockers: decision.blockers,
-      warnings: decision.warnings,
-      resolved: decision.resolved,
+      ok: d.ok,
+      digest: d.digest,
+      policy: d.policy,
+      refs: d.refs,
+      blockers: d.blockers,
+      warnings: d.warnings,
+      resolved: d.resolved,
     };
   }
 
-  function verifyEmissionBinding(projection, plan, receipt, emission) {
-    return emission && emission.projection && emission.execution && emission.output &&
+  function emissionBinds(projection, plan, receipt, emission) {
+    return !!(emission && emission.projection && emission.execution && emission.output &&
       emission.projection.id === projection.id &&
       emission.projection.digest === projection.digest &&
       emission.execution.planId === plan.id &&
       emission.execution.planDigest === plan.digest &&
       emission.execution.receiptId === receipt.id &&
-      emission.execution.outcome === "settled";
+      emission.execution.outcome === "settled");
   }
 
   function buildCertificate({ projection, plan, receipt, emission, executionEngine, projectionEngine } = {}) {
@@ -202,37 +181,35 @@
       throw new Error("certificate requires the settled execution node with a W(3,3) cellPoint");
     }
 
-    const steps = transitionTrace(projection, emission, node.cellPoint);
-    const partition = transportPartition(steps);
+    const steps = transitionSteps(projection, emission, node.cellPoint);
+    const transport = partition(steps);
     const historical = historicalDecision(plan);
     const current = currentDecision(executionEngine, plan);
     const projectionBinding = projectionEngine && typeof projectionEngine.verifyBinding === "function"
       ? projectionEngine.verifyBinding(projection, plan)
       : { ok: true, reason: "projection engine not supplied; direct emission binding only" };
 
-    const emissionBytes = utf8Bytes(emission);
-    const emissionSha = sha256Hex(emission);
-    const evidenceEnvelopePresent = !!(receipt.evidenceEnvelope && receipt.evidenceDigest);
+    const emissionBytes = canonicalBytes(emission);
+    const emissionSha = sha256Hex(emissionBytes);
     const routeChecks = steps.map((step) => ({
       transition: `${step.direction}:${step.id}`,
       hops: step.hops,
       ok: step.hops >= 0 && step.hops <= S.CONST.cellDiameter &&
         (step.hops !== 2 || step.relayAlternates === S.CONST.mu - 1),
     }));
-
     const proofChecks = {
       emission_content_address_roundtrip: emissionSha === sha256Hex(emissionBytes),
       receipt_is_settled: receipt.outcome === "settled",
       plan_status_is_settled: plan.status === "settled",
       receipt_binds_plan: receipt.planId === plan.id && receipt.planDigest === plan.digest,
-      emission_binds_transition: verifyEmissionBinding(projection, plan, receipt, emission),
+      emission_binds_transition: emissionBinds(projection, plan, receipt, emission),
       projection_binding_valid: projectionBinding.ok === true,
       historical_evidence_admission: historical.ok === true,
-      evidence_envelope_present: evidenceEnvelopePresent,
-      transport_partition_complete: partition.complete,
+      evidence_envelope_present: !!(receipt.evidenceEnvelope && receipt.evidenceDigest),
+      transport_partition_complete: transport.complete,
       diameter_two_routes: routeChecks.every((row) => row.ok),
     };
-    const allChecksPass = Object.values(proofChecks).every(Boolean);
+    const pass = Object.values(proofChecks).every(Boolean);
 
     const element = {
       digestAlgorithm: "sha256",
@@ -269,28 +246,27 @@
       checks: proofChecks,
       route_checks: routeChecks,
       historical_evidence_admission: historical,
-      current_evidence_admissibility: current,
+      current_evidence_admissibility_at_issue: current,
       correction_semantics:
-        "Historical execution validity is frozen at settlement; current admissibility is re-evaluated and may later become false without rewriting the certificate.",
+        "The settled transition and its SHA-256 element remain historical facts. Current admissibility is a snapshot and may later become false under a new evidence-ledger state without modifying this certificate.",
       projection_binding: projectionBinding,
     };
     const certificate = {
-      valid: allChecksPass,
+      valid: pass,
       attests: [
         "SHA-256 content address of the canonical HoloTrade emission record",
         "settled receipt and plan/emission binding",
         "historical evidence admission captured at execution time",
         "exact W(3,3) diameter-2 route witnesses for input/execution/output transition points",
       ],
-      currentAdmissibility: current.available ? current.ok : null,
+      currentAdmissibilityAtIssue: current.available ? current.ok : null,
       boundary:
         "Offline HoloTrade/W33 bridge certificate. It mirrors the W33-Theory Holonet/UOR certificate anatomy and uses real SHA-256 content addressing, but it is not issued by uor.foundation, is not a digital signature or remote attestation, and does not prove physical W(3,3) packet transport.",
     };
-
     const body = {
       schema: SCHEMA,
       kind: CERTIFICATE_KIND,
-      status: allChecksPass ? "PASS" : "FAIL",
+      status: pass ? "PASS" : "FAIL",
       source: {
         projectionId: projection.id,
         planId: plan.id,
@@ -307,7 +283,7 @@
         nativeCertification: false,
       },
       element,
-      transport_partition: partition,
+      transport_partition: transport,
       proof,
       trace,
       certificate,
@@ -315,13 +291,27 @@
     return Object.freeze({ ...body, certificateDigest: sha256Digest(body) });
   }
 
+  function reevaluateEvidence(cert, executionEngine, plan) {
+    if (!cert || cert.schema !== SCHEMA) throw new TypeError("valid HoloTrade W33 transition certificate required");
+    const current = currentDecision(executionEngine, plan);
+    const result = {
+      schema: "holotrade.w33_uor_transition_admissibility.v1",
+      certificateDigest: cert.certificateDigest,
+      elementDigest: cert.element.digest,
+      historicalAdmission: cert.proof.historical_evidence_admission,
+      current,
+      reusableNow: cert.status === "PASS" && current.available && current.ok === true,
+    };
+    return Object.freeze({ ...result, digest: sha256Digest(result) });
+  }
+
   function validateShape(cert) {
     const violations = [];
-    const requireKey = (obj, key, path) => {
+    const need = (obj, key, path) => {
       if (!obj || typeof obj !== "object" || !Object.hasOwn(obj, key)) violations.push(`${path}.${key} missing`);
     };
     for (const key of ["schema", "status", "element", "transport_partition", "proof", "trace", "certificate"])
-      requireKey(cert, key, "certificate");
+      need(cert, key, "certificate");
     if (cert.schema !== SCHEMA) violations.push("certificate.schema unsupported");
     if (cert.status !== "PASS") violations.push("certificate.status is not PASS");
     if (!cert.element || cert.element.digestAlgorithm !== "sha256" ||
@@ -338,11 +328,9 @@
     if (!cert.trace || cert.trace.kind !== TRACE_KIND || !Array.isArray(cert.trace.transition_steps)) {
       violations.push("certificate.trace malformed");
     }
-    if (!cert.certificate || cert.certificate.valid !== true) {
-      violations.push("certificate validity flag is false");
-    }
-    const expected = cert.certificateDigest;
+    if (!cert.certificate || cert.certificate.valid !== true) violations.push("certificate validity flag is false");
     const body = { ...cert };
+    const expected = body.certificateDigest;
     delete body.certificateDigest;
     if (expected !== sha256Digest(body)) violations.push("certificateDigest mismatch");
     return { conforms: violations.length === 0, violations };
@@ -356,9 +344,9 @@
     sha256Hex,
     sha256Digest,
     buildCertificate,
+    reevaluateEvidence,
     validateShape,
   };
-
   root.HolotradeW33TransitionCertificate = API;
   if (typeof module !== "undefined" && module.exports) module.exports = API;
 })(typeof window !== "undefined" ? window : globalThis);
