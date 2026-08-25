@@ -1,42 +1,33 @@
 // ======================================================================
 // HOLOTRADE -> GoMicroVM CONTRACT ADAPTER
 //
-// Compiles a HoloTrade ExecutionPlan into a payload-ready contract matching
-// the currently documented GoMicroVM/mvm security vocabulary: pinned
-// artifacts, explicit authority, policy refs, validity/nonce, seccomp posture,
-// redacted invocation metadata, and signed-receipt ingestion.
+// Compiles HoloTrade ExecutionPlans into the GoMicroVM security vocabulary:
+// pinned artifacts, explicit grants, policy refs, validity/nonce, seccomp
+// posture, redacted invocation metadata, and receipt evidence.
 //
-// This adapter does NOT invoke mvmctl, Firecracker, Nix, a guest agent, or a
-// hosted control plane. It is an offline contract compiler + receipt parser.
+// v2 also reconciles an externally supplied admission snapshot against the
+// contract. The adapter itself still does NOT invoke mvmctl/Firecracker or
+// infer remote execution/hardware attestation from a signed receipt.
 // ======================================================================
 
 (function (root) {
   "use strict";
 
-  const E = root.HolotradeEvidence ||
-    (typeof require !== "undefined" ? require("./evidence.js") : null);
+  const E = root.HolotradeEvidence || (typeof require !== "undefined" ? require("./evidence.js") : null);
   if (!E) throw new Error("gomicrovm-adapter requires evidence.js");
 
-  const SCHEMA = "holotrade.gomicrovm-adapter.v1";
-  const CONTRACT_SCHEMA = "holotrade.gomicrovm-execution-contract.v1";
+  const SCHEMA = "holotrade.gomicrovm-adapter.v2";
+  const CONTRACT_SCHEMA = "holotrade.gomicrovm-execution-contract.v2";
+  const SECCOMP_RANK = Object.freeze({ essential: 0, minimal: 1, standard: 2, network: 3, unrestricted: 4 });
 
   function text(value, name) {
     if (typeof value !== "string" || value.trim().length === 0) throw new TypeError(`${name} must be a non-empty string`);
     return value.trim();
   }
-
-  function canonical(value) {
-    return JSON.parse(E.canonicalJson(value));
-  }
-
-  function strings(value) {
-    return [...new Set((value || []).map((x) => text(x, "string entry")))].sort();
-  }
+  function canonical(value) { return JSON.parse(E.canonicalJson(value)); }
+  function strings(value) { return [...new Set((value || []).map((x) => text(x, "string entry")))].sort(); }
 
   function seccompTier(plan) {
-    // Current mvm docs expose essential/minimal/standard/network/unrestricted.
-    // HoloTrade is deny-all by default, so network authority is the only
-    // reason this compiler raises the suggested tier above minimal.
     return (plan.grants?.network || []).length > 0 ? "network" : "minimal";
   }
 
@@ -54,6 +45,8 @@
       services: strings(plan.grants?.services),
       secrets: strings(plan.grants?.secrets),
     };
+    const requestedTier = options.seccompTier || seccompTier(plan);
+    if (!Object.hasOwn(SECCOMP_RANK, requestedTier)) throw new RangeError(`unsupported seccomp tier: ${requestedTier}`);
     const body = {
       schema: CONTRACT_SCHEMA,
       adapterSchema: SCHEMA,
@@ -72,8 +65,10 @@
         validFrom: plan.validFrom,
         validUntil: plan.validUntil,
         policyRefs,
-        seccompTier: options.seccompTier || seccompTier(plan),
+        seccompTier: requestedTier,
         auditChainSigningRequired: options.auditChainSigningRequired !== false,
+        guestNetworkDeviceExpected: false,
+        artifactReverificationRequired: true,
       },
       resources: {
         requestedSeconds: plan.requestedSeconds,
@@ -86,6 +81,7 @@
         microvmLaunched: false,
         firecrackerLaunched: false,
         receiptVerified: false,
+        runtimeSnapshotVerified: false,
       },
     };
     return Object.freeze({ ...body, digest: E.demoDigest(body) });
@@ -102,8 +98,79 @@
       artifactDigests: contract.artifacts.map((x) => x.digest),
       redacted: true,
       boundary:
-        "Request descriptor only. It intentionally does not contain secret values, raw argv, host paths, stdout, or stderr and does not execute mvmctl.",
+        "Request descriptor only. It excludes secret values/raw argv/host paths/stdout/stderr and does not execute mvmctl.",
     });
+  }
+
+  function setEqual(a, b) {
+    const aa = strings(a); const bb = strings(b);
+    return aa.length === bb.length && aa.every((value, i) => value === bb[i]);
+  }
+
+  function artifactMap(rows) {
+    return new Map((rows || []).map((row) => [text(row.name || row.digest, "artifact name"), text(row.digest, "artifact digest")]));
+  }
+
+  /**
+   * Reconcile an externally obtained admission/runtime snapshot. A snapshot is
+   * only evidence about what its producer reported; this function does not
+   * authenticate the producer. Every security-sensitive mismatch fails closed.
+   */
+  function reconcileAdmissionSnapshot(contract, snapshot, { now = Date.now() } = {}) {
+    if (!contract || contract.schema !== CONTRACT_SCHEMA) throw new TypeError("compiled GoMicroVM contract required");
+    if (!snapshot || typeof snapshot !== "object") throw new TypeError("admission snapshot required");
+    const blockers = [];
+    const checks = {};
+
+    checks.contractDigest = snapshot.contractDigest === contract.digest;
+    if (!checks.contractDigest) blockers.push({ code: "CONTRACT_DIGEST_MISMATCH" });
+
+    checks.nonce = snapshot.nonce === contract.admission.nonce;
+    if (!checks.nonce) blockers.push({ code: "NONCE_MISMATCH" });
+
+    checks.validityWindow = now >= contract.admission.validFrom && now <= contract.admission.validUntil;
+    if (!checks.validityWindow) blockers.push({ code: "WINDOW" });
+
+    const expectedArtifacts = artifactMap(contract.artifacts);
+    const observedArtifacts = artifactMap(snapshot.artifacts || []);
+    checks.artifacts = expectedArtifacts.size === observedArtifacts.size && [...expectedArtifacts].every(([name, digest]) => observedArtifacts.get(name) === digest);
+    if (!checks.artifacts) blockers.push({ code: "ARTIFACT_REVERIFICATION_MISMATCH" });
+
+    checks.networkAuthority = setEqual(snapshot.authority?.network || [], contract.authority.network);
+    checks.serviceAuthority = setEqual(snapshot.authority?.services || [], contract.authority.services);
+    checks.secretAuthority = setEqual(snapshot.authority?.secrets || [], contract.authority.secrets);
+    if (!checks.networkAuthority || !checks.serviceAuthority || !checks.secretAuthority) blockers.push({ code: "AUTHORITY_MISMATCH" });
+
+    checks.policyRefs = setEqual(snapshot.policyRefs || [], contract.admission.policyRefs);
+    if (!checks.policyRefs) blockers.push({ code: "POLICY_REF_MISMATCH" });
+
+    const observedTier = snapshot.seccompTier;
+    checks.seccompTierKnown = Object.hasOwn(SECCOMP_RANK, observedTier);
+    checks.seccompNotWeaker = checks.seccompTierKnown && SECCOMP_RANK[observedTier] <= SECCOMP_RANK[contract.admission.seccompTier];
+    if (!checks.seccompNotWeaker) blockers.push({ code: "SECCOMP_WEAKENED" });
+
+    checks.noGuestNetworkDevice = snapshot.guestNetworkDevicePresent === false;
+    if (!checks.noGuestNetworkDevice) blockers.push({ code: "GUEST_NETWORK_DEVICE_PRESENT_OR_UNKNOWN" });
+
+    checks.auditChainSigned = contract.admission.auditChainSigningRequired ? snapshot.auditChainSigned === true : true;
+    if (!checks.auditChainSigned) blockers.push({ code: "AUDIT_CHAIN_UNSIGNED" });
+
+    checks.rootfsSealed = snapshot.rootfsSealed === true;
+    if (!checks.rootfsSealed) blockers.push({ code: "ROOTFS_NOT_REPORTED_SEALED" });
+
+    const body = {
+      schema: "holotrade.gomicrovm-admission-reconciliation.v1",
+      contractDigest: contract.digest,
+      ok: blockers.length === 0,
+      checks,
+      blockers,
+      sourceAuthentication: "not-performed-by-adapter",
+      remoteExecutionVerified: false,
+      hardwareAttestationVerified: false,
+      boundary:
+        "Fail-closed reconciliation of a caller-supplied snapshot against the compiled contract. The snapshot must be independently authenticated before treating this result as external runtime evidence.",
+    };
+    return Object.freeze({ ...body, digest: E.demoDigest(body) });
   }
 
   function receiptEvidence(contract, receipt, { signatureVerified = false, attestationVerified = false } = {}) {
@@ -118,13 +185,12 @@
       id: text(receipt.id || `gomicrovm:${contract.holotrade.planId}:${E.demoDigest(receipt).slice(5, 17)}`, "evidence id"),
       subject: `GoMicroVM receipt for ${contract.holotrade.planId}`,
       status: verified ? E.STATUS.VERIFIED : E.STATUS.UNVERIFIED,
-      evidenceClass: attested ? E.EVIDENCE_CLASS.RUNTIME_ATTESTATION :
-        (verified ? E.EVIDENCE_CLASS.EXTERNAL_VERIFIED : E.EVIDENCE_CLASS.MODEL_RESULT),
+      evidenceClass: attested ? E.EVIDENCE_CLASS.RUNTIME_ATTESTATION : (verified ? E.EVIDENCE_CLASS.EXTERNAL_VERIFIED : E.EVIDENCE_CLASS.MODEL_RESULT),
       scope: E.SCOPE.RUNTIME,
       claim: attested
-        ? "The supplied GoMicroVM receipt signature, plan/contract binding, successful exit, and an additional runtime-attestation check were reported verified by the caller."
+        ? "The supplied GoMicroVM receipt signature, binding, successful exit, and an additional runtime-attestation check were reported verified by the caller."
         : verified
-          ? "The supplied GoMicroVM receipt signature, plan/contract binding, and successful exit were reported verified by the caller; no remote or hardware attestation is inferred."
+          ? "The supplied GoMicroVM receipt signature, binding, and successful exit were reported verified by the caller; no remote/hardware attestation is inferred."
           : "A GoMicroVM-shaped receipt was supplied, but signature/binding/success verification is incomplete.",
       source: {
         adapter: SCHEMA,
@@ -156,7 +222,17 @@
       subset(contract.authority.secrets, plan.grants?.secrets || []);
   }
 
-  const API = { SCHEMA, CONTRACT_SCHEMA, compile, dryRunRequest, receiptEvidence, authoritySubset, seccompTier };
+  const API = {
+    SCHEMA,
+    CONTRACT_SCHEMA,
+    SECCOMP_RANK,
+    compile,
+    dryRunRequest,
+    reconcileAdmissionSnapshot,
+    receiptEvidence,
+    authoritySubset,
+    seccompTier,
+  };
   root.HolotradeGoMicroVM = API;
   if (typeof module !== "undefined" && module.exports) module.exports = API;
 })(typeof window !== "undefined" ? window : globalThis);
