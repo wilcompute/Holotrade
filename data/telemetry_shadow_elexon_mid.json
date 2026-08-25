@@ -1,0 +1,820 @@
+{
+  "schema": "holotrade.telemetry-shadow.market.v1",
+  "evidence": "MEASURED_OFFICIAL_MARKET_DATA",
+  "retrievedAt": "2026-08-25T15:40:35.153Z",
+  "source": {
+    "authority": "Elexon Insights Solution",
+    "dataset": "Market Index Data (MID)",
+    "documentation": "https://bmrs.elexon.co.uk/api-documentation/endpoint/balancing/pricing/market-index",
+    "apiDocumentation": "https://developer.data.elexon.co.uk/",
+    "licence": "https://www.elexon.co.uk/bsc/data/open-data-requests/bsc-open-data-licence/",
+    "attribution": "Contains BSC information licensed under the BSC Open Data Licence.",
+    "url": "https://data.elexon.co.uk/bmrs/api/v1/balancing/pricing/market-index?from=2026-08-01T00%3A00%3A00Z&to=2026-08-02T00%3A00%3A00Z&dataProviders=APXMIDP&format=json",
+    "httpStatus": 200,
+    "contentType": "application/json; charset=utf-8",
+    "responseBytes": 7221,
+    "responseBytesSha256": "1b83b9643f5f2ef0332b29eda5ab64cd61fd3eab528001b90747a1ae69154f8e",
+    "responseCanonicalSha256": "e52f39ab873f0d3f4cad5c37c56f67ea116133c33a0b0c3f14776ecf07bb3e03",
+    "note": "MID prices reflect short-term wholesale electricity trading in Great Britain; APXMIDP is the selected provider."
+  },
+  "query": {
+    "from": "2026-08-01T00:00:00Z",
+    "to": "2026-08-02T00:00:00Z",
+    "dataProvider": "APXMIDP",
+    "intervalConvention": "half-open [from,to) after filtering the API's inclusive response"
+  },
+  "units": {
+    "price": "GBP/MWh",
+    "volume": "MWh"
+  },
+  "providerResponseRawUtf8": "{\"metadata\":{\"datasets\":[\"MID\"]},\"data\":[{\"startTime\":\"2026-08-02T00:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-02\",\"settlementPeriod\":3,\"price\":139.81,\"volume\":1337.100},{\"startTime\":\"2026-08-01T23:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-02\",\"settlementPeriod\":2,\"price\":142.78,\"volume\":1613.400},{\"startTime\":\"2026-08-01T23:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-02\",\"settlementPeriod\":1,\"price\":142.07,\"volume\":1642.150},{\"startTime\":\"2026-08-01T22:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":48,\"price\":147.45,\"volume\":1521.250},{\"startTime\":\"2026-08-01T22:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":47,\"price\":149.61,\"volume\":1748.000},{\"startTime\":\"2026-08-01T21:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":46,\"price\":149.95,\"volume\":1926.200},{\"startTime\":\"2026-08-01T21:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":45,\"price\":153.81,\"volume\":1680.800},{\"startTime\":\"2026-08-01T20:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":44,\"price\":158.94,\"volume\":2483.250},{\"startTime\":\"2026-08-01T20:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":43,\"price\":156.77,\"volume\":2420.800},{\"startTime\":\"2026-08-01T19:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":42,\"price\":152.48,\"volume\":2903.400},{\"startTime\":\"2026-08-01T19:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":41,\"price\":150.88,\"volume\":2713.200},{\"startTime\":\"2026-08-01T18:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":40,\"price\":152.14,\"volume\":2616.350},{\"startTime\":\"2026-08-01T18:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":39,\"price\":141.82,\"volume\":2690.400},{\"startTime\":\"2026-08-01T17:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":38,\"price\":136.06,\"volume\":2403.350},{\"startTime\":\"2026-08-01T17:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":37,\"price\":127.96,\"volume\":2082.800},{\"startTime\":\"2026-08-01T16:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":36,\"price\":115.97,\"volume\":2407.600},{\"startTime\":\"2026-08-01T16:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":35,\"price\":113.37,\"volume\":2431.500},{\"startTime\":\"2026-08-01T15:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":34,\"price\":90.00,\"volume\":2425.200},{\"startTime\":\"2026-08-01T15:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":33,\"price\":89.95,\"volume\":2373.900},{\"startTime\":\"2026-08-01T14:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":32,\"price\":49.90,\"volume\":2873.650},{\"startTime\":\"2026-08-01T14:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":31,\"price\":44.98,\"volume\":2850.300},{\"startTime\":\"2026-08-01T13:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":30,\"price\":34.86,\"volume\":3732.500},{\"startTime\":\"2026-08-01T13:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":29,\"price\":47.64,\"volume\":3090.650},{\"startTime\":\"2026-08-01T12:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":28,\"price\":47.71,\"volume\":2983.300},{\"startTime\":\"2026-08-01T12:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":27,\"price\":51.31,\"volume\":2499.700},{\"startTime\":\"2026-08-01T11:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":26,\"price\":48.41,\"volume\":2811.200},{\"startTime\":\"2026-08-01T11:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":25,\"price\":45.96,\"volume\":2689.500},{\"startTime\":\"2026-08-01T10:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":24,\"price\":51.20,\"volume\":2398.500},{\"startTime\":\"2026-08-01T10:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":23,\"price\":51.66,\"volume\":2673.150},{\"startTime\":\"2026-08-01T09:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":22,\"price\":82.84,\"volume\":2170.350},{\"startTime\":\"2026-08-01T09:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":21,\"price\":89.34,\"volume\":2352.950},{\"startTime\":\"2026-08-01T08:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":20,\"price\":106.76,\"volume\":2282.200},{\"startTime\":\"2026-08-01T08:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":19,\"price\":119.71,\"volume\":2364.550},{\"startTime\":\"2026-08-01T07:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":18,\"price\":132.50,\"volume\":2544.000},{\"startTime\":\"2026-08-01T07:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":17,\"price\":131.72,\"volume\":2390.050},{\"startTime\":\"2026-08-01T06:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":16,\"price\":133.58,\"volume\":2617.600},{\"startTime\":\"2026-08-01T06:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":15,\"price\":123.75,\"volume\":2683.750},{\"startTime\":\"2026-08-01T05:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":14,\"price\":135.53,\"volume\":2268.800},{\"startTime\":\"2026-08-01T05:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":13,\"price\":133.37,\"volume\":1879.600},{\"startTime\":\"2026-08-01T04:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":12,\"price\":144.32,\"volume\":1496.700},{\"startTime\":\"2026-08-01T04:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":11,\"price\":143.03,\"volume\":1620.750},{\"startTime\":\"2026-08-01T03:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":10,\"price\":136.81,\"volume\":1482.650},{\"startTime\":\"2026-08-01T03:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":9,\"price\":132.62,\"volume\":1567.750},{\"startTime\":\"2026-08-01T02:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":8,\"price\":124.06,\"volume\":1751.750},{\"startTime\":\"2026-08-01T02:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":7,\"price\":127.51,\"volume\":1796.600},{\"startTime\":\"2026-08-01T01:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":6,\"price\":135.62,\"volume\":2008.950},{\"startTime\":\"2026-08-01T01:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":5,\"price\":133.13,\"volume\":1684.350},{\"startTime\":\"2026-08-01T00:30:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":4,\"price\":138.74,\"volume\":1852.350},{\"startTime\":\"2026-08-01T00:00:00Z\",\"dataProvider\":\"APXMIDP\",\"settlementDate\":\"2026-08-01\",\"settlementPeriod\":3,\"price\":132.88,\"volume\":2040.500}]}",
+  "providerResponse": {
+    "metadata": {
+      "datasets": [
+        "MID"
+      ]
+    },
+    "data": [
+      {
+        "startTime": "2026-08-02T00:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-02",
+        "settlementPeriod": 3,
+        "price": 139.81,
+        "volume": 1337.1
+      },
+      {
+        "startTime": "2026-08-01T23:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-02",
+        "settlementPeriod": 2,
+        "price": 142.78,
+        "volume": 1613.4
+      },
+      {
+        "startTime": "2026-08-01T23:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-02",
+        "settlementPeriod": 1,
+        "price": 142.07,
+        "volume": 1642.15
+      },
+      {
+        "startTime": "2026-08-01T22:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 48,
+        "price": 147.45,
+        "volume": 1521.25
+      },
+      {
+        "startTime": "2026-08-01T22:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 47,
+        "price": 149.61,
+        "volume": 1748
+      },
+      {
+        "startTime": "2026-08-01T21:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 46,
+        "price": 149.95,
+        "volume": 1926.2
+      },
+      {
+        "startTime": "2026-08-01T21:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 45,
+        "price": 153.81,
+        "volume": 1680.8
+      },
+      {
+        "startTime": "2026-08-01T20:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 44,
+        "price": 158.94,
+        "volume": 2483.25
+      },
+      {
+        "startTime": "2026-08-01T20:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 43,
+        "price": 156.77,
+        "volume": 2420.8
+      },
+      {
+        "startTime": "2026-08-01T19:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 42,
+        "price": 152.48,
+        "volume": 2903.4
+      },
+      {
+        "startTime": "2026-08-01T19:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 41,
+        "price": 150.88,
+        "volume": 2713.2
+      },
+      {
+        "startTime": "2026-08-01T18:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 40,
+        "price": 152.14,
+        "volume": 2616.35
+      },
+      {
+        "startTime": "2026-08-01T18:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 39,
+        "price": 141.82,
+        "volume": 2690.4
+      },
+      {
+        "startTime": "2026-08-01T17:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 38,
+        "price": 136.06,
+        "volume": 2403.35
+      },
+      {
+        "startTime": "2026-08-01T17:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 37,
+        "price": 127.96,
+        "volume": 2082.8
+      },
+      {
+        "startTime": "2026-08-01T16:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 36,
+        "price": 115.97,
+        "volume": 2407.6
+      },
+      {
+        "startTime": "2026-08-01T16:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 35,
+        "price": 113.37,
+        "volume": 2431.5
+      },
+      {
+        "startTime": "2026-08-01T15:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 34,
+        "price": 90,
+        "volume": 2425.2
+      },
+      {
+        "startTime": "2026-08-01T15:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 33,
+        "price": 89.95,
+        "volume": 2373.9
+      },
+      {
+        "startTime": "2026-08-01T14:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 32,
+        "price": 49.9,
+        "volume": 2873.65
+      },
+      {
+        "startTime": "2026-08-01T14:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 31,
+        "price": 44.98,
+        "volume": 2850.3
+      },
+      {
+        "startTime": "2026-08-01T13:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 30,
+        "price": 34.86,
+        "volume": 3732.5
+      },
+      {
+        "startTime": "2026-08-01T13:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 29,
+        "price": 47.64,
+        "volume": 3090.65
+      },
+      {
+        "startTime": "2026-08-01T12:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 28,
+        "price": 47.71,
+        "volume": 2983.3
+      },
+      {
+        "startTime": "2026-08-01T12:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 27,
+        "price": 51.31,
+        "volume": 2499.7
+      },
+      {
+        "startTime": "2026-08-01T11:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 26,
+        "price": 48.41,
+        "volume": 2811.2
+      },
+      {
+        "startTime": "2026-08-01T11:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 25,
+        "price": 45.96,
+        "volume": 2689.5
+      },
+      {
+        "startTime": "2026-08-01T10:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 24,
+        "price": 51.2,
+        "volume": 2398.5
+      },
+      {
+        "startTime": "2026-08-01T10:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 23,
+        "price": 51.66,
+        "volume": 2673.15
+      },
+      {
+        "startTime": "2026-08-01T09:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 22,
+        "price": 82.84,
+        "volume": 2170.35
+      },
+      {
+        "startTime": "2026-08-01T09:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 21,
+        "price": 89.34,
+        "volume": 2352.95
+      },
+      {
+        "startTime": "2026-08-01T08:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 20,
+        "price": 106.76,
+        "volume": 2282.2
+      },
+      {
+        "startTime": "2026-08-01T08:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 19,
+        "price": 119.71,
+        "volume": 2364.55
+      },
+      {
+        "startTime": "2026-08-01T07:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 18,
+        "price": 132.5,
+        "volume": 2544
+      },
+      {
+        "startTime": "2026-08-01T07:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 17,
+        "price": 131.72,
+        "volume": 2390.05
+      },
+      {
+        "startTime": "2026-08-01T06:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 16,
+        "price": 133.58,
+        "volume": 2617.6
+      },
+      {
+        "startTime": "2026-08-01T06:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 15,
+        "price": 123.75,
+        "volume": 2683.75
+      },
+      {
+        "startTime": "2026-08-01T05:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 14,
+        "price": 135.53,
+        "volume": 2268.8
+      },
+      {
+        "startTime": "2026-08-01T05:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 13,
+        "price": 133.37,
+        "volume": 1879.6
+      },
+      {
+        "startTime": "2026-08-01T04:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 12,
+        "price": 144.32,
+        "volume": 1496.7
+      },
+      {
+        "startTime": "2026-08-01T04:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 11,
+        "price": 143.03,
+        "volume": 1620.75
+      },
+      {
+        "startTime": "2026-08-01T03:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 10,
+        "price": 136.81,
+        "volume": 1482.65
+      },
+      {
+        "startTime": "2026-08-01T03:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 9,
+        "price": 132.62,
+        "volume": 1567.75
+      },
+      {
+        "startTime": "2026-08-01T02:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 8,
+        "price": 124.06,
+        "volume": 1751.75
+      },
+      {
+        "startTime": "2026-08-01T02:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 7,
+        "price": 127.51,
+        "volume": 1796.6
+      },
+      {
+        "startTime": "2026-08-01T01:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 6,
+        "price": 135.62,
+        "volume": 2008.95
+      },
+      {
+        "startTime": "2026-08-01T01:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 5,
+        "price": 133.13,
+        "volume": 1684.35
+      },
+      {
+        "startTime": "2026-08-01T00:30:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 4,
+        "price": 138.74,
+        "volume": 1852.35
+      },
+      {
+        "startTime": "2026-08-01T00:00:00Z",
+        "dataProvider": "APXMIDP",
+        "settlementDate": "2026-08-01",
+        "settlementPeriod": 3,
+        "price": 132.88,
+        "volume": 2040.5
+      }
+    ]
+  },
+  "rows": [
+    {
+      "startTime": "2026-08-01T00:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 3,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 132.88,
+      "volumeMWh": 2040.5
+    },
+    {
+      "startTime": "2026-08-01T00:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 4,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 138.74,
+      "volumeMWh": 1852.35
+    },
+    {
+      "startTime": "2026-08-01T01:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 5,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 133.13,
+      "volumeMWh": 1684.35
+    },
+    {
+      "startTime": "2026-08-01T01:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 6,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 135.62,
+      "volumeMWh": 2008.95
+    },
+    {
+      "startTime": "2026-08-01T02:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 7,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 127.51,
+      "volumeMWh": 1796.6
+    },
+    {
+      "startTime": "2026-08-01T02:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 8,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 124.06,
+      "volumeMWh": 1751.75
+    },
+    {
+      "startTime": "2026-08-01T03:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 9,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 132.62,
+      "volumeMWh": 1567.75
+    },
+    {
+      "startTime": "2026-08-01T03:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 10,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 136.81,
+      "volumeMWh": 1482.65
+    },
+    {
+      "startTime": "2026-08-01T04:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 11,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 143.03,
+      "volumeMWh": 1620.75
+    },
+    {
+      "startTime": "2026-08-01T04:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 12,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 144.32,
+      "volumeMWh": 1496.7
+    },
+    {
+      "startTime": "2026-08-01T05:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 13,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 133.37,
+      "volumeMWh": 1879.6
+    },
+    {
+      "startTime": "2026-08-01T05:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 14,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 135.53,
+      "volumeMWh": 2268.8
+    },
+    {
+      "startTime": "2026-08-01T06:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 15,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 123.75,
+      "volumeMWh": 2683.75
+    },
+    {
+      "startTime": "2026-08-01T06:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 16,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 133.58,
+      "volumeMWh": 2617.6
+    },
+    {
+      "startTime": "2026-08-01T07:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 17,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 131.72,
+      "volumeMWh": 2390.05
+    },
+    {
+      "startTime": "2026-08-01T07:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 18,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 132.5,
+      "volumeMWh": 2544
+    },
+    {
+      "startTime": "2026-08-01T08:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 19,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 119.71,
+      "volumeMWh": 2364.55
+    },
+    {
+      "startTime": "2026-08-01T08:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 20,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 106.76,
+      "volumeMWh": 2282.2
+    },
+    {
+      "startTime": "2026-08-01T09:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 21,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 89.34,
+      "volumeMWh": 2352.95
+    },
+    {
+      "startTime": "2026-08-01T09:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 22,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 82.84,
+      "volumeMWh": 2170.35
+    },
+    {
+      "startTime": "2026-08-01T10:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 23,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 51.66,
+      "volumeMWh": 2673.15
+    },
+    {
+      "startTime": "2026-08-01T10:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 24,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 51.2,
+      "volumeMWh": 2398.5
+    },
+    {
+      "startTime": "2026-08-01T11:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 25,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 45.96,
+      "volumeMWh": 2689.5
+    },
+    {
+      "startTime": "2026-08-01T11:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 26,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 48.41,
+      "volumeMWh": 2811.2
+    },
+    {
+      "startTime": "2026-08-01T12:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 27,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 51.31,
+      "volumeMWh": 2499.7
+    },
+    {
+      "startTime": "2026-08-01T12:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 28,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 47.71,
+      "volumeMWh": 2983.3
+    },
+    {
+      "startTime": "2026-08-01T13:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 29,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 47.64,
+      "volumeMWh": 3090.65
+    },
+    {
+      "startTime": "2026-08-01T13:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 30,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 34.86,
+      "volumeMWh": 3732.5
+    },
+    {
+      "startTime": "2026-08-01T14:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 31,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 44.98,
+      "volumeMWh": 2850.3
+    },
+    {
+      "startTime": "2026-08-01T14:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 32,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 49.9,
+      "volumeMWh": 2873.65
+    },
+    {
+      "startTime": "2026-08-01T15:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 33,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 89.95,
+      "volumeMWh": 2373.9
+    },
+    {
+      "startTime": "2026-08-01T15:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 34,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 90,
+      "volumeMWh": 2425.2
+    },
+    {
+      "startTime": "2026-08-01T16:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 35,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 113.37,
+      "volumeMWh": 2431.5
+    },
+    {
+      "startTime": "2026-08-01T16:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 36,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 115.97,
+      "volumeMWh": 2407.6
+    },
+    {
+      "startTime": "2026-08-01T17:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 37,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 127.96,
+      "volumeMWh": 2082.8
+    },
+    {
+      "startTime": "2026-08-01T17:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 38,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 136.06,
+      "volumeMWh": 2403.35
+    },
+    {
+      "startTime": "2026-08-01T18:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 39,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 141.82,
+      "volumeMWh": 2690.4
+    },
+    {
+      "startTime": "2026-08-01T18:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 40,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 152.14,
+      "volumeMWh": 2616.35
+    },
+    {
+      "startTime": "2026-08-01T19:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 41,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 150.88,
+      "volumeMWh": 2713.2
+    },
+    {
+      "startTime": "2026-08-01T19:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 42,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 152.48,
+      "volumeMWh": 2903.4
+    },
+    {
+      "startTime": "2026-08-01T20:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 43,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 156.77,
+      "volumeMWh": 2420.8
+    },
+    {
+      "startTime": "2026-08-01T20:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 44,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 158.94,
+      "volumeMWh": 2483.25
+    },
+    {
+      "startTime": "2026-08-01T21:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 45,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 153.81,
+      "volumeMWh": 1680.8
+    },
+    {
+      "startTime": "2026-08-01T21:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 46,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 149.95,
+      "volumeMWh": 1926.2
+    },
+    {
+      "startTime": "2026-08-01T22:00:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 47,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 149.61,
+      "volumeMWh": 1748
+    },
+    {
+      "startTime": "2026-08-01T22:30:00.000Z",
+      "settlementDate": "2026-08-01",
+      "settlementPeriod": 48,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 147.45,
+      "volumeMWh": 1521.25
+    },
+    {
+      "startTime": "2026-08-01T23:00:00.000Z",
+      "settlementDate": "2026-08-02",
+      "settlementPeriod": 1,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 142.07,
+      "volumeMWh": 1642.15
+    },
+    {
+      "startTime": "2026-08-01T23:30:00.000Z",
+      "settlementDate": "2026-08-02",
+      "settlementPeriod": 2,
+      "dataProvider": "APXMIDP",
+      "priceGBPPerMWh": 142.78,
+      "volumeMWh": 1613.4
+    }
+  ],
+  "rowsSha256": "2415eeb6f7d5f755db99c4c760a463068ad957f788ffa16d100a55c8d5d44149",
+  "fixtureSha256": "52ce161e0a4448019c08f709b8c86cbf98362b329265f155cecef9b118e88346"
+}

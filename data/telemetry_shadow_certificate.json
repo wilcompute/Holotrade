@@ -1,0 +1,1876 @@
+{
+  "schema": "holotrade.telemetry-shadow.replay.v1",
+  "evidence": "MEASURED_INPUTS_COUNTERFACTUAL_OUTPUTS",
+  "actuation": "NONE",
+  "inputCommitments": {
+    "hostFixtureSha256": "c8e19ded8d190a57d02ddf6448217c390ffe07e7d2e3d59eb65aa0b3b8ce4ae0",
+    "marketFixtureSha256": "52ce161e0a4448019c08f709b8c86cbf98362b329265f155cecef9b118e88346"
+  },
+  "design": {
+    "paired": true,
+    "offArm": "observed per-CPU persistence; no recommendation applied",
+    "onArm": "one normalized 0.10 response step using the repository demand multiplier and -1.9 price elasticity",
+    "conservedQuantity": "sum of per-CPU busy fractions within each interval",
+    "thermalSwingTreatment": "not measured; utilisationEMA equals current utilisation so no swing surcharge is invented",
+    "priceTreatment": "official price drives one common dimensionless E multiplier; it cancels from within-host relative allocation",
+    "timeAlignment": "host telemetry and the historical market trace are independent streams paired by ordinal only, not co-temporal observations",
+    "fieldOutcome": false
+  },
+  "marketSummary": {
+    "count": 48,
+    "baseline": {
+      "statistic": "trace median",
+      "priceGBPPerMWh": 132.56
+    },
+    "minPriceGBPPerMWh": 34.86,
+    "maxPriceGBPPerMWh": 158.94,
+    "meanPriceGBPPerMWh": 114.23874999999997,
+    "volumeWeightedPriceGBPPerMWh": 109.19462755449499,
+    "meanCommonEnergyMultiplier": 0.9161952548591287,
+    "minCommonEnergyMultiplier": 0.62,
+    "maxCommonEnergyMultiplier": 1.1049723031871166
+  },
+  "telemetrySummary": {
+    "observationCount": 48,
+    "logicalCpuLanes": 12,
+    "meanObservedHostCpuBusyFraction": 0.009822803421721928,
+    "meanObservedLaneGini": 0.674173866788963
+  },
+  "counterfactualSummary": {
+    "meanRecommendedLaneGini": 0.6054857263329889,
+    "meanPairedGiniDifference": 0.0686881404559739,
+    "improvedIntervals": 41,
+    "unchangedIntervals": 7,
+    "worsenedIntervals": 0,
+    "meanObservedMaximumLaneUtilisation": 0.0529870840780346,
+    "meanRecommendedMaximumLaneUtilisation": 0.048483083692042496
+  },
+  "rowsSha256": "01d3b0d1a2d6e6d0a8eea8debd833ac3a80103217fa813afa906c9368990e1df",
+  "rows": [
+    {
+      "sequence": 0,
+      "telemetryIntervalStart": "2026-08-25T15:35:41.768Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:42.286Z",
+      "marketOrdinal": 0,
+      "marketStartTime": "2026-08-01T00:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 132.88,
+      "commonEnergyMultiplier": 1.0013269803630358,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8320254782157264,
+        "maximumLaneUtilisation": 0.07407407407407407,
+        "aggregateLaneUtilisation": 0.11217276783314518
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7472734482338936,
+        "maximumLaneUtilisation": 0.06748394896368304,
+        "aggregateLaneUtilisation": 0.11217276783314523,
+        "giniDifference": 0.08475202998183273,
+        "recommendedUtilisation": [
+          0.06748394896368304,
+          0.017896245607190744,
+          0.0009522735649251757,
+          0.0009522735649251757,
+          0.018222111177944828,
+          0.0009522735649251757,
+          0.0009522735649251757,
+          0.0009522735649251757,
+          0.0009522735649251757,
+          0.0009522735649251757,
+          0.0009522735649251757,
+          0.0009522735649251757
+        ]
+      }
+    },
+    {
+      "sequence": 1,
+      "telemetryIntervalStart": "2026-08-25T15:35:42.286Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:42.821Z",
+      "marketOrdinal": 1,
+      "marketStartTime": "2026-08-01T00:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 138.74,
+      "commonEnergyMultiplier": 1.025378146184051,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0,
+        "giniDifference": 0,
+        "recommendedUtilisation": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "sequence": 2,
+      "telemetryIntervalStart": "2026-08-25T15:35:42.821Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:43.349Z",
+      "marketOrdinal": 2,
+      "marketStartTime": "2026-08-01T01:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 133.13,
+      "commonEnergyMultiplier": 1.0023626834770356,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8341269841269845,
+        "maximumLaneUtilisation": 0.019230769230769232,
+        "aggregateLaneUtilisation": 0.038098693759071114
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7501631168958125,
+        "maximumLaneUtilisation": 0.017614575164475385,
+        "aggregateLaneUtilisation": 0.03809869375907113,
+        "giniDifference": 0.083963867231172,
+        "recommendedUtilisation": [
+          0.00031958705310022715,
+          0.00031958705310022715,
+          0.00031958705310022715,
+          0.00031958705310022715,
+          0.00031958705310022715,
+          0.017288248063593463,
+          0.00031958705310022715,
+          0.00031958705310022715,
+          0.00031958705310022715,
+          0.017614575164475385,
+          0.00031958705310022715,
+          0.00031958705310022715
+        ]
+      }
+    },
+    {
+      "sequence": 3,
+      "telemetryIntervalStart": "2026-08-25T15:35:43.349Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:43.872Z",
+      "marketOrdinal": 3,
+      "marketStartTime": "2026-08-01T01:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 135.62,
+      "commonEnergyMultiplier": 1.0126309209440822,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.669093851132686,
+        "maximumLaneUtilisation": 0.0196078431372549,
+        "aggregateLaneUtilisation": 0.07621161672216055
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.6012942540169242,
+        "maximumLaneUtilisation": 0.01826453671200173,
+        "aggregateLaneUtilisation": 0.07621161672216056,
+        "giniDifference": 0.06779959711576189,
+        "recommendedUtilisation": [
+          0.017599566754579382,
+          0.0006435474683025863,
+          0.01826453671200173,
+          0.0006435474683025863,
+          0.0006435474683025863,
+          0.017599566754579382,
+          0.0006435474683025863,
+          0.017599566754579382,
+          0.0006435474683025863,
+          0.0006435474683025863,
+          0.0006435474683025863,
+          0.0006435474683025863
+        ]
+      }
+    },
+    {
+      "sequence": 4,
+      "telemetryIntervalStart": "2026-08-25T15:35:43.872Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:44.399Z",
+      "marketOrdinal": 4,
+      "marketStartTime": "2026-08-01T02:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 127.51,
+      "commonEnergyMultiplier": 0.9788642390792064,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.018518518518518517,
+        "aggregateLaneUtilisation": 0.018518518518518517
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8247063458139687,
+        "maximumLaneUtilisation": 0.016815549613838923,
+        "aggregateLaneUtilisation": 0.018518518518518514,
+        "giniDifference": 0.09196032085269801,
+        "recommendedUtilisation": [
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.016815549613838923,
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.00015481535497087234,
+          0.00015481535497087234
+        ]
+      }
+    },
+    {
+      "sequence": 5,
+      "telemetryIntervalStart": "2026-08-25T15:35:44.399Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:44.908Z",
+      "marketOrdinal": 5,
+      "marketStartTime": "2026-08-01T02:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 124.06,
+      "commonEnergyMultiplier": 0.964207720906072,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8341423948220066,
+        "maximumLaneUtilisation": 0.0196078431372549,
+        "aggregateLaneUtilisation": 0.038838612368024134
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7501665042103756,
+        "maximumLaneUtilisation": 0.017959693960403266,
+        "aggregateLaneUtilisation": 0.038838612368024134,
+        "giniDifference": 0.08397589061163102,
+        "recommendedUtilisation": [
+          0.0003258344219181231,
+          0.0003258344219181231,
+          0.01762057418843964,
+          0.0003258344219181231,
+          0.0003258344219181231,
+          0.0003258344219181231,
+          0.0003258344219181231,
+          0.0003258344219181231,
+          0.017959693960403266,
+          0.0003258344219181231,
+          0.0003258344219181231,
+          0.0003258344219181231
+        ]
+      }
+    },
+    {
+      "sequence": 6,
+      "telemetryIntervalStart": "2026-08-25T15:35:44.908Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:45.432Z",
+      "marketOrdinal": 6,
+      "marketStartTime": "2026-08-01T03:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 132.62,
+      "commonEnergyMultiplier": 1.0002489185274044,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0,
+        "giniDifference": 0,
+        "recommendedUtilisation": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "sequence": 7,
+      "telemetryIntervalStart": "2026-08-25T15:35:45.432Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:45.936Z",
+      "marketOrdinal": 7,
+      "marketStartTime": "2026-08-01T03:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 136.81,
+      "commonEnergyMultiplier": 1.017508254515389,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.583987569512594,
+        "maximumLaneUtilisation": 0.1,
+        "aggregateLaneUtilisation": 0.3996078431372549
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.5216641368593251,
+        "maximumLaneUtilisation": 0.09290009418780153,
+        "aggregateLaneUtilisation": 0.3996078431372549,
+        "giniDifference": 0.062323432653268895,
+        "recommendedUtilisation": [
+          0.039272138150199726,
+          0.021060607959898392,
+          0.07501735848584538,
+          0.0035576673199937945,
+          0.0035576673199937945,
+          0.021410750399946665,
+          0.07501735848584538,
+          0.0035576673199937945,
+          0.09290009418780153,
+          0.0035576673199937945,
+          0.05714119886774884,
+          0.0035576673199937945
+        ]
+      }
+    },
+    {
+      "sequence": 8,
+      "telemetryIntervalStart": "2026-08-25T15:35:45.936Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:46.442Z",
+      "marketOrdinal": 8,
+      "marketStartTime": "2026-08-01T04:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 143.03,
+      "commonEnergyMultiplier": 1.0426968313732567,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8722222222222222,
+        "maximumLaneUtilisation": 0.23529411764705882,
+        "aggregateLaneUtilisation": 0.2941176470588235
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7813481306163959,
+        "maximumLaneUtilisation": 0.21337830711420502,
+        "aggregateLaneUtilisation": 0.2941176470588235,
+        "giniDifference": 0.09087409160582638,
+        "recommendedUtilisation": [
+          0.002554809291254622,
+          0.002554809291254622,
+          0.21337830711420502,
+          0.002554809291254622,
+          0.02009837488693381,
+          0.002554809291254622,
+          0.002554809291254622,
+          0.002554809291254622,
+          0.002554809291254622,
+          0.03764768143639309,
+          0.002554809291254622,
+          0.002554809291254622
+        ]
+      }
+    },
+    {
+      "sequence": 9,
+      "telemetryIntervalStart": "2026-08-25T15:35:46.442Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:46.954Z",
+      "marketOrdinal": 9,
+      "marketStartTime": "2026-08-01T04:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 144.32,
+      "commonEnergyMultiplier": 1.0478586761018773,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.019230769230769232,
+        "aggregateLaneUtilisation": 0.019230769230769232
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8246953302964288,
+        "maximumLaneUtilisation": 0.017462089685187736,
+        "aggregateLaneUtilisation": 0.019230769230769225,
+        "giniDifference": 0.09197133637023791,
+        "recommendedUtilisation": [
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.017462089685187736,
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.0001607890495983177,
+          0.0001607890495983177
+        ]
+      }
+    },
+    {
+      "sequence": 10,
+      "telemetryIntervalStart": "2026-08-25T15:35:46.954Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:47.472Z",
+      "marketOrdinal": 10,
+      "marketStartTime": "2026-08-01T05:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 133.37,
+      "commonEnergyMultiplier": 1.003356135387026,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0,
+        "giniDifference": 0,
+        "recommendedUtilisation": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "sequence": 11,
+      "telemetryIntervalStart": "2026-08-25T15:35:47.472Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:48.013Z",
+      "marketOrdinal": 11,
+      "marketStartTime": "2026-08-01T05:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 135.53,
+      "commonEnergyMultiplier": 1.012261265160274,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0,
+        "giniDifference": 0,
+        "recommendedUtilisation": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "sequence": 12,
+      "telemetryIntervalStart": "2026-08-25T15:35:48.013Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:48.552Z",
+      "marketOrdinal": 12,
+      "marketStartTime": "2026-08-01T06:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 123.75,
+      "commonEnergyMultiplier": 0.9628818305543103,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.7166666666666666,
+        "maximumLaneUtilisation": 0.037037037037037035,
+        "aggregateLaneUtilisation": 0.09259259259259259
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.6438530006238181,
+        "maximumLaneUtilisation": 0.034058818507319316,
+        "aggregateLaneUtilisation": 0.09259259259259259,
+        "giniDifference": 0.07281366604284845,
+        "recommendedUtilisation": [
+          0.0007839909007053615,
+          0.0007839909007053615,
+          0.0007839909007053615,
+          0.01742061562654346,
+          0.0007839909007053615,
+          0.0007839909007053615,
+          0.01742061562654346,
+          0.0007839909007053615,
+          0.0007839909007053615,
+          0.01742061562654346,
+          0.0007839909007053615,
+          0.034058818507319316
+        ]
+      }
+    },
+    {
+      "sequence": 13,
+      "telemetryIntervalStart": "2026-08-25T15:35:48.552Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:49.096Z",
+      "marketOrdinal": 13,
+      "marketStartTime": "2026-08-01T06:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 133.58,
+      "commonEnergyMultiplier": 1.0042247460825573,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0,
+        "giniDifference": 0,
+        "recommendedUtilisation": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "sequence": 14,
+      "telemetryIntervalStart": "2026-08-25T15:35:49.096Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:49.610Z",
+      "marketOrdinal": 14,
+      "marketStartTime": "2026-08-01T07:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 131.72,
+      "commonEnergyMultiplier": 0.9965098013668073,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0,
+        "giniDifference": 0,
+        "recommendedUtilisation": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "sequence": 15,
+      "telemetryIntervalStart": "2026-08-25T15:35:49.610Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:50.115Z",
+      "marketOrdinal": 15,
+      "marketStartTime": "2026-08-01T07:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 132.5,
+      "commonEnergyMultiplier": 0.9997510307673677,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.0196078431372549,
+        "aggregateLaneUtilisation": 0.0196078431372549
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8246895067274629,
+        "maximumLaneUtilisation": 0.017804369412956784,
+        "aggregateLaneUtilisation": 0.01960784313725491,
+        "giniDifference": 0.09197715993920386,
+        "recommendedUtilisation": [
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.017804369412956784,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432
+        ]
+      }
+    },
+    {
+      "sequence": 16,
+      "telemetryIntervalStart": "2026-08-25T15:35:50.115Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:50.643Z",
+      "marketOrdinal": 16,
+      "marketStartTime": "2026-08-01T08:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 119.71,
+      "commonEnergyMultiplier": 0.9454637113317105,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.7510615711252655,
+        "maximumLaneUtilisation": 0.019230769230769232,
+        "aggregateLaneUtilisation": 0.056966618287373
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.6752108621481823,
+        "maximumLaneUtilisation": 0.017768062201231994,
+        "aggregateLaneUtilisation": 0.05696661828737299,
+        "giniDifference": 0.07585070897708324,
+        "recommendedUtilisation": [
+          0.000479428076089675,
+          0.000479428076089675,
+          0.017441851700666967,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.017768062201231994,
+          0.000479428076089675,
+          0.017441851700666967,
+          0.000479428076089675
+        ]
+      }
+    },
+    {
+      "sequence": 17,
+      "telemetryIntervalStart": "2026-08-25T15:35:50.643Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:51.153Z",
+      "marketOrdinal": 17,
+      "marketStartTime": "2026-08-01T08:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 106.76,
+      "commonEnergyMultiplier": 0.8877646306301471,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8349673202614378,
+        "maximumLaneUtilisation": 0.02,
+        "aggregateLaneUtilisation": 0.039230769230769236
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7509028498315453,
+        "maximumLaneUtilisation": 0.018315553752321568,
+        "aggregateLaneUtilisation": 0.03923076923076923,
+        "giniDifference": 0.08406447042989251,
+        "recommendedUtilisation": [
+          0.0003291461234904227,
+          0.0003291461234904227,
+          0.0003291461234904227,
+          0.0003291461234904227,
+          0.0003291461234904227,
+          0.01762375424354344,
+          0.0003291461234904227,
+          0.0003291461234904227,
+          0.018315553752321568,
+          0.0003291461234904227,
+          0.0003291461234904227,
+          0.0003291461234904227
+        ]
+      }
+    },
+    {
+      "sequence": 18,
+      "telemetryIntervalStart": "2026-08-25T15:35:51.153Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:51.698Z",
+      "marketOrdinal": 18,
+      "marketStartTime": "2026-08-01T09:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 89.34,
+      "commonEnergyMultiplier": 0.8049119942468025,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8340978593272173,
+        "maximumLaneUtilisation": 0.018518518518518517,
+        "aggregateLaneUtilisation": 0.0367003367003367
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7501567376140119,
+        "maximumLaneUtilisation": 0.016962657019158153,
+        "aggregateLaneUtilisation": 0.036700336700336705,
+        "giniDifference": 0.08394112171320534,
+        "recommendedUtilisation": [
+          0.00030778441963474706,
+          0.00030778441963474706,
+          0.00030778441963474706,
+          0.00030778441963474706,
+          0.00030778441963474706,
+          0.00030778441963474706,
+          0.016659835484831072,
+          0.00030778441963474706,
+          0.016962657019158153,
+          0.00030778441963474706,
+          0.00030778441963474706,
+          0.00030778441963474706
+        ]
+      }
+    },
+    {
+      "sequence": 19,
+      "telemetryIntervalStart": "2026-08-25T15:35:51.698Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:52.211Z",
+      "marketOrdinal": 19,
+      "marketStartTime": "2026-08-01T09:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 82.84,
+      "commonEnergyMultiplier": 0.7721562252436505,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.5697213846043927,
+        "maximumLaneUtilisation": 0.12962962962962962,
+        "aggregateLaneUtilisation": 0.38119569582388674
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.5091578953999929,
+        "maximumLaneUtilisation": 0.11927003005099171,
+        "aggregateLaneUtilisation": 0.3811956958238868,
+        "giniDifference": 0.0605634892043998,
+        "recommendedUtilisation": [
+          0.11927003005099171,
+          0.03841100755315707,
+          0.05395138785112337,
+          0.02055660040896805,
+          0.03773712004497728,
+          0.02055660040896805,
+          0.05593564553686996,
+          0.0033834049147102134,
+          0.021243684309990372,
+          0.0033834049147102134,
+          0.0033834049147102134,
+          0.0033834049147102134
+        ]
+      }
+    },
+    {
+      "sequence": 20,
+      "telemetryIntervalStart": "2026-08-25T15:35:52.211Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:52.713Z",
+      "marketOrdinal": 20,
+      "marketStartTime": "2026-08-01T10:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 51.66,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.6884499485895204,
+        "maximumLaneUtilisation": 0.22448979591836735,
+        "aggregateLaneUtilisation": 0.5240976390556222
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.6140365773003675,
+        "maximumLaneUtilisation": 0.20509010995550092,
+        "aggregateLaneUtilisation": 0.5240976390556221,
+        "giniDifference": 0.07441337128915282,
+        "recommendedUtilisation": [
+          0.022538428563319543,
+          0.20509010995550092,
+          0.040353987686764244,
+          0.004733919838901379,
+          0.004733919838901379,
+          0.09385893681884235,
+          0.004733919838901379,
+          0.004733919838901379,
+          0.022538428563319543,
+          0.09385893681884235,
+          0.022189211454526393,
+          0.004733919838901379
+        ]
+      }
+    },
+    {
+      "sequence": 21,
+      "telemetryIntervalStart": "2026-08-25T15:35:52.713Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:53.217Z",
+      "marketOrdinal": 21,
+      "marketStartTime": "2026-08-01T10:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 51.2,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8333333333333335,
+        "maximumLaneUtilisation": 0.0196078431372549,
+        "aggregateLaneUtilisation": 0.0392156862745098
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7494335480916767,
+        "maximumLaneUtilisation": 0.017962749308987124,
+        "aggregateLaneUtilisation": 0.039215686274509796,
+        "giniDifference": 0.08389978524165675,
+        "recommendedUtilisation": [
+          0.00032901876565355535,
+          0.017962749308987124,
+          0.00032901876565355535,
+          0.00032901876565355535,
+          0.00032901876565355535,
+          0.017962749308987124,
+          0.00032901876565355535,
+          0.00032901876565355535,
+          0.00032901876565355535,
+          0.00032901876565355535,
+          0.00032901876565355535,
+          0.00032901876565355535
+        ]
+      }
+    },
+    {
+      "sequence": 22,
+      "telemetryIntervalStart": "2026-08-25T15:35:53.217Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:53.724Z",
+      "marketOrdinal": 22,
+      "marketStartTime": "2026-08-01T11:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 45.96,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0,
+        "maximumLaneUtilisation": 0,
+        "aggregateLaneUtilisation": 0,
+        "giniDifference": 0,
+        "recommendedUtilisation": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "sequence": 23,
+      "telemetryIntervalStart": "2026-08-25T15:35:53.724Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:54.247Z",
+      "marketOrdinal": 23,
+      "marketStartTime": "2026-08-01T11:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 48.41,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.7510615711252655,
+        "maximumLaneUtilisation": 0.019230769230769232,
+        "aggregateLaneUtilisation": 0.056966618287373
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.6752108621481823,
+        "maximumLaneUtilisation": 0.017768062201231994,
+        "aggregateLaneUtilisation": 0.05696661828737298,
+        "giniDifference": 0.07585070897708324,
+        "recommendedUtilisation": [
+          0.017441851700666967,
+          0.017768062201231994,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.017441851700666967,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675,
+          0.000479428076089675
+        ]
+      }
+    },
+    {
+      "sequence": 24,
+      "telemetryIntervalStart": "2026-08-25T15:35:54.247Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:54.748Z",
+      "marketOrdinal": 24,
+      "marketStartTime": "2026-08-01T12:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 51.31,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.687551695616212,
+        "maximumLaneUtilisation": 0.058823529411764705,
+        "aggregateLaneUtilisation": 0.15803921568627452
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.6169419283139457,
+        "maximumLaneUtilisation": 0.05413845689834033,
+        "aggregateLaneUtilisation": 0.15803921568627455,
+        "giniDifference": 0.07060976730226631,
+        "recommendedUtilisation": [
+          0.0013527888897422542,
+          0.018945047345479596,
+          0.0013527888897422542,
+          0.0013527888897422542,
+          0.0013527888897422542,
+          0.019296924313524585,
+          0.05413845689834033,
+          0.0013527888897422542,
+          0.018945047345479596,
+          0.0013527888897422542,
+          0.0013527888897422542,
+          0.03724421755525463
+        ]
+      }
+    },
+    {
+      "sequence": 25,
+      "telemetryIntervalStart": "2026-08-25T15:35:54.748Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:55.290Z",
+      "marketOrdinal": 25,
+      "marketStartTime": "2026-08-01T12:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 47.71,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.037037037037037035,
+        "aggregateLaneUtilisation": 0.037037037037037035
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8244263767186417,
+        "maximumLaneUtilisation": 0.03362073000192499,
+        "aggregateLaneUtilisation": 0.037037037037037035,
+        "giniDifference": 0.09224028994802502,
+        "recommendedUtilisation": [
+          0.0003105733668283679,
+          0.03362073000192499,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679,
+          0.0003105733668283679
+        ]
+      }
+    },
+    {
+      "sequence": 26,
+      "telemetryIntervalStart": "2026-08-25T15:35:55.290Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:55.792Z",
+      "marketOrdinal": 26,
+      "marketStartTime": "2026-08-01T13:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 47.64,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.38481106387044384,
+        "maximumLaneUtilisation": 0.06,
+        "aggregateLaneUtilisation": 0.3157315233785822
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.3442530826812038,
+        "maximumLaneUtilisation": 0.05645233932868125,
+        "aggregateLaneUtilisation": 0.3157315233785822,
+        "giniDifference": 0.04055798118924003,
+        "recommendedUtilisation": [
+          0.020312022472743645,
+          0.02066277867090244,
+          0.05438692041518008,
+          0.002777476961666344,
+          0.020312022472743645,
+          0.02066277867090244,
+          0.02066277867090244,
+          0.02066277867090244,
+          0.05645233932868125,
+          0.02066277867090244,
+          0.002777476961666344,
+          0.05539937141138868
+        ]
+      }
+    },
+    {
+      "sequence": 27,
+      "telemetryIntervalStart": "2026-08-25T15:35:55.792Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:56.294Z",
+      "marketOrdinal": 27,
+      "marketStartTime": "2026-08-01T13:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 34.86,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.5413223925389861,
+        "maximumLaneUtilisation": 0.08163265306122448,
+        "aggregateLaneUtilisation": 0.2808963585434174
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.4846162822190758,
+        "maximumLaneUtilisation": 0.07554451351819723,
+        "aggregateLaneUtilisation": 0.2808963585434174,
+        "giniDifference": 0.05670611031991024,
+        "recommendedUtilisation": [
+          0.037555452870560085,
+          0.002454694563972934,
+          0.020002315725097728,
+          0.002454694563972934,
+          0.020002315725097728,
+          0.020353325848868915,
+          0.0572640150257373,
+          0.002454694563972934,
+          0.020002315725097728,
+          0.002454694563972934,
+          0.020353325848868915,
+          0.07554451351819723
+        ]
+      }
+    },
+    {
+      "sequence": 28,
+      "telemetryIntervalStart": "2026-08-25T15:35:56.294Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:56.798Z",
+      "marketOrdinal": 28,
+      "marketStartTime": "2026-08-01T14:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 44.98,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.0392156862745098,
+        "aggregateLaneUtilisation": 0.0392156862745098
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8243942992484137,
+        "maximumLaneUtilisation": 0.0355971620620293,
+        "aggregateLaneUtilisation": 0.0392156862745098,
+        "giniDifference": 0.09227236741825307,
+        "recommendedUtilisation": [
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0003289567465891365,
+          0.0355971620620293,
+          0.0003289567465891365
+        ]
+      }
+    },
+    {
+      "sequence": 29,
+      "telemetryIntervalStart": "2026-08-25T15:35:56.798Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:57.326Z",
+      "marketOrdinal": 29,
+      "marketStartTime": "2026-08-01T14:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 49.9,
+      "commonEnergyMultiplier": 0.62,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8676470588235294,
+        "maximumLaneUtilisation": 0.2,
+        "aggregateLaneUtilisation": 0.25660377358490566
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.777605400917551,
+        "maximumLaneUtilisation": 0.18149576114620775,
+        "aggregateLaneUtilisation": 0.25660377358490566,
+        "giniDifference": 0.0900416579059784,
+        "recommendedUtilisation": [
+          0.0022199883298224697,
+          0.0022199883298224697,
+          0.0022199883298224697,
+          0.0022199883298224697,
+          0.0022199883298224697,
+          0.0022199883298224697,
+          0.0360136264151084,
+          0.0022199883298224697,
+          0.019114491055187293,
+          0.0022199883298224697,
+          0.18149576114620775,
+          0.0022199883298224697
+        ]
+      }
+    },
+    {
+      "sequence": 30,
+      "telemetryIntervalStart": "2026-08-25T15:35:57.326Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:57.828Z",
+      "marketOrdinal": 30,
+      "marketStartTime": "2026-08-01T15:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 89.95,
+      "commonEnergyMultiplier": 0.8079300653456635,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.5520170862629468,
+        "maximumLaneUtilisation": 0.32,
+        "aggregateLaneUtilisation": 0.8821528611444578
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.4895761236415772,
+        "maximumLaneUtilisation": 0.29256741591830154,
+        "aggregateLaneUtilisation": 0.8821528611444577,
+        "giniDifference": 0.062440962621369556,
+        "recommendedUtilisation": [
+          0.02606366564011541,
+          0.29256741591830154,
+          0.0791336119894914,
+          0.025717341211303847,
+          0.02606366564011541,
+          0.08057980143743652,
+          0.15300834781992065,
+          0.008411005310633119,
+          0.06038530327596038,
+          0.008411005310633119,
+          0.06038530327596038,
+          0.061426394314585984
+        ]
+      }
+    },
+    {
+      "sequence": 31,
+      "telemetryIntervalStart": "2026-08-25T15:35:57.828Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:58.333Z",
+      "marketOrdinal": 31,
+      "marketStartTime": "2026-08-01T15:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 90,
+      "commonEnergyMultiplier": 0.8081770392060298,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.0196078431372549,
+        "aggregateLaneUtilisation": 0.0196078431372549
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8246895067274629,
+        "maximumLaneUtilisation": 0.017804369412956784,
+        "aggregateLaneUtilisation": 0.01960784313725491,
+        "giniDifference": 0.09197715993920386,
+        "recommendedUtilisation": [
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.017804369412956784,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432,
+          0.00016395215675437432
+        ]
+      }
+    },
+    {
+      "sequence": 32,
+      "telemetryIntervalStart": "2026-08-25T15:35:58.333Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:58.876Z",
+      "marketOrdinal": 32,
+      "marketStartTime": "2026-08-01T16:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 113.37,
+      "commonEnergyMultiplier": 0.917586696060087,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.03636363636363636,
+        "aggregateLaneUtilisation": 0.03636363636363636
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.824436327464849,
+        "maximumLaneUtilisation": 0.03300980584720662,
+        "aggregateLaneUtilisation": 0.03636363636363636,
+        "giniDifference": 0.09223033920181778,
+        "recommendedUtilisation": [
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.0003048936833117948,
+          0.03300980584720662,
+          0.0003048936833117948
+        ]
+      }
+    },
+    {
+      "sequence": 33,
+      "telemetryIntervalStart": "2026-08-25T15:35:58.876Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:59.390Z",
+      "marketOrdinal": 33,
+      "marketStartTime": "2026-08-01T16:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 115.97,
+      "commonEnergyMultiplier": 0.929101666298247,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8611111111111114,
+        "maximumLaneUtilisation": 0.0392156862745098,
+        "aggregateLaneUtilisation": 0.058823529411764705
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7741365097371471,
+        "maximumLaneUtilisation": 0.035750234185807576,
+        "aggregateLaneUtilisation": 0.058823529411764705,
+        "giniDifference": 0.08697460137396429,
+        "recommendedUtilisation": [
+          0.035750234185807576,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.0004951175644233656,
+          0.018122119581723474,
+          0.0004951175644233656
+        ]
+      }
+    },
+    {
+      "sequence": 34,
+      "telemetryIntervalStart": "2026-08-25T15:35:59.390Z",
+      "telemetryIntervalEnd": "2026-08-25T15:35:59.896Z",
+      "marketOrdinal": 34,
+      "marketStartTime": "2026-08-01T17:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 127.96,
+      "commonEnergyMultiplier": 0.980762732151811,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.0196078431372549,
+        "aggregateLaneUtilisation": 0.0196078431372549
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8246895067274629,
+        "maximumLaneUtilisation": 0.017804369412956784,
+        "aggregateLaneUtilisation": 0.0196078431372549,
+        "giniDifference": 0.09197715993920386,
+        "recommendedUtilisation": [
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.017804369412956784,
+          0.00016395215675437427
+        ]
+      }
+    },
+    {
+      "sequence": 35,
+      "telemetryIntervalStart": "2026-08-25T15:35:59.896Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:00.401Z",
+      "marketOrdinal": 35,
+      "marketStartTime": "2026-08-01T17:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 136.06,
+      "commonEnergyMultiplier": 1.014436540145861,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.0196078431372549,
+        "aggregateLaneUtilisation": 0.0196078431372549
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8246895067274629,
+        "maximumLaneUtilisation": 0.017804369412956784,
+        "aggregateLaneUtilisation": 0.01960784313725491,
+        "giniDifference": 0.09197715993920386,
+        "recommendedUtilisation": [
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.017804369412956784,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427,
+          0.00016395215675437427
+        ]
+      }
+    },
+    {
+      "sequence": 36,
+      "telemetryIntervalStart": "2026-08-25T15:36:00.401Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:00.920Z",
+      "marketOrdinal": 36,
+      "marketStartTime": "2026-08-01T18:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 141.82,
+      "commonEnergyMultiplier": 1.0378360259480728,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.875,
+        "maximumLaneUtilisation": 0.05660377358490566,
+        "aggregateLaneUtilisation": 0.07547169811320754
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7863947054005249,
+        "maximumLaneUtilisation": 0.05150961944428754,
+        "aggregateLaneUtilisation": 0.07547169811320754,
+        "giniDifference": 0.08860529459947508,
+        "recommendedUtilisation": [
+          0.0006368908751062249,
+          0.0006368908751062249,
+          0.01759316991785776,
+          0.0006368908751062249,
+          0.0006368908751062249,
+          0.0006368908751062249,
+          0.0006368908751062249,
+          0.0006368908751062249,
+          0.0006368908751062249,
+          0.0006368908751062249,
+          0.05150961944428754,
+          0.0006368908751062249
+        ]
+      }
+    },
+    {
+      "sequence": 37,
+      "telemetryIntervalStart": "2026-08-25T15:36:00.920Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:01.422Z",
+      "marketOrdinal": 37,
+      "marketStartTime": "2026-08-01T18:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 152.14,
+      "commonEnergyMultiplier": 1.0787157110009864,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.4734016807283712,
+        "maximumLaneUtilisation": 0.08163265306122448,
+        "aggregateLaneUtilisation": 0.319671868747499
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.4234669119477479,
+        "maximumLaneUtilisation": 0.07584717158337709,
+        "aggregateLaneUtilisation": 0.31967186874749903,
+        "giniDifference": 0.049934768780623306,
+        "recommendedUtilisation": [
+          0.02069655952695407,
+          0.0028127129166685555,
+          0.03858697185891085,
+          0.0028127129166685555,
+          0.03788526967281843,
+          0.0028127129166685555,
+          0.020345831048124197,
+          0.03858697185891085,
+          0.03858697185891085,
+          0.03788526967281843,
+          0.07584717158337709,
+          0.0028127129166685555
+        ]
+      }
+    },
+    {
+      "sequence": 38,
+      "telemetryIntervalStart": "2026-08-25T15:36:01.422Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:01.930Z",
+      "marketOrdinal": 38,
+      "marketStartTime": "2026-08-01T19:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 150.88,
+      "commonEnergyMultiplier": 1.0737929517775704,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.6940860215053768,
+        "maximumLaneUtilisation": 0.058823529411764705,
+        "aggregateLaneUtilisation": 0.1753393665158371
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.6226114210565681,
+        "maximumLaneUtilisation": 0.054273154506054806,
+        "aggregateLaneUtilisation": 0.1753393665158371,
+        "giniDifference": 0.07147460044880871,
+        "recommendedUtilisation": [
+          0.053258115637801494,
+          0.001504981661767374,
+          0.001504981661767374,
+          0.001504981661767374,
+          0.001504981661767374,
+          0.01909107491320306,
+          0.001504981661767374,
+          0.001504981661767374,
+          0.001504981661767374,
+          0.01909107491320306,
+          0.054273154506054806,
+          0.01909107491320306
+        ]
+      }
+    },
+    {
+      "sequence": 39,
+      "telemetryIntervalStart": "2026-08-25T15:36:01.930Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:02.474Z",
+      "marketOrdinal": 39,
+      "marketStartTime": "2026-08-01T19:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 152.48,
+      "commonEnergyMultiplier": 1.0800409280202976,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8333333333333335,
+        "maximumLaneUtilisation": 0.01818181818181818,
+        "aggregateLaneUtilisation": 0.03636363636363636
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7494739085753683,
+        "maximumLaneUtilisation": 0.016657101368036997,
+        "aggregateLaneUtilisation": 0.03636363636363636,
+        "giniDifference": 0.08385942475796515,
+        "recommendedUtilisation": [
+          0.0003049433627562371,
+          0.0003049433627562371,
+          0.016657101368036997,
+          0.0003049433627562371,
+          0.0003049433627562371,
+          0.0003049433627562371,
+          0.0003049433627562371,
+          0.016657101368036997,
+          0.0003049433627562371,
+          0.0003049433627562371,
+          0.0003049433627562371,
+          0.0003049433627562371
+        ]
+      }
+    },
+    {
+      "sequence": 40,
+      "telemetryIntervalStart": "2026-08-25T15:36:02.474Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:00.497Z",
+      "marketOrdinal": 40,
+      "marketStartTime": "2026-08-01T20:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 156.77,
+      "commonEnergyMultiplier": 1.096649271883724,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8341121495327104,
+        "maximumLaneUtilisation": 0.018867924528301886,
+        "aggregateLaneUtilisation": 0.0373864430468204
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7501598639664171,
+        "maximumLaneUtilisation": 0.017282470351276936,
+        "aggregateLaneUtilisation": 0.037386443046820386,
+        "giniDifference": 0.0839522855662933,
+        "recommendedUtilisation": [
+          0.00031357472510586983,
+          0.01696822544448477,
+          0.00031357472510586983,
+          0.00031357472510586983,
+          0.017282470351276936,
+          0.00031357472510586983,
+          0.00031357472510586983,
+          0.00031357472510586983,
+          0.00031357472510586983,
+          0.00031357472510586983,
+          0.00031357472510586983,
+          0.00031357472510586983
+        ]
+      }
+    },
+    {
+      "sequence": 41,
+      "telemetryIntervalStart": "2026-08-25T15:36:00.497Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:01.040Z",
+      "marketOrdinal": 41,
+      "marketStartTime": "2026-08-01T20:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 158.94,
+      "commonEnergyMultiplier": 1.1049723031871166,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8604294478527605,
+        "maximumLaneUtilisation": 0.03636363636363636,
+        "aggregateLaneUtilisation": 0.05488215488215488
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7735792689784122,
+        "maximumLaneUtilisation": 0.03315506290441419,
+        "aggregateLaneUtilisation": 0.05488215488215487,
+        "giniDifference": 0.08685017887434832,
+        "recommendedUtilisation": [
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.00046164684276230825,
+          0.017110623550117606,
+          0.03315506290441419,
+          0.00046164684276230825
+        ]
+      }
+    },
+    {
+      "sequence": 42,
+      "telemetryIntervalStart": "2026-08-25T15:36:01.040Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:01.569Z",
+      "marketOrdinal": 42,
+      "marketStartTime": "2026-08-01T21:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 153.81,
+      "commonEnergyMultiplier": 1.0852121368766667,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.6553333333333335,
+        "maximumLaneUtilisation": 0.03773584905660377,
+        "aggregateLaneUtilisation": 0.13102725366876308
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.5883153084924428,
+        "maximumLaneUtilisation": 0.03499417529660816,
+        "aggregateLaneUtilisation": 0.13102725366876308,
+        "giniDifference": 0.0670180248408907,
+        "recommendedUtilisation": [
+          0.03436673260715067,
+          0.017740610470853988,
+          0.0011167362980238763,
+          0.0011167362980238763,
+          0.03499417529660816,
+          0.0011167362980238763,
+          0.0011167362980238763,
+          0.018054290603991576,
+          0.0011167362980238763,
+          0.0011167362980238763,
+          0.018054290603991576,
+          0.0011167362980238763
+        ]
+      }
+    },
+    {
+      "sequence": 43,
+      "telemetryIntervalStart": "2026-08-25T15:36:01.569Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:02.087Z",
+      "marketOrdinal": 43,
+      "marketStartTime": "2026-08-01T21:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 149.95,
+      "commonEnergyMultiplier": 1.070147610440928,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.7860092864125126,
+        "maximumLaneUtilisation": 0.17647058823529413,
+        "aggregateLaneUtilisation": 0.2911295142149748
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7038758010461343,
+        "maximumLaneUtilisation": 0.16060971555908904,
+        "aggregateLaneUtilisation": 0.2911295142149748,
+        "giniDifference": 0.08213348536637821,
+        "recommendedUtilisation": [
+          0.019419586752454643,
+          0.002537473054077765,
+          0.002537473054077765,
+          0.002537473054077765,
+          0.16060971555908904,
+          0.002537473054077765,
+          0.019419586752454643,
+          0.002537473054077765,
+          0.054174017815463583,
+          0.019744295956968572,
+          0.002537473054077765,
+          0.002537473054077765
+        ]
+      }
+    },
+    {
+      "sequence": 44,
+      "telemetryIntervalStart": "2026-08-25T15:36:02.087Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:02.630Z",
+      "marketOrdinal": 44,
+      "marketStartTime": "2026-08-01T22:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 149.61,
+      "commonEnergyMultiplier": 1.0688123666316318,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.018518518518518517,
+        "aggregateLaneUtilisation": 0.018518518518518517
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8247063458139687,
+        "maximumLaneUtilisation": 0.016815549613838923,
+        "aggregateLaneUtilisation": 0.018518518518518507,
+        "giniDifference": 0.09196032085269801,
+        "recommendedUtilisation": [
+          0.016815549613838923,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232,
+          0.00015481535497087232
+        ]
+      }
+    },
+    {
+      "sequence": 45,
+      "telemetryIntervalStart": "2026-08-25T15:36:02.630Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:03.149Z",
+      "marketOrdinal": 45,
+      "marketStartTime": "2026-08-01T22:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 147.45,
+      "commonEnergyMultiplier": 1.0602975424702803,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.019230769230769232,
+        "aggregateLaneUtilisation": 0.019230769230769232
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8246953302964286,
+        "maximumLaneUtilisation": 0.017462089685187736,
+        "aggregateLaneUtilisation": 0.019230769230769218,
+        "giniDifference": 0.09197133637023813,
+        "recommendedUtilisation": [
+          0.017462089685187736,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766,
+          0.00016078904959831766
+        ]
+      }
+    },
+    {
+      "sequence": 46,
+      "telemetryIntervalStart": "2026-08-25T15:36:03.149Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:03.656Z",
+      "marketOrdinal": 46,
+      "marketStartTime": "2026-08-01T23:00:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 142.07,
+      "commonEnergyMultiplier": 1.0388418495394773,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.8492217898832684,
+        "maximumLaneUtilisation": 0.057692307692307696,
+        "aggregateLaneUtilisation": 0.0969079939668175
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.7629227101598688,
+        "maximumLaneUtilisation": 0.0526510822638174,
+        "aggregateLaneUtilisation": 0.09690799396681751,
+        "giniDifference": 0.08629907972339956,
+        "recommendedUtilisation": [
+          0.0526510822638174,
+          0.0008206763409922248,
+          0.0008206763409922248,
+          0.0008206763409922248,
+          0.0008206763409922248,
+          0.0008206763409922248,
+          0.03605014829307785,
+          0.0008206763409922248,
+          0.0008206763409922248,
+          0.0008206763409922248,
+          0.0008206763409922248,
+          0.0008206763409922248
+        ]
+      }
+    },
+    {
+      "sequence": 47,
+      "telemetryIntervalStart": "2026-08-25T15:36:03.656Z",
+      "telemetryIntervalEnd": "2026-08-25T15:36:04.172Z",
+      "marketOrdinal": 47,
+      "marketStartTime": "2026-08-01T23:30:00.000Z",
+      "streamsTimeAligned": false,
+      "priceGBPPerMWh": 142.78,
+      "commonEnergyMultiplier": 1.0416940540116388,
+      "observed": {
+        "source": "MEASURED_LOCAL_KERNEL_COUNTERS",
+        "laneCount": 12,
+        "utilisationGini": 0.9166666666666667,
+        "maximumLaneUtilisation": 0.019230769230769232,
+        "aggregateLaneUtilisation": 0.019230769230769232
+      },
+      "counterfactual": {
+        "source": "COUNTERFACTUAL_ONE_STEP_POLICY_MODEL",
+        "utilisationGini": 0.8246953302964288,
+        "maximumLaneUtilisation": 0.017462089685187736,
+        "aggregateLaneUtilisation": 0.019230769230769218,
+        "giniDifference": 0.09197133637023791,
+        "recommendedUtilisation": [
+          0.017462089685187736,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772,
+          0.00016078904959831772
+        ]
+      }
+    }
+  ],
+  "certificateSha256": "06e0721374eb2622c67d06511dca88dedcbbff0e17652a36564843044023a5d4"
+}

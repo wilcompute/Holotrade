@@ -1,0 +1,191 @@
+{
+  "schema": "holotrade.shape-reservation-demo.v1",
+  "evidenceScope": "EXACT_TOPOLOGY_PLUS_DETERMINISTIC_CONTROL_PLANE_REGRESSION",
+  "physicalExecutionClaimed": false,
+  "contract": {
+    "schema": "holotrade.shape-reservation.v1",
+    "reservationId": "RSV-W33-LINE-DEMO",
+    "owner": "holotrade-demo",
+    "nonce": "shape-demo-seed-v1",
+    "artifactDigest": "sha256:4242424242424242424242424242424242424242424242424242424242424242",
+    "points": [
+      0,
+      4,
+      5,
+      6
+    ],
+    "shapeDigest": "sha256:bca808a0b36afcc3058a27e262836109b6a9d25a6829ccb2a48409d1fdd163b3",
+    "topologyDigest": "sha256:7a82c48a468c94d46fe590fe2063be2b993abb254c8824ca902940444521932f",
+    "topologyRequirements": {
+      "connected": true,
+      "isotropicLine": true,
+      "maxDiameter": 1,
+      "minDegree": 3,
+      "minBoundary": null,
+      "survivesNodeFailures": 2
+    },
+    "resources": {
+      "perNode": {
+        "vcpus": 2,
+        "memoryMiB": 512
+      }
+    },
+    "requestedSeconds": 10,
+    "requestedNodeSeconds": 40,
+    "failurePolicy": {
+      "mode": "minimum-survivors",
+      "minSurvivors": 3
+    },
+    "maxPricePerNodeSecond": 0.01,
+    "evidenceRefs": [],
+    "validFrom": 0,
+    "validUntil": 60,
+    "digest": "sha256:bdcdc2f6b550f5c37ff5e0fde090eab17c9e7af656ac8748fff39828d3d4af19",
+    "shape": {
+      "schema": "holotrade.w33-induced-shape.v1",
+      "points": [
+        0,
+        4,
+        5,
+        6
+      ],
+      "pointKeys": [
+        "0001",
+        "0100",
+        "0101",
+        "0102"
+      ],
+      "vertices": 4,
+      "internalEdges": 6,
+      "boundaryEdges": 36,
+      "degreeSequence": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "minDegree": 3,
+      "maxDegree": 3,
+      "components": [
+        [
+          0,
+          4,
+          5,
+          6
+        ]
+      ],
+      "connected": true,
+      "inducedDiameter": 1,
+      "isIsotropicLine": true,
+      "spectralBoundary": {
+        "theorem": "lambda_2(L)||x_perp||^2 <= boundary <= lambda_max(L)||x_perp||^2",
+        "laplacianEigenvalues": [
+          0,
+          10,
+          16
+        ],
+        "lower": {
+          "numerator": 144,
+          "denominator": 4,
+          "rounded": 36
+        },
+        "upper": {
+          "numerator": 288,
+          "denominator": 5,
+          "rounded": 57
+        },
+        "realizedInsideCorridor": true
+      },
+      "digest": "sha256:bca808a0b36afcc3058a27e262836109b6a9d25a6829ccb2a48409d1fdd163b3"
+    },
+    "topology": {
+      "schema": "holotrade.w33-shape-admission.v1",
+      "shapeDigest": "sha256:bca808a0b36afcc3058a27e262836109b6a9d25a6829ccb2a48409d1fdd163b3",
+      "requirements": {
+        "connected": true,
+        "isotropicLine": true,
+        "maxDiameter": 1,
+        "minDegree": 3,
+        "minBoundary": null,
+        "survivesNodeFailures": 2
+      },
+      "failureCertified": true,
+      "ok": true,
+      "blockers": [],
+      "digest": "sha256:7a82c48a468c94d46fe590fe2063be2b993abb254c8824ca902940444521932f"
+    }
+  },
+  "phases": {
+    "prepare": {
+      "ok": true,
+      "digest": "sha256:51e328f53b46d694546f3765ef254833b61f5ad438a46af13f720ed94d5c7d69"
+    },
+    "commit": {
+      "ok": true
+    },
+    "start": {
+      "ok": true
+    }
+  },
+  "injectedFailure": {
+    "point": 0,
+    "atSecond": 0
+  },
+  "receipt": {
+    "schema": "holotrade.shape-delivery-receipt.v1",
+    "reservationId": "RSV-W33-LINE-DEMO",
+    "contractDigest": "sha256:bdcdc2f6b550f5c37ff5e0fde090eab17c9e7af656ac8748fff39828d3d4af19",
+    "shapeDigest": "sha256:bca808a0b36afcc3058a27e262836109b6a9d25a6829ccb2a48409d1fdd163b3",
+    "state": "SETTLED",
+    "reason": "requested-wall-time-reached",
+    "requestedNodeSeconds": 40,
+    "deliveredNodeSeconds": 30,
+    "shortfallNodeSeconds": 10,
+    "cost": 0.03015,
+    "perNode": [
+      {
+        "point": 0,
+        "nodeId": "DEMO-NODE-00",
+        "rate": 0.001,
+        "deliveredSeconds": 0,
+        "cost": 0,
+        "failed": true
+      },
+      {
+        "point": 4,
+        "nodeId": "DEMO-NODE-04",
+        "rate": 0.0010040000000000001,
+        "deliveredSeconds": 10,
+        "cost": 0.01004,
+        "failed": false
+      },
+      {
+        "point": 5,
+        "nodeId": "DEMO-NODE-05",
+        "rate": 0.001005,
+        "deliveredSeconds": 10,
+        "cost": 0.01005,
+        "failed": false
+      },
+      {
+        "point": 6,
+        "nodeId": "DEMO-NODE-06",
+        "rate": 0.001006,
+        "deliveredSeconds": 10,
+        "cost": 0.01006,
+        "failed": false
+      }
+    ],
+    "failures": [
+      {
+        "point": 0,
+        "atSecond": 0,
+        "code": "NODE_FAILED"
+      }
+    ],
+    "accounting": "sum of per-node delivered seconds; failed or unobserved slices are not billed",
+    "cryptographicallySigned": false,
+    "digest": "sha256:4613850ce7438fd367a3e53aeecc674fd338678fccf08cbc4529c1e9415fe83a"
+  },
+  "packetDigest": "sha256:80c2c5d7f273a53652f9ad467067b886f3a0a12da32c24f909644f40610d0588"
+}

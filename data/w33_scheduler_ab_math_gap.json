@@ -1,0 +1,41 @@
+{
+  "schema": "holotrade.w33-scheduler-math.gap.v1",
+  "gapVersion": "4.12.1",
+  "graph": {
+    "vertices": 40,
+    "edges": 240,
+    "degree": 12,
+    "lambda": 2,
+    "mu": 4,
+    "spectrum": {
+      "12": 1,
+      "2": 24,
+      "-4": 15
+    }
+  },
+  "spectralBounds": {
+    "edgeBoundaryLower": "m(40-m)/4",
+    "edgeBoundaryUpper": "2m(40-m)/5",
+    "inducedEdgesUpper": "m(m+8)/8"
+  },
+  "equalityShapes": {
+    "line4": {
+      "points0Based": [0, 4, 5, 6],
+      "internalEdges": 6,
+      "boundary": 36
+    },
+    "half20": {
+      "points0Based": [2, 4, 5, 7, 8, 9, 11, 12, 16, 17, 19, 21, 23, 24, 28, 29, 32, 35, 38, 39],
+      "internalEdges": 70,
+      "boundary": 100
+    }
+  },
+  "vertexConnectivity": {
+    "value": 12,
+    "nonadjacentPairsChecked": 540,
+    "localFlowValues": [12],
+    "upperWitness": "deleting one open neighbourhood isolates its centre",
+    "operationalConsequence": "the full 40-node cell remains connected after any 11 node deletions"
+  },
+  "allChecksPass": true
+}

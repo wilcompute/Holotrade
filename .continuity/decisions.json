@@ -450,5 +450,93 @@
       "source": "cli",
       "timestamp": "2026-08-24T17:45:55.064Z"
     }
+  },
+  {
+    "id": "5fd9685d-67e7-4c97-9992-44c0d2a766e2",
+    "question": "Why were atomic W33 shape reservations added?",
+    "answer": "A multi-node request must reserve a named connected induced subgraph atomically, revalidate every participant at commit, roll back all locks on any negative vote, and meter delivered node-seconds per participant under explicit failure policy. The exact W(3,3) Laplacian spectrum certifies m(40-m)/4 <= boundary <= 2m(40-m)/5 for every m-node shape; tests also show the existing 20|20 cut attains the lower bound 100.",
+    "timestamp": "2026-08-25T15:34:00.792Z",
+    "tags": [
+      "atomic",
+      "holotrade",
+      "math",
+      "metering",
+      "node",
+      "reservation",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-25T15:34:00.793Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-25T15:34:00.789Z"
+    }
+  },
+  {
+    "id": "6bd125ee-b4a8-439c-80f8-6ddccbf0fc53",
+    "question": "What does the frozen W33 shape-reservation packet demonstrate?",
+    "answer": "The deterministic K4 line packet executes prepare, commit, start, an injected one-node failure, and settlement under a three-survivor policy. It requests 40 node-seconds, delivers and bills exactly 30, records a 10 node-second shortfall, preserves 36 boundary edges, and binds the packet with SHA-256 digest 80c2c5d7f273a53652f9ad467067b886f3a0a12da32c24f909644f40610d0588. This is a control-plane regression, not physical multi-node execution.",
+    "timestamp": "2026-08-25T15:34:18.184Z",
+    "tags": [
+      "certificate",
+      "holotrade",
+      "node",
+      "regression",
+      "reservation",
+      "scope"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-25T15:34:18.184Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-25T15:34:18.181Z"
+    }
   }
 ]
