@@ -39,6 +39,7 @@ function artifactEntry(file) {
 function criticalArtifacts() {
   const fixed = [
     "index.html",
+    "holotrade.html",
     "README.md",
     "DEMO.md",
     "docs/holotrade.tex",

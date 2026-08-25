@@ -1,0 +1,232 @@
+{
+  "available": true,
+  "ok": true,
+  "schema": "holotrade.w33-gap-certificate.v1",
+  "gapVersion": "4.16.0",
+  "method": "GRAPE/nauty for the automorphism group; GAP CompleteSubgraphs for clique and independence",
+  "graph": {
+    "vertices": 40,
+    "degree": 12,
+    "edges": 240,
+    "lambda": 2,
+    "mu": 4,
+    "autOrder": 51840,
+    "pspOrder": 25920,
+    "spOrder": 51840,
+    "indexOverPsp": 2,
+    "pointTransitive": true,
+    "rank": 3,
+    "suborbits": [
+      1,
+      12,
+      27
+    ],
+    "pointStabiliser": 1296,
+    "orbitStabiliserHolds": true,
+    "cliqueNumber": 4,
+    "maxCliqueCount": 40,
+    "independenceNumber": 7,
+    "ratioBound": 10,
+    "ratioBoundAttained": false,
+    "ovoidExists": false,
+    "shapes": [
+      {
+        "m": 4,
+        "tight": true,
+        "inducedEdges": 6,
+        "bound": 6,
+        "boundary": 36,
+        "orbitUnderAut": 40,
+        "setStabiliser": 1296
+      },
+      {
+        "m": 8,
+        "tight": true,
+        "inducedEdges": 16,
+        "bound": 16,
+        "boundary": 64,
+        "orbitUnderAut": 45,
+        "setStabiliser": 1152
+      },
+      {
+        "m": 12,
+        "tight": true,
+        "inducedEdges": 30,
+        "bound": 30,
+        "boundary": 84,
+        "orbitUnderAut": 1080,
+        "setStabiliser": 48
+      },
+      {
+        "m": 16,
+        "tight": true,
+        "inducedEdges": 48,
+        "bound": 48,
+        "boundary": 96,
+        "orbitUnderAut": 270,
+        "setStabiliser": 192
+      },
+      {
+        "m": 20,
+        "tight": true,
+        "inducedEdges": 70,
+        "bound": 70,
+        "boundary": 100,
+        "orbitUnderAut": 3240,
+        "setStabiliser": 16
+      },
+      {
+        "m": 24,
+        "tight": true,
+        "inducedEdges": 96,
+        "bound": 96,
+        "boundary": 96,
+        "orbitUnderAut": 6480,
+        "setStabiliser": 8
+      },
+      {
+        "m": 28,
+        "tight": true,
+        "inducedEdges": 126,
+        "bound": 126,
+        "boundary": 84,
+        "orbitUnderAut": 1080,
+        "setStabiliser": 48
+      },
+      {
+        "m": 32,
+        "tight": true,
+        "inducedEdges": 160,
+        "bound": 160,
+        "boundary": 64,
+        "orbitUnderAut": 540,
+        "setStabiliser": 96
+      },
+      {
+        "m": 36,
+        "tight": true,
+        "inducedEdges": 198,
+        "bound": 198,
+        "boundary": 36,
+        "orbitUnderAut": 40,
+        "setStabiliser": 1296
+      },
+      {
+        "m": 20,
+        "tight": false,
+        "inducedEdges": 40,
+        "bound": 70,
+        "boundary": 160,
+        "orbitUnderAut": 432,
+        "setStabiliser": 120
+      }
+    ]
+  },
+  "crossCheck": {
+    "problems": [],
+    "orbitAgreement": [
+      {
+        "m": 4,
+        "kind": "tight",
+        "pspOrbit": 40,
+        "autOrbit": 40,
+        "unchanged": true,
+        "pspStabiliser": 648,
+        "autStabiliser": 1296,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 8,
+        "kind": "tight",
+        "pspOrbit": 45,
+        "autOrbit": 45,
+        "unchanged": true,
+        "pspStabiliser": 576,
+        "autStabiliser": 1152,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 12,
+        "kind": "tight",
+        "pspOrbit": 1080,
+        "autOrbit": 1080,
+        "unchanged": true,
+        "pspStabiliser": 24,
+        "autStabiliser": 48,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 16,
+        "kind": "tight",
+        "pspOrbit": 270,
+        "autOrbit": 270,
+        "unchanged": true,
+        "pspStabiliser": 96,
+        "autStabiliser": 192,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 20,
+        "kind": "tight",
+        "pspOrbit": 3240,
+        "autOrbit": 3240,
+        "unchanged": true,
+        "pspStabiliser": 8,
+        "autStabiliser": 16,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 24,
+        "kind": "tight",
+        "pspOrbit": 6480,
+        "autOrbit": 6480,
+        "unchanged": true,
+        "pspStabiliser": 4,
+        "autStabiliser": 8,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 28,
+        "kind": "tight",
+        "pspOrbit": 1080,
+        "autOrbit": 1080,
+        "unchanged": true,
+        "pspStabiliser": 24,
+        "autStabiliser": 48,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 32,
+        "kind": "tight",
+        "pspOrbit": 540,
+        "autOrbit": 540,
+        "unchanged": true,
+        "pspStabiliser": 48,
+        "autStabiliser": 96,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 36,
+        "kind": "tight",
+        "pspOrbit": 40,
+        "autOrbit": 40,
+        "unchanged": true,
+        "pspStabiliser": 648,
+        "autStabiliser": 1296,
+        "stabiliserDoubled": true
+      },
+      {
+        "m": 20,
+        "kind": "m-ovoid",
+        "pspOrbit": 432,
+        "autOrbit": 432,
+        "unchanged": true,
+        "pspStabiliser": 60,
+        "autStabiliser": 120,
+        "stabiliserDoubled": true
+      }
+    ],
+    "guaranteesStand": true
+  },
+  "digest": "59abb1f83cac6432624bbc7acef64c9c9477ded503e527d641ec99b4f79f97b9"
+}

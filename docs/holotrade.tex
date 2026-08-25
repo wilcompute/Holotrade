@@ -825,6 +825,150 @@ For partial baskets, the implementation uses normalized induced-edge coherence,
 not the minimum bisection of the induced graph. \MODELLED
 \end{resultbox}
 
+
+\subsection{Which topologies are actually optimal, and can they be delivered}
+
+The bisection result above is about the whole cell. A scheduler does not reserve
+the whole cell --- it reserves a subset --- so the operational question is
+sharper: for a request of $m$ nodes, what is the best possible shape, does one
+exist, can it be placed on whatever is free, and what happens to the leftovers.
+
+All four have exact answers. \PROVED
+
+\begin{plainbox}[What "optimal shape" means here]
+Two reservations of the same size can differ enormously in how well connected
+they are internally. The extremes are worth naming: the \emph{densest} shape of
+a given size packs in as many internal links as the geometry permits, which is
+what one tightly coupled job wants; the \emph{most spread} shape is the one
+every outside node sees equally, which is what failure-independent replicas
+want. Everything else sits between them.
+\end{plainbox}
+
+Writing $\mathbf 1_T$ for the indicator of a candidate set and
+$f=\mathbf 1_T-\tfrac m{40}\mathbf 1$, the spectral bounds are attained exactly
+when $f$ lies wholly in one eigenspace. Using the strongly regular identity
+$A^2=8I-2A+4J$, that turns into a pure counting condition on neighbourhoods,
+and the condition is decidable by exhaustive search:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lll}
+\toprule
+& \textbf{condition on every node} & \textbf{forces} \\
+\midrule
+densest ($f\in E_2$) & $|N(v)\cap T| = 2+m/4$ inside, $m/4$ outside & $4\mid m$ \\
+most spread ($f\in E_{-4}$) & $|N(v)\cap T| = 2m/5-4$ inside, $2m/5$ outside & $5\mid m$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{rrrrrrr}
+\toprule
+$m$ & $\max e(T)$ & $b(T)$ & \#\,shapes & $\tau$ & \textbf{busy tolerated} & tilings \\
+\midrule
+4 & 6 & 36 & 40 & 11 & 10 & 36 \\
+8 & 16 & 64 & 585 & 8 & 7 & 57,132 \\
+12 & 30 & 84 & 5,400 & 8 & 7 & --- \\
+16 & 48 & 96 & 21,330 & 6 & 5 & --- \\
+20 & 70 & 100 & 33,264 & 6 & 5 & 16,632 \\
+24 & 96 & 96 & 21,330 & 4 & 3 & --- \\
+28 & 126 & 84 & 5,400 & 4 & 3 & --- \\
+32 & 160 & 64 & 585 & 3 & 2 & --- \\
+36 & 198 & 36 & 40 & 2 & 1 & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Four things in that table are worth reading off.
+
+\textbf{A densest shape exists at every multiple of four, and nowhere else.} So
+whenever a request is a multiple of four there is a provably optimal shape to
+serve it, and the repository holds a witness for each.
+
+\textbf{The shape counts are a palindrome} --- $40$, $585$, $5{,}400$,
+$21{,}330$, $33{,}264$, $21{,}330$, $5{,}400$, $585$, $40$. That is forced
+rather than coincidental: the complement of a densest shape is a densest shape,
+so the count at $m$ must equal the count at $40-m$. The search reproduced it
+without being told, which is a real check on the search.
+
+\textbf{The four-node shapes are exactly the 40 lines of the geometry.} Verified
+three ways, including brute force over all $\binom{40}{4}=91{,}390$ subsets. The
+optimal small reservation is not something the design imposed; it is the
+incidence structure's own object.
+
+\textbf{Perfectly spread sets exist only at $m=20$.} Every other admissible size
+is impossible, not merely unfound.
+
+\subsubsection{Delivery: guarantees rather than averages}
+
+A catalogue nobody can place is a wall poster. The symmetry group makes shapes
+movable: an automorphism preserves adjacency, so it preserves internal link
+count and boundary \emph{exactly}, and a shape transported onto free nodes
+carries its optimality with it as a matter of definition rather than
+approximation.
+
+The column marked \textbf{busy tolerated} is the part a scheduler can act on. It
+is $\tau-1$, where $\tau$ is the smallest number of blocked nodes that defeats
+\emph{every} placement of the shape. Below it a placement is certain regardless
+of \emph{which} nodes are busy; at it, an adversary can block the shape
+entirely. This is a worst case, not an average.
+
+\begin{keybox}{Why the four-node guarantee is exactly ten}
+The densest four-node shapes are the 40 lines, so defeating them means hitting
+every line. Each point lies on 4 lines, so $k$ points cover at most $4k$
+incidences, and covering all 40 needs $k\ge10$. \emph{Equality would require all
+40 incidences to be distinct} --- no two of the ten points collinear --- which
+is precisely an \textbf{ovoid}.
+
+\smallskip
+This quadrangle has none: its independence number is $7$, strictly below the
+Hoffman ratio bound of $10$, established here by exhaustive search rather than
+by citation. Hence $\tau\ge11$, and $\tau=11$ is achieved.
+
+\smallskip
+So a four-node reservation \textbf{survives any ten simultaneous busy or failed
+nodes}, and eleven specific ones can defeat it. The bound is tight both ways,
+and an abstract non-existence result is what fixes an operational number.
+\end{keybox}
+
+The same non-existence caps failure-independent placement: \textbf{no eight
+nodes share zero links}, at any price, on any fabric of this shape. Seven is the
+ceiling on replica spreading.
+
+\subsubsection{Fragmentation: the sizes that leave nothing stranded}
+
+A tiling is the fragmentation-free schedule --- every node used, every
+reservation provably densest, nothing left between jobs. It needs $4\mid m$ so a
+densest shape exists, and $m\mid40$ so the pieces exhaust the cell, which admits
+only $m\in\{4,8,20,40\}$ before any search runs.
+
+All three non-trivial cases tile, and the counts are exact: $36$ at $m=4$,
+$57{,}132$ at $m=8$, and $16{,}632$ at $m=20$. The first are the classical
+\emph{spreads} of the quadrangle, ten disjoint lines meeting every point-star
+exactly once. The third is exactly half the number of 20-shapes, because each
+tiles with its own complement --- the palindrome above, showing up again as a
+factor of two.
+
+\begin{resultbox}{An admission policy, not an inequality}
+Reserve in units of $4$, $8$ or $20$ and the cell partitions perfectly, with
+zero stranded capacity and every piece provably densest. At any other size some
+capacity is stranded by arithmetic: $4$ nodes at $m=12$, $8$ at $m=16$, and more
+above. \PROVED
+\end{resultbox}
+
+\begin{scopebox}
+\textbf{Scope.} These are exact statements about the level-1 point graph:
+reservations of \emph{points}, verified by three independent routes ---
+combinatorial search in JavaScript, eigenspace projection in Python, and
+GRAPE/nauty in GAP, which also settles that the graph's full automorphism group
+has order $51{,}840$ and that every shape orbit is unchanged under it, so the
+guarantees are exact rather than conservative. They say nothing about
+link-state routing, congestion, failure recovery, or placement across an address
+hierarchy, none of which is built.
+\end{scopebox}
+
 \subsection{The mechanism this creates: a defragmentation market}
 
 \begin{plainbox}[]

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HoloTrade — a topology-aware compute execution and settlement research prototype with inspectable quotes, exact finite topology, metering, and scoped evidence.">
+  <meta name="theme-color" content="#070b12">
+  <meta name="color-scheme" content="dark light">
+  <title>HoloTrade — Compute Execution &amp; Settlement</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='18' width='100' height='100' fill='%23070b12'/><circle cx='50' cy='50' r='27' fill='none' stroke='%2338bdf8' stroke-width='7'/><circle cx='50' cy='50' r='7' fill='%2338bdf8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="boot" id="boot">
+  <div class="boot-mark">HOLOTRADE</div>
+  <div class="boot-bar"><i></i></div>
+  <div class="boot-text" id="bootText">building W(3,3) fabric…</div>
+</div>
+
+<header class="topbar">
+  <button class="icon-btn hidden" id="menuBtn" title="Menu" aria-label="Toggle menu">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+  </button>
+  <h1 class="logo">HOLO<em>TRADE</em><span>Compute Execution</span></h1>
+
+  <div class="topbar-spacer"></div>
+
+  <div class="tb-group">
+    <div class="chip" id="chipClock" title="Seeded simulation clock"><span class="dot warn"></span><span class="chip-mode">SIM</span><b id="simClock">00:00:00</b></div>
+    <div class="chip" id="chipMid" title="Median spot clearing price across the listed fleet">MID <b id="chipMidVal">—</b></div>
+    <div class="chip" id="chipGini" title="Gini coefficient of fleet utilisation. Lower is a more evenly loaded fleet.">GINI <b id="chipGiniVal">—</b></div>
+    <div class="chip" id="chipEquity" title="Your equity: cash plus mark-to-market positions">EQUITY <b id="chipEquityVal">—</b></div>
+  </div>
+
+  <div class="tb-group">
+    <button class="btn sm" id="speedBtn" title="Simulation speed">1×</button>
+    <button class="btn sm" id="pauseBtn" title="Pause / resume the simulation">Pause</button>
+    <button class="icon-btn" id="themeBtn" title="Toggle theme">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13"><path d="M17.29 13.29A8 8 0 016.71 2.71a8 8 0 1010.58 10.58z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="tape" id="tape"><div class="tape-track" id="tapeTrack"></div></div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <nav>
+      <div class="nav-label">Trade</div>
+      <button class="nav-btn active" data-view="exchange">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path d="M3 3a1 1 0 000 2h1v10H3a1 1 0 100 2h14a1 1 0 100-2h-1V5h1a1 1 0 100-2H3zm4 4a1 1 0 012 0v6a1 1 0 11-2 0V7zm5 2a1 1 0 012 0v4a1 1 0 11-2 0V9z"/></svg>
+        Exchange
+      </button>
+      <button class="nav-btn" data-view="portfolio">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9z" clip-rule="evenodd"/></svg>
+        Portfolio
+      </button>
+      <button class="nav-btn" data-view="execution">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M11.3 1.05A1 1 0 0112 2v5h4a1 1 0 01.82 1.57l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.57l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+        Execution
+        <span class="badge" id="badgeVMs">0</span>
+      </button>
+
+      <div class="nav-label">Fleet</div>
+      <button class="nav-btn" data-view="fleet">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        Fleet
+      </button>
+      <button class="nav-btn" data-view="fabric">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path d="M10 2a1 1 0 011 1v2.1a5 5 0 013.9 3.9H17a1 1 0 110 2h-2.1a5 5 0 01-3.9 3.9V17a1 1 0 11-2 0v-2.1A5 5 0 015.1 11H3a1 1 0 110-2h2.1A5 5 0 019 5.1V3a1 1 0 011-1zm0 5a3 3 0 100 6 3 3 0 000-6z"/></svg>
+        Fabric
+      </button>
+      <button class="nav-btn" data-view="balance">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1h4a1 1 0 110 2h-.28l2.23 5.57A1 1 0 0116 13h-3a1 1 0 01-.95-1.43L14.28 6H11v10h2a1 1 0 110 2H7a1 1 0 110-2h2V6H5.72l2.23 5.57A1 1 0 017 13H4a1 1 0 01-.95-1.43L5.28 6H5a1 1 0 010-2h4V3a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        Balance
+      </button>
+      <button class="nav-btn" data-view="health">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M3.17 5.17a4 4 0 015.66 0L10 6.34l1.17-1.17a4 4 0 115.66 5.66L10 17.66l-6.83-6.83a4 4 0 010-5.66z" clip-rule="evenodd"/></svg>
+        Health &amp; Wear
+      </button>
+      <button class="nav-btn" data-view="genetics">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path d="M5 3a1 1 0 011 1c0 3 8 3 8 6s-8 3-8 6a1 1 0 11-2 0c0-3 8-3 8-6s-8-3-8-6a1 1 0 011-1zm10 0a1 1 0 011 1c0 1.1-.9 2-2 2.7V4a1 1 0 011-1z"/><path d="M6.5 6.5h7v1.2h-7zM6.5 12.3h7v1.2h-7z"/></svg>
+        Genetics
+      </button>
+
+      <div class="nav-label">Substrate</div>
+      <button class="nav-btn" data-view="energy">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M11.3 1.05A1 1 0 0112 2v5h4a1 1 0 01.82 1.57l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.57l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+        Energy
+      </button>
+      <button class="nav-btn" data-view="assets">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm3 2h6v2H7V6zm0 4h6v2H7v-2z" clip-rule="evenodd"/></svg>
+        Assets &amp; UOR
+      </button>
+      <button class="nav-btn" data-view="receipts">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-3.7-2.3a1 1 0 00-1.4-1.4L9 10.2 7.1 8.3a1 1 0 00-1.4 1.4l2.6 2.6a1 1 0 001.4 0l4.6-4.6z" clip-rule="evenodd"/></svg>
+        Receipts
+      </button>
+      <button class="nav-btn" data-view="docs">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-9-3a1 1 0 112 0 1 1 0 01-2 0zm0 3a1 1 0 012 0v3a1 1 0 11-2 0v-3z" clip-rule="evenodd"/></svg>
+        The Model
+      </button>
+    </nav>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- ============================ EXCHANGE ============================ -->
+    <section class="view" id="view-exchange">
+      <div class="page-head">
+        <h2 class="page-title">Exchange</h2>
+        <p class="page-sub">The ask side <em>is</em> the pricing engine: every listed node posts an offer at its own clearing price, so every line in the book decomposes back into six auditable multipliers and a named machine. There is no market rate you cannot take apart.</p>
+      </div>
+
+      <div class="evidence-strip" aria-label="Prototype evidence status">
+        <span><span class="tag amber">SIMULATION</span> seeded prices, fleet and order flow</span>
+        <span><span class="tag up">EXACT</span> finite W(3,3) graph and adjacency rules</span>
+        <span><span class="tag">PROTOTYPE</span> no live feeds or physical substrate</span>
+      </div>
+
+      <div class="grid g4" id="exchangeStats"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Instrument</h3>
+          <span class="card-note" id="instrumentNote"></span>
+        </div>
+        <div class="card-body">
+          <div class="seg" id="instrumentSeg"></div>
+          <p class="page-sub" style="margin-top:9px" id="instrumentBlurb"></p>
+        </div>
+      </div>
+
+      <div class="grid g-2-1">
+        <div>
+          <div class="card">
+            <div class="card-head">
+              <h3 class="card-title">Order book</h3>
+              <span class="card-note" id="bookNote"></span>
+            </div>
+            <div class="card-body flush">
+              <div class="book" id="book"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3 class="card-title">Depth</h3>
+              <div class="seg" id="depthZoomSeg" style="margin-left:auto">
+                <button data-zoom="liquid" class="active">Liquid</button>
+                <button data-zoom="half">50%</button>
+                <button data-zoom="full">Full book</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <canvas class="viz chart-interactive" id="depthCanvas" height="210" role="img" aria-label="Interactive cumulative bid and ask depth chart with order preview">Cumulative bid and ask depth.</canvas>
+              <div id="depthReadout" class="depth-readout"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h3 class="card-title">Value frontier</h3>
+              <span class="card-note">every listed node · $/hr against delivered TFLOPs</span>
+            </div>
+            <div class="card-body">
+              <div class="note">A node-hour is not comparable across hardware classes &mdash; a CPU node at $4 and an accelerator at $60 are not competing offers. <b>Delivered throughput per dollar is comparable.</b> The highlighted line is the Pareto frontier: the nodes that nothing else beats on both price and capacity at once. Everything above it is dominated, and the exchange will tell a buyer so.</div>
+              <canvas class="viz chart-interactive" id="frontierCanvas" height="230" role="img" aria-label="Interactive log-scale price and delivered-throughput Pareto frontier">Price and throughput Pareto frontier.</canvas>
+              <div class="legend" id="frontierLegend" style="margin-top:9px"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Tape</h3><span class="card-note" id="tapeNote"></span></div>
+            <div class="card-body flush">
+              <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+                <th>Time</th><th>Side</th><th>Node</th><th>Addr</th><th>HW</th><th>Site</th><th class="right">Qty</th><th class="right">Price</th>
+              </tr></thead><tbody id="tapeBody"></tbody></table></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Ticket</h3></div>
+            <div class="card-body">
+              <label class="field"><span>Workload class</span><select id="tkWorkload"></select></label>
+              <label class="field"><span>Quantity (node-hours)</span><input type="number" id="tkQty" value="4" min="1" step="1"></label>
+              <label class="field"><span>Limit ($/node-hour, blank = market)</span><input type="text" id="tkLimit" placeholder="market"></label>
+              <label class="field"><span>Anchor address (your data's position, optional)</span><input type="text" id="tkAnchor" placeholder="e.g. 03.03.17"></label>
+              <div class="row">
+                <button class="btn primary" id="tkBuy" style="flex:2">Buy</button>
+                <button class="btn none" id="tkClear">Clear</button>
+              </div>
+              <hr class="sep">
+              <div class="kv" id="tkPreview"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Best quote, decomposed</h3><span class="card-note">P = base × E×G×D×H×Q×L</span></div>
+            <div class="card-body" id="bestDecomp"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Your orders</h3></div>
+            <div class="card-body flush">
+              <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+                <th>ID</th><th>Inst</th><th class="right">Qty</th><th class="right">Filled</th><th>Status</th>
+              </tr></thead><tbody id="ordersBody"></tbody></table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FLEET ============================ -->
+    <section class="view hidden" id="view-fleet">
+      <div class="page-head">
+        <h2 class="page-title">Fleet</h2>
+        <p class="page-sub">Every node is four things at once and all four are priced: what it <em>is</em> (hardware), where it <em>sits</em> (fabric address), what it has <em>learned</em> (genome), and what it has <em>spent</em> (health). Click any cell.</p>
+      </div>
+
+      <div class="grid g4" id="fleetStats"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Fleet map</h3>
+          <div class="seg" id="fleetColorSeg" style="margin-left:auto">
+            <button data-color="price" class="active">Price</button>
+            <button data-color="util">Utilisation</button>
+            <button data-color="health">Health</button>
+            <button data-color="fitness">Fitness</button>
+            <button data-color="hw">Hardware</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="fleet-grid" id="fleetGrid"></div>
+          <hr class="sep">
+          <div class="legend" id="fleetLegend"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Listed nodes</h3>
+          <div class="row none" style="margin-left:auto; gap:7px">
+            <select id="fleetFilterDc" class="none" style="width:140px"></select>
+            <select id="fleetFilterHw" class="none" style="width:140px"></select>
+            <select id="fleetSort" class="none" style="width:150px">
+              <option value="price">Sort: price</option>
+              <option value="util">Sort: utilisation</option>
+              <option value="fitness">Sort: fitness</option>
+              <option value="wear">Sort: wear</option>
+              <option value="value">Sort: $/TFLOP-hr</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body flush">
+          <div class="tbl-wrap scroll-y"><table class="tbl"><thead><tr>
+            <th>Node</th><th>Addr</th><th>HW</th><th>Site</th>
+            <th class="right">$/node-hr</th><th class="right">$/TF-hr</th>
+            <th class="right">Util</th><th class="right">Fitness</th><th class="right">Wear</th><th>Best at</th>
+          </tr></thead><tbody id="fleetBody"></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FABRIC ============================ -->
+    <section class="view hidden" id="view-fabric">
+      <div class="page-head">
+        <h2 class="page-title">Fabric</h2>
+        <p class="page-sub">The modeled substrate treats topology as part of capacity, so a basket is more than a node count. Exact induced-graph facts make the difference between connected and scattered holdings visible without pretending they are physical-network SLAs.</p>
+      </div>
+
+      <div class="grid g4" id="fabricStats"></div>
+
+      <div class="grid g-1-2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">W(3,3) &mdash; one cell</h3><span class="card-note">40 points · 240 edges</span></div>
+          <div class="card-body">
+            <canvas class="viz chart-interactive" id="w33Canvas" height="330" role="img" aria-label="Clickable 40-point W(3,3) formal graph">W(3,3) graph with 40 points.</canvas>
+            <div class="legend" style="margin-top:9px">
+              <span><i style="background:var(--accent)"></i>occupied</span>
+              <span><i style="background:var(--border-hi)"></i>vacant</span>
+              <span><i style="background:var(--amber)"></i>selected + neighbours</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Routing &mdash; address <em>is</em> route</h3><span class="card-note">one symplectic inner product per hop</span></div>
+            <div class="card-body">
+              <div class="row">
+                <label class="field"><span>From</span><select id="routeFrom"></select></label>
+                <label class="field"><span>To</span><select id="routeTo"></select></label>
+              </div>
+              <div id="routeResult"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Recursive instrument sketch</h3><span class="card-note">DESIGN SKETCH · shared quote interface</span></div>
+            <div class="card-body">
+              <div class="note scope">The prototype applies one quote interface &mdash; address, modeled specialization, health, utilisation and throughput &mdash; to leaves and simulated composites. That makes a self-similar instrument ladder testable in software. It does <b>not</b> establish a deployed recursive fabric, atomic composite reservation, or a campus that can already settle as one node.</div>
+              <div class="tbl-wrap"><table class="tbl"><thead><tr>
+                <th>Level</th><th class="right">Objects</th><th class="right">Leaves</th><th class="right">Coherence</th><th class="right">Model diameter bound</th><th class="right">Quote $/hr</th>
+              </tr></thead><tbody id="towerBody"></tbody></table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Cells</h3><span class="card-note">model treats a complete cell as one composite</span></div>
+          <div class="card-body flush">
+            <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+              <th>Cell</th><th>Site</th><th class="right">Nodes</th><th class="right">Occupancy</th><th class="right">Induced edges</th><th class="right">Coherence</th>
+            </tr></thead><tbody id="cellsBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Instrument ladder H<sub>n</sub></h3><span class="card-note">40<sup>n</sup> leaves · model bound 16n−14</span></div>
+          <div class="card-body flush">
+            <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+              <th>n</th><th class="right">Leaves</th><th class="right">Model diameter</th><th class="right">Components</th><th class="right">$/node-hr</th><th>Seats</th>
+            </tr></thead><tbody id="ladderBody"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Defragmentation &mdash; the swap book</h3><span class="card-note" id="fragNote"></span></div>
+        <div class="card-body">
+          <div class="note">Repeated spot fills can leave the seeded portfolio as confetti across many cells, reducing its induced-edge coherence even though every individual position looks fine. A modelled swap exchanges orphans between cells. <b>A swap is only offered when both sides gain coherence</b>; physical delivery and interconnect performance remain unmodelled.</div>
+          <div class="tbl-wrap"><table class="tbl"><thead><tr>
+            <th>Swap</th><th>Give</th><th>Get</th><th class="right">Your coherence</th><th class="right">Their gain</th><th class="right">Cash adj.</th><th></th>
+          </tr></thead><tbody id="swapBody"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Optimal reservation shapes</h3>
+          <span class="card-note" id="shapeNote">exact &middot; every witness attains its spectral bound</span>
+        </div>
+        <div class="card-body">
+          <div class="note">The spectral bounds say how dense a reservation of a given size <em>could</em> be. A scheduler cannot reserve a bound &mdash; it reserves a set. These are the sets that actually attain the bounds, found by exhaustive search and re-checked independently by eigenspace projection. <b>A densest shape exists at every multiple of four and nowhere else</b>; the four-point ones are exactly the 40 totally isotropic lines.</div>
+
+          <div class="note amber"><b>&ldquo;Survives&rdquo; is a worst-case guarantee, not an average.</b> It is one less than the minimum number of blocked points that defeats <em>every</em> placement of the shape &mdash; so with that many nodes busy a placement is certain, whichever nodes they are. Proved two independent ways: branch-and-bound, and SAT with every smaller size discharged as UNSAT. The four-node figure of 10 is exactly the no-ovoid result in disguise: ten points could only block all 40 lines by being an ovoid, and there is none.</div>
+
+          <div class="row" style="margin-bottom:11px">
+            <label class="field none" style="min-width:190px"><span>Busy nodes (blocked)</span>
+              <input type="range" id="shapeBusy" min="0" max="34" step="1" value="0"></label>
+            <div class="none" style="align-self:center"><span class="tag accent" id="shapeBusyLabel">0 busy &middot; 40 free</span></div>
+          </div>
+
+          <div class="tbl-wrap"><table class="tbl"><thead><tr>
+            <th>Size m</th><th class="right">max e(T)</th><th class="right">min b(T)</th>
+            <th class="right">Orbit</th><th class="right">Survives</th><th>Placeable now</th><th>Placement</th>
+          </tr></thead><tbody id="shapeMenuBody"></tbody></table></div>
+
+          <hr class="sep">
+          <div class="grid g2">
+            <div>
+              <h4 style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-2);margin:0 0 7px">Anti-affinity ceiling</h4>
+              <div class="note amber" id="antiAffinityNote"></div>
+            </div>
+            <div>
+              <h4 style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-2);margin:0 0 7px">Perfectly spread set</h4>
+              <div class="note" id="spreadNote"></div>
+            </div>
+          </div>
+
+          <div class="note scope" style="margin-top:12px">Exact finite mathematics about the level-1 point graph, verified in <code>tests/shape-catalogue.test.js</code>. Placement transports a shape by an automorphism, which preserves induced edges and boundary exactly. It reserves <em>points</em>: link-state routing, congestion, failure recovery and multi-cell placement are not modelled here.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Neighbour averaging</h3><span class="card-note">toy scalar model · not consensus</span></div>
+        <div class="card-body"><div class="grid g4" id="clearingStats"></div>
+          <div class="note scope" style="margin-top:12px">This is a neighbour-averaging recurrence on the exact level-1 graph. It does not implement leader election, settlement, consensus, crash tolerance, Byzantine tolerance, networking energy, or a physical holonet.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ BALANCE ============================ -->
+    <section class="view hidden" id="view-balance">
+      <div class="page-head">
+        <h2 class="page-title">Balance</h2>
+        <p class="page-sub">The seeded demand-response model applies a premium above the target utilisation band and a discount below it. Use the toggle to compare the resulting utilisation distributions; this is a simulation outcome, not an operator savings claim.</p>
+      </div>
+
+      <div class="grid g4" id="balanceStats"></div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Paired simulation certificate</h3>
+          <span class="card-note">SIMULATION · frozen 64-seed packet · same seeds in both arms</span>
+        </div>
+        <div class="card-body">
+          <div class="grid g4">
+            <div class="stat"><div class="stat-label">Balancer on</div><div class="stat-value">0.06458</div><div class="stat-sub">Gini · 95% CI 0.06043–0.06874</div></div>
+            <div class="stat"><div class="stat-label">Balancer off</div><div class="stat-value">0.16110</div><div class="stat-sub">Gini · 95% CI 0.15455–0.16764</div></div>
+            <div class="stat up"><div class="stat-label">Paired reduction</div><div class="stat-value">60.34%</div><div class="stat-sub">95% CI 58.90–61.77%</div></div>
+            <div class="stat accent"><div class="stat-label">Seeds improved</div><div class="stat-value">64 / 64</div><div class="stat-sub">220 nodes · 500 × 60s steps</div></div>
+          </div>
+          <div class="note scope" style="margin-top:12px">Checked-in deterministic model result, not field telemetry or an operator savings claim. Reproduce with <code>npm run experiment:balancer</code>. Row digest: <span class="mono">1cdc21978a17…b8a</span>.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">Two-sided pricing on/off</h3>
+          <label class="toggle" style="margin-left:auto">
+            <input type="checkbox" id="balancerToggle" checked><span class="track"></span>
+            <span style="font-size:11.5px" id="balancerLabel">Balancer ON</span>
+          </label>
+        </div>
+        <div class="card-body">
+          <div class="note"><b>Watch the Gini in this run.</b> Nothing in the loop pushes utilisation toward the band directly. A node's target is set by its <em>price</em> relative to the median of its hardware class, and that price came from its utilisation. Toggle the model and compare its current seeded trajectories.</div>
+          <canvas class="viz" id="giniCanvas" height="190" role="img" aria-label="Simulation history of utilisation Gini and mean utilisation">Utilisation history.</canvas>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Utilisation distribution</h3><span class="card-note" id="bandNote"></span></div>
+          <div class="card-body"><canvas class="viz" id="histCanvas" height="180" role="img" aria-label="Histogram of simulated fleet utilisation">Fleet utilisation histogram.</canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">How the wear model treats dispersion</h3></div>
+          <div class="card-body">
+            <div class="note amber"><b>Model assumption.</b> The seeded wear function penalises utilisation swings more than steady load at the same average. Smoother load therefore accumulates less <em>modelled</em> wear and spreads modelled service events. HoloTrade has not measured a hardware lifetime improvement.</div>
+            <div class="kv" id="wearKv"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">The demand multiplier D</h3><span class="card-note">premium above band · discount below</span></div>
+        <div class="card-body"><canvas class="viz" id="dCurveCanvas" height="170" role="img" aria-label="Demand multiplier across node utilisation with target band">Demand multiplier curve.</canvas></div>
+      </div>
+    </section>
+
+    <!-- ============================ HEALTH ============================ -->
+    <section class="view hidden" id="view-health">
+      <div class="page-head">
+        <h2 class="page-title">Health &amp; Wear</h2>
+        <p class="page-sub">The seeded model converts use, cycling and service state into a visible health multiplier and maintenance reserve. These are policy inputs for exploring a wear-aware market, not telemetry from deployed hardware.</p>
+      </div>
+
+      <div class="grid g4" id="healthStats"></div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Weibull hazard</h3><span class="card-note">wear-out dominated, shape k = 2.4</span></div>
+          <div class="card-body"><canvas class="viz" id="hazardCanvas" height="185" role="img" aria-label="Modelled Weibull hazard curves and simulated fleet observations">Weibull hazard chart.</canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Service queue</h3><span class="card-note" id="serviceNote"></span></div>
+          <div class="card-body">
+            <div class="note">Taking a node out of service costs its owner the revenue it would have earned &mdash; which is exactly why the balancer's discount window matters. It creates the trough you schedule service into. Service recovers most of the derate but <b>not all of it</b>: wear is partly permanent, silicon does not go back to new.</div>
+            <div class="row"><button class="btn primary none" id="serviceDueBtn">Service all due nodes</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Wear ledger</h3><span class="card-note">RUL = remaining useful life</span></div>
+        <div class="card-body flush">
+          <div class="tbl-wrap scroll-y"><table class="tbl"><thead><tr>
+            <th>Node</th><th>HW</th><th>Site</th>
+            <th class="right">Wear</th><th class="right">Derate</th><th class="right">Hazard</th>
+            <th class="right">RUL (h)</th><th class="right">Cycles</th><th class="right">CE</th>
+            <th class="right">Reserve $/h</th><th>Status</th>
+          </tr></thead><tbody id="healthBody"></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ GENETICS ============================ -->
+    <section class="view hidden" id="view-genetics">
+      <div class="page-head">
+        <h2 class="page-title">Genetics</h2>
+        <p class="page-sub">Spot node-hours are a commodity and commodities converge to marginal cost. Trained cores are not: they are heterogeneous, their quality is observable, and their value compounds with use. That is where the spread lives.</p>
+      </div>
+
+      <div class="grid g4" id="geneticsStats"></div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head">
+            <h3 class="card-title">Fitness leaderboard</h3>
+            <select id="genWorkload" style="width:180px; margin-left:auto"></select>
+          </div>
+          <div class="card-body flush">
+            <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+              <th>#</th><th>Node</th><th>HW</th><th class="right">Score</th><th class="right">Fitness</th><th class="right">Gen</th><th class="right">Jobs</th>
+            </tr></thead><tbody id="leaderBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Bloodlines</h3><span class="card-note">founder cores by descendants</span></div>
+          <div class="card-body flush">
+            <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+              <th>Founder</th><th>HW</th><th class="right">Descendants</th><th class="right">Founder fit</th><th class="right">Line mean</th><th class="right">Line best</th>
+            </tr></thead><tbody id="foundersBody"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Breeding console</h3><span class="card-note">prediction stated before the cross</span></div>
+        <div class="card-body">
+          <div class="note">Crossover of two high-fitness cores onto fresh hardware &mdash; the software operation of merging two checkpoints and warm-starting from the result. The child's expected fitness is stated <b>before</b> the cross so it can be checked afterwards, and it comes in <em>below</em> the better parent on purpose: a merge is lossy and a fresh core has no track record. The exchange must not credit it with its parents' completions.</div>
+          <div class="tbl-wrap"><table class="tbl"><thead><tr>
+            <th>Parents</th><th>Target</th><th class="right">Distance</th><th class="right">Target now</th><th class="right">Predicted</th><th class="right">Gain</th><th></th>
+          </tr></thead><tbody id="crossBody"></tbody></table></div>
+          <hr class="sep">
+          <h4 style="font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-2); margin:0 0 8px">Crosses made</h4>
+          <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+            <th>Target</th><th class="right">Predicted</th><th class="right">Before</th><th class="right">After</th><th class="right">Gen</th>
+          </tr></thead><tbody id="breedLogBody"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Where the priors sit</h3><span class="card-note">fleet census by strongest class</span></div>
+        <div class="card-body flush">
+          <div class="tbl-wrap"><table class="tbl"><thead><tr>
+            <th>Workload class</th><th class="right">Nodes strongest here</th><th class="right">Mean score</th><th class="right">Share</th>
+          </tr></thead><tbody id="censusBody"></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ ENERGY ============================ -->
+    <section class="view hidden" id="view-energy">
+      <div class="page-head">
+        <h2 class="page-title">Energy</h2>
+        <p class="page-sub">Compute is bought in dollars and paid for in joules. You cannot price per-second energy if your settlement unit is an hour &mdash; which is the real reason the tradeable unit here is the node-second.</p>
+      </div>
+
+      <div class="grid g4" id="energyStats"></div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Wholesale grid price</h3><span class="card-note">$/MWh · seeded simulation</span></div>
+        <div class="card-body"><canvas class="viz" id="energyCanvas" height="210" role="img" aria-label="Seeded simulated wholesale grid price history by site">Simulated wholesale grid-price history.</canvas>
+          <div class="legend" id="energyLegend" style="margin-top:9px"></div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Sites</h3></div>
+          <div class="card-body flush">
+            <div class="tbl-wrap"><table class="tbl"><thead><tr>
+              <th>Site</th><th>Grid</th><th class="right">$/MWh</th><th class="right">gCO₂/kWh</th><th class="right">PUE</th><th class="right">Nodes</th><th class="right">Load kW</th><th class="right">E mult</th>
+            </tr></thead><tbody id="sitesBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Hardware energy inputs</h3><span class="card-note">catalogue assumptions · not measurements</span></div>
+          <div class="card-body">
+            <div class="note scope">The J/op values below are seeded catalogue inputs used by the pricing model. The UI does not compare them with a per-cycle thermodynamic quantity: those units and operation boundaries are not interchangeable.</div>
+            <div class="tbl-wrap"><table class="tbl"><thead><tr>
+              <th>Hardware class</th><th class="right">J/op</th><th>Status</th>
+            </tr></thead><tbody id="floorBody"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ EXECUTION ============================ -->
+    <section class="view hidden" id="view-execution">
+      <div class="page-head">
+        <h2 class="page-title">Execution</h2>
+        <p class="page-sub">A complete single-node lifecycle simulation: <b>the node is the asset, the plan is the contract, the node-second is the settlement unit.</b> No real microVM or workload is launched by this browser prototype.</p>
+      </div>
+
+      <div class="grid g4" id="execStats"></div>
+
+      <div class="grid g-1-2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">New execution plan</h3></div>
+          <div class="card-body">
+            <label class="field"><span>Name</span><input type="text" id="planName" value="nightly finetune"></label>
+            <label class="field"><span>Workload class</span><select id="planWorkload"></select></label>
+            <div class="row">
+              <label class="field"><span>Seconds</span><input type="number" id="planSeconds" value="120" min="1"></label>
+              <label class="field"><span>Nodes (prototype lifecycle: one)</span><input type="number" id="planNodes" value="1" min="1" max="1" readonly></label>
+            </div>
+            <label class="field"><span>Declared artifact digest (bound into demo plan)</span><input type="text" id="planDigest" value="sha256:9f2c0e4d2a8b7c6d5e4f3210abcdef1234567890fedcba0987654321a17b4c5d"></label>
+            <label class="field"><span>Egress grants (blank = deny all, no network device)</span><input type="text" id="planGrants" placeholder="api.example.com:443"></label>
+            <button class="btn primary" id="planCreate" style="width:100%">Seal demo plan</button>
+            <hr class="sep">
+            <div class="kv" id="planPreview"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Placement</h3><span class="card-note">ranked by total cost, not headline rate</span></div>
+            <div class="card-body">
+              <div class="note scope">The placement model itemises a declared cold-start distribution and modeled pin-validation work once instead of hiding it in the rate. This demo does not boot a kernel, mount a verity root, or hash artifact bytes; those are production integration requirements.</div>
+              <div class="tbl-wrap"><table class="tbl"><thead><tr>
+                <th>Node</th><th>Addr</th><th>HW</th><th class="right">$/node-s</th><th class="right">Boot</th><th class="right">Migration</th><th class="right">Total</th><th></th>
+              </tr></thead><tbody id="placeBody"></tbody></table></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">Simulated microVM runs</h3><span class="card-note">node-second ledger · clipped final interval</span></div>
+            <div class="card-body flush">
+              <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+                <th>VM</th><th>Plan</th><th>Node</th><th class="right">Uptime</th><th class="right">Spend</th><th class="right">kWh</th><th></th>
+              </tr></thead><tbody id="vmBody"></tbody></table></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Plans</h3></div>
+          <div class="card-body flush">
+            <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+              <th>Plan</th><th>Digest</th><th>Class</th><th class="right">t</th><th class="right">Node-s</th><th>Status</th>
+            </tr></thead><tbody id="plansBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Audit chain</h3><span class="card-note" id="chainNote"></span></div>
+          <div class="card-body flush">
+            <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+              <th>#</th><th>Event</th><th>Detail</th><th>prev→hash</th>
+            </tr></thead><tbody id="auditBody"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Nested state namespace</h3><span class="card-note">illustrative grammar count · not runtime capacity</span></div>
+        <div class="card-body">
+          <div class="note scope">Under the illustrative copy-on-write grammar, untouched siblings retain their digests, so a uniform root at depth <em>n</em> denotes the address tree from <em>n</em>+1 model blobs. At level 6 the arithmetic counts 4,096,000,000 leaf labels plus 105,025,641 internal labels. It does not instantiate 4.2 billion VMs, allocate their state, or establish runtime density.</div>
+          <div class="tbl-wrap"><table class="tbl"><thead><tr>
+            <th>Level</th><th class="right">Leaf labels</th><th class="right">Internal labels</th><th class="right">Total labels</th><th class="right">Model blobs</th><th class="right">Distance bound</th>
+          </tr></thead><tbody id="densityBody"></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ PORTFOLIO ============================ -->
+    <section class="view hidden" id="view-portfolio">
+      <div class="page-head">
+        <h2 class="page-title">Portfolio</h2>
+        <p class="page-sub">Positions, marked against current simulated quotes. The capacity roll-up is in effective TFLOP-hours, which is the number that matters to a buyer &mdash; not the node count.</p>
+      </div>
+
+      <div class="grid g4" id="portfolioStats"></div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Positions</h3><span class="card-note" id="posNote"></span></div>
+        <div class="card-body flush">
+          <div class="tbl-wrap scroll-y"><table class="tbl"><thead><tr>
+            <th>Node</th><th>Addr</th><th>Inst</th><th>Class</th>
+            <th class="right">Qty</th><th class="right">Avg</th><th class="right">Mark</th>
+            <th class="right">Value</th><th class="right">P&amp;L</th><th></th>
+          </tr></thead><tbody id="posBody"></tbody></table></div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Your shape</h3><span class="card-note">coherence, not count</span></div>
+          <div class="card-body" id="shapeBody"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Fills</h3></div>
+          <div class="card-body flush">
+            <div class="tbl-wrap scroll-y short"><table class="tbl"><thead><tr>
+              <th>Time</th><th>Side</th><th>Node</th><th class="right">Qty</th><th class="right">Price</th>
+            </tr></thead><tbody id="fillsBody"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ ASSETS ============================ -->
+    <section class="view hidden" id="view-assets">
+      <div class="page-head">
+        <h2 class="page-title">Assets &amp; UOR</h2>
+        <p class="page-sub">Each asset carries explicit delivery policies. The dashboard turns documented policy defaults into an estimated market-breadth score across forty reference regions; it is not observed liquidity or a group-theoretic co-volume.</p>
+      </div>
+
+      <div class="grid g4" id="assetStats"></div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">The address</h3><span class="card-note">2⁶⁴ = 40 × 1,296 × payload</span></div>
+        <div class="card-body">
+          <div class="note">The forty vertices of W(3,3) are in canonical bijection with the forty Sylow-3 subgroups of Sp(4,𝔽₃), so an object reference is a pair (P, x): a Sylow subgroup and a coset representative. 40 × 1,296 = 51,840 = |Aut(W(3,3))|. <b>An asset's identity and its position in the fabric are the same 64 bits</b> &mdash; there is no separate registry mapping ids to locations that can go stale, and no lookup to do.</div>
+          <div class="grid g4" id="uorStats"></div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Policy-estimated market breadth</h3><span class="card-note">configured defaults · not tape liquidity</span></div>
+          <div class="card-body">
+            <div class="note amber">Each default estimates the fraction of forty reference delivery regions in which an asset remains eligible. Multiple policies use the tightest score, avoiding an invented independence assumption. <b>These are configurable model inputs unless a venue supplies measured eligibility.</b></div>
+            <canvas class="viz" id="liquidityCanvas" height="150" role="img" aria-label="Asset counts by policy-estimated market-breadth band">Policy market-breadth counts.</canvas>
+            <div class="tbl-wrap" style="margin-top:11px"><table class="tbl"><thead><tr>
+              <th>Policy</th><th class="right">Mobility score</th><th class="right">Eligible regions</th><th>Band</th>
+            </tr></thead><tbody id="constraintBody"></tbody></table></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3 class="card-title">Rank-3 shell from an anchor</h3><span class="card-note">1 + 12 + 27 = 40</span></div>
+          <div class="card-body">
+            <label class="field"><span>Anchor node</span><select id="shellAnchor"></select></label>
+            <div class="note">Every listed node falls into one of three geometric relations to the anchor: identity, intersecting, or disjoint. The 1:12:27 ratio describes the forty reference points; a listed fleet may place zero, one, or many nodes at each point, so its observed shares need not match it.</div>
+            <div class="tbl-wrap"><table class="tbl"><thead><tr>
+              <th>Tier</th><th class="right">Nodes</th><th class="right">Fleet share</th><th class="right">Geometry ratio</th><th class="right">Δ</th>
+            </tr></thead><tbody id="shellBody"></tbody></table></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Illustrative rate transforms</h3><span class="card-note">dimensional displays · not ceilings</span></div>
+        <div class="card-body">
+          <label class="field" style="max-width:280px"><span>Transaction rate (TPS)</span><input type="range" id="tpsRange" min="6" max="9" step="0.1" value="7.845"></label>
+          <div class="grid g4" id="capacityStats"></div>
+          <div class="note scope" style="margin-top:12px">The displayed rates apply documented dimensionless factors to the TPS slider. They are illustrative transforms, not measured throughput, protocol limits, projections, or service-level objectives. Full reference scan time is simply 51,840 transactions divided by the supplied transactions per second.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ RECEIPTS ============================ -->
+    <section class="view hidden" id="view-receipts">
+      <div class="page-head">
+        <h2 class="page-title">Receipts</h2>
+        <p class="page-sub">Every simulated fill emits a deterministic quote sample carrying node and model provenance. No workload has run at fill time, so these records are not execution, delivery, verification, or attestation evidence.</p>
+      </div>
+
+      <div class="grid g4" id="receiptStats"></div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Evidence boundary</h3><span class="card-note">SIMULATED_QUOTE_RECEIPT</span></div>
+        <div class="card-body">
+          <div class="grid g2">
+            <div class="note amber"><b>Substrate-labelled sample.</b> The contextual fraction is generated by the seeded quote model. It is not a photonic measurement and carries no clean/dirty verdict.</div>
+            <div class="note scope"><b>Clifford-labelled sample.</b> The lane is catalogue classification only. No stabilizer trace is produced or checked by a fill receipt.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3 class="card-title">Simulated quote receipts</h3><span class="card-note" id="receiptNote"></span></div>
+        <div class="card-body flush">
+          <div class="tbl-wrap scroll-y"><table class="tbl"><thead><tr>
+            <th>Receipt</th><th>Node</th><th>Addr</th><th>Lane</th><th class="right">Synthetic CF</th><th>Label</th><th class="right">Qty</th><th class="right">Price</th><th class="right">Gen</th><th>Model provenance</th>
+          </tr></thead><tbody id="receiptBody"></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ DOCS ============================ -->
+    <section class="view hidden" id="view-docs">
+      <div class="page-head">
+        <h2 class="page-title">The Model</h2>
+        <p class="page-sub">What HoloTrade sells, how it prices it, and which surfaces are exact, formal, synthesized, simulated, prototyped, or still design work.</p>
+      </div>
+      <div id="docsBody"></div>
+    </section>
+
+  </main>
+</div>
+
+<div class="drawer-back" id="drawerBack"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3 id="drawerTitle">—</h3>
+    <button class="icon-btn" id="drawerClose" style="margin-left:auto" aria-label="Close">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13"><path fill-rule="evenodd" d="M4.3 4.3a1 1 0 011.4 0L10 8.6l4.3-4.3a1 1 0 111.4 1.4L11.4 10l4.3 4.3a1 1 0 01-1.4 1.4L10 11.4l-4.3 4.3a1 1 0 01-1.4-1.4L8.6 10 4.3 5.7a1 1 0 010-1.4z" clip-rule="evenodd"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="data/catalog.js"></script>
+<script src="js/substrate.js"></script>
+<script src="js/energy.js"></script>
+<script src="js/fleet.js"></script>
+<script src="js/pricing.js"></script>
+<script src="js/fabric.js"></script>
+<script src="js/genetics.js"></script>
+<script src="js/uor.js"></script>
+<script src="scheduler/w33-shapes.js"></script>
+<script src="js/execution.js"></script>
+<script src="js/market.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

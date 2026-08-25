@@ -169,7 +169,8 @@ The spot interaction is a prototype. Forward, option, lease, and supply screens 
 ## Repository map
 
 ```text
-index.html                  application shell and evidence labels
+holotrade.html              application shell and evidence labels
+index.html                  redirect stub so the Pages root still works
 css/styles.css              responsive visual system
 data/catalog.js             deterministic demo inventory
 data/balancer_ab_64.json    frozen paired simulation summary

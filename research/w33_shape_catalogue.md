@@ -16,7 +16,10 @@ or a fitted coefficient.
 | `data/w33_shape_catalogue.json` | frozen catalogue with witnesses and exact counts |
 | `analysis/w33_shape_guarantees.js` | worst-case blocking numbers, by branch and bound |
 | `analysis/w33_blocking_sat.py` | the same, by SAT, with UNSAT proofs below tau |
-| `tests/shape-catalogue.test.js` | 28 regression tests |
+| `analysis/w33_shape_packing.js` | perfect tilings and maximum packings |
+| `analysis/w33_shape_catalogue.g` | GAP/GRAPE certificate: full automorphism group |
+| `analysis/w33_gap_certificate.js` | runs GAP and cross-checks every artifact |
+| `tests/shape-catalogue.test.js` | 34 regression tests |
 
 ---
 
@@ -300,7 +303,88 @@ how many placements exist. The counting bound is tight only at `m = 36`.
 So the scheduler's admission rule is a lookup, not a simulation: past
 `τ − 1` busy nodes, stop promising an optimal shape of that size and say so.
 
-## 9. Scope
+## 9. Perfect packings: the sizes that strand nothing
+
+A tiling is the fragmentation-free schedule — every node used, every reservation
+provably densest, nothing left stranded between jobs. Two arithmetic constraints
+decide which sizes can even try:
+
+* a densest shape needs `4 | m`
+* a tiling needs `m | 40`
+
+so only `m ∈ {4, 8, 20, 40}` are candidates, before any search runs.
+
+| m | densest shapes | m divides 40 | tilings | outcome |
+|---:|---:|:---:|---:|---|
+| 4 | 40 | yes | **36** | **perfect tiling** |
+| 8 | 585 | yes | **57,132** | **perfect tiling** |
+| 12 | 5,400 | no | — | max 3 disjoint, 4 stranded |
+| 16 | 21,330 | no | — | max 2 disjoint, 8 stranded |
+| 20 | 33,264 | yes | **16,632** | **perfect tiling** |
+| 24 | 21,330 | no | — | max 1 disjoint, 16 stranded |
+| 28 | 5,400 | no | — | max 1 disjoint, 12 stranded |
+| 32 | 585 | no | — | max 1 disjoint, 8 stranded |
+| 36 | 40 | no | — | max 1 disjoint, 4 stranded |
+
+**All three non-trivial candidates tile.** The `m = 4` tilings are the classical
+**spreads** of the quadrangle — ten disjoint lines meeting every point-star
+exactly once — and there are exactly 36, reproducing the substrate corpus's
+count independently. The `m = 8` count of 57,132 is new here. And
+`16,632 = 33,264 / 2` exactly, because every densest 20-set tiles with its own
+complement: the complementation theorem showing up a third time, now as a factor
+of two.
+
+> **Reserve in units of 4, 8 or 20 and the cell partitions perfectly.** At any
+> other size, capacity is stranded by arithmetic: 4 nodes at m=12, 8 at m=16.
+
+### A bug this caught
+
+The first version of the packing search looked for tilings inside the **orbit**
+of a single catalogue witness. It reported *no tiling at m = 20*, which directly
+contradicts the proved complementation theorem — so something had to be wrong.
+
+The orbit of that witness has 3,240 members out of 33,264 densest 20-sets, so
+the complement simply was not in the pool being searched. **Orbit is not
+isomorphism class here**, and only `m = 4` has a single orbit, which is why that
+case looked correct. Searching the full pool gives 16,632.
+
+The contradiction was only visible because the theorem had already been proved.
+A search with no prediction to violate would have reported the wrong answer
+quietly.
+
+## 10. GAP: the full automorphism group
+
+The transvection closure in §5 gives 25,920 = PSp(4,3). That is the *projective*
+group, and it left a real gap: placement cares about the automorphism group of
+the **graph**, which could be larger. If it were, shapes would have more images
+and the guarantees in §8 would be conservative.
+
+GRAPE/nauty settles it:
+
+| | |
+|---|---:|
+| \|Aut(graph)\| | **51,840** |
+| \|PSp(4,3)\| | 25,920 |
+| index | **2** |
+| rank | 3 |
+| suborbits | 1, 12, 27 |
+| point stabiliser | **1,296** |
+
+The graph's automorphism group is an index-2 extension of PSp(4,3). But **every
+shape orbit is unchanged in size, and every set stabiliser exactly doubles** —
+the extra involution carries each shape back into its own PSp(4,3)-orbit rather
+than to new images.
+
+So the blocking numbers and guarantees are **exact, not conservative**, and are
+now certified against the true automorphism group rather than a subgroup.
+
+Two details worth noting because they close loops elsewhere in the corpus: the
+point stabiliser order **1,296** is exactly the `|N_G(P₃)|` of the UOR address
+factorisation `2⁶⁴ = 40 × 1296 × payload`, and the suborbits **1 + 12 + 27 = 40**
+are exactly the rank-3 shell `js/uor.js` already implements. Both were asserted
+in the source papers; GAP verifies them here as facts about the graph.
+
+## 11. Scope
 
 **What this is.** Exact finite mathematics about one 40-vertex graph, plus an API
 that reserves point sets in it.

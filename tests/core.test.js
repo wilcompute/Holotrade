@@ -365,7 +365,7 @@ test("the frozen 64-seed balancer packet is reproducible and explicitly simulate
 
   // The demo surface must show the frozen result rather than invite a
   // presenter to infer a headline number from the live animation.
-  const site = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  const site = fs.readFileSync(path.join(root, "holotrade.html"), "utf8");
   assert.match(site, /Paired simulation certificate/);
   assert.match(site, /60\.34%/);
   assert.match(site, /64 \/ 64/);

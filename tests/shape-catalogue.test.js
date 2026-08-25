@@ -507,3 +507,86 @@ test("guarantees shrink as shapes grow, and orbit size does not explain it", () 
   assert.ok(m12.orbitSize > 20 * m8.orbitSize, "orbits differ by more than 20x");
   assert.equal(m8.tau, m12.tau, "yet the blocking numbers are equal");
 });
+
+// ======================================================================
+// Perfect reservation packings
+//
+// A tiling is the fragmentation-free schedule: every node used, every
+// reservation provably densest, nothing stranded. It needs 4 | m (a
+// densest shape exists) and m | 40 (the pieces exhaust the cell).
+// ======================================================================
+
+const packing = require(path.join(root, "analysis/w33_shape_packing.js"));
+
+test("only m in {4, 8, 20, 40} can possibly tile the cell", () => {
+  for (let m = 1; m <= 40; m++) {
+    const canTile = m % 4 === 0 && N % m === 0;
+    const expected = [4, 8, 20, 40].includes(m);
+    assert.equal(canTile, expected, `m=${m}`);
+  }
+});
+
+test("the 40 lines tile the cell in exactly 36 ways — the spreads", () => {
+  const lines = S.LINES.map((l) => [...l].sort((a, b) => a - b));
+  const t = packing.findTilings(lines);
+  assert.equal(t.count, 36, "36 spreads of W(3,3)");
+  assert.equal(t.pieces, 10, "ten disjoint lines");
+
+  for (const tiling of t.tilings.slice(0, 5)) {
+    const covered = tiling.flat();
+    assert.equal(new Set(covered).size, N, "covers every point exactly once");
+    assert.equal(covered.length, N, "and no point twice");
+    // a spread meets every point-star exactly once
+    for (let v = 0; v < N; v++) {
+      assert.equal(tiling.filter((l) => l.includes(v)).length, 1,
+        `point ${v} lies on exactly one line of the spread`);
+    }
+  }
+});
+
+test("perfect tilings exist at exactly the three admissible sizes", () => {
+  const res = packing.run();
+  const tiling = new Map(res.shapes.map((r) => [r.m, r]));
+  for (const m of [4, 8, 20]) {
+    assert.ok(tiling.get(m).tilingPossible, `m=${m} tiles the cell`);
+    assert.equal(tiling.get(m).pointsStranded, 0, `m=${m} strands nothing`);
+  }
+  for (const m of [12, 16, 24, 28, 32, 36]) {
+    assert.equal(tiling.get(m).tilingPossible, false, `m=${m} cannot tile`);
+    assert.ok(tiling.get(m).pointsStranded > 0);
+  }
+});
+
+test("the m=20 tiling count is exactly half the shape count", () => {
+  // Complementation forces it: every densest 20-set tiles the cell with
+  // its own complement, and the pair is counted once as an unordered
+  // tiling. So tilings = shapes / 2, with no search needed to predict it.
+  const res = packing.run();
+  const r20 = res.shapes.find((r) => r.m === 20);
+  assert.equal(r20.tilingCount * 2, r20.totalShapes,
+    "16,632 tilings from 33,264 shapes");
+});
+
+test("a tiling really is made of densest shapes and covers everything", () => {
+  const res = packing.run();
+  for (const v of res.verifications) {
+    assert.ok(v.ok, `m=${v.m}: ${v.why || ""}`);
+  }
+  assert.ok(res.verifications.length >= 3, "all three tiling sizes verified");
+});
+
+test("orbit is not the same thing as isomorphism class", () => {
+  // The bug this test exists to prevent: searching for tilings inside a
+  // single orbit reported NO tiling at m=20, contradicting the proved
+  // complementation theorem. The orbit had 3,240 members out of 33,264
+  // densest 20-sets, so the complement was simply not in the pool.
+  const res = packing.run();
+  const r20 = res.shapes.find((r) => r.m === 20);
+  assert.ok(r20.totalShapes > r20.orbitSize,
+    "there are more densest 20-sets than one orbit contains");
+  assert.ok(r20.orbitsInPool > 1, "so the pool spans several orbits");
+
+  const r4 = res.shapes.find((r) => r.m === 4);
+  assert.equal(r4.totalShapes, r4.orbitSize,
+    "m=4 is the one size with a single orbit, which is why it looked fine");
+});

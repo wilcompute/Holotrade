@@ -260,6 +260,7 @@ function searchIntriguing(m, targetIn, targetOut, { collect = 1, nodeCap = 40e6 
     complete: exhausted,
     searchNodes: nodes,
     witness: witnesses[0] || null,
+    allWitnesses: witnesses,
   };
 }
 
