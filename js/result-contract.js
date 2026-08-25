@@ -117,7 +117,9 @@
     const semantic = commit(value, c);
     const base = projectionEngine.emit(projection, plan, receipt, {
       id, kind, address,
-      metadata: { ...metadata, resultContractDigest: c.digest },
+      // resultDigest is a backwards-compatibility alias only.  The authoritative
+      // commitment is output.result below and is contract-bound.
+      metadata: { ...metadata, resultContractDigest: c.digest, resultDigest: semantic.digest },
     });
     const body = {
       ...base,
