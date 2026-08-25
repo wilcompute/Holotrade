@@ -1,13 +1,14 @@
 // ======================================================================
 // HOLOTRADE CAPABILITY-TRANSITION MARKET
 //
-// A vendor capability is modeled as an immutable resource. Applying it to a
-// node profile is itself a Projection -> Execution -> Emission transition,
-// so capability upgrades are auditable state changes rather than mutable
-// flags in a central registry.
+// Capabilities are immutable resources. Applying one or more offers to a node
+// profile is itself a Projection -> Execution -> Emission transition, so a
+// capability upgrade is auditable state rather than a mutable registry flag.
 //
-// This is a prototype market/state-machine. It does not perform firmware
-// installation, hardware reconfiguration, licensing, or remote attestation.
+// v2 adds exact bundle selection over the listed offers: for a required set of
+// capabilities, choose the compatible bundle with minimum modeled price, then
+// fewest offers, then lexical offer ids. This is a market optimizer over model
+// prices, not a deployed procurement or licensing system.
 // ======================================================================
 
 (function (root) {
@@ -19,8 +20,8 @@
     (typeof require !== "undefined" ? require("./projection.js") : null);
   if (!E || !P) throw new Error("capability-market requires evidence.js and projection.js");
 
-  const PROFILE_SCHEMA = "holotrade.node-capability-profile.v1";
-  const OFFER_SCHEMA = "holotrade.capability-offer.v1";
+  const PROFILE_SCHEMA = "holotrade.node-capability-profile.v2";
+  const OFFER_SCHEMA = "holotrade.capability-offer.v2";
 
   function text(value, name) {
     if (typeof value !== "string" || value.trim().length === 0) throw new TypeError(`${name} must be a non-empty string`);
@@ -118,29 +119,76 @@
         .filter((row) => row.adds.length > 0)
         .sort((a, b) => Number(b.complete) - Number(a.complete) || a.offer.price - b.offer.price || a.offer.id.localeCompare(b.offer.id));
     }
+
+    /** Exact minimum-price set cover across compatible offers. */
+    bestBundle(profile, requiredCapabilities = []) {
+      const required = stringSet(requiredCapabilities, "requiredCapabilities");
+      const have = new Set(profile.metadata?.capabilities || []);
+      const missing = required.filter((cap) => !have.has(cap));
+      if (missing.length === 0) return Object.freeze({ complete: true, offers: [], adds: [], totalPrice: 0, required, missing: [] });
+      if (missing.length > 24) throw new RangeError("exact bundle optimizer supports at most 24 missing capabilities");
+      const index = new Map(missing.map((cap, i) => [cap, i]));
+      const fullMask = (1 << missing.length) - 1;
+      const compatible = this.offers.filter((offer) => offer.compatible(profile)).map((offer) => {
+        let mask = 0;
+        for (const cap of offer.capabilities) if (index.has(cap)) mask |= 1 << index.get(cap);
+        return { offer, mask };
+      }).filter((row) => row.mask !== 0);
+
+      const best = new Map([[0, { price: 0, ids: [], offers: [] }]]);
+      for (const row of compatible) {
+        const snapshot = [...best.entries()];
+        for (const [mask, state] of snapshot) {
+          const nextMask = mask | row.mask;
+          const candidate = {
+            price: state.price + row.offer.price,
+            ids: [...state.ids, row.offer.id].sort(),
+            offers: [...state.offers, row.offer],
+          };
+          const prior = best.get(nextMask);
+          const candidateKey = `${candidate.price.toFixed(12)}|${String(candidate.ids.length).padStart(4, "0")}|${candidate.ids.join("|")}`;
+          const priorKey = prior ? `${prior.price.toFixed(12)}|${String(prior.ids.length).padStart(4, "0")}|${prior.ids.join("|")}` : null;
+          if (!prior || candidateKey < priorKey) best.set(nextMask, candidate);
+        }
+      }
+      const winner = best.get(fullMask);
+      if (!winner) return Object.freeze({ complete: false, offers: [], adds: [], totalPrice: null, required, missing });
+      const ordered = [...winner.offers].sort((a, b) => a.id.localeCompare(b.id));
+      const adds = [...new Set(ordered.flatMap((offer) => offer.capabilities).filter((cap) => !have.has(cap)))].sort();
+      return Object.freeze({
+        complete: true,
+        offers: Object.freeze(ordered),
+        offerIds: Object.freeze(ordered.map((x) => x.id)),
+        adds: Object.freeze(adds),
+        totalPrice: winner.price,
+        required: Object.freeze(required),
+        missing: Object.freeze(missing),
+        digest: E.demoDigest({ profile: profile.digest, required, offerDigests: ordered.map((x) => x.digest), totalPrice: winner.price }),
+      });
+    }
   }
 
   class CapabilityTransitionEngine {
     constructor(projectionEngine) {
-      if (!projectionEngine || typeof projectionEngine.createPlan !== "function") {
-        throw new TypeError("CapabilityTransitionEngine requires ProjectionEngine");
-      }
+      if (!projectionEngine || typeof projectionEngine.createPlan !== "function") throw new TypeError("CapabilityTransitionEngine requires ProjectionEngine");
       this.projectionEngine = projectionEngine;
     }
 
-    projection(profile, offer, { workloadId = "finetune", evidencePolicy = E.POLICY.VERIFIED } = {}) {
-      const cap = offer instanceof CapabilityOffer ? offer : new CapabilityOffer(offer);
-      if (!cap.compatible(profile)) throw new Error("capability offer is incompatible with node hardware kind");
+    bundleProjection(profile, offers, { workloadId = "finetune", evidencePolicy = E.POLICY.VERIFIED } = {}) {
+      const caps = offers.map((x) => x instanceof CapabilityOffer ? x : new CapabilityOffer(x)).sort((a, b) => a.id.localeCompare(b.id));
+      if (caps.length === 0) throw new Error("at least one capability offer is required");
+      for (const cap of caps) if (!cap.compatible(profile)) throw new Error(`capability offer ${cap.id} is incompatible with node hardware kind`);
       const current = new Set(profile.metadata?.capabilities || []);
-      const adds = cap.capabilities.filter((x) => !current.has(x));
+      const adds = [...new Set(caps.flatMap((cap) => cap.capabilities).filter((x) => !current.has(x)))].sort();
       if (adds.length === 0) throw new Error("capability transition is a no-op");
-      const refs = [...new Set([...(profile.metadata?.evidenceRefs || []), ...cap.evidenceRefs])].sort();
+      const refs = [...new Set([...(profile.metadata?.evidenceRefs || []), ...caps.flatMap((cap) => cap.evidenceRefs)])].sort();
+      const totalPrice = caps.reduce((sum, cap) => sum + cap.price, 0);
       return new P.Projection({
-        id: `projection:capability:${profile.id}:${cap.id}`,
-        name: `apply ${cap.id} to ${profile.metadata.nodeId}`,
+        id: `projection:capability:${profile.id}:${E.demoDigest(caps.map((x) => x.digest)).slice(5, 17)}`,
+        name: `apply ${caps.map((x) => x.id).join("+")} to ${profile.metadata.nodeId}`,
         service: "capability-transition",
         workloadId,
-        inputs: [profile, cap.asResource()],
+        inputs: [profile, ...caps.map((cap) => cap.asResource())],
         grants: { network: [], services: [], secrets: [] },
         evidenceRefs: refs,
         evidencePolicy,
@@ -149,19 +197,24 @@
           nodeId: profile.metadata.nodeId,
           currentCapabilities: [...current].sort(),
           addedCapabilities: adds,
-          vendor: cap.vendor,
-          offerDigest: cap.digest,
-          transitionPrice: cap.price,
+          vendors: [...new Set(caps.map((x) => x.vendor))].sort(),
+          offerIds: caps.map((x) => x.id),
+          offerDigests: caps.map((x) => x.digest),
+          transitionPrice: totalPrice,
         },
       });
     }
 
-    emitProfile(projection, plan, receipt, profile, offer) {
-      const cap = offer instanceof CapabilityOffer ? offer : new CapabilityOffer(offer);
-      const capabilities = [...new Set([...(profile.metadata?.capabilities || []), ...cap.capabilities])].sort();
-      const evidenceRefs = [...new Set([...(profile.metadata?.evidenceRefs || []), ...cap.evidenceRefs])].sort();
+    projection(profile, offer, options = {}) {
+      return this.bundleProjection(profile, [offer], options);
+    }
+
+    emitBundleProfile(projection, plan, receipt, profile, offers) {
+      const caps = offers.map((x) => x instanceof CapabilityOffer ? x : new CapabilityOffer(x)).sort((a, b) => a.id.localeCompare(b.id));
+      const capabilities = [...new Set([...(profile.metadata?.capabilities || []), ...caps.flatMap((cap) => cap.capabilities)])].sort();
+      const evidenceRefs = [...new Set([...(profile.metadata?.evidenceRefs || []), ...caps.flatMap((cap) => cap.evidenceRefs)])].sort();
       const generation = (profile.metadata?.generation || 0) + 1;
-      const emission = this.projectionEngine.emit(projection, plan, receipt, {
+      return this.projectionEngine.emit(projection, plan, receipt, {
         kind: "node-profile",
         metadata: {
           schema: PROFILE_SCHEMA,
@@ -170,13 +223,16 @@
           capabilities,
           evidenceRefs,
           generation,
-          vendor: cap.vendor,
-          offerId: cap.id,
-          offerDigest: cap.digest,
-          transitionPrice: cap.price,
+          vendors: [...new Set(caps.map((x) => x.vendor))].sort(),
+          offerIds: caps.map((x) => x.id),
+          offerDigests: caps.map((x) => x.digest),
+          transitionPrice: caps.reduce((sum, cap) => sum + cap.price, 0),
         },
       });
-      return emission;
+    }
+
+    emitProfile(projection, plan, receipt, profile, offer) {
+      return this.emitBundleProfile(projection, plan, receipt, profile, [offer]);
     }
   }
 
