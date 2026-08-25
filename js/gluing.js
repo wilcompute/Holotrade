@@ -1,13 +1,13 @@
 // ======================================================================
 // HOLOTRADE LOCAL -> GLOBAL GLUING KERNEL
 //
-// W33-Theory's strongest UOR bridge is not an address coincidence: exact
-// local sections overlap compatibly and glue to one global section. This
-// module turns that pattern into an execution-market primitive.
-//
 // Independent policy/capability/resource patches may compose iff every
 // overlapping path agrees exactly after canonicalization. Conflicts fail
 // closed; no "last writer wins" semantics exist here.
+//
+// v2 adds epistemic admission: structural compatibility is necessary but not
+// sufficient. A global section may be structurally unique and still be refused
+// when the evidence supporting one of its local sections is stale/invalid.
 // ======================================================================
 
 (function (root) {
@@ -17,7 +17,7 @@
     (typeof require !== "undefined" ? require("./evidence.js") : null);
   if (!E) throw new Error("gluing requires evidence.js");
 
-  const SCHEMA = "holotrade.gluing.v1";
+  const SCHEMA = "holotrade.gluing.v2";
 
   function text(value, name) {
     if (typeof value !== "string" || value.trim().length === 0) {
@@ -91,14 +91,8 @@
           continue;
         }
         const prior = merged.get(path);
-        const priorEncoded = E.canonicalJson(prior);
-        const compatible = priorEncoded === encoded;
-        overlaps.push({
-          path,
-          section: local.id,
-          priorSections: owners.get(path).map((x) => x.id),
-          compatible,
-        });
+        const compatible = E.canonicalJson(prior) === encoded;
+        overlaps.push({ path, section: local.id, priorSections: owners.get(path).map((x) => x.id), compatible });
         if (!compatible) {
           conflicts.push({ path, expected: prior, received: value, section: local.id, priorSections: owners.get(path).map((x) => x.id) });
         } else {
@@ -111,6 +105,10 @@
     const missing = required.filter((path) => !merged.has(path));
     const ok = conflicts.length === 0 && missing.length === 0;
     const globalSection = ok ? canonical(unflatten(merged)) : null;
+    const cover = [...merged.keys()].sort().map((path) => ({
+      path,
+      owners: (owners.get(path) || []).map((x) => x.id).sort(),
+    }));
     const body = {
       schema: SCHEMA,
       ok,
@@ -121,10 +119,38 @@
       missing,
       overlaps,
       conflicts,
+      cover,
       globalSection,
       evidenceRefs: [...new Set(sections.flatMap((x) => x.evidenceRefs))].sort(),
     };
     return Object.freeze({ ...body, digest: E.demoDigest(body) });
+  }
+
+  /**
+   * Evaluate a structurally glued section against the current evidence ledger.
+   * History is not rewritten: the structural digest is preserved verbatim and
+   * current admission is a separate decision object.
+   */
+  function admit(values, ledger, { requiredPaths = [], evidencePolicy = E.POLICY.VERIFIED } = {}) {
+    if (!ledger || typeof ledger.evaluate !== "function") throw new TypeError("EvidenceLedger required");
+    const structural = glue(values, { requiredPaths });
+    const evidenceDecision = ledger.evaluate(structural.evidenceRefs, { policy: evidencePolicy });
+    const body = {
+      schema: "holotrade.gluing-admission.v1",
+      structuralDigest: structural.digest,
+      structuralOk: structural.ok,
+      evidencePolicy,
+      evidenceDecisionDigest: evidenceDecision.digest,
+      evidenceOk: evidenceDecision.ok,
+      ok: structural.ok && evidenceDecision.ok,
+      globalSection: structural.ok && evidenceDecision.ok ? structural.globalSection : null,
+      blockers: [
+        ...structural.conflicts.map((x) => ({ code: "GLUING_CONFLICT", path: x.path })),
+        ...structural.missing.map((path) => ({ code: "MISSING_REQUIRED_PATH", path })),
+        ...evidenceDecision.blockers,
+      ],
+    };
+    return Object.freeze({ ...body, structural, evidenceDecision, digest: E.demoDigest(body) });
   }
 
   function glueResourceMetadata(resources, options = {}) {
@@ -137,7 +163,7 @@
     })), options);
   }
 
-  const API = { SCHEMA, LocalSection, flatten, glue, glueResourceMetadata };
+  const API = { SCHEMA, LocalSection, flatten, glue, admit, glueResourceMetadata };
   root.HolotradeGluing = API;
   if (typeof module !== "undefined" && module.exports) module.exports = API;
 })(typeof window !== "undefined" ? window : globalThis);
