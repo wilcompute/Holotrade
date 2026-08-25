@@ -1,0 +1,202 @@
+{
+  "schema": "holotrade.w33-blocking-sat.v1",
+  "method": "SAT: one clause per orbit image, sequential-counter cardinality, UNSAT at every k below tau",
+  "solver": "minisat22 via python-sat",
+  "shapes": [
+    {
+      "kind": "densest",
+      "m": 4,
+      "orbitSize": 40,
+      "countingLowerBound": 10,
+      "tau": 11,
+      "guarantee": 10,
+      "witness": [
+        6,
+        10,
+        11,
+        12,
+        13,
+        14,
+        23,
+        28,
+        29,
+        30,
+        31
+      ],
+      "witnessValid": true,
+      "unsatProofs": 10,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 8,
+      "orbitSize": 45,
+      "countingLowerBound": 5,
+      "tau": 8,
+      "guarantee": 7,
+      "witness": [
+        0,
+        8,
+        9,
+        13,
+        26,
+        27,
+        38,
+        39
+      ],
+      "witnessValid": true,
+      "unsatProofs": 7,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 12,
+      "orbitSize": 1080,
+      "countingLowerBound": 4,
+      "tau": 8,
+      "guarantee": 7,
+      "witness": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "witnessValid": true,
+      "unsatProofs": 7,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 16,
+      "orbitSize": 270,
+      "countingLowerBound": 3,
+      "tau": 6,
+      "guarantee": 5,
+      "witness": [
+        1,
+        2,
+        23,
+        24,
+        26,
+        28
+      ],
+      "witnessValid": true,
+      "unsatProofs": 5,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 20,
+      "orbitSize": 3240,
+      "countingLowerBound": 2,
+      "tau": 6,
+      "guarantee": 5,
+      "witness": [
+        0,
+        1,
+        8,
+        24,
+        25,
+        35
+      ],
+      "witnessValid": true,
+      "unsatProofs": 5,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 24,
+      "orbitSize": 6480,
+      "countingLowerBound": 2,
+      "tau": 4,
+      "guarantee": 3,
+      "witness": [
+        0,
+        37,
+        38,
+        39
+      ],
+      "witnessValid": true,
+      "unsatProofs": 3,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 28,
+      "orbitSize": 1080,
+      "countingLowerBound": 2,
+      "tau": 4,
+      "guarantee": 3,
+      "witness": [
+        0,
+        30,
+        36,
+        39
+      ],
+      "witnessValid": true,
+      "unsatProofs": 3,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 32,
+      "orbitSize": 540,
+      "countingLowerBound": 2,
+      "tau": 3,
+      "guarantee": 2,
+      "witness": [
+        37,
+        38,
+        39
+      ],
+      "witnessValid": true,
+      "unsatProofs": 2,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    },
+    {
+      "kind": "densest",
+      "m": 36,
+      "orbitSize": 40,
+      "countingLowerBound": 2,
+      "tau": 2,
+      "guarantee": 1,
+      "witness": [
+        38,
+        39
+      ],
+      "witnessValid": true,
+      "unsatProofs": 1,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": true
+    },
+    {
+      "kind": "spread",
+      "m": 20,
+      "orbitSize": 432,
+      "countingLowerBound": 2,
+      "tau": 3,
+      "guarantee": 2,
+      "witness": [
+        15,
+        29,
+        34
+      ],
+      "witnessValid": true,
+      "unsatProofs": 2,
+      "guaranteeProvedUnsat": true,
+      "countingBoundTight": false
+    }
+  ]
+}

@@ -14,7 +14,9 @@ or a fitted coefficient.
 | `analysis/w33_automorphisms.js` | the symmetry group, and shape transport |
 | `scheduler/w33-shapes.js` | the scheduler-facing reservation API |
 | `data/w33_shape_catalogue.json` | frozen catalogue with witnesses and exact counts |
-| `tests/shape-catalogue.test.js` | 22 regression tests |
+| `analysis/w33_shape_guarantees.js` | worst-case blocking numbers, by branch and bound |
+| `analysis/w33_blocking_sat.py` | the same, by SAT, with UNSAT proofs below tau |
+| `tests/shape-catalogue.test.js` | 28 regression tests |
 
 ---
 
@@ -219,7 +221,86 @@ It confirms:
 
 All checks pass.
 
-## 8. Scope
+## 8. Worst-case placement guarantees
+
+`placementCapacity()` reports a **sampled** figure: over random sets of busy
+nodes, how often a shape can still be placed. That is honest but weak. A
+scheduler wants a guarantee:
+
+> with at most `B` nodes busy, a densest `m`-node reservation is always
+> placeable — **no matter which** nodes are busy.
+
+That is exact. A blocked set `X` defeats a shape exactly when every image of it
+under the automorphism group meets `X` — that is, when `X` is a **blocking set**
+for the shape's orbit. So if `τ` is the minimum blocking set,
+
+* with `|X| ≤ τ − 1` busy nodes a placement **always** exists;
+* with `|X| = τ` an adversary can make placement impossible.
+
+`τ − 1` is the guarantee, and `τ` is exactly where the cliff is.
+
+### A lower bound from transitivity
+
+The orbit of a shape under a point-transitive group is balanced: every point
+lies in exactly `|orbit|·m/40` images. One blocked point therefore hits at most
+that many, so
+
+```
+    τ  ≥  |orbit| / (|orbit|·m/40)  =  40/m,     hence  τ ≥ ⌈40/m⌉.
+```
+
+### The results
+
+| m | orbit | counting bound ⌈40/m⌉ | τ | **busy nodes tolerated** |
+|---:|---:|---:|---:|---:|
+| 4 | 40 | 10 | **11** | **10** |
+| 8 | 45 | 5 | **8** | **7** |
+| 12 | 1,080 | 4 | **8** | **7** |
+| 16 | 270 | 3 | **6** | **5** |
+| 20 | 3,240 | 2 | **6** | **5** |
+| 24 | 6,480 | 2 | **4** | **3** |
+| 28 | 1,080 | 2 | **4** | **3** |
+| 32 | 540 | 2 | **3** | **2** |
+| 36 | 40 | 2 | **2** | **1** |
+
+and for the perfectly spread set: `m = 20`, orbit 432, τ = 3, tolerating 2.
+
+Computed **twice, independently**: by branch and bound in
+`analysis/w33_shape_guarantees.js`, and by SAT in `analysis/w33_blocking_sat.py`,
+where every size below `τ` is discharged as **UNSAT** — which is what makes each
+figure a proof of a lower bound rather than an unsuccessful search. The two
+solvers agree on every shape.
+
+### Why the four-node guarantee is exactly 10
+
+This is the result worth reading twice, because it is the no-ovoid theorem
+wearing different clothes.
+
+The densest 4-point shapes are exactly the 40 lines, so defeating them means
+hitting every line. Each point lies on 4 lines, so `k` points cover at most `4k`
+incidences and covering all 40 needs `k ≥ 10`. **Equality would require all 40
+incidences to be distinct** — no two of the ten points collinear — which is
+precisely an ovoid. §4 showed this quadrangle has none. Therefore `τ ≥ 11`, and
+the search finds `τ = 11` exactly.
+
+> **A four-node densest reservation survives any ten simultaneous busy or failed
+> nodes**, and eleven specific ones can defeat it. The bound is tight in both
+> directions.
+
+The abstract non-existence of an ovoid is not a curiosity here. It is the reason
+the guarantee is 10 rather than 9.
+
+### What the table says operationally
+
+The guarantee **falls** as shapes grow: 10, 7, 7, 5, 5, 3, 3, 2, 1. And it again
+has nothing to do with orbit size — `m=8` (orbit 45) and `m=12` (orbit 1,080)
+have **the same** blocking number of 8, despite a twenty-four-fold difference in
+how many placements exist. The counting bound is tight only at `m = 36`.
+
+So the scheduler's admission rule is a lookup, not a simulation: past
+`τ − 1` busy nodes, stop promising an optimal shape of that size and say so.
+
+## 9. Scope
 
 **What this is.** Exact finite mathematics about one 40-vertex graph, plus an API
 that reserves point sets in it.

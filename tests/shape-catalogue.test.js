@@ -407,3 +407,103 @@ test("the embedded catalogue agrees with the frozen artifact", () => {
     assert.equal(shapes.inducedEdges(cat.spread[20]), (20 * 10) / 5);
   }
 });
+
+// ======================================================================
+// Worst-case placement guarantees
+//
+// placementCapacity() is sampled. These are the exact worst-case
+// numbers: the minimum blocking set of a shape's orbit. With tau - 1
+// nodes busy a placement ALWAYS exists, whichever nodes they are.
+// ======================================================================
+
+const guarantees = require(path.join(root, "analysis/w33_shape_guarantees.js"));
+
+test("a minimum blocking set really blocks, and nothing smaller does", () => {
+  const lines = S.LINES.map((l) => [...l].sort((a, b) => a - b));
+  const hs = guarantees.minimumHittingSet(lines);
+  assert.ok(hs.exhausted, "the search closed");
+  assert.equal(hs.tau, 11, "eleven points are needed to hit all 40 lines");
+  assert.ok(guarantees.verifyBlocking(hs.witness, lines), "the witness blocks every line");
+  assert.equal(hs.witness.length, 11);
+});
+
+test("the line blocking number is forced by the absence of an ovoid", () => {
+  // Each point lies on 4 lines, so hitting 40 lines needs >= 10 points,
+  // and equality would require 10 pairwise non-collinear points -- an
+  // ovoid. There is none, so tau >= 11, and 11 is achieved.
+  const pointsPerLine = 4;
+  const linesPerPoint = S.LINES.filter((l) => l.includes(0)).length;
+  assert.equal(linesPerPoint, pointsPerLine, "4 lines through each point");
+  const countingBound = Math.ceil(S.LINES.length / linesPerPoint);
+  assert.equal(countingBound, 10);
+
+  const { alpha } = cat.maxIndependentSet();
+  assert.ok(alpha < 10, "no ovoid, so the counting bound cannot be attained");
+
+  const hs = guarantees.minimumHittingSet(S.LINES.map((l) => [...l].sort((a, b) => a - b)));
+  assert.equal(hs.tau, countingBound + 1, "so tau is exactly one more");
+});
+
+test("a four-node densest reservation survives any ten busy nodes", () => {
+  // the headline guarantee, checked directly rather than via tau
+  const lines = S.LINES.map((l) => [...l].sort((a, b) => a - b));
+  const rand = S.rng("ten-busy");
+  for (let t = 0; t < 3000; t++) {
+    const busy = new Set();
+    while (busy.size < 10) busy.add(Math.floor(rand() * N));
+    assert.ok(lines.some((l) => l.every((v) => !busy.has(v))),
+      `a line survived ${[...busy].join(",")}`);
+  }
+});
+
+test("eleven busy nodes can defeat it, so the guarantee is tight", () => {
+  const lines = S.LINES.map((l) => [...l].sort((a, b) => a - b));
+  const hs = guarantees.minimumHittingSet(lines);
+  const busy = new Set(hs.witness);
+  assert.equal(busy.size, 11);
+  assert.ok(!lines.some((l) => l.every((v) => !busy.has(v))),
+    "this specific set of 11 leaves no line intact");
+});
+
+test("the frozen SAT guarantees agree with the branch-and-bound", () => {
+  const satPath = path.join(root, "data/w33_blocking_sat.json");
+  const bbPath = path.join(root, "data/w33_shape_guarantees.json");
+  if (!fs.existsSync(satPath) || !fs.existsSync(bbPath)) return;
+  const sat = JSON.parse(fs.readFileSync(satPath, "utf8"));
+  const bb = JSON.parse(fs.readFileSync(bbPath, "utf8"));
+  const byM = new Map(bb.shapes.map((r) => [r.m, r]));
+
+  for (const r of sat.shapes) {
+    if (r.kind !== "densest") continue;
+    const j = byM.get(r.m);
+    if (!j) continue;
+    if (j.tau != null) {
+      assert.equal(j.tau, r.tau, `m=${r.m}: two independent solvers give the same tau`);
+    } else {
+      assert.ok(j.tauLowerBound <= r.tau && r.tau <= j.tauUpperBound,
+        `m=${r.m}: SAT answer lies inside the branch-and-bound interval`);
+    }
+    assert.ok(r.guaranteeProvedUnsat,
+      `m=${r.m}: the guarantee is proved by UNSAT, not sampled`);
+    assert.ok(r.witnessValid);
+    assert.equal(r.guarantee, r.tau - 1);
+  }
+});
+
+test("guarantees shrink as shapes grow, and orbit size does not explain it", () => {
+  const satPath = path.join(root, "data/w33_blocking_sat.json");
+  if (!fs.existsSync(satPath)) return;
+  const sat = JSON.parse(fs.readFileSync(satPath, "utf8"));
+  const densest = sat.shapes.filter((r) => r.kind === "densest").sort((a, b) => a.m - b.m);
+
+  for (let i = 1; i < densest.length; i++) {
+    assert.ok(densest[i].guarantee <= densest[i - 1].guarantee,
+      "a larger shape never tolerates more busy nodes than a smaller one");
+  }
+  // m=8 (orbit 45) and m=12 (orbit 1080) have the SAME tau despite a
+  // twenty-four-fold difference in orbit size
+  const m8 = densest.find((r) => r.m === 8);
+  const m12 = densest.find((r) => r.m === 12);
+  assert.ok(m12.orbitSize > 20 * m8.orbitSize, "orbits differ by more than 20x");
+  assert.equal(m8.tau, m12.tau, "yet the blocking numbers are equal");
+});

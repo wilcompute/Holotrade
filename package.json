@@ -12,8 +12,9 @@
     "verify": "npm test && npm run verify:rtl && npm run synth:rtl && npm run verify:shapes",
     "experiment:balancer": "node experiments/balancer_ab.js --summary",
     "paper": "node scripts/run-paper.js",
-    "verify:shapes": "node analysis/w33_shape_catalogue.js && node analysis/w33_automorphisms.js",
-    "freeze:shapes": "node analysis/w33_shape_catalogue.js --write && node analysis/w33_automorphisms.js --write"
+    "verify:shapes": "node analysis/w33_shape_catalogue.js && node analysis/w33_automorphisms.js && node analysis/w33_shape_guarantees.js",
+    "freeze:shapes": "node analysis/w33_shape_catalogue.js --write && node analysis/w33_automorphisms.js --write && node analysis/w33_shape_guarantees.js --write && py -3 analysis/w33_blocking_sat.py --write",
+    "verify:blocking": "py -3 analysis/w33_blocking_sat.py"
   },
   "keywords": [
     "compute-exchange",

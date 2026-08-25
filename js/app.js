@@ -1242,11 +1242,21 @@
       const place = r.placement
         ? `<span class="mono" style="font-size:10.5px">${r.placement.slice(0, 8).join(" ")}${r.placement.length > 8 ? " …" : ""}</span>`
         : `<span class="muted" style="font-size:10.5px">${fmt.esc(r.reason || "")}</span>`;
+      // "survives" is the proved worst-case: busy nodes tolerated with a
+      // placement still certain. Flagged when the fabric has gone past it,
+      // because that is the moment the guarantee stops applying and the
+      // scheduler is relying on luck instead.
+      const g = r.guarantee;
+      const past = g && blocked.size > g.busyTolerated;
+      const gCell = g
+        ? `<span class="tag ${past ? "amber" : "up"}" title="minimum blocking set ${g.blockingNumber}">${g.busyTolerated}</span>`
+        : `<span class="muted">—</span>`;
       return `<tr>
         <td><span class="tag accent">${r.m}</span></td>
         <td class="num">${r.maxInducedEdges}</td>
         <td class="num">${r.minBoundary}</td>
         <td class="num muted">${r.orbitSize == null ? "—" : fmt.int(r.orbitSize)}</td>
+        <td class="num">${gCell}</td>
         <td><span class="tag ${r.placeable ? "up" : "down"}">${r.placeable ? "yes" : "no"}</span></td>
         <td class="wrap">${place}</td>
       </tr>`;
@@ -1272,9 +1282,10 @@
     // hits zero, even the smallest optimal shape is gone, and it hits
     // zero well before the free-node count does.
     const freeLines = Substrate.LINES.filter((l) => l.every((v) => !blocked.has(v))).length;
+    const guaranteed = menu.densest.filter((r) => r.guarantee && blocked.size <= r.guarantee.busyTolerated).length;
     $("shapeNote").textContent =
       `${menu.densest.filter((r) => r.placeable).length}/${menu.densest.length} placeable · `
-      + `${menu.freeNodes} free nodes · ${freeLines}/40 lines intact`;
+      + `${guaranteed} still guaranteed · ${menu.freeNodes} free · ${freeLines}/40 lines intact`;
   }
 
   function renderFabric() {

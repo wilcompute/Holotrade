@@ -227,6 +227,61 @@ function shapeOrbit(shape, { cap = 20000 } = {}) {
 }
 
 // ---------------------------------------------------------------------
+// Proved worst-case placement guarantees.
+//
+// tau is the minimum number of blocked points that defeats EVERY
+// placement of the shape -- the minimum blocking set of its orbit. So
+// with tau - 1 nodes busy a placement always exists, WHICHEVER nodes
+// they are. This is a worst-case guarantee, not the sampled average
+// that placementCapacity() reports.
+//
+// Computed twice and independently: by branch and bound in
+// analysis/w33_shape_guarantees.js, and by SAT in
+// analysis/w33_blocking_sat.py, where every value below tau is
+// discharged as UNSAT. The two agree on every shape.
+//
+// The m=4 row is the one worth reading twice. Each point lies on 4
+// lines, so hitting all 40 needs at least 10 points, and equality would
+// require an ovoid -- which this quadrangle does not have. That is why
+// tau is 11 and not 10, and why a four-node reservation survives any ten
+// simultaneous failures.
+// ---------------------------------------------------------------------
+const GUARANTEES = Object.freeze({
+  densest: Object.freeze({
+    4: { tau: 11, guarantee: 10, countingBound: 10 },
+    8: { tau: 8, guarantee: 7, countingBound: 5 },
+    12: { tau: 8, guarantee: 7, countingBound: 4 },
+    16: { tau: 6, guarantee: 5, countingBound: 3 },
+    20: { tau: 6, guarantee: 5, countingBound: 2 },
+    24: { tau: 4, guarantee: 3, countingBound: 2 },
+    28: { tau: 4, guarantee: 3, countingBound: 2 },
+    32: { tau: 3, guarantee: 2, countingBound: 2 },
+    36: { tau: 2, guarantee: 1, countingBound: 2 },
+  }),
+  spread: Object.freeze({
+    20: { tau: 3, guarantee: 2, countingBound: 2 },
+  }),
+});
+
+/**
+ * The worst-case guarantee for a shape size: how many nodes may be busy
+ * with a placement still certain, regardless of which ones.
+ */
+function guaranteeFor(m, kind = "densest") {
+  const table = kind === "spread" ? GUARANTEES.spread : GUARANTEES.densest;
+  const row = table[m];
+  if (!row) return null;
+  return {
+    m, kind,
+    busyTolerated: row.guarantee,
+    blockingNumber: row.tau,
+    countingLowerBound: row.countingBound,
+    countingBoundTight: row.tau === row.countingBound,
+    method: "minimum blocking set of the shape orbit; proved by SAT and by branch and bound",
+  };
+}
+
+// ---------------------------------------------------------------------
 // public API
 // ---------------------------------------------------------------------
 
@@ -411,6 +466,7 @@ function shapeMenu({ unavailable = [] } = {}) {
       placement: r.ok ? r.placement : null,
       reason: r.ok ? null : r.reason,
       orbitSize: r.orbitSize ?? null,
+      guarantee: guaranteeFor(m),
     });
   }
   const spread = reserveShape(20, { kind: "spread", unavailable: blocked });
@@ -432,6 +488,7 @@ const API = {
   generators, shapeOrbit,
   bounds, inducedEdges, edgeBoundary, profile,
   optimalShape, reserveShape, maxAntiAffinity, placementCapacity, shapeMenu,
+  guaranteeFor, GUARANTEES,
   frozenCatalogue,
 };
 
