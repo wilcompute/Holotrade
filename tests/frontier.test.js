@@ -259,7 +259,7 @@ test("ancestor correction quarantines every descendant without deleting history"
   assert.equal(graph.nodes.has(second.emission.output.digest), true, "history remains present");
 });
 
-test("deterministic replay challenges confirm matches and emit correction-ready mismatch evidence", () => {
+test("legacy replay provenance mismatches require manual review rather than semantic invalidation", () => {
   const t = certifiedTransition("challenge");
   const pool = new Challenge.ChallengePool();
   const good = pool.open(t.certificate, { bounty: 5, deterministic: true, sponsor: "buyer" });
@@ -272,7 +272,10 @@ test("deterministic replay challenges confirm matches and emit correction-ready 
   assert.equal(result.match, false);
   const correction = pool.correctionForMismatch(bad, { createdAt: 2 });
   assert.ok(correction.invalidates.includes("cert:challenge"));
-  assert.equal(correction.metadata.correctionReady, true);
+  assert.equal(correction.metadata.correctionReady, false);
+  assert.equal(correction.metadata.semanticResultIdentityCompared, false);
+  assert.equal(correction.metadata.provenanceIdentityCompared, true);
+  assert.equal(correction.metadata.automaticInvalidationScope, "manual-review-required");
   assert.equal(pool.totalBounty, 0);
 });
 
