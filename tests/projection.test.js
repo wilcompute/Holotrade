@@ -166,7 +166,9 @@ test("a settled projection emits an immutable reusable resource", () => {
   assert.equal(emission.output.role, "output");
   assert.match(emission.output.digest, /^demo:/);
   assert.match(emission.output.address, /^uor:[0-9a-f]{16}$/);
-  assert.equal(pe.emit(first, plan, receipt).digest === emission.digest, false,
+  assert.equal(pe.emit(first, plan, receipt, { metadata: { format: "parquet" } }), emission,
+    "identical emission requests are idempotent");
+  assert.throws(() => pe.emit(first, plan, receipt), /different content/,
     "changing output metadata is a conflicting second emission, not an implicit overwrite");
 });
 
