@@ -101,6 +101,13 @@
     }
   }
 
+  function betterBundle(candidate, prior) {
+    if (!prior) return true;
+    if (candidate.price !== prior.price) return candidate.price < prior.price;
+    if (candidate.ids.length !== prior.ids.length) return candidate.ids.length < prior.ids.length;
+    return candidate.ids.join("|").localeCompare(prior.ids.join("|")) < 0;
+  }
+
   class CapabilityExchange {
     constructor(offers = []) {
       this.offers = offers.map((x) => x instanceof CapabilityOffer ? x : new CapabilityOffer(x));
@@ -139,6 +146,8 @@
       for (const row of compatible) {
         const snapshot = [...best.entries()];
         for (const [mask, state] of snapshot) {
+          // Do not buy an offer twice when a state already contains it.
+          if (state.ids.includes(row.offer.id)) continue;
           const nextMask = mask | row.mask;
           const candidate = {
             price: state.price + row.offer.price,
@@ -146,9 +155,7 @@
             offers: [...state.offers, row.offer],
           };
           const prior = best.get(nextMask);
-          const candidateKey = `${candidate.price.toFixed(12)}|${String(candidate.ids.length).padStart(4, "0")}|${candidate.ids.join("|")}`;
-          const priorKey = prior ? `${prior.price.toFixed(12)}|${String(prior.ids.length).padStart(4, "0")}|${prior.ids.join("|")}` : null;
-          if (!prior || candidateKey < priorKey) best.set(nextMask, candidate);
+          if (betterBundle(candidate, prior)) best.set(nextMask, candidate);
         }
       }
       const winner = best.get(fullMask);
