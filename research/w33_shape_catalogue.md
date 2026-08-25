@@ -22,7 +22,8 @@ or a fitted coefficient.
 | `analysis/w33_level2.js` | the level-2 fabric under three constructions |
 | `analysis/w33_level2_shapes.js` | the lift theorem, verified |
 | `analysis/w33_level2_check.py` | level-2 spectra checked numerically |
-| `tests/shape-catalogue.test.js` | 42 regression tests |
+| `analysis/w33_level2_guarantees.js` | level-2 blocking numbers and the collapse |
+| `tests/shape-catalogue.test.js` | 48 regression tests |
 
 ---
 
@@ -477,7 +478,88 @@ level-1 ladder scaled by the cell size, and nothing between them.
 `scheduler/w33-shapes.js` exposes this as `optimalShapeLevel2()`, refusing
 anything off the ladder with the nearest attainable size.
 
-## 13. Scope
+## 13. Level-2 guarantees, and a collapse the spectral argument hides
+
+The lift theorem gives provably densest level-2 reservations, and the API
+exposed them with a `note` admitting the guarantee had never been computed
+there. It can be, exactly, and the answer changes how the lifts should be used.
+
+### The product theorem
+
+By Sabidussi--Vizing the automorphism group of a square of a connected prime
+graph is `Aut(W) wr S2`: elements act as `(c,p) -> (g(c), h(p))`, plus the swap.
+Applying those to a by-points lift gives `L_P(h(T1))`, and the swap gives the
+by-cells lift, so the orbit is exactly
+
+```
+    { L_P(T1') } union { L_C(T1') },   T1' ranging over the level-1 orbit.
+```
+
+For a blocked set `X` write `P(X)` for its point shadow and `C(X)` for its cell
+shadow. Then `X` meets `L_P(T1')` iff `P(X)` meets `T1'`, and likewise for cells.
+So `X` blocks everything iff **both shadows are level-1 blocking sets**, giving
+`|X| >= |P(X)| >= tau_1`. And it is attained: put `X` on the diagonal,
+`X = {(b,b) : b in B}` for a level-1 blocking set `B`, and both shadows equal `B`.
+
+```
+    tau_2 = tau_1   exactly.
+```
+
+| m1 | m2 | orbit | tau | **busy tolerated** | fraction, level 1 | fraction, level 2 |
+|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 160 | 40 | 11 | **10** | 25.00% | 0.625% |
+| 8 | 320 | 45 | 8 | **7** | 17.50% | 0.438% |
+| 16 | 640 | 270 | 6 | **5** | 12.50% | 0.312% |
+
+### The collapse
+
+The reservation grew 40x. The fabric grew 40x. **The number of simultaneous
+failures it survives did not grow at all.**
+
+So the survivable *fraction* collapses by exactly the cell size, every time:
+25% becomes 0.625%. Eleven well-chosen leaves out of sixteen hundred defeat an
+optimal 160-node reservation.
+
+Nothing in the spectral argument warns about this. Optimality and fault
+tolerance are separate questions, and the bound only answers the first. It shows
+up only if you refuse to extrapolate the level-1 number and compute the level-2
+one instead -- where it turns out to be numerically identical and operationally
+completely different.
+
+### The trade, and why one lift wins outright
+
+If lifting is fragile, the obvious move is to confine the reservation to fewer
+cells. Measured at 160 leaves:
+
+| cells | per cell | e(T) | bound | efficiency | cells left free | |
+|---:|---:|---:|---:|---:|---:|---|
+| 4 | 40 | 1200 | 1200 | 100.0% | 36 | by-cells lift: optimal AND confined |
+| 5 | 32 | 928 | 1200 | 77.3% | 35 | optimal per cell |
+| 8 | 20 | 880 | 1200 | 73.3% | 32 | optimal per cell |
+| 10 | 16 | 720 | 1200 | 60.0% | 30 | optimal per cell |
+| 20 | 8 | 880 | 1200 | 73.3% | 20 | optimal per cell |
+| 40 | 4 | 1200 | 1200 | 100.0% | 0 | by-points lift: a target in every cell |
+
+Two rows reach the bound, and they are the two lifts. Everything in between is
+strictly worse: the inter-cell links given up are not repaid by the intra-cell
+links gained.
+
+> **byCells is Pareto-dominant.** Same density, same blocking number, and it
+> leaves **36 of 40 cells completely untouched** for other tenants where
+> byPoints leaves none. It is now the default in `optimalShapeLevel2()`.
+
+### A bug worth recording
+
+The first version of the confinement table took the first `k` cell indices,
+which happen to be mutually non-adjacent. No inter-cell link was captured, the
+4-cell row scored 80% instead of 100%, and confinement looked strictly worse
+than lifting -- the opposite of the truth.
+
+**Which cells matters as much as how many.** Choosing them as an optimal level-1
+shape -- a line, for four cells -- recovers every inter-cell link the geometry
+allows and lands exactly on the bound.
+
+## 14. Scope
 
 **What this is.** Exact finite mathematics about one 40-vertex graph, plus an API
 that reserves point sets in it.

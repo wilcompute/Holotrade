@@ -307,6 +307,24 @@ function guaranteeFor(m, kind = "densest") {
 //
 // The available level-2 sizes are therefore 160, 320, ..., 1440 -- the
 // level-1 ladder scaled by the cell size, and nothing between them.
+//
+// ----------------------------------------------------------------------
+// WHICH LIFT TO USE: byCells, always
+//
+// Both lifts attain the bound and both have the same blocking number, so
+// on the two obvious axes they tie. They are not equivalent operationally.
+//
+//   byCells   holds every point of m1 cells, leaving 40 - m1 cells
+//             completely untouched and available to other tenants
+//   byPoints  holds m1 point positions in ALL 40 cells, so every cell is
+//             partly occupied and none is free for anyone else
+//
+// At m = 160 that is 36 free cells against zero, for identical density
+// and identical fault tolerance. byCells is Pareto-dominant, so it is the
+// default here. Anything between the two extremes is strictly worse on
+// density: at 160 leaves the intermediate splits reach only 60-77% of the
+// bound, because the inter-cell links they give up are not compensated by
+// the intra-cell links they gain.
 // ---------------------------------------------------------------------
 
 const LEVEL2 = Object.freeze({
@@ -336,7 +354,7 @@ function level2Bound(m) {
  * a scheduler that quietly rounds is worse than one that says what it
  * cannot do.
  */
-function optimalShapeLevel2(m, { lift = "byPoints" } = {}) {
+function optimalShapeLevel2(m, { lift = "byCells" } = {}) {
   const bound = level2Bound(m);
   if (m % N !== 0) {
     const nearest = Math.max(N * 4, Math.round(m / N) * N);
@@ -370,8 +388,18 @@ function optimalShapeLevel2(m, { lift = "byPoints" } = {}) {
     attainsBound: true,
     bounds: bound,
     guarantee: guaranteeFor(m1),
-    note: "the level-1 guarantee applies per cell; a level-2 worst case over "
-      + "1,600 leaves has not been computed",
+    // Computed in analysis/w33_level2_guarantees.js, not extrapolated.
+    level2Guarantee: {
+      blockingNumber: guaranteeFor(m1) ? guaranteeFor(m1).blockingNumber : null,
+      busyTolerated: guaranteeFor(m1) ? guaranteeFor(m1).busyTolerated : null,
+      sameAsLevel1: true,
+      why: "tau_2 = tau_1: a blocking set's point and cell shadows must each block "
+        + "at level 1, and the diagonal attains it",
+      caution: "the ABSOLUTE tolerance is unchanged while the fabric grew " + N
+        + "x, so the survivable FRACTION collapses by that factor",
+    },
+    cellsUsed: lift === "byCells" ? m1 : N,
+    cellsLeftFree: lift === "byCells" ? N - m1 : 0,
   };
 }
 

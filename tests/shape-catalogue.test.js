@@ -715,3 +715,111 @@ test("the level-2 API materialises the same set the theorem describes", () => {
     }
   }
 });
+
+// ======================================================================
+// Level-2 guarantees, and the robustness collapse
+// ======================================================================
+
+const L2G = require(path.join(root, "analysis/w33_level2_guarantees.js"));
+
+test("a level-2 blocking set's shadows must each block at level 1", () => {
+  // the product theorem, checked constructively rather than argued
+  const T1 = shapes.optimalShape(4).witness;
+  const orbit1 = shapes.shapeOrbit(T1);
+  const hs = guarantees.minimumHittingSet(orbit1, 40);
+  assert.ok(hs.exhausted);
+
+  // the diagonal of a level-1 blocking set blocks every level-2 lift
+  const diagonal = hs.witness.map((b) => L2.idx(b, b));
+  assert.equal(diagonal.length, hs.tau);
+  assert.ok(L2G.blocksAllLifts(diagonal, orbit1),
+    "tau_1 leaves on the diagonal defeat every placement of the lift");
+
+  // and a set whose point shadow is too small cannot block, however
+  // many leaves it holds
+  const oneCell = [];
+  for (let p = 0; p < 40; p++) oneCell.push(L2.idx(0, p));
+  assert.equal(oneCell.length, 40, "forty leaves, but all in one cell");
+  assert.ok(!L2G.blocksAllLifts(oneCell, orbit1),
+    "forty leaves in a single cell do not block, because the cell shadow is one point");
+});
+
+test("tau_2 equals tau_1 exactly, so absolute tolerance does not scale", () => {
+  const res = L2G.run();
+  assert.ok(res.theoremHolds, "verified at every size checked");
+  for (const r of res.perSize) {
+    assert.equal(r.tau2, r.tau1, `m1=${r.level1Size}: tau is unchanged one level up`);
+    assert.ok(r.diagonalBlocks, "the diagonal construction attains it");
+    assert.ok(r.noSmallerBlockerFound, "and nothing smaller was found");
+    // the collapse is exactly the cell size, every time
+    assert.ok(Math.abs(r.fractionRatio - 40) < 1e-6,
+      `m1=${r.level1Size}: survivable fraction collapses by exactly the cell size`);
+  }
+});
+
+test("the survivable fraction collapses from a quarter to well under a percent", () => {
+  const res = L2G.run();
+  const r4 = res.perSize.find((r) => r.level1Size === 4);
+  assert.ok(Math.abs(r4.fractionLevel1 - 0.25) < 1e-9, "10 of 40 at level 1");
+  assert.ok(Math.abs(r4.fractionLevel2 - 10 / 1600) < 1e-9, "still 10, now of 1600");
+  assert.ok(r4.fractionLevel2 < 0.01,
+    "under one percent of the fabric may fail before an optimal lift is unplaceable");
+});
+
+test("byCells is Pareto-dominant, and is the default", () => {
+  const byCells = shapes.optimalShapeLevel2(160);
+  const byPoints = shapes.optimalShapeLevel2(160, { lift: "byPoints" });
+
+  assert.equal(byCells.lift, "byCells", "the default");
+  // tie on density
+  assert.equal(byCells.inducedEdges, byPoints.inducedEdges);
+  assert.ok(byCells.attainsBound && byPoints.attainsBound);
+  // tie on fault tolerance
+  assert.equal(byCells.level2Guarantee.busyTolerated,
+               byPoints.level2Guarantee.busyTolerated);
+  // strictly better on co-tenancy
+  assert.equal(byCells.cellsUsed, 4);
+  assert.equal(byCells.cellsLeftFree, 36);
+  assert.equal(byPoints.cellsUsed, 40);
+  assert.equal(byPoints.cellsLeftFree, 0);
+  assert.ok(byCells.cellsLeftFree > byPoints.cellsLeftFree,
+    "same density, same tolerance, 36 free cells against none");
+});
+
+test("intermediate splits are strictly worse than either extreme", () => {
+  // The two lifts are the only ways to reach the bound at 160 leaves.
+  // Splitting the difference gives up inter-cell links without gaining
+  // enough intra-cell ones to compensate.
+  const rows = L2G.confinementTradeoff(160);
+  const extremes = rows.filter((r) => r.cellsUsed === 4 || r.cellsUsed === 40);
+  const middle = rows.filter((r) => r.cellsUsed !== 4 && r.cellsUsed !== 40);
+  assert.equal(extremes.length, 2);
+  for (const e of extremes) {
+    assert.ok(Math.abs(e.efficiency - 1) < 1e-9, `${e.cellsUsed} cells attains the bound`);
+  }
+  for (const mrow of middle) {
+    assert.ok(mrow.efficiency < 1,
+      `${mrow.cellsUsed} cells reaches only ${(mrow.efficiency * 100).toFixed(0)}% of the bound`);
+  }
+});
+
+test("choosing WHICH cells matters, not just how many", () => {
+  // The bug this prevents: taking the first k cell indices picks a
+  // mutually non-adjacent set, so no inter-cell link is captured and
+  // confinement looks strictly worse than it is.
+  const adj = L2.buildCartesian();
+  const line = shapes.optimalShape(4).witness;      // 4 mutually adjacent cells
+  const arbitrary = [0, 1, 2, 3];
+
+  const build = (cells) => {
+    const T = [];
+    for (const c of cells) for (let p = 0; p < 40; p++) T.push(L2.idx(c, p));
+    return T.sort((a, b) => a - b);
+  };
+  const eLine = L2S.inducedEdges(adj, build(line));
+  const eArb = L2S.inducedEdges(adj, build(arbitrary));
+  assert.equal(build(line).length, build(arbitrary).length, "same leaf count");
+  assert.ok(eLine > eArb,
+    "an optimal cell set captures inter-cell links an arbitrary one does not");
+  assert.equal(eLine, L2S.level2UpperBound(160), "and it attains the bound");
+});

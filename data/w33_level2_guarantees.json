@@ -1,0 +1,131 @@
+{
+  "schema": "holotrade.w33-level2-guarantees.v1",
+  "theorem": "tau_2 = tau_1 exactly: a blocking set's point and cell shadows must each block at level 1, and the diagonal construction attains it",
+  "consequence": "a lifted reservation survives the same absolute number of failures as its level-1 seed, so the surviveable FRACTION of the fabric collapses by the cell size",
+  "perSize": [
+    {
+      "level1Size": 4,
+      "level2Size": 160,
+      "orbit1Size": 40,
+      "level2OrbitSize": 80,
+      "tau1": 11,
+      "tau1Exhaustive": true,
+      "diagonalBlocks": true,
+      "diagonalSize": 11,
+      "noSmallerBlockerFound": true,
+      "tau2": 11,
+      "guarantee2": 10,
+      "fractionLevel1": 0.25,
+      "fractionLevel2": 0.00625,
+      "fractionRatio": 40
+    },
+    {
+      "level1Size": 8,
+      "level2Size": 320,
+      "orbit1Size": 45,
+      "level2OrbitSize": 90,
+      "tau1": 8,
+      "tau1Exhaustive": true,
+      "diagonalBlocks": true,
+      "diagonalSize": 8,
+      "noSmallerBlockerFound": true,
+      "tau2": 8,
+      "guarantee2": 7,
+      "fractionLevel1": 0.175,
+      "fractionLevel2": 0.004375,
+      "fractionRatio": 39.99999999999999
+    },
+    {
+      "level1Size": 16,
+      "level2Size": 640,
+      "orbit1Size": 270,
+      "level2OrbitSize": 540,
+      "tau1": 6,
+      "tau1Exhaustive": true,
+      "diagonalBlocks": true,
+      "diagonalSize": 6,
+      "noSmallerBlockerFound": true,
+      "tau2": 6,
+      "guarantee2": 5,
+      "fractionLevel1": 0.125,
+      "fractionLevel2": 0.003125,
+      "fractionRatio": 40
+    }
+  ],
+  "confinementTradeoff": [
+    {
+      "cellsUsed": 4,
+      "leavesPerCell": 40,
+      "totalLeaves": 160,
+      "optimalPerCell": false,
+      "inducedEdges": 1200,
+      "level2Bound": 1200,
+      "efficiency": 1,
+      "cellsAreOptimalShape": true,
+      "cellsFreeForOtherTenants": 36,
+      "note": "by-cells lift: optimal AND confined"
+    },
+    {
+      "cellsUsed": 5,
+      "leavesPerCell": 32,
+      "totalLeaves": 160,
+      "optimalPerCell": true,
+      "inducedEdges": 928,
+      "level2Bound": 1200,
+      "efficiency": 0.7733333333333333,
+      "cellsAreOptimalShape": false,
+      "cellsFreeForOtherTenants": 35,
+      "note": "optimal per cell"
+    },
+    {
+      "cellsUsed": 8,
+      "leavesPerCell": 20,
+      "totalLeaves": 160,
+      "optimalPerCell": true,
+      "inducedEdges": 880,
+      "level2Bound": 1200,
+      "efficiency": 0.7333333333333333,
+      "cellsAreOptimalShape": true,
+      "cellsFreeForOtherTenants": 32,
+      "note": "optimal per cell"
+    },
+    {
+      "cellsUsed": 10,
+      "leavesPerCell": 16,
+      "totalLeaves": 160,
+      "optimalPerCell": true,
+      "inducedEdges": 720,
+      "level2Bound": 1200,
+      "efficiency": 0.6,
+      "cellsAreOptimalShape": false,
+      "cellsFreeForOtherTenants": 30,
+      "note": "optimal per cell"
+    },
+    {
+      "cellsUsed": 20,
+      "leavesPerCell": 8,
+      "totalLeaves": 160,
+      "optimalPerCell": true,
+      "inducedEdges": 880,
+      "level2Bound": 1200,
+      "efficiency": 0.7333333333333333,
+      "cellsAreOptimalShape": true,
+      "cellsFreeForOtherTenants": 20,
+      "note": "optimal per cell"
+    },
+    {
+      "cellsUsed": 40,
+      "leavesPerCell": 4,
+      "totalLeaves": 160,
+      "optimalPerCell": true,
+      "inducedEdges": 1200,
+      "level2Bound": 1200,
+      "efficiency": 1,
+      "cellsAreOptimalShape": false,
+      "cellsFreeForOtherTenants": 0,
+      "note": "by-points lift: a target in every cell"
+    }
+  ],
+  "theoremHolds": true,
+  "digest": "9b42ab320b40978f64b2cf174c8687dba303b29d35fc11a45b00e7f9df757503"
+}
