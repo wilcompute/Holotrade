@@ -1,0 +1,446 @@
+{
+  "schema": "holotrade.w33-level2-shapes.v1",
+  "fabric": "Cartesian W [] W: 1600 leaves, 24-regular, spectrum {24,14,8,4,-2,-8}",
+  "bounds": {
+    "upper": "e(T) <= 7m + m^2/320, equality iff f lies in the 14-eigenspace",
+    "lower": "e(T) >= -4m + m^2/100, equality iff f lies in the -8-eigenspace"
+  },
+  "liftTheorem": "if f1 is in the 2-eigenspace of A1 then 1 (x) f1 and f1 (x) 1 are both in the 14-eigenspace of A1 (x) I + I (x) A1, because 12 + 2 = 2 + 12 = 14",
+  "lifts": [
+    {
+      "level1Size": 4,
+      "lift": "by-points",
+      "level2Size": 160,
+      "level1InducedEdges": 6,
+      "inducedEdges": 1200,
+      "predictedInducedEdges": 1200,
+      "predictionHolds": true,
+      "boundary": 1440,
+      "upperBound": 1200,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          15
+        ],
+        "outside": [
+          1
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 4,
+      "lift": "by-cells",
+      "level2Size": 160,
+      "level1InducedEdges": 6,
+      "inducedEdges": 1200,
+      "predictedInducedEdges": 1200,
+      "predictionHolds": true,
+      "boundary": 1440,
+      "upperBound": 1200,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          15
+        ],
+        "outside": [
+          1
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 8,
+      "lift": "by-points",
+      "level2Size": 320,
+      "level1InducedEdges": 16,
+      "inducedEdges": 2560,
+      "predictedInducedEdges": 2560,
+      "predictionHolds": true,
+      "boundary": 2560,
+      "upperBound": 2560,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          16
+        ],
+        "outside": [
+          2
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 8,
+      "lift": "by-cells",
+      "level2Size": 320,
+      "level1InducedEdges": 16,
+      "inducedEdges": 2560,
+      "predictedInducedEdges": 2560,
+      "predictionHolds": true,
+      "boundary": 2560,
+      "upperBound": 2560,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          16
+        ],
+        "outside": [
+          2
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 12,
+      "lift": "by-points",
+      "level2Size": 480,
+      "level1InducedEdges": 30,
+      "inducedEdges": 4080,
+      "predictedInducedEdges": 4080,
+      "predictionHolds": true,
+      "boundary": 3360,
+      "upperBound": 4080,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          17
+        ],
+        "outside": [
+          3
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 12,
+      "lift": "by-cells",
+      "level2Size": 480,
+      "level1InducedEdges": 30,
+      "inducedEdges": 4080,
+      "predictedInducedEdges": 4080,
+      "predictionHolds": true,
+      "boundary": 3360,
+      "upperBound": 4080,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          17
+        ],
+        "outside": [
+          3
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 16,
+      "lift": "by-points",
+      "level2Size": 640,
+      "level1InducedEdges": 48,
+      "inducedEdges": 5760,
+      "predictedInducedEdges": 5760,
+      "predictionHolds": true,
+      "boundary": 3840,
+      "upperBound": 5760,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          18
+        ],
+        "outside": [
+          4
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 16,
+      "lift": "by-cells",
+      "level2Size": 640,
+      "level1InducedEdges": 48,
+      "inducedEdges": 5760,
+      "predictedInducedEdges": 5760,
+      "predictionHolds": true,
+      "boundary": 3840,
+      "upperBound": 5760,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          18
+        ],
+        "outside": [
+          4
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 20,
+      "lift": "by-points",
+      "level2Size": 800,
+      "level1InducedEdges": 70,
+      "inducedEdges": 7600,
+      "predictedInducedEdges": 7600,
+      "predictionHolds": true,
+      "boundary": 4000,
+      "upperBound": 7600,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          19
+        ],
+        "outside": [
+          5
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 20,
+      "lift": "by-cells",
+      "level2Size": 800,
+      "level1InducedEdges": 70,
+      "inducedEdges": 7600,
+      "predictedInducedEdges": 7600,
+      "predictionHolds": true,
+      "boundary": 4000,
+      "upperBound": 7600,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          19
+        ],
+        "outside": [
+          5
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 24,
+      "lift": "by-points",
+      "level2Size": 960,
+      "level1InducedEdges": 96,
+      "inducedEdges": 9600,
+      "predictedInducedEdges": 9600,
+      "predictionHolds": true,
+      "boundary": 3840,
+      "upperBound": 9600,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          20
+        ],
+        "outside": [
+          6
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 24,
+      "lift": "by-cells",
+      "level2Size": 960,
+      "level1InducedEdges": 96,
+      "inducedEdges": 9600,
+      "predictedInducedEdges": 9600,
+      "predictionHolds": true,
+      "boundary": 3840,
+      "upperBound": 9600,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          20
+        ],
+        "outside": [
+          6
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 28,
+      "lift": "by-points",
+      "level2Size": 1120,
+      "level1InducedEdges": 126,
+      "inducedEdges": 11760,
+      "predictedInducedEdges": 11760,
+      "predictionHolds": true,
+      "boundary": 3360,
+      "upperBound": 11760,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          21
+        ],
+        "outside": [
+          7
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 28,
+      "lift": "by-cells",
+      "level2Size": 1120,
+      "level1InducedEdges": 126,
+      "inducedEdges": 11760,
+      "predictedInducedEdges": 11760,
+      "predictionHolds": true,
+      "boundary": 3360,
+      "upperBound": 11760,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          21
+        ],
+        "outside": [
+          7
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 32,
+      "lift": "by-points",
+      "level2Size": 1280,
+      "level1InducedEdges": 160,
+      "inducedEdges": 14080,
+      "predictedInducedEdges": 14080,
+      "predictionHolds": true,
+      "boundary": 2560,
+      "upperBound": 14080,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          22
+        ],
+        "outside": [
+          8
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 32,
+      "lift": "by-cells",
+      "level2Size": 1280,
+      "level1InducedEdges": 160,
+      "inducedEdges": 14080,
+      "predictedInducedEdges": 14080,
+      "predictionHolds": true,
+      "boundary": 2560,
+      "upperBound": 14080,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          22
+        ],
+        "outside": [
+          8
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 36,
+      "lift": "by-points",
+      "level2Size": 1440,
+      "level1InducedEdges": 198,
+      "inducedEdges": 16560,
+      "predictedInducedEdges": 16560,
+      "predictionHolds": true,
+      "boundary": 1440,
+      "upperBound": 16560,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          23
+        ],
+        "outside": [
+          9
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    },
+    {
+      "level1Size": 36,
+      "lift": "by-cells",
+      "level2Size": 1440,
+      "level1InducedEdges": 198,
+      "inducedEdges": 16560,
+      "predictedInducedEdges": 16560,
+      "predictionHolds": true,
+      "boundary": 1440,
+      "upperBound": 16560,
+      "attainsBound": true,
+      "profile": {
+        "inside": [
+          23
+        ],
+        "outside": [
+          9
+        ],
+        "isIntriguing": true
+      },
+      "degreeIdentity": true
+    }
+  ],
+  "nonLiftProbes": [
+    {
+      "name": "diagonal of the m=8 shape",
+      "size": 8,
+      "inducedEdges": 0,
+      "upperBound": 56.2,
+      "profile": {
+        "inside": [
+          0
+        ],
+        "outside": [
+          0,
+          1,
+          2
+        ],
+        "isIntriguing": false
+      }
+    },
+    {
+      "name": "product of two m=4 shapes",
+      "size": 16,
+      "inducedEdges": 48,
+      "upperBound": 112.8,
+      "profile": {
+        "inside": [
+          6
+        ],
+        "outside": [
+          0,
+          1
+        ],
+        "isIntriguing": false
+      }
+    }
+  ],
+  "allLiftsAttainBound": true,
+  "allLiftsIntriguing": true,
+  "allPredictionsHold": true,
+  "digest": "e0db934ee970c21c1ab29af3a655a355132d13a69c2e4dfb0e3673cf2090190c"
+}

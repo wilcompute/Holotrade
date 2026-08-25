@@ -1,0 +1,142 @@
+{
+  "schema": "holotrade.w33-level2.v1",
+  "question": "the recursive layer is a distance formula; what is it as an actual graph?",
+  "leafCount": 1600,
+  "softwareDistanceBound": 18,
+  "softwareModel": "route in the first divergent cell, then 8 moves per descent on each side: 16n - 14",
+  "constructions": [
+    {
+      "name": "cartesian",
+      "note": "homogeneous: every leaf keeps 12 intra-cell links and gains one per neighbouring cell",
+      "vertices": 1600,
+      "edges": 19200,
+      "degree": {
+        "min": 24,
+        "max": 24,
+        "regular": true
+      },
+      "diameter": 4,
+      "connected": true,
+      "spectrumClosedForm": [
+        [
+          24,
+          1
+        ],
+        [
+          14,
+          48
+        ],
+        [
+          8,
+          30
+        ],
+        [
+          4,
+          576
+        ],
+        [
+          -2,
+          720
+        ],
+        [
+          -8,
+          225
+        ]
+      ],
+      "spectralBounds": {
+        "degree": 24,
+        "lambda2": 14,
+        "lambdaMin": -8,
+        "lowerCoefficient": 10,
+        "upperCoefficient": 32,
+        "expansionRatio": 0.4166666666666667,
+        "balancedBisectionLowerBound": 4000,
+        "degreeMatchesGraph": true,
+        "multiplicitiesSumToN": true
+      },
+      "cellSplitCut": {
+        "leftSize": 800,
+        "crossingEdges": 4000,
+        "description": "cells split by the certified level-1 20|20 bisection",
+        "spectralLowerBound": 4000,
+        "meetsLowerBound": true
+      }
+    },
+    {
+      "name": "lexicographic",
+      "note": "adjacent cells fully meshed; diameter 2 at any level, quadratic wiring",
+      "vertices": 1600,
+      "edges": 393600,
+      "degree": {
+        "min": 492,
+        "max": 492,
+        "regular": true
+      },
+      "diameter": 2,
+      "connected": true,
+      "spectrumClosedForm": [
+        [
+          492,
+          1
+        ],
+        [
+          92,
+          24
+        ],
+        [
+          2,
+          960
+        ],
+        [
+          -4,
+          600
+        ],
+        [
+          -148,
+          15
+        ]
+      ],
+      "spectralBounds": {
+        "degree": 492,
+        "lambda2": 92,
+        "lambdaMin": -148,
+        "lowerCoefficient": 400,
+        "upperCoefficient": 640,
+        "expansionRatio": 0.8130081300813008,
+        "balancedBisectionLowerBound": 160000,
+        "degreeMatchesGraph": true,
+        "multiplicitiesSumToN": true
+      },
+      "cellSplitCut": {
+        "leftSize": 800,
+        "crossingEdges": 160000,
+        "description": "cells split by the certified level-1 20|20 bisection",
+        "spectralLowerBound": 160000,
+        "meetsLowerBound": true
+      }
+    },
+    {
+      "name": "hierarchical-gateway-4",
+      "note": "inter-cell traffic funnels through one 4-point line per cell; matches the software's distance model",
+      "vertices": 1600,
+      "edges": 10560,
+      "degree": {
+        "min": 12,
+        "max": 24,
+        "regular": false
+      },
+      "diameter": 5,
+      "connected": true,
+      "spectrumClosedForm": null,
+      "spectralBounds": null,
+      "cellSplitCut": {
+        "leftSize": 800,
+        "crossingEdges": 400,
+        "description": "cells split by the certified level-1 20|20 bisection",
+        "spectralLowerBound": null,
+        "meetsLowerBound": null
+      }
+    }
+  ],
+  "digest": "d9e77b61c67ebe7d605d3b028c4f7ec979a8951d85b7b23027a582fcb055b138"
+}

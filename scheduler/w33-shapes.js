@@ -282,6 +282,127 @@ function guaranteeFor(m, kind = "densest") {
 }
 
 // ---------------------------------------------------------------------
+// LEVEL 2: multi-cell reservations
+//
+// Everything above reserves points inside ONE 40-point cell. A server
+// fleet is not one cell, so the backend question is whether any of it
+// survives a level up -- or whether a multi-cell reservation needs a
+// fresh search over 1,600 vertices.
+//
+// It survives. On the Cartesian fabric W [] W (24-regular, spectrum
+// {24,14,8,4,-2,-8}) the densest-shape bound is
+//
+//     e(T) <= 7m + m^2/320,   equality iff f lies in the 14-eigenspace,
+//
+// and if f1 sits in the 2-eigenspace at level 1 then both 1 (x) f1 and
+// f1 (x) 1 sit in the 14-eigenspace at level 2, because 12 + 2 = 2 + 12.
+// So a level-1 optimal shape lifts two ways:
+//
+//   byPoints   hold the same point positions in EVERY cell
+//   byCells    hold EVERY point inside a set of optimal cells
+//
+// Both give a provably densest level-2 reservation of 40*m1 nodes,
+// assembled from a catalogue that already exists. Verified in
+// analysis/w33_level2_shapes.js: all 18 lifts attain the bound exactly.
+//
+// The available level-2 sizes are therefore 160, 320, ..., 1440 -- the
+// level-1 ladder scaled by the cell size, and nothing between them.
+// ---------------------------------------------------------------------
+
+const LEVEL2 = Object.freeze({
+  leaves: N * N,
+  degree: 2 * K,
+  spectrum: Object.freeze({ 24: 1, 14: 48, 8: 30, 4: 576, "-2": 720, "-8": 225 }),
+  lambda2: 14,
+  lambdaMin: -8,
+});
+
+/** e(T) <= 7m + m^2/320 on the level-2 Cartesian fabric. */
+function level2Bound(m) {
+  return {
+    maxInducedEdges: 7 * m + (m * m) / 320,
+    minInducedEdges: Math.max(0, -4 * m + (m * m) / 100),
+    degree: LEVEL2.degree,
+    leaves: LEVEL2.leaves,
+  };
+}
+
+/**
+ * The densest level-2 reservation of a requested size.
+ *
+ * Only multiples of 40*4 = 160 are attainable, because a lift scales a
+ * level-1 shape by the cell size and level-1 needs 4 | m1. Anything else
+ * is refused with the nearest attainable size, exactly as at level 1 --
+ * a scheduler that quietly rounds is worse than one that says what it
+ * cannot do.
+ */
+function optimalShapeLevel2(m, { lift = "byPoints" } = {}) {
+  const bound = level2Bound(m);
+  if (m % N !== 0) {
+    const nearest = Math.max(N * 4, Math.round(m / N) * N);
+    return {
+      ok: false, m, level: 2,
+      reason: `a level-2 lift holds ${N} leaves per level-1 point, so ${N} must divide m`,
+      nearestAttainable: nearest, bounds: bound,
+    };
+  }
+  const m1 = m / N;
+  const base = optimalShape(m1);
+  if (!base.ok) {
+    return {
+      ok: false, m, level: 2,
+      reason: `no level-1 densest shape at m1 = ${m1}: ${base.reason}`,
+      nearestAttainable: base.nearestAttainable ? base.nearestAttainable * N : null,
+      bounds: bound,
+    };
+  }
+  return {
+    ok: true, m, level: 2, lift,
+    level1Size: m1,
+    level1Witness: base.witness,
+    // the level-2 set is described rather than materialised: 1,600
+    // indices is a lot to hand back when the generating rule is two
+    // lines long and the caller usually wants the rule
+    describe: lift === "byCells"
+      ? `every point of the ${m1} cells ${base.witness.join(",")}`
+      : `points ${base.witness.join(",")} in every one of the ${N} cells`,
+    inducedEdges: bound.maxInducedEdges,
+    attainsBound: true,
+    bounds: bound,
+    guarantee: guaranteeFor(m1),
+    note: "the level-1 guarantee applies per cell; a level-2 worst case over "
+      + "1,600 leaves has not been computed",
+  };
+}
+
+/** Materialise a level-2 lift as explicit leaf indices (cell*40 + point). */
+function materialiseLevel2(spec) {
+  if (!spec || !spec.ok) return null;
+  const out = [];
+  if (spec.lift === "byCells") {
+    for (const c of spec.level1Witness) for (let p = 0; p < N; p++) out.push(c * N + p);
+  } else {
+    for (let c = 0; c < N; c++) for (const p of spec.level1Witness) out.push(c * N + p);
+  }
+  return out.sort((a, b) => a - b);
+}
+
+/** The sizes a level-2 reservation can actually take. */
+function level2Ladder() {
+  const rows = [];
+  for (let m1 = 4; m1 <= 36; m1 += 4) {
+    const m = m1 * N;
+    rows.push({
+      level1Size: m1,
+      level2Size: m,
+      maxInducedEdges: level2Bound(m).maxInducedEdges,
+      lifts: ["byPoints", "byCells"],
+    });
+  }
+  return rows;
+}
+
+// ---------------------------------------------------------------------
 // public API
 // ---------------------------------------------------------------------
 
@@ -489,6 +610,7 @@ const API = {
   bounds, inducedEdges, edgeBoundary, profile,
   optimalShape, reserveShape, maxAntiAffinity, placementCapacity, shapeMenu,
   guaranteeFor, GUARANTEES,
+  LEVEL2, level2Bound, optimalShapeLevel2, materialiseLevel2, level2Ladder,
   frozenCatalogue,
 };
 

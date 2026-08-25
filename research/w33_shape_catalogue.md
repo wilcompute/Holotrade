@@ -19,7 +19,10 @@ or a fitted coefficient.
 | `analysis/w33_shape_packing.js` | perfect tilings and maximum packings |
 | `analysis/w33_shape_catalogue.g` | GAP/GRAPE certificate: full automorphism group |
 | `analysis/w33_gap_certificate.js` | runs GAP and cross-checks every artifact |
-| `tests/shape-catalogue.test.js` | 34 regression tests |
+| `analysis/w33_level2.js` | the level-2 fabric under three constructions |
+| `analysis/w33_level2_shapes.js` | the lift theorem, verified |
+| `analysis/w33_level2_check.py` | level-2 spectra checked numerically |
+| `tests/shape-catalogue.test.js` | 42 regression tests |
 
 ---
 
@@ -384,7 +387,97 @@ factorisation `2⁶⁴ = 40 × 1296 × payload`, and the suborbits **1 + 12 + 27
 are exactly the rank-3 shell `js/uor.js` already implements. Both were asserted
 in the source papers; GAP verifies them here as facts about the graph.
 
-## 11. Scope
+## 11. Level 2: the recursion as an actual graph
+
+Everything above is level-1: one 40-point cell. The repository's recursive layer
+is a **distance formula**, not a graph -- `js/substrate.js` computes hops as
+"route in the first divergent cell, then eight moves per descent on each side",
+giving `16n - 14`, and the paper labels it MODELLED with the note *"no physical
+product graph"*.
+
+That label is honest, and it is also the gap: a distance formula cannot tell you
+the degree, the spectrum, the bisection, or whether an optimal shape exists one
+level up. Only a graph can.
+
+### Three constructions, three different machines
+
+A level-2 leaf is a pair `(c, p)`. How cells are wired is a real engineering
+choice, and the cost differs enormously:
+
+| construction | degree | edges | diameter | expansion | cell-split cut |
+|---|---:|---:|---:|---:|---:|
+| cartesian | 24 | 19,200 | **4** | 0.4167 | 4,000 |
+| lexicographic | 492 | 393,600 | **2** | 0.8130 | 160,000 |
+| hierarchical-gateway-4 | 12–24 | 10,560 | **5** | — | 400 |
+
+- **Cartesian** `W [] W` -- each leaf keeps its 12 intra-cell links and gains one
+  per neighbouring cell, to the same point position. Homogeneous, no gateway.
+- **Lexicographic** `W[W]` -- adjacent cells fully meshed. Diameter 2 at any
+  level, and a wiring bill that grows quadratically.
+- **Hierarchical** -- inter-cell traffic funnels through one 4-point line per
+  cell. This is the shape the software's distance model implies.
+
+Spectra, closed-form and verified numerically in
+`analysis/w33_level2_check.py`:
+
+```
+    Cartesian      24^1  14^48  8^30  4^576  (-2)^720  (-8)^225
+    lexicographic  492^1  92^24  2^960  (-4)^600  (-148)^15
+```
+
+### Two findings
+
+**Scaling up costs expansion.** A single cell has `(k - lambda2)/k = 10/12 =
+0.833`. The Cartesian fabric has `10/24 = 0.417` -- half as good. The
+lexicographic fabric buys back almost all of it (`0.813`) but at forty times the
+wiring. There is no free scale-up.
+
+**The `16n - 14` bound is measuring something else.** It gives 18 at level 2, but
+the measured diameter of an explicit fabric is **4** (Cartesian) or 5
+(hierarchical). The two are not comparable: `hopsPerDigit = 8` is a *declared
+descent cost* in reversible control moves -- the corpus's "three cube moves plus
+five chart-web moves per digit" -- not a graph distance. Both numbers are fine;
+conflating them is not. A network sizing exercise wants 4; a reversible compiler
+wants 8 per digit.
+
+## 12. The lift theorem: shapes survive one level up
+
+The backend question is whether a multi-cell reservation needs a fresh search
+over 1,600 vertices. It does not.
+
+On the Cartesian fabric the same spectral argument gives
+
+```
+    e(T) <= 7m + m^2/320,   equality iff f lies in the 14-eigenspace.
+```
+
+Let `T1` be a level-1 densest shape, so `f1` lies in the 2-eigenspace of `A1`.
+Replicate it in every cell: `T = {(c,p) : p in T1}`, indicator `1 (x) 1_T1`, so
+`f = 1 (x) f1` and
+
+```
+    (A1 (x) I + I (x) A1)(1 (x) f1) = 12(1 (x) f1) + 2(1 (x) f1) = 14(1 (x) f1).
+```
+
+It lands exactly in `E_14`. **The level-1 catalogue lifts.** The dual lift --
+every point inside a densest set of *cells* -- works identically, from
+`2 + 12 = 14`.
+
+All 18 lifts (9 sizes, 2 directions) attain the level-2 bound exactly, are
+two-valued intriguing sets, and match the arithmetic prediction. Natural
+non-lifted constructions (the diagonal, a product of two shapes) fall well short
+and are not two-valued, so the replication structure is doing the work.
+
+> **A provably densest 160-node reservation is "the same optimal 4-shape in
+> every cell."** No search over 1,600 vertices, no heuristic -- assembled from a
+> catalogue that already exists.
+
+Available level-2 sizes: 160, 320, 480, 640, 800, 960, 1120, 1280, 1440 -- the
+level-1 ladder scaled by the cell size, and nothing between them.
+`scheduler/w33-shapes.js` exposes this as `optimalShapeLevel2()`, refusing
+anything off the ladder with the nearest attainable size.
+
+## 13. Scope
 
 **What this is.** Exact finite mathematics about one 40-vertex graph, plus an API
 that reserves point sets in it.

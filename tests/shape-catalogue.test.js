@@ -590,3 +590,128 @@ test("orbit is not the same thing as isomorphism class", () => {
   assert.equal(r4.totalShapes, r4.orbitSize,
     "m=4 is the one size with a single orbit, which is why it looked fine");
 });
+
+// ======================================================================
+// Level 2: the inter-cell fabric, and whether shapes lift
+// ======================================================================
+
+const L2 = require(path.join(root, "analysis/w33_level2.js"));
+const L2S = require(path.join(root, "analysis/w33_level2_shapes.js"));
+
+test("the level-2 constructions have the degrees and diameters claimed", () => {
+  const cart = L2.buildCartesian();
+  assert.equal(cart.length, 1600);
+  assert.ok(cart.every((r) => r.length === 24), "Cartesian is 24-regular");
+  assert.equal(cart.reduce((a, r) => a + r.length, 0) / 2, 19200);
+  assert.equal(L2.diameter(cart).diameter, 4,
+    "measured by BFS from every vertex, not bounded");
+
+  const lex = L2.buildLexicographic();
+  assert.ok(lex.every((r) => r.length === 492), "lexicographic is 492-regular");
+  assert.equal(L2.diameter(lex).diameter, 2);
+});
+
+test("the closed-form level-2 spectra are consistent with the graphs", () => {
+  const cart = L2.cartesianSpectrumClosedForm();
+  assert.equal(cart.reduce((a, [, m]) => a + m, 0), 1600, "multiplicities sum to n");
+  assert.equal(cart[0][0], 24, "top eigenvalue is the degree");
+  assert.equal(cart[0][1], 1, "and it is simple, so the graph is connected");
+  assert.deepEqual(cart.map(([e]) => e), [24, 14, 8, 4, -2, -8]);
+
+  const lex = L2.lexicographicSpectrumClosedForm();
+  assert.equal(lex.reduce((a, [, m]) => a + m, 0), 1600);
+  assert.equal(lex[0][0], 492);
+  // trace of A is zero for a simple graph: sum of eigenvalues times
+  // multiplicity must vanish
+  for (const spec of [cart, lex]) {
+    const trace = spec.reduce((a, [e, m]) => a + e * m, 0);
+    assert.equal(trace, 0, "trace of the adjacency matrix is zero");
+  }
+});
+
+test("both products expand strictly worse than a single cell", () => {
+  // The engineering point: scaling up costs expansion. A single W(3,3)
+  // has (k - lambda_2)/k = 10/12; the Cartesian fabric has 10/24.
+  const level1 = (S.CONST.degree - 2) / S.CONST.degree;
+  const cart = L2.cartesianSpectrumClosedForm();
+  const cartExp = (cart[0][0] - cart[1][0]) / cart[0][0];
+  assert.ok(Math.abs(level1 - 10 / 12) < 1e-12);
+  assert.ok(Math.abs(cartExp - 10 / 24) < 1e-12);
+  assert.ok(cartExp < level1, "the Cartesian fabric is the weaker expander");
+});
+
+test("the measured level-2 diameter is far below the software distance bound", () => {
+  // js/substrate.js models recursive distance as 16n - 14, which is a
+  // DECLARED descent cost (8 reversible moves per digit per side), not a
+  // graph distance. Under an explicit inter-cell wiring the graph
+  // diameter is 4. The two numbers measure different things and should
+  // not be compared as if they were the same quantity.
+  const modelled = S.diameterAtLevel(2);
+  assert.equal(modelled, 18, "2 + 16(n-1)");
+  const measured = L2.diameter(L2.buildCartesian()).diameter;
+  assert.equal(measured, 4);
+  assert.ok(measured < modelled,
+    "an explicit graph is much better connected than the declared descent cost");
+});
+
+test("level-1 densest shapes lift to level-2 densest shapes", () => {
+  // The lift theorem: if f1 is in the 2-eigenspace of A1 then 1 (x) f1
+  // and f1 (x) 1 are both in the 14-eigenspace of the Cartesian fabric,
+  // because 12 + 2 = 2 + 12 = 14.
+  const adj = L2.buildCartesian();
+  for (const m1 of [4, 8, 20]) {
+    const T1 = shapes.optimalShape(m1).witness;
+    for (const [kind, T] of [["byPoints", L2S.liftByPoints(T1)], ["byCells", L2S.liftByCells(T1)]]) {
+      const m = T.length;
+      assert.equal(m, 40 * m1, `${kind}: a lift scales by the cell size`);
+      const e = L2S.inducedEdges(adj, T);
+      assert.equal(e, L2S.level2UpperBound(m),
+        `${kind} m1=${m1}: attains e(T) = 7m + m^2/320 exactly`);
+      const b = L2S.edgeBoundary(adj, T);
+      assert.equal(2 * e + b, 24 * m, "2e(T) + b(T) = km at level 2");
+      const prof = L2S.profile(adj, T);
+      assert.ok(prof.isIntriguing, `${kind}: two-valued neighbourhood profile`);
+    }
+  }
+});
+
+test("a construction that is not a lift does not attain the level-2 bound", () => {
+  const adj = L2.buildCartesian();
+  const T1 = shapes.optimalShape(8).witness;
+  // the diagonal {(p,p)} is a natural-looking set and is not a lift
+  const diag = T1.map((p) => L2.idx(p, p));
+  const e = L2S.inducedEdges(adj, diag);
+  assert.ok(e < L2S.level2UpperBound(diag.length),
+    "the diagonal falls short of the bound");
+  assert.ok(!L2S.profile(adj, diag).isIntriguing,
+    "and is not a two-valued set, so it is not attaining the equality");
+});
+
+test("the level-2 reservation API refuses unattainable sizes", () => {
+  assert.ok(shapes.optimalShapeLevel2(160).ok);
+  assert.ok(shapes.optimalShapeLevel2(800).ok);
+  for (const m of [100, 200, 500, 1000]) {
+    const r = shapes.optimalShapeLevel2(m);
+    assert.equal(r.ok, false, `m=${m} is not a lift size`);
+    assert.ok(r.reason, "and it says why");
+    assert.ok(r.nearestAttainable, "and names something that works");
+  }
+  assert.deepEqual(shapes.level2Ladder().map((r) => r.level2Size),
+    [160, 320, 480, 640, 800, 960, 1120, 1280, 1440]);
+});
+
+test("the level-2 API materialises the same set the theorem describes", () => {
+  const adj = L2.buildCartesian();
+  for (const m of [160, 320]) {
+    for (const lift of ["byPoints", "byCells"]) {
+      const spec = shapes.optimalShapeLevel2(m, { lift });
+      assert.ok(spec.ok);
+      const T = shapes.materialiseLevel2(spec);
+      assert.equal(T.length, m);
+      assert.equal(new Set(T).size, m, "no duplicate leaves");
+      assert.equal(L2S.inducedEdges(adj, T), spec.inducedEdges,
+        "the materialised set has the induced-edge count the API promised");
+      assert.ok(L2S.profile(adj, T).isIntriguing);
+    }
+  }
+});

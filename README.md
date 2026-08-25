@@ -1,5 +1,7 @@
 # HoloTrade
 
+**Live: [wilcompute.github.io/Holotrade](https://wilcompute.github.io/Holotrade/)**  ·  [paper (PDF)](docs/holotrade.pdf)  ·  [shape catalogue](research/w33_shape_catalogue.md)
+
 HoloTrade is a working research prototype for **topology-aware compute execution and settlement**. It connects a transparent quote to named capacity, a scoped execution plan, a hardware-checkable admission decision, per-second metering, and a receipt.
 
 The core product idea is simple: do not sell an anonymous VM-hour. Quote the machine that will run the work, expose why it costs what it costs, reserve a bounded execution contract, and reconcile what was delivered.
