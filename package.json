@@ -5,7 +5,7 @@
   "main": "js/app.js",
   "type": "commonjs",
   "scripts": {
-    "test": "node --test tests/core.test.js",
+    "test": "node --test tests/*.test.js",
     "serve": "node scripts/serve.js",
     "verify:rtl": "node scripts/run-yosys.js rtl/verify.ys",
     "synth:rtl": "node scripts/run-yosys.js rtl/synth.ys",
