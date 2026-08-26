@@ -1,0 +1,21 @@
+{
+  "schema": "holotrade.tensor-tight-rows-and-columns.v1",
+  "target": 110,
+  "status": "UNKNOWN",
+  "wallSeconds": 2101.0,
+  "minimumBlockersUsed": 360,
+  "alpha": 7,
+  "forced": {
+    "T1_fibresDisjointOnEveryLine": true,
+    "T2_shadowIsAMinimumBlocker": true,
+    "T3_everyFibreAndCofibreIsIndependent": true
+  },
+  "derivation": "4|X| >= sum of shadows >= 440 has exactly two inequalities; at 110 both are equalities on all 40 lines, and transposing (T1) forces (T3)",
+  "conclusion": "undecided in budget",
+  "proved": false,
+  "intervalUnchanged": [
+    110,
+    115
+  ],
+  "note": "UNKNOWN, not INFEASIBLE: the derivation (T1)-(T3) is sound and the model encodes it faithfully, but CP-SAT did not decide feasibility at 110 in 2100 s. The lower bound is unchanged. Reported as a negative result rather than dressed up as evidence either way."
+}

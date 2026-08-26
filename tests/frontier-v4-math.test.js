@@ -18,7 +18,11 @@ test("spread Seidel algebra gives exact complementary 15/21 projectors and 1+15+
 
 test("36-vector spread ETF is equiangular and tight using integer Gram arithmetic only",()=>{const c=H.certificate(),G=c.etf.gramNumerator;for(let i=0;i<36;i++){assert.equal(G[i][i],5);for(let j=0;j<36;j++)if(i!==j)assert.equal(Math.abs(G[i][j]),1);}assert.equal(c.theorem.etfTight,true);});
 
-test("tensor product line family has rigorous 110..121 depth-2 blocking interval",()=>{const c=T.depth2Certificate();assert.equal(c.valid,true);assert.equal(c.bounds.lower,110);assert.equal(c.bounds.upper,121);assert.equal(c.openGap,11);assert.equal(c.exactTau,null);assert.equal(c.upperWitness.length,121);});
+test("tensor product line family has rigorous 110..115 depth-2 blocking interval",()=>{const c=T.depth2Certificate();assert.equal(c.valid,true);assert.equal(c.bounds.lower,110);assert.equal(c.bounds.upper,115);assert.equal(c.openGap,5);assert.equal(c.exactTau,null);assert.equal(c.upperWitness.length,115);// the product construction B x B is retained but proved non-optimal
+assert.equal(c.productWitness.length,121);assert.equal(c.productConstructionOptimal,false);assert.equal(c.bounds.upperBeatsProduct,true);// the 116 witness is re-verified here, not merely asserted
+assert.equal(T.hitsAllProductTiles(c.upperWitness),true);assert.equal(c.theorem.bestWitnessMinimal,true);// its row support is 37, refuting the hypothesis of the old conditional
+// "tau = 121 if the support is an 11-point line blocker" theorem
+assert.equal(c.rowSupport,37);assert.equal(c.colSupport,40);assert.ok(c.rowSupport>T.TAU1);});
 
 test("recursive tensor lower amplification exactly matches the lift/tile capacity ratio",()=>{for(let d=1;d<=5;d++){const c=T.recursiveCapacity(d);assert.equal(c.identityHolds,true);assert.equal(c.capacityRatio,Math.pow(10,d-1));assert.equal(c.lowerAmplificationVsLift,c.capacityRatio);}});
 

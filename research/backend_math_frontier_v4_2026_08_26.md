@@ -79,11 +79,40 @@ If `B` is the certified 11-point level-one blocker, `B x B` hits every product t
 
 `110 <= tau_tensor,2 <= 121`.
 
-The exact value is intentionally left open. This pass does not convert an unsuccessful optimization search into a theorem.
+**Update (2026-08-26): the upper bound falls to 115, and the product construction is proved non-optimal.**
+
+Direct search over all `2^1600` subsets stalls, and the reason is symmetry rather than size: the problem's
+stabiliser is `Aut(W33) wr C2`, of order `51840^2 * 2 = 5.4e9`, so a solver re-explores each candidate
+billions of times. Restricting to blockers *invariant* under a cyclic subgroup collapses the 1,600 leaf
+variables to one per orbit. For an element `g` of `Aut(W33)` and a power `h = g^t`, the twisted action
+`(p,q) -> (g(p), h(q))` leaves a few hundred orbits, and CP-SAT returns an optimum in seconds.
+
+The classes must be keyed by **cycle type**, not by element order -- that detail cost a result. Keying on
+order collapses distinct conjugacy classes onto a single representative: the order-keyed sweep bottomed out
+at 116 under an order-12 element, and a *second* order-6 class, invisible to that sweep, gives **115**.
+Both witnesses are verified leaf-by-leaf against all 1,600 tiles and are minimal, in the sense that no
+single leaf can be dropped:
+
+`110 <= tau_tensor,2 <= 115`.
+
+The method is one-sided and the asymmetry matters. A hit is a genuine upper bound on `tau_2`. A miss proves
+nothing about `tau_2`, only about that symmetry class; and proving optimality *within* a class -- which
+CP-SAT did here -- likewise says nothing about `tau_2`.
+
+The structural consequence outweighs the six-leaf improvement. The earlier conditional theorem read:
+`tau_2 = 121` **if** an optimal blocker's row support is a minimum line blocker (11 points). The 115 witness
+has row support **37**, so that hypothesis is now known **false at the optimum**. `B x B` is not optimal, and
+the product construction that produced the 121 figure in the first place is strictly beatable. The recursive
+upper bound `11^n` inherits the same defect at every depth.
+
+The exact value inside `[110, 115]` remains open. This pass does not convert an unsuccessful optimization
+search into a theorem: the lower bound is untouched, and `exactTau` stays `null` in the engine.
 
 The same shadow count recursively gives
 
-`11 * 10^(n-1) <= tau_tensor,n <= 11^n`.
+`11 * 10^(n-1) <= tau_tensor,n <= 11^n`,
+
+with the upper half now known to be loose at `n = 2` and therefore at every `n >= 2`.
 
 ## 4. Equal-capacity recursive sharding experiment
 
@@ -143,4 +172,4 @@ The 540 chart / 540 triangle match was tested literally and closes as a bijectio
 - Exact: W33 carrier, 36 spreads, spread overlap graph, clique/coclique/coloring certificates, integer matrix identities, chart/triangle bijection, incidence Gram identity, tensor shadow lower bound, explicit tensor upper witness.
 - Repository-certified: minimal level-one line blocker `tau_1=11` depends on the frozen SAT/UNSAT certificate already in the repository.
 - Model: calling four-line overlap a compute-market conflict, pricing batches, congestion, runtime placement utility, failure correlation.
-- Open: the exact depth-two product-transversal number inside `[110,121]`; representation-theoretic identification of chart-web eigenspaces; any physical or quantum realization of these scheduling coordinates.
+- Open: the exact depth-two product-transversal number inside `[110,115]` (narrowed from `[110,121]`; the upper bound is a construction, not a proof of optimality); representation-theoretic identification of chart-web eigenspaces; any physical or quantum realization of these scheduling coordinates.

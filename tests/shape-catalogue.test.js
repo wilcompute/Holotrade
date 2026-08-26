@@ -1007,13 +1007,125 @@ test("B x B is a minimal blocking set, not merely a convenient one", () => {
 
 test("the interval is narrowed but honestly still open", () => {
   const r = TBS.run();
-  assert.deepEqual(r.publishedInterval, [110, 121]);
-  assert.match(r.stillOpen, /support of 12 or more/,
-    "beating 121 requires a larger support; that case is not settled here");
+  assert.deepEqual(r.publishedInterval, [110, 115]);
+  // this module PREDICTED that beating 121 needs a support of 12 or more.
+  // A support-37 blocker of size 116 was then found, so the prediction is
+  // resolved and the conditional tau=121 theorem is vacuous at the optimum.
+  assert.match(r.predictionForBeating121, /support of 12 or more/);
+  assert.equal(r.predictionResolved, true);
+  assert.equal(r.conditionalHypothesisHoldsAtOptimum, false);
+  assert.match(r.stillOpen, /exact value of tau_2 inside \[110, 115\]/,
+    "the interval narrowed; it did not close");
   // the module must not claim an exact value it does not have
   const T = require(path.join(root, "js/tensor-sharding.js"));
   assert.equal(T.depth2Certificate().exactTau, null,
     "tensor-sharding still reports the exact value as unknown");
+});
+
+// ======================================================================
+// Breaking the product bound: 121 -> 115
+//
+// The upper bound had always been B x B for a minimum line blocker B.
+// Searching only blockers invariant under a cyclic subgroup of Aut(W33)
+// collapses 1,600 leaf variables to 174 orbit variables, and CP-SAT then
+// finds a 115-leaf blocker in seconds.  These tests re-verify the witness
+// from scratch -- they never trust the stored number.
+// ======================================================================
+
+test("the 115 witness really blocks every one of the 1600 depth-2 tiles", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const X = new Set(T.SYMMETRIC_WITNESS);
+  assert.equal(T.SYMMETRIC_WITNESS.length, 115);
+  assert.equal(X.size, 115, "no duplicated leaves");
+  let checked = 0;
+  for (let a = 0; a < 40; a++) {
+    for (let b = 0; b < 40; b++) {
+      const tile = T.productTile(a, b);
+      assert.equal(tile.leaves.length, 16);
+      assert.ok(tile.leaves.some((v) => X.has(v)),
+        `tile (${a},${b}) is unblocked`);
+      checked++;
+    }
+  }
+  assert.equal(checked, 1600, "every product tile was actually tested");
+});
+
+test("the 115 witness is minimal: no leaf can be dropped", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  for (const v of T.SYMMETRIC_WITNESS) {
+    const T2 = new Set(T.SYMMETRIC_WITNESS);
+    T2.delete(v);
+    assert.equal(T.hitsAllProductTiles(T2), false,
+      `dropping leaf ${v} still blocked everything, so it is not minimal`);
+  }
+});
+
+test("115 beats the product construction, so B x B is not optimal", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const c = T.depth2Certificate();
+  assert.equal(c.productWitness.length, T.TAU1 * T.TAU1);
+  assert.equal(c.productWitness.length, 121);
+  assert.ok(c.upperWitness.length < c.productWitness.length,
+    "the symmetric witness must strictly beat B x B");
+  assert.equal(c.productConstructionOptimal, false);
+  assert.equal(c.bounds.productUpper, 121);
+  assert.equal(c.bounds.upper, 115);
+});
+
+test("the 115 witness refutes the hypothesis of the conditional tau=121 theorem", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const rows = new Set(T.SYMMETRIC_WITNESS.map((v) => Math.floor(v / 40)));
+  const cols = new Set(T.SYMMETRIC_WITNESS.map((v) => v % 40));
+  // the old theorem assumed the row support IS a minimum line blocker (11)
+  assert.equal(rows.size, 37);
+  assert.equal(cols.size, 40);
+  assert.ok(rows.size > T.TAU1,
+    "support exceeds 11, which is exactly the case the theorem left open");
+  // it is still a line-blocking set -- that much is forced
+  const S = require(path.join(root, "js/substrate.js"));
+  assert.ok(S.LINES.every((L) => L.some((p) => rows.has(p))),
+    "any row support must block all 40 lines");
+});
+
+test("the frozen certificate and the engine agree on the same witness", () => {
+  // These drifted apart once already: the engine carried a witness from one
+  // search run and the certificate a different one of the same size. Pin them.
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const cert = require(path.join(root, "data/tensor_symmetric_blocker.json"));
+  assert.equal(cert.upperBound, 115);
+  assert.equal(cert.previousUpperBound, 121);
+  assert.equal(cert.lowerBound, 110);
+  assert.deepEqual(cert.witness, [...T.SYMMETRIC_WITNESS],
+    "certificate witness and engine witness must be the same set of leaves");
+  assert.equal(cert.witnessBlocksAll1600, true);
+  assert.equal(cert.witnessMinimal, true);
+  assert.equal(cert.productConstructionOptimal, false);
+  assert.equal(cert.exactTau, null);
+  // the search that produced it is one-sided, and the certificate says so
+  assert.match(cert.onesided, /a miss.*bound\s*nothing about tau_2/s);
+  assert.match(cert.boundary, /remains OPEN/);
+});
+
+test("the tight-case lower-bound attempt is recorded as undecided, not as evidence", () => {
+  const r = require(path.join(root, "data/tensor_tight_rows_and_columns.json"));
+  assert.equal(r.target, 110);
+  assert.equal(r.proved, false);
+  assert.equal(r.status, "UNKNOWN");
+  assert.equal(r.conclusion, "undecided in budget");
+  assert.equal(r.forced.T3_everyFibreAndCofibreIsIndependent, true,
+    "the derivation is sound even though the solver did not decide");
+  assert.deepEqual(r.intervalUnchanged, [110, 115]);
+  assert.ok(!("newLowerBound" in r), "no lower bound may be claimed from UNKNOWN");
+});
+
+test("the lower bound is untouched: narrowing the interval did not close it", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const c = T.depth2Certificate();
+  assert.equal(c.bounds.lower, 110, "the shadow double count is unchanged");
+  assert.equal(c.openGap, 5, "gap fell from 11 to 5");
+  assert.equal(c.exactTau, null, "the exact value is still unknown");
+  assert.match(c.evidenceBoundary, /No claim is made that either endpoint is the exact/);
+  assert.ok(c.bounds.lower < c.bounds.upper, "the interval is still open");
 });
 
 // ======================================================================

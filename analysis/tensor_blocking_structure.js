@@ -130,10 +130,22 @@ function run() {
     bxbBlocks: blocks(bxb, tl),
     bxbRemovableLeaves: removable,
     bxbIsMinimal: removable === 0,
-    stillOpen:
+    // RESOLVED, and in the direction this module predicted.  The prediction
+    // below said beating 121 needs a support of 12 or more.  A support-37
+    // blocker of size 115, invariant under an order-6 element of Aut(W33),
+    // was later found by orbit-collapsed CP-SAT and is verified in
+    // js/tensor-sharding.js.  So the conditional theorem above is vacuous at
+    // the optimum: B x B is NOT optimal.
+    predictionForBeating121:
       "beating 121 requires a support of 12 or more points; the double count still "
       + "permits 110 and an integer fibre-size weighting summing to 11 on every line "
       + "does exist, so no counting obstruction rules it out",
+    predictionResolved: true,
+    resolvedBy: "analysis/tensor_symmetric_blocker.py -- 115 leaves, support 37",
+    conditionalHypothesisHoldsAtOptimum: false,
+    stillOpen:
+      "the exact value of tau_2 inside [110, 115]; the lower bound is still the "
+      + "shadow double count and the upper bound is still only a construction",
   };
 }
 

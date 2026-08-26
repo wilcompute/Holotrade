@@ -1,0 +1,9 @@
+{
+  "schema": "holotrade.tensor-tight-case.v1",
+  "target": 110,
+  "status": "UNKNOWN",
+  "seconds": 1500.2,
+  "solver": "OR-Tools CP-SAT",
+  "conclusion": "undecided in budget",
+  "proved": false
+}
