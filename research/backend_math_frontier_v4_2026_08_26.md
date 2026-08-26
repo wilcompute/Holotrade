@@ -112,7 +112,24 @@ The same shadow count recursively gives
 
 `11 * 10^(n-1) <= tau_tensor,n <= 11^n`,
 
-with the upper half now known to be loose at `n = 2` and therefore at every `n >= 2`.
+and the upper half improves at **every** depth, because blocking numbers are **submultiplicative**:
+if `X` blocks every depth-`a` tile and `Y` every depth-`b` tile then `X x Y` blocks every
+depth-`(a+b)` tile, since a tile splits into its first `a` and last `b` factors and each half is met
+independently. Hence `tau_(a+b) <= tau_a * tau_b`, and the best product packs in as many depth-2
+factors as it can:
+
+`tau_tensor,n <= 115^floor(n/2) * 11^(n mod 2)`.
+
+| depth | lower | new upper | naive `11^n` |
+|---|---|---|---|
+| 2 | 110 | **115** | 121 |
+| 3 | 1,100 | **1,265** | 1,331 |
+| 4 | 11,000 | **13,225** | 14,641 |
+| 5 | 110,000 | **145,475** | 161,051 |
+| 6 | 1,100,000 | **1,520,875** | 1,771,561 |
+
+The saving compounds as `(115/121)^(n/2)` -- about 14% by depth 6. The depth-3 witness (1,265 leaves)
+is verified in the test suite against all 64,000 depth-3 tiles rather than asserted.
 
 ## 4. Equal-capacity recursive sharding experiment
 

@@ -1087,6 +1087,59 @@ test("the 115 witness refutes the hypothesis of the conditional tau=121 theorem"
     "any row support must block all 40 lines");
 });
 
+test("the 115 improvement propagates to every depth by submultiplicativity", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  // tau_(a+b) <= tau_a * tau_b, so the best product uses depth-2 factors
+  for (const d of [2, 3, 4, 5, 6]) {
+    const b = T.tensorBlockingBounds(d);
+    const expect = Math.pow(115, Math.floor(d / 2)) * Math.pow(11, d % 2);
+    assert.equal(b.upper, expect, `depth ${d} upper bound`);
+    assert.ok(b.upper < b.productUpper,
+      `depth ${d} must beat the naive 11^n = ${b.productUpper}`);
+    assert.equal(b.lower, 11 * Math.pow(10, d - 1));
+    assert.ok(b.lower < b.upper, "the interval stays open at every depth");
+  }
+  // depth 1 is the exact SAT value and must not be inflated
+  const one = T.tensorBlockingBounds(1);
+  assert.equal(one.lower, 11);
+  assert.equal(one.upper, 11);
+  assert.equal(one.exact, true);
+});
+
+test("the depth-3 product blocker is verified against all 64000 tiles, not asserted", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const S = require(path.join(root, "js/substrate.js"));
+  // X3 = (the 115-leaf depth-2 blocker) x (the 11-point line blocker)
+  const X2 = new Set(T.SYMMETRIC_WITNESS);
+  const B = [...T.BLOCKER];
+  const X3 = new Set();
+  for (const v of X2) for (const r of B) X3.add(v * 40 + r);
+  assert.equal(X3.size, 115 * 11);
+  assert.equal(X3.size, 1265);
+  assert.equal(X3.size, T.tensorBlockingBounds(3).upper);
+
+  let tiles = 0;
+  for (let a = 0; a < 40; a++) {
+    for (let b = 0; b < 40; b++) {
+      for (let c = 0; c < 40; c++) {
+        let hit = false;
+        for (const p of S.LINES[a]) {
+          for (const q of S.LINES[b]) {
+            for (const r of S.LINES[c]) {
+              if (X3.has((p * 40 + q) * 40 + r)) { hit = true; break; }
+            }
+            if (hit) break;
+          }
+          if (hit) break;
+        }
+        assert.ok(hit, `depth-3 tile (${a},${b},${c}) is unblocked`);
+        tiles++;
+      }
+    }
+  }
+  assert.equal(tiles, 64000, "every depth-3 tile was actually tested");
+});
+
 test("the frozen certificate and the engine agree on the same witness", () => {
   // These drifted apart once already: the engine carried a witness from one
   // search run and the certificate a different one of the same size. Pin them.
