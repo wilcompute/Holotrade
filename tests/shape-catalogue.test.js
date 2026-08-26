@@ -823,3 +823,105 @@ test("choosing WHICH cells matters, not just how many", () => {
     "an optimal cell set captures inter-cell links an arbitrary one does not");
   assert.equal(eLine, L2S.level2UpperBound(160), "and it attains the bound");
 });
+
+// ======================================================================
+// Level n: the classification, and what it forbids
+// ======================================================================
+
+const LN = require(path.join(root, "analysis/w33_leveln_classification.js"));
+
+test("the spectral gap is exactly 10 at every level", () => {
+  // k = 12n and lambda_2 = 12n - 10, so the gap never grows. This single
+  // invariant is the robustness collapse in spectral form.
+  for (let n = 1; n <= 6; n++) {
+    const p = LN.levelParameters(n);
+    assert.equal(p.degree, 12 * n, `degree at level ${n}`);
+    assert.equal(p.lambda2, 12 * n - 10, `lambda_2 at level ${n}`);
+    assert.equal(p.spectralGap, 10, "the gap is the same absolute 10 forever");
+    assert.ok(Math.abs(p.expansionRatio - 10 / (12 * n)) < 1e-12);
+  }
+  // and it therefore decays toward zero
+  assert.ok(LN.levelParameters(6).expansionRatio < LN.levelParameters(1).expansionRatio / 5);
+});
+
+test("the lambda_2 eigenspace is the 2-eigenspace in one coordinate", () => {
+  // dim should be n * 24: the level-1 2-eigenspace placed in each of the
+  // n coordinates. This is what forces every densest shape to be a lift.
+  for (let n = 1; n <= 5; n++) {
+    const p = LN.levelParameters(n);
+    assert.equal(p.lambda2Multiplicity, n * 24,
+      `level ${n}: lambda_2 multiplicity is n x 24`);
+  }
+});
+
+test("the power spectrum is consistent and trace-free", () => {
+  for (let n = 1; n <= 4; n++) {
+    const spec = LN.powerSpectrum(n);
+    const total = spec.reduce((a, [, m]) => a + m, 0);
+    assert.equal(total, Math.pow(40, n), `multiplicities sum to 40^${n}`);
+    const trace = spec.reduce((a, [e, m]) => a + e * m, 0);
+    assert.equal(trace, 0, "a simple graph has zero trace");
+    assert.equal(spec[0][1], 1, "the degree is a simple eigenvalue, so connected");
+  }
+});
+
+test("a 0/1 separable function forces all but one part constant", () => {
+  // The step the classification turns on: |A+B| >= |A|+|B|-1, so two
+  // non-constant parts give at least three distinct sums and cannot land
+  // inside the two-element set {0,1}.
+  const sep = LN.verifySeparability({ trials: 60000 });
+  assert.ok(sep.pairsChecked > 1000, "enough pairs actually sampled");
+  assert.equal(sep.counterexample, null,
+    "no pair of non-constant value sets has 2 or fewer sums");
+  assert.ok(sep.sumsetBoundHolds);
+});
+
+test("the level-n densest bound reduces correctly at levels 1 and 2", () => {
+  // (6n-5)m + 5m^2/40^n must agree with the bounds derived independently
+  for (const m of [4, 8, 20, 36]) {
+    assert.ok(Math.abs(LN.levelParameters(1).densestBound(m) - (m * (m + 8)) / 8) < 1e-9,
+      `level 1 at m=${m} reduces to m(m+8)/8`);
+  }
+  for (const m of [160, 320, 800]) {
+    assert.ok(Math.abs(LN.levelParameters(2).densestBound(m) - (7 * m + (m * m) / 320)) < 1e-9,
+      `level 2 at m=${m} reduces to 7m + m^2/320`);
+  }
+});
+
+test("the level-2 shape count is exactly two lifts per level-1 tight set", () => {
+  const res = LN.verifyLevel2Exhaustive(4);
+  assert.equal(res.level1TightSets, 40, "the 40 lines");
+  assert.equal(res.predictedLevel2Shapes, 80, "two lifts each, and nothing else");
+  assert.ok(res.allSampledAttainBound);
+});
+
+test("the ladder gets 40x coarser per level and never gets more robust", () => {
+  for (let n = 1; n <= 5; n++) {
+    const a = shapes.levelAdvice(n);
+    assert.equal(a.smallestDensestShape, 4 * Math.pow(40, n - 1));
+    assert.equal(a.busyTolerated, 10, "the same ten failures at every level");
+    assert.equal(a.ladder.length, 9, "nine rungs, always");
+    // consecutive rungs differ by 40^(n-1)
+    for (let i = 1; i < a.ladder.length; i++) {
+      assert.equal(a.ladder[i] - a.ladder[i - 1], 4 * Math.pow(40, n - 1));
+    }
+  }
+  // by level 5 the smallest densest reservation is over ten million nodes
+  assert.ok(shapes.levelAdvice(5).smallestDensestShape > 1e7);
+  assert.ok(shapes.levelAdvice(5).survivableFraction < 1e-6);
+});
+
+test("levelAdvice refuses off-ladder requests and says what to do instead", () => {
+  const r = shapes.levelAdvice(3, 5000);
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /below the ladder/);
+  assert.equal(r.nearestOnLadder, 6400);
+  assert.match(r.recommendation, /compose level-1 shapes inside cells/,
+    "and it recommends the honest alternative rather than a formula");
+
+  const good = shapes.levelAdvice(2, 320);
+  assert.equal(good.ok, true);
+  assert.equal(good.maxInducedEdges, 7 * 320 + (320 * 320) / 320);
+
+  assert.match(shapes.levelAdvice(1).recommendation, /level-1 catalogue/);
+});

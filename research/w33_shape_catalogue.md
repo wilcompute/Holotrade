@@ -23,7 +23,8 @@ or a fitted coefficient.
 | `analysis/w33_level2_shapes.js` | the lift theorem, verified |
 | `analysis/w33_level2_check.py` | level-2 spectra checked numerically |
 | `analysis/w33_level2_guarantees.js` | level-2 blocking numbers and the collapse |
-| `tests/shape-catalogue.test.js` | 48 regression tests |
+| `analysis/w33_leveln_classification.js` | the level-n classification |
+| `tests/shape-catalogue.test.js` | 56 regression tests |
 
 ---
 
@@ -559,7 +560,89 @@ than lifting -- the opposite of the truth.
 shape -- a line, for four cells -- recovers every inter-cell link the geometry
 allows and lands exactly on the bound.
 
-## 14. Scope
+## 14. Every densest shape, at every level, is a lift
+
+Section 13 found that lifted reservations do not get more robust as the fabric
+grows. The obvious escape was to look for level-2 optimal shapes that are **not**
+products -- something built directly on the 1,600-vertex graph that might spread
+its risk differently.
+
+**There are none.** The lift theorem is not a construction, it is a
+classification, and the proof is four lines.
+
+### The argument
+
+At level `n` the fabric is the `n`-fold Cartesian power, with eigenvalues all
+`n`-fold sums from `{12, 2, -4}`. So
+
+```
+    k = 12n,   lambda_2 = 12(n-1) + 2 = 12n - 10,   k - lambda_2 = 10
+```
+
+for **every** `n`. A set attains the densest bound exactly when
+`f = 1_T - (m/N)1` lies wholly in the `lambda_2`-eigenspace, and for a Cartesian
+power that eigenspace is the level-1 2-eigenspace placed in **one** coordinate:
+
+```
+    E_{12n-10}  =  (+)_i  1 (x) ... (x) E_2 (x) ... (x) 1,     dim = 24n.
+```
+
+So `1_T(x_1,...,x_n) = m/N + f_1(x_1) + ... + f_n(x_n)` -- a sum of functions of
+separate coordinates. But `1_T` takes only the values 0 and 1, and for finite
+sets of reals `|A_1 + ... + A_n| >= sum|A_i| - (n-1)`. The left side is at most
+2, so `sum|A_i| <= n+1`, so **at most one `f_i` is non-constant** and the rest
+vanish, being orthogonal to all-ones.
+
+`T` is therefore a level-1 tight set in one coordinate and everything in the
+others. That is exactly a lift. There is no third kind.
+
+### The ladder
+
+| n | leaves | degree | lambda_2 | gap | expansion | smallest densest shape | survivable |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 40 | 12 | 2 | **10** | 0.8333 | 4 | 25.00000% |
+| 2 | 1,600 | 24 | 14 | **10** | 0.4167 | 160 | 0.62500% |
+| 3 | 64,000 | 36 | 26 | **10** | 0.2778 | 6,400 | 0.01562% |
+| 4 | 2,560,000 | 48 | 38 | **10** | 0.2083 | 256,000 | 0.00039% |
+| 5 | 102,400,000 | 60 | 50 | **10** | 0.1667 | 10,240,000 | 0.00001% |
+
+Three things to read off, all of them bad for large fleets:
+
+**The spectral gap is 10 at every level.** It never grows. Expansion decays as
+`10/(12n)`, so the fabric gets structurally *worse* at connecting itself the
+bigger it gets.
+
+**The ladder is 40x coarser per level.** At level 5 the smallest provably-densest
+reservation holds **10,240,000 leaves**, and there is nothing at all below it.
+Nine rungs, always, spaced `4 x 40^(n-1)` apart.
+
+**Robustness never improves.** Ten failures, at every level, for every shape --
+0.00001% of a level-5 fabric.
+
+### What the backend does with this
+
+Provably-densest reservations are a **level-1 tool**. Above that the honest move
+is to compose level-1 shapes inside cells and accept a sub-optimal joint, which
+is what the confinement measurements in section 13 support.
+`scheduler/w33-shapes.js` exposes `levelAdvice()`, which refuses off-ladder
+requests, reports the survivable fraction, and says so directly rather than
+quoting a bound nobody can use.
+
+### Prior art
+
+None of the machinery is new. Intriguing sets and tight sets are Payne (1987)
+and Bamberg--Kelly--Law--Penttila; the same objects are **equitable
+2-partitions** / **perfect 2-colourings**, where the characterisation used above
+-- `f` is a perfect 2-colouring iff `f - c` is an eigenfunction -- is standard,
+and equitable 2-partitions of Hamming graphs (Cartesian powers of complete
+graphs) with the second eigenvalue have their own literature. The separability
+step is elementary and is very likely folklore.
+
+**Nothing here is claimed as new mathematics.** What is new is that *this*
+fabric is now classified, so the architectural question "is there a better
+level-n shape" has a definite answer, and the answer is no.
+
+## 15. Scope
 
 **What this is.** Exact finite mathematics about one 40-vertex graph, plus an API
 that reserves point sets in it.

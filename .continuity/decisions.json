@@ -538,5 +538,57 @@
       "source": "cli",
       "timestamp": "2026-08-25T15:34:18.181Z"
     }
+  },
+  {
+    "id": "a5e5cde3-d40c-4474-8c77-fcd2b188f419",
+    "question": "Why add an ordered-spread elastic reservation ladder?",
+    "answer": "The existing catalogue proves tight sets at every multiple of four but does not preserve identity across resizes. An ordered W33 spread gives ten nested K4 atoms whose prefixes are connected regular tight sets with e=2i(i+2), boundary=4i(10-i), and zero retained-work migration. Added scheduler/w33-elastic-ladder.js with exact rung, resize, availability, and contract APIs; classical tight-set prior art is explicitly separated from the applied scheduler synthesis.",
+    "timestamp": "2026-08-26T19:00:27.727Z",
+    "tags": [
+      "backend",
+      "elastic",
+      "holotrade",
+      "math",
+      "migration",
+      "scheduler",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-26T19:00:27.728Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "migration"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-26T19:00:27.721Z"
+    }
   }
 ]

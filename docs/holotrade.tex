@@ -969,6 +969,92 @@ link-state routing, congestion, failure recovery, or placement across an address
 hierarchy, none of which is built.
 \end{scopebox}
 
+
+\subsection{What happens above one cell, and why it does not scale}
+
+Everything above concerns a single 40-node cell. A fleet is not one cell, so the
+question is what survives when the fabric is built recursively. The answer is
+sharp, and it is mostly negative. \PROVED
+
+\begin{plainbox}[The recursive fabric]
+Each of the 40 positions is replaced by a whole copy of the structure, giving
+$40^n$ leaves at level $n$. Two leaves are adjacent when they sit in the same
+cell and are adjacent inside it, or when they sit at the same position in
+adjacent cells. That is the homogeneous wiring --- no gateway node, no
+privileged position.
+\end{plainbox}
+
+At level $n$ the fabric is $12n$-regular with second eigenvalue $12n-10$, so
+
+\begin{center}
+\begin{tcolorbox}[enhanced,colback=white,colframe=navy,boxrule=1pt,arc=2pt,width=0.72\textwidth,halign=center]
+$k - \lambda_2 = 10$ \quad at \emph{every} level
+\end{tcolorbox}
+\end{center}
+
+The spectral gap never grows. Everything below follows from that one fact.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{rrrrrrrr}
+\toprule
+$n$ & leaves & degree & $\lambda_2$ & gap & expansion & smallest shape & survivable \\
+\midrule
+1 & 40 & 12 & 2 & 10 & 0.8333 & 4 & 25.00000\% \\
+2 & 1,600 & 24 & 14 & 10 & 0.4167 & 160 & 0.62500\% \\
+3 & 64,000 & 36 & 26 & 10 & 0.2778 & 6,400 & 0.01562\% \\
+4 & 2,560,000 & 48 & 38 & 10 & 0.2083 & 256,000 & 0.00039\% \\
+5 & 102,400,000 & 60 & 50 & 10 & 0.1667 & 10,240,000 & 0.00001\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Every optimal shape above level one is a replication}
+
+A set attains the densest bound exactly when its indicator, minus a constant,
+lies wholly in the $\lambda_2$-eigenspace --- and for a Cartesian power that
+eigenspace consists of a level-1 eigenvector placed in \emph{one} coordinate. So
+the indicator must be a sum of functions of separate coordinates. Since it takes
+only the values $0$ and $1$, and $|A_1+\cdots+A_n| \ge \sum|A_i| - (n-1)$ for
+finite sets of reals, at most one of those functions can be non-constant.
+
+\begin{keybox}{The classification, and what it forbids}
+Every densest reservation above level one is a level-1 optimal shape replicated
+along one coordinate. \textbf{There is no third kind}, so there is no cleverer
+shape waiting to be found.
+
+\smallskip
+Three consequences, all bad for large fleets. Expansion decays as $10/(12n)$, so
+the fabric gets structurally worse at connecting itself as it grows. The ladder
+of available sizes is $40\times$ coarser at each level --- at level 5 the
+smallest provably densest reservation holds \textbf{10,240,000} leaves and there
+is nothing below it. And every one of them tolerates the same \textbf{ten}
+simultaneous failures, which is $0.00001\%$ of a level-5 fabric.
+\end{keybox}
+
+The practical reading is that provably-densest reservations are a
+\textbf{level-1 tool}. Above that, the honest move is to compose level-1 shapes
+inside cells and accept a sub-optimal joint. The implementation says exactly
+that: \texttt{levelAdvice()} refuses off-ladder requests, reports the survivable
+fraction, and recommends the alternative rather than quoting a bound nobody can
+use.
+
+\begin{scopebox}
+\textbf{Prior art.} None of this machinery is new. Intriguing and tight sets are
+Payne (1987) and Bamberg--Kelly--Law--Penttila; the same objects appear as
+equitable 2-partitions, where the eigenfunction characterisation used here is
+standard, and equitable 2-partitions of Cartesian powers have their own
+literature. The separability step is elementary and likely folklore. What is
+claimed is not new mathematics but that \emph{this} fabric is now classified, so
+the architectural question has a definite answer.
+
+\smallskip
+\textbf{Scope.} These are statements about the level-1 point graph and its
+Cartesian powers. The repository's software distance model, $16n-14$, measures a
+different quantity --- a declared cost in reversible control moves --- and the
+measured graph diameter at level 2 is 4. Both are fine; conflating them is not.
+\end{scopebox}
+
 \subsection{The mechanism this creates: a defragmentation market}
 
 \begin{plainbox}[]

@@ -431,6 +431,112 @@ function level2Ladder() {
 }
 
 // ---------------------------------------------------------------------
+// LEVEL n: what the classification says a scheduler may promise
+//
+// analysis/w33_leveln_classification.js settles the shape of the whole
+// ladder. At level n the fabric is the n-fold Cartesian power, and
+//
+//     k = 12n,   lambda_2 = 12n - 10,   so  k - lambda_2 = 10  ALWAYS.
+//
+// The spectral gap never grows. Three consequences follow and all three
+// are bad for large fleets:
+//
+//   1. Expansion decays as 10/(12n). The fabric gets structurally worse
+//      at connecting itself the bigger it gets.
+//
+//   2. Every densest shape is a LIFT -- a level-1 tight set in one
+//      coordinate, everything in the others -- because the lambda_2
+//      eigenspace of a power is the 2-eigenspace placed in a single
+//      coordinate, and a 0/1 function that is a sum of separate-variable
+//      functions must have all but one summand constant. There is no
+//      exotic shape waiting to be found.
+//
+//   3. Therefore the smallest densest reservation at level n is
+//      4 * 40^(n-1), and the ladder is 40x coarser at each level:
+//
+//          level 1     4, 8, 12, ..., 36
+//          level 2     160, 320, ..., 1440
+//          level 3     6400, 12800, ..., 57600
+//          level 5     10,240,000 and up
+//
+//      and every one of them tolerates the same 10 busy nodes.
+//
+// So provably-densest reservations are a LEVEL-1 TOOL. Above that the
+// honest move is to compose level-1 shapes inside cells and accept a
+// sub-optimal joint, which is what the confinement measurements support.
+// This module says so rather than quoting a bound nobody can use.
+// ---------------------------------------------------------------------
+
+const LEVEL_N = Object.freeze({
+  spectralGap: 10,
+  degreeAt: (n) => 12 * n,
+  lambda2At: (n) => 12 * n - 10,
+  expansionAt: (n) => 10 / (12 * n),
+  leavesAt: (n) => Math.pow(N, n),
+  smallestDensestShapeAt: (n) => 4 * Math.pow(N, n - 1),
+  densestBound: (n, m) => (6 * n - 5) * m + (5 * m * m) / Math.pow(N, n),
+  busyTolerated: 10,
+});
+
+/**
+ * Whether a densest reservation is a sensible thing to ask for at this
+ * level and size -- and if not, why not.
+ *
+ * The refusal cases are the useful part. A level-5 request has nothing
+ * available below ten million leaves, and whatever it does get tolerates
+ * ten failures out of a hundred million. Reporting that is more useful
+ * than returning a formula.
+ */
+function levelAdvice(n, requestedLeaves) {
+  const leaves = LEVEL_N.leavesAt(n);
+  const smallest = LEVEL_N.smallestDensestShapeAt(n);
+  const ladder = [];
+  for (let m1 = 4; m1 <= 36; m1 += 4) ladder.push(m1 * Math.pow(N, n - 1));
+
+  const advice = {
+    level: n,
+    fabricLeaves: leaves,
+    degree: LEVEL_N.degreeAt(n),
+    expansion: LEVEL_N.expansionAt(n),
+    spectralGap: LEVEL_N.spectralGap,
+    smallestDensestShape: smallest,
+    ladder,
+    busyTolerated: LEVEL_N.busyTolerated,
+    survivableFraction: LEVEL_N.busyTolerated / leaves,
+    everyDensestShapeIsALift: true,
+  };
+
+  // The recommendation does not depend on the request, and it is the
+  // most useful field here, so it is set before the early return rather
+  // than after it. (It used to sit below, so asking for level advice
+  // without a size silently dropped the one thing worth reading.)
+  advice.recommendation = n === 1
+    ? "use the level-1 catalogue directly"
+    : `a lift is the only densest option and tolerates ${LEVEL_N.busyTolerated} failures `
+      + `out of ${leaves}. For fault tolerance, compose level-1 shapes inside cells and `
+      + `accept a sub-optimal joint instead.`;
+
+  if (requestedLeaves == null) return advice;
+
+  advice.requested = requestedLeaves;
+  const exact = ladder.find((x) => x === requestedLeaves);
+  if (exact) {
+    advice.ok = true;
+    advice.maxInducedEdges = LEVEL_N.densestBound(n, requestedLeaves);
+  } else {
+    advice.ok = false;
+    advice.reason = requestedLeaves < smallest
+      ? `the smallest densest shape at level ${n} holds ${smallest} leaves; `
+        + `${requestedLeaves} is below the ladder entirely`
+      : `level-${n} densest shapes come only in multiples of ${Math.pow(N, n - 1)}`;
+    advice.nearestOnLadder = ladder.reduce((best, x) =>
+      Math.abs(x - requestedLeaves) < Math.abs(best - requestedLeaves) ? x : best, ladder[0]);
+  }
+
+  return advice;
+}
+
+// ---------------------------------------------------------------------
 // public API
 // ---------------------------------------------------------------------
 
@@ -639,6 +745,7 @@ const API = {
   optimalShape, reserveShape, maxAntiAffinity, placementCapacity, shapeMenu,
   guaranteeFor, GUARANTEES,
   LEVEL2, level2Bound, optimalShapeLevel2, materialiseLevel2, level2Ladder,
+  LEVEL_N, levelAdvice,
   frozenCatalogue,
 };
 

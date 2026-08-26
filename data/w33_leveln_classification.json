@@ -1,0 +1,114 @@
+{
+  "schema": "holotrade.w33-leveln-classification.v1",
+  "theorem": "at every level n, a set attains the densest bound iff its indicator minus a constant is a 2-eigenfunction in exactly ONE coordinate and constant in the others -- that is, iff it is a lift of a level-1 tight set",
+  "proof": "E_{lambda_2} of a Cartesian power is the direct sum of the 2-eigenspace placed in one coordinate, so 1_T = const + sum_i f_i(x_i). Since 1_T is 0/1 and |A_1+...+A_n| >= sum|A_i| - (n-1), we need sum|A_i| <= n+1, so at most one f_i is non-constant and the rest vanish.",
+  "consequence": "the robustness collapse is unavoidable: a lift is the ONLY densest shape above level 1, and every lift inherits tau_1, so better fault tolerance at scale requires giving up optimality",
+  "priorArt": "intriguing/tight sets: Payne 1987, Bamberg-Kelly-Law-Penttila. The same objects are equitable 2-partitions / perfect 2-colourings, where 'f is a perfect 2-colouring iff f - c is an eigenfunction' is standard. The separability argument is elementary and likely folklore. Nothing here is claimed as new mathematics; what is new is that THIS fabric is now classified.",
+  "invariant": "k - lambda_2 = 10 at every level, so expansion = 10/(12n) -> 0",
+  "levels": [
+    {
+      "level": 1,
+      "leaves": 40,
+      "degree": 12,
+      "lambda2": 2,
+      "spectralGap": 10,
+      "expansionRatio": 0.8333333333333334,
+      "lambda2Multiplicity": 24,
+      "predictedLambda2Multiplicity": 24,
+      "multiplicityMatches": true,
+      "densestBoundFormula": "e(T) <= (6n-5)m + 5m^2/40^n  =  1m + 5m^2/40",
+      "smallestShape": 4,
+      "smallestShapeEdges": 6,
+      "busyTolerated": 10,
+      "survivableFraction": 0.25
+    },
+    {
+      "level": 2,
+      "leaves": 1600,
+      "degree": 24,
+      "lambda2": 14,
+      "spectralGap": 10,
+      "expansionRatio": 0.4166666666666667,
+      "lambda2Multiplicity": 48,
+      "predictedLambda2Multiplicity": 48,
+      "multiplicityMatches": true,
+      "densestBoundFormula": "e(T) <= (6n-5)m + 5m^2/40^n  =  7m + 5m^2/1600",
+      "smallestShape": 160,
+      "smallestShapeEdges": 1200,
+      "busyTolerated": 10,
+      "survivableFraction": 0.00625
+    },
+    {
+      "level": 3,
+      "leaves": 64000,
+      "degree": 36,
+      "lambda2": 26,
+      "spectralGap": 10,
+      "expansionRatio": 0.2777777777777778,
+      "lambda2Multiplicity": 72,
+      "predictedLambda2Multiplicity": 72,
+      "multiplicityMatches": true,
+      "densestBoundFormula": "e(T) <= (6n-5)m + 5m^2/40^n  =  13m + 5m^2/64000",
+      "smallestShape": 6400,
+      "smallestShapeEdges": 86400,
+      "busyTolerated": 10,
+      "survivableFraction": 0.00015625
+    },
+    {
+      "level": 4,
+      "leaves": 2560000,
+      "degree": 48,
+      "lambda2": 38,
+      "spectralGap": 10,
+      "expansionRatio": 0.20833333333333334,
+      "lambda2Multiplicity": 96,
+      "predictedLambda2Multiplicity": 96,
+      "multiplicityMatches": true,
+      "densestBoundFormula": "e(T) <= (6n-5)m + 5m^2/40^n  =  19m + 5m^2/2560000",
+      "smallestShape": 256000,
+      "smallestShapeEdges": 4992000,
+      "busyTolerated": 10,
+      "survivableFraction": 0.00000390625
+    },
+    {
+      "level": 5,
+      "leaves": 102400000,
+      "degree": 60,
+      "lambda2": 50,
+      "spectralGap": 10,
+      "expansionRatio": 0.16666666666666666,
+      "lambda2Multiplicity": 120,
+      "predictedLambda2Multiplicity": 120,
+      "multiplicityMatches": true,
+      "densestBoundFormula": "e(T) <= (6n-5)m + 5m^2/40^n  =  25m + 5m^2/102400000",
+      "smallestShape": 10240000,
+      "smallestShapeEdges": 261120000,
+      "busyTolerated": 10,
+      "survivableFraction": 9.765625e-8
+    }
+  ],
+  "separability": {
+    "pairsChecked": 89280,
+    "counterexample": null,
+    "sumsetBoundHolds": true
+  },
+  "level2Checks": [
+    {
+      "level1Size": 4,
+      "level1TightSets": 40,
+      "predictedLevel2Shapes": 80,
+      "sampledVerified": 40,
+      "allSampledAttainBound": true,
+      "note": "the classification predicts exactly two lifts per level-1 tight set, and no others; the sample confirms every predicted one is genuine"
+    },
+    {
+      "level1Size": 8,
+      "level1TightSets": 585,
+      "predictedLevel2Shapes": 1170,
+      "sampledVerified": 41,
+      "allSampledAttainBound": true,
+      "note": "the classification predicts exactly two lifts per level-1 tight set, and no others; the sample confirms every predicted one is genuine"
+    }
+  ],
+  "digest": "80f8f144a328c2d4e1703d9d79ffbc44273a7de1f639b1d3613d9defee6d6797"
+}
