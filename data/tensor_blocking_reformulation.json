@@ -1,0 +1,36 @@
+{
+  "schema": "holotrade.tensor-blocking-reformulation.v1",
+  "reformulation": "X blocks every tile iff for every line M the columns { R_q : q in M } jointly meet every line; and if |X| = 110 then every column is an independent set, so |R_q| <= alpha = 7",
+  "minimumBlockerCount": 360,
+  "minimumBlockerExample": [
+    0,
+    1,
+    2,
+    5,
+    7,
+    9,
+    11,
+    12,
+    18,
+    27,
+    36
+  ],
+  "alpha": 7,
+  "columnCapWhenTight": 7,
+  "fibreSizeRelaxation": {
+    "lpOptimum": 110,
+    "integerOptimum": 110,
+    "conclusion": "the size relaxation cannot improve the lower bound; any improvement must come from the sets, not their sizes"
+  },
+  "bxbColumnView": {
+    "distinctSizes": [
+      0,
+      11
+    ],
+    "allColumnsIndependent": false,
+    "maxColumn": 11,
+    "blocking": true,
+    "note": "B x B has columns of size 11, which are NOT independent -- consistent, because independence is forced only at |X| = 110 and B x B has 121"
+  },
+  "open": "whether |X| = 110 is attained; no verdict is claimed here"
+}

@@ -1015,3 +1015,65 @@ test("the interval is narrowed but honestly still open", () => {
   assert.equal(T.depth2Certificate().exactTau, null,
     "tensor-sharding still reports the exact value as unknown");
 });
+
+// ======================================================================
+// The tensor blocking reformulation
+//
+// Where the no-ovoid result re-enters, two levels from where it was
+// proved: at |X| = 110 every column of a blocking set is forced to be a
+// partial ovoid, so alpha = 7 caps it.
+// ======================================================================
+
+const TBR = require(path.join(root, "analysis/tensor_blocking_reformulation.js"));
+
+test("there are exactly 360 minimum blocking sets of the 40 lines", () => {
+  const B = TBR.minimumBlockers();
+  assert.equal(B.length, 360);
+  for (const b of B.slice(0, 25)) {
+    assert.equal(b.length, 11);
+    for (const L of S.LINES) {
+      assert.ok(L.some((p) => b.includes(p)), "every line is met");
+    }
+  }
+  // 360 divides the automorphism group order
+  assert.equal(51840 % 360, 0);
+});
+
+test("the column view detects blocking exactly", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const B = [...T.BLOCKER];
+  const bxb = [];
+  for (const p of B) for (const q of B) bxb.push(p * 40 + q);
+  const v = TBR.columnView(bxb);
+  assert.ok(v.blocking, "B x B blocks, seen through columns");
+  assert.equal(v.maxColumn, 11);
+
+  // drop a whole column and it must stop blocking
+  const holed = bxb.filter((x) => x % 40 !== B[0]);
+  assert.ok(!TBR.columnView(holed).blocking, "removing a column breaks it");
+});
+
+test("independence of the columns is forced only at the tight count", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const B = [...T.BLOCKER];
+  const bxb = [];
+  for (const p of B) for (const q of B) bxb.push(p * 40 + q);
+  const v = TBR.columnView(bxb);
+  // B x B has 121, not 110, so its columns need not be independent -- and
+  // they are not. A test that asserted independence here would be wrong.
+  assert.equal(v.allIndependent, false);
+  assert.equal(bxb.length, 121);
+
+  // an 11-point blocker is never independent: alpha is 7
+  assert.ok(!TBR.isIndependent(B), "a minimum blocker exceeds alpha = 7");
+});
+
+test("the fibre-size relaxation cannot improve the lower bound", () => {
+  const r = TBR.run();
+  assert.equal(r.fibreSizeRelaxation.lpOptimum, 110);
+  assert.equal(r.fibreSizeRelaxation.integerOptimum, 110,
+    "integrality costs nothing here, so any improvement must come from the sets");
+  assert.equal(r.minimumBlockerCount, 360);
+  assert.match(r.open, /no verdict is claimed/,
+    "the exact value stays open and is labelled as such");
+});
