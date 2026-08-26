@@ -925,3 +925,47 @@ test("levelAdvice refuses off-ladder requests and says what to do instead", () =
 
   assert.match(shapes.levelAdvice(1).recommendation, /level-1 catalogue/);
 });
+
+// ======================================================================
+// The 36-spread graph colouring
+//
+// js/spread-obstruction.js shipped an 8-colouring that was not proper --
+// 29 monochromatic edges, and its own certificate said valid = false.
+// The chromatic number claim was right; only the assignment was wrong.
+// ======================================================================
+
+test("the shipped spread colouring is proper and matches its asserted sizes", () => {
+  require(path.join(root, "js/uor.js"));
+  require(path.join(root, "js/w33-scheduler.js"));
+  const O = require(path.join(root, "js/spread-obstruction.js"));
+  const c = O.certificate();
+  const a = O.adjacency();
+
+  assert.equal(c.valid, true, "the certificate validates");
+  assert.equal(c.chromaticNumber, 8);
+  assert.deepEqual(c.colorClassSizes, [5, 5, 5, 5, 5, 5, 4, 2]);
+
+  let mono = 0;
+  for (const batch of c.batches) {
+    for (let i = 0; i < batch.length; i++) {
+      for (let j = i + 1; j < batch.length; j++) if (a[batch[i]][batch[j]]) mono++;
+    }
+  }
+  assert.equal(mono, 0, "no colour class contains an edge");
+
+  const covered = c.batches.flat();
+  assert.equal(covered.length, 36, "every spread coloured once");
+  assert.equal(new Set(covered).size, 36, "and only once");
+});
+
+test("chi = 8 is forced by the independence number, not merely observed", () => {
+  require(path.join(root, "js/uor.js"));
+  require(path.join(root, "js/w33-scheduler.js"));
+  const O = require(path.join(root, "js/spread-obstruction.js"));
+  const c = O.certificate();
+  // a colour class is an independent set, so at least ceil(n / alpha)
+  // classes are needed. alpha = 5 and n = 36 give 8, and 8 is achieved.
+  assert.equal(c.alpha, 5);
+  assert.equal(Math.ceil(36 / c.alpha), 8);
+  assert.equal(c.chromaticNumber, 8, "the counting bound is attained");
+});

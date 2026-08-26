@@ -13,7 +13,16 @@
   const W=root.HolotradeW33Scheduler||(typeof require!=="undefined"?require("./w33-scheduler.js"):null);
   const V=root.HolotradeSpreadVenueMarket||(typeof require!=="undefined"?require("./spread-venue-market.js"):null);
   if(!W||!V)throw new Error("spread-obstruction requires w33-scheduler and spread-venue-market");
-  const COLORS=Object.freeze([0,1,2,3,4,5,6,7,6,3,4,1,0,4,1,0,2,3,5,2,4,1,5,0,3,6,2,3,4,1,0,2,5,6,5,7]);
+  // Proper 8-colouring, from analysis/spread_colouring_sat.py.
+  //
+  // The previous array had the right chromatic number and the right class
+  // sizes but was NOT a proper colouring: 29 of its edges were
+  // monochromatic, and certificate().valid reported false because of it.
+  // SAT confirms chi = 8 (alpha = 5 forces chi >= ceil(36/5) = 8, and 8 is
+  // achievable) and that the asserted profile [5,5,5,5,5,5,4,2] is itself
+  // achievable, so only the assignment needed replacing -- the theorem and
+  // the published class sizes stand unchanged.
+  const COLORS=Object.freeze([4,1,5,0,3,7,5,6,2,0,4,1,7,5,1,3,2,0,2,3,5,6,0,2,4,6,1,1,3,0,5,3,4,2,6,4]);
   const CLIQUE4=Object.freeze([26,33,34,35]);
   const COClique5=Object.freeze([0,10,24,32,35]);
   const n=()=>W.spreads().length;
