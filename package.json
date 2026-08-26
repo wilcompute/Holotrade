@@ -19,7 +19,8 @@
     "verify:packing": "node analysis/w33_shape_packing.js",
     "verify:level2": "node analysis/w33_level2.js && node analysis/w33_level2_shapes.js && node analysis/w33_level2_guarantees.js && py -3 analysis/w33_level2_check.py && node analysis/w33_leveln_classification.js",
     "verify:leveln": "node analysis/w33_leveln_classification.js",
-    "verify:colouring": "py -3 analysis/spread_colouring_sat.py"
+    "verify:colouring": "py -3 analysis/spread_colouring_sat.py",
+    "verify:tensor": "node analysis/tensor_blocking_structure.js"
   },
   "keywords": [
     "compute-exchange",

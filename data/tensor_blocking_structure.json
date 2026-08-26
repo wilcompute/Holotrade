@@ -1,0 +1,35 @@
+{
+  "schema": "holotrade.tensor-blocking-structure.v1",
+  "publishedInterval": [
+    110,
+    121
+  ],
+  "reduction": "X blocks every tile iff every line's union of fibres is a line-blocking set",
+  "tau1": 11,
+  "blockerSize": 11,
+  "lineIntersectionSizes": {
+    "1": 36,
+    "2": 4
+  },
+  "uniqueWitnessPoints": [
+    6,
+    10,
+    11,
+    12,
+    13,
+    14,
+    23,
+    28,
+    29,
+    30,
+    31
+  ],
+  "allBlockerPointsAreUniqueWitnesses": true,
+  "conditionalTau": 121,
+  "conditionalStatement": "if the support of X is a minimum blocker then every fibre must itself block, so |X| >= 121, and B x B attains it: tau = 121 exactly in that case",
+  "bxbSize": 121,
+  "bxbBlocks": true,
+  "bxbRemovableLeaves": 0,
+  "bxbIsMinimal": true,
+  "stillOpen": "beating 121 requires a support of 12 or more points; the double count still permits 110 and an integer fibre-size weighting summing to 11 on every line does exist, so no counting obstruction rules it out"
+}

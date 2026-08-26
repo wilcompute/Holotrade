@@ -969,3 +969,49 @@ test("chi = 8 is forced by the independence number, not merely observed", () => 
   assert.equal(Math.ceil(36 / c.alpha), 8);
   assert.equal(c.chromaticNumber, 8, "the counting bound is attained");
 });
+
+// ======================================================================
+// Depth-2 tensor blocking: the structural narrowing
+//
+// js/tensor-sharding.js leaves tau open at [110, 121]. This does not
+// close it, but it reduces the problem and settles it conditionally.
+// ======================================================================
+
+const TBS = require(path.join(root, "analysis/tensor_blocking_structure.js"));
+
+test("every point of a minimum line-blocker is some line's only blocker point", () => {
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const r = TBS.run();
+  assert.equal(r.blockerSize, 11);
+  assert.deepEqual(r.lineIntersectionSizes, { 1: 36, 2: 4 },
+    "44 incidences over 40 lines: 36 met once, 4 met twice");
+  assert.equal(r.uniqueWitnessPoints.length, 11,
+    "all eleven, which is what forces every fibre to block");
+  assert.ok(r.allBlockerPointsAreUniqueWitnesses);
+});
+
+test("if the support is a minimum blocker then tau is exactly 121", () => {
+  const r = TBS.run();
+  // each of the 11 fibres must itself be a line-blocking set, so >= 11
+  assert.equal(r.conditionalTau, 121);
+  assert.equal(r.bxbSize, 121);
+  assert.ok(r.bxbBlocks, "and B x B attains it");
+});
+
+test("B x B is a minimal blocking set, not merely a convenient one", () => {
+  const r = TBS.run();
+  assert.equal(r.bxbRemovableLeaves, 0,
+    "no single leaf can be dropped while still blocking every tile");
+  assert.ok(r.bxbIsMinimal);
+});
+
+test("the interval is narrowed but honestly still open", () => {
+  const r = TBS.run();
+  assert.deepEqual(r.publishedInterval, [110, 121]);
+  assert.match(r.stillOpen, /support of 12 or more/,
+    "beating 121 requires a larger support; that case is not settled here");
+  // the module must not claim an exact value it does not have
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  assert.equal(T.depth2Certificate().exactTau, null,
+    "tensor-sharding still reports the exact value as unknown");
+});
