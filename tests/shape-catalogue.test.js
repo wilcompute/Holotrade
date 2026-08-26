@@ -1077,3 +1077,52 @@ test("the fibre-size relaxation cannot improve the lower bound", () => {
   assert.match(r.open, /no verdict is claimed/,
     "the exact value stays open and is labelled as such");
 });
+
+// ======================================================================
+// The tight case: what is forced at |X| = 110
+// ======================================================================
+
+const TTO = require(path.join(root, "analysis/tensor_tight_obstructions.js"));
+
+test("the incidence identity Nmat^T Nmat = 4I + A holds exactly", () => {
+  const r = TTO.incidenceIdentity();
+  assert.ok(r.holds, `mismatches: ${JSON.stringify(r.mismatches)}`);
+  // it is the statement that two collinear points share exactly one line
+  for (let p = 0; p < 40; p++) {
+    for (const q of S.ADJ[p]) {
+      const shared = S.LINES.filter((L) => L.includes(p) && L.includes(q));
+      assert.equal(shared.length, 1);
+    }
+  }
+});
+
+test("the row sums of a tight blocker satisfy (A + 4I) r = 44 . 1", () => {
+  const c = TTO.cosetCheck();
+  assert.equal(c.degreePlusFour, 16, "k + 4 = 16");
+  assert.ok(c.equals44, "(11/4) * 16 = 44, so the uniform vector is a solution");
+  // the homogeneous part is the (-4)-eigenspace, dimension 15
+  const spec = { 12: 1, 2: 24, "-4": 15 };
+  assert.equal(spec["-4"], 15);
+});
+
+test("every minimum blocking set induces a bipartite subgraph", () => {
+  // 11 points, alpha = 7, and yet chi = 2: minimum blockers of this
+  // quadrangle are almost independent sets.
+  const r = TTO.run();
+  assert.equal(r.minimumBlockerChromaticDistribution["2"], 360);
+  assert.ok(r.minimumBlockersAreBipartite);
+  // so the "four fibres per line" constraint is nowhere near binding
+  const obstruction = r.obstructionsTried.find((o) => /colourability/.test(o.name));
+  assert.equal(obstruction.fires, false);
+});
+
+test("every arithmetic relaxation of the tight case survives", () => {
+  const r = TTO.run();
+  assert.equal(r.obstructionsTried.length, 4);
+  for (const o of r.obstructionsTried) {
+    assert.equal(o.fires, false,
+      `${o.name} was expected not to fire; if it now does, the bound improves`);
+  }
+  assert.match(r.conclusion, /stays open/,
+    "and the exact value is still reported as open");
+});

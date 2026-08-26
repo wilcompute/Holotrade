@@ -1,0 +1,52 @@
+{
+  "schema": "holotrade.tensor-tight-obstructions.v1",
+  "question": "is the double-count bound 110 attained by a depth-2 tile blocker?",
+  "forcedAtTightCount": [
+    "every line-sum is exactly 11, in both the row and the column view",
+    "the four fibres on each line are pairwise disjoint",
+    "hence every row and every column is an independent set, capped by alpha = 7",
+    "each line's union of fibres is one of the 360 minimum blocking sets"
+  ],
+  "incidenceIdentity": {
+    "holds": true,
+    "mismatches": []
+  },
+  "rowSumEigenEquation": {
+    "statement": "(A + 4I) r = 44 . 1",
+    "derivation": "Nmat r = 11 . 1 and Nmat^T Nmat = 4I + A",
+    "degreePlusFour": 16,
+    "particular": 2.75,
+    "product": 44,
+    "equals44": true,
+    "solutionSpace": "(11/4) . 1 + E_{-4}, the 15-dimensional (-4)-eigenspace"
+  },
+  "obstructionsTried": [
+    {
+      "name": "fibre-size relaxation",
+      "result": "LP optimum 110, integer optimum 110",
+      "fires": false,
+      "meaning": "integrality costs nothing, so no improvement can come from sizes alone"
+    },
+    {
+      "name": "integrality of the eigen-coset",
+      "result": "integer points of (11/4).1 + E_{-4} exist",
+      "fires": false
+    },
+    {
+      "name": "independence cap alpha = 7 on the row sums",
+      "result": "integer solutions with every r_p <= 7 still exist",
+      "fires": false
+    },
+    {
+      "name": "four-colourability of the fibre unions",
+      "result": "all 360 minimum blockers are 2-colourable",
+      "fires": false,
+      "meaning": "a line supplies four fibres and two would suffice; nowhere near binding"
+    }
+  ],
+  "minimumBlockerChromaticDistribution": {
+    "2": 360
+  },
+  "minimumBlockersAreBipartite": true,
+  "conclusion": "every arithmetic relaxation tried survives, so any obstruction is genuinely combinatorial and must come out of search; the exact value stays open"
+}
