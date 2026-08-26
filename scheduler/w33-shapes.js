@@ -282,6 +282,75 @@ function guaranteeFor(m, kind = "densest") {
 }
 
 // ---------------------------------------------------------------------
+// TENSOR RESERVATIONS: the same guarantee, one level up
+//
+// A depth-n tensor reservation is a product of n W(3,3) lines -- 4^n
+// leaves in a 40^n fabric. The guarantee has the same shape as the
+// single-cell one above: if fewer than tau_n leaves are unavailable then
+// SOME product placement is still entirely clear, whichever leaves those
+// are.
+//
+// tau_2 is NOT known exactly, and this is the one place in the scheduler
+// where a guarantee rests on an open interval. Shadow double-counting
+// proves tau_2 >= 110, so 109 busy leaves are always survivable and that
+// number is safe to quote. An explicit 115-leaf blocker exists
+// (data/tensor_symmetric_blocker.json, verified leaf-by-leaf against all
+// 1600 tiles), so 115 simultaneous failures CAN defeat every placement --
+// meaning the true tolerance is somewhere in [109, 114] and cannot be
+// better than 114.
+//
+// The engineering reading: quote 109, design for 109, and do not promise
+// more until the interval closes. The gap is an honest 5, down from 11 --
+// the 115 witness replaced the earlier product construction B x B = 121,
+// which is now proved non-optimal.
+// ---------------------------------------------------------------------
+
+const TENSOR = Object.freeze({
+  tau1: 11,
+  depth2Lower: 110,
+  depth2Upper: 115,
+  productUpperSuperseded: 121,
+  source: "data/tensor_symmetric_blocker.json; js/tensor-sharding.js re-verifies the witness",
+});
+
+/**
+ * Worst-case placement guarantee for a depth-n tensor reservation.
+ *
+ * busyTolerated is the PROVED figure and is what a quote may rely on.
+ * busyToleratedCeiling is the most any future proof could raise it to,
+ * because a blocker of that size is already known to exist.
+ */
+function tensorGuarantee(depth = 2) {
+  if (!Number.isInteger(depth) || depth < 1) {
+    throw new RangeError("depth must be a positive integer");
+  }
+  const lower = depth === 1 ? TENSOR.tau1 : TENSOR.tau1 * Math.pow(10, depth - 1);
+  const upper = depth === 1
+    ? TENSOR.tau1
+    : Math.pow(TENSOR.depth2Upper, Math.floor(depth / 2))
+      * Math.pow(TENSOR.tau1, depth % 2);
+  return {
+    depth,
+    leaves: Math.pow(4, depth),
+    fabric: Math.pow(40, depth),
+    blockingLower: lower,
+    blockingUpper: upper,
+    exact: depth === 1,
+    busyTolerated: lower - 1,
+    busyToleratedCeiling: upper - 1,
+    open: depth > 1,
+    openGap: upper - lower,
+    method: depth === 1
+      ? "exact SAT blocking certificate"
+      : "shadow double-count for the floor; explicit verified blocker for the ceiling",
+    boundary: depth === 1
+      ? "exact"
+      : "busyTolerated is proved and safe to quote; the true tolerance lies in "
+        + "[" + (lower - 1) + ", " + (upper - 1) + "] and is not known exactly",
+  };
+}
+
+// ---------------------------------------------------------------------
 // LEVEL 2: multi-cell reservations
 //
 // Everything above reserves points inside ONE 40-point cell. A server
@@ -744,6 +813,7 @@ const API = {
   bounds, inducedEdges, edgeBoundary, profile,
   optimalShape, reserveShape, maxAntiAffinity, placementCapacity, shapeMenu,
   guaranteeFor, GUARANTEES,
+  tensorGuarantee, TENSOR,
   LEVEL2, level2Bound, optimalShapeLevel2, materialiseLevel2, level2Ladder,
   LEVEL_N, levelAdvice,
   frozenCatalogue,

@@ -1087,6 +1087,55 @@ test("the 115 witness refutes the hypothesis of the conditional tau=121 theorem"
     "any row support must block all 40 lines");
 });
 
+test("the tensor guarantee agrees with the exact single-cell one at depth 1", () => {
+  const SH = require(path.join(root, "scheduler/w33-shapes.js"));
+  // depth 1 is just a line: it must reproduce the frozen m=4 SAT guarantee
+  const one = SH.tensorGuarantee(1);
+  const line = SH.guaranteeFor(4, "densest");
+  assert.equal(one.blockingLower, line.blockingNumber);
+  assert.equal(one.busyTolerated, line.busyTolerated);
+  assert.equal(one.busyTolerated, 10);
+  assert.equal(one.exact, true);
+  assert.equal(one.open, false);
+  assert.equal(one.openGap, 0);
+});
+
+test("the tensor guarantee quotes the proved floor and names the ceiling it cannot pass", () => {
+  const SH = require(path.join(root, "scheduler/w33-shapes.js"));
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const g = SH.tensorGuarantee(2);
+  // the quotable number is the PROVED one
+  assert.equal(g.busyTolerated, 109);
+  assert.equal(g.blockingLower, T.tensorBlockingBounds(2).lower);
+  // and a 115-leaf blocker exists, so no proof can ever push it past 114
+  assert.equal(g.busyToleratedCeiling, 114);
+  assert.equal(g.blockingUpper, T.tensorBlockingBounds(2).upper);
+  assert.equal(g.open, true);
+  assert.equal(g.openGap, 5);
+  assert.match(g.boundary, /not known exactly/);
+  // the scheduler's constants must not drift from the engine's
+  assert.equal(SH.TENSOR.depth2Lower, T.tensorBlockingBounds(2).lower);
+  assert.equal(SH.TENSOR.depth2Upper, T.tensorBlockingBounds(2).upper);
+  assert.equal(SH.TENSOR.productUpperSuperseded, T.tensorBlockingBounds(2).productUpper);
+  assert.equal(SH.TENSOR.tau1, T.TAU1);
+});
+
+test("tensor guarantees track the submultiplicative bound at every depth", () => {
+  const SH = require(path.join(root, "scheduler/w33-shapes.js"));
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  for (const d of [1, 2, 3, 4, 5]) {
+    const g = SH.tensorGuarantee(d);
+    const b = T.tensorBlockingBounds(d);
+    assert.equal(g.blockingLower, b.lower, `depth ${d} floor`);
+    assert.equal(g.blockingUpper, b.upper, `depth ${d} ceiling`);
+    assert.equal(g.leaves, Math.pow(4, d));
+    assert.equal(g.fabric, Math.pow(40, d));
+    assert.ok(g.busyTolerated < g.fabric, "a guarantee cannot exceed the fabric");
+  }
+  assert.throws(() => SH.tensorGuarantee(0), RangeError);
+  assert.throws(() => SH.tensorGuarantee(1.5), RangeError);
+});
+
 test("the 115 improvement propagates to every depth by submultiplicativity", () => {
   const T = require(path.join(root, "js/tensor-sharding.js"));
   // tau_(a+b) <= tau_a * tau_b, so the best product uses depth-2 factors
