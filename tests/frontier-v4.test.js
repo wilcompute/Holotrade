@@ -45,6 +45,7 @@ test("capability transition receipt remains immutable while superseded evidence 
   ledger.add({id:"offer-proof-v2",status:E.STATUS.VERIFIED,evidenceClass:E.EVIDENCE_CLASS.FORMAL_WITNESS,scope:E.SCOPE.FORMAL,claim:"superseding proof",supersedes:["offer-proof"],createdAt:3});assert.equal(CT.currentAdmission(receipt,ledger).admitted,false);assert.equal(receipt.digest,digest);assert.equal(receipt.status,"COMMITTED");
 });
 
-test("tensor frontier preserves [110,121] and certifies the tight eigen-equation prerequisite without overclaiming closure",()=>{
-  const c=TF.tightNecessaryConditions();assert.equal(c.valid,true);assert.deepEqual(c.interval,[110,121]);assert.equal(c.exactTau,null);assert.equal(c.searchStatus.startsWith("OPEN"),true);assert.equal(c.theorem.incidenceGram4IplusA,true);assert.equal(c.tightNecessaryEquation,"(A + 4 I) r = 44 * 1");
+test("tensor frontier preserves the open interval and certifies the tight eigen-equation prerequisite without overclaiming closure",()=>{
+  const c=TF.tightNecessaryConditions();assert.equal(c.valid,true);assert.deepEqual(c.interval,[110,115]);// 121 was the product bound B x B; it is superseded but still recorded
+  assert.equal(c.theorem.productUpperWas121,true);assert.equal(c.theorem.productConstructionNotOptimal,true);assert.equal(c.theorem.upperStrictlyBeatsProduct,true);assert.equal(c.exactTau,null);assert.equal(c.searchStatus.startsWith("OPEN"),true);assert.equal(c.theorem.incidenceGram4IplusA,true);assert.equal(c.tightNecessaryEquation,"(A + 4 I) r = 44 * 1");
 });

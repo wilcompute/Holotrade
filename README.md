@@ -152,6 +152,32 @@ That bound now agrees with `fabricDistance` and has explicit witnesses in the te
 
 Likewise, \(9^t\) is an illustrative declared-workload cost model. Gottesman–Knill establishes efficient classical simulation for stabilizer circuits; it does not make memory, routing, error correction, or all Clifford computation free, and it does not make \(9^t\) a universal runtime law.
 
+### Tensor placement robustness, and one open interval
+
+A depth-2 tensor tile is \(L\times M\) for two W(3,3) lines: 16 leaves in the \(40\times40\) fabric. The
+relevant quantity is \(\tau_2\), the fewest leaf failures that can leave **no** intact tile anywhere. Fewer
+than \(\tau_2\) failures always leave some tile whole, so \(\tau_2-1\) is a hard survivability floor.
+
+Shadow double-counting proves \(\tau_2\ge110\), and the obvious construction \(B\times B\) from an 11-point
+line blocker gives 121. The gap resisted direct search: CP-SAT over all \(2^{1600}\) subsets reproduced
+exactly those endpoints and then stalled, because the problem's stabiliser \(\mathrm{Aut}(W_{33})\wr C_2\)
+has order \(51840^2\cdot2\approx5.4\times10^9\) and the solver re-explores every candidate billions of times.
+
+Searching only blockers **invariant** under a cyclic subgroup collapses the 1,600 leaf variables to one per
+orbit, and CP-SAT then answers in seconds. That gives an explicit 115-leaf blocker — verified leaf-by-leaf
+against all 1,600 tiles, and minimal in the sense that no single leaf can be dropped. Blocking numbers are
+submultiplicative, so the improvement propagates: \(\tau_n\le115^{\lfloor n/2\rfloor}\cdot11^{n\bmod2}\),
+beating \(11^n\) at every \(n\ge2\). The depth-3 witness is verified against all 64,000 depth-3 tiles.
+
+The structural consequence matters more than the six leaves: the witness has row support 37, not 11, so
+\(B\times B\) is **not** optimal and the product construction behind the 121 figure is strictly beatable.
+
+**\(\tau_2\) itself is still open in \([110,115]\).** The lower bound has not moved. Two models that encode
+everything tightness forces at 110 — both shadow families pinned to the exactly 360 minimum blockers, every
+fibre and co-fibre an independent set capped by \(\alpha=7\), and the degree identity linking them — each
+returned UNKNOWN rather than a decision. That is recorded as a negative result; `exactTau` is `null` in the
+engine and the tests pin the open wording.
+
 The E8-to-W33 refinement is a promising future topology compiler only after an explicit, complete certificate exists. The truncated external JSON previously considered for this repo is intentionally not imported.
 
 ## Product boundary
