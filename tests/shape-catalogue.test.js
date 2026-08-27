@@ -1236,6 +1236,45 @@ test("the coclique census of W(3,3) is recomputed, not trusted", () => {
   assert.ok(census.independenceNumber < census.hoffmanRatioBound);
 });
 
+test("the cyclotomic bridge holds at q=3 and is killed at q=5", () => {
+  const c = require(path.join(root, "data/w33_cyclotomic_bridge_killed.json"));
+  assert.equal(c.valid, true);
+  const [q3, q5] = c.instances;
+
+  // q = 3: the fit that made it tempting
+  assert.equal(q3.q, 3);
+  assert.equal(q3.points, 40);
+  assert.equal(q3.srgConfirmed, true);
+  assert.equal(q3.ovoidSize, 10);          // Phi_4(3) = q^2+1
+  assert.equal(q3.alpha, 7);
+  assert.equal(q3.phi6, 7);                // Phi_6(3) = q^2-q+1
+  assert.equal(q3.alphaEqualsPhi6, true);
+  assert.equal(q3.cocliqueDeficit, 3);
+  assert.equal(q3.deficitEqualsQ, true);
+
+  // q = 5: the prediction, and its failure
+  assert.equal(q5.q, 5);
+  assert.equal(q5.points, 156);            // (q+1)(q^2+1)
+  assert.equal(q5.srgConfirmed, true);     // SRG(156,30,4,6)
+  assert.equal(q5.ovoidSize, 26);
+  assert.equal(q5.phi6, 21, "the prediction was 21");
+  assert.equal(q5.alpha, 18, "the truth is 18");
+  assert.equal(q5.alphaEqualsPhi6, false);
+  assert.equal(q5.cocliqueDeficit, 8);
+  assert.equal(q5.deficitEqualsQ, false);
+
+  // both alphas are established, not asserted
+  for (const r of c.instances) {
+    assert.equal(r.alphaStatus, "OPTIMAL");
+    assert.equal(r.nextSizeStatus, "INFEASIBLE", "alpha+1 must be refuted");
+    assert.equal(r.witnessCollinearPairs, 0,
+      "the witness is checked against the symplectic form itself");
+    assert.equal(r.witnessDistinct, true);
+  }
+  assert.match(c.verdict, /FALSE/);
+  assert.match(c.boundary, /weaker evidence of a shared\s+object, not stronger/);
+});
+
 test("one ovoid suffices: three products close, one stays open", () => {
   const o = require(path.join(root, "data/tensor_one_ovoid_suffices.json"));
   assert.equal(o.valid, true);

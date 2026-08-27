@@ -1,0 +1,44 @@
+{
+  "schema": "holotrade.w33-cyclotomic-bridge-killed.v1",
+  "valid": true,
+  "temptation": "their 3-5-7 is cyclotomic at q=3, and Phi_4(3)=10 is W(3,3)'s ovoid size while Phi_6(3)=7 is its independence number, with coclique deficit exactly q",
+  "prediction": "alpha(W(3,q)) = Phi_6(q), deficit = q",
+  "instances": [
+    {
+      "q": 3,
+      "points": 40,
+      "srgConfirmed": true,
+      "ovoidSize": 10,
+      "alpha": 7,
+      "alphaStatus": "OPTIMAL",
+      "witnessCollinearPairs": 0,
+      "witnessDistinct": true,
+      "nextSizeStatus": "INFEASIBLE",
+      "phi6": 7,
+      "alphaEqualsPhi6": true,
+      "cocliqueDeficit": 3,
+      "deficitEqualsQ": true
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "srgConfirmed": true,
+      "ovoidSize": 26,
+      "alpha": 18,
+      "alphaStatus": "OPTIMAL",
+      "witnessCollinearPairs": 0,
+      "witnessDistinct": true,
+      "nextSizeStatus": "INFEASIBLE",
+      "phi6": 21,
+      "alphaEqualsPhi6": false,
+      "cocliqueDeficit": 8,
+      "deficitEqualsQ": false
+    }
+  ],
+  "verdict": "FALSE -- holds at q=3, fails at q=5",
+  "alphaW35": 18,
+  "alphaW35Establishment": "explicit 18-point set checked against the symplectic form itself (zero collinear pairs, all projectively distinct), plus size 19 proved INFEASIBLE",
+  "recollectionNote": "a Tallini-type bound (q^2+q+2)/2 came to mind, giving 16 at q=5 and forbidding this; it matches at q=3 and fails here. The witness is verified against the defining form, so the computation stands and the recollection does not apply",
+  "whatSurvives": "only the q=3 facts, already ours: alpha = 7 against Hoffman 10, coclique deficit 3, blocking ovoid defect 1",
+  "boundary": "two different q=3 exceptionalities meeting at the number seven is weaker evidence of a shared object, not stronger; many things are special at q=3, and the Lagrange obstruction still says no C7 acts on W(3,3) at all"
+}
