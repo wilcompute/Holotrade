@@ -1,0 +1,16 @@
+{
+  "schema": "holotrade.tensor-lower-sdp-ceiling.v1",
+  "status": "optimal",
+  "sdpBound": 100.0,
+  "plainFractionalBound": 100,
+  "shadowBound": 110,
+  "reachesShadowBound": false,
+  "commutantDimension": 9,
+  "conclusion": "a symmetry-reduced Lasserre-1 SDP returns the plain fractional bound and does not reach 110",
+  "rulesOut": "any convex relaxation whose only structure is the two-point association scheme; the shadow argument concerns lines, which are four-point objects",
+  "remainingRoutes": [
+    "a relaxation with line-level variables (Lasserre level 4 or a line-indexed formulation)",
+    "a combinatorial argument converting the ovoid defect into a statement about the product"
+  ],
+  "boundary": "this bounds the METHOD family, not tau_2, which stays open in [110, 115]"
+}

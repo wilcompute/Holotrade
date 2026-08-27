@@ -105,7 +105,7 @@ has row support **37**, so that hypothesis is now known **false at the optimum**
 the product construction that produced the 121 figure in the first place is strictly beatable. The recursive
 upper bound `11^n` inherits the same defect at every depth.
 
-### Why the gap exists at all: multiplicativity and the ovoid defect
+### Why the gap exists at all: the ovoid defect controls its width
 
 Five attacks on the tight case failed. Rather than a sixth, ask where the interval comes from -- and the
 answer is a one-line derivation that explains it completely.
@@ -119,7 +119,13 @@ where `delta = tau_1 - (st+1)` is the **ovoid defect** -- how far the blocking n
 size. A blocking set of size `st+1` is exactly an ovoid, so `delta = 0` **iff** the quadrangle has an ovoid,
 and then the two bounds coincide:
 
-> **The tensor blocking number is multiplicative exactly when the quadrangle has an ovoid.**
+> **An ovoid is SUFFICIENT for multiplicativity: `delta = 0` collapses the two bounds onto each other, so
+> `tau_2 = tau_1^2`.**
+
+The converse does **not** follow from the bound gap, and an earlier draft of this section claimed it did.
+A positive defect *opens* an interval; it does not force `tau_2` to sit below the top of it, so "no ovoid"
+alone does not give non-multiplicativity. W(3,3) *is* non-multiplicative, but that is established
+separately, by the certified 115-leaf blocker beating `11^2 = 121` -- not by the width of the interval.
 
 Two instances, both computed:
 
@@ -140,6 +146,27 @@ No literature on blocking numbers of *products* of generalized quadrangles turne
 consequence of two standard bounds, so it is recorded as a derivation that explains our interval rather than
 as a discovery.
 
+### A ceiling on convex relaxations
+
+Before an eighth combinatorial attack, it is worth asking whether the other standard tool could work at all.
+It cannot, and the answer is cheap.
+
+`Aut(W33) x Aut(W33)` has three orbitals on point pairs, so nine on leaf pairs, and the Shor (Lasserre-1)
+relaxation symmetrises down to **ten variables**. The product constraints collapse too, for a reason worth
+naming: in a generalized quadrangle a point off a line is collinear with *exactly one* of its points, so the
+relation-count vector from a point to a line's four points is `(1,3,0)` on the line and `(0,1,3)` off it --
+two cases per coordinate.
+
+The optimum is **exactly 100** -- the plain fractional bound `1600/16` that transitivity gives for free. The
+SDP does not merely fail to beat the shadow bound of 110; it fails to *reach* it.
+
+The reason is structural. The shadow argument is about **lines** -- four-point objects that a two-point
+scheme cannot express. So no relaxation built on pairwise structure can prove `tau_2 >= 111`, however much
+PSD machinery is stacked on it. Strengthening the cone at the two-point level is provably a dead end.
+
+That leaves two honest routes: a formulation whose variables live at the level of lines, or a combinatorial
+argument converting the ovoid defect directly into a statement about the product.
+
 ### Where the two bounds now stand
 
 The upper bound has been attacked by four independent methods and the lower bound by five exact models:
@@ -158,7 +185,12 @@ The upper bound has been attacked by four independent methods and the lower boun
 
 Supporting census: W(3,3) has exactly **40,055** independent sets -- 1, 40, 540, 3240, 9450, 13824, 10080,
 2880 by size -- and `alpha = 7` against a Hoffman ratio bound of 10. Every fibre and co-fibre of a tight
-blocker is drawn from that list, and the `7 < 10` shortfall is the same ovoid defect.
+blocker is drawn from that list.
+
+Two different deficits are in play here and must not be conflated: the **blocking** ovoid defect
+`delta = tau_1 - (st+1) = 11 - 10 = 1`, which is what sets the interval width, and the **coclique** deficit
+`(st+1) - alpha = 10 - 7 = 3`, which is how far the largest partial ovoid falls short of a real one. Both
+are symptoms of the same missing ovoid; they are not the same number.
 
 ### The centre of a minimum blocker -- and the citation that stops this being a discovery
 

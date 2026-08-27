@@ -1236,12 +1236,31 @@ test("the coclique census of W(3,3) is recomputed, not trusted", () => {
   assert.ok(census.independenceNumber < census.hoffmanRatioBound);
 });
 
-test("the tensor blocking number is multiplicative exactly when an ovoid exists", () => {
+test("no two-point convex relaxation can prove the lower bound", () => {
+  const s = require(path.join(root, "data/tensor_lower_sdp_ceiling.json"));
+  assert.equal(s.status, "optimal");
+  assert.equal(s.commutantDimension, 9);
+  // the symmetry-reduced Lasserre-1 SDP returns the plain fractional bound
+  assert.equal(s.plainFractionalBound, 100);
+  assert.ok(Math.abs(s.sdpBound - 100) < 1e-3,
+    "the SDP collapses to 1600/16, adding nothing");
+  // it does not even reach the elementary shadow bound
+  assert.equal(s.shadowBound, 110);
+  assert.equal(s.reachesShadowBound, false);
+  assert.ok(s.sdpBound < s.shadowBound);
+  // and the record says what that bounds: the method family, not tau_2
+  assert.match(s.rulesOut, /two-point association scheme/);
+  assert.match(s.boundary, /bounds the METHOD family, not tau_2/);
+  assert.equal(s.remainingRoutes.length, 2);
+});
+
+test("an ovoid is sufficient for multiplicativity; the converse is not claimed", () => {
   const d = require(path.join(root, "data/tensor_multiplicativity_ovoid_defect.json"));
   assert.equal(d.valid, true);
   const [gq22, w33] = d.instances;
 
-  // GQ(2,2) has an ovoid: the two bounds coincide and tau_2 is exactly tau_1^2
+  // GQ(2,2) has an ovoid: the two bounds coincide, so tau_2 is exactly tau_1^2.
+  // This is the SUFFICIENT direction and is all that is proved.
   assert.equal(gq22.hasOvoid, true);
   assert.equal(gq22.ovoidDefect, 0);
   assert.equal(gq22.tau1, gq22.ovoidSize);
@@ -1252,7 +1271,9 @@ test("the tensor blocking number is multiplicative exactly when an ovoid exists"
   assert.equal(gq22.tau2Status, "OPTIMAL", "solved exactly, no symmetry assumed");
   assert.equal(gq22.multiplicative, true);
 
-  // W(3,3) has none: the defect is 1 and the gap is exactly tau_1 * delta
+  // W(3,3) has none: the defect is 1 and the gap is exactly tau_1 * delta.
+  // That opens an interval; it does NOT by itself prove non-multiplicativity.
+  // W(3,3) is non-multiplicative because the 115 witness beats 121.
   assert.equal(w33.hasOvoid, false);
   assert.equal(w33.ovoidDefect, 1);
   assert.equal(w33.tau1, 11);
