@@ -1,0 +1,99 @@
+{
+  "schema": "holotrade.crosstrack-hexagon-quadrangle.v1",
+  "bettiCompanion": {
+    "theirs": "beta1(Levi(H(q))) = q^6, Pass10501-10516",
+    "ours": "beta1(Levi(GQ(s,t))) = (st)^2",
+    "w33": 81,
+    "uniform": "generalized 2m-gon of order (q,q): beta1 = q^(2m)",
+    "table": [
+      {
+        "s": 2,
+        "t": 2,
+        "V": 30,
+        "E": 45,
+        "beta1": 16,
+        "stSquared": 16,
+        "matches": true
+      },
+      {
+        "s": 3,
+        "t": 3,
+        "V": 80,
+        "E": 160,
+        "beta1": 81,
+        "stSquared": 81,
+        "matches": true
+      },
+      {
+        "s": 2,
+        "t": 4,
+        "V": 72,
+        "E": 135,
+        "beta1": 64,
+        "stSquared": 64,
+        "matches": true
+      },
+      {
+        "s": 4,
+        "t": 2,
+        "V": 72,
+        "E": 135,
+        "beta1": 64,
+        "stSquared": 64,
+        "matches": true
+      },
+      {
+        "s": 3,
+        "t": 9,
+        "V": 392,
+        "E": 1120,
+        "beta1": 729,
+        "stSquared": 729,
+        "matches": true
+      },
+      {
+        "s": 4,
+        "t": 4,
+        "V": 170,
+        "E": 425,
+        "beta1": 256,
+        "stSquared": 256,
+        "matches": true
+      },
+      {
+        "s": 5,
+        "t": 5,
+        "V": 312,
+        "E": 936,
+        "beta1": 625,
+        "stSquared": 625,
+        "matches": true
+      }
+    ],
+    "novelty": "elementary Euler characteristic; recorded as the quadrangle companion, not a discovery"
+  },
+  "nineTriples": {
+    "theirs": "canonical nine-triple organization of 27 states, Pass10477-10484, from the Wilson 13:6 normalizer",
+    "ours": "the 9 minimum blockers at each centre partition the far-27 into 9 disjoint 3-cocliques, at all 40 centres",
+    "partitionsAtEveryCentre": true,
+    "far27": {
+      "degree": [
+        8
+      ],
+      "lambda": [
+        1
+      ],
+      "mu": [
+        0,
+        3
+      ],
+      "triangles": 36
+    },
+    "rivalPartitions": 200000,
+    "rivalPartitionsCapped": true,
+    "isABridge": false,
+    "why": "a nine-triple organization of 27 is a common architecture -- at least 200,000 exist on this graph alone -- so matching the shape is close to no evidence of a shared object",
+    "whatSurvives": "the 360 minimum blockers select exactly 40 of those partitions, one per centre, with no choices made"
+  },
+  "boundary": "no objectwise identification with any other track's carrier is claimed, in line with their own practice of rejecting identification without an intertwiner"
+}

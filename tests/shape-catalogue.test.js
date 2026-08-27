@@ -1236,6 +1236,52 @@ test("the coclique census of W(3,3) is recomputed, not trusted", () => {
   assert.ok(census.independenceNumber < census.hoffmanRatioBound);
 });
 
+test("the Levi Betti companion to the other track's hexagon theorem", () => {
+  const S = require(path.join(root, "js/substrate.js"));
+  const c = require(path.join(root, "data/crosstrack_hexagon_quadrangle.json"));
+  // beta1(Levi(GQ(s,t))) = (st)^2, recomputed from the actual incidence graph
+  const V = 80;
+  let E = 0;
+  for (const L of S.LINES) E += L.length;
+  assert.equal(E, 160);
+  assert.equal(E - V + 1, 81);
+  assert.equal(c.bettiCompanion.w33, 81);
+  assert.equal(81, Math.pow(3, 4), "3^4, the (st)^2 value at s=t=3");
+  for (const r of c.bettiCompanion.table) {
+    assert.equal(r.beta1, r.stSquared, `(s,t)=(${r.s},${r.t})`);
+    assert.equal(r.matches, true);
+  }
+  // framed as elementary, not as a discovery
+  assert.match(c.bettiCompanion.novelty, /not a discovery/);
+});
+
+test("the nine-triple shape match is recorded as NOT a bridge", () => {
+  const c = require(path.join(root, "data/crosstrack_hexagon_quadrangle.json"));
+  // the structure is real: 9 blockers per centre partition the far-27
+  assert.equal(c.nineTriples.partitionsAtEveryCentre, true);
+  // but the architecture is common, so it is not evidence of a shared object
+  assert.equal(c.nineTriples.isABridge, false);
+  assert.ok(c.nineTriples.rivalPartitions >= 200000);
+  assert.match(c.nineTriples.why, /common architecture/);
+  assert.match(c.nineTriples.whatSurvives, /one per centre/);
+  assert.match(c.boundary, /no objectwise identification/);
+});
+
+test("the far-27 subconstituent has the parameters the note claims", () => {
+  const S = require(path.join(root, "js/substrate.js"));
+  const c = require(path.join(root, "data/crosstrack_hexagon_quadrangle.json"));
+  // rank-3 shell around a point: 1 + 12 + 27
+  const p = 0;
+  const near = new Set();
+  for (const L of S.LINES) if (L.includes(p)) for (const q of L) if (q !== p) near.add(q);
+  assert.equal(near.size, 12);
+  const far = [...Array(40).keys()].filter((q) => q !== p && !near.has(q));
+  assert.equal(far.length, 27);
+  const deg = far.map((a) => far.filter((b) => a !== b && S.isAdjacent(a, b)).length);
+  assert.deepEqual([...new Set(deg)], c.nineTriples.far27.degree);
+  assert.deepEqual([...new Set(deg)], [8]);
+});
+
 test("no two-point convex relaxation can prove the lower bound", () => {
   const s = require(path.join(root, "data/tensor_lower_sdp_ceiling.json"));
   assert.equal(s.status, "optimal");
