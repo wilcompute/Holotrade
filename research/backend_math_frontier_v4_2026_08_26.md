@@ -146,6 +146,35 @@ No literature on blocking numbers of *products* of generalized quadrangles turne
 consequence of two standard bounds, so it is recorded as a derivation that explains our interval rather than
 as a discovery.
 
+### One ovoid suffices -- and the dual product is exactly 110
+
+Ten attacks on `tau_2(W(3,3))` failed. So stop attacking that object and compute its **neighbours**.
+
+Running the shadow count over axis *i* of a product `Q1 x Q2` gives `tau >= (s_i t_i + 1) * tau_j`, and
+`B1 x B2` gives `tau <= tau_1 * tau_2`. If `Q_i` has an ovoid then `tau_i = s_i t_i + 1` and that axis's
+lower bound *is* the upper bound:
+
+> **If EITHER factor has an ovoid, `tau(Q1 x Q2) = tau_1 * tau_2`. One ovoid suffices, not two.**
+
+| product | ovoid? | lower | upper | `tau` |
+|---|---|---|---|---|
+| W(3,2) x W(3,2) | both | 25 | 25 | **25** |
+| W(3,2) x W(3,3) | one | 55 | 55 | **55** |
+| W(3,3) x Q(4,3) | one | 110 | 110 | **110** |
+| W(3,3) x W(3,3) | **neither** | 110 | 121 | **open** |
+
+**The third row is the point.** W(3,3) has no ovoid -- Thas, for odd `q` -- but it *does* have **spreads**:
+36 of them, ten disjoint lines covering all forty points. A spread of W(3,3) is exactly an ovoid of the dual
+`Q(4,3)`. So `Q(4,3)` has an ovoid, `tau(Q(4,3)) = 10`, and the theorem applies.
+
+The two products then live on the **same 40x40 grid with 1600 tiles of 16 leaves**, differing only in which
+tiles: `line x line` versus `line x pencil`. The answers are `[110,115]` open versus **110 exactly**, with an
+explicit witness (11-point blocker x 10-line spread) verified leaf-by-leaf against all 1600 tiles.
+
+Swapping one factor for its dual closes the problem outright, because duality converts "no ovoid" into "has
+an ovoid". That is a precise measurement of what the defect costs: not a vague obstruction, but the
+difference between an interval of width five and a closed value, on two problems of identical size and shape.
+
 ### A ceiling on convex relaxations
 
 Before an eighth combinatorial attack, it is worth asking whether the other standard tool could work at all.

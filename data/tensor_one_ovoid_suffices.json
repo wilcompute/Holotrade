@@ -1,0 +1,49 @@
+{
+  "schema": "holotrade.tensor-one-ovoid-suffices.v1",
+  "valid": true,
+  "theorem": "if EITHER factor of a product of generalized quadrangles has an ovoid, the shadow lower bound run over that axis equals the product upper bound, so tau(Q1 x Q2) = tau_1 * tau_2",
+  "strongerThan": "the earlier single-quadrangle statement: one ovoid suffices, not two",
+  "instances": [
+    {
+      "product": "W(3,2) x W(3,2)",
+      "lower": 25,
+      "upper": 25,
+      "multiplicative": true,
+      "tau": 25
+    },
+    {
+      "product": "W(3,2) x W(3,3)",
+      "lower": 55,
+      "upper": 55,
+      "multiplicative": true,
+      "tau": 55
+    },
+    {
+      "product": "W(3,3) x Q(4,3)",
+      "lower": 110,
+      "upper": 110,
+      "multiplicative": true,
+      "tau": 110
+    },
+    {
+      "product": "W(3,3) x W(3,3)",
+      "lower": 110,
+      "upper": 121,
+      "multiplicative": false,
+      "tau": null
+    }
+  ],
+  "w33HasNoOvoid": true,
+  "w33HasSpreads": 36,
+  "dualOvoidIsASpread": "an ovoid of Q(4,3) is a spread of W(3,3); spreads exist, ovoids do not",
+  "dualProduct": {
+    "tau": 110,
+    "witness": "11-point blocker x 10-line spread",
+    "witnessSize": 110,
+    "tilesChecked": 1600,
+    "unblocked": 0,
+    "proof": "shadow count gives >= 110 and the witness attains it"
+  },
+  "contrast": "same 40x40 grid, same 1600 tiles of 16 leaves: line x line is open in [110,115], line x pencil is exactly 110",
+  "boundary": "this closes three products and explains the fourth; it does NOT decide tau_2(W(3,3)), which stays open in [110, 115]"
+}

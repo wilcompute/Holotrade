@@ -1236,6 +1236,66 @@ test("the coclique census of W(3,3) is recomputed, not trusted", () => {
   assert.ok(census.independenceNumber < census.hoffmanRatioBound);
 });
 
+test("one ovoid suffices: three products close, one stays open", () => {
+  const o = require(path.join(root, "data/tensor_one_ovoid_suffices.json"));
+  assert.equal(o.valid, true);
+  const by = Object.fromEntries(o.instances.map((r) => [r.product, r]));
+  // an ovoid on EITHER side makes the bounds meet
+  assert.equal(by["W(3,2) x W(3,2)"].tau, 25);
+  assert.equal(by["W(3,2) x W(3,3)"].tau, 55);
+  assert.equal(by["W(3,3) x Q(4,3)"].tau, 110);
+  for (const k of ["W(3,2) x W(3,2)", "W(3,2) x W(3,3)", "W(3,3) x Q(4,3)"]) {
+    assert.equal(by[k].multiplicative, true, k);
+    assert.equal(by[k].lower, by[k].upper, `${k}: the bounds must meet`);
+  }
+  // and the one with no ovoid on either side does not
+  const open = by["W(3,3) x W(3,3)"];
+  assert.equal(open.multiplicative, false);
+  assert.equal(open.lower, 110);
+  assert.equal(open.upper, 121);
+  assert.equal(open.tau, null, "the open case may not claim a value");
+  assert.match(o.boundary, /does NOT decide tau_2/);
+});
+
+test("the dual-product witness is verified against all 1600 tiles", () => {
+  // Rebuilt here from the geometry: an 11-point blocker of W(3,3) crossed
+  // with a 10-line spread of W(3,3) blocks every line x pencil tile.
+  const S = require(path.join(root, "js/substrate.js"));
+  const W = require(path.join(root, "js/w33-scheduler.js"));
+  const T = require(path.join(root, "js/tensor-sharding.js"));
+  const B = [...T.BLOCKER];
+  const sp = W.spreads()[0];
+  assert.equal(B.length, 11);
+  assert.equal(sp.length, 10);
+  const covered = new Set();
+  for (const li of sp) for (const p of S.LINES[li]) covered.add(p);
+  assert.equal(covered.size, 40, "a spread covers every point exactly once");
+
+  const X = new Set();
+  for (const p of B) for (const M of sp) X.add(p * 40 + M);
+  assert.equal(X.size, 110);
+
+  const thru = [];
+  for (let r = 0; r < 40; r++) {
+    thru.push([...Array(40).keys()].filter((li) => S.LINES[li].includes(r)));
+  }
+  let tiles = 0;
+  for (let li = 0; li < 40; li++) {
+    for (let r = 0; r < 40; r++) {
+      let hit = false;
+      for (const p of S.LINES[li]) {
+        for (const M of thru[r]) if (X.has(p * 40 + M)) { hit = true; break; }
+        if (hit) break;
+      }
+      assert.ok(hit, `dual tile (${li},${r}) unblocked`);
+      tiles++;
+    }
+  }
+  assert.equal(tiles, 1600);
+  // same grid, same tile count, same tile size as the open problem
+  assert.equal(tiles, 40 * 40);
+});
+
 test("the 3-5-7 cube cannot reach W(3,3) by symmetry, and neither can C13", () => {
   const o = require(path.join(root, "data/w33_357_cube_obstruction.json"));
   assert.equal(o.valid, true);
