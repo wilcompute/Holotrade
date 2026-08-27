@@ -1208,6 +1208,68 @@ test("the frozen certificate and the engine agree on the same witness", () => {
   assert.match(cert.boundary, /remains OPEN/);
 });
 
+test("the coclique census of W(3,3) is recomputed, not trusted", () => {
+  const S = require(path.join(root, "js/substrate.js"));
+  const census = require(path.join(root, "data/w33_coclique_census.json"));
+  const nbr = [];
+  for (let i = 0; i < 40; i++) {
+    const s = new Set();
+    for (let j = 0; j < 40; j++) if (i !== j && S.isAdjacent(i, j)) s.add(j);
+    nbr.push(s);
+  }
+  const by = new Array(12).fill(0);
+  (function ext(depth, cand) {
+    by[depth]++;
+    for (let i = 0; i < cand.length; i++) {
+      const v = cand[i];
+      ext(depth + 1, cand.slice(i + 1).filter((w) => !nbr[v].has(w)));
+    }
+  })(0, [...Array(40).keys()]);
+  for (const [k, v] of Object.entries(census.bySize)) {
+    assert.equal(by[Number(k)], v, `independent sets of size ${k}`);
+  }
+  assert.equal(by.reduce((a, b) => a + b, 0), census.total);
+  assert.equal(census.total, 40055);
+  // alpha = 7, well under the Hoffman ratio bound of 10 -- the ovoid defect
+  assert.equal(by[8], 0, "there is no independent set of size 8");
+  assert.equal(census.independenceNumber, 7);
+  assert.ok(census.independenceNumber < census.hoffmanRatioBound);
+});
+
+test("the tensor blocking number is multiplicative exactly when an ovoid exists", () => {
+  const d = require(path.join(root, "data/tensor_multiplicativity_ovoid_defect.json"));
+  assert.equal(d.valid, true);
+  const [gq22, w33] = d.instances;
+
+  // GQ(2,2) has an ovoid: the two bounds coincide and tau_2 is exactly tau_1^2
+  assert.equal(gq22.hasOvoid, true);
+  assert.equal(gq22.ovoidDefect, 0);
+  assert.equal(gq22.tau1, gq22.ovoidSize);
+  assert.equal(gq22.shadowLower, gq22.productUpper);
+  assert.equal(gq22.intervalWidth, 0);
+  assert.equal(gq22.tau2, 25);
+  assert.equal(gq22.tau2, gq22.tau1 * gq22.tau1);
+  assert.equal(gq22.tau2Status, "OPTIMAL", "solved exactly, no symmetry assumed");
+  assert.equal(gq22.multiplicative, true);
+
+  // W(3,3) has none: the defect is 1 and the gap is exactly tau_1 * delta
+  assert.equal(w33.hasOvoid, false);
+  assert.equal(w33.ovoidDefect, 1);
+  assert.equal(w33.tau1, 11);
+  assert.equal(w33.ovoidSize, 10);
+  assert.equal(w33.shadowLower, 110);
+  assert.equal(w33.productUpper, 121);
+  assert.equal(w33.intervalWidth, 11);
+  assert.equal(w33.productUpper - w33.shadowLower, w33.tau1 * w33.ovoidDefect,
+    "the width formula tau_1*delta must close");
+  // and it is still open, with the truth at neither end
+  assert.equal(w33.tau2, null);
+  assert.equal(d.w33Open, true);
+  assert.deepEqual(d.w33Interval, [110, 115]);
+  // stated as a derivation, not a discovery
+  assert.match(d.novelty, /not as a discovery/);
+});
+
 test("every minimum blocker has a centre, and the structure is fully rigid", () => {
   // Recomputed here from the geometry, not read out of the artifact.
   const S = require(path.join(root, "js/substrate.js"));

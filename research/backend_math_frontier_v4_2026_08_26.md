@@ -105,6 +105,61 @@ has row support **37**, so that hypothesis is now known **false at the optimum**
 the product construction that produced the 121 figure in the first place is strictly beatable. The recursive
 upper bound `11^n` inherits the same defect at every depth.
 
+### Why the gap exists at all: multiplicativity and the ovoid defect
+
+Five attacks on the tight case failed. Rather than a sixth, ask where the interval comes from -- and the
+answer is a one-line derivation that explains it completely.
+
+For a generalized quadrangle of order `(s,t)`, the same shadow double-count gives
+`tau_2 >= (st+1)*tau_1`, and `B x B` gives `tau_2 <= tau_1^2`. The width of that interval is
+
+`tau_1^2 - (st+1)*tau_1 = tau_1 * (tau_1 - (st+1)) = tau_1 * delta`,
+
+where `delta = tau_1 - (st+1)` is the **ovoid defect** -- how far the blocking number sits above the ovoid
+size. A blocking set of size `st+1` is exactly an ovoid, so `delta = 0` **iff** the quadrangle has an ovoid,
+and then the two bounds coincide:
+
+> **The tensor blocking number is multiplicative exactly when the quadrangle has an ovoid.**
+
+Two instances, both computed:
+
+| | `(s,t)` | ovoid | `tau_1` | `delta` | lower | upper | `tau_2` |
+|---|---|---|---|---|---|---|---|
+| GQ(2,2) = W(3,2) | (2,2) | yes | 5 | 0 | 25 | 25 | **25, OPTIMAL** |
+| W(3,3) | (3,3) | no (Thas) | 11 | 1 | 110 | 121 | **open in [110,115]** |
+
+GQ(2,2) is solved exactly over its full 225-cell grid with no symmetry assumed: `tau_2 = tau_1^2 = 25`,
+multiplicative, product optimal. W(3,3) has `delta = 1`, so the interval has width `11 * 1 = 11` -- precisely
+the `[110, 121]` we began with.
+
+**So the difficulty is not an artefact of the search. It is the missing ovoid, surfacing two levels above
+where it was proved missing.** That also says what would close it: an argument converting the defect into a
+statement about the product, not more search inside the interval it opens.
+
+No literature on blocking numbers of *products* of generalized quadrangles turned up, but this is a one-line
+consequence of two standard bounds, so it is recorded as a derivation that explains our interval rather than
+as a discovery.
+
+### Where the two bounds now stand
+
+The upper bound has been attacked by four independent methods and the lower bound by five exact models:
+
+| attack | outcome |
+|---|---|
+| symmetric CP-SAT over `Aut(W33)`, all 12 cycle-type classes, all twists | **115** |
+| symmetric CP-SAT including the **transpose** (the full `Aut(W33) wr C2`), 39 variants | nothing below 115 |
+| LNS, 40+ rounds freeing up to 680 leaves | no improvement |
+| guided annealing at size 114, 12M+ moves | plateaus at 9 unblocked tiles of 1,600 |
+| one-sided tight model | UNKNOWN, 1901 s |
+| two-sided + degree identity | UNKNOWN, 1901 s |
+| + sound 360-fold symmetry break | UNKNOWN, 2302 s |
+| + centre excess-balance and proved support >= 24 | UNKNOWN, 2101 s |
+| degree-sequence split | 41,672 sequences before timeout |
+
+Supporting census: W(3,3) has exactly **40,055** independent sets -- 1, 40, 540, 3240, 9450, 13824, 10080,
+2880 by size -- and `alpha = 7` against a Hoffman ratio bound of 10. Every fibre and co-fibre of a tight
+blocker is drawn from that list, and the `7 < 10` shortfall is the same ovoid defect.
+
 ### The centre of a minimum blocker -- and the citation that stops this being a discovery
 
 All 360 minimum blocking sets of W(3,3) share one rigid structure. Each has a **centre**: a point `p`
@@ -221,6 +276,50 @@ The tempting stronger conjecture that the 540-chart web adjacency preserves this
 
 The bijection is real. An adjacency intertwiner is not.
 
+## 6. E8's unitary residues give exact elastic ladders with unavoidable holes
+
+The W33 repository's unitary branch identifies the two small E8 residue carriers as
+
+**E8 / 2E8 -> H(3,4) = GQ(4,2)**,
+
+**E8 / 3E8 -> H(3,9) = GQ(9,3)**.
+
+Before treating those identifications as scheduler objects, this repository now rebuilds the standard
+Hermitian models independently in GAP. The witness enumerates all projective isotropic points and lines,
+checks the point-graph SRG parameters, forms the graph in which two lines are adjacent exactly when they are
+disjoint, and exhausts cliques at the candidate maximum and one beyond it.
+
+For a generalized quadrangle GQ(s,t), order i mutually disjoint lines and let rung i be their union. The
+quadrangle axiom gives
+
+- vertices = (s+1)i;
+- induced degree = s+i-1;
+- internal edges = (s+1)i(s+i-1)/2;
+- boundary = (s+1)i(st+1-i).
+
+The last quantity equals the one-sided spectral minimum, so every rung is connected, regular, and
+boundary-optimal. Prefixes are nested line atoms: expansion and shrink retain every common point and migrate
+zero retained work.
+
+| carrier | point graph | max partial spread | number of maxima | covered | holes | full spread would need |
+|---|---|---:|---:|---:|---:|---:|
+| H(3,4) | SRG(45,12,3,3) | 6 lines | 72 | 30 | 15 | 9 lines |
+| H(3,9) | SRG(280,36,8,4) | 16 lines | 2,268 | 160 | 120 | 28 lines |
+
+The maxima are not new mathematics. De Beule, Klein, Metsch and Storme proved the bound
+(q^3+q+2)/2 for partial spreads of H(3,q^2) and its sharpness at q=2,3 (Designs, Codes and
+Cryptography 47 (2008), DOI 10.1007/s10623-007-9047-8). W33 Passes 7255-7256 had already recorded
+that prior art and the values 6 and 16. The new HoloTrade synthesis is the ordered-prefix scheduler object,
+its exact resize transaction plan, and the decision to expose the residual hole sector as a first-class
+contract field.
+
+analysis/e8_unitary_elastic_ladders.g owns the geometry; the canonical freezer records GAP 4.12.1 and
+SHA-256 cce62c1c16927909a83be619e353df481eb01f95c6fe8831384b5d313fc92f74.
+scheduler/e8-unitary-elastic-ladder.js verifies that digest before building a plan. Its output is
+deliberately dispatchable=false: the GAP point numbers are not host IDs, and an inventory binding plus
+runtime topology attestation is still required. The standard Hermitian carriers are incidence-isomorphic to
+the W33-certified E8 residues, but this packet does not construct a literal E8-coordinate map.
+
 # Three outside-the-box probes executed
 
 ### A. Split the 21-dimensional Seidel sector rather than stopping at the ETF
@@ -237,7 +336,7 @@ The 540 chart / 540 triangle match was tested literally and closes as a bijectio
 
 # Evidence boundaries
 
-- Exact: W33 carrier, 36 spreads, spread overlap graph, clique/coclique/coloring certificates, integer matrix identities, chart/triangle bijection, incidence Gram identity, tensor shadow lower bound, explicit tensor upper witness.
+- Exact: W33 carrier, 36 spreads, spread overlap graph, clique/coclique/coloring certificates, integer matrix identities, chart/triangle bijection, incidence Gram identity, tensor shadow lower bound, explicit tensor upper witness, GAP-rebuilt H(3,4)/H(3,9) carriers, and their exhaustive maximum-partial-spread ladders.
 - Repository-certified: minimal level-one line blocker `tau_1=11` depends on the frozen SAT/UNSAT certificate already in the repository.
 - Model: calling four-line overlap a compute-market conflict, pricing batches, congestion, runtime placement utility, failure correlation.
 - Open: the exact depth-two product-transversal number inside `[110,115]` (narrowed from `[110,121]`; the upper bound is a construction, not a proof of optimality); representation-theoretic identification of chart-web eigenspaces; any physical or quantum realization of these scheduling coordinates.

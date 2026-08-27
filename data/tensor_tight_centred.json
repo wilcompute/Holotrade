@@ -1,0 +1,19 @@
+{
+  "schema": "holotrade.tensor-tight-centred.v1",
+  "target": 110,
+  "status": "UNKNOWN",
+  "wallSeconds": 2100.6,
+  "added": {
+    "centreExcessBalanceBothAxes": true,
+    "centreNotInItsOwnBlocker": true,
+    "provedMinimumSupport": 24,
+    "naiveCountingSupport": 16,
+    "soundSymmetryBreak360": true
+  },
+  "conclusion": "undecided in budget",
+  "proved": false,
+  "intervalUnchanged": [
+    110,
+    115
+  ]
+}

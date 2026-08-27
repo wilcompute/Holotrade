@@ -1,0 +1,51 @@
+{
+  "schema": "holotrade.tensor-multiplicativity.v1",
+  "valid": true,
+  "theorem": "a GQ of order (s,t) with an ovoid has tau_2 = tau_1^2 = (st+1)^2; the bounds coincide because tau_1 = st+1 makes the shadow lower bound (st+1)*tau_1 equal to the product upper bound",
+  "widthFormula": "tau_1^2 - (st+1)*tau_1 = tau_1 * delta",
+  "instances": [
+    {
+      "name": "GQ(2,2) = W(3,2), q even",
+      "s": 2,
+      "t": 2,
+      "points": 15,
+      "lines": 15,
+      "ovoidSize": 5,
+      "tau1": 5,
+      "tau1Status": "OPTIMAL",
+      "ovoidDefect": 0,
+      "hasOvoid": true,
+      "shadowLower": 25,
+      "productUpper": 25,
+      "intervalWidth": 0,
+      "tau2": 25,
+      "tau2Status": "OPTIMAL",
+      "multiplicative": true
+    },
+    {
+      "name": "W(3,3), q odd -- no ovoid (Thas)",
+      "s": 3,
+      "t": 3,
+      "points": 40,
+      "lines": 40,
+      "ovoidSize": 10,
+      "tau1": 11,
+      "tau1Status": "frozen SAT certificate",
+      "ovoidDefect": 1,
+      "hasOvoid": false,
+      "shadowLower": 110,
+      "productUpper": 121,
+      "intervalWidth": 11,
+      "tau2": null,
+      "tau2Status": null,
+      "multiplicative": null
+    }
+  ],
+  "w33Interval": [
+    110,
+    115
+  ],
+  "w33Open": true,
+  "reading": "the W(3,3) gap is the ovoid defect delta = 1 multiplied by tau_1 = 11, not a search artefact",
+  "novelty": "no literature on blocking numbers of products of generalized quadrangles turned up, but the statement is a one-line consequence of two standard bounds; recorded as a derivation that explains our interval, not as a discovery"
+}

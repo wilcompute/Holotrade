@@ -1,0 +1,20 @@
+{
+  "schema": "holotrade.w33-coclique-census.v1",
+  "graph": "W(3,3) collinearity graph, SRG(40,12,2,4)",
+  "independenceNumber": 7,
+  "hoffmanRatioBound": 10,
+  "bySize": {
+    "0": 1,
+    "1": 40,
+    "2": 540,
+    "3": 3240,
+    "4": 9450,
+    "5": 13824,
+    "6": 10080,
+    "7": 2880
+  },
+  "total": 40055,
+  "nonEmpty": 40054,
+  "whyItMatters": "at |X| = 110 every fibre and co-fibre of a depth-2 blocker is forced to be an independent set, so this census is the exact domain those fibres are drawn from; alpha = 7 against a Hoffman bound of 10 is the same ovoid defect that opens the tau_2 interval",
+  "boundary": "a census, not a bound; it constrains the tight case without deciding it"
+}

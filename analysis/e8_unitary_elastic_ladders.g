@@ -204,8 +204,10 @@ AuditProfile := function(q)
   return rec(q := q, allChecks := allChecks);
 end;
 
-P2 := AuditProfile(2);;
-P3 := AuditProfile(3);;
-if not P2.allChecks or not P3.allChecks then Error("audit failed"); fi;
-Print("ALL_CHECKS_PASS\n");
-QUIT;
+if not IsBound(E8UnitaryLibraryOnly) or E8UnitaryLibraryOnly <> true then
+  P2 := AuditProfile(2);;
+  P3 := AuditProfile(3);;
+  if not P2.allChecks or not P3.allChecks then Error("audit failed"); fi;
+  Print("ALL_CHECKS_PASS\n");
+  QUIT;
+fi;
