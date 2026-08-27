@@ -1,0 +1,333 @@
+{
+  "schema": "holotrade.tensor-tight-symmetry-exclusion.v1",
+  "target": 110,
+  "classesTested": 44,
+  "provedInfeasible": 12,
+  "undecided": 32,
+  "feasible": 0,
+  "ordersExcluded": [
+    2,
+    4,
+    6,
+    9,
+    12
+  ],
+  "kindsTested": [
+    "direct",
+    "transpose"
+  ],
+  "rows": [
+    {
+      "order": 12,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 174,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 12,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 174,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 12,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 206,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 12,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 214,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 9,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 216,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 9,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 112,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 9,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 216,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 9,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 334,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 342,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 334,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 398,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 420,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 284,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 280,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 328,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 420,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 272,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 6,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 280,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 6,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 272,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 6,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 400,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 5,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 320,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 5,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 164,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 5,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 320,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 5,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 164,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 4,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 400,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 4,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 400,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 4,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 400,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 4,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 200,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 4,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 424,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 4,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 420,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 4,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 496,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 4,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 214,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 646,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 334,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 646,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 820,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 544,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 280,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 2,
+      "kind": "direct",
+      "orbits": 544,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 3,
+      "twist": 2,
+      "kind": "transpose",
+      "orbits": 820,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 2,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 800,
+      "status": "INFEASIBLE"
+    },
+    {
+      "order": 2,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 820,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 2,
+      "twist": 1,
+      "kind": "direct",
+      "orbits": 832,
+      "status": "UNKNOWN"
+    },
+    {
+      "order": 2,
+      "twist": 1,
+      "kind": "transpose",
+      "orbits": 820,
+      "status": "UNKNOWN"
+    }
+  ],
+  "theorem": "no 110-leaf depth-2 blocker is invariant under any of the 12 symmetry types proved infeasible here, direct or transpose-twisted",
+  "evidence": "44 symmetry classes were tested at exactly 110 and NONE returned feasible; extremal objects in highly symmetric geometries usually carry some symmetry, so this is evidence against existence",
+  "boundary": "this is evidence, not proof: 32 classes are undecided, and an asymmetric tight blocker is not excluded by any of it. tau_2 stays open in [110, 115].",
+  "exactTau": null
+}

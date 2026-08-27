@@ -1,0 +1,22 @@
+{
+  "schema": "holotrade.tensor-close-at-114-two-sided.v1",
+  "size": 114,
+  "status": "UNKNOWN",
+  "wallSeconds": 2700.3,
+  "slackBudget": 16,
+  "linesForcedFullyTightPerAxis": 24,
+  "verifiedUpperBound": 115,
+  "encodes": [
+    "row shadows",
+    "column shadows",
+    "per-axis slack budget",
+    "per-axis tightness indicators",
+    "cross-implication coupling the axes"
+  ],
+  "proved": false,
+  "conclusion": "undecided in budget",
+  "intervalUnchanged": [
+    110,
+    115
+  ]
+}

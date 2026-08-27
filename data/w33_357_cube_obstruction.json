@@ -1,0 +1,51 @@
+{
+  "schema": "holotrade.w33-357-cube-obstruction.v1",
+  "valid": true,
+  "autOrder": 51840,
+  "autFactorisation": {
+    "2": 7,
+    "3": 4,
+    "5": 1
+  },
+  "elementOrdersRealised": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    9,
+    12
+  ],
+  "primes": [
+    {
+      "prime": 3,
+      "dividesAutOrder": true,
+      "orderRealised": true
+    },
+    {
+      "prime": 5,
+      "dividesAutOrder": true,
+      "orderRealised": true
+    },
+    {
+      "prime": 7,
+      "dividesAutOrder": false,
+      "orderRealised": false
+    },
+    {
+      "prime": 13,
+      "dividesAutOrder": false,
+      "orderRealised": false
+    }
+  ],
+  "obstruction": "7 and 13 do not divide |Aut(W(3,3))| = 2^7 * 3^4 * 5, so by Lagrange the quadrangle has no C7 and no C13; the cube's C7 factor and the H(4) C13 clock cannot act on it",
+  "notASearchResult": true,
+  "sevenInW33": "alpha = 7 against a Hoffman ratio bound of 10 -- the ovoid defect, a combinatorial invariant, not a group order",
+  "whatCouldStillTransport": [
+    3,
+    5
+  ],
+  "standard": "an operator or module map, not a numerical coincidence; this is the negative half of that standard applied to the C7 factor",
+  "boundary": "this rules out a GROUP-THEORETIC transport of the C7 sector to W(3,3). It does not rule out some other kind of map, and it says nothing about the cube itself, which stands on its own side."
+}

@@ -1236,6 +1236,78 @@ test("the coclique census of W(3,3) is recomputed, not trusted", () => {
   assert.ok(census.independenceNumber < census.hoffmanRatioBound);
 });
 
+test("the 3-5-7 cube cannot reach W(3,3) by symmetry, and neither can C13", () => {
+  const o = require(path.join(root, "data/w33_357_cube_obstruction.json"));
+  assert.equal(o.valid, true);
+  // 51840 = 2^7 * 3^4 * 5 -- recomputed, not trusted
+  assert.equal(o.autOrder, 51840);
+  assert.equal(Math.pow(2, 7) * Math.pow(3, 4) * 5, 51840);
+  assert.notEqual(o.autOrder % 7, 0, "7 does not divide the order");
+  assert.notEqual(o.autOrder % 13, 0);
+  assert.equal(o.autOrder % 3, 0);
+  assert.equal(o.autOrder % 5, 0);
+  // the realised element orders must be the true ones, not a broken walk:
+  // Aut(W(3,3)) has exponent 12 and these are its element orders
+  assert.deepEqual(o.elementOrdersRealised, [1, 2, 3, 4, 5, 6, 9, 12]);
+  assert.ok(!o.elementOrdersRealised.some((n) => n > 12),
+    "no element order may exceed the exponent -- this caught a real bug");
+  for (const r of o.primes) {
+    if (r.prime === 7 || r.prime === 13) {
+      assert.equal(r.dividesAutOrder, false);
+      assert.equal(r.orderRealised, false);
+    } else {
+      assert.equal(r.dividesAutOrder, true);
+      assert.equal(r.orderRealised, true);
+    }
+  }
+  assert.deepEqual(o.whatCouldStillTransport, [3, 5]);
+  assert.equal(o.notASearchResult, true);
+  // the seven in W(3,3) is alpha, not a group order
+  assert.match(o.sevenInW33, /alpha = 7/);
+  assert.match(o.sevenInW33, /not\s+a group order/);
+  assert.match(o.boundary, /does not rule out some\s+other kind of map/);
+});
+
+test("both 114 closure attempts are recorded as undecided", () => {
+  for (const f of ["data/tensor_close_at_114.json",
+                   "data/tensor_close_at_114_two_sided.json"]) {
+    const r = require(path.join(root, f));
+    assert.equal(r.size, 114);
+    assert.equal(r.slackBudget, 16, "4*114 - 440");
+    assert.equal(r.status, "UNKNOWN");
+    assert.equal(r.proved, false);
+    assert.ok(!("exactTau" in r), "UNKNOWN may not claim an exact value");
+    assert.deepEqual(r.intervalUnchanged, [110, 115]);
+  }
+  // the two-sided model is the strictly stronger one and says so
+  const two = require(path.join(root, "data/tensor_close_at_114_two_sided.json"));
+  assert.ok(two.encodes.includes("cross-implication coupling the axes"));
+  assert.equal(two.linesForcedFullyTightPerAxis, 24);
+});
+
+test("a tight blocker carries none of the excluded symmetries", () => {
+  const s = require(path.join(root, "data/tensor_tight_symmetry_exclusion.json"));
+  assert.equal(s.target, 110);
+  assert.equal(s.classesTested, 44);
+  assert.equal(s.provedInfeasible, 12);
+  // the point of the sweep: nothing was found, anywhere
+  assert.equal(s.feasible, 0);
+  assert.equal(s.provedInfeasible + s.undecided + s.feasible, s.classesTested);
+  // it reaches inside the full wreath group, not just the base
+  assert.deepEqual(s.kindsTested.sort(), ["direct", "transpose"]);
+  assert.deepEqual(s.ordersExcluded, [2, 4, 6, 9, 12]);
+  // every row is one of the three statuses, and none is feasible
+  for (const r of s.rows) {
+    assert.ok(["INFEASIBLE", "UNKNOWN"].includes(r.status),
+      `no class may report feasible: ${JSON.stringify(r)}`);
+    assert.ok(r.orbits > 0 && r.orbits < 1600, "orbits collapse the leaves");
+  }
+  // and it is labelled evidence, not proof
+  assert.equal(s.exactTau, null);
+  assert.match(s.boundary, /evidence, not proof/);
+  assert.match(s.boundary, /stays open in \[110, 115\]/);
+});
+
 test("the Levi Betti companion to the other track's hexagon theorem", () => {
   const S = require(path.join(root, "js/substrate.js"));
   const c = require(path.join(root, "data/crosstrack_hexagon_quadrangle.json"));

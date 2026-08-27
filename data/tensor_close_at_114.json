@@ -1,0 +1,15 @@
+{
+  "schema": "holotrade.tensor-close-at-114.v1",
+  "size": 114,
+  "status": "UNKNOWN",
+  "wallSeconds": 2400.2,
+  "slackBudget": 16,
+  "linesForcedFullyTight": 24,
+  "verifiedUpperBound": 115,
+  "proved": false,
+  "conclusion": "undecided in budget",
+  "intervalUnchanged": [
+    110,
+    115
+  ]
+}
