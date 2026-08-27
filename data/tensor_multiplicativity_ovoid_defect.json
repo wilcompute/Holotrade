@@ -2,6 +2,8 @@
   "schema": "holotrade.tensor-multiplicativity.v1",
   "valid": true,
   "theorem": "a GQ of order (s,t) with an ovoid has tau_2 = tau_1^2 = (st+1)^2; the bounds coincide because tau_1 = st+1 makes the shadow lower bound (st+1)*tau_1 equal to the product upper bound",
+  "converseProved": false,
+  "converseBoundary": "delta > 0 opens a gap between the generic bounds but does not by itself imply tau_2 < tau_1^2",
   "widthFormula": "tau_1^2 - (st+1)*tau_1 = tau_1 * delta",
   "instances": [
     {
@@ -41,11 +43,12 @@
       "multiplicative": null
     }
   ],
-  "w33Interval": [
-    110,
-    115
-  ],
+  "w33Interval": [110, 115],
   "w33Open": true,
-  "reading": "the W(3,3) gap is the ovoid defect delta = 1 multiplied by tau_1 = 11, not a search artefact",
-  "novelty": "no literature on blocking numbers of products of generalized quadrangles turned up, but the statement is a one-line consequence of two standard bounds; recorded as a derivation that explains our interval, not as a discovery"
+  "w33Nonmultiplicative": true,
+  "w33NonmultiplicativityReason": "the explicit 115-leaf blocker gives tau_2 <= 115 < 121 = tau_1^2",
+  "w33CocliqueOvoidDeficit": 3,
+  "defectBoundary": "blocking ovoid defect is 11-10=1; coclique ovoid deficit is 10-7=3; they witness the same absent ovoid but are distinct invariants",
+  "reading": "the W(3,3) generic-bound gap is the blocking ovoid defect delta = 1 multiplied by tau_1 = 11; the strict 115 construction, not delta>0 alone, proves nonmultiplicativity",
+  "novelty": "no literature on blocking numbers of products of generalized quadrangles turned up, but the proved one-way implication is a one-line consequence of two standard bounds; recorded as a derivation, not as a discovery"
 }

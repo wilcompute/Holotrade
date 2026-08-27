@@ -1,74 +1,78 @@
 #!/usr/bin/env python3
 """
-Why the gap exists at all: the tensor blocking number is multiplicative
-exactly when the quadrangle has an ovoid.
+Why the generic depth-2 tensor blocking interval is controlled by the ovoid
+defect, and why an ovoid is a sufficient condition for multiplicativity.
 
-Five attacks on tau_2(W(3,3)) have failed to close [110, 115].  This file
-stops attacking and asks a different question -- where does the interval come
-from? -- and the answer turns out to be a theorem with a one-line proof and a
-clean computational confirmation.
+Five attacks on tau_2(W(3,3)) have failed to close [110, 115]. This file
+stops attacking and asks a different question -- where does the generic
+interval come from? -- and the answer is a one-line derivation with a clean
+computational confirmation.
 
-SETUP.  Let Q be a generalized quadrangle of order (s,t): it has
+SETUP. Let Q be a generalized quadrangle of order (s,t): it has
 (s+1)(st+1) points and (t+1)(st+1) lines, every line carries s+1 points, and
-every point lies on t+1 lines.  Write tau_1 for its blocking number -- the
+every point lies on t+1 lines. Write tau_1 for its blocking number -- the
 fewest points meeting every line -- and tau_2 for the blocking number of the
 product, the fewest cells of the point-by-point grid meeting every tile
 L x M.
 
-THE TWO BOUNDS.  For a blocker X of the product and a line L, the shadow
-S_L = union of X_p over p in L must itself block, so |S_L| >= tau_1.  Summing
+THE TWO BOUNDS. For a blocker X of the product and a line L, the shadow
+S_L = union of X_p over p in L must itself block, so |S_L| >= tau_1. Summing
 over all lines, and using that each point lies on t+1 of them,
 
     (t+1)|X|  =  sum over L of sum over p in L of |X_p|
               >= sum over L of |S_L|
               >= (t+1)(st+1) * tau_1,
 
-so tau_2 >= (st+1) * tau_1.  In the other direction B x B blocks every tile
-for any line blocker B, so tau_2 <= tau_1^2.  Hence
+so tau_2 >= (st+1) * tau_1. In the other direction B x B blocks every tile
+for any line blocker B, so tau_2 <= tau_1^2. Hence
 
     (st+1) * tau_1  <=  tau_2  <=  tau_1^2,
 
-and the width of that interval is exactly
+and the width of that generic interval is exactly
 
     tau_1^2 - (st+1)*tau_1  =  tau_1 * (tau_1 - (st+1))  =  tau_1 * delta,
 
-where delta = tau_1 - (st+1) is the OVOID DEFECT: how far the quadrangle's
+where delta = tau_1 - (st+1) is the BLOCKING OVOID DEFECT: how far the
 blocking number sits above the ovoid size st+1.
 
-THE THEOREM.  A blocking set of size st+1 is precisely an ovoid.  So delta = 0
-if and only if Q has an ovoid, and in that case the two bounds COINCIDE:
+THE PROVED IMPLICATION. A blocking set of size st+1 is precisely an ovoid.
+Thus delta = 0 iff Q has an ovoid. When delta = 0 the two bounds coincide:
 
-    Q has an ovoid   ==>   tau_2 = tau_1^2 = (st+1)^2,
+    Q has an ovoid   ==>   tau_2 = tau_1^2 = (st+1)^2.
 
-the product construction is optimal, and the tensor blocking number is
-multiplicative.  No gap can open.  Conversely a positive defect opens an
-interval of width exactly tau_1 * delta, and nothing in the counting decides
-where inside it the truth lies.
+So an ovoid is sufficient for depth-2 multiplicativity and makes the product
+construction optimal. The converse does NOT follow from these bounds: when
+delta > 0 they merely open an interval, and tau_2 could in principle still
+sit at its upper endpoint. Nonmultiplicativity for a no-ovoid quadrangle needs
+an additional strict upper construction (or some other argument).
 
 THE TWO INSTANCES.
 
-  GQ(2,2) = W(3,2).  q even, so it HAS an ovoid: tau_1 = 5 = st+1, delta = 0.
+  GQ(2,2) = W(3,2). q even, so it HAS an ovoid: tau_1 = 5 = st+1, delta = 0.
   Both bounds give 25, and CP-SAT confirms tau_2 = 25 exactly, OPTIMAL, over
-  the full 225-cell grid with no symmetry assumptions.  Multiplicative.
+  the full 225-cell grid with no symmetry assumptions. Multiplicative.
 
-  W(3,3).  q odd, so by Thas it has NO ovoid.  tau_1 = 11 > st+1 = 10, so
-  delta = 1 and the interval has width 11 * 1 = 11 -- which is precisely the
-  [110, 121] we started from.  The 115 witness shows the truth is at neither
-  end: the product bound is not attained, and the shadow bound is not known
-  to be.
+  W(3,3). q odd, so by Thas it has NO ovoid. tau_1 = 11 > st+1 = 10, so
+  delta = 1 and the generic interval has width 11 * 1 = 11 -- precisely the
+  [110, 121] interval we started from. Separately, the certified 115-leaf
+  blocker gives tau_2 <= 115 < 121 = tau_1^2, which proves W(3,3) itself is
+  nonmultiplicative at depth 2. The exact value remains open in [110,115].
 
-NOVELTY, CALIBRATED.  No literature on blocking numbers of PRODUCTS of
-generalized quadrangles turned up.  But the statement follows in one line
-from two standard bounds, and "an expert would see it immediately" is the
-correct description of a one-line consequence of a standard double count.
-It is recorded here as a derivation that explains our interval, not as a
-discovery, and the repository's own history is the reason for that caution:
-a result whose novelty cannot be established is not new.
+A SECOND, DISTINCT OVOID DEFICIT. W(3,3) has independence number alpha = 7,
+where an ovoid would be an independent set of size st+1 = 10. That gives a
+COCLIQUE OVOID DEFICIT 10 - 7 = 3. It witnesses the same absent object but it
+is not numerically the same invariant as the blocking ovoid defect 11 - 10 =
+1. Keeping these two defects separate matters.
 
-So the difficulty is not an artefact of the search.  It is the missing ovoid,
-showing up two levels above where it was proved missing.  That also says what
-would settle it: an argument that converts the ovoid defect into a statement
-about the product, rather than more search inside the interval it opens.
+NOVELTY, CALIBRATED. No literature on blocking numbers of PRODUCTS of
+generalized quadrangles turned up. But the one-way implication above follows
+immediately from two standard bounds, so it is recorded as a derivation that
+explains the generic interval, not as a discovery.
+
+The missing ovoid therefore explains why the elementary lower and product
+upper bounds fail to collapse for W(3,3); it does not by itself decide where
+tau_2 lies in that interval. The independent 115 construction is what proves
+that the product upper endpoint is not attained for W(3,3).
 """
 
 import itertools
@@ -152,7 +156,7 @@ def report(name, n, lines, tau1, tau1_status, tau2=None, tau2_status=None):
     print("    points / lines       : %d / %d" % (n, len(lines)))
     print("    ovoid size st+1      : %d" % ovoid_size)
     print("    tau_1                : %d   (%s)" % (tau1, tau1_status))
-    print("    ovoid defect delta   : %d   -> has an ovoid: %s"
+    print("    blocking ovoid defect: %d   -> has an ovoid: %s"
           % (delta, delta == 0))
     print("    shadow lower (st+1)*tau_1 : %d" % lower)
     print("    product upper tau_1^2     : %d" % upper)
@@ -161,7 +165,7 @@ def report(name, n, lines, tau1, tau1_status, tau2=None, tau2_status=None):
     if tau2 is not None:
         print("    tau_2                : %d   (%s)" % (tau2, tau2_status))
         if delta == 0:
-            print("    => MULTIPLICATIVE: tau_2 = tau_1^2, product optimal")
+            print("    => OVOID SUFFICES: bounds collapse and tau_2 = tau_1^2")
         else:
             print("    => tau_2 sits inside an interval of width %d"
                   % (tau1 * delta))
@@ -177,11 +181,12 @@ def report(name, n, lines, tau1, tau1_status, tau2=None, tau2_status=None):
 
 
 def main():
-    print("MULTIPLICATIVITY AND THE OVOID DEFECT")
+    print("MULTIPLICATIVITY BOUND COLLAPSE AND THE OVOID DEFECT")
     print("=" * 72)
     print("  (st+1)*tau_1 <= tau_2 <= tau_1^2, an interval of width")
-    print("  tau_1*(tau_1 - (st+1)) = tau_1 * delta.  delta = 0 exactly when")
+    print("  tau_1*(tau_1 - (st+1)) = tau_1 * delta. delta = 0 exactly when")
     print("  the quadrangle has an ovoid, and then the bounds coincide.")
+    print("  The converse is not implied when delta > 0.")
     print()
 
     rows = []
@@ -195,18 +200,18 @@ def main():
     rows.append(report("W(3,3), q odd -- no ovoid (Thas)", n3, l3, 11,
                        "frozen SAT certificate"))
     print("    tau_2                : OPEN in [110, 115]")
-    print("       the 115 witness beats the product bound, so the upper end is")
-    print("       NOT attained; the lower end is not known to be either")
+    print("       the 115 witness gives tau_2 < 121 = tau_1^2, hence")
+    print("       W(3,3) is nonmultiplicative; exact tau_2 remains open")
     print()
-    print("  The W(3,3) interval is not an artefact of the search. It is the")
-    print("  missing ovoid, surfacing two levels above where it was proved")
-    print("  missing. Closing it needs an argument that converts the defect")
-    print("  into a statement about the product, not more search inside it.")
+    print("  The missing ovoid explains why the elementary bounds do not")
+    print("  collapse. It does not prove the converse. The separate 115")
+    print("  construction is what proves nonmultiplicativity for W(3,3).")
 
     ok = (rows[0]["multiplicative"] is True
           and rows[0]["hasOvoid"] is True
           and rows[1]["hasOvoid"] is False
-          and rows[1]["intervalWidth"] == 11)
+          and rows[1]["intervalWidth"] == 11
+          and 115 < rows[1]["productUpper"])
 
     if "--write" in sys.argv:
         out = os.path.join(ROOT, "data",
@@ -219,12 +224,30 @@ def main():
                             "tau_2 = tau_1^2 = (st+1)^2; the bounds coincide "
                             "because tau_1 = st+1 makes the shadow lower bound "
                             "(st+1)*tau_1 equal to the product upper bound"),
+                "converseProved": False,
+                "converseBoundary": ("delta > 0 opens a gap between the generic "
+                                     "bounds but does not by itself imply "
+                                     "tau_2 < tau_1^2"),
                 "widthFormula": "tau_1^2 - (st+1)*tau_1 = tau_1 * delta",
                 "instances": rows,
                 "w33Interval": [110, 115],
                 "w33Open": True,
-                "reading": ("the W(3,3) gap is the ovoid defect delta = 1 "
-                            "multiplied by tau_1 = 11, not a search artefact"),
+                "w33Nonmultiplicative": True,
+                "w33NonmultiplicativityReason": ("the explicit 115-leaf blocker "
+                                                 "gives tau_2 <= 115 < 121 = tau_1^2"),
+                "w33CocliqueOvoidDeficit": 3,
+                "defectBoundary": ("blocking ovoid defect is 11-10=1; coclique "
+                                   "ovoid deficit is 10-7=3; they witness the "
+                                   "same absent ovoid but are distinct invariants"),
+                "reading": ("the W(3,3) generic-bound gap is the blocking ovoid "
+                            "defect delta = 1 multiplied by tau_1 = 11; the "
+                            "strict 115 construction, not delta>0 alone, proves "
+                            "nonmultiplicativity"),
+                "novelty": ("no literature on blocking numbers of products of "
+                            "generalized quadrangles turned up, but the proved "
+                            "one-way implication is a one-line consequence of "
+                            "two standard bounds; recorded as a derivation, not "
+                            "as a discovery"),
             }, fh, indent=2)
         print("\n  written: %s" % os.path.relpath(out, ROOT))
     return 0 if ok else 1

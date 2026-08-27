@@ -16,6 +16,7 @@
 
   const CONTRACT_SCHEMA = "holotrade.semantic-result-contract.v1";
   const RESULT_SCHEMA = "holotrade.semantic-result.v1";
+  const DIGEST_RE = /^sha256:[0-9a-f]{64}$/;
 
   function text(v, name) {
     if (typeof v !== "string" || !v.trim()) throw new TypeError(`${name} must be a non-empty string`);
@@ -24,6 +25,18 @@
   function sha256(value) {
     const b = Buffer.isBuffer(value) ? value : Buffer.from(typeof value === "string" ? value : E.canonicalJson(value), "utf8");
     return `sha256:${crypto.createHash("sha256").update(b).digest("hex")}`;
+  }
+  function semanticError(code, message) {
+    const err = new Error(message);
+    err.code = code;
+    return err;
+  }
+  function checkedDigest(value, label) {
+    if (value == null) return null;
+    if (typeof value !== "string" || !DIGEST_RE.test(value)) {
+      throw semanticError("INVALID_RESULT_DIGEST", `${label} is not a canonical SHA-256 digest`);
+    }
+    return value;
   }
 
   class ResultContract {
@@ -100,7 +113,7 @@
   function verifyCommitment(commitment, contractValue, value = undefined) {
     const c = contract(contractValue);
     if (!commitment || commitment.schema !== RESULT_SCHEMA || commitment.contractDigest !== c.digest ||
-        commitment.digestAlgorithm !== "sha256" || !/^sha256:[0-9a-f]{64}$/.test(commitment.digest || "")) {
+        commitment.digestAlgorithm !== "sha256" || !DIGEST_RE.test(commitment.digest || "")) {
       return { ok: false, code: "SHAPE_OR_CONTRACT" };
     }
     if (value !== undefined) {
@@ -117,7 +130,7 @@
     const semantic = commit(value, c);
     const base = projectionEngine.emit(projection, plan, receipt, {
       id, kind, address,
-      // resultDigest is a backwards-compatibility alias only.  The authoritative
+      // resultDigest is a backwards-compatibility alias only. The authoritative
       // commitment is output.result below and is contract-bound.
       metadata: { ...metadata, resultContractDigest: c.digest, resultDigest: semantic.digest },
     });
@@ -133,13 +146,58 @@
     return record;
   }
 
-  function resultDigestOf(emission) {
-    const d = emission?.output?.result?.digest || emission?.semanticResult?.digest || emission?.output?.metadata?.resultDigest || null;
-    if (typeof d !== "string" || !/^sha256:[0-9a-f]{64}$/.test(d)) throw new Error("emission has no valid first-class semantic SHA-256 result commitment");
-    return d;
+  // Resolve semantic identity without confusing it with provenance.  The two
+  // first-class locations are redundant by design and therefore MUST agree.
+  // The metadata field is only a compatibility alias; when present alongside
+  // a first-class commitment it MUST also agree.  A metadata-only digest is
+  // never silently promoted: callers must opt in with allowLegacy=true and
+  // receive an explicit advisory/manual-review identity.
+  function resultIdentityOf(emission, { allowLegacy = false } = {}) {
+    const outputDigest = checkedDigest(emission?.output?.result?.digest, "emission.output.result.digest");
+    const semanticDigest = checkedDigest(emission?.semanticResult?.digest, "emission.semanticResult.digest");
+    const legacyDigest = checkedDigest(emission?.output?.metadata?.resultDigest, "emission.output.metadata.resultDigest");
+
+    if (outputDigest && semanticDigest && outputDigest !== semanticDigest) {
+      throw semanticError("FIRST_CLASS_RESULT_MISMATCH", "first-class semantic result commitments disagree");
+    }
+    const authoritative = outputDigest || semanticDigest;
+    if (authoritative) {
+      if (legacyDigest && legacyDigest !== authoritative) {
+        throw semanticError("LEGACY_ALIAS_MISMATCH", "legacy metadata resultDigest disagrees with the authoritative first-class semantic result commitment");
+      }
+      return Object.freeze({
+        digest: authoritative,
+        mode: "first-class",
+        authoritative: true,
+        manualReviewRequired: false,
+        outputResultPresent: !!outputDigest,
+        semanticResultPresent: !!semanticDigest,
+        legacyAliasPresent: !!legacyDigest,
+      });
+    }
+
+    if (legacyDigest) {
+      if (!allowLegacy) {
+        throw semanticError("LEGACY_ONLY_RESULT_DIGEST", "metadata-only resultDigest is legacy/advisory and is not an authoritative semantic result commitment");
+      }
+      return Object.freeze({
+        digest: legacyDigest,
+        mode: "legacy-metadata",
+        authoritative: false,
+        manualReviewRequired: true,
+        outputResultPresent: false,
+        semanticResultPresent: false,
+        legacyAliasPresent: true,
+      });
+    }
+    throw semanticError("MISSING_RESULT_DIGEST", "emission has no semantic SHA-256 result commitment");
   }
 
-  const API = { CONTRACT_SCHEMA, RESULT_SCHEMA, ResultContract, contract, bindProjection, projectionBinds, commit, verifyCommitment, emit, resultDigestOf, sha256 };
+  function resultDigestOf(emission, options = {}) {
+    return resultIdentityOf(emission, options).digest;
+  }
+
+  const API = { CONTRACT_SCHEMA, RESULT_SCHEMA, ResultContract, contract, bindProjection, projectionBinds, commit, verifyCommitment, emit, resultIdentityOf, resultDigestOf, sha256 };
   root.HolotradeResultContract = API;
   if (typeof module !== "undefined" && module.exports) module.exports = API;
 })(typeof window !== "undefined" ? window : globalThis);

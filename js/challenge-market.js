@@ -2,23 +2,21 @@
 // HOLOTRADE RE-EXECUTION CHALLENGE MARKET
 //
 // Provenance identity and semantic result identity are deliberately separate.
-// Legacy callers may still compare whole-emission provenance; new certified
-// replay requires a SHA-256 semantic result commitment in output metadata.
+// Certified replay uses first-class result commitments as authority. Legacy
+// metadata-only result digests remain an explicitly advisory compatibility
+// path and can never trigger automatic evidence invalidation.
 // ======================================================================
 (function (root) {
   "use strict";
   const E = root.HolotradeEvidence || (typeof require !== "undefined" ? require("./evidence.js") : null);
   const C = root.HolotradeW33TransitionCertificate || (typeof require !== "undefined" ? require("./w33-transition-certificate.js") : null);
-  if (!E || !C) throw new Error("challenge-market requires evidence and W33 transition certificates");
+  const R = root.HolotradeResultContract || (typeof require !== "undefined" ? require("./result-contract.js") : null);
+  if (!E || !C || !R) throw new Error("challenge-market requires evidence, W33 transition certificates, and result contracts");
   const SCHEMA = "holotrade.reexecution-challenge.v3";
   let SEQ = 1;
 
   function resultDigestOf(emission) {
-    const digest = emission?.output?.metadata?.resultDigest;
-    if (typeof digest !== "string" || !/^sha256:[0-9a-f]{64}$/.test(digest)) {
-      throw new Error("deterministic certified replay requires emission.output.metadata.resultDigest as canonical SHA-256");
-    }
-    return digest;
+    return R.resultDigestOf(emission);
   }
 
   function certifiedReplay(challenge, bundle) {
@@ -30,13 +28,18 @@
     if (C.sha256Digest(emission) !== cert.element.digest) throw new Error("replay emission is not bound by supplied certificate");
     const projectionDigest = cert.trace?.projection?.digest || null;
     if (projectionDigest !== challenge.projectionDigest) throw new Error("replay certificate does not bind challenged projection digest");
-    const observedResultDigest = resultDigestOf(emission);
+    const observedIdentity = R.resultIdentityOf(emission, { allowLegacy: challenge.resultIdentityMode === "legacy-metadata" });
+    const observedResultDigest = observedIdentity.digest;
+    const authoritativeSemanticIdentity = challenge.authoritativeSemanticIdentity === true && observedIdentity.authoritative === true;
     return Object.freeze({
       certificateDigest: cert.certificateDigest,
       provenanceElementDigest: cert.element.digest,
       projectionDigest,
       observedResultDigest,
       expectedResultDigest: challenge.expectedResultDigest,
+      resultIdentityMode: observedIdentity.mode,
+      authoritativeSemanticIdentity,
+      manualReviewRequired: !authoritativeSemanticIdentity,
       match: observedResultDigest === challenge.expectedResultDigest,
     });
   }
@@ -51,9 +54,19 @@
       const projectionDigest = certificate.trace?.projection?.digest;
       if (!projectionDigest) throw new Error("certificate is missing projection digest");
       let expectedResultDigest = null;
+      let resultIdentityMode = null;
+      let authoritativeSemanticIdentity = false;
+      let mode = "legacy-provenance";
       if (emission) {
         if (C.sha256Digest(emission) !== certificate.element.digest) throw new Error("source emission is not bound by challenge certificate");
-        expectedResultDigest = resultDigestOf(emission);
+        // allowLegacy is deliberate here: old v2 certificates can still be
+        // compared, but the challenge records that they are advisory and the
+        // correction path will require manual review.
+        const identity = R.resultIdentityOf(emission, { allowLegacy: true });
+        expectedResultDigest = identity.digest;
+        resultIdentityMode = identity.mode;
+        authoritativeSemanticIdentity = identity.authoritative === true;
+        mode = authoritativeSemanticIdentity ? "semantic-certified" : "semantic-legacy-advisory";
       }
       const row = {
         schema: SCHEMA,
@@ -63,9 +76,12 @@
         projectionDigest,
         sourceProvenanceElementDigest: certificate.element.digest,
         expectedResultDigest,
+        resultIdentityMode,
+        authoritativeSemanticIdentity,
+        manualReviewRequired: !!emission && !authoritativeSemanticIdentity,
         historicalEvidenceRefs: [...(certificate.proof?.historical_evidence_admission?.refs || [])],
         sponsor: String(sponsor), bounty, deterministic: true,
-        mode: emission ? "semantic-certified" : "legacy-provenance",
+        mode,
         status: "open", result: null,
       };
       this.challenges.push(row); this.totalBounty += bounty; return row;
@@ -82,6 +98,8 @@
         expectedElementDigest: challenge.sourceProvenanceElementDigest,
         observedResultDigest: null,
         expectedResultDigest: challenge.expectedResultDigest,
+        authoritativeSemanticIdentity: false,
+        manualReviewRequired: true,
         match,
         bountyDisposition: match ? "return-to-sponsor" : "pay-challenger-model",
         warning: "Legacy mode compares provenance identity, not semantic deterministic result identity.",
@@ -109,6 +127,7 @@
       if (replays.length < minimum) return Object.freeze({ mode: "certified-semantic-quorum", resolved: false, code: "QUORUM_NOT_MET", minimum, distinctReplays: replays.length, replays });
       const mismatches = replays.filter((row) => !row.match);
       const match = mismatches.length === 0;
+      const authoritativeSemanticIdentity = challenge.authoritativeSemanticIdentity === true && replays.every((row) => row.authoritativeSemanticIdentity === true);
       challenge.status = match ? "confirmed" : "mismatch";
       challenge.result = Object.freeze({
         mode: "certified-semantic-quorum", resolved: true, minimum,
@@ -117,6 +136,8 @@
         replays: Object.freeze(replays),
         observedResultDigest: match ? challenge.expectedResultDigest : mismatches[0].observedResultDigest,
         expectedResultDigest: challenge.expectedResultDigest,
+        authoritativeSemanticIdentity,
+        manualReviewRequired: !authoritativeSemanticIdentity,
         bountyDisposition: match ? "return-to-sponsor" : "pay-challenger-model",
       });
       this.totalBounty -= challenge.bounty; return challenge.result;
@@ -126,6 +147,7 @@
       if (!challenge || challenge.status !== "mismatch" || !challenge.result) throw new Error("a resolved mismatch challenge is required");
       const invalidates = [...challenge.historicalEvidenceRefs].sort();
       const semantic = challenge.result.mode !== "legacy-provenance-comparison";
+      const authoritative = semantic && challenge.result.authoritativeSemanticIdentity === true;
       return {
         id: `replay-mismatch:${challenge.id}`,
         subject: `Re-execution mismatch for ${challenge.certificateDigest}`,
@@ -133,7 +155,9 @@
         evidenceClass: E.EVIDENCE_CLASS.MODEL_RESULT,
         scope: E.SCOPE.REGRESSION,
         claim: semantic
-          ? "One or more independently certified deterministic re-executions of the same projection produced a different semantic result SHA-256 commitment."
+          ? (authoritative
+            ? "One or more independently certified deterministic re-executions of the same projection produced a different authoritative semantic result SHA-256 commitment."
+            : "One or more certified deterministic re-executions disagreed on a legacy metadata-only result digest; this is advisory compatibility evidence and requires manual review.")
           : "A replay emission did not match the original provenance commitment; this legacy comparison does not establish semantic nondeterminism.",
         invalidates,
         createdAt,
@@ -146,11 +170,16 @@
           expectedElementDigest: challenge.result.expectedElementDigest || null,
           observedElementDigest: challenge.result.observedElementDigest || null,
           resolutionMode: challenge.result.mode,
+          resultIdentityMode: challenge.result.resultIdentityMode || challenge.result.replays?.[0]?.resultIdentityMode || null,
           distinctReplays: challenge.result.distinctReplays || 1,
         },
         metadata: {
+          // correctionReady means a correction record can be produced. Only an
+          // authoritative first-class mismatch may automatically invalidate.
           correctionReady: semantic,
-          automaticInvalidationScope: semantic && invalidates.length ? "referenced-evidence" : "manual-review-required",
+          automaticInvalidationScope: authoritative && invalidates.length ? "referenced-evidence" : "manual-review-required",
+          authoritativeSemanticIdentity: authoritative,
+          manualReviewRequired: !authoritative,
           physicalAttestationClaimed: false,
           provenanceIdentityCompared: !semantic,
           semanticResultIdentityCompared: semantic,
