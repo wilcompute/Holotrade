@@ -1,0 +1,58 @@
+{
+  "count": 41672,
+  "complete": false,
+  "supports": [
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37
+  ],
+  "maxima": [
+    5,
+    6,
+    7
+  ],
+  "orbitsUnderAut": null,
+  "orbitReduction": null,
+  "conclusion": "degree sequences exist; necessary, never sufficient",
+  "proved": false,
+  "schema": "holotrade.tensor-tight-degree-sequences.v2",
+  "alpha": 7,
+  "tau1": 11,
+  "boundary": "a degree sequence is necessary for a 110-leaf blocker and never sufficient; nothing here bounds tau_2 unless the count is zero and the enumeration is complete",
+  "provedBounds": {
+    "support_min": {
+      "value": 24,
+      "status": "OPTIMAL",
+      "proved": true
+    },
+    "support_max": {
+      "value": 40,
+      "status": "OPTIMAL",
+      "proved": true
+    },
+    "maxfibre_min": {
+      "value": 4,
+      "status": "OPTIMAL",
+      "proved": true
+    },
+    "maxfibre_max": {
+      "value": 7,
+      "status": "OPTIMAL",
+      "proved": true
+    }
+  },
+  "naiveCountingSupport": 16,
+  "observedRangesAreNotBounds": "the supports and maxima fields are what the INCOMPLETE enumeration happened to produce; only provedBounds are facts",
+  "headline": "at |X|=110 the support is at least 24 on each axis -- the geometry beats the naive counting bound of ceil(110/7)=16 by eight -- and the largest fibre is at least 4, so no tight solution is flat"
+}

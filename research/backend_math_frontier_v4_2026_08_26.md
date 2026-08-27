@@ -105,6 +105,57 @@ has row support **37**, so that hypothesis is now known **false at the optimum**
 the product construction that produced the 121 figure in the first place is strictly beatable. The recursive
 upper bound `11^n` inherits the same defect at every depth.
 
+### The centre of a minimum blocker -- and the citation that stops this being a discovery
+
+All 360 minimum blocking sets of W(3,3) share one rigid structure. Each has a **centre**: a point `p`
+whose four lines it meets *twice*, all other 36 lines *once*, and which it never contains. Relative to the
+rank-3 shell `1 + 12 + 27` around `p` the blocker has shape `(0, 8, 3)` -- none of `p`, eight of the twelve
+collinear points (two on each line through `p`), three of the twenty-seven others. There are 9 blockers per
+centre and 40 centres: `360 = 40 x 9`, one `Aut(W(3,3))`-orbit, stabiliser 144.
+
+The arithmetic closes cleanly: `sum_L |b cap L| = 4|b| = 44` over 40 lines each met at least once, so the
+total excess is exactly `44 - 40 = 4` -- and it sits on a pencil rather than being spread around.
+
+**This is almost certainly not new, and is recorded as verification rather than discovery.** Dualise:
+W(3,3) is the dual of Q(4,3), so a blocking set is a *cover of Q(4,3) by lines*, and the statement becomes
+"a minimum cover of Q(4,3) has excess 1, its four doubly-covered points form a line, and that line is not in
+the cover." Covers of classical generalized quadrangles are a studied subject, and two published facts
+bracket the whole thing:
+
+- Eisfeld, Storme, Szonyi and Sziklai, *Covers and blocking sets of classical generalised quadrangles*,
+  Discrete Mathematics **238** (2001) 35-51, prove a cover of `Q(4,q)` for odd `q` needs more than
+  `q^2 + 1 + (q-1)/3` lines. At `q = 3` that is `> 10.67`, i.e. at least 11 -- **exactly the value this
+  repository certifies by SAT.** `tau_1 = 11` is prior art; our certificate reproduces it and shows it is
+  attained.
+- The companion work on covers of `PG(3,q)` and of finite generalized quadrangles states that for minimal
+  covers with small excess, "the structure of the set of points lying on at least two lines of the cover is
+  described" -- which is precisely the excess structure above.
+
+The `q = 3` statement could not be retrieved verbatim from open sources, and that uncertainty resolves one
+way only: **a result whose novelty cannot be established is not new.** What remains ours is the depth-2
+*tensor* blocking number -- a question about a product of two quadrangles, for which no literature turned up.
+
+### Two proved facts about the tight case, and three things that did not work
+
+Optimising the fibre-size program directly (`f(p) = |X_p|`, line sums exactly 11, `0 <= f <= alpha = 7`)
+gives two facts CP-SAT reports as OPTIMAL:
+
+- **the support is at least 24** on each axis, against a naive counting bound of `ceil(110/7) = 16` -- the
+  geometry beats the counting by eight;
+- **the largest fibre is at least 4**, so no tight solution is flat.
+
+Three approaches did not work, and are recorded as such rather than quietly dropped:
+
+| attempt | result |
+|---|---|
+| two-sided tight model, degree identity | UNKNOWN, 1901 s |
+| the same, sound 360-fold symmetry break | UNKNOWN, 2302 s |
+| split on degree sequences | 41,672 found before timeout; not a reduction |
+| LNS from the 115 witness, 40+ rounds | no improvement; bounds the method, not `tau_2` |
+
+The centre-excess balance -- the 40 chosen centres must meet every line exactly 4 times -- is *feasible*, so
+it does not obstruct on its own. It is used as a propagation constraint instead.
+
 The exact value inside `[110, 115]` remains open. This pass does not convert an unsuccessful optimization
 search into a theorem: the lower bound is untouched, and `exactTau` stays `null` in the engine.
 

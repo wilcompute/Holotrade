@@ -1,0 +1,49 @@
+{
+  "schema": "holotrade.w33-blocker-centre.v1",
+  "valid": true,
+  "checks": {
+    "blockerCount360": true,
+    "allSizeTau1": true,
+    "allBlockEveryLine": true,
+    "everyPointOnFourLines": true,
+    "excessSetIsAlwaysAPencil": true,
+    "oneIntersectionProfile": true,
+    "profileIs36x1plus4x2": true,
+    "fortyCentres": true,
+    "nineBlockersPerCentre": true,
+    "centreNeverInItsBlocker": true,
+    "oneShapeRelativeToCentre": true,
+    "shapeIsZeroEightThree": true,
+    "excessArithmetic": true,
+    "countFactorises": true
+  },
+  "tau1": 11,
+  "blockers": 360,
+  "centres": 40,
+  "blockersPerCentre": [
+    9
+  ],
+  "intersectionProfile": {
+    "1": 36,
+    "2": 4
+  },
+  "shapeInRank3Shell": {
+    "centre": 0,
+    "collinear12": 8,
+    "far27": 3
+  },
+  "novelty": "NOT NEW -- presumed prior art; recorded as a computational verification with citations",
+  "citations": [
+    {
+      "claim": "a cover of Q(4,q), q odd, needs more than q^2+1+(q-1)/3 lines; at q=3 that is >10.67, hence tau_1 >= 11",
+      "source": "J. Eisfeld, L. Storme, T. Szonyi, P. Sziklai, Covers and blocking sets of classical generalised quadrangles, Discrete Mathematics 238 (2001) 35-51",
+      "bearing": "the value 11 is prior art; our SAT certificate reproduces it and shows it is attained"
+    },
+    {
+      "claim": "for minimal covers with small excess, the structure of the set of points on at least two lines of the cover is described",
+      "source": "Covers of PG(3,q) and of finite generalized quadrangles (same group of authors)",
+      "bearing": "the centre structure computed here is presumed to be a q=3 instance of this; not claimed as new"
+    }
+  ],
+  "oursInstead": "the depth-2 tensor blocking number tau_2, analysis/tensor_symmetric_blocker.py"
+}

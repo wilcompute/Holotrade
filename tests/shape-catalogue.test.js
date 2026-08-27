@@ -1208,6 +1208,88 @@ test("the frozen certificate and the engine agree on the same witness", () => {
   assert.match(cert.boundary, /remains OPEN/);
 });
 
+test("every minimum blocker has a centre, and the structure is fully rigid", () => {
+  // Recomputed here from the geometry, not read out of the artifact.
+  const S = require(path.join(root, "js/substrate.js"));
+  const R = require(path.join(root, "analysis/tensor_blocking_reformulation.js"));
+  const B = R.minimumBlockers().map((b) => new Set(b));
+  assert.equal(B.length, 360);
+
+  const pencil = new Map();
+  for (let p = 0; p < 40; p++) {
+    const ls = [];
+    for (let li = 0; li < 40; li++) if (S.LINES[li].includes(p)) ls.push(li);
+    assert.equal(ls.length, 4, "W(3,3) is 4-regular on lines");
+    pencil.set(ls.join(","), p);
+  }
+
+  const perCentre = new Map();
+  for (const b of B) {
+    const exc = [];
+    const prof = new Map();
+    for (let li = 0; li < 40; li++) {
+      const k = S.LINES[li].filter((p) => b.has(p)).length;
+      prof.set(k, (prof.get(k) || 0) + 1);
+      if (k >= 2) exc.push(li);
+    }
+    // every blocker meets 36 lines once and 4 lines twice
+    assert.equal(prof.get(1), 36);
+    assert.equal(prof.get(2), 4);
+    assert.equal(prof.size, 2, "no line is met three or more times");
+    // the four doubly-met lines are exactly a pencil
+    const c = pencil.get(exc.join(","));
+    assert.notEqual(c, undefined, "the excess set must be a pencil");
+    assert.ok(!b.has(c), "a blocker never contains its own centre");
+    perCentre.set(c, (perCentre.get(c) || 0) + 1);
+  }
+  assert.equal(perCentre.size, 40, "forty centres");
+  for (const n of perCentre.values()) assert.equal(n, 9, "nine per centre");
+  assert.equal(40 * 9, 360);
+});
+
+test("the centre structure is recorded as prior art, not as a discovery", () => {
+  const c = require(path.join(root, "data/w33_blocker_centre_structure.json"));
+  assert.equal(c.valid, true);
+  assert.match(c.novelty, /NOT NEW/);
+  assert.ok(c.citations.length >= 1);
+  assert.match(c.citations[0].source, /Eisfeld/);
+  assert.match(c.citations[0].source, /Discrete Mathematics 238 \(2001\)/);
+  // the published bound is what tau_1 = 11 reproduces; it is not ours
+  assert.match(c.citations[0].bearing, /prior art/);
+  assert.equal(c.tau1, 11);
+  assert.match(c.oursInstead, /tensor/);
+});
+
+test("the tight case has support at least 24, beating the counting bound", () => {
+  const d = require(path.join(root, "data/tensor_tight_degree_sequences.json"));
+  // alpha = 7 alone gives only ceil(110/7) = 16
+  assert.equal(d.naiveCountingSupport, 16);
+  assert.equal(d.provedBounds.support_min.value, 24);
+  assert.equal(d.provedBounds.support_min.proved, true);
+  assert.equal(d.provedBounds.support_min.status, "OPTIMAL");
+  assert.ok(d.provedBounds.support_min.value > d.naiveCountingSupport,
+    "the geometry must beat the counting bound for this to be worth having");
+  // no tight solution is flat
+  assert.equal(d.provedBounds.maxfibre_min.value, 4);
+  assert.equal(d.provedBounds.maxfibre_max.value, 7);
+  // and the enumeration itself decided nothing
+  assert.equal(d.complete, false);
+  assert.equal(d.proved, false);
+  assert.match(d.observedRangesAreNotBounds, /only provedBounds are facts/);
+});
+
+test("the LNS run is recorded as bounding the method, not tau_2", () => {
+  const r = require(path.join(root, "data/tensor_upper_lns.json"));
+  assert.equal(r.startedFrom, 115);
+  assert.equal(r.result, 115);
+  assert.equal(r.improved, false);
+  assert.equal(r.exactTau, null);
+  assert.equal(r.witnessVerified, true);
+  assert.equal(r.witnessMinimal, true);
+  assert.match(r.onesided, /bounds the method, not tau_2/);
+  assert.ok(r.rounds > 0, "the search actually ran");
+});
+
 test("the tight-case lower-bound attempt is recorded as undecided, not as evidence", () => {
   const r = require(path.join(root, "data/tensor_tight_rows_and_columns.json"));
   assert.equal(r.target, 110);

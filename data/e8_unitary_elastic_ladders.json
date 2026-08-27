@@ -1,0 +1,520 @@
+{
+  "schema": "holotrade.e8-unitary-elastic-ladders.v1",
+  "evidenceClass": "EXACT_GAP_FINITE_GEOMETRY",
+  "gapVersion": "4.12.1",
+  "profiles": [
+    {
+      "q": 2,
+      "field": 4,
+      "identification": "H(3,4)=GQ(4,2)",
+      "points": 45,
+      "lines": 27,
+      "lineSize": 5,
+      "degree": 12,
+      "lambda": 3,
+      "mu": 3,
+      "maxPartialSpreadLines": 6,
+      "maximumPartialSpreadCount": 72,
+      "coveredPoints": 30,
+      "holePoints": 15,
+      "fullSpreadWouldNeedLines": 9,
+      "hasFullSpread": false,
+      "rungs": [
+        {
+          "rung": 1,
+          "vertices": 5,
+          "internalEdges": 10,
+          "boundaryEdges": 40,
+          "inducedDegree": 4,
+          "outsideAttachmentDegree": 1,
+          "spectralMinimumBoundary": 40,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 2,
+          "vertices": 10,
+          "internalEdges": 25,
+          "boundaryEdges": 70,
+          "inducedDegree": 5,
+          "outsideAttachmentDegree": 2,
+          "spectralMinimumBoundary": 70,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 3,
+          "vertices": 15,
+          "internalEdges": 45,
+          "boundaryEdges": 90,
+          "inducedDegree": 6,
+          "outsideAttachmentDegree": 3,
+          "spectralMinimumBoundary": 90,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 4,
+          "vertices": 20,
+          "internalEdges": 70,
+          "boundaryEdges": 100,
+          "inducedDegree": 7,
+          "outsideAttachmentDegree": 4,
+          "spectralMinimumBoundary": 100,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 5,
+          "vertices": 25,
+          "internalEdges": 100,
+          "boundaryEdges": 100,
+          "inducedDegree": 8,
+          "outsideAttachmentDegree": 5,
+          "spectralMinimumBoundary": 100,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 6,
+          "vertices": 30,
+          "internalEdges": 135,
+          "boundaryEdges": 90,
+          "inducedDegree": 9,
+          "outsideAttachmentDegree": 6,
+          "spectralMinimumBoundary": 90,
+          "attainsSpectralMinimum": true
+        }
+      ],
+      "partialSpread": [
+        [
+          1,
+          16,
+          17,
+          21,
+          25
+        ],
+        [
+          2,
+          26,
+          28,
+          32,
+          33
+        ],
+        [
+          3,
+          36,
+          39,
+          40,
+          44
+        ],
+        [
+          4,
+          14,
+          20,
+          31,
+          42
+        ],
+        [
+          5,
+          15,
+          24,
+          35,
+          43
+        ],
+        [
+          6,
+          13,
+          19,
+          27,
+          38
+        ]
+      ]
+    },
+    {
+      "q": 3,
+      "field": 9,
+      "identification": "H(3,9)=GQ(9,3)",
+      "points": 280,
+      "lines": 112,
+      "lineSize": 10,
+      "degree": 36,
+      "lambda": 8,
+      "mu": 4,
+      "maxPartialSpreadLines": 16,
+      "maximumPartialSpreadCount": 2268,
+      "coveredPoints": 160,
+      "holePoints": 120,
+      "fullSpreadWouldNeedLines": 28,
+      "hasFullSpread": false,
+      "rungs": [
+        {
+          "rung": 1,
+          "vertices": 10,
+          "internalEdges": 45,
+          "boundaryEdges": 270,
+          "inducedDegree": 9,
+          "outsideAttachmentDegree": 1,
+          "spectralMinimumBoundary": 270,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 2,
+          "vertices": 20,
+          "internalEdges": 100,
+          "boundaryEdges": 520,
+          "inducedDegree": 10,
+          "outsideAttachmentDegree": 2,
+          "spectralMinimumBoundary": 520,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 3,
+          "vertices": 30,
+          "internalEdges": 165,
+          "boundaryEdges": 750,
+          "inducedDegree": 11,
+          "outsideAttachmentDegree": 3,
+          "spectralMinimumBoundary": 750,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 4,
+          "vertices": 40,
+          "internalEdges": 240,
+          "boundaryEdges": 960,
+          "inducedDegree": 12,
+          "outsideAttachmentDegree": 4,
+          "spectralMinimumBoundary": 960,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 5,
+          "vertices": 50,
+          "internalEdges": 325,
+          "boundaryEdges": 1150,
+          "inducedDegree": 13,
+          "outsideAttachmentDegree": 5,
+          "spectralMinimumBoundary": 1150,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 6,
+          "vertices": 60,
+          "internalEdges": 420,
+          "boundaryEdges": 1320,
+          "inducedDegree": 14,
+          "outsideAttachmentDegree": 6,
+          "spectralMinimumBoundary": 1320,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 7,
+          "vertices": 70,
+          "internalEdges": 525,
+          "boundaryEdges": 1470,
+          "inducedDegree": 15,
+          "outsideAttachmentDegree": 7,
+          "spectralMinimumBoundary": 1470,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 8,
+          "vertices": 80,
+          "internalEdges": 640,
+          "boundaryEdges": 1600,
+          "inducedDegree": 16,
+          "outsideAttachmentDegree": 8,
+          "spectralMinimumBoundary": 1600,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 9,
+          "vertices": 90,
+          "internalEdges": 765,
+          "boundaryEdges": 1710,
+          "inducedDegree": 17,
+          "outsideAttachmentDegree": 9,
+          "spectralMinimumBoundary": 1710,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 10,
+          "vertices": 100,
+          "internalEdges": 900,
+          "boundaryEdges": 1800,
+          "inducedDegree": 18,
+          "outsideAttachmentDegree": 10,
+          "spectralMinimumBoundary": 1800,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 11,
+          "vertices": 110,
+          "internalEdges": 1045,
+          "boundaryEdges": 1870,
+          "inducedDegree": 19,
+          "outsideAttachmentDegree": 11,
+          "spectralMinimumBoundary": 1870,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 12,
+          "vertices": 120,
+          "internalEdges": 1200,
+          "boundaryEdges": 1920,
+          "inducedDegree": 20,
+          "outsideAttachmentDegree": 12,
+          "spectralMinimumBoundary": 1920,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 13,
+          "vertices": 130,
+          "internalEdges": 1365,
+          "boundaryEdges": 1950,
+          "inducedDegree": 21,
+          "outsideAttachmentDegree": 13,
+          "spectralMinimumBoundary": 1950,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 14,
+          "vertices": 140,
+          "internalEdges": 1540,
+          "boundaryEdges": 1960,
+          "inducedDegree": 22,
+          "outsideAttachmentDegree": 14,
+          "spectralMinimumBoundary": 1960,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 15,
+          "vertices": 150,
+          "internalEdges": 1725,
+          "boundaryEdges": 1950,
+          "inducedDegree": 23,
+          "outsideAttachmentDegree": 15,
+          "spectralMinimumBoundary": 1950,
+          "attainsSpectralMinimum": true
+        },
+        {
+          "rung": 16,
+          "vertices": 160,
+          "internalEdges": 1920,
+          "boundaryEdges": 1920,
+          "inducedDegree": 24,
+          "outsideAttachmentDegree": 16,
+          "spectralMinimumBoundary": 1920,
+          "attainsSpectralMinimum": true
+        }
+      ],
+      "partialSpread": [
+        [
+          1,
+          101,
+          102,
+          108,
+          112,
+          115,
+          119,
+          125,
+          129,
+          130
+        ],
+        [
+          2,
+          158,
+          160,
+          166,
+          168,
+          173,
+          178,
+          179,
+          183,
+          189
+        ],
+        [
+          3,
+          191,
+          194,
+          196,
+          203,
+          207,
+          208,
+          214,
+          217,
+          221
+        ],
+        [
+          4,
+          248,
+          252,
+          254,
+          257,
+          261,
+          267,
+          270,
+          275,
+          280
+        ],
+        [
+          5,
+          46,
+          64,
+          90,
+          120,
+          146,
+          176,
+          211,
+          238,
+          265
+        ],
+        [
+          6,
+          41,
+          60,
+          86,
+          111,
+          142,
+          170,
+          200,
+          230,
+          259
+        ],
+        [
+          7,
+          52,
+          75,
+          97,
+          133,
+          157,
+          187,
+          222,
+          245,
+          278
+        ],
+        [
+          8,
+          47,
+          71,
+          93,
+          122,
+          149,
+          181,
+          213,
+          241,
+          272
+        ],
+        [
+          11,
+          42,
+          76,
+          85,
+          121,
+          153,
+          164,
+          192,
+          225,
+          271
+        ],
+        [
+          12,
+          48,
+          70,
+          91,
+          106,
+          135,
+          169,
+          223,
+          234,
+          250
+        ],
+        [
+          15,
+          43,
+          59,
+          98,
+          104,
+          134,
+          182,
+          210,
+          243,
+          256
+        ],
+        [
+          16,
+          49,
+          65,
+          92,
+          132,
+          144,
+          162,
+          198,
+          224,
+          260
+        ],
+        [
+          17,
+          31,
+          61,
+          94,
+          116,
+          147,
+          165,
+          218,
+          246,
+          251
+        ],
+        [
+          22,
+          32,
+          67,
+          100,
+          109,
+          152,
+          186,
+          195,
+          233,
+          264
+        ],
+        [
+          23,
+          29,
+          68,
+          83,
+          126,
+          154,
+          159,
+          204,
+          235,
+          253
+        ],
+        [
+          28,
+          30,
+          74,
+          89,
+          103,
+          141,
+          172,
+          197,
+          240,
+          274
+        ]
+      ]
+    }
+  ],
+  "theorem": {
+    "hermitianModelsRebuilt": true,
+    "maximumPartialSpreadsExhaustive": true,
+    "everyRungConnectedRegularAndSpectrallyOptimal": true,
+    "neitherUnitaryCarrierHasFullSpread": true,
+    "exactHoleSectors": {
+      "H34": 15,
+      "H39": 120
+    }
+  },
+  "provenance": {
+    "e8ResidueIdentifications": "W33-Theory analysis/w33_pass9961_9984_the_unitary_branch.py and its independent driver",
+    "maximumPriorArt": "W33-Theory Passes 7255-7256; De Beule-Klein-Metsch-Storme sharp bound (q^3+q+2)/2",
+    "classicalPartialSpreadReference": "Ihringer-Sin-Xiang, arXiv:1604.06172, and the cited earlier sharp bound"
+  },
+  "evidenceBoundary": "The standard Hermitian incidence models are isomorphic to the E8 residue geometries certified in W33-Theory, but this file does not construct an E8-coordinate isomorphism. The ladders are exact topology plans, not deployed inventory or hardware SLAs.",
+  "sha256": "cce62c1c16927909a83be619e353df481eb01f95c6fe8831384b5d313fc92f74"
+}

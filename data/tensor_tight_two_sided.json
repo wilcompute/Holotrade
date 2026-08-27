@@ -1,0 +1,20 @@
+{
+  "schema": "holotrade.tensor-tight-two-sided.v1",
+  "target": 110,
+  "status": "UNKNOWN",
+  "wallSeconds": 2301.9,
+  "encoded": {
+    "A_rowShadowIsMinimumBlocker": true,
+    "B_columnShadowIsMinimumBlocker": true,
+    "C_bothFibreFamiliesIndependent": true,
+    "D_degreeEqualsFourTimesFibreSize": true
+  },
+  "symmetryBroken": true,
+  "symmetryBreakJustification": "the 360 minimum blockers form a single Aut(W33)-orbit, so for any g there is an h carrying the row shadow of line 0 to a fixed blocker. Only ONE of the two shadow families may be normalised: pinning the column shadow too would be unsound, because fixing the row shadow already constrains h and the column condition then constrains g given that h.",
+  "conclusion": "undecided in budget",
+  "proved": false,
+  "intervalUnchanged": [
+    110,
+    115
+  ]
+}

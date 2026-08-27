@@ -1,0 +1,15 @@
+{
+  "schema": "holotrade.tensor-upper-lns.v1",
+  "startedFrom": 115,
+  "result": 115,
+  "improved": false,
+  "rounds": 629,
+  "improvements": 0,
+  "trace": [],
+  "witness": null,
+  "witnessVerified": true,
+  "witnessMinimal": true,
+  "lowerBound": 110,
+  "onesided": "an improvement is a real upper bound; exhausting the search bounds the method, not tau_2",
+  "exactTau": null
+}
