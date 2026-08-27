@@ -2667,5 +2667,60 @@
       "source": "cli",
       "timestamp": "2026-08-27T15:13:29.327Z"
     }
+  },
+  {
+    "id": "d82067a8-2406-45a0-84db-c8b4754c4cf4",
+    "question": "Why follow commit 480bb16 with a README-only correction?",
+    "answer": "The anchor audit found six stripped inline Markdown math delimiters in the new hole-sector section. Restoring them changes presentation only; the GAP certificates, theorem statements, digests, and runtime remain unchanged.",
+    "timestamp": "2026-08-27T15:15:36.475Z",
+    "tags": [
+      "audit",
+      "correction",
+      "formatting",
+      "holotrade",
+      "readme",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "480bb16",
+      "status": "active"
+    },
+    "commitHashes": [
+      "480bb16"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-08-27T15:15:36.476Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": [
+        "audit"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-27T15:15:36.468Z"
+    }
   }
 ]

@@ -176,14 +176,14 @@ IDs are bound to real hosts and independently topology-attested. The standard He
 incidence-isomorphic to the certified E8 residues; a literal E8-coordinate isomorphism is not claimed here.
 
 The maximum-rung boundary is now classified rather than merely counted. All maximum partial spreads lie
-in one ambient orbit, so each carrier has one hole-graph isomorphism type. For (q=2), the 15 holes induce
+in one ambient orbit, so each carrier has one hole-graph isomorphism type. For \(q=2\), the 15 holes induce
 
 \[
 \operatorname{SRG}(15,6,1,3)\cong KG(6,2),
 \]
 
-with automorphism group (S_6). For (q=3), the 120 holes form a 20-regular diameter-two graph with
-spectrum (20^1,8^5,4^{45},0^9,(-4)^{60}). It is not strongly regular. GAP identifies its full
+with automorphism group \(S_6\). For \(q=3\), the 120 holes form a 20-regular diameter-two graph with
+spectrum \(20^1,8^5,4^{45},0^9,(-4)^{60}\). It is not strongly regular. GAP identifies its full
 automorphism group as
 
 \[
@@ -191,7 +191,7 @@ G\cong (\mathbb F_2^6/\langle\mathbf1\rangle)\rtimes S_6
    =\operatorname{Aut}(\text{folded }Q_6),
 \]
 
-and the graph itself as the coset action (G/H), where (H=\operatorname{SmallGroup}(192,1485)), with
+and the graph itself as the coset action \(G/H\), where \(H=\operatorname{SmallGroup}(192,1485)\), with
 adjacency the union of the degree-16 and degree-4 orbitals. The obvious 120-duad folded-cube carrier was
 also tested and rejected: it has stabilizer `SmallGroup(192,1472)` and its degree-20 graph is not
 isomorphic to the hole graph. This is an exact finite graph/group result, not a folded-cube hardware claim
