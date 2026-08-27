@@ -1,0 +1,13 @@
+{
+  "schema": "holotrade.tensor-upper-anneal.v1",
+  "size": 114,
+  "restarts": 16,
+  "secondsPerRestart": 110.0,
+  "totalMoves": 69259264,
+  "bestUnblockedTiles": 9,
+  "improved": false,
+  "currentUpperBound": 115,
+  "lowerBound": 110,
+  "exactTau": null,
+  "onesided": "annealing is not a decision procedure; failing to reach zero bounds the search, not tau_2"
+}
