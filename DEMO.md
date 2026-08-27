@@ -13,6 +13,8 @@ Run this once before the meeting:
 npm test
 npm run verify:rtl
 npm run synth:rtl
+npm run verify:unitary-ladders
+npm run verify:unitary-holes
 npm run experiment:balancer
 npm run serve
 ```
@@ -22,9 +24,12 @@ fleet and market use a deterministic seed, so reload is the reset button.
 
 The expected headline checks are:
 
-- 56 software tests pass;
+- all software tests pass;
 - the RTL miter passes over all \(2^{25}=33,554,432\) input assignments;
 - iCE40 synthesis reports 49 LUT4 cells and 6 carry cells;
+- GAP replays the two E8-unitary ladder certificates and reports maxima 6 and 16;
+- GAP/GRAPE replays the maximum-rung boundary certificate: the 15-hole SRG and
+  the 120-hole folded-cube-group coset graph, including the natural-duad no-go;
 - the paired 64-seed simulation reports a 60.34% terminal-Gini reduction, with
   all 64 pairs improving.
 
@@ -105,6 +110,23 @@ Point to the bisection certificate.
 > “This explicit 20|20 cut has exactly 100 crossing edges, meeting the spectral
 > lower bound. That is an exact graph certificate—not a claim about a deployed
 > cable plant, congestion, failures, or physical throughput.”
+
+Move the **E8 unitary elastic ladder** slider between the two carriers.
+
+> “The same line-atom scheduler extends to two larger finite carriers, but the
+> result is deliberately incomplete: 30 of 45 and 160 of 280 points are the
+> exact ceilings. The remaining 15 and 120 points are shown as hole sectors,
+> not hidden as unused inventory. GAP proves the topology plan; real dispatch
+> still requires host binding and runtime topology attestation.”
+
+Move each carrier to its final rung and point to **maximum-rung boundary
+geometry**.
+
+> “The q=2 ceiling closes to SRG(15,6,1,3). The q=3 ceiling closes to an exact
+> 120-state coset graph for the folded-six-cube automorphism group: degree 20,
+> diameter two, and not strongly regular. The obvious 120-duad model was tested
+> and rejected. This panel appears only at the certified ceiling; none of it
+> turns the abstract point labels into dispatchable hosts.”
 
 Then show **Portfolio** or the Fabric cell table.
 

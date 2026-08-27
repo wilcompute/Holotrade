@@ -152,6 +152,59 @@ That bound now agrees with `fabricDistance` and has explicit witnesses in the te
 
 Likewise, \(9^t\) is an illustrative declared-workload cost model. Gottesman–Knill establishes efficient classical simulation for stabilizer circuits; it does not make memory, routing, error correction, or all Clifford computation free, and it does not make \(9^t\) a universal runtime law.
 
+### Elastic topology ladders: one complete, two partial
+
+Ordering the ten disjoint lines of any \(W(3,3)\) spread gives a nested reservation ladder. Rung \(i\)
+contains \(4i\) points, has induced degree \(i+2\), \(2i(i+2)\) internal edges, and boundary
+\(4i(10-i)\). Every rung meets the spectral minimum boundary exactly. Expanding or shrinking by a whole
+four-point line leaves every retained point in place, and rung 10 closes the entire 40-point carrier.
+
+The same construction now runs on the two unitary residue geometries identified on the W33/E8 track.
+GAP 4.12.1 independently rebuilds both Hermitian generalized quadrangles, exhausts their line-disjointness
+graphs, and freezes these ceilings:
+
+| carrier | maximum line atoms | ladder sizes | covered | unavoidable holes | maximum witnesses |
+|---|---:|---:|---:|---:|---:|
+| \(H(3,4)=GQ(4,2)\) | 6 | 5, 10, …, 30 | 30 / 45 | 15 | 72 |
+| \(H(3,9)=GQ(9,3)\) | 16 | 10, 20, …, 160 | 160 / 280 | 120 | 2,268 |
+
+These two ladders are provably **partial**: a full spread would require 9 and 28 lines, while exhaustive
+search rules out even 7 and 17. The runtime therefore exposes the hole sector instead of silently treating
+the final rung as full coverage. `scheduler/e8-unitary-elastic-ladder.js` verifies the frozen SHA-256 and
+emits zero-migration resize plans, but its topology plans remain `dispatchable: false` until abstract point
+IDs are bound to real hosts and independently topology-attested. The standard Hermitian models are
+incidence-isomorphic to the certified E8 residues; a literal E8-coordinate isomorphism is not claimed here.
+
+The maximum-rung boundary is now classified rather than merely counted. All maximum partial spreads lie
+in one ambient orbit, so each carrier has one hole-graph isomorphism type. For (q=2), the 15 holes induce
+
+\[
+\operatorname{SRG}(15,6,1,3)\cong KG(6,2),
+\]
+
+with automorphism group (S_6). For (q=3), the 120 holes form a 20-regular diameter-two graph with
+spectrum (20^1,8^5,4^{45},0^9,(-4)^{60}). It is not strongly regular. GAP identifies its full
+automorphism group as
+
+\[
+G\cong (\mathbb F_2^6/\langle\mathbf1\rangle)\rtimes S_6
+   =\operatorname{Aut}(\text{folded }Q_6),
+\]
+
+and the graph itself as the coset action (G/H), where (H=\operatorname{SmallGroup}(192,1485)), with
+adjacency the union of the degree-16 and degree-4 orbitals. The obvious 120-duad folded-cube carrier was
+also tested and rejected: it has stabilizer `SmallGroup(192,1472)` and its degree-20 graph is not
+isomorphic to the hole graph. This is an exact finite graph/group result, not a folded-cube hardware claim
+or a K3-surface construction.
+
+The upper bound \((q^3+q+2)/2\), sharp at \(q=2,3\), is published finite-geometry prior art; the contribution
+here is its executable, evidence-bounded scheduler lift. Recompute the certificate with:
+
+```bash
+npm run verify:unitary-ladders
+npm run verify:unitary-holes
+```
+
 ### Tensor placement robustness, and one open interval
 
 A depth-2 tensor tile is \(L\times M\) for two W(3,3) lines: 16 leaves in the \(40\times40\) fabric. The
@@ -178,7 +231,8 @@ fibre and co-fibre an independent set capped by \(\alpha=7\), and the degree ide
 returned UNKNOWN rather than a decision. That is recorded as a negative result; `exactTau` is `null` in the
 engine and the tests pin the open wording.
 
-The E8-to-W33 refinement is a promising future topology compiler only after an explicit, complete certificate exists. The truncated external JSON previously considered for this repo is intentionally not imported.
+The earlier truncated external E8 JSON remains intentionally unimported. The unitary ladder above is instead
+owned by a complete local GAP witness, a canonical frozen certificate, and a deterministic replay test.
 
 ## Product boundary
 
@@ -213,6 +267,14 @@ js/energy.js                simulated grid/carbon process
 js/genetics.js              specialization and lineage model
 js/uor.js                   64-bit object-reference codec and policy scores
 js/app.js                   browser orchestration and chart rendering
+scheduler/e8-unitary-elastic-ladder.js  fail-closed H(3,4)/H(3,9) topology plans
+analysis/e8_unitary_elastic_ladders.g   GAP reconstruction and exhaustive maxima
+data/e8_unitary_elastic_ladders.json    canonical unitary-ladder certificate
+analysis/e8_unitary_hole_sector_probe.g GAP hole graphs, spectra, groups and spread orbits
+analysis/e8_unitary_kummer_duad_bridge.g exact folded-Q6 coset model and duad no-go
+analysis/e8_unitary_hole_sectors.js     canonical GAP/GRAPE hole-sector freezer
+data/e8_unitary_hole_sectors.json       frozen residual-geometry certificate
+tests/e8-unitary-hole-sectors.test.js   digest, theorem and anti-overread guards
 rtl/holotrade_admit.v       admission/locality datapath + golden reference
 rtl/verify.ys               complete 2^25-output formal miter
 rtl/synth.ys                reproducible iCE40 synthesis

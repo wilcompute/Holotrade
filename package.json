@@ -9,7 +9,7 @@
     "serve": "node scripts/serve.js",
     "verify:rtl": "node scripts/run-yosys.js rtl/verify.ys",
     "synth:rtl": "node scripts/run-yosys.js rtl/synth.ys",
-    "verify": "npm test && npm run verify:rtl && npm run synth:rtl && npm run verify:shapes",
+    "verify": "npm test && npm run verify:rtl && npm run synth:rtl && npm run verify:shapes && npm run verify:unitary-ladders && npm run verify:unitary-holes",
     "experiment:balancer": "node experiments/balancer_ab.js --summary",
     "paper": "node scripts/run-paper.js",
     "verify:shapes": "node analysis/w33_shape_catalogue.js && node analysis/w33_automorphisms.js && node analysis/w33_shape_guarantees.js && node analysis/w33_shape_packing.js && node analysis/w33_level2_shapes.js",
@@ -21,6 +21,8 @@
     "verify:leveln": "node analysis/w33_leveln_classification.js",
     "verify:colouring": "py -3 analysis/spread_colouring_sat.py",
     "verify:tensor": "node analysis/tensor_blocking_structure.js && node analysis/tensor_blocking_reformulation.js && node analysis/tensor_tight_obstructions.js",
+    "verify:unitary-ladders": "node analysis/e8_unitary_elastic_ladders.js",
+    "verify:unitary-holes": "node analysis/e8_unitary_hole_sectors.js",
     "search:tensor": "py -3 analysis/tensor_blocking_cpsat.py --seconds 600"
   },
   "keywords": [

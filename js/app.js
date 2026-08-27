@@ -25,6 +25,8 @@
   const market = new Market(fleet, pricing, energy, {
     INSTRUMENTS, OPERATORS, DATACENTERS, HARDWARE, WORKLOADS,
   });
+  let unitaryCertificate = null;
+  let unitaryHoleCertificate = null;
 
   // ---- ui state ------------------------------------------------------
   const ui = {
@@ -1288,6 +1290,148 @@
       + `${guaranteed} still guaranteed · ${menu.freeNodes} free · ${freeLines}/40 lines intact`;
   }
 
+  async function loadUnitaryCertificate() {
+    try {
+      const response = await fetch("data/e8_unitary_elastic_ladders.json", { cache: "no-store" });
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const packet = await response.json();
+      if (packet.schema !== "holotrade.e8-unitary-elastic-ladders.v1" ||
+          !Array.isArray(packet.profiles) || packet.profiles.length !== 2 ||
+          !packet.theorem || packet.theorem.maximumPartialSpreadsExhaustive !== true) {
+        throw new Error("certificate schema or theorem flags invalid");
+      }
+      unitaryCertificate = packet;
+      renderUnitaryLadder();
+    } catch (err) {
+      console.error("[unitary ladder]", err);
+      const note = $("unitaryCertificateNote");
+      if (note) note.textContent = "CERTIFICATE UNAVAILABLE";
+      const body = $("unitaryRungBody");
+      if (body) body.innerHTML = '<tr><td colspan="7" class="down">' + fmt.esc(err.message) + "</td></tr>";
+    }
+  }
+
+  async function loadUnitaryHoleCertificate() {
+    try {
+      const response = await fetch("data/e8_unitary_hole_sectors.json", { cache: "no-store" });
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const packet = await response.json();
+      if (packet.schema !== "holotrade.e8-unitary-hole-sectors.v1" ||
+          !Array.isArray(packet.profiles) || packet.profiles.length !== 2 ||
+          !packet.theorem || packet.theorem.allMaximumPartialSpreadsSingleAmbientOrbit !== true ||
+          packet.theorem.q3HoleGraphClassifiedByExactCosetAction !== true ||
+          !packet.q3CosetModel || packet.q3CosetModel.graphIsomorphismToH39HoleGraph !== true ||
+          !packet.naturalKummerDuadNoGo ||
+          packet.naturalKummerDuadNoGo.graphIsomorphismToH39HoleGraph !== false) {
+        throw new Error("hole-sector certificate schema or theorem flags invalid");
+      }
+      unitaryHoleCertificate = packet;
+      renderUnitaryLadder();
+    } catch (err) {
+      console.error("[unitary hole sector]", err);
+      const panel = $("unitaryHoleShape");
+      if (panel) panel.innerHTML =
+        "<b>Maximum-rung boundary geometry</b> · certificate unavailable: " + fmt.esc(err.message);
+    }
+  }
+
+  function renderUnitaryHoleShape(q, rung, maximumRung) {
+    const panel = $("unitaryHoleShape");
+    if (!panel) return;
+    if (rung !== maximumRung) {
+      panel.innerHTML =
+        "<b>Maximum-rung boundary geometry</b> · available at the certified ceiling (rung " +
+        maximumRung + "). The current residual is intentionally not assigned the ceiling graph.";
+      return;
+    }
+    if (!unitaryHoleCertificate) {
+      panel.innerHTML =
+        "<b>Maximum-rung boundary geometry</b> · loading independent GAP/GRAPE certificate…";
+      return;
+    }
+    const profile = unitaryHoleCertificate.profiles.find((row) => row.q === q);
+    if (!profile) {
+      panel.innerHTML = "<b>Maximum-rung boundary geometry</b> · carrier missing from certificate";
+      return;
+    }
+    if (q === 2) {
+      panel.innerHTML =
+        "<b>Maximum-rung boundary geometry · EXACT</b> · " +
+        fmt.int(profile.holes) + " holes induce <b>SRG(15,6,1,3) ≅ KG(6,2)</b>; " +
+        "degree 6, diameter 2, full automorphism group S6 of order " +
+        fmt.int(profile.holeGraph.automorphismOrder) + ". All 72 ceilings form one ambient orbit.";
+      return;
+    }
+    const coset = unitaryHoleCertificate.q3CosetModel;
+    panel.innerHTML =
+      "<b>Maximum-rung boundary geometry · EXACT</b> · 120-state <b>G/H coset graph</b>, " +
+      "degree 20, diameter 2, spectrum 20¹ · 8⁵ · 4⁴⁵ · 0⁹ · (−4)⁶⁰; not strongly regular. " +
+      "G = Aut(folded Q6), |G| = " + fmt.int(coset.groupOrder) +
+      ", H = SmallGroup(192,1485), adjacency orbitals 16 + 4. " +
+      "The natural 120-duad action is a certified no-go, not this carrier.";
+  }
+
+  function renderUnitaryLadder() {
+    const body = $("unitaryRungBody");
+    const select = $("unitaryCarrier");
+    const slider = $("unitaryRung");
+    if (!body || !select || !slider || !unitaryCertificate) return;
+    const q = Number(select.value);
+    const profile = unitaryCertificate.profiles.find((row) => row.q === q);
+    if (!profile) return;
+    slider.max = String(profile.maxPartialSpreadLines);
+    if (Number(slider.value) > profile.maxPartialSpreadLines) {
+      slider.value = String(profile.maxPartialSpreadLines);
+    }
+    const rung = Math.max(1, Math.min(profile.maxPartialSpreadLines, Number(slider.value) || 1));
+    const row = profile.rungs[rung - 1];
+    const s = q * q;
+    const expected = {
+      vertices: (s + 1) * rung,
+      degree: s + rung - 1,
+      edges: ((s + 1) * rung * (s + rung - 1)) / 2,
+      boundary: (s + 1) * rung * (s * q + 1 - rung),
+    };
+    const exact = row.vertices === expected.vertices && row.inducedDegree === expected.degree &&
+      row.internalEdges === expected.edges && row.boundaryEdges === expected.boundary &&
+      row.attainsSpectralMinimum === true;
+    if (!exact) {
+      body.innerHTML = '<tr><td colspan="7" class="down">certificate formula mismatch</td></tr>';
+      return;
+    }
+    $("unitaryRungLabel").textContent =
+      "rung " + rung + " / " + profile.maxPartialSpreadLines;
+    $("unitaryCertificateNote").textContent =
+      "EXACT · GAP " + unitaryCertificate.gapVersion + " · " +
+      unitaryCertificate.sha256.slice(0, 12) + "…";
+    $("unitaryStats").innerHTML = [
+      tile("Reserved points", fmt.int(row.vertices), rung + " disjoint line atoms", "accent"),
+      tile("Exact ceiling", fmt.int(profile.coveredPoints),
+        profile.maxPartialSpreadLines + " lines · exhaustive"),
+      tile("Unavoidable holes", fmt.int(profile.holePoints),
+        "full spread would need " + profile.fullSpreadWouldNeedLines + " lines", "amber"),
+      tile("Maximum witnesses", fmt.int(profile.maximumPartialSpreadCount),
+        "all enumerated by GAP", "violet"),
+    ].join("");
+    body.innerHTML = [
+      "<tr>",
+      '<td><span class="tag violet">' + fmt.esc(profile.identification) + "</span></td>",
+      '<td class="num">' + rung + "</td>",
+      '<td class="num">' + row.vertices + "</td>",
+      '<td class="num">' + row.inducedDegree + "</td>",
+      '<td class="num">' + row.internalEdges + "</td>",
+      '<td class="num">' + row.boundaryEdges + "</td>",
+      '<td class="num">' + (profile.points - row.vertices) + "</td>",
+      "</tr>",
+    ].join("");
+    $("unitaryScope").innerHTML =
+      "Every prefix is connected, regular, and meets the one-sided spectral minimum boundary. " +
+      "<b>Resize migrates zero retained points.</b> The " + profile.holePoints +
+      "-point maximum-rung hole sector is mathematically unavoidable on this carrier. " +
+      "GAP point IDs are not live hosts; runtime topology attestation is still required before dispatch.";
+    renderUnitaryHoleShape(q, rung, profile.maxPartialSpreadLines);
+  }
+
   function renderFabric() {
     const fs = fabric.fabricStats(market.positions);
     const listed = fleet.listedNodes();
@@ -1307,6 +1451,7 @@
     renderLadder();
     renderSwaps();
     renderShapes();
+    renderUnitaryLadder();
 
     const cp = fabric.clearingProfile();
     $("clearingStats").innerHTML = [
@@ -2383,6 +2528,15 @@
 
     const shapeBusy = $("shapeBusy");
     if (shapeBusy) shapeBusy.addEventListener("input", renderShapes);
+    const unitaryCarrier = $("unitaryCarrier");
+    const unitaryRung = $("unitaryRung");
+    if (unitaryCarrier) unitaryCarrier.addEventListener("change", () => {
+      if (unitaryRung) unitaryRung.value = "1";
+      renderUnitaryLadder();
+    });
+    if (unitaryRung) unitaryRung.addEventListener("input", renderUnitaryLadder);
+    loadUnitaryCertificate();
+    loadUnitaryHoleCertificate();
 
     $("drawerClose").addEventListener("click", closeDrawer);
     $("drawerBack").addEventListener("click", closeDrawer);

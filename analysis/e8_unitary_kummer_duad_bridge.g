@@ -11,6 +11,11 @@
 E8UnitaryLibraryOnly := true;;
 Read("analysis/e8_unitary_elastic_ladders.g");
 
+BoolInt := function(value)
+  if value then return 1; fi;
+  return 0;
+end;
+
 CanonicalFoldedVector := function(v)
   local complement;
   complement := List(v, x -> 1 - x);
@@ -56,9 +61,15 @@ DuadBridge := function()
         blockDuals, dualPoint, dualBlock, duadImage, duadGenerators,
         duadGroup, colourGroup, colourDuadGroup, colourGenerators,
         singleOrbitals, orbitals, degreeTwenty, candidate, graphIso,
-        fullAut, lineAut,
+        fullAut, holeSingleOrbitals, holeVertexStabilizer,
+        duadVertexStabilizer, lineAut,
         spreadStabilizer, signature, edgeSignatures, nonedgeSignatures,
-        i, j, checks;
+        subsetOrbits, subsetOrbit, objectGenerators, objectGroup,
+        objectStabilizer, objectOrbitals, objectDegreeTwenty, objectGraph,
+        objectIso, carrierProfiles, foundCarrier, targetStabilizerId,
+        embeddings, embedding, embeddedStabilizer, cosets, cosetGroup,
+        cosetOrbitals, cosetDegreeTwenty, cosetGraph, cosetIso,
+        cosetProfiles, foundCosetCarrier, k, i, j, checks;
 
   D := BuildHermitianGQ(3);
   neighbours := PointNeighbours(D);
@@ -114,17 +125,74 @@ DuadBridge := function()
   if Length(degreeTwenty) = 0 then
     Error("no degree-20 two-orbital union in Kummer duad action");
   fi;
-  candidate := fail;
-  graphIso := fail;
-  for i in [1..Length(degreeTwenty)] do
-    graphIso := GraphIsomorphism(holeGraph, degreeTwenty[i]);
-    if graphIso <> fail then
-      candidate := degreeTwenty[i];
-      break;
-    fi;
+  candidate := degreeTwenty[1];
+  graphIso := GraphIsomorphism(holeGraph, candidate);
+  fullAut := AutGroupGraph(holeGraph);
+  holeSingleOrbitals := GeneralizedOrbitalGraphs(fullAut, 1);
+  holeVertexStabilizer := Stabilizer(fullAut, 1);
+  duadVertexStabilizer := Stabilizer(duadGroup, 1);
+  targetStabilizerId := IdGroup(holeVertexStabilizer);
+
+  carrierProfiles := [];
+  foundCarrier := fail;
+  for k in [3..4] do
+    subsetOrbits := OrbitsDomain(FoldedQ6Aut,
+      Combinations([1..32], k), OnSets);
+    for subsetOrbit in Filtered(subsetOrbits,
+      orbit -> Length(orbit) = 120) do
+      objectGenerators := List(GeneratorsOfGroup(FoldedQ6Aut), generator ->
+        PermList(List(subsetOrbit, object -> Position(subsetOrbit,
+          Set(List(object, point -> point ^ generator))))));
+      objectGroup := Group(objectGenerators);
+      objectStabilizer := Stabilizer(objectGroup, 1);
+      objectOrbitals := GeneralizedOrbitalGraphs(objectGroup, 1);
+      Add(carrierProfiles, [k, subsetOrbit[1],
+        IdGroup(objectStabilizer), List(objectOrbitals, VertexDegrees)]);
+      if IdGroup(objectStabilizer) = targetStabilizerId then
+        objectDegreeTwenty := Filtered(
+          GeneralizedOrbitalGraphs(objectGroup, 2),
+          graph -> VertexDegrees(graph) = [20]);
+        for objectGraph in objectDegreeTwenty do
+          objectIso := GraphIsomorphism(holeGraph, objectGraph);
+          if objectIso <> fail then
+            foundCarrier := rec(k := k, orbit := subsetOrbit,
+              representative := subsetOrbit[1], group := objectGroup,
+              graph := objectGraph, graphIso := objectIso,
+              stabilizer := objectStabilizer);
+            break;
+          fi;
+        od;
+      fi;
+      if foundCarrier <> fail then break; fi;
+    od;
+    if foundCarrier <> fail then break; fi;
   od;
-  if candidate = fail then Error("degree-20 duad unions miss hole graph"); fi;
-  fullAut := AutGroupGraph(candidate);
+
+  embeddings := IsomorphicSubgroups(FoldedQ6Aut,
+    SmallGroup(targetStabilizerId));
+  cosetProfiles := [];
+  foundCosetCarrier := fail;
+  for embedding in embeddings do
+    embeddedStabilizer := Image(embedding);
+    cosets := RightCosets(FoldedQ6Aut, embeddedStabilizer);
+    cosetGroup := Action(FoldedQ6Aut, cosets, OnRight);
+    cosetOrbitals := GeneralizedOrbitalGraphs(cosetGroup, 1);
+    Add(cosetProfiles, List(cosetOrbitals, VertexDegrees));
+    cosetDegreeTwenty := Filtered(
+      GeneralizedOrbitalGraphs(cosetGroup, 2),
+      graph -> VertexDegrees(graph) = [20]);
+    for cosetGraph in cosetDegreeTwenty do
+      cosetIso := GraphIsomorphism(holeGraph, cosetGraph);
+      if cosetIso <> fail then
+        foundCosetCarrier := rec(stabilizer := embeddedStabilizer,
+          cosets := cosets, group := cosetGroup, graph := cosetGraph,
+          graphIso := cosetIso,
+          representative := Representative(cosets[1]));
+        break;
+      fi;
+    od;
+    if foundCosetCarrier <> fail then break; fi;
+  od;
 
   lineAut := AutGroupGraph(lineGraph);
   spreadStabilizer := Stabilizer(lineAut, Set(witness), OnSets);
@@ -166,7 +234,7 @@ DuadBridge := function()
     IsTransitive(duadGroup, [1..120]),
     Size(colourDuadGroup) = 11520,
     Length(degreeTwenty) = 1,
-    graphIso <> fail,
+    graphIso = fail,
     Size(fullAut) = 23040,
     Size(spreadStabilizer) = 11520,
     IsomorphismGroups(colourDuadGroup, spreadStabilizer) <> fail,
@@ -179,10 +247,33 @@ DuadBridge := function()
         "|colourGroup=", Size(colourDuadGroup),
         "|orbitalDegrees=", List(singleOrbitals, VertexDegrees),
         "|degree20Orbitals=", Length(degreeTwenty),
-        "|holeIsomorphic=1|graphAut=", Size(fullAut), "\n");
+        "|holeIsomorphic=0|graphAut=", Size(fullAut), "\n");
+  Print("ACTION_NO_GO|holeOrbitalDegrees=",
+        List(holeSingleOrbitals, VertexDegrees),
+        "|holeVertexStabilizer=", StructureDescription(holeVertexStabilizer),
+        "|holeVertexId=", IdGroup(holeVertexStabilizer),
+        "|duadVertexStabilizer=", StructureDescription(duadVertexStabilizer),
+        "|duadVertexId=", IdGroup(duadVertexStabilizer),
+        "|abstractGroupsIsomorphic=1\n");
   Print("DUAD_SIGNATURES|edges=", edgeSignatures,
         "|nonedges=", nonedgeSignatures, "\n");
-  Print("ALL_KUMMER_DUAD_CHECKS_PASS\n");
+  Print("FOLDED_SUBSET_SEARCH|profiles=", carrierProfiles,
+        "|found=", BoolInt(foundCarrier <> fail));
+  if foundCarrier <> fail then
+    Print("|k=", foundCarrier.k,
+          "|representative=", foundCarrier.representative,
+          "|stabilizer=", StructureDescription(foundCarrier.stabilizer));
+  fi;
+  Print("\n");
+  Print("FOLDED_COSET_SEARCH|embeddingClasses=", Length(embeddings),
+        "|profiles=", cosetProfiles,
+        "|found=", BoolInt(foundCosetCarrier <> fail));
+  if foundCosetCarrier <> fail then
+    Print("|stabilizerId=", IdGroup(foundCosetCarrier.stabilizer),
+          "|cosets=", Length(foundCosetCarrier.cosets));
+  fi;
+  Print("\n");
+  Print("ALL_KUMMER_DUAD_NO_GO_CHECKS_PASS\n");
   return rec(checks := checks, graphIso := graphIso,
              candidate := candidate, holeGraph := holeGraph);
 end;

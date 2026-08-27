@@ -958,8 +958,90 @@ capacity is stranded by arithmetic: $4$ nodes at $m=12$, $8$ at $m=16$, and more
 above. \PROVED
 \end{resultbox}
 
+\subsubsection{Elastic line ladders: complete on \W{}, partial on the unitary residues}
+
+A spread can do more than tile one static request. Order its ten disjoint lines
+$L_1,\ldots,L_{10}$ and reserve the prefix
+$T_i=L_1\cup\cdots\cup L_i$. The quadrangle axiom makes every pair of lines
+contribute a perfect matching, so
+\[
+ |T_i|=4i,\qquad k(T_i)=i+2,\qquad
+ e(T_i)=2i(i+2),\qquad b(T_i)=4i(10-i).
+\]
+The boundary is exactly the spectral minimum. Each resize adds or removes one
+four-point clique, retains the old prefix literally, and therefore migrates no
+retained point. At $i=10$ the ladder closes the whole 40-point carrier. \PROVED
+
+The same construction applies to $H(3,q^2)=GQ(q^2,q)$, the unitary branch of
+the E$_8$ residue programme. For a prefix of $i$ mutually disjoint lines,
+\[
+ m=(q^2+1)i,\quad k(T_i)=q^2+i-1,\quad
+ e(T_i)=\frac{(q^2+1)i(q^2+i-1)}2,
+\]
+\[
+ b(T_i)=(q^2+1)i(q^3+1-i),
+\]
+again with equality in the one-sided spectral boundary bound. A GAP 4.12.1
+witness reconstructs the two incidence geometries, checks their strongly
+regular point graphs, exhausts their line-disjointness graphs at the claimed
+maximum and one rung beyond it, and then verifies every prefix.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+carrier & max. lines & max. points & holes & \# maxima & full spread \\
+\midrule
+$H(3,4)=GQ(4,2)$ & 6 & 30 of 45 & 15 & 72 & needs 9 \\
+$H(3,9)=GQ(9,3)$ & 16 & 160 of 280 & 120 & 2,268 & needs 28 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are provably partial ladders: there is no seven-line set in the first
+carrier and no seventeen-line set in the second. The scheduler therefore makes
+the 15- and 120-point hole sectors explicit instead of presenting the last rung
+as full coverage. Its topology-plan envelope is tamper-evident and
+non-dispatchable until the abstract GAP points are bound to inventory and the
+resulting physical topology is independently attested. \PROVED
+
+The ceiling leaves structure, not merely unused points. In each carrier the
+ambient automorphism group is transitive on the maximum partial spreads, so the
+hole graph has one isomorphism type. For $q=2$ it is
+$\operatorname{SRG}(15,6,1,3)\cong KG(6,2)$, with automorphism group $S_6$.
+For $q=3$ it is a 20-regular diameter-two graph on 120 vertices, with spectrum
+\[
+ 20^1,\ 8^5,\ 4^{45},\ 0^9,\ (-4)^{60}.
+\]
+It is not strongly regular. Its full automorphism group is
+\[
+ G\cong (\mathbb F_2^6/\langle\mathbf 1\rangle)\rtimes S_6
+   =\operatorname{Aut}(\text{folded }Q_6),\qquad |G|=23{,}040,
+\]
+and GAP identifies the graph exactly as the coset action $G/H$, where
+$H=\texttt{SmallGroup(192,1485)}$ and adjacency is the union of the
+degree-16 and degree-4 orbitals. The maximum-spread stabilizer has order
+$11{,}520$; it is not the full hole-graph group. \PROVED
+
+The most obvious 120-state folded-cube model does not work. The point-duads,
+equivalently antipodal square faces, have stabilizer
+$\texttt{SmallGroup(192,1472)}\cong S_4\times D_8$, and their unique
+degree-20 two-orbital graph is not isomorphic to the hole graph. This executable
+no-go isolates the correct permutation representation: the symmetry bridge is
+exact, but the natural-duad carrier is wrong. It is not a claim about a K3
+surface or a deployed folded-cube network. \PROVED
+
+The extremal bound $(q^3+q+2)/2$ and its sharpness for $q=2,3$ are published
+finite-geometry results, not a claim of this paper~\cite{debeule2008hermitian}.
+The contribution here is the executable scheduler lift, the exact residual
+graph/group/coset classification, and their evidence boundary. The standard
+Hermitian models are incidence-isomorphic to the E$_8$ residue carriers
+certified in the companion W33 repository; no literal E$_8$ coordinate
+isomorphism is constructed in this implementation.
+
 \begin{scopebox}
-\textbf{Scope.} These are exact statements about the level-1 point graph:
+\textbf{Scope of the \W{} catalogue above.} These are exact statements about
+the level-1 40-point graph:
 reservations of \emph{points}, verified by three independent routes ---
 combinatorial search in JavaScript, eigenspace projection in Python, and
 GRAPE/nauty in GAP, which also settles that the graph's full automorphism group
@@ -1644,6 +1726,13 @@ August 2026.
 S. E. Payne and J. A. Thas,
 \emph{Finite Generalized Quadrangles}, 2nd ed., European Mathematical
 Society, 2009.
+
+\bibitem{debeule2008hermitian}
+J. De Beule, A. Klein, K. Metsch, and L. Storme,
+\emph{Partial ovoids and partial spreads in Hermitian polar spaces},
+\emph{Designs, Codes and Cryptography}, vol. 47, nos. 1--3,
+pp. 21--34, 2008;
+\href{https://doi.org/10.1007/s10623-007-9047-8}{doi:10.1007/s10623-007-9047-8}.
 
 \end{thebibliography}
 

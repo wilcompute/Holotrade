@@ -1,0 +1,185 @@
+{
+  "schema": "holotrade.e8-unitary-hole-sectors.v1",
+  "evidenceClass": "EXACT_GAP_GRAPE_FINITE_GEOMETRY",
+  "gapVersion": "4.12.1",
+  "profiles": [
+    {
+      "q": 2,
+      "carrier": "H(3,4)=GQ(4,2)",
+      "maximumPartialSpreads": 72,
+      "maximumOrbitSizes": [
+        72
+      ],
+      "ambientLineGraphAutomorphismOrder": 51840,
+      "spreadStabilizerOrder": 720,
+      "holes": 15,
+      "holeGraph": {
+        "degree": 6,
+        "diameter": 2,
+        "adjacentCommonNeighbours": [
+          1
+        ],
+        "nonadjacentCommonNeighbours": [
+          3
+        ],
+        "spectrum": [
+          [
+            6,
+            1
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            -3,
+            5
+          ]
+        ],
+        "automorphismOrder": 720,
+        "certifiedParameters": "SRG(15,6,1,3)",
+        "w33PriorModel": "KG(6,2)"
+      },
+      "coveredAttachmentDegree": 6,
+      "originalLineHoleIntersections": [
+        [
+          0,
+          12
+        ],
+        [
+          3,
+          15
+        ]
+      ]
+    },
+    {
+      "q": 3,
+      "carrier": "H(3,9)=GQ(9,3)",
+      "maximumPartialSpreads": 2268,
+      "maximumOrbitSizes": [
+        2268
+      ],
+      "ambientLineGraphAutomorphismOrder": 26127360,
+      "spreadStabilizerOrder": 11520,
+      "holes": 120,
+      "holeGraph": {
+        "degree": 20,
+        "diameter": 2,
+        "adjacentCommonNeighbours": [
+          4
+        ],
+        "nonadjacentCommonNeighbours": [
+          2,
+          4
+        ],
+        "stronglyRegular": false,
+        "spectrum": [
+          [
+            20,
+            1
+          ],
+          [
+            8,
+            5
+          ],
+          [
+            4,
+            45
+          ],
+          [
+            0,
+            9
+          ],
+          [
+            -4,
+            60
+          ]
+        ],
+        "automorphismOrder": 23040
+      },
+      "coveredAttachmentDegree": 16,
+      "originalLineHoleIntersections": [
+        [
+          0,
+          32
+        ],
+        [
+          6,
+          80
+        ]
+      ]
+    }
+  ],
+  "q3Symmetry": {
+    "group": "(F2^6/<111111>) semidirect S6",
+    "order": 23040,
+    "twoCoreOrder": 32,
+    "quotient": "S6",
+    "centreOrder": 1,
+    "isomorphicToFoldedQ6AutomorphismGroup": true,
+    "isomorphicToWeylD6": false,
+    "sameOrderAsWeylD6": true,
+    "weylD6CentreOrder": 2,
+    "spreadStabilizer": {
+      "structure": "2^4:S6",
+      "order": 11520,
+      "quotientByTwoCore": "S6",
+      "w33KummerModel": "colour-preserving automorphism group of the folded-Q6 Kummer 16_6 Levi graph"
+    }
+  },
+  "q3CosetModel": {
+    "carrier": "G/H",
+    "group": "Aut(folded Q6)",
+    "groupOrder": 23040,
+    "stabilizerSmallGroupId": [
+      192,
+      1485
+    ],
+    "stabilizerOrder": 192,
+    "cosets": 120,
+    "embeddingConjugacyClasses": 1,
+    "nontrivialOrbitalDegrees": [
+      16,
+      48,
+      4,
+      3,
+      48
+    ],
+    "adjacencyOrbitalDegrees": [
+      16,
+      4
+    ],
+    "graphIsomorphismToH39HoleGraph": true
+  },
+  "naturalKummerDuadNoGo": {
+    "carrier": "120 point-duads / antipodal square faces of folded Q6",
+    "stabilizerSmallGroupId": [
+      192,
+      1472
+    ],
+    "stabilizerStructure": "S4 x D8",
+    "nontrivialOrbitalDegrees": [
+      16,
+      24,
+      4,
+      24,
+      48,
+      3
+    ],
+    "uniqueDegree20TwoOrbitalUnion": true,
+    "graphIsomorphismToH39HoleGraph": false,
+    "conclusion": "The symmetry-group bridge is exact, but the obvious 120-duad permutation representation is the wrong carrier."
+  },
+  "theorem": {
+    "allMaximumPartialSpreadsSingleAmbientOrbit": true,
+    "q3HoleGraphClassifiedByExactCosetAction": true,
+    "failedNaturalCarrierRetainedAsExecutableNoGo": true
+  },
+  "provenance": {
+    "e8Residue": "W33-Theory Pass9961-9984 unitary branch",
+    "maximumPartialSpreads": "W33-Theory Pass7255-7256 and the sharp Hermitian partial-spread literature",
+    "kummerFoldedCube": "W33-Theory Pass7001-7016 and Pass7065-7080"
+  },
+  "evidenceBoundary": "This is an exact finite graph/group/coset classification. It is not a deployed network, a hardware topology, a K3 surface realization, or a claim that GAP point IDs name live hosts.",
+  "sha256": "f5e3a44ee4d1c24d354de532849cb07c89f5c7836f52e24ad056f472d655190e"
+}

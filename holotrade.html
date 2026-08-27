@@ -384,6 +384,33 @@
       </div>
 
       <div class="card">
+        <div class="card-head">
+          <h3 class="card-title">E8 unitary elastic ladder</h3>
+          <span class="card-note" id="unitaryCertificateNote">EXACT · loading GAP certificate</span>
+        </div>
+        <div class="card-body">
+          <div class="note">Two larger unitary carriers inherit the same nested line-atom scheduler, but neither has a full spread. Choose a carrier and rung to see the exact regular subgraph, spectral-minimum boundary, and the residual hole sector. <b>The final rung is a certified ceiling, not full coverage.</b></div>
+          <div class="row" style="margin-bottom:11px">
+            <label class="field none" style="min-width:210px"><span>Carrier</span>
+              <select id="unitaryCarrier"><option value="2">H(3,4) · 45 points</option><option value="3">H(3,9) · 280 points</option></select>
+            </label>
+            <label class="field none" style="min-width:260px"><span>Prefix rung</span>
+              <input type="range" id="unitaryRung" min="1" max="6" step="1" value="1">
+            </label>
+            <div class="none" style="align-self:center"><span class="tag violet" id="unitaryRungLabel">rung 1 / 6</span></div>
+          </div>
+          <div class="grid g4" id="unitaryStats"></div>
+          <div class="note" id="unitaryHoleShape" style="margin-top:12px">
+            <b>Maximum-rung boundary geometry</b> · loading independent GAP/GRAPE certificate…
+          </div>
+          <div class="tbl-wrap" style="margin-top:12px"><table class="tbl"><thead><tr>
+            <th>Carrier</th><th class="right">Line atoms</th><th class="right">Vertices</th><th class="right">Induced degree</th><th class="right">Internal edges</th><th class="right">Boundary</th><th class="right">Holes now</th>
+          </tr></thead><tbody id="unitaryRungBody"><tr><td colspan="7" class="muted">loading certificate…</td></tr></tbody></table></div>
+          <div class="note scope" id="unitaryScope" style="margin-top:12px">The standard Hermitian incidence model is an abstract topology plan. GAP point IDs are not live hosts; inventory binding, physical links, routing, and runtime topology attestation remain required before dispatch.</div>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-head"><h3 class="card-title">Neighbour averaging</h3><span class="card-note">toy scalar model · not consensus</span></div>
         <div class="card-body"><div class="grid g4" id="clearingStats"></div>
           <div class="note scope" style="margin-top:12px">This is a neighbour-averaging recurrence on the exact level-1 graph. It does not implement leader election, settlement, consensus, crash tolerance, Byzantine tolerance, networking energy, or a physical holonet.</div>

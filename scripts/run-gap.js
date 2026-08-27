@@ -38,6 +38,30 @@ function findGap() {
     }
   }
 
+  // A common mixed Windows/WSL setup invokes Windows node.exe from a WSL
+  // shell.  process.platform is then win32 even though the actual GAP binary
+  // is installed inside WSL.  Detect that bridge explicitly instead of
+  // declaring GAP missing or asking every certificate to special-case it.
+  if (process.platform === "win32") {
+    const probe = spawnSync("wsl.exe", ["sh", "-lc",
+      "command -v gap; printf '%s\\n%s\\n%s\\n' \"$HOME\" \"$PATH\" \"${LD_LIBRARY_PATH:-}\""], {
+      encoding: "utf8",
+    });
+    if (probe.status === 0 && probe.stdout.trim()) {
+      const lines = probe.stdout.trim().split(/\r?\n/);
+      return {
+        exe: "wsl.exe",
+        extraPath: null,
+        wsl: true,
+        gap: lines[0],
+        wslPath: (lines[1] ? lines[1] + "/.local/bin:" : "") +
+          (lines[2] || "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"),
+        wslLdLibraryPath: (lines[1] ? lines[1] + "/.local/lib:" : "") +
+          (lines[3] || ""),
+      };
+    }
+  }
+
   // Windows: the Cygwin-packaged installer
   const roots = [];
   for (const base of ["C:/Program Files", "C:/Program Files (x86)", "C:/"]) {
@@ -61,6 +85,12 @@ function findGap() {
   return null;
 }
 
+function toWslPath(value) {
+  const normalized = path.resolve(value).replace(/\\/g, "/");
+  const drive = normalized.match(/^([A-Za-z]):\/(.*)$/);
+  return drive ? `/mnt/${drive[1].toLowerCase()}/${drive[2]}` : normalized;
+}
+
 function runGap(scriptPath, { cwd = process.cwd(), quiet = false } = {}) {
   const found = findGap();
   if (!found) {
@@ -71,7 +101,13 @@ function runGap(scriptPath, { cwd = process.cwd(), quiet = false } = {}) {
     // the Cygwin DLLs must be resolvable or the binary will not start
     env.PATH = found.extraPath + path.delimiter + env.PATH;
   }
-  const res = spawnSync(found.exe, ["-q", "-b", "--nointeract", scriptPath], {
+  const exe = found.wsl ? "wsl.exe" : found.exe;
+  const args = found.wsl
+    ? ["--cd", toWslPath(cwd), "/usr/bin/env", "PATH=" + found.wslPath,
+       "LD_LIBRARY_PATH=" + found.wslLdLibraryPath,
+       found.gap || "gap", "-q", "-b", "--nointeract", toWslPath(scriptPath)]
+    : ["-q", "-b", "--nointeract", scriptPath];
+  const res = spawnSync(exe, args, {
     cwd, env, encoding: "utf8", maxBuffer: 64 * 1024 * 1024,
   });
   if (!quiet && res.stdout) process.stdout.write(res.stdout);
@@ -82,7 +118,7 @@ function runGap(scriptPath, { cwd = process.cwd(), quiet = false } = {}) {
     status: res.status,
     stdout: res.stdout || "",
     stderr: res.stderr || "",
-    exe: found.exe,
+    exe: found.wsl ? `${found.exe}:${found.gap}` : found.exe,
   };
 }
 
@@ -102,4 +138,4 @@ if (require.main === module) {
   process.exit(res.ok ? 0 : 1);
 }
 
-module.exports = { findGap, runGap };
+module.exports = { findGap, runGap, toWslPath };

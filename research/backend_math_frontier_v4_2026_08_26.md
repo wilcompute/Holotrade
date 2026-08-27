@@ -367,6 +367,28 @@ zero retained work.
 | H(3,4) | SRG(45,12,3,3) | 6 lines | 72 | 30 | 15 | 9 lines |
 | H(3,9) | SRG(280,36,8,4) | 16 lines | 2,268 | 160 | 120 | 28 lines |
 
+The residual sectors at those two ceilings are now classified exactly. The ambient automorphism group is
+transitive on the maximum partial spreads in each case, so the following are isomorphism types rather than
+features of one specially chosen witness.
+
+| carrier | hole graph | spectrum | full hole-graph automorphism group |
+|---|---|---|---:|
+| H(3,4) | SRG(15,6,1,3) = KG(6,2) | 6^1, 1^9, (-3)^5 | S6, order 720 |
+| H(3,9) | 120 vertices, degree 20, diameter 2; not SRG | 20^1, 8^5, 4^45, 0^9, (-4)^60 | (F2^6/<1>) : S6, order 23,040 |
+
+For q=3 the equality of group orders with W(D6) is a trap, not an identification: the hole-graph group has
+trivial centre while W(D6) has centre of order two. GAP instead proves that the group is
+Aut(folded Q6). More strongly, the graph is the exact coset graph G/H for
+H = SmallGroup(192,1485), with a unique embedding class of H in G and adjacency equal to the union of the
+degree-16 and degree-4 orbitals. The ambient maximum-spread stabilizer has order 11,520 and structure
+2^4:S6; it is index two in the full hole-graph automorphism group and must not be conflated with it.
+
+The obvious geometric guess was kept as an executable negative result. The 120 point-duads (antipodal
+square faces) of folded Q6 carry another transitive G-action, but its point stabilizer is
+SmallGroup(192,1472) = S4 x D8. Its unique degree-20 two-orbital graph is not isomorphic to the H(3,9)
+hole graph. Thus the symmetry bridge is exact while the natural-duad carrier is wrong; the result does not
+rule out every possible Kummer interpretation and constructs no K3 surface.
+
 The maxima are not new mathematics. De Beule, Klein, Metsch and Storme proved the bound
 (q^3+q+2)/2 for partial spreads of H(3,q^2) and its sharpness at q=2,3 (Designs, Codes and
 Cryptography 47 (2008), DOI 10.1007/s10623-007-9047-8). W33 Passes 7255-7256 had already recorded
@@ -380,6 +402,11 @@ scheduler/e8-unitary-elastic-ladder.js verifies that digest before building a pl
 deliberately dispatchable=false: the GAP point numbers are not host IDs, and an inventory binding plus
 runtime topology attestation is still required. The standard Hermitian carriers are incidence-isomorphic to
 the W33-certified E8 residues, but this packet does not construct a literal E8-coordinate map.
+
+The residual classification is owned by `analysis/e8_unitary_hole_sector_probe.g` and
+`analysis/e8_unitary_kummer_duad_bridge.g`. Its canonical freezer is
+`analysis/e8_unitary_hole_sectors.js`; the frozen JSON digest is
+`f5e3a44ee4d1c24d354de532849cb07c89f5c7836f52e24ad056f472d655190e`.
 
 # Three outside-the-box probes executed
 
@@ -397,7 +424,7 @@ The 540 chart / 540 triangle match was tested literally and closes as a bijectio
 
 # Evidence boundaries
 
-- Exact: W33 carrier, 36 spreads, spread overlap graph, clique/coclique/coloring certificates, integer matrix identities, chart/triangle bijection, incidence Gram identity, tensor shadow lower bound, explicit tensor upper witness, GAP-rebuilt H(3,4)/H(3,9) carriers, and their exhaustive maximum-partial-spread ladders.
+- Exact: W33 carrier, 36 spreads, spread overlap graph, clique/coclique/coloring certificates, integer matrix identities, chart/triangle bijection, incidence Gram identity, tensor shadow lower bound, explicit tensor upper witness, GAP-rebuilt H(3,4)/H(3,9) carriers, their exhaustive maximum-partial-spread ladders, both maximum-spread orbit censuses, both hole graphs, and the q=3 folded-Q6 coset classification plus natural-duad no-go.
 - Repository-certified: minimal level-one line blocker `tau_1=11` depends on the frozen SAT/UNSAT certificate already in the repository.
 - Model: calling four-line overlap a compute-market conflict, pricing batches, congestion, runtime placement utility, failure correlation.
 - Open: the exact depth-two product-transversal number inside `[110,115]` (narrowed from `[110,121]`; the upper bound is a construction, not a proof of optimality); representation-theoretic identification of chart-web eigenspaces; any physical or quantum realization of these scheduling coordinates.
