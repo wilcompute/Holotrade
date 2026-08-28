@@ -146,6 +146,69 @@ No literature on blocking numbers of *products* of generalized quadrangles turne
 consequence of two standard bounds, so it is recorded as a derivation that explains our interval rather than
 as a discovery.
 
+### The near-ovoid / minimum-blocker correspondence
+
+Four cross-track number matches were built and killed here. This one survives, because it is not a number
+match: it is a map, verified both ways on every instance, and it **derives** the other track's count.
+
+Their theorem: an optimal near-ovoid's three missed lines form a punctured pencil at a point `x`. Lines
+through `x` meet only at `x`, so `x` is the *unique* point on all three — hence `N ∪ {x}` meets every line,
+and at size `11 = tau_1` it is a **minimum blocker**.
+
+The converse has a proof rather than a search. Let `B` be a minimum blocker with centre `c` (our centre
+theorem: `B` avoids `c`, meets its four lines twice and the other 36 once). Delete `p ∈ B`; the lines that go
+missing are exactly those meeting `B` only at `p`.
+
+- `p ~ c`: one of `p`'s four lines is `pc`, which was **doubled** and survives. The other three go missing —
+  a punctured pencil at `p`, deficiency 3, optimal.
+- `p !~ c`: none of `p`'s lines was doubled, so all four go missing. Deficiency 4, not optimal.
+
+So `B \ {p}` is an optimal near-ovoid **iff** `p` is collinear with `c`, and the count of such `p` is the
+**8** in our own `(0,8,3)` blocker shape against the rank-3 shell `1+12+27`. Hence
+
+`360 blockers × 8 deletions = 2880 optimal near-ovoids` — their number, derived.
+
+Verified exhaustively: 3960/3960 deletions match the criterion, 2880/2880 round trips return the originating
+blocker, fibre uniformly 8. **Corollary:** the near-ovoid's defect centre and the blocker's centre are always
+distinct and always collinear.
+
+### An identity: deficiency is bounded by induced edges
+
+For `|S| = q^2+1`, with `r = N^T chi_S` and `f = r - 1`: `sum f = 0`, and since `N N^T = (q+1)I + A`,
+
+`||f||^2 = (q+1)|S| + 2e(S) - #lines = 2 e(S)`,
+
+with `e(S)` the collinear pairs inside `S`. A missed line gives `f_i = -1` and the positive part must total
+`d`, so `2e(S) >= 2d`:
+
+> **`d <= e(S)`, with equality exactly when every line is met 0, 1 or 2 times.**
+
+Minimising induced edges is a different optimisation and the solver handles it far better. **At q=3 it
+closes**: minimum induced edges in a 10-set is 3, OPTIMAL, minimiser profile `{0:3, 1:34, 2:3}` — `def(3)=3`
+recovered from the edge side. At q=5 a 26-set with `e = 12` exists, so `d = e = 12` there, which is why 12
+keeps recurring.
+
+It bounds the deficiency from **above only**; a line met three or more times lets `d` fall below `e`. And the
+spectral route is dead: the eigenvalue bound gives average internal degree `>= 30·26/156 - 6·130/156 = 0`,
+because `m = 26` *is* the Hoffman bound and the inequality is tight there by construction.
+
+### Where q=5 stands, and what has been tried
+
+`def(W(3,5))` is open in **[6, 12]**. The lower bound is the other track's, built on our q=5 dipole
+infeasibility; the upper is our explicit witness. Six methods have now stalled at the same place:
+
+| method | outcome |
+|---|---|
+| direct deficiency minimisation | FEASIBLE 12, bound 0 |
+| exact tests at deficiency 6, 7, 8 | all UNKNOWN, 700 s each |
+| the same with 156-fold line-transitive symmetry breaking | UNKNOWN |
+| guided annealing, 60 runs | floor 12, never below |
+| min-induced-edges reformulation | FEASIBLE 12, bound 0 |
+| min-edges descending ladder | UNKNOWN at 11 |
+
+The annealing floor is **evidence** that `def(5) = 12`, not proof — local search is not a decision procedure.
+`theta - alpha = 8` sits inside the interval and is undecided, neither confirmed nor refuted.
+
 ### Three measures of the missing ovoid, and three coincidences that failed
 
 W(3,q) has no ovoid for odd q. This repository now measures that absence three ways, and they are
