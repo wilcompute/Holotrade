@@ -1,0 +1,23 @@
+{
+  "boundary": "This corpus exercises the exact level-1 four-node line-reservation cliff. It does not change the proved guarantee tau=11 and does not by itself imply anything about the open depth-2 tensor blocking interval.",
+  "counts": {
+    "blockersPerCenter": 9,
+    "freeLinesPerNearOvoid": 3,
+    "minimumBlockers": 360,
+    "nearOvoids": 2880,
+    "removalsPerBlocker": 8
+  },
+  "coverTheorem": "The 2880 optimal near-ovoids form an 8-fold cover of the 360 minimum line blockers. B\\{a} is a near-ovoid for each of the eight shell-1 blocker points a; adding a back recovers B.",
+  "encoding": "360 minimum blockers; each record's eight removals expand to the 2880 near-ovoids B\\{a}",
+  "placementCliff": {
+    "blockingNumber": 11,
+    "busyStateSize": 10,
+    "busyTolerated": 10,
+    "freeLinePlacementsAtState": 3,
+    "oneAddedPointDefeatsAllPlacements": true,
+    "reservationSize": 4
+  },
+  "recordsSha256": "d3f014837e77471087f70516bd372e6b8da9f543896d63ecda805f6adfb06d39",
+  "schema": "holotrade.w33-near-ovoid-adversarial-corpus.v1",
+  "valid": true
+}
