@@ -1,0 +1,29 @@
+{
+  "schema": "holotrade.tensor-111-near-duality-budget.v1",
+  "valid": true,
+  "sourceCommit": "a4054388efd9d7b06211a1c1c63e23e5bf720b39",
+  "candidateSize": 111,
+  "axisSlackUnits": 4,
+  "axisSlackPartitions": [[4], [3,1], [2,2], [2,1,1], [1,1,1,1]],
+  "cleanShadow": {
+    "definition": "shadow size 11 and no fibre overlap on that line",
+    "minimumPerAxis": 36
+  },
+  "cleanCoreReciprocity": "for clean row L and clean column M: c_L in M iff d_M in L",
+  "tileOccupancyBudget": {
+    "total": 1776,
+    "baselineOnePerTile": 1600,
+    "formula": "Dcc >= 4r+4c-176",
+    "minimumDccAt36By36": 112
+  },
+  "centerOnlyNegativeControl": {
+    "dirtyLines": "four-line pencil through one point",
+    "cleanCenters": "all the same point",
+    "cleanCoreReciprocityHolds": true,
+    "forcedTileOccupancyBeforeDirtyDirty": 1872,
+    "availableTotalTileOccupancy": 1776,
+    "impossible": true
+  },
+  "theorem": "Any 111-leaf tensor blocker has at least 36 clean shadows on each axis, exact center reciprocity on their core, and at least 112 clean-clean forced doubled tiles. The constant-center/pencil-deletion escape is impossible by tile-incidence count.",
+  "boundary": "This does not yet exclude every dense partial-duality/blocker-label configuration at size 111. The certified tensor interval remains [111,115]."
+}
