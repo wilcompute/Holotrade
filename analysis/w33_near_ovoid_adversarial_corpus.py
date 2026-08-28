@@ -12,9 +12,12 @@ The 2880 optimal ten-point near-ovoids are compressed as 360 minimum
 
 Therefore the corpus is a complete set of adversarial states exactly one busy
 node below the scheduler's proved m=4 line-placement cliff (tau=11).
+
+Default execution verifies and hashes the complete corpus without touching the
+working tree. Pass --write to materialize the expanded 360-record encoding.
 """
 from __future__ import annotations
-import itertools,json,hashlib
+import itertools,json,hashlib,sys
 from collections import Counter,defaultdict
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
@@ -105,6 +108,7 @@ def main():
     assert Counter(r["center"] for r in records)==Counter({i:9 for i in range(40)})
     canon=json.dumps(records,sort_keys=True,separators=(",",":"))
     sha=hashlib.sha256(canon.encode()).hexdigest()
+    assert sha=="d3f014837e77471087f70516bd372e6b8da9f543896d63ecda805f6adfb06d39"
     out={
       "schema":"holotrade.w33-near-ovoid-adversarial-corpus.v1",
       "valid":True,
@@ -119,6 +123,8 @@ def main():
       "records":records,
       "boundary":"This corpus exercises the exact level-1 four-node line-reservation cliff. It does not change the proved guarantee tau=11 and does not by itself imply anything about the open depth-2 tensor blocking interval."
     }
-    OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
-    print(json.dumps({"status":"PASS","blockers":360,"near":2880,"cover":8,"sha256":sha}))
+    if "--write" in sys.argv:
+        OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
+    print(json.dumps({"status":"PASS","blockers":360,"near":2880,"cover":8,"sha256":sha,"written":"--write" in sys.argv}))
+    return out
 if __name__=="__main__":main()
