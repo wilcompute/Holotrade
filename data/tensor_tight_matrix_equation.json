@@ -1,0 +1,18 @@
+{
+  "schema": "holotrade.tensor-tight-matrix-equation.v1",
+  "valid": true,
+  "equation": "N^T X N = J + P N",
+  "meaning": "T[L][M] = |B_L cap M| is 1 or 2 with exactly four 2s per row; those four lines are the pencil of c(L), and pencil rows are rows of N, so the excess matrix D factors as P N with P the centre-selection matrix",
+  "checks": {
+    "everyPointOnFourLines": true,
+    "rowsOfNSumToFour": true,
+    "allOnesInRowspaceOfN": true,
+    "everyBlockerRowOfDIsAPencilRowOfN": true,
+    "traceSumIs44": true
+  },
+  "crossCheck": "column sums of D = 4 give #{L : c(L) in M} = 4 for every line M -- the centre-balance condition, previously derived by a different counting argument. Two independent routes to the same statement.",
+  "rankNote": "rank(N^T X N) <= rank(N) = 25 and 1 lies in rowspace(N) since N's rows sum to 4*1, so D's rows lie in 25 dimensions, consistent with D = P N",
+  "sharpestFormulation": "tau_2 = 110 iff there exist a 0/1 leaf matrix X and a centre map P with N^T X N = J + P N, every row and column of X independent, and P's column sums meeting every line exactly four times",
+  "isAnObstruction": false,
+  "boundary": "everything closes, so this proves nothing about tau_2, which stays open in [110, 115]. A matrix identity that restates a problem is easy to oversell and this one is recorded as a reformulation plus a cross-check, nothing more."
+}

@@ -1337,6 +1337,52 @@ test("the correspondence recomputes from the geometry, not from the artifact", (
   assert.deepEqual([...perBlocker], [8]);
 });
 
+test("the tight case reduces to N^T X N = J + P N, and re-derives the centre balance", () => {
+  const e = require(path.join(root, "data/tensor_tight_matrix_equation.json"));
+  assert.equal(e.valid, true);
+  assert.equal(e.equation, "N^T X N = J + P N");
+  for (const [k, v] of Object.entries(e.checks)) assert.equal(v, true, k);
+  // the cross-check is the point: centre balance from a second direction
+  assert.match(e.crossCheck, /Two independent routes/);
+  assert.match(e.rankNote, /rank\(N\) = 25/);
+  // and it is explicitly NOT sold as an obstruction
+  assert.equal(e.isAnObstruction, false);
+  assert.match(e.boundary, /proves nothing about\s+tau_2/);
+  assert.match(e.boundary, /easy to\s+oversell/);
+});
+
+test("the matrix equation is rebuilt from the geometry, not read back", () => {
+  const S = require(path.join(root, "js/substrate.js"));
+  const R = require(path.join(root, "analysis/tensor_blocking_reformulation.js"));
+  // rows of N sum to 4, and 1 is in rowspace(N) since column sums are 4 too
+  const Nm = [];
+  for (let p = 0; p < 40; p++) {
+    Nm.push([...Array(40).keys()].map((li) => (S.LINES[li].includes(p) ? 1 : 0)));
+    assert.equal(Nm[p].reduce((a, b) => a + b, 0), 4);
+  }
+  for (let li = 0; li < 40; li++) {
+    let c = 0;
+    for (let p = 0; p < 40; p++) c += Nm[p][li];
+    assert.equal(c, 4, "column sums 4, so the all-ones vector is in rowspace(N)");
+  }
+  // every minimum blocker's doubled-line set is a pencil row of N
+  const pencils = new Map();
+  for (let p = 0; p < 40; p++) {
+    pencils.set(Nm[p].join(""), p);
+  }
+  for (const b of R.minimumBlockers()) {
+    const bs = new Set(b);
+    const row = [...Array(40).keys()].map((li) =>
+      (S.LINES[li].filter((z) => bs.has(z)).length === 2 ? 1 : 0));
+    assert.equal(row.reduce((a, x) => a + x, 0), 4, "four doubled lines");
+    assert.ok(pencils.has(row.join("")), "and they form a pencil, i.e. a row of N");
+    // trace sum is 4|B| = 44
+    let tr = 0;
+    for (let li = 0; li < 40; li++) tr += S.LINES[li].filter((z) => bs.has(z)).length;
+    assert.equal(tr, 44);
+  }
+});
+
 test("the tau_2 SAT encoding passes a positive control", () => {
   const e = require(path.join(root, "data/tensor_110_sat_encoding.json"));
   assert.equal(e.valid, true);
