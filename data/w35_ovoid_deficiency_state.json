@@ -1,0 +1,46 @@
+{
+  "schema": "holotrade.w35-ovoid-deficiency-state.v1",
+  "question": "def(W(3,5)) = fewest lines missed by a 26-set (ovoid size q^2+1)",
+  "interval": [
+    6,
+    12
+  ],
+  "status": "OPEN",
+  "lowerBound": {
+    "value": 6,
+    "source": "W33-Theory PART_W33_20260828_GQ_DEFECT_SUPPORT_Q5",
+    "argument": "deficiencies 1-4 excluded by the 2q eigenfunction support bound; deficiency 5 would have to be a punctured-pencil dipole, and Holotrade commit a41a53f proved the representative dipole infeasible with flag transitivity covering all representatives",
+    "crossTrack": true
+  },
+  "upperBound": {
+    "value": 12,
+    "source": "Holotrade explicit feasible 26-set",
+    "verified": "12 missed lines, independently recounted"
+  },
+  "exactTests": {
+    "deficiency6": "UNKNOWN",
+    "deficiency7": "UNKNOWN",
+    "deficiency8": "UNKNOWN",
+    "budgetSecondsEach": 700
+  },
+  "annealing": {
+    "runs": 60,
+    "floor": 12,
+    "everBelow12": false,
+    "reading": "60 independent guided-annealing runs never beat 12. That is EVIDENCE that def(5) = 12, not proof: local search is not a decision procedure and has missed optima before in this repository."
+  },
+  "rivalReadings": {
+    "defEqualsQ": {
+      "value": 5,
+      "status": "REFUTED at q=5",
+      "why": "the proved lower bound is 6, so def(5) > q"
+    },
+    "thetaMinusAlpha": {
+      "value": 8,
+      "status": "UNDECIDED",
+      "why": "8 lies inside [6,12]; the exact test at 8 returned UNKNOWN"
+    }
+  },
+  "whatDefQEqualsQReallyIs": "the support bound gives def(q) >= q, tight at q=3 where the dipole attains it and provably not tight at q=5. So 'def(q) = q' was the LOWER BOUND being tight at q=3, never the value.",
+  "boundary": "def(5) is not determined here. The annealing floor is reported as evidence and is explicitly not a claim; all three exact tests are UNKNOWN."
+}

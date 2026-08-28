@@ -1337,6 +1337,30 @@ test("the correspondence recomputes from the geometry, not from the artifact", (
   assert.deepEqual([...perBlocker], [8]);
 });
 
+test("def(W(3,5)) is recorded as open in [6,12], with evidence kept separate", () => {
+  const s = require(path.join(root, "data/w35_ovoid_deficiency_state.json"));
+  assert.equal(s.status, "OPEN");
+  assert.deepEqual(s.interval, [6, 12]);
+  // the lower bound is theirs, built on our q=5 dipole infeasibility
+  assert.equal(s.lowerBound.value, 6);
+  assert.equal(s.lowerBound.crossTrack, true);
+  assert.match(s.lowerBound.argument, /a41a53f/);
+  assert.equal(s.upperBound.value, 12);
+  // every exact test is undecided -- none may be read as a result
+  for (const k of ["deficiency6", "deficiency7", "deficiency8"]) {
+    assert.equal(s.exactTests[k], "UNKNOWN");
+  }
+  // the annealing floor is EVIDENCE, and labelled as such
+  assert.equal(s.annealing.runs, 60);
+  assert.equal(s.annealing.floor, 12);
+  assert.equal(s.annealing.everBelow12, false);
+  assert.match(s.annealing.reading, /not proof/);
+  // def(q) = q is refuted; theta - alpha is undecided, not refuted
+  assert.match(s.rivalReadings.defEqualsQ.status, /REFUTED/);
+  assert.equal(s.rivalReadings.thetaMinusAlpha.status, "UNDECIDED");
+  assert.match(s.whatDefQEqualsQReallyIs, /LOWER BOUND being tight at q=3/);
+});
+
 test("the defect-dipole shape is q=3 exceptional", () => {
   const d = require(path.join(root, "data/w33_dipole_q3_exceptional.json"));
   assert.equal(d.valid, true);
