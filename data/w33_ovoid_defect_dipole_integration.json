@@ -1,0 +1,32 @@
+{
+  "integrationNamespace": {
+    "coarseDefectDipoles": 480,
+    "exactCompletionsPerDipole": 6,
+    "interpretation": "480 oriented collinear defect channels, each with six exact completion states",
+    "optimalNearOvoids": 2880
+  },
+  "localChecks": {
+    "representativeCompletions": 6,
+    "representativeProfile": {
+      "0": 3,
+      "1": 34,
+      "2": 3
+    },
+    "size4ClassesArePuncturedPencilClasses": true,
+    "tripleSignatureHistogram": {
+      "singleton": 9720,
+      "size4": 40
+    }
+  },
+  "notAuthorized": "Do not identify the local six completions with P1(F9), HJ10, G2, S3 control, or any other six-state carrier without an explicit intertwiner. Do not change scheduler guarantees from this classification alone.",
+  "reconcilesHolotradeOvoidDeficiency": true,
+  "safeUse": "regression/fuzz namespace for W33 placement and evidence-path tests; theorem remains owned by W33-Theory",
+  "schema": "holotrade.w33-ovoid-defect-dipole-integration.v1",
+  "sourceOfTruth": {
+    "certificateCommit": "7b71c98cb181b73f7fa9464f543cb0b51615af20",
+    "noteCommit": "51761470746215b9d885d1507e9a25455d153d7d",
+    "proofCommit": "dd770350d39b22d0a50c3586feb7283eebaac4ea",
+    "repository": "wilcompute/W33-Theory"
+  },
+  "valid": true
+}
