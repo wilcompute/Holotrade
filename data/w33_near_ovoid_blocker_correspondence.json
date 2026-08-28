@@ -1,0 +1,30 @@
+{
+  "schema": "holotrade.w33-near-ovoid-blocker-correspondence.v1",
+  "valid": true,
+  "theorem": "for a minimum blocker B with centre c and p in B, B minus p is an optimal near-ovoid if and only if p is collinear with c; conversely N plus its defect centre is a minimum blocker",
+  "proof": "B meets the four lines through c twice and all others once. Deleting p makes exactly the lines meeting B only at p become missed. If p ~ c then the line pc was doubled and survives, so three become missed -- a punctured pencil at p, deficiency 3. If p is not collinear with c, none of p's four lines was doubled, so all four become missed and the deficiency is 4.",
+  "blockers": 360,
+  "deletionsChecked": 3960,
+  "criterionAgreement": 3960,
+  "nearOvoidsPerBlocker": {
+    "8": 360
+  },
+  "fibreSize": [
+    8
+  ],
+  "derivedCount": 2880,
+  "theirEnumeratedCount": 2880,
+  "countDerived": true,
+  "centreRelation": {
+    "collinear": 2880
+  },
+  "whyEight": "the 8 is the collinear entry of the (0,8,3) minimum-blocker shape against the rank-3 shell 1+12+27",
+  "whyThisIsNotANumberMatch": "it is an explicit map verified in both directions on every instance, and it derives their count rather than matching it",
+  "theirSource": [
+    "dd770350d",
+    "7b71c98cb",
+    "517614707"
+  ],
+  "ourSource": "analysis/w33_blocker_centre_structure.py",
+  "boundary": "a q=3 correspondence. The dipole shape is infeasible at q=5, so this is not claimed to generalise, and it says nothing about tau_2."
+}

@@ -1272,6 +1272,71 @@ test("the q=5 extension is recorded as four open questions, not as results", () 
   assert.match(w.boundary, /remains a q=3 fact only/);
 });
 
+test("the near-ovoid / minimum-blocker correspondence holds both ways", () => {
+  const c = require(path.join(root, "data/w33_near_ovoid_blocker_correspondence.json"));
+  assert.equal(c.valid, true);
+  // the converse, checked on every deletion rather than sampled
+  assert.equal(c.blockers, 360);
+  assert.equal(c.deletionsChecked, 3960, "360 blockers x 11 points");
+  assert.equal(c.criterionAgreement, 3960, "100% agreement, no exceptions");
+  assert.deepEqual(c.fibreSize, [8], "uniform fibre");
+  assert.deepEqual(c.nearOvoidsPerBlocker, { 8: 360 });
+  // the count is DERIVED, not matched
+  assert.equal(c.derivedCount, 2880);
+  assert.equal(c.theirEnumeratedCount, 2880);
+  assert.equal(c.countDerived, true);
+  assert.equal(360 * 8, 2880);
+  // the two distinguished points are always distinct and collinear
+  assert.deepEqual(Object.keys(c.centreRelation), ["collinear"]);
+  assert.equal(c.centreRelation.collinear, 2880);
+  // the 8 is our own (0,8,3) shape, not a free parameter
+  assert.match(c.whyEight, /\(0,8,3\)/);
+  assert.match(c.whyThisIsNotANumberMatch, /both\s+directions/);
+  // and it is scoped to q=3, since the dipole shape dies at q=5
+  assert.match(c.boundary, /not claimed to\s+generalise/);
+});
+
+test("the correspondence recomputes from the geometry, not from the artifact", () => {
+  // Independent rebuild: delete each point of each minimum blocker and check
+  // the collinear-with-centre criterion directly against the incidence data.
+  const S = require(path.join(root, "js/substrate.js"));
+  const R = require(path.join(root, "analysis/tensor_blocking_reformulation.js"));
+  const B = R.minimumBlockers().map((b) => new Set(b));
+  const pencil = new Map();
+  for (let p = 0; p < 40; p++) {
+    const ls = [];
+    for (let li = 0; li < 40; li++) if (S.LINES[li].includes(p)) ls.push(li);
+    pencil.set(ls.join(","), p);
+  }
+  let checked = 0, agree = 0;
+  const perBlocker = new Set();
+  for (const b of B) {
+    const exc = [];
+    for (let li = 0; li < 40; li++) {
+      if (S.LINES[li].filter((p) => b.has(p)).length === 2) exc.push(li);
+    }
+    const c = pencil.get(exc.join(","));
+    assert.notEqual(c, undefined);
+    let good = 0;
+    for (const p of b) {
+      const rest = new Set(b); rest.delete(p);
+      const missed = [];
+      for (let li = 0; li < 40; li++) {
+        if (!S.LINES[li].some((z) => rest.has(z))) missed.push(li);
+      }
+      const isOpt = missed.length === 3 && missed.every((li) => S.LINES[li].includes(p));
+      const predicted = p !== c && S.isAdjacent(p, c);
+      checked++;
+      if (isOpt === predicted) agree++;
+      if (isOpt) good++;
+    }
+    perBlocker.add(good);
+  }
+  assert.equal(checked, 3960);
+  assert.equal(agree, 3960, "the criterion must hold with no exceptions");
+  assert.deepEqual([...perBlocker], [8]);
+});
+
 test("the defect-dipole shape is q=3 exceptional", () => {
   const d = require(path.join(root, "data/w33_dipole_q3_exceptional.json"));
   assert.equal(d.valid, true);
