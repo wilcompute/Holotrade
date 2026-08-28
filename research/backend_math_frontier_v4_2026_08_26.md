@@ -146,6 +146,38 @@ No literature on blocking numbers of *products* of generalized quadrangles turne
 consequence of two standard bounds, so it is recorded as a derivation that explains our interval rather than
 as a discovery.
 
+### Three measures of the missing ovoid, and three coincidences that failed
+
+W(3,q) has no ovoid for odd q. This repository now measures that absence three ways, and they are
+*different numbers* — keeping them apart matters:
+
+| measure | definition | q=3 | q=5 |
+|---|---|---|---|
+| blocking defect | `tau_1 - (q^2+1)` | **1** | 2 or 3 (τ₁ unsettled) |
+| coclique deficit | `(q^2+1) - alpha` | **3** | **8** |
+| ovoid deficiency | fewest lines missed by a `(q^2+1)`-set | **3** | open, `<= 12` |
+
+The third is the most direct, and a counting identity makes it a single number: each point lies on `q+1`
+lines, so `sum_L |S ∩ L| = (q+1)|S|`, which at `|S| = q^2+1` is exactly the line count. **Missed lines and
+total excess therefore always coincide.** At q=3 the answer is `def(3) = 3`, OPTIMAL, with the optimal
+10-set having line profile `{0:3, 1:34, 2:3}` — W(3,3) comes within three lines of having an ovoid and no
+closer.
+
+**And three tempting bridges to the other track, all tested, all failed:**
+
+1. **The nine-triple carrier.** Their Pass10477-10484 finds a canonical nine-triple organisation of 27
+   states; our minimum blockers independently partition the far-27 into nine disjoint 3-cocliques at every
+   centre. But that graph carries **≥200,000** such partitions — a common architecture, so the shape match
+   is close to no evidence.
+2. **The cyclotomic seven.** `Phi_6(3) = 7 = alpha(W(3,3))` and `Phi_4(3) = 10 =` the ovoid size, with
+   deficit exactly `q`. Beautiful — and false: `alpha(W(3,5)) = 18`, not `Phi_6(5) = 21`.
+3. **The ten-state carrier.** Their P1(F9) ≅ Q⁻(3,3) has exactly the ovoid size 10. But the elliptic
+   quadric misses **12** of the 40 lines against an optimum of 3 — a match of size only.
+
+The pattern in the failures is worth more than any one of them: **at q=3 the small numbers recur across
+genuinely unrelated constructions because there are not many small numbers. A shared value is evidence of a
+shared parameter, not a shared object.** That is now the standing prior for cross-track number matches here.
+
 ### One ovoid suffices -- and the dual product is exactly 110
 
 Ten attacks on `tau_2(W(3,3))` failed. So stop attacking that object and compute its **neighbours**.
