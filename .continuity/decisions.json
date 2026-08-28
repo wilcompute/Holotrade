@@ -4091,5 +4091,51 @@
       "source": "cli",
       "timestamp": "2026-08-28T03:39:56.115Z"
     }
+  },
+  {
+    "id": "fa76626e-dcc9-4f40-8a97-f6455703d579",
+    "question": "What exact commit publishes the E8 fibre backend and 40-40-40 switch (80bff34)?",
+    "answer": "Commit 80bff34 publishes the fully verified eight-front packet: five requested E8 fronts, three additional probes, exact GAP and Yosys witnesses, frozen certificates, schedulers, website and paper integration, with npm test at 286 pass, 0 fail, 1 platform skip.",
+    "timestamp": "2026-08-28T03:47:25.980Z",
+    "tags": [
+      "audit",
+      "e8",
+      "gap",
+      "holotrade",
+      "publication",
+      "yosys"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "80bff34",
+      "status": "active"
+    },
+    "commitHashes": [
+      "80bff34"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:47:25.983Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:47:25.968Z"
+    }
   }
 ]
