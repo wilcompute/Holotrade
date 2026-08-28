@@ -1236,6 +1236,42 @@ test("the coclique census of W(3,3) is recomputed, not trusted", () => {
   assert.ok(census.independenceNumber < census.hoffmanRatioBound);
 });
 
+test("the q=5 extension is recorded as four open questions, not as results", () => {
+  const w = require(path.join(root, "data/w35_open_questions.json"));
+
+  // tau_1(W(3,5)) is bracketed but not settled
+  assert.deepEqual(w.tau1.interval, [28, 29]);
+  assert.equal(w.tau1.status, "UNDECIDED");
+  assert.equal(w.tau1.publishedLowerBound, 28);
+  assert.equal(w.tau1.witnessFound, 29);
+  assert.equal(w.tau1.exactFeasibilityAt28, "UNKNOWN");
+  assert.match(w.tau1.publishedSource, /Eisfeld/);
+
+  // the ovoid deficiency at q=5 likewise
+  assert.deepEqual(w.ovoidDeficiency.interval, [1, 12]);
+  assert.equal(w.ovoidDeficiency.status, "UNDECIDED");
+  assert.equal(w.ovoidDeficiency.lowerBound, 1, "no ovoid, so at least one");
+
+  // and the product-bound claim is CONDITIONAL, which is the point
+  const p = w.productBound;
+  assert.equal(p.symmetricBlockerFound, 814);
+  assert.equal(p.beats29squared, true);
+  assert.equal(p.beats28squared, false);
+  assert.equal(p["28squared"], 784);
+  assert.equal(p["29squared"], 841);
+  assert.ok(p.status.startsWith("CONDITIONAL"),
+    "814 beats 841 but loses to 784, so nothing may be claimed");
+  assert.match(p.why, /no claim can be made/);
+
+  // q=3, by contrast, IS settled and beaten
+  assert.equal(p.atQ3ForComparison.productBound, 121);
+  assert.equal(p.atQ3ForComparison.found, 115);
+  assert.equal(p.atQ3ForComparison.beaten, true);
+
+  // no general theorem is asserted from any of this
+  assert.match(w.boundary, /remains a q=3 fact only/);
+});
+
 test("the ovoid deficiency of W(3,3) is exactly 3", () => {
   const d = require(path.join(root, "data/w33_ovoid_deficiency.json"));
   assert.equal(d.valid, true);

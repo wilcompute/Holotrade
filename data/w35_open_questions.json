@@ -1,0 +1,49 @@
+{
+  "schema": "holotrade.w35-open-questions.v1",
+  "context": "extending the ovoid-defect programme from q=3 to q=5, where the objects are 156 points and 156 lines instead of 40 and 40",
+  "tau1": {
+    "question": "tau_1(W(3,5)) = 28 or 29?",
+    "publishedLowerBound": 28,
+    "publishedSource": "Eisfeld, Storme, Szonyi, Sziklai, Discrete Math 238 (2001) 35-51: a cover of Q(4,q), q odd, needs more than q^2+1+(q-1)/3; at q=5 that is >27.33, so >=28",
+    "witnessFound": 29,
+    "symmetricSearchAt28": "no invariant 28-blocker across 11 cycle-type classes",
+    "exactFeasibilityAt28": "UNKNOWN",
+    "annealingAt28": "floor of 5-6 unblocked lines, never 0",
+    "status": "UNDECIDED",
+    "interval": [
+      28,
+      29
+    ],
+    "note": "the published bound is TIGHT at q=3, where it gives >=11 and tau_1 = 11 exactly. Whether it is tight at q=5 is open here."
+  },
+  "ovoidDeficiency": {
+    "question": "def(5) = fewest lines missed by a 26-set",
+    "upperBound": 12,
+    "lowerBound": 1,
+    "lowerBoundReason": "W(3,5) has no ovoid (Thas, q odd), so def >= 1",
+    "descendingLadderAt11": "UNKNOWN",
+    "status": "UNDECIDED",
+    "interval": [
+      1,
+      12
+    ],
+    "note": "def(3) = 3 is OPTIMAL; whether def(q) = q is neither shown nor refuted"
+  },
+  "productBound": {
+    "question": "is B x B beatable for W(3,5), as it is for W(3,3)?",
+    "symmetricBlockerFound": 814,
+    "beats29squared": true,
+    "29squared": 841,
+    "beats28squared": false,
+    "28squared": 784,
+    "status": "CONDITIONAL -- undecided",
+    "why": "814 beats 841 = 29^2 but loses to 784 = 28^2, and tau_1(W(3,5)) is undecided in [28,29], so no claim can be made. Beating 784 would make it unconditional.",
+    "atQ3ForComparison": {
+      "tau1": 11,
+      "productBound": 121,
+      "found": 115,
+      "beaten": true
+    }
+  },
+  "boundary": "all four questions here are open. Nothing in this file supports a general theorem that a positive ovoid defect makes the product construction beatable; that remains a q=3 fact only."
+}
