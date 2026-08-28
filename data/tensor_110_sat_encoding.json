@@ -1,13 +1,13 @@
 {
   "schema": "holotrade.tensor-110-sat-encoding.v1",
   "valid": true,
-  "why": "six CP-SAT formulations returned UNKNOWN; the instance needs an unsatisfiability proof, which is what clause-learning solvers are for",
+  "why": "six CP-SAT formulations returned UNKNOWN; this SAT encoding remains a validated sound-and-complete formulation of the former tau_2=110 decision problem",
   "constraintFamilies": [
     "at-most-one per (q,M): every C_q independent",
-    "1 <= |B_L cap M| <= 2: blocks, and our centre theorem",
+    "1 <= |B_L cap M| <= 2: blocks, and the minimum-blocker centre theorem",
     "|B_L| = tau_1: minimum size"
   ],
-  "impliedNotEncoded": "H_q is automatically a disjoint pencil union, and |X| = 110 follows from sum_L |B_L| = 4|X|",
+  "impliedNotEncoded": "H_q is automatically a disjoint pencil union, and |X|=110 follows from sum_L |B_L|=4|X|",
   "soundAndComplete": true,
   "positiveControl": {
     "geometry": "W(3,2)",
@@ -17,15 +17,21 @@
     "result": "SAT",
     "witnessSize": 25,
     "witnessVerified": true,
-    "passes": true,
-    "purpose": "an over-constrained model returns UNSAT for free; this shows the encoding finds the known tight solution where one exists"
+    "passes": true
   },
   "q3Instance": {
     "clauses": 1169440,
     "vars": 132720,
-    "status": "running",
-    "kissatSegfaults": true,
-    "usableEngine": "cadical"
+    "historicalStatus": "running / unresolved by SAT within recorded budgets",
+    "currentStatus": "SUPERSEDED BY THEOREM",
+    "supersedingProofCommit": "43049db35424fe5802019a76fb6ce16704555ee9",
+    "supersedingCertificateCommit": "1513d61f7bd1c213109a55d19af11a572e85673a",
+    "proved110Impossible": true
   },
-  "boundary": "the control validates the ENCODING. It says nothing about whether tau_2 = 110, which stays open in [110, 115]."
+  "currentFrontier": {
+    "lowerBound": 111,
+    "upperBound": 115,
+    "interval": [111,115]
+  },
+  "boundary": "The SAT model remains a useful validated encoding and positive control, but no longer defines the mathematical frontier: the self-duality obstruction proves tau_2 != 110."
 }
