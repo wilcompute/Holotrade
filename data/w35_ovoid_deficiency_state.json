@@ -2,15 +2,16 @@
   "schema": "holotrade.w35-ovoid-deficiency-state.v1",
   "question": "def(W(3,5)) = fewest lines missed by a 26-set (ovoid size q^2+1)",
   "interval": [
-    6,
+    7,
     12
   ],
   "status": "OPEN",
   "lowerBound": {
-    "value": 6,
-    "source": "W33-Theory PART_W33_20260828_GQ_DEFECT_SUPPORT_Q5",
-    "argument": "deficiencies 1-4 excluded by the 2q eigenfunction support bound; deficiency 5 would have to be a punctured-pencil dipole, and Holotrade commit a41a53f proved the representative dipole infeasible with flag transitivity covering all representatives",
-    "crossTrack": true
+    "value": 7,
+    "source": "W33-Theory, propagated as w33_ovoid_deficiency_q5_support_update v2",
+    "argument": "deficiency 5 is impossible: the line-eigenvector relation A_line d = (q-1)d forces |supp d| >= 2q, and equality delta = q is EXACTLY the punctured-pencil dipole, which Holotrade a41a53f proved infeasible at q=5. Deficiency 6 is impossible: every such defect must be the difference of two full six-line pencils at noncollinear centres, and the unique PSp orbit target is infeasible.",
+    "crossTrack": true,
+    "supersedes": "the earlier lower bound of 6"
   },
   "upperBound": {
     "value": 12,
@@ -27,7 +28,7 @@
     "runs": 60,
     "floor": 12,
     "everBelow12": false,
-    "reading": "60 independent guided-annealing runs never beat 12. That is EVIDENCE that def(5) = 12, not proof: local search is not a decision procedure and has missed optima before in this repository."
+    "reading": "60 independent guided-annealing runs never beat 12. Evidence that def(5) = 12, not proof: local search is not a decision procedure and has missed optima in this repository before."
   },
   "rivalReadings": {
     "defEqualsQ": {
@@ -38,9 +39,32 @@
     "thetaMinusAlpha": {
       "value": 8,
       "status": "UNDECIDED",
-      "why": "8 lies inside [6,12]; the exact test at 8 returned UNKNOWN"
+      "why": "8 is now the BOTTOM of the interval [7,12] plus one; still not decided"
     }
   },
   "whatDefQEqualsQReallyIs": "the support bound gives def(q) >= q, tight at q=3 where the dipole attains it and provably not tight at q=5. So 'def(q) = q' was the LOWER BOUND being tight at q=3, never the value.",
-  "boundary": "def(5) is not determined here. The annealing floor is reported as evidence and is explicitly not a claim; all three exact tests are UNKNOWN."
+  "boundary": "def(5) is not determined here. The annealing floor is reported as evidence and is explicitly not a claim; all three exact tests are UNKNOWN.",
+  "history": [
+    {
+      "interval": [
+        1,
+        12
+      ],
+      "note": "our CP-SAT upper bound only"
+    },
+    {
+      "interval": [
+        6,
+        12
+      ],
+      "note": "their support bound plus our dipole infeasibility"
+    },
+    {
+      "interval": [
+        7,
+        12
+      ],
+      "note": "their deficiency-six no-go"
+    }
+  ]
 }

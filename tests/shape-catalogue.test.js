@@ -1373,11 +1373,17 @@ test("the deficiency / induced-edge identity holds, and is upper-bound only", ()
 test("def(W(3,5)) is recorded as open in [6,12], with evidence kept separate", () => {
   const s = require(path.join(root, "data/w35_ovoid_deficiency_state.json"));
   assert.equal(s.status, "OPEN");
-  assert.deepEqual(s.interval, [6, 12]);
+  assert.deepEqual(s.interval, [7, 12]);
   // the lower bound is theirs, built on our q=5 dipole infeasibility
-  assert.equal(s.lowerBound.value, 6);
+  assert.equal(s.lowerBound.value, 7);
   assert.equal(s.lowerBound.crossTrack, true);
   assert.match(s.lowerBound.argument, /a41a53f/);
+  assert.match(s.lowerBound.argument, /deficiency 6 is impossible/i);
+  assert.equal(s.lowerBound.supersedes, "the earlier lower bound of 6");
+  // the interval has tightened three times; the history records each step
+  assert.equal(s.history.length, 3);
+  assert.deepEqual(s.history[0].interval, [1, 12]);
+  assert.deepEqual(s.history[2].interval, [7, 12]);
   assert.equal(s.upperBound.value, 12);
   // every exact test is undecided -- none may be read as a result
   for (const k of ["deficiency6", "deficiency7", "deficiency8"]) {
