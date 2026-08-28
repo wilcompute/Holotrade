@@ -1,0 +1,56 @@
+{
+  "schema": "holotrade.w33-deficiency-edge-identity.v1",
+  "valid": true,
+  "identity": "for |S| = q^2+1, ||N^T chi_S - 1||^2 = 2 e(S) and the sum is zero, hence d <= e(S) with equality iff every line is met 0, 1 or 2 times",
+  "derivation": "N N^T = (q+1)I + A on points, so sum r_i^2 = (q+1)|S| + 2e(S); subtracting the line count leaves 2e(S). Missed lines contribute -1 each and the positive part must total d, so 2e >= 2d.",
+  "instances": [
+    {
+      "q": 3,
+      "points": 40,
+      "lines": 40,
+      "setSize": 10,
+      "minEdges": 3,
+      "bound": 3,
+      "status": "OPTIMAL",
+      "proved": true,
+      "witnessEdges": 3,
+      "profile": {
+        "0": 3,
+        "1": 34,
+        "2": 3
+      },
+      "deficiency": 3,
+      "profileTotal": 40,
+      "countingIdentityHolds": true,
+      "normIdentityHolds": true,
+      "dAtMostE": true,
+      "equalityCase": true
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "lines": 156,
+      "setSize": 26,
+      "minEdges": 12,
+      "bound": 0,
+      "status": "FEASIBLE",
+      "proved": false,
+      "witnessEdges": 12,
+      "profile": {
+        "0": 12,
+        "1": 132,
+        "2": 12
+      },
+      "deficiency": 12,
+      "profileTotal": 156,
+      "countingIdentityHolds": true,
+      "normIdentityHolds": true,
+      "dAtMostE": true,
+      "equalityCase": true
+    }
+  ],
+  "direction": "an UPPER bound on the deficiency: def(q) <= min_S e(S). Not a lower bound, since a line met three or more times lets d fall strictly below e.",
+  "whyTwelveRecurs": "12 is the smallest induced edge count found for a 26-set, and that configuration is of the equality type, so its deficiency equals it",
+  "spectralNoteFails": "the eigenvalue bound gives average internal degree >= k m/n + s(1 - m/n) = 30*26/156 - 6*130/156 = 0 at q=5, so e >= 0 and nothing more; m = 26 is exactly the Hoffman bound, so the inequality is tight there by construction. A useful lower bound must come from alpha = 18 < 26.",
+  "boundary": "def(5) stays open in [6, 12]; this reformulation does not close it."
+}

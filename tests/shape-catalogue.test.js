@@ -1337,6 +1337,39 @@ test("the correspondence recomputes from the geometry, not from the artifact", (
   assert.deepEqual([...perBlocker], [8]);
 });
 
+test("the deficiency / induced-edge identity holds, and is upper-bound only", () => {
+  const d = require(path.join(root, "data/w33_deficiency_edge_identity.json"));
+  assert.equal(d.valid, true);
+  for (const r of d.instances) {
+    // sum_L |S cap L| = (q+1)|S| = #lines at ovoid size
+    assert.equal(r.countingIdentityHolds, true);
+    assert.equal(r.profileTotal, (r.q + 1) * r.setSize);
+    assert.equal(r.profileTotal, r.lines);
+    // ||f||^2 = 2 e(S), recomputed from the profile
+    assert.equal(r.normIdentityHolds, true);
+    let norm = 0;
+    for (const [k, v] of Object.entries(r.profile)) norm += (Number(k) - 1) ** 2 * v;
+    assert.equal(norm, 2 * r.witnessEdges);
+    // d <= e(S), with equality here since the profile stays within {0,1,2}
+    assert.equal(r.dAtMostE, true);
+    assert.ok(r.deficiency <= r.witnessEdges);
+    assert.equal(r.equalityCase, true);
+    assert.equal(r.deficiency, r.witnessEdges, "equality case: d = e");
+  }
+  // q=3 closes; q=5 does not
+  const [q3, q5] = d.instances;
+  assert.equal(q3.minEdges, 3);
+  assert.equal(q3.proved, true, "q=3 minimum induced edges is OPTIMAL");
+  assert.equal(q3.deficiency, 3);
+  assert.equal(q5.minEdges, 12);
+  assert.equal(q5.proved, false, "q=5 is only feasible, not proved minimal");
+  // the direction is stated: upper bound only
+  assert.match(d.direction, /UPPER bound/);
+  assert.match(d.direction, /Not a lower bound/);
+  assert.match(d.spectralNoteFails, /Hoffman bound/);
+  assert.match(d.boundary, /stays open in \[6, 12\]/);
+});
+
 test("def(W(3,5)) is recorded as open in [6,12], with evidence kept separate", () => {
   const s = require(path.join(root, "data/w35_ovoid_deficiency_state.json"));
   assert.equal(s.status, "OPEN");
