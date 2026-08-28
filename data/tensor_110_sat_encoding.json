@@ -1,0 +1,31 @@
+{
+  "schema": "holotrade.tensor-110-sat-encoding.v1",
+  "valid": true,
+  "why": "six CP-SAT formulations returned UNKNOWN; the instance needs an unsatisfiability proof, which is what clause-learning solvers are for",
+  "constraintFamilies": [
+    "at-most-one per (q,M): every C_q independent",
+    "1 <= |B_L cap M| <= 2: blocks, and our centre theorem",
+    "|B_L| = tau_1: minimum size"
+  ],
+  "impliedNotEncoded": "H_q is automatically a disjoint pencil union, and |X| = 110 follows from sum_L |B_L| = 4|X|",
+  "soundAndComplete": true,
+  "positiveControl": {
+    "geometry": "W(3,2)",
+    "tau1": 5,
+    "tightCase": 25,
+    "knownAttained": true,
+    "result": "SAT",
+    "witnessSize": 25,
+    "witnessVerified": true,
+    "passes": true,
+    "purpose": "an over-constrained model returns UNSAT for free; this shows the encoding finds the known tight solution where one exists"
+  },
+  "q3Instance": {
+    "clauses": 1169440,
+    "vars": 132720,
+    "status": "running",
+    "kissatSegfaults": true,
+    "usableEngine": "cadical"
+  },
+  "boundary": "the control validates the ENCODING. It says nothing about whether tau_2 = 110, which stays open in [110, 115]."
+}

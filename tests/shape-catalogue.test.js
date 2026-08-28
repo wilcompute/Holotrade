@@ -1337,6 +1337,29 @@ test("the correspondence recomputes from the geometry, not from the artifact", (
   assert.deepEqual([...perBlocker], [8]);
 });
 
+test("the tau_2 SAT encoding passes a positive control", () => {
+  const e = require(path.join(root, "data/tensor_110_sat_encoding.json"));
+  assert.equal(e.valid, true);
+  // three families, each a theorem rather than a modelling choice
+  assert.equal(e.constraintFamilies.length, 3);
+  assert.equal(e.soundAndComplete, true);
+  assert.match(e.impliedNotEncoded, /disjoint pencil\s+union/);
+  // the control: same encoding where the tight case IS attained
+  const c = e.positiveControl;
+  assert.equal(c.geometry, "W(3,2)");
+  assert.equal(c.knownAttained, true);
+  assert.equal(c.tightCase, 25);
+  assert.equal(c.result, "SAT");
+  assert.equal(c.witnessSize, 25);
+  assert.equal(c.witnessVerified, true, "rechecked against the incidence data");
+  assert.equal(c.passes, true);
+  // it exists because an over-constrained model returns UNSAT for free
+  assert.match(c.purpose, /returns UNSAT for\s+free/);
+  // and it validates the encoding only, not the answer
+  assert.match(e.boundary, /says\s+nothing about whether tau_2 = 110/);
+  assert.match(e.boundary, /open in \[110, 115\]/);
+});
+
 test("the deficiency / induced-edge identity holds, and is upper-bound only", () => {
   const d = require(path.join(root, "data/w33_deficiency_edge_identity.json"));
   assert.equal(d.valid, true);
