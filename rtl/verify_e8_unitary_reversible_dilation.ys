@@ -1,0 +1,6 @@
+read_verilog rtl/e8_unitary_reversible_dilation.v
+hierarchy -check -top e8_unitary_reversible_dilation_twice
+proc
+flatten
+opt
+sat -verify -prove mismatch 0 -show-ports

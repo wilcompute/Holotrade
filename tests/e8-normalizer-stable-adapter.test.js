@@ -33,12 +33,13 @@ test("the odd and D26 branches balance exact auxiliary dimensions", () => {
   assert.equal(Adapter.verifyPlan(d26), true);
 });
 
-test("the full C13:C6 request is a signed-off refusal, not an inferred bridge", () => {
-  const blocked = Adapter.planStableAdapter("c13c6");
-  assert.equal(blocked.accepted, false);
-  assert.equal(blocked.dispatchable, false);
-  assert.match(blocked.reason, /no single compatible C13:C6 module intertwiner/i);
-  assert.equal(Adapter.verifyPlan(blocked), true);
+test("the full C13:C6 request delegates to the exact stable closure", () => {
+  const closure = Adapter.planStableAdapter("c13c6");
+  assert.equal(closure.stableDimensionEachSide, 4160);
+  assert.equal(closure.abstractModuleIsomorphismProved, true);
+  assert.equal(closure.chainLevelIntertwinerBuilt, false);
+  assert.equal(closure.dispatchable, false);
+  assert.equal(Adapter.verifyPlan(closure), true);
   assert.throws(() => Adapter.planStableAdapter("c13"), /branch must be/);
 });
 

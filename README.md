@@ -210,7 +210,7 @@ tests; the RTL row has an additional Yosys SAT proof.
 | orientation / rollback | \(2^4{:}S_6\triangleleft 2^5{:}S_6\) gives a relative \(C_2\) character and 1,134 unlabelled pairs of maximum spreads | no canonical 0/1 label and no canonical rollback: 376 outer involutions form five classes |
 | hole-graph RTL | the exact 120-state degree-20 graph is implemented both by a 1,920-bit \(GF(9)\) coordinate predicate and a 14,400-bit row ROM | Yosys proves equality on all \(2^{14}\) address pairs; synthesis is not timing or deployment evidence |
 | stable normalizer adapter | over \(C_{13}{:}C_3\), both sides stabilize at dimension 4,200; over \(D_{26}=C_{13}{:}C_2\), \(F_2[V_2]\oplus J_2^{32}\cong H_1\oplus J_1^{64}\) at dimension 4,160 | corrections are external \(C_{13}\)-trivial modules; no compatible full \(C_{13}{:}C_6\) intertwiner is built |
-| cross-prime fibre | the \(2\)-core partitions the 120 states into fifteen \(F_2^3\) fibres of size eight; each fibre is \(K_{4,4}\), and intersecting-duad fibres meet in one \(C_{16}\) | this is an abstract equitable fibre chart, not an inventory topology |
+| cross-prime fibre | the \(2\)-core partitions the 120 states into fifteen \(F_2^3\) fibres of size eight; each fibre is \(K_{4,4}\), while the cross-only connector over an intersecting-duad edge is exactly \(4C_4\) | the two-fibre induced union is connected and 6-regular; the old `C16` label confused component size with graph type and is retracted |
 
 The cross-prime quotient is especially rigid. If \(Q\) counts neighbours from one eight-state fibre into
 another, then

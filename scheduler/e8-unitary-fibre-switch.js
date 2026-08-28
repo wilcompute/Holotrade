@@ -77,7 +77,7 @@ function blockRelation(leftBlock, rightBlock) {
   const left = FIBRE.blocks[leftBlock].duad;
   const right = FIBRE.blocks[rightBlock].duad;
   const relation = leftBlock === rightBlock ? "same-fibre-K4,4" :
-    (weight === 2 ? "intersecting-duads-C16-connector" : "disjoint-duads-KG6,2-zero");
+    (weight === 2 ? "intersecting-duads-cross-only-4C4" : "disjoint-duads-KG6,2-zero");
   return deepFreeze({ leftBlock, rightBlock, leftDuad: [...left], rightDuad: [...right],
     neighbourCountPerSourceVertex: weight, relation });
 }

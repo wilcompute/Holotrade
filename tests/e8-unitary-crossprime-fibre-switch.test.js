@@ -40,6 +40,12 @@ test("actual adjacency realizes the exact 4I plus 2T6 weighted quotient", () => 
     }
   }
   assert.equal(Switch.blockRelation(0, 0).relation, "same-fibre-K4,4");
+  const intersecting = frozen.blocks.find((row) => row.blockId !== 0 &&
+    row.duad.some((value) => frozen.blocks[0].duad.includes(value)));
+  assert.equal(Switch.blockRelation(0, intersecting.blockId).relation,
+    "intersecting-duads-cross-only-4C4");
+  assert.equal(frozen.localFibre.crossOnlyConnectorForIntersectingDuads, "4C4");
+  assert.match(frozen.localFibre.twoFibreInducedUnion, /connected 16-vertex 6-regular/);
   const disjoint = frozen.blocks.find((row) =>
     row.duad.every((value) => !frozen.blocks[0].duad.includes(value)));
   assert.equal(Switch.blockRelation(0, disjoint.blockId).relation, "disjoint-duads-KG6,2-zero");
@@ -75,6 +81,7 @@ test("the demo exposes the theorem and its no-identification boundary", () => {
   const app = fs.readFileSync(path.join(ROOT, "js/app.js"), "utf8");
   assert.match(html, /id="unitaryCrossprimeShape"/);
   assert.match(app, /120 = 15 × 8/);
+  assert.match(app, /four disjoint C₄/);
   assert.match(app, /40 \| 40 \| 40/);
   assert.match(app, /No graded piece is claimed to be W\(3,3\)/);
 });

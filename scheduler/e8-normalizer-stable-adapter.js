@@ -2,12 +2,14 @@
 
 // Fail-closed plans for the two exact stable normalizer repairs.  These plans
 // expose auxiliary module accounting; they are not workload routes or live
-// intertwiners.  In particular, C13:C6 remains refused until one compatible
-// chain-level glue map is constructed.
+// intertwiners. The original v1 certificate remains the source for C13:C3 and
+// D26; the later full-normalizer certificate supersedes only its C13:C6
+// refusal with an abstract 4160-dimensional stable plan.
 
 const crypto = require("node:crypto");
 const E = require("../js/evidence.js");
 const FROZEN = require("../data/e8_normalizer_stable_adapter.json");
+const FullClosure = require("./e8-full-normalizer-stable-closure.js");
 
 const PLAN_SCHEMA = "holotrade.e8-normalizer-stable-plan.v1";
 const REFUSAL_SCHEMA = "holotrade.e8-normalizer-stable-refusal.v1";
@@ -63,7 +65,7 @@ function refusal(reason) {
 
 function planStableAdapter(branch) {
   if (branch === "c13c6") {
-    return refusal(FROZEN.fullNormalizer.reason);
+    return FullClosure.planStableClosure();
   }
 
   let body;
@@ -117,6 +119,7 @@ function planStableAdapter(branch) {
 }
 
 function verifyPlan(plan) {
+  if (plan?.schema === FullClosure.PLAN_SCHEMA) return FullClosure.verifyPlan(plan);
   if (!plan || ![PLAN_SCHEMA, REFUSAL_SCHEMA].includes(plan.schema)) return false;
   const { digest, ...body } = plan;
   return digest === E.demoDigest(body) && plan.dispatchable === false &&

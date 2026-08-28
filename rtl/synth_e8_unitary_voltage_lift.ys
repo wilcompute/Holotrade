@@ -1,0 +1,10 @@
+read_verilog rtl/e8_unitary_voltage_lift.v
+log AFFINE_VOLTAGE_LIFT_SYNTHESIS
+synth_ice40 -noabc -noabc9 -top e8_unitary_voltage_lift_affine
+stat
+
+design -reset
+read_verilog rtl/e8_unitary_hole_adj.v
+log GENERAL_GF9_PREDICATE_SAME_FLOW_SYNTHESIS
+synth_ice40 -noabc -noabc9 -top e8_unitary_hole_adj_compact
+stat

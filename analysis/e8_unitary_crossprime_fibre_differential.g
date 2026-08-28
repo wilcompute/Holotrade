@@ -72,8 +72,9 @@ BuildHoleCross := function(q)
              holes := holes, maxima := maxima);
 end;
 
-ConnectorProfilesCross := function(graph, blocks, quotient)
-  local profiles, i, j, universe, unseen, sizes, todo, seen, vertex;
+ConnectorProfilesCross := function(graph, blocks, quotient, crossOnly)
+  local profiles, i, j, universe, unseen, sizes, todo, seen, vertex,
+        neighbours;
   profiles := [];
   for i in [1..Length(blocks)-1] do
     for j in [i+1..Length(blocks)] do
@@ -89,7 +90,16 @@ ConnectorProfilesCross := function(graph, blocks, quotient)
             if not vertex in seen then
               Add(seen, vertex);
               RemoveSet(unseen, vertex);
-              Append(todo, Intersection(Adjacency(graph, vertex), universe));
+              if crossOnly then
+                if vertex in blocks[i] then
+                  neighbours := Intersection(Adjacency(graph, vertex), blocks[j]);
+                else
+                  neighbours := Intersection(Adjacency(graph, vertex), blocks[i]);
+                fi;
+              else
+                neighbours := Intersection(Adjacency(graph, vertex), universe);
+              fi;
+              Append(todo, neighbours);
             fi;
           od;
           Add(sizes, Length(seen));
@@ -107,7 +117,8 @@ CrossPrimeFibreDifferential := function()
         actionHom, NAction, blocks, blockOf, blockAction, blockKernel,
         quotient, equitable, i, j, vertex, row, supportGraph, zeroGraph,
         duads, triangular, kneser, zeroToDuad, zeroToQ2, x, quotientPoly,
-        fibre, fibreGraph, k44, fibrePoly, connectorProfiles, F2, A2,
+        fibre, fibreGraph, k44, fibrePoly, connectorProfiles,
+        crossConnectorProfiles, F2, A2,
         rank2, squareZero, factorsQ3, factorsQ2, block, mappedDuad,
         checks;
 
@@ -205,7 +216,8 @@ CrossPrimeFibreDifferential := function()
   fibrePoly := CharacteristicPolynomial(Rationals, Rationals,
     List([1..8], i -> List([1..8], j ->
       BoolIntCross(j in Adjacency(fibreGraph, i)))));
-  connectorProfiles := ConnectorProfilesCross(graph, blocks, quotient);
+  connectorProfiles := ConnectorProfilesCross(graph, blocks, quotient, false);
+  crossConnectorProfiles := ConnectorProfilesCross(graph, blocks, quotient, true);
 
   F2 := GF(2);
   A2 := List([1..120], i -> List([1..120], j ->
@@ -248,6 +260,7 @@ CrossPrimeFibreDifferential := function()
     GraphIsomorphism(fibreGraph, k44) <> fail,
     fibrePoly = (x - 4) * (x + 4) * x^6,
     connectorProfiles = [[16]],
+    crossConnectorProfiles = [[4, 4, 4, 4]],
     squareZero,
     rank2 = 40,
     120 - rank2 = 80,
@@ -269,7 +282,8 @@ CrossPrimeFibreDifferential := function()
         "|quotient=20^1,8^5,0^9|q2KG=6^1,1^9,-3^5",
         "|zero9FromKGplus1=1\n");
   Print("LOCAL_FIBRE|group=C2^3|graph=K4,4|spectrum=4^1,0^6,-4^1",
-        "|crossT6Connector=C16\n");
+        "|crossOnlyT6Connector=4C4|twoFibreUnionConnected=1",
+        "|twoFibreUnionDegree=6\n");
   Print("MOD2_DIFFERENTIAL|squareZero=1|rank=40|image=40|kernel=80",
         "|homology=40|graded=40,40,40\n");
   for i in [1..15] do
@@ -282,8 +296,12 @@ CrossPrimeFibreDifferential := function()
   od;
   Print("ALL_CROSSPRIME_FIBRE_DIFFERENTIAL_CHECKS_PASS\n");
   return rec(blocks := blocks, quotient := quotient, blockOf := blockOf,
-             zeroToDuad := zeroToDuad, checks := checks);
+             zeroToDuad := zeroToDuad, checks := checks, graph := graph,
+             graphIsomorphism := graphIso, fullAutomorphismGroup := fullQ3,
+             foldedGroup := G, twoCore := N, cosetAction := found.action,
+             adjacencyF2 := A2);
 end;
 
-CrossPrimeFibre := CrossPrimeFibreDifferential();;
-QUIT;
+if not IsBound(E8CrossPrimeLibraryOnly) then
+  CrossPrimeFibre := CrossPrimeFibreDifferential();;
+fi;

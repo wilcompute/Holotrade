@@ -28,6 +28,7 @@
   let unitaryCertificate = null;
   let unitaryHoleCertificate = null;
   let unitaryCrossprimeCertificate = null;
+  let unitaryBackendCertificates = null;
 
   // ---- ui state ------------------------------------------------------
   const ui = {
@@ -1360,6 +1361,65 @@
     }
   }
 
+  async function loadUnitaryBackendCertificates() {
+    const sources = {
+      closure: ["data/e8_full_normalizer_stable_closure.json", "holotrade.e8-full-normalizer-stable-closure.v1"],
+      canonical: ["data/e8_unitary_canonical_fibre_partition.json", "holotrade.e8-unitary-canonical-fibre-partition.v1"],
+      voltage: ["data/e8_unitary_voltage_lift.json", "holotrade.e8-unitary-voltage-lift.v1"],
+      reversible: ["data/e8_unitary_reversible_dilation.json", "holotrade.e8-unitary-reversible-dilation.v1"],
+      fractal: ["data/e8_fractal_microvm_fabric.json", "holotrade.e8-fractal-microvm-fabric.v1"],
+    };
+    try {
+      const entries = await Promise.all(Object.entries(sources).map(async ([key, [url, schema]]) => {
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) throw new Error(`${key}: HTTP ${response.status}`);
+        const packet = await response.json();
+        if (packet.schema !== schema || !/^[0-9a-f]{64}$/.test(packet.sha256 || "")) {
+          throw new Error(`${key}: certificate schema or digest invalid`);
+        }
+        return [key, packet];
+      }));
+      unitaryBackendCertificates = Object.fromEntries(entries);
+      renderUnitaryBackendClosure();
+    } catch (err) {
+      console.error("[unitary backend closure]", err);
+      const panel = $("unitaryBackendClosure");
+      if (panel) panel.innerHTML =
+        "<b>Backend closure</b> · certificate unavailable: " + fmt.esc(err.message);
+    }
+  }
+
+  function renderUnitaryBackendClosure() {
+    const panel = $("unitaryBackendClosure");
+    if (!panel) return;
+    if (!unitaryBackendCertificates) {
+      panel.innerHTML = "<b>Backend closure</b> · loading five independent exact certificates…";
+      return;
+    }
+    const { closure, canonical, voltage, reversible, fractal } = unitaryBackendCertificates;
+    if (closure.stableClosure.stableDimensionEachSide !== 4160 ||
+        closure.stableClosure.chainLevelIntertwinerBuilt !== false ||
+        canonical.partition.canonicalAsUnlabelledPartition !== true ||
+        voltage.crossRelation.inducedConnector !== "4C4" ||
+        voltage.implementation.synthesis.affinePredicateIce40Lut4 !== 171 ||
+        reversible.dilation.involution !== true || reversible.dilation.symplectic !== true ||
+        reversible.cnotNetwork.layers !== 20 ||
+        fractal.fabric.states !== 20160 || fractal.independence.commonNontrivialQuotient !== false) {
+      panel.innerHTML = "<b>Backend closure</b> · certificate theorem flags disagree";
+      return;
+    }
+    panel.innerHTML =
+      "<b>Backend closure · EXACT / NON-DISPATCHABLE</b> · the 15 × 8 partition is intrinsic under the full " +
+      "2⁵:S₆ graph automorphism group; slots inside a fibre are not. The full C₁₃:C₆ module repair closes " +
+      "abstractly at <b>4,160</b> dimensions with a 64-state correction pair, now identified on the C₂ " +
+      "restriction as 32 nonsplit Ext¹ classes versus 64 Tate classes. The square-zero switch has a " +
+      "<b>240-bit symplectic involution</b> with 2,400 CNOTs in provably optimal depth <b>20</b>. " +
+      "The corrected affine relation compiler implements the graph in <b>171 iCE40 LUT4s</b> (13 relation types), " +
+      "with Yosys equivalence against the full row ROM; its cross-only connectors are 4C₄, not C₁₆. " +
+      "Its independent recursive controller chart has <b>21 × 8 × 15 × 8 = 20,160</b> logical states; " +
+      "Goursat forces the Fano and execution control groups to be independent. None of these facts binds a host or authorizes dispatch.";
+  }
+
   function renderUnitaryHoleShape(q, rung, maximumRung) {
     const panel = $("unitaryHoleShape");
     if (!panel) return;
@@ -1420,7 +1480,8 @@
     }
     panel.innerHTML =
       "<b>Cross-prime fibre · EXACT</b> · <b>120 = 15 × 8</b>: F₂³ fibres induce K₄,₄, intersecting duads " +
-      "are joined by one C₁₆, and disjoint duads carry no edges. The weighted quotient is " +
+      "have a cross-only connector of <b>four disjoint C₄ cycles</b>, and disjoint duads carry no edges. " +
+      "Including each fibre's internal K₄,₄ edges makes the two-fibre union connected and 6-regular; it is not C₁₆. The weighted quotient is " +
       "<b>4I + 2A(T(6))</b>; its zero relation is exactly the q=2 KG(6,2) graph. Over F₂, adjacency is " +
       "square-zero of rank " + differential.rank + ", giving image | homology | coimage = <b>40 | 40 | 40</b>. " +
       "No graded piece is claimed to be W(3,3) without an explicit equivariant map.";
@@ -1486,6 +1547,7 @@
       "GAP point IDs are not live hosts; runtime topology attestation is still required before dispatch.";
     renderUnitaryHoleShape(q, rung, profile.maxPartialSpreadLines);
     renderUnitaryCrossprime(q, rung, profile.maxPartialSpreadLines);
+    renderUnitaryBackendClosure();
   }
 
   function renderFabric() {
@@ -2594,6 +2656,7 @@
     loadUnitaryCertificate();
     loadUnitaryHoleCertificate();
     loadUnitaryCrossprimeCertificate();
+    loadUnitaryBackendCertificates();
 
     $("drawerClose").addEventListener("click", closeDrawer);
     $("drawerBack").addEventListener("click", closeDrawer);

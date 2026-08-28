@@ -1,0 +1,33 @@
+{
+  "schema": "holotrade.e8-unitary-canonical-fibre-partition.v1",
+  "evidenceClass": "EXACT_GAP_FULL_GRAPH_AUTOMORPHISM_CANONICALITY",
+  "graph": {
+    "vertices": 120,
+    "fullAutomorphismGroup": "2^5:S6",
+    "order": 23040
+  },
+  "intrinsicTwoCore": {
+    "group": "O2(Aut graph)=C2^5",
+    "order": 32,
+    "characteristicInAutomorphismGroup": true,
+    "quotient": "S6"
+  },
+  "partition": {
+    "orbitCount": 15,
+    "orbitSize": 8,
+    "blockAction": "S6",
+    "blockKernel": "O2(Aut graph)",
+    "equalsFrozenFibrePartition": true,
+    "invariantUnderFullGraphAutomorphismGroup": true,
+    "canonicalAsUnlabelledPartition": true
+  },
+  "fibreAction": {
+    "pointKernelOrder": 4,
+    "inducedGroup": "C2^3",
+    "individualSlotLabellingCanonical": false
+  },
+  "theorem": "The fifteen eight-state fibres are intrinsic orbits of the characteristic 2-core of the full graph automorphism group; only the within-fibre slot labels remain gauge choices.",
+  "evidenceBoundary": "Canonical graph blocks are still logical cosets, not machines or physical sites. Canonicality does not supply inventory binding.",
+  "sourceCertificateSha256": "b1373339ab07c5bcd1245cf391344d6a9bba474f36cba81cf8944d0892c48e53",
+  "sha256": "a762604b3cd5e8c4fcc9181dbcf401443b926b79f4d44905acf1fa0ab6b512bf"
+}

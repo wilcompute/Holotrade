@@ -1,0 +1,51 @@
+{
+  "schema": "holotrade.e8-fractal-microvm-fabric.v1",
+  "evidenceClass": "EXACT_GAP_GOURSAT_AND_COMPILED_ADDRESS_PRODUCT",
+  "controlPlane": {
+    "group": "PSL(3,2)=GL(3,2)",
+    "order": 168,
+    "simple": true,
+    "chart": "(C7:C3) matched with D8",
+    "factorShape": [
+      21,
+      8
+    ],
+    "sourceCertificateSha256": "5b5620708c7b4bf0daaeabd687e68eeb0cd19c18dacf690cd434073b723d0003"
+  },
+  "executionPlane": {
+    "group": "2^5:S6",
+    "order": 23040,
+    "quotientByTwoCore": "S6",
+    "carrierStates": 120,
+    "chart": "15 duads x 8 fibre states",
+    "factorShape": [
+      15,
+      8
+    ],
+    "pointStabilizerOrder": 192,
+    "sourceCertificateSha256": "b1373339ab07c5bcd1245cf391344d6a9bba474f36cba81cf8944d0892c48e53"
+  },
+  "independence": {
+    "theorem": "every subdirect coupling with both projections surjective is the direct product",
+    "reason": "Goursat plus simplicity of PSL(3,2); 168 does not divide 23040, so the factors have no common nontrivial quotient",
+    "orderGcd": 24,
+    "commonNontrivialQuotient": false,
+    "productGroupOrder": 3870720
+  },
+  "fabric": {
+    "addressShape": [
+      21,
+      8,
+      15,
+      8
+    ],
+    "states": 20160,
+    "transitiveProductAction": true,
+    "pointStabilizerOrder": 192,
+    "stateCountEqualsOrderA8": true,
+    "a8IdentificationClaimed": false
+  },
+  "theorem": "The 168-state Fano matched-action controller and 120-state unitary fibre switch form a forced direct-product control/execution fabric with one bijective 20,160-state abstract address chart.",
+  "evidenceBoundary": "The 20,160 states are Cartesian logical addresses, not A8 elements, hosts, microVMs, or dispatchable inventory. Signed live binding remains external.",
+  "sha256": "c3a05942e8906ad8435f567a8a168289a84ec1fc2eba108ba8472f256157014a"
+}

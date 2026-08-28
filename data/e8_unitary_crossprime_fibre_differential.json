@@ -78,7 +78,10 @@
         1
       ]
     ],
-    "connectorForIntersectingDuads": "one C16 on the two eight-state fibres",
+    "crossOnlyConnectorForIntersectingDuads": "4C4",
+    "crossOnlyDegreePerVertex": 2,
+    "twoFibreInducedUnion": "connected 16-vertex 6-regular graph",
+    "correction": "The earlier C16 label inferred a cycle from component size 16. Exact cross-only traversal gives 4C4; including both internal K4,4 graphs makes the union connected and 6-regular, not C16.",
     "connectorForDisjointDuads": "empty"
   },
   "characteristicTwoDifferential": {
@@ -1575,5 +1578,5 @@
   ],
   "theorem": "The q=3 hole graph is an equitable eight-state F2^3 fibre extension of the q=2 S6 duad carrier. Its missing block relation is exactly KG(6,2), and in characteristic two its adjacency is a rank-40 differential with 40-dimensional image, homology, and coimage.",
   "evidenceBoundary": "All graph, quotient, spectrum, and GF(2) statements are exact. The 40-dimensional graded pieces are not identified with W33 points or any physical particle carrier; such an identification would require an explicit equivariant map.",
-  "sha256": "d350554684286ebe832dabc2982323c1bd737f883c579b03d96578c6b92ad4b6"
+  "sha256": "b1373339ab07c5bcd1245cf391344d6a9bba474f36cba81cf8944d0892c48e53"
 }

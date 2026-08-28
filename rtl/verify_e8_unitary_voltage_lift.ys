@@ -1,0 +1,7 @@
+read_verilog rtl/e8_unitary_voltage_lift.v
+hierarchy -top e8_unitary_voltage_lift_miter
+proc
+memory_map
+flatten
+opt
+sat -verify -prove mismatch 0 -show-ports

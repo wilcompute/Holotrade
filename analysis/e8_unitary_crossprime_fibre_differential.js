@@ -48,7 +48,7 @@ function parse(stdout) {
     ["GROUP_TOWER|G=23040|H=192|N=32|HcapN=4|HN=1536|Nquotient=C2 x C2 x C2|HNquotient=C2 x S4|Gquotient=S6", "group tower"],
     ["FIBRE_QUOTIENT|vertices=120|blocks=15|fibre=8|blockAction=S6|kernel=32|equitable=1|weights=diag4,T6x2,KG0", "weighted quotient"],
     ["SPECTRAL_DESCENT|q3=20^1,8^5,4^45,0^9,-4^60|quotient=20^1,8^5,0^9|q2KG=6^1,1^9,-3^5|zero9FromKGplus1=1", "spectral descent"],
-    ["LOCAL_FIBRE|group=C2^3|graph=K4,4|spectrum=4^1,0^6,-4^1|crossT6Connector=C16", "local fibre"],
+    ["LOCAL_FIBRE|group=C2^3|graph=K4,4|spectrum=4^1,0^6,-4^1|crossOnlyT6Connector=4C4|twoFibreUnionConnected=1|twoFibreUnionDegree=6", "local fibre"],
     ["MOD2_DIFFERENTIAL|squareZero=1|rank=40|image=40|kernel=80|homology=40|graded=40,40,40", "mod-2 differential"],
   ];
   for (const [fragment, label] of signatures) required(stdout, fragment, label);
@@ -133,7 +133,11 @@ function parse(stdout) {
       affineGroup: "F2^3",
       inducedGraph: "K4,4",
       spectrum: [[4, 1], [0, 6], [-4, 1]],
-      connectorForIntersectingDuads: "one C16 on the two eight-state fibres",
+      crossOnlyConnectorForIntersectingDuads: "4C4",
+      crossOnlyDegreePerVertex: 2,
+      twoFibreInducedUnion: "connected 16-vertex 6-regular graph",
+      correction:
+        "The earlier C16 label inferred a cycle from component size 16. Exact cross-only traversal gives 4C4; including both internal K4,4 graphs makes the union connected and 6-regular, not C16.",
       connectorForDisjointDuads: "empty",
     },
     characteristicTwoDifferential: {
