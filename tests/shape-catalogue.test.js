@@ -1272,6 +1272,44 @@ test("the q=5 extension is recorded as four open questions, not as results", () 
   assert.match(w.boundary, /remains a q=3 fact only/);
 });
 
+test("the defect-dipole shape is q=3 exceptional", () => {
+  const d = require(path.join(root, "data/w33_dipole_q3_exceptional.json"));
+  assert.equal(d.valid, true);
+  const [q3, q5] = d.instances;
+
+  // at q=3 the punctured-pencil dipole realises the optimum
+  assert.equal(q3.q, 3);
+  assert.equal(q3.puncturedPencilSize, 3, "a pencil has q+1 lines, punctured q");
+  assert.equal(q3.feasible, true);
+  assert.equal(q3.profile["0"], 3);
+  assert.equal(q3.profile["2"], 3);
+  assert.equal(q3.profile["1"], 34);
+
+  // at q=5 it is INFEASIBLE, so the shape does not generalise
+  assert.equal(q5.q, 5);
+  assert.equal(q5.puncturedPencilSize, 5);
+  assert.equal(q5.feasible, false);
+  assert.equal(q5.status, "INFEASIBLE");
+
+  // and the failure is combinatorial, not arithmetic: the counting identity
+  // permits the profile at BOTH q, so infeasibility is not a parity accident
+  for (const r of d.instances) {
+    assert.equal(r.countingIdentityPermits, true);
+    assert.equal(r.profileTotal, r.requiredTotal);
+    assert.equal(r.requiredTotal, (r.q + 1) * r.setSize);
+  }
+
+  // the two rival predictions agree at q=3 and diverge at q=5
+  assert.equal(d.predictionsAgreeAtQ3, true);
+  assert.match(d.shapePredicts, /def\(q\) = q/);
+  assert.match(d.rivalPredicts, /theta - alpha/);
+
+  // scope: this kills a route, not the value
+  assert.match(d.whatItSettles, /kills the dipole route/);
+  assert.match(d.whatItDoesNotSettle, /is NOT proved/);
+  assert.match(d.whatItDoesNotSettle, /open in \[1, 12\]/);
+});
+
 test("the ovoid deficiency of W(3,3) is exactly 3", () => {
   const d = require(path.join(root, "data/w33_ovoid_deficiency.json"));
   assert.equal(d.valid, true);

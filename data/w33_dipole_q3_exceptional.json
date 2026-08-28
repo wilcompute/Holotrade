@@ -1,0 +1,50 @@
+{
+  "schema": "holotrade.w33-dipole-q3-exceptional.v1",
+  "valid": true,
+  "theirTheorem": "missed and doubled triples are punctured line-pencils at two distinct collinear points, common line singly hit",
+  "theirSource": [
+    "dd770350d",
+    "7b71c98cb",
+    "517614707"
+  ],
+  "shapePredicts": "def(q) = q, since a punctured pencil has q lines",
+  "rivalPredicts": "theta - alpha, with theta = Hoffman ratio bound = q^2+1; 3 at q=3, 8 at q=5",
+  "predictionsAgreeAtQ3": true,
+  "instances": [
+    {
+      "q": 3,
+      "points": 40,
+      "lines": 40,
+      "setSize": 10,
+      "puncturedPencilSize": 3,
+      "countingIdentityPermits": true,
+      "requiredTotal": 40,
+      "profileTotal": 40,
+      "status": "OPTIMAL",
+      "feasible": true,
+      "profile": {
+        "0": 3,
+        "1": 34,
+        "2": 3
+      }
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "lines": 156,
+      "setSize": 26,
+      "puncturedPencilSize": 5,
+      "countingIdentityPermits": true,
+      "requiredTotal": 156,
+      "profileTotal": 156,
+      "status": "INFEASIBLE",
+      "feasible": false,
+      "profile": {}
+    }
+  ],
+  "conclusion": "the dipole shape is q=3 exceptional: feasible at q=3, INFEASIBLE at q=5",
+  "notAParityAccident": "the counting identity permits the profile at q=5, so the obstruction is combinatorial",
+  "whatItSettles": "kills the dipole route to def(5) = 5",
+  "whatItDoesNotSettle": "def(5) != 5 is NOT proved; another shape could achieve it. def(5) stays open in [1, 12]",
+  "fourthQ3PatternToFail": "after alpha = Phi_6(q), the deficit = q reading, and the ten-state carrier"
+}
