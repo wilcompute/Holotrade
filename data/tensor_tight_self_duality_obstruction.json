@@ -1,0 +1,28 @@
+{
+  "schema": "holotrade.tensor-tight-self-duality-obstruction.v1",
+  "status": "PASS",
+  "tightCandidate": 110,
+  "input": "At |X|=110, every row and column shadow is a minimum 11-point W33 blocker.",
+  "occupancyIdentity": "NXN^T = J + E, with E binary and exactly four ones in every row and column",
+  "centreReciprocity": "c_L in M iff d_M in L",
+  "centreMultiplicity": {
+    "allowed": [0,1,4],
+    "multiplicityFourSet": "F",
+    "F_independent": true,
+    "pairCountEquation": "4*C(|F|,2)=3*|F|*C(4,2)",
+    "nonzeroSolution": 10,
+    "alphaW33": 7,
+    "thereforeFEmpty": true,
+    "centreMapsBijective": true
+  },
+  "dualityConsequence": "Bijective centre maps satisfying reciprocity define an incidence isomorphism W(3,3) -> W(3,3)^D.",
+  "classicalInput": "The symplectic generalized quadrangle W(q) is self-dual iff q is even; q=3 is odd.",
+  "consequence": {
+    "tau2Equals110": false,
+    "provedLowerBound": 111,
+    "existingUpperBound": 115,
+    "certifiedInterval": [111,115]
+  },
+  "sourceCommit": "43049db35424fe5802019a76fb6ce16704555ee9",
+  "boundary": "This excludes only 110. It does not decide whether 111,112,113,114, or 115 is optimal."
+}
