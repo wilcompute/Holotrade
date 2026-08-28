@@ -1,26 +1,33 @@
 {
-  "schema": "holotrade.w33-ovoid-deficiency-q5-support-update.v1",
+  "schema": "holotrade.w33-ovoid-deficiency-q5-support-update.v2",
   "valid": true,
-  "previousParallelBoundary": {
-    "commit": "a41a53f5d4e70f30c4ab1e44679bece9a6bedf30",
-    "statement": "dipole infeasible at q=5, but another deficiency-5 shape was not excluded",
-    "previousInterval": [1, 12]
-  },
-  "w33TheoryUpgrade": {
-    "proofCommit": "ec51f2d5cf4c065fb7048739d42289f98b8c9374",
-    "certificateCommit": "79159e2477d7bbbe4f701c13dc0216ef043a6af6",
-    "defectEigenEquation": "A_line d = (q-1)d",
-    "supportBound": "|supp(d)| >= 2q",
-    "generalLowerBound": "nonzero deficiency delta >= q",
-    "equalityClassification": "delta=q forces a punctured-pencil dipole"
-  },
+  "history": [
+    {
+      "commit": "a41a53f5d4e70f30c4ab1e44679bece9a6bedf30",
+      "result": "punctured-pencil dipole infeasible at q=5; by itself this left another deficiency-5 shape possible",
+      "intervalAfter": [1, 12]
+    },
+    {
+      "proofCommit": "ec51f2d5cf4c065fb7048739d42289f98b8c9374",
+      "certificateCommit": "79159e2477d7bbbe4f701c13dc0216ef043a6af6",
+      "result": "A_line d=(q-1)d, |supp d|>=2q, and equality delta=q is exactly the dipole; deficiency 5 therefore impossible",
+      "intervalAfter": [6, 12]
+    },
+    {
+      "proofCommit": "b85825483f6712834993ae36eeee242ef1ecc9d8",
+      "certificateCommit": "a9cef9dbf3f0073ff509ae6b34c256f40af8ac5f",
+      "result": "every deficiency-six defect must be the difference of two full six-line pencils at noncollinear centers; the unique PSp orbit target is infeasible",
+      "intervalAfter": [7, 12]
+    }
+  ],
   "q5": {
     "deficiencyFivePossible": false,
-    "provedLowerBound": 6,
+    "deficiencySixPossible": false,
+    "provedLowerBound": 7,
     "existingFeasibleUpperBound": 12,
-    "certifiedInterval": [6, 12],
+    "certifiedInterval": [7, 12],
     "exactValue": null
   },
-  "operationalEffect": "No scheduler guarantee changes from this research invariant alone. Any policy consuming q=5 deficiency may use lower bound 6 and upper bound 12, but must keep the exact value OPEN.",
-  "boundary": "The upper bound 12 remains Holotrade's existing feasible witness. W33-Theory supplies the new lower-bound theorem. This artifact reconciles the two repositories without duplicating the theorem implementation."
+  "operationalEffect": "No scheduler guarantee changes from this research invariant alone. Any policy consuming q=5 deficiency may use lower bound 7 and upper bound 12, but must keep the exact value OPEN.",
+  "boundary": "The upper bound 12 remains Holotrade's existing feasible witness. W33-Theory owns the lower-bound proofs; this artifact only reconciles the current theorem boundary into Holotrade."
 }
