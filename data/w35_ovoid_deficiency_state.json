@@ -1,17 +1,16 @@
 {
   "schema": "holotrade.w35-ovoid-deficiency-state.v1",
   "question": "def(W(3,5)) = fewest lines missed by a 26-set (ovoid size q^2+1)",
-  "interval": [
-    7,
-    12
-  ],
+  "interval": [8, 12],
   "status": "OPEN",
   "lowerBound": {
-    "value": 7,
-    "source": "W33-Theory, propagated as w33_ovoid_deficiency_q5_support_update v2",
-    "argument": "deficiency 5 is impossible: the line-eigenvector relation A_line d = (q-1)d forces |supp d| >= 2q, and equality delta = q is EXACTLY the punctured-pencil dipole, which Holotrade a41a53f proved infeasible at q=5. Deficiency 6 is impossible: every such defect must be the difference of two full six-line pencils at noncollinear centres, and the unique PSp orbit target is infeasible.",
+    "value": 8,
+    "source": "W33-Theory PART_W33_20260828_Q5_DEFICIENCY7_NOGO",
+    "argument": "deficiency 5 is impossible by the support/equality theorem plus Holotrade's q=5 dipole infeasibility; deficiency 6 is impossible by the full-pencil-pair classification and exact representative no-go; deficiency 7 is impossible because its defect would be plus/minus one valued with each seven-line sign support inducing minimum intersection degree at least four, but no seven-line set in GQ(5,5) can have minimum intersection degree four.",
     "crossTrack": true,
-    "supersedes": "the earlier lower bound of 6"
+    "proofCommit": "67075bc4343d5c2af8d38072d46f5c1f08643584",
+    "certificateCommit": "7bc3ba36c42048617bc4057a8547f6d1f3b8f76e",
+    "supersedes": "the earlier lower bound of 7"
   },
   "upperBound": {
     "value": 12,
@@ -19,52 +18,35 @@
     "verified": "12 missed lines, independently recounted"
   },
   "exactTests": {
-    "deficiency6": "UNKNOWN",
-    "deficiency7": "UNKNOWN",
+    "deficiency6": "historical CP-SAT UNKNOWN, subsequently ruled out by W33 theorem",
+    "deficiency7": "historical CP-SAT UNKNOWN, subsequently ruled out by W33 theorem",
     "deficiency8": "UNKNOWN",
-    "budgetSecondsEach": 700
+    "historicalBudgetSecondsEach": 700
   },
   "annealing": {
     "runs": 60,
     "floor": 12,
     "everBelow12": false,
-    "reading": "60 independent guided-annealing runs never beat 12. Evidence that def(5) = 12, not proof: local search is not a decision procedure and has missed optima in this repository before."
+    "reading": "60 independent guided-annealing runs never beat 12. Evidence that def(5)=12, not proof: local search is not a decision procedure."
   },
   "rivalReadings": {
     "defEqualsQ": {
       "value": 5,
       "status": "REFUTED at q=5",
-      "why": "the proved lower bound is 6, so def(5) > q"
+      "why": "the proved lower bound is now 8"
     },
     "thetaMinusAlpha": {
       "value": 8,
-      "status": "UNDECIDED",
-      "why": "8 is now the BOTTOM of the interval [7,12] plus one; still not decided"
+      "status": "AT THE CERTIFIED LOWER BOUND, STILL UNDECIDED",
+      "why": "the theorem proves def(5)>=8; no deficiency-eight witness or no-go is yet certified"
     }
   },
-  "whatDefQEqualsQReallyIs": "the support bound gives def(q) >= q, tight at q=3 where the dipole attains it and provably not tight at q=5. So 'def(q) = q' was the LOWER BOUND being tight at q=3, never the value.",
-  "boundary": "def(5) is not determined here. The annealing floor is reported as evidence and is explicitly not a claim; all three exact tests are UNKNOWN.",
+  "whatDefQEqualsQReallyIs": "the support bound gives def(q)>=q, tight at q=3 and strictly non-tight at q=5.",
+  "boundary": "def(5) is not determined here. The interval is rigorously [8,12]; deficiency eight remains open and the annealing floor 12 remains evidence only.",
   "history": [
-    {
-      "interval": [
-        1,
-        12
-      ],
-      "note": "our CP-SAT upper bound only"
-    },
-    {
-      "interval": [
-        6,
-        12
-      ],
-      "note": "their support bound plus our dipole infeasibility"
-    },
-    {
-      "interval": [
-        7,
-        12
-      ],
-      "note": "their deficiency-six no-go"
-    }
+    {"interval": [1,12], "note": "Holotrade CP-SAT upper bound only"},
+    {"interval": [6,12], "note": "W33 support bound plus Holotrade dipole infeasibility"},
+    {"interval": [7,12], "note": "W33 deficiency-six no-go"},
+    {"interval": [8,12], "note": "W33 deficiency-seven generalized-quadrangle no-go"}
   ]
 }
