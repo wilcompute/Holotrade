@@ -1,0 +1,26 @@
+# Exact formal equivalence for the 120-state q=3 unitary-hole adjacency.
+#
+# Gold: 120 complete GAP-generated 120-bit adjacency rows.
+# Gate: 120 GAP-transported GF(9)^4 coordinates plus one Hermitian form.
+#
+# The miter covers all 2^14 address pairs, including invalid IDs 120..127.
+
+read_verilog rtl/e8_unitary_hole_adj.v
+hierarchy -top e8_unitary_hole_adj_rom
+proc; memory_map; opt; flatten; opt -full
+rename e8_unitary_hole_adj_rom gold
+design -stash gold
+
+read_verilog rtl/e8_unitary_hole_adj.v
+hierarchy -top e8_unitary_hole_adj_compact
+proc; memory_map; opt; flatten; opt -full
+rename e8_unitary_hole_adj_compact gate
+design -stash gate
+
+design -copy-from gold -as gold gold
+design -copy-from gate -as gate gate
+miter -equiv -flatten -make_assert gold gate miter
+hierarchy -top miter
+proc; opt -full
+sat -verify -prove-asserts -show-ports miter
+stat

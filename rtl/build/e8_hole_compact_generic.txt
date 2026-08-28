@@ -1,0 +1,154 @@
+
+3. Printing statistics.
+
+=== e8_unitary_hole_adj_compact ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       32 wires
+       95 wire bits
+       15 public wires
+       78 public wire bits
+        4 ports
+       16 port bits
+       19 cells
+        9   $_AND_
+        1   $_NAND_
+        2   $_NOR_
+        7   $_XNOR_
+        9 submodules
+        3   e8_hole_f9_add
+        4   e8_hole_f9_hermitian_term
+        2   e8_unitary_hole_coordinate_rom
+
+=== e8_unitary_hole_coordinate_rom ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      441 wires
+      462 wire bits
+        3 public wires
+       24 public wire bits
+        3 ports
+       24 port bits
+      452 cells
+       39   $_ANDNOT_
+      112   $_AND_
+       25   $_MUX_
+      176   $_NAND_
+       16   $_NOR_
+        3   $_NOT_
+       33   $_ORNOT_
+       47   $_OR_
+        1   $_XNOR_
+
+=== e8_hole_f9_hermitian_term ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       11 wires
+       28 wire bits
+       11 public wires
+       28 public wire bits
+        3 ports
+       12 port bits
+        9 submodules
+        4   e8_hole_f3_add
+        4   e8_hole_f3_mul
+        1   e8_hole_f3_neg
+
+=== e8_hole_f9_add ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        3 wires
+       12 wire bits
+        3 public wires
+       12 public wire bits
+        3 ports
+       12 port bits
+        2 submodules
+        2   e8_hole_f3_add
+
+=== e8_hole_f3_mul ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        8 wires
+       11 wire bits
+        3 public wires
+        6 public wire bits
+        3 ports
+        6 port bits
+        7 cells
+        1   $_AND_
+        6   $_NAND_
+
+=== e8_hole_f3_neg ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        2 wires
+        4 wire bits
+        2 public wires
+        4 public wire bits
+        2 ports
+        4 port bits
+        1 cells
+        1   $_ANDNOT_
+
+=== e8_hole_f3_add ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       13 wires
+       16 wire bits
+        3 public wires
+        6 public wire bits
+        3 ports
+        6 port bits
+       12 cells
+        1   $_AND_
+        2   $_MUX_
+        4   $_NAND_
+        1   $_NOR_
+        2   $_ORNOT_
+        2   $_OR_
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+     1303 e8_unitary_hole_adj_compact
+       12   e8_hole_f3_add
+       12   e8_hole_f3_add
+        7   e8_hole_f3_mul
+        1   e8_hole_f3_neg
+      452 e8_unitary_hole_coordinate_rom
+
+        +----------Count including submodules.
+        | 
+     1389 wires
+     1711 wire bits
+      196 public wires
+      518 public wire bits
+      153 ports
+      392 port bits
+        - memories
+        - memory bits
+        - processes
+     1303 cells
+       82   $_ANDNOT_
+      271   $_AND_
+       94   $_MUX_
+      537   $_NAND_
+       56   $_NOR_
+        6   $_NOT_
+      110   $_ORNOT_
+      138   $_OR_
+        9   $_XNOR_
+        9 submodules
+        3   e8_hole_f9_add
+        4   e8_hole_f9_hermitian_term
+        2   e8_unitary_hole_coordinate_rom
+

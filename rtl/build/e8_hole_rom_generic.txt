@@ -1,0 +1,25 @@
+
+7. Printing statistics.
+
+=== e8_unitary_hole_adj_rom ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     2406 wires
+     2418 wire bits
+        4 public wires
+       16 public wire bits
+        4 ports
+       16 port bits
+     2404 cells
+      150   $_ANDNOT_
+      620   $_AND_
+      114   $_MUX_
+     1225   $_NAND_
+       30   $_NOR_
+        9   $_NOT_
+       90   $_ORNOT_
+      163   $_OR_
+        1   $_XNOR_
+        2   $_XOR_
+

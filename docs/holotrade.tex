@@ -1031,6 +1031,112 @@ no-go isolates the correct permutation representation: the symmetry bridge is
 exact, but the natural-duad carrier is wrong. It is not a claim about a K3
 surface or a deployed folded-cube network. \PROVED
 
+\subsubsection{The cross-prime fibre theorem and a 40--40--40 differential}
+
+The two hole carriers are not merely analogous. Let $N=O_2(G)\cong C_2^5$
+in the full $q=3$ hole group $G=2^5{:}S_6$, and let $H$ be the order-192
+coset stabilizer above. Exact GAP calculation gives
+\[
+ |H\cap N|=4,\qquad N/(H\cap N)\cong C_2^3,
+ \qquad HN/N\cong C_2\times S_4,
+\]
+so the $N$-orbits form fifteen fibres of eight states and the induced block
+action is $G/N\cong S_6$. Every fibre induces $K_{4,4}$. Between two fibres
+whose duads meet, the bipartite connector is one 16-cycle; disjoint-duad
+fibres have no connecting edge. \PROVED
+
+More precisely, if $Q_{ij}$ is the number of neighbours in fibre $j$ of any
+one vertex in fibre $i$, then the partition is equitable and
+\[
+ Q=4I+2A(T(6)).
+\]
+The off-diagonal zero relation is therefore the complement of $T(6)$, namely
+$KG(6,2)$ --- exactly the $q=2$ hole graph. This also explains the quotient
+spectrum
+\[
+ 20^1,\ 8^5,\ 0^9:
+\]
+the nine-dimensional rational zero eigenspace is the block-constant lift of
+the eigenvalue-$1$ space of the $q=2$ Kneser graph. This is an object-level
+cross-prime descent, not a shared-order observation. \PROVED
+
+The same adjacency matrix has a different exact life in characteristic two.
+For its reduction $A_2$ over $\mathbb F_2$, GAP obtains
+\[
+ A_2^2=0,\qquad \operatorname{rank}A_2=40,
+ \qquad \dim\ker A_2=80.
+\]
+Consequently
+\[
+ 0\subset\operatorname{im}A_2\subset\ker A_2\subset\mathbb F_2^{120}
+\]
+has associated graded dimensions $40\mid40\mid40$, and the middle homology
+$\ker A_2/\operatorname{im}A_2$ is 40-dimensional. The scheduler exposes this
+as an exact parity switch: one application lands in the image and the second
+vanishes. It remains an abstract logical transform, not a reversible gate or
+a command to a host. In particular, the dimension match does \emph{not}
+identify any graded piece with the forty points of \W{}; that would require an
+explicit equivariant map. \PROVED
+
+\subsubsection{Control codec, orientation boundary and compiled graph}
+
+The seven-point Fano control plane admits the exact factorization
+\[
+ \mathrm{GL}(3,2)=(C_7{:}C_3)D_8,
+ \qquad (C_7{:}C_3)\cap D_8=1.
+\]
+Neither factor is normal. Thus its 168 states have one $21\times8$ address
+chart, but multiplication is the nontrivial matched-action, or Zappa--Sz\'ep,
+product rather than componentwise multiplication. The GAP witness checks all
+28,224 products and all 4,741,632 associativity triples before JavaScript
+freezes the table. These are abstract control-plane addresses and cannot name
+machines without a separately signed inventory binding. \PROVED
+
+The index-two extension on the 120-state hole carrier also needs careful
+wording. The embedded maximum-spread stabilizer $2^4{:}S_6$ is normal in the
+full $2^5{:}S_6$ action and supplies a relative $C_2$ orientation character.
+The 2,268 maximum spreads group into 1,134 unordered fibres: the two members
+cover the same points, share no lines and are exchanged by an equivariant
+partner involution. But the unmarked full hole group has abelianization
+$C_2\times C_2$ and three index-two normal subgroups, so it supplies no
+intrinsic zero/one label. Nor does it select a rollback: 376 outer involutions
+split into five conjugacy classes under the spread subgroup and the centralizer
+of the hole action is trivial. Runtime rollback must therefore name and attest
+an explicit class and representative. \PROVED
+
+Finally, the exact 120-state graph now has two independent synthesizable
+implementations. The compact circuit stores 120 normalized $GF(9)^4$
+coordinates (1,920 bits) and evaluates Hermitian orthogonality; the reference
+circuit stores all 120 adjacency rows (14,400 bits). A Yosys SAT miter proves
+equality over every one of the $2^{14}$ input address pairs. Current iCE40
+synthesis reports 544 LUT4 cells for the compact predicate and 1,174 for the
+row ROM. These are logic counts, not timing, power, board or physical-network
+measurements. \PROVED
+
+\subsubsection{Stable normalizer adapters are not a direct bridge}
+
+The companion normalizer calculation is also exposed fail-closed. On the odd
+$C_{13}{:}C_3$ branch, adding the two induced correction modules gives equal
+dimension 4,200. On the characteristic-two dihedral branch
+$D_{26}=C_{13}{:}C_2$, the complete extension defect lies in the
+316-dimensional $C_{13}$-fixed sector:
+\[
+ F_2[V_2]\big|_{C_{13}\text{-fixed}}=J_1^{64}\oplus J_2^{126},
+ \qquad H_1\big|_{C_{13}\text{-fixed}}=J_2^{158}.
+\]
+The complementary $W_{12}^{315}$ sector already agrees, yielding the exact
+stable identity
+\[
+ F_2[V_2]\oplus J_2^{32}\cong H_1\oplus J_1^{64}
+ \quad\text{as }F_2[D_{26}]\text{-modules},
+\]
+at dimension 4,160 on each side. Both correction carriers are external with
+trivial $C_{13}$ action. The natural $\mathbb F_4^3$ fixed cone cannot replace
+them: three locally $C_3$-compatible translation pairings exist, but no
+nonzero translation is $C_{13}$-equivariant. The restrictions therefore do
+not construct one compatible $C_{13}{:}C_6$ intertwiner, and that full request
+remains refused by the scheduler. \PROVED
+
 The extremal bound $(q^3+q+2)/2$ and its sharpness for $q=2,3$ are published
 finite-geometry results, not a claim of this paper~\cite{debeule2008hermitian}.
 The contribution here is the executable scheduler lift, the exact residual
@@ -1547,6 +1653,12 @@ The \W{} geometry --- 40 points, 240 edges, 40 lines of 4 points each, diameter
 cut, and symmetry-group order 51{,}840. The $40^n$ recursive address count. The
 form miter over $2^{16}$ encoded pairs, the full admission miter over $2^{25}$
 encoded inputs, and the 1{,}600-pair canonical-point cross-check.
+
+The two Hermitian ladder ceilings and their hole graphs; the 120-state coset
+graph and its SAT-equivalent coordinate/ROM circuits; the $15\times8$ fibre
+quotient with weighted matrix $4I+2A(T(6))$; the square-zero rank-40
+characteristic-two adjacency; the 168-state Fano matched-action codec; and the
+stated stable-module identities and orientation/rollback no-gos.
 
 \vspace{4pt}
 These are statements about finite software objects and encodings. They do not

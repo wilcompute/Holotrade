@@ -1,0 +1,77 @@
+{
+  "schema": "holotrade.e8-normalizer-stable-adapter.v1",
+  "evidenceClass": "EXACT_GAP_MODULE_ARITHMETIC",
+  "sourceDimension": 4096,
+  "oddBranch": {
+    "group": "C13:C3",
+    "localC3StableDimension": 4104,
+    "inducedStableDimension": 4200,
+    "localCorrectionDimensionEachSide": 8,
+    "inducedCorrectionDimensionEachSide": 104,
+    "leftCorrection": "Ind_C3^(C13:C3)(4*W2)",
+    "rightCorrection": "Ind_C3^(C13:C3)(8*1)",
+    "proved": true
+  },
+  "d26Branch": {
+    "group": "D26=C13:C2 with inversion",
+    "sourceInvariantDimensions": {
+      "F2V2": 2080,
+      "H1LeviH4": 2048,
+      "defect": 32
+    },
+    "sourceBlocks": {
+      "F2V2": "J1^64 + J2^2016",
+      "H1LeviH4": "J2^2048"
+    },
+    "c13FixedSector": {
+      "dimension": 316,
+      "F2V2": "J1^64 + J2^126",
+      "H1LeviH4": "J2^158",
+      "invariantDimensions": {
+        "F2V2": 190,
+        "H1LeviH4": 158
+      }
+    },
+    "nontrivialC13Sector": {
+      "moduleEachSide": "W12^315",
+      "dimension": 3780,
+      "c2InvariantDimensionEachSide": 1890,
+      "compatibleD26ExtensionUnique": true
+    },
+    "stableDimension": 4160,
+    "leftCorrection": {
+      "carrier": "external vertices of Q6 with antipodal C2 action and trivial C13 action",
+      "states": 64,
+      "antipodalPairs": 32,
+      "module": "J2^32"
+    },
+    "rightCorrection": {
+      "carrier": "external 64-state trivial module (cardinality modeled by F4^3)",
+      "states": 64,
+      "module": "J1^64"
+    },
+    "stableIdentity": "F2[V2] + J2^32 ~= H1(Levi H4;F2) + J1^64 as F2[D26]-modules, with C13 trivial on both corrections",
+    "naturalFixedConeIsCorrectionCarrier": false,
+    "translationBoundary": {
+      "localC3CompatiblePairings": 3,
+      "pairsEach": 32,
+      "c13EquivariantTranslationExists": false
+    },
+    "proved": true
+  },
+  "fullNormalizer": {
+    "group": "C13:C6",
+    "direct4096Bridge": false,
+    "compatibleStableGlueBuilt": false,
+    "dispatchable": false,
+    "reason": "The C3 and C2 restrictions are repaired exactly, but no single compatible C13:C6 module intertwiner has been constructed."
+  },
+  "provenance": {
+    "c3Defect": "W33-Theory Pass10773-10788",
+    "d26Defect": "W33-Theory Pass10789-10844",
+    "translationNoGo": "W33-Theory Pass10845-10868",
+    "q6Carrier": "HoloTrade external GAP construction on the 64 binary 6-cube vertices"
+  },
+  "evidenceBoundary": "Stable module equivalence means auxiliary state was added to both sides. It is not a direct equivalence, a live transport map, or authority to dispatch workloads.",
+  "sha256": "e053b529b1583b32af7f0866a61f0ebe22865915825adaf2f595e41a8953b8ad"
+}

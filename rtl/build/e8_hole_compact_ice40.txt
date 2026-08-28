@@ -1,0 +1,18 @@
+
+11. Printing statistics.
+
+=== e8_unitary_hole_adj_compact ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      366 wires
+     1255 wire bits
+      366 public wires
+     1255 public wire bits
+        4 ports
+       16 port bits
+      626 cells
+       51   $scopeinfo
+       31   SB_CARRY
+      544   SB_LUT4
+

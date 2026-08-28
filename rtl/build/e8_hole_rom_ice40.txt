@@ -1,0 +1,17 @@
+
+15. Printing statistics.
+
+=== e8_unitary_hole_adj_rom ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      627 wires
+     2268 wire bits
+      627 public wires
+     2268 public wire bits
+        4 ports
+       16 port bits
+     1180 cells
+        6   SB_CARRY
+     1174   SB_LUT4
+

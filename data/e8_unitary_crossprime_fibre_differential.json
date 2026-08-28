@@ -1,0 +1,1579 @@
+{
+  "schema": "holotrade.e8-unitary-crossprime-fibre-differential.v1",
+  "evidenceClass": "EXACT_GAP_CROSSPRIME_FINITE_GEOMETRY_AND_LINEAR_ALGEBRA",
+  "gapVersion": "4.12.1",
+  "groupTower": {
+    "group": "2^5:S6",
+    "groupOrder": 23040,
+    "cosetStabilizerOrder": 192,
+    "twoCore": "C2^5",
+    "twoCoreOrder": 32,
+    "stabilizerIntersectionTwoCore": "C2^2",
+    "stabilizerIntersectionOrder": 4,
+    "affineFibreGroup": "C2^3",
+    "fibreExtensionOrder": 1536,
+    "fibreStabilizerQuotient": "C2 x S4",
+    "blockAction": "S6",
+    "blockActionKernelOrder": 32
+  },
+  "crossPrimeQuotient": {
+    "q3Carrier": "H(3,9) maximum-partial-spread hole graph",
+    "q3Vertices": 120,
+    "q2Carrier": "H(3,4) maximum-partial-spread hole graph = KG(6,2)",
+    "q2Vertices": 15,
+    "blocks": 15,
+    "fibreSize": 8,
+    "equitable": true,
+    "weightedFormula": "Q = 4*I + 2*A(T(6))",
+    "sameBlockWeight": 4,
+    "intersectingDuadsWeight": 2,
+    "disjointDuadsWeight": 0,
+    "zeroWeightGraph": "KG(6,2), exactly the q=2 hole graph",
+    "positiveOffDiagonalSupport": "T(6), the complement of KG(6,2)",
+    "quotientSpectrum": [
+      [
+        20,
+        1
+      ],
+      [
+        8,
+        5
+      ],
+      [
+        0,
+        9
+      ]
+    ],
+    "q2Spectrum": [
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        9
+      ],
+      [
+        -3,
+        5
+      ]
+    ],
+    "zeroEigenspaceDescent": "the rational q=3 zero eigenspace is the lifted q=2 KG eigenvalue-1 space"
+  },
+  "localFibre": {
+    "affineStates": 8,
+    "affineGroup": "F2^3",
+    "inducedGraph": "K4,4",
+    "spectrum": [
+      [
+        4,
+        1
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        -4,
+        1
+      ]
+    ],
+    "connectorForIntersectingDuads": "one C16 on the two eight-state fibres",
+    "connectorForDisjointDuads": "empty"
+  },
+  "characteristicTwoDifferential": {
+    "operator": "the 120x120 adjacency matrix A reduced modulo 2",
+    "squareZero": true,
+    "rank": 40,
+    "imageDimension": 40,
+    "kernelDimension": 80,
+    "homologyDimension": 40,
+    "filtration": "0 < im(A) < ker(A) < F2^120",
+    "associatedGradedDimensions": [
+      40,
+      40,
+      40
+    ],
+    "equivariantFor": "2^5:S6",
+    "w33ModuleIdentificationClaimed": false
+  },
+  "blocks": [
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "vertices": [
+        0,
+        5,
+        6,
+        11,
+        19,
+        21,
+        109,
+        112
+      ]
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "vertices": [
+        1,
+        3,
+        7,
+        9,
+        13,
+        15,
+        108,
+        110
+      ]
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "vertices": [
+        2,
+        4,
+        12,
+        17,
+        18,
+        23,
+        111,
+        113
+      ]
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "vertices": [
+        8,
+        10,
+        14,
+        16,
+        20,
+        22,
+        118,
+        119
+      ]
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "vertices": [
+        24,
+        29,
+        30,
+        33,
+        39,
+        40,
+        85,
+        88
+      ]
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "vertices": [
+        25,
+        27,
+        31,
+        32,
+        35,
+        36,
+        84,
+        86
+      ]
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "vertices": [
+        26,
+        28,
+        34,
+        37,
+        38,
+        41,
+        87,
+        89
+      ]
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "vertices": [
+        42,
+        45,
+        46,
+        49,
+        52,
+        53,
+        91,
+        93
+      ]
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "vertices": [
+        43,
+        44,
+        47,
+        48,
+        50,
+        51,
+        90,
+        92
+      ]
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "vertices": [
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        94,
+        95
+      ]
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "vertices": [
+        60,
+        65,
+        66,
+        71,
+        79,
+        81,
+        99,
+        105
+      ]
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "vertices": [
+        61,
+        63,
+        67,
+        69,
+        73,
+        75,
+        97,
+        101
+      ]
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "vertices": [
+        62,
+        64,
+        72,
+        77,
+        78,
+        83,
+        103,
+        107
+      ]
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "vertices": [
+        68,
+        70,
+        74,
+        76,
+        80,
+        82,
+        115,
+        117
+      ]
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "vertices": [
+        96,
+        98,
+        100,
+        102,
+        104,
+        106,
+        114,
+        116
+      ]
+    }
+  ],
+  "quotientMatrix": [
+    [
+      4,
+      2,
+      2,
+      2,
+      2,
+      0,
+      0,
+      2,
+      0,
+      2,
+      2,
+      0,
+      0,
+      0,
+      2
+    ],
+    [
+      2,
+      4,
+      2,
+      2,
+      0,
+      2,
+      0,
+      0,
+      2,
+      2,
+      0,
+      2,
+      0,
+      0,
+      2
+    ],
+    [
+      2,
+      2,
+      4,
+      2,
+      0,
+      0,
+      2,
+      2,
+      2,
+      0,
+      0,
+      0,
+      2,
+      0,
+      2
+    ],
+    [
+      2,
+      2,
+      2,
+      4,
+      2,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2
+    ],
+    [
+      2,
+      0,
+      0,
+      2,
+      4,
+      2,
+      2,
+      2,
+      0,
+      2,
+      2,
+      0,
+      0,
+      2,
+      0
+    ],
+    [
+      0,
+      2,
+      0,
+      2,
+      2,
+      4,
+      2,
+      0,
+      2,
+      2,
+      0,
+      2,
+      0,
+      2,
+      0
+    ],
+    [
+      0,
+      0,
+      2,
+      2,
+      2,
+      2,
+      4,
+      2,
+      2,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0
+    ],
+    [
+      2,
+      0,
+      2,
+      0,
+      2,
+      0,
+      2,
+      4,
+      2,
+      2,
+      2,
+      0,
+      2,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      2,
+      0,
+      0,
+      2,
+      2,
+      2,
+      4,
+      2,
+      0,
+      2,
+      2,
+      0,
+      0
+    ],
+    [
+      2,
+      2,
+      0,
+      0,
+      2,
+      2,
+      0,
+      2,
+      2,
+      4,
+      2,
+      2,
+      0,
+      0,
+      0
+    ],
+    [
+      2,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      2,
+      0,
+      2,
+      4,
+      2,
+      2,
+      2,
+      2
+    ],
+    [
+      0,
+      2,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      2,
+      2,
+      2,
+      4,
+      2,
+      2,
+      2
+    ],
+    [
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      2,
+      2,
+      2,
+      0,
+      2,
+      2,
+      4,
+      2,
+      2
+    ],
+    [
+      0,
+      0,
+      0,
+      2,
+      2,
+      2,
+      2,
+      0,
+      0,
+      0,
+      2,
+      2,
+      2,
+      4,
+      2
+    ],
+    [
+      2,
+      2,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      2,
+      2,
+      4
+    ]
+  ],
+  "vertexToAddress": [
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 5,
+      "duad": [
+        2,
+        3
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 4,
+      "duad": [
+        0,
+        2
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 6,
+      "duad": [
+        2,
+        4
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 8,
+      "duad": [
+        3,
+        4
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 7,
+      "duad": [
+        0,
+        4
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 9,
+      "duad": [
+        0,
+        3
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 0
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 1
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 2
+    },
+    {
+      "blockId": 11,
+      "duad": [
+        3,
+        5
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 3
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 4
+    },
+    {
+      "blockId": 10,
+      "duad": [
+        0,
+        5
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 5
+    },
+    {
+      "blockId": 12,
+      "duad": [
+        4,
+        5
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 1,
+      "duad": [
+        1,
+        3
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 0,
+      "duad": [
+        0,
+        1
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 2,
+      "duad": [
+        1,
+        4
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 14,
+      "duad": [
+        1,
+        5
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 13,
+      "duad": [
+        2,
+        5
+      ],
+      "fibreSlot": 7
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 6
+    },
+    {
+      "blockId": 3,
+      "duad": [
+        1,
+        2
+      ],
+      "fibreSlot": 7
+    }
+  ],
+  "theorem": "The q=3 hole graph is an equitable eight-state F2^3 fibre extension of the q=2 S6 duad carrier. Its missing block relation is exactly KG(6,2), and in characteristic two its adjacency is a rank-40 differential with 40-dimensional image, homology, and coimage.",
+  "evidenceBoundary": "All graph, quotient, spectrum, and GF(2) statements are exact. The 40-dimensional graded pieces are not identified with W33 points or any physical particle carrier; such an identification would require an explicit equivariant map.",
+  "sha256": "d350554684286ebe832dabc2982323c1bd737f883c579b03d96578c6b92ad4b6"
+}

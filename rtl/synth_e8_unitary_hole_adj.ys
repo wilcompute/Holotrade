@@ -1,0 +1,25 @@
+# Reproducible resource comparison for the certified q=3 hole-graph circuit.
+# These are post-synthesis cell counts, not placed/routed timing claims.
+
+read_verilog rtl/e8_unitary_hole_adj.v
+synth -top e8_unitary_hole_adj_compact
+tee -o rtl/build/e8_hole_compact_generic.txt stat
+write_json rtl/build/e8_hole_compact_generic.json
+
+design -reset
+read_verilog rtl/e8_unitary_hole_adj.v
+synth -top e8_unitary_hole_adj_rom
+tee -o rtl/build/e8_hole_rom_generic.txt stat
+write_json rtl/build/e8_hole_rom_generic.json
+
+design -reset
+read_verilog rtl/e8_unitary_hole_adj.v
+synth_ice40 -top e8_unitary_hole_adj_compact
+tee -o rtl/build/e8_hole_compact_ice40.txt stat
+write_json rtl/build/e8_hole_compact_ice40.json
+
+design -reset
+read_verilog rtl/e8_unitary_hole_adj.v
+synth_ice40 -top e8_unitary_hole_adj_rom
+tee -o rtl/build/e8_hole_rom_ice40.txt stat
+write_json rtl/build/e8_hole_rom_ice40.json

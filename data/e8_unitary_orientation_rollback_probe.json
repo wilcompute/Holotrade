@@ -1,0 +1,89 @@
+{
+  "schema": "holotrade.e8-unitary-orientation-rollback-probe.v1",
+  "evidenceClass": "EXACT_GAP_FINITE_GEOMETRY_NO_GO",
+  "carrier": {
+    "holes": 120,
+    "ambientLineGraphAutomorphismOrder": 26127360,
+    "spreadStabilizerOrder": 11520,
+    "inducedHoleGroup": "2^4:S6",
+    "fullHoleAutomorphismGroup": "2^5:S6",
+    "fullHoleAutomorphismOrder": 23040,
+    "index": 2,
+    "subgroupNormal": true
+  },
+  "orientationCharacter": {
+    "quotient": "C2",
+    "kernelOrder": 11520,
+    "relativeToEmbeddedSpreadStabilizer": true,
+    "intrinsicToUnmarkedHoleGraph": false,
+    "reason": "the full hole group has abelianization C2 x C2 and three distinct index-two normal subgroups"
+  },
+  "maximumSpreadFibre": {
+    "maximumSpreads": 2268,
+    "coveredPointSets": 1134,
+    "fibreSize": 2,
+    "pairedSpreadsShareLines": 0,
+    "partnerInvolutionMovesEverySpread": true,
+    "partnerInvolutionCommutesWithAmbientAction": true,
+    "partnerInvolutionInsideAmbientAction": false,
+    "canonicalUnlabelledPairing": true,
+    "canonicalZeroOneLabelling": false
+  },
+  "holeOrbitals": {
+    "subdegrees": [
+      1,
+      48,
+      48,
+      16,
+      4,
+      3
+    ],
+    "adjacentOrbitals": [
+      false,
+      false,
+      false,
+      true,
+      true,
+      false
+    ],
+    "unchangedByOuterExtension": true,
+    "meaning": "the orientation quotient is invisible to the unmarked hole adjacency relation"
+  },
+  "rollback": {
+    "outerInvolutions": 376,
+    "conjugacyClassesUnderSpreadGroup": [
+      {
+        "classSize": 180,
+        "fixedHoles": 8,
+        "transpositions": 56
+      },
+      {
+        "classSize": 60,
+        "fixedHoles": 12,
+        "transpositions": 54
+      },
+      {
+        "classSize": 6,
+        "fixedHoles": 40,
+        "transpositions": 40
+      },
+      {
+        "classSize": 120,
+        "fixedHoles": 12,
+        "transpositions": 54
+      },
+      {
+        "classSize": 10,
+        "fixedHoles": 0,
+        "transpositions": 60
+      }
+    ],
+    "holeActionCentralizerOrder": 1,
+    "canonicalOuterInvolution": false,
+    "canonicalRollbackOperation": false,
+    "relativeRollbackRequires": "an explicitly selected and attested outer involution class plus representative"
+  },
+  "theorem": "The index-two extension canonically supplies a relative orientation character and an unlabelled partner pairing of maximum spreads, but neither a canonical 0/1 orientation label nor a canonical rollback involution on the 120 holes.",
+  "evidenceBoundary": "Exact abstract group and finite-geometry computation. No outer involution is promoted to a scheduler rollback command; runtime use requires a separately attested representative and policy.",
+  "sha256": "ad35993d0bc9c9575e7d414723a29b6351d956162ad83ba1df802678ac755253"
+}

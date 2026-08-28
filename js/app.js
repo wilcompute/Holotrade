@@ -27,6 +27,7 @@
   });
   let unitaryCertificate = null;
   let unitaryHoleCertificate = null;
+  let unitaryCrossprimeCertificate = null;
 
   // ---- ui state ------------------------------------------------------
   const ui = {
@@ -1335,6 +1336,30 @@
     }
   }
 
+  async function loadUnitaryCrossprimeCertificate() {
+    try {
+      const response = await fetch("data/e8_unitary_crossprime_fibre_differential.json", { cache: "no-store" });
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const packet = await response.json();
+      if (packet.schema !== "holotrade.e8-unitary-crossprime-fibre-differential.v1" ||
+          !packet.crossPrimeQuotient || packet.crossPrimeQuotient.weightedFormula !== "Q = 4*I + 2*A(T(6))" ||
+          !packet.characteristicTwoDifferential ||
+          packet.characteristicTwoDifferential.squareZero !== true ||
+          packet.characteristicTwoDifferential.rank !== 40 ||
+          packet.characteristicTwoDifferential.homologyDimension !== 40 ||
+          packet.characteristicTwoDifferential.w33ModuleIdentificationClaimed !== false) {
+        throw new Error("cross-prime certificate schema or theorem flags invalid");
+      }
+      unitaryCrossprimeCertificate = packet;
+      renderUnitaryLadder();
+    } catch (err) {
+      console.error("[unitary cross-prime fibre]", err);
+      const panel = $("unitaryCrossprimeShape");
+      if (panel) panel.innerHTML =
+        "<b>Cross-prime fibre and logic switch</b> · certificate unavailable: " + fmt.esc(err.message);
+    }
+  }
+
   function renderUnitaryHoleShape(q, rung, maximumRung) {
     const panel = $("unitaryHoleShape");
     if (!panel) return;
@@ -1369,6 +1394,36 @@
       "G = Aut(folded Q6), |G| = " + fmt.int(coset.groupOrder) +
       ", H = SmallGroup(192,1485), adjacency orbitals 16 + 4. " +
       "The natural 120-duad action is a certified no-go, not this carrier.";
+  }
+
+  function renderUnitaryCrossprime(q, rung, maximumRung) {
+    const panel = $("unitaryCrossprimeShape");
+    if (!panel) return;
+    if (rung !== maximumRung) {
+      panel.innerHTML =
+        "<b>Cross-prime fibre and logic switch</b> · the exact quotient belongs to the certified ceiling " +
+        "(rung " + maximumRung + "), not this intermediate residual.";
+      return;
+    }
+    if (!unitaryCrossprimeCertificate) {
+      panel.innerHTML =
+        "<b>Cross-prime fibre and logic switch</b> · loading exact quotient certificate…";
+      return;
+    }
+    const packet = unitaryCrossprimeCertificate;
+    const differential = packet.characteristicTwoDifferential;
+    if (q === 2) {
+      panel.innerHTML =
+        "<b>Cross-prime base · EXACT</b> · these 15 holes are <b>KG(6,2)</b>. The q=3 ceiling is an " +
+        "eight-state F₂³ fibre over the same S₆ duad carrier; disjoint duads are exactly its zero-weight relation.";
+      return;
+    }
+    panel.innerHTML =
+      "<b>Cross-prime fibre · EXACT</b> · <b>120 = 15 × 8</b>: F₂³ fibres induce K₄,₄, intersecting duads " +
+      "are joined by one C₁₆, and disjoint duads carry no edges. The weighted quotient is " +
+      "<b>4I + 2A(T(6))</b>; its zero relation is exactly the q=2 KG(6,2) graph. Over F₂, adjacency is " +
+      "square-zero of rank " + differential.rank + ", giving image | homology | coimage = <b>40 | 40 | 40</b>. " +
+      "No graded piece is claimed to be W(3,3) without an explicit equivariant map.";
   }
 
   function renderUnitaryLadder() {
@@ -1430,6 +1485,7 @@
       "-point maximum-rung hole sector is mathematically unavoidable on this carrier. " +
       "GAP point IDs are not live hosts; runtime topology attestation is still required before dispatch.";
     renderUnitaryHoleShape(q, rung, profile.maxPartialSpreadLines);
+    renderUnitaryCrossprime(q, rung, profile.maxPartialSpreadLines);
   }
 
   function renderFabric() {
@@ -2537,6 +2593,7 @@
     if (unitaryRung) unitaryRung.addEventListener("input", renderUnitaryLadder);
     loadUnitaryCertificate();
     loadUnitaryHoleCertificate();
+    loadUnitaryCrossprimeCertificate();
 
     $("drawerClose").addEventListener("click", closeDrawer);
     $("drawerBack").addEventListener("click", closeDrawer);

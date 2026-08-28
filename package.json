@@ -23,6 +23,8 @@
     "verify:tensor": "node analysis/tensor_blocking_structure.js && node analysis/tensor_blocking_reformulation.js && node analysis/tensor_tight_obstructions.js",
     "verify:unitary-ladders": "node analysis/e8_unitary_elastic_ladders.js",
     "verify:unitary-holes": "node analysis/e8_unitary_hole_sectors.js",
+    "verify:e8-backend": "node --test tests/e8-fano-zappa-szep-codec.test.js tests/e8-normalizer-stable-adapter.test.js tests/e8-unitary-orientation-rollback.test.js tests/e8-unitary-hole-adj-rtl.test.js tests/e8-unitary-crossprime-fibre-switch.test.js",
+    "freeze:e8-backend": "node analysis/e8_fano_zappa_szep_codec.js --write && node analysis/e8_normalizer_stable_adapter.js --write && node analysis/e8_unitary_orientation_rollback_probe.js --write && node analysis/e8_unitary_hole_coset_rtl.js --write && node analysis/e8_unitary_crossprime_fibre_differential.js --write",
     "search:tensor": "py -3 analysis/tensor_blocking_cpsat.py --seconds 600"
   },
   "keywords": [

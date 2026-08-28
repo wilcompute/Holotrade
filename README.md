@@ -28,6 +28,7 @@ For a pre-demo check:
 npm test
 npm run verify:rtl
 npm run synth:rtl
+npm run verify:e8-backend
 npm run experiment:balancer
 npm run paper
 ```
@@ -197,6 +198,50 @@ also tested and rejected: it has stabilizer `SmallGroup(192,1472)` and its degre
 isomorphic to the hole graph. This is an exact finite graph/group result, not a folded-cube hardware claim
 or a K3-surface construction.
 
+### The eight-front E8 backend packet
+
+The residual graph is now compiled, factored, and connected back to the \(q=2\) carrier rather than merely
+classified. Every item below has a GAP-owned witness, a frozen SHA-256 certificate, and focused regression
+tests; the RTL row has an additional Yosys SAT proof.
+
+| Front | Exact result | Boundary retained |
+|---|---|---|
+| Fano control codec | \(\mathrm{GL}(3,2)=(C_7{:}C_3)D_8\), a unique \(21\times8=168\) Zappa--Szép address chart; all 28,224 products and 4,741,632 associativity triples checked | abstract bus IDs, not machines; multiplication is matched-action, not coordinatewise |
+| orientation / rollback | \(2^4{:}S_6\triangleleft 2^5{:}S_6\) gives a relative \(C_2\) character and 1,134 unlabelled pairs of maximum spreads | no canonical 0/1 label and no canonical rollback: 376 outer involutions form five classes |
+| hole-graph RTL | the exact 120-state degree-20 graph is implemented both by a 1,920-bit \(GF(9)\) coordinate predicate and a 14,400-bit row ROM | Yosys proves equality on all \(2^{14}\) address pairs; synthesis is not timing or deployment evidence |
+| stable normalizer adapter | over \(C_{13}{:}C_3\), both sides stabilize at dimension 4,200; over \(D_{26}=C_{13}{:}C_2\), \(F_2[V_2]\oplus J_2^{32}\cong H_1\oplus J_1^{64}\) at dimension 4,160 | corrections are external \(C_{13}\)-trivial modules; no compatible full \(C_{13}{:}C_6\) intertwiner is built |
+| cross-prime fibre | the \(2\)-core partitions the 120 states into fifteen \(F_2^3\) fibres of size eight; each fibre is \(K_{4,4}\), and intersecting-duad fibres meet in one \(C_{16}\) | this is an abstract equitable fibre chart, not an inventory topology |
+
+The cross-prime quotient is especially rigid. If \(Q\) counts neighbours from one eight-state fibre into
+another, then
+
+\[
+Q=4I+2A(T(6)).
+\]
+
+The off-diagonal zero relation is exactly \(KG(6,2)\), the \(q=2\) hole graph. Consequently the quotient
+spectrum is \(20^1,8^5,0^9\), and the rational nine-dimensional zero eigenspace of the \(q=3\) graph is the
+lift of the \(+1\) eigenspace of \(KG(6,2)\).
+
+There is a second, characteristic-two descent. Reducing the 120-by-120 adjacency matrix \(A\) modulo two gives
+
+\[
+A^2=0,\qquad \operatorname{rank}A=40,\qquad
+\dim\ker A=80,\qquad \dim(\ker A/\operatorname{im}A)=40.
+\]
+
+Thus \(0\subset\operatorname{im}A\subset\ker A\subset F_2^{120}\) has associated graded dimensions
+\(40\mid40\mid40\). `scheduler/e8-unitary-fibre-switch.js` executes this exact parity transform and verifies
+that a second application vanishes. The dimension 40 is recorded as a structural target only: no graded
+piece is identified with the 40 W(3,3) points without an explicit equivariant map.
+
+The synthesized compact predicate currently uses 544 iCE40 LUT4s versus 1,174 for the independent row ROM.
+Reproduce the complete packet with:
+
+```bash
+npm run verify:e8-backend
+```
+
 The upper bound \((q^3+q+2)/2\), sharp at \(q=2,3\), is published finite-geometry prior art; the contribution
 here is its executable, evidence-bounded scheduler lift. Recompute the certificate with:
 
@@ -268,6 +313,13 @@ js/genetics.js              specialization and lineage model
 js/uor.js                   64-bit object-reference codec and policy scores
 js/app.js                   browser orchestration and chart rendering
 scheduler/e8-unitary-elastic-ladder.js  fail-closed H(3,4)/H(3,9) topology plans
+scheduler/e8-normalizer-stable-adapter.js exact stable plans and full-normalizer refusal
+scheduler/e8-unitary-fibre-switch.js     executable 15x8 chart and square-zero parity switch
+analysis/e8_fano_zappa_szep_codec.g      exact 168-state Fano matched-action codec
+analysis/e8_normalizer_stable_adapter.g  C13:C3 and D26 stable module arithmetic
+analysis/e8_unitary_orientation_rollback_probe.g relative orientation and rollback no-go
+analysis/e8_unitary_hole_coset_rtl.g     GAP transport from 120 cosets to GF(9) coordinates
+analysis/e8_unitary_crossprime_fibre_differential.g q3-to-q2 quotient and rank-40 differential
 analysis/e8_unitary_elastic_ladders.g   GAP reconstruction and exhaustive maxima
 data/e8_unitary_elastic_ladders.json    canonical unitary-ladder certificate
 analysis/e8_unitary_hole_sector_probe.g GAP hole graphs, spectra, groups and spread orbits
@@ -275,6 +327,8 @@ analysis/e8_unitary_kummer_duad_bridge.g exact folded-Q6 coset model and duad no
 analysis/e8_unitary_hole_sectors.js     canonical GAP/GRAPE hole-sector freezer
 data/e8_unitary_hole_sectors.json       frozen residual-geometry certificate
 tests/e8-unitary-hole-sectors.test.js   digest, theorem and anti-overread guards
+rtl/e8_unitary_hole_adj.v  compact GF(9) predicate plus independent 120-row ROM
+rtl/verify_e8_unitary_hole_adj.ys complete compact-versus-ROM SAT miter
 rtl/holotrade_admit.v       admission/locality datapath + golden reference
 rtl/verify.ys               complete 2^25-output formal miter
 rtl/synth.ys                reproducible iCE40 synthesis

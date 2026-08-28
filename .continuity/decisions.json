@@ -2722,5 +2722,1374 @@
       "source": "cli",
       "timestamp": "2026-08-27T15:15:36.468Z"
     }
+  },
+  {
+    "id": "ba9f8ab7-20b5-4a28-aa8e-bf4073c0d9dd",
+    "question": "How does the new order-two normalizer defect admit an exact stable repair?",
+    "answer": "Added analysis/e8_normalizer_stable_adapter.g. GAP realizes the C2 restrictions as V2=J1^64+J2^2016 and H1=J2^2048, then proves V2 plus the 64-vertex Q6 antipodal permutation module J2^32 equals H1 plus the 64 fixed F4^3 vectors J1^64. It also verifies the prior C3 and induced C13:C3 stable arithmetic, while keeping the full C6 compatibility unbuilt and non-dispatchable.",
+    "timestamp": "2026-08-27T15:29:34.194Z",
+    "tags": [
+      "correction",
+      "e8",
+      "gap",
+      "holotrade",
+      "how",
+      "normalizer",
+      "q6",
+      "stable-module"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-27T15:29:34.195Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-27T15:29:34.190Z"
+    }
+  },
+  {
+    "id": "3ee94334-2a90-4ec0-8571-3a294f602f81",
+    "question": "Why widen GAP output in the normalizer adapter witness?",
+    "answer": "Set SizeScreen wide so the exact module and Q6 repair signatures remain one line each for the thin freezer; this changes only certificate transport, not the mathematics.",
+    "timestamp": "2026-08-27T15:29:55.995Z",
+    "tags": [
+      "certificate",
+      "formatting",
+      "gap",
+      "holotrade",
+      "normalizer",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-27T15:29:56.001Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-27T15:29:55.983Z"
+    }
+  },
+  {
+    "id": "462f3a06-0da8-4925-a018-00ec2c2e080f",
+    "question": "How is the local normalizer stable repair made portable and evidence-bounded?",
+    "answer": "Added analysis/e8_normalizer_stable_adapter.js as a thin GAP freezer. It guards exact C3, C13:C3, C2, and Q6-antipodal output signatures, freezes canonical provenance and SHA-256, and explicitly records that the full C13:C6 compatible glue remains unbuilt and non-dispatchable.",
+    "timestamp": "2026-08-27T15:30:50.172Z",
+    "tags": [
+      "certificate",
+      "e8",
+      "gap",
+      "holotrade",
+      "how",
+      "normalizer",
+      "scope"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-27T15:30:50.172Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-27T15:30:50.166Z"
+    }
+  },
+  {
+    "id": "5318a031-f439-4499-9758-ee7dd38cfed3",
+    "question": "What is the frozen normalizer stable-adapter certificate?",
+    "answer": "data/e8_normalizer_stable_adapter.json now freezes SHA-256 0e18b975881b814d5275851504811fc631f21a18d8dcc289b614f3e6fcbcf18b: odd stable dimension 4200, involution stable dimension 4160, Q6 antipodal correction 32 J2 blocks, and full C13:C6 dispatchability false.",
+    "timestamp": "2026-08-27T15:31:05.446Z",
+    "tags": [
+      "certificate",
+      "e8",
+      "holotrade",
+      "normalizer",
+      "sha256"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-27T15:31:05.447Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-27T15:31:05.441Z"
+    }
+  },
+  {
+    "id": "055e43d7-e2c7-4762-82a3-615f22985f3f",
+    "question": "Why add the exact 168-state Fano control-plane codec?",
+    "answer": "GAP proves GL(3,2)=(C7:C3)D8 is an exact non-semidirct Zappa-Szep factorization with unique 21x8 addresses; the frozen JavaScript codec verifies all 28224 products and 4741632 associativity triples while remaining non-dispatchable.",
+    "timestamp": "2026-08-28T03:16:21.503Z",
+    "tags": [
+      "codec",
+      "control-plane",
+      "fano",
+      "gap",
+      "javascript",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:16:21.504Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "javascript",
+        "java"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:16:21.496Z"
+    }
+  },
+  {
+    "id": "da291bfa-4d20-4da4-83eb-15f3b69d8fc1",
+    "question": "Why compile the 120-state unitary hole graph to RTL?",
+    "answer": "GAP regenerates the exact H(3,9) maximum-spread hole graph, JavaScript emits an F9 Hermitian predicate plus independent full-row ROM, and Yosys SAT proves them equivalent; iCE40 synthesis measures 544 versus 1174 LUT4s.",
+    "timestamp": "2026-08-28T03:16:24.364Z",
+    "tags": [
+      "gap",
+      "hardware",
+      "javascript",
+      "rtl",
+      "unitary",
+      "why",
+      "yosys"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:16:24.365Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "javascript",
+        "java"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:16:24.357Z"
+    }
+  },
+  {
+    "id": "7c512954-8e33-4688-8345-f886d43ac6fc",
+    "question": "Does the index-two hole-graph extension provide a canonical rollback operation?",
+    "answer": "It provides a canonical C2 quotient character and a canonical partner involution on the 2268 maximal spreads, but not a canonical outer involution on the 120 holes: 376 outer involutions split into five 2^4:S6 conjugacy orbits and the hole-action centralizer is trivial.",
+    "timestamp": "2026-08-28T03:16:27.044Z",
+    "tags": [
+      "gap",
+      "no-go",
+      "orientation",
+      "rollback",
+      "unitary"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:16:27.045Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:16:27.039Z"
+    }
+  },
+  {
+    "id": "4ade8f20-18ae-441f-bd49-03613299060b",
+    "question": "Why strengthen the normalizer GAP witness from C2 arithmetic to D26?",
+    "answer": "W33 Pass10837 proves the defect is localized in the 316-dimensional C13-fixed sector: J1^64+J2^126 versus J2^158, while W12^315 already matches. The HoloTrade witness now verifies that decomposition and models the Q6 and 64-state corrections as external C13-trivial modules, explicitly avoiding the false identification with the non-C13-stable natural F4^3 cone.",
+    "timestamp": "2026-08-28T03:17:04.813Z",
+    "tags": [
+      "d26",
+      "gap",
+      "no-go",
+      "normalizer",
+      "stable-module",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:17:04.814Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:17:04.807Z"
+    }
+  },
+  {
+    "id": "412a33f4-d777-4b60-a0ef-72dab342d090",
+    "question": "Why revise the frozen normalizer adapter schema?",
+    "answer": "The frozen artifact now exposes the exact D26 fixed-sector decomposition, the unique matching W12^315 sector, and the external C13-trivial correction modules. It records that the natural F4^3 cone is not the correction carrier and that no C13-equivariant translation pairing exists.",
+    "timestamp": "2026-08-28T03:17:39.096Z",
+    "tags": [
+      "d26",
+      "evidence",
+      "normalizer",
+      "schema",
+      "scope",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:17:39.098Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "schema"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:17:39.083Z"
+    }
+  },
+  {
+    "id": "5759971f-d9b3-44f1-b217-c46fcd2b170d",
+    "question": "What is the frozen digest of the strengthened D26 normalizer adapter?",
+    "answer": "The GAP-regenerated holotrade.e8-normalizer-stable-adapter.v1 artifact has SHA-256 e053b529b1583b32af7f0866a61f0ebe22865915825adaf2f595e41a8953b8ad; odd stable dimension is 4200, D26 stable dimension is 4160, and full C13:C6 dispatch remains false.",
+    "timestamp": "2026-08-28T03:18:02.307Z",
+    "tags": [
+      "certificate",
+      "d26",
+      "digest",
+      "normalizer"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:18:02.309Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:18:02.293Z"
+    }
+  },
+  {
+    "id": "ed600cff-ca23-489f-b360-8206837ad753",
+    "question": "Why add a scheduler-facing normalizer stable-adapter module?",
+    "answer": "It converts the frozen C13:C3 and D26 stable equivalences into immutable, tamper-evident, non-dispatchable plans while returning an explicit fail-closed refusal for C13:C6. This makes the exact auxiliary-state accounting usable without laundering it into a direct bridge or runtime route.",
+    "timestamp": "2026-08-28T03:18:51.165Z",
+    "tags": [
+      "fail-closed",
+      "normalizer",
+      "scheduler",
+      "stable-module",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:18:51.167Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:18:51.150Z"
+    }
+  },
+  {
+    "id": "66a5514c-8fdc-4e72-999e-8cc2b3c1bc11",
+    "question": "How is the normalizer stable-adapter boundary regression-tested?",
+    "answer": "The focused Node tests rerun GAP, verify the 316-dimensional D26 fixed sector and W12^315 equality, balance the 4200 and 4160 stable plans, reject natural-fixed-cone and translation overreads, require C13:C6 refusal, and detect plan mutation.",
+    "timestamp": "2026-08-28T03:19:18.524Z",
+    "tags": [
+      "boundary",
+      "d26",
+      "how",
+      "node",
+      "normalizer",
+      "testing"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:19:18.526Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:19:18.508Z"
+    }
+  },
+  {
+    "id": "758dc53e-5261-46aa-bdad-aeb50f0493fc",
+    "question": "Why freeze the unitary orientation and rollback probe separately?",
+    "answer": "The freezer distinguishes four notions that orders alone blur: a relative C2 character, an unlabelled two-spread partner fibre, the absence of a canonical 0/1 labelling, and the absence of a canonical hole rollback among 376 outer involutions. It preserves the exact GAP output and scope boundary in a hashed artifact.",
+    "timestamp": "2026-08-28T03:20:33.400Z",
+    "tags": [
+      "certificate",
+      "no-go",
+      "orientation",
+      "rollback",
+      "unitary",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:20:33.402Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:20:33.386Z"
+    }
+  },
+  {
+    "id": "080f19b9-b801-47a3-9244-220e7c4dd7d7",
+    "question": "What is the frozen orientation rollback certificate?",
+    "answer": "The GAP-regenerated orientation probe freezes as SHA-256 ad35993d0bc9c9575e7d414723a29b6351d956162ad83ba1df802678ac755253: quotient C2, 1134 unlabelled pairs of maximum spreads, 376 candidate outer involutions in five classes, and canonical rollback false.",
+    "timestamp": "2026-08-28T03:21:08.674Z",
+    "tags": [
+      "digest",
+      "orientation",
+      "rollback",
+      "unitary"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:21:08.676Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:21:08.661Z"
+    }
+  },
+  {
+    "id": "8578ecc6-c795-4254-be8f-69a997c744f2",
+    "question": "How is the orientation versus rollback distinction regression-tested?",
+    "answer": "Focused tests rerun GAP, verify the relative C2 quotient and unchanged hole orbitals, prove the 2268 spreads form 1134 unlabelled partner pairs, and require rollback to remain false across all five exact outer-involution classes.",
+    "timestamp": "2026-08-28T03:21:32.493Z",
+    "tags": [
+      "how",
+      "orientation",
+      "rollback",
+      "testing",
+      "unitary"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:21:32.495Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:21:32.478Z"
+    }
+  },
+  {
+    "id": "0ef7cd79-7726-4683-b9d0-b094fe5f3129",
+    "question": "What exact cross-prime object replaces the vague common-S6 comparison?",
+    "answer": "A new GAP witness reconstructs both Hermitian hole graphs and proves the q=3 graph is a 15-fibre, eight-state extension over the S6 duad carrier. Its weighted quotient is 4I+2A(T6), while the zero-weight relation is exactly the q=2 KG(6,2) hole graph; every fibre is K4,4 and every nonzero cross-fibre connector is one C16.",
+    "timestamp": "2026-08-28T03:28:19.522Z",
+    "tags": [
+      "cross-prime",
+      "fibre",
+      "gap",
+      "s6",
+      "unitary"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:28:19.525Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:28:19.506Z"
+    }
+  },
+  {
+    "id": "ced05726-8c31-4533-8729-8ed46bbe1d2f",
+    "question": "What does the 120-state q=3 adjacency become in characteristic two?",
+    "answer": "Exactly a square-zero rank-40 equivariant differential. Its image has dimension 40, kernel dimension 80, and homology dimension 40, so 0 < im A < ker A < F2^120 has associated graded dimensions 40,40,40. This is exact GAP linear algebra, not a spectral analogy or a claim that any graded piece is already the W33 permutation module.",
+    "timestamp": "2026-08-28T03:28:57.517Z",
+    "tags": [
+      "gap",
+      "homology",
+      "logic-switch",
+      "mod2",
+      "unitary"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:28:57.519Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:28:57.504Z"
+    }
+  },
+  {
+    "id": "69294e4b-f660-46d3-9fa1-f4d021887991",
+    "question": "Why freeze the cross-prime fibre and differential result as one certificate?",
+    "answer": "The S6 quotient, eight-state F2^3 fibres, weighted 4I+2T6 relation, q2 KG zero relation, rational zero9 descent, and mod-2 rank-40 differential are different shadows of the same exact 120-state adjacency. One hashed artifact preserves their shared block chart and prevents them from drifting into disconnected count matches.",
+    "timestamp": "2026-08-28T03:30:05.006Z",
+    "tags": [
+      "certificate",
+      "cross-prime",
+      "mod2",
+      "s6",
+      "unitary",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:30:05.008Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:30:04.992Z"
+    }
+  },
+  {
+    "id": "ba60f83d-acac-4956-a42f-7006018eb6fd",
+    "question": "What is the frozen cross-prime fibre-differential digest?",
+    "answer": "The GAP-regenerated holotrade.e8-unitary-crossprime-fibre-differential.v1 artifact has SHA-256 d350554684286ebe832dabc2982323c1bd737f883c579b03d96578c6b92ad4b6 and freezes the 4I+2T6 quotient, K4,4 fibres, C16 connectors, and square-zero rank-40 mod-2 differential.",
+    "timestamp": "2026-08-28T03:30:44.105Z",
+    "tags": [
+      "certificate",
+      "cross-prime",
+      "digest",
+      "unitary"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:30:44.107Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:30:44.090Z"
+    }
+  },
+  {
+    "id": "30f3f717-51e7-4795-9d9b-8403745dccc2",
+    "question": "Why expose the cross-prime result as an abstract fibre switch?",
+    "answer": "The scheduler module makes the exact 15-by-8 duad/fibre chart and mod-2 adjacency differential executable as a parity transform. It reports same-fibre K4,4, intersecting-duad C16, and disjoint-duad KG zero relations, proves every concrete switch output dies on the second application, and remains explicitly non-dispatchable.",
+    "timestamp": "2026-08-28T03:31:36.047Z",
+    "tags": [
+      "fibre",
+      "logic-switch",
+      "mod2",
+      "scheduler",
+      "unitary",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:31:36.049Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:31:36.032Z"
+    }
+  },
+  {
+    "id": "e3d15c26-45c7-443a-b70d-f3ada0bba7ae",
+    "question": "How is the 40-40-40 fibre switch regression-tested?",
+    "answer": "Tests rerun GAP, exhaust all 120 fibre addresses and 1800 source-block budgets, apply the mod-2 differential twice to every basis state, and require immutable non-dispatchable switch certificates with tamper detection.",
+    "timestamp": "2026-08-28T03:32:07.478Z",
+    "tags": [
+      "fibre",
+      "how",
+      "logic-switch",
+      "mod2",
+      "testing",
+      "unitary"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:32:07.480Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:32:07.463Z"
+    }
+  },
+  {
+    "id": "ac3ad0f0-155f-4c48-a96f-2242353b734d",
+    "question": "Why add a cross-prime panel to the HoloTrade demo?",
+    "answer": "The visible unitary-ladder card now has a dedicated surface for the exact q3-to-q2 fibre quotient and mod-2 logic switch, so the strongest result is discoverable in the demo instead of buried in analysis files.",
+    "timestamp": "2026-08-28T03:32:57.820Z",
+    "tags": [
+      "cross-prime",
+      "demo",
+      "unitary",
+      "website",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:32:57.823Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:32:57.807Z"
+    }
+  },
+  {
+    "id": "1213924a-e5ef-471d-aa88-2951a055a904",
+    "question": "How should the website present the 40-40-40 discovery?",
+    "answer": "The Fabric view now loads and validates the hashed cross-prime certificate, shows the q2 KG base and q3 15x8 lift only at their certified ceilings, explains K4,4 fibres and C16 connectors, and states both the square-zero rank-40 result and the explicit no-W33-identification boundary.",
+    "timestamp": "2026-08-28T03:33:33.139Z",
+    "tags": [
+      "evidence",
+      "how",
+      "mod2",
+      "scope",
+      "unitary",
+      "website"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:33:33.142Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:33:33.126Z"
+    }
+  },
+  {
+    "id": "33365976-e416-4a97-b77f-7cc8d9c40e93",
+    "question": "How are the five requested fronts and three outside probes exposed as one reproducibility command?",
+    "answer": "package.json now provides verify:e8-backend for the Fano codec, stable normalizer, orientation no-go, Yosys hole RTL, and cross-prime fibre switch, plus freeze:e8-backend to regenerate all five canonical artifacts.",
+    "timestamp": "2026-08-28T03:34:06.120Z",
+    "tags": [
+      "e8",
+      "gap",
+      "go",
+      "how",
+      "reproducibility",
+      "tooling",
+      "yosys"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:34:06.123Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:34:06.104Z"
+    }
+  },
+  {
+    "id": "1576ff6d-4b50-4555-b4f4-21f253881b72",
+    "question": "Why expand the README with an eight-front E8 backend packet?",
+    "answer": "The README now makes the Fano codec, relative-orientation no-go, 120-state RTL, D26 stable adapter, 15x8 cross-prime quotient, and 40-40-40 differential discoverable together, with exact counts, one reproducibility command, and explicit non-dispatch and no-W33-identification boundaries.",
+    "timestamp": "2026-08-28T03:35:43.294Z",
+    "tags": [
+      "breakthrough",
+      "documentation",
+      "e8",
+      "evidence",
+      "go",
+      "readme",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:35:43.296Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:35:43.281Z"
+    }
+  },
+  {
+    "id": "13653148-12ea-4d51-af41-4d8627a2c4f8",
+    "question": "Why extend the README repository map?",
+    "answer": "The repository map now points directly to every new GAP witness, scheduler guard, generated RTL, and Yosys miter so readers can move from theorem statements to executable artifacts without filename archaeology.",
+    "timestamp": "2026-08-28T03:36:02.631Z",
+    "tags": [
+      "navigation",
+      "readme",
+      "reproducibility",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:36:02.633Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:36:02.617Z"
+    }
+  },
+  {
+    "id": "bb12019b-2bbe-4dda-818a-a8978dd38b92",
+    "question": "Why add the complete eight-front theorem packet to the HoloTrade paper?",
+    "answer": "The paper now derives the exact 15x8 cross-prime quotient, rational zero9 descent, 40-40-40 mod-2 filtration, Fano matched-action codec, relative orientation and rollback no-go, dual RTL implementation, and D26 stable adapter. Every paragraph states the object and preserves the missing-map, non-dispatch, and synthesis-only boundaries.",
+    "timestamp": "2026-08-28T03:37:00.892Z",
+    "tags": [
+      "e8",
+      "go",
+      "paper",
+      "scope",
+      "theorem",
+      "unitary",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:37:00.894Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:37:00.879Z"
+    }
+  },
+  {
+    "id": "27016cb6-8647-4a2b-a932-c1d39fbcae33",
+    "question": "Why update the paper's honest-scope exact inventory?",
+    "answer": "The honest-scope box now names the new finite objects explicitly: Hermitian ceilings, coset RTL, 15x8 quotient, rank-40 differential, Fano codec, stable identities, and rollback no-gos. This keeps the paper's claim ledger synchronized with its new theorem section.",
+    "timestamp": "2026-08-28T03:37:17.392Z",
+    "tags": [
+      "audit",
+      "evidence",
+      "paper",
+      "scope",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:37:17.395Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:37:17.381Z"
+    }
+  },
+  {
+    "id": "9472bc0d-ad67-4603-9a8f-43c9410fd0f9",
+    "question": "Why add verify:e8-backend to the pre-demo checklist?",
+    "answer": "The demo checklist now exercises the newly visible Fano, normalizer, orientation, unitary RTL, and cross-prime switch surfaces before a presentation, preventing a stale certificate or missing GAP/Yosys dependency from appearing live.",
+    "timestamp": "2026-08-28T03:37:32.550Z",
+    "tags": [
+      "demo",
+      "readme",
+      "verification",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:37:32.552Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:37:32.537Z"
+    }
+  },
+  {
+    "id": "6ec93f24-92b5-44e2-bf4b-159488424a8e",
+    "question": "How is the new website theorem panel guarded?",
+    "answer": "The cross-prime focused test now requires the HTML mount point, the 120=15x8 and 40|40|40 visible statements, and the explicit no-W33-identification sentence in the browser renderer.",
+    "timestamp": "2026-08-28T03:37:56.297Z",
+    "tags": [
+      "cross-prime",
+      "how",
+      "scope",
+      "testing",
+      "website"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:37:56.300Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:37:56.284Z"
+    }
+  },
+  {
+    "id": "1d76a808-01ed-4984-a133-76282a6d5817",
+    "question": "Did the expanded HoloTrade paper compile?",
+    "answer": "Yes. The TeX source compiled successfully to docs/holotrade.pdf at 224.55 KiB with only pre-existing underfull-box warnings; the eight-front theorem packet and honest-scope inventory are included.",
+    "timestamp": "2026-08-28T03:39:56.127Z",
+    "tags": [
+      "paper",
+      "pdf",
+      "verification"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:39:56.129Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:39:56.115Z"
+    }
   }
 ]
