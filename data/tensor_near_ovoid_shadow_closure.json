@@ -1,0 +1,52 @@
+{
+  "schema": "holotrade.tensor-near-ovoid-shadow-closure.v1",
+  "valid": true,
+  "tight110_equivalence": {
+    "statement": "tau_2=110 iff 40 minimum blockers B_L can be assigned to the 40 line labels such that H_q={L:q in B_L} is a union of full four-line pencils centered at an independent W33 set C_q for every q",
+    "reconstruction": "X={(p,q):p in C_q}; then row shadow(L)=B_L and |X|=(1/4)sum_L|B_L|=110",
+    "leaf_variables_needed": false,
+    "second_shadow_selector_family_needed": false
+  },
+  "pencil_union_code": {
+    "independent_center_sets": 40055,
+    "independent_set_size_distribution": {"0":1,"1":40,"2":540,"3":3240,"4":9450,"5":13824,"6":10080,"7":2880},
+    "distinct_line_masks": 37850,
+    "mask_decomposition_multiplicity": {"1":35645,"2":2205}
+  },
+  "strictness_negative_control": {
+    "blocker_indices": [0,69,173],
+    "line_label_multiplicities": [16,12,12],
+    "H_size_distribution": {"0":11,"12":17,"16":8,"24":1,"28":3},
+    "old_degree_conditions_pass": true,
+    "decoded_total_leaf_count": 110,
+    "max_decoded_fibre_size": 7,
+    "nonempty_Hq": 29,
+    "pencil_union_failures": 21,
+    "new_line_level_condition_fires": true
+  },
+  "near_ovoid_cover": {
+    "minimum_blockers": 360,
+    "near_ovoid_deletions_per_minimum_blocker": 8,
+    "tight110_predecessor_incidences_per_axis": 320,
+    "tight110_singleton_tiles": {"total":1440,"near_ovoid_shell_type":960,"deep_type":480},
+    "slack_110_to_115": {
+      "110":{"minimum_shadows_per_axis":40,"near_ovoid_predecessor_incidences_per_axis":320},
+      "111":{"minimum_shadows_per_axis":36,"near_ovoid_predecessor_incidences_per_axis":288},
+      "112":{"minimum_shadows_per_axis":32,"near_ovoid_predecessor_incidences_per_axis":256},
+      "113":{"minimum_shadows_per_axis":28,"near_ovoid_predecessor_incidences_per_axis":224},
+      "114":{"minimum_shadows_per_axis":24,"near_ovoid_predecessor_incidences_per_axis":192},
+      "115":{"minimum_shadows_per_axis":20,"near_ovoid_predecessor_incidences_per_axis":160}
+    },
+    "proof": "if |X|=110+s and m shadows have size 11 while the rest have size at least 12, then 11m+12(40-m)<=4|X|, so m>=40-4s"
+  },
+  "incumbent115_audit": {
+    "row_shadow_size_distribution": {"11":33,"12":4,"13":3},
+    "column_shadow_size_distribution": {"11":33,"12":3,"13":3,"14":1},
+    "minimum_row_shadows": 33,
+    "minimum_column_shadows": 33,
+    "near_ovoid_predecessor_incidences_each_axis": 264,
+    "tile_occupancy_distribution": {"1":1389,"2":192,"3":11,"4":7,"6":1}
+  },
+  "theorem": "The depth-2 lower-bound equality problem is exactly a 40-variable minimum-blocker labeling problem with a 37,850-word pencil-union shadow code. The new constraint is strictly stronger than the old divisibility/alpha relaxation. The 360x8 near-ovoid cover supplies 320 critical predecessor incidences per axis at equality and at least 8(40-4s) per axis at size 110+s.",
+  "boundary": "This is an exact equivalent reformulation of the 110 case and a certified structural audit of the 115 witness. It does not prove the shadow-label CSP infeasible or feasible; tau_2 remains open in [110,115]."
+}
