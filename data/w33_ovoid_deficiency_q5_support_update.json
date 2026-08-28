@@ -1,0 +1,26 @@
+{
+  "schema": "holotrade.w33-ovoid-deficiency-q5-support-update.v1",
+  "valid": true,
+  "previousParallelBoundary": {
+    "commit": "a41a53f5d4e70f30c4ab1e44679bece9a6bedf30",
+    "statement": "dipole infeasible at q=5, but another deficiency-5 shape was not excluded",
+    "previousInterval": [1, 12]
+  },
+  "w33TheoryUpgrade": {
+    "proofCommit": "ec51f2d5cf4c065fb7048739d42289f98b8c9374",
+    "certificateCommit": "79159e2477d7bbbe4f701c13dc0216ef043a6af6",
+    "defectEigenEquation": "A_line d = (q-1)d",
+    "supportBound": "|supp(d)| >= 2q",
+    "generalLowerBound": "nonzero deficiency delta >= q",
+    "equalityClassification": "delta=q forces a punctured-pencil dipole"
+  },
+  "q5": {
+    "deficiencyFivePossible": false,
+    "provedLowerBound": 6,
+    "existingFeasibleUpperBound": 12,
+    "certifiedInterval": [6, 12],
+    "exactValue": null
+  },
+  "operationalEffect": "No scheduler guarantee changes from this research invariant alone. Any policy consuming q=5 deficiency may use lower bound 6 and upper bound 12, but must keep the exact value OPEN.",
+  "boundary": "The upper bound 12 remains Holotrade's existing feasible witness. W33-Theory supplies the new lower-bound theorem. This artifact reconciles the two repositories without duplicating the theorem implementation."
+}
