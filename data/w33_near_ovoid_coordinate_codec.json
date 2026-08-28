@@ -1,0 +1,41 @@
+{
+  "schema": "holotrade.w33-near-ovoid-coordinate-codec.v1",
+  "valid": true,
+  "sourceCommit": "289147d20bc5c9293c26059901f6375e59e808c4",
+  "coordinates": {
+    "form": "(a,c,m), a~c, m in O_c\\O_a",
+    "states": 2880,
+    "orientedDefectPairs": 480,
+    "microstatesPerPair": 6,
+    "carrierLabels": 45,
+    "statesPerCarrierLabel": 64,
+    "sha256": "d66763bf7ff312bcb7fb72f6c43ef0ed6ba0d22fdc73ed9dfb1598e096c06049"
+  },
+  "parentBlockerCodec": {
+    "form": "(c,m), m in O_c",
+    "parents": 360,
+    "nearOvoidsPerParent": 8,
+    "legalRemovals": "Adj(c) \\ C_m, where C_m={x:m in O_x}",
+    "CmSize": 8,
+    "CmGraph": "K4,4"
+  },
+  "schedulerFactorization": {
+    "currentReservation": "four-node W33 line",
+    "availabilityDependsOn": ["a", "c"],
+    "availabilityIndependentOf": "m",
+    "availabilityClasses": 480,
+    "classSize": 6,
+    "freeLines": "Pencil(a) minus the hinge line ac"
+  },
+  "oneAdditionalBusyPoint": {
+    "idlePoints": 30,
+    "remainingFreeLineHistogram": {"0": 1, "2": 9, "3": 20}
+  },
+  "oneReleasedBusyPoint": {
+    "busyPoints": 10,
+    "resultingFreeLineHistogram": {"6": 6, "7": 4}
+  },
+  "shapeInvariant": {"inducedBusyEdges": 3, "count": 2880},
+  "reading": "m is a genuine adversarial microstate but is invisible to the current level-1 line-availability decision once (a,c) is known. The exact operational state space for that decision is 480 classes of six.",
+  "boundary": "This is a state-space/diagnostic reduction. It does not strengthen tau_1=11 or the depth-2 tensor guarantee."
+}
