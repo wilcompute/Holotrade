@@ -1236,6 +1236,43 @@ test("the coclique census of W(3,3) is recomputed, not trusted", () => {
   assert.ok(census.independenceNumber < census.hoffmanRatioBound);
 });
 
+test("the ovoid deficiency of W(3,3) is exactly 3", () => {
+  const d = require(path.join(root, "data/w33_ovoid_deficiency.json"));
+  assert.equal(d.valid, true);
+  const q3 = d.instances.find((r) => r.q === 3);
+  assert.equal(q3.setSize, 10, "ovoid size q^2+1");
+  assert.equal(q3.deficiency, 3);
+  assert.equal(q3.status, "OPTIMAL");
+  assert.equal(q3.bound, 3, "proved, not just attained");
+  // missed and doubled must balance: sum_L |S cap L| = (q+1)|S| = #lines
+  assert.equal(q3.profile["0"], 3);
+  assert.equal(q3.profile["2"], 3);
+  assert.equal(q3.profile["1"], 34);
+  const total = 0 * q3.profile["0"] + 1 * q3.profile["1"] + 2 * q3.profile["2"];
+  assert.equal(total, 40, "(q+1)|S| = 4*10 = 40 = the number of lines");
+  assert.equal(q3.profile["0"] + q3.profile["1"] + q3.profile["2"], 40);
+  // nonzero deficiency is the no-ovoid theorem, restated
+  assert.ok(q3.deficiency > 0, "W(3,3) has no ovoid");
+});
+
+test("the ten-state carrier match is size only, not structure", () => {
+  const d = require(path.join(root, "data/w33_ovoid_deficiency.json"));
+  const e = d.ellipticQuadric;
+  // Q^-(3,3) = P1(F9) has exactly the ovoid size, which is the temptation
+  assert.equal(e.size, 10);
+  // but it misses 12 lines where the optimum is 3
+  assert.equal(e.linesMissed, 12);
+  assert.equal(e.optimum, 3);
+  assert.equal(e.isNearOptimal, false);
+  assert.ok(e.linesMissed > 3 * e.optimum, "four times worse than optimal");
+  // its profile still satisfies the counting identity
+  const p = e.profile;
+  assert.equal(0 * p["0"] + 1 * p["1"] + 2 * p["2"], 40);
+  assert.equal(p["0"], p["2"], "missed and doubled must balance");
+  assert.match(e.verdict, /size only/);
+  assert.match(d.thirdCoincidenceDefused, /shared parameter, not a shared object/);
+});
+
 test("the cyclotomic bridge holds at q=3 and is killed at q=5", () => {
   const c = require(path.join(root, "data/w33_cyclotomic_bridge_killed.json"));
   assert.equal(c.valid, true);

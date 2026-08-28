@@ -1,0 +1,41 @@
+{
+  "schema": "holotrade.w33-ovoid-deficiency.v1",
+  "valid": true,
+  "definition": "fewest lines missed by a set of exactly ovoid size q^2+1; zero iff an ovoid exists",
+  "countingIdentity": "sum_L |S cap L| = (q+1)|S| = #lines at |S| = q^2+1, so missed lines equal total excess and deficiency is one number",
+  "instances": [
+    {
+      "q": 3,
+      "points": 40,
+      "lines": 40,
+      "setSize": 10,
+      "deficiency": 3,
+      "bound": 3,
+      "status": "OPTIMAL",
+      "profile": {
+        "0": 3,
+        "1": 34,
+        "2": 3
+      },
+      "proved": true,
+      "upperBoundOnly": false,
+      "equalsQ": true
+    }
+  ],
+  "ellipticQuadric": {
+    "isTheirCarrier": "P1(F9) = Q^-(3,3), Pass10869-10876",
+    "size": 10,
+    "profile": {
+      "0": 12,
+      "1": 16,
+      "2": 12
+    },
+    "linesMissed": 12,
+    "optimum": 3,
+    "isNearOptimal": false,
+    "verdict": "a match of size only; the elliptic quadric is a poor near-ovoid of W(3,3)"
+  },
+  "deficiencyEqualsQ": "holds at q=3 (proved); OPEN at q=5, where only an upper bound of 12 is known. Not claimed either way.",
+  "thirdCoincidenceDefused": "after the nine-triple carrier and the cyclotomic seven; a shared value is evidence of a shared parameter, not a shared object",
+  "boundary": "deficiency is a new invariant of W(3,q); it is not claimed to determine tau_2, which stays open in [110, 115]"
+}
