@@ -4137,5 +4137,59 @@
       "source": "cli",
       "timestamp": "2026-08-28T03:47:25.968Z"
     }
+  },
+  {
+    "id": "f26c431f-5ad3-4fef-8a5d-f0df25a1db58",
+    "question": "Why was the local GRAPE dreadnaut runtime repaired before the E8 GAP witnesses (80bff34)?",
+    "answer": "The installed dreadnaut binary could not load libnauty-2.8.8.so and sudo was unavailable. The Ubuntu library was extracted under /home/wiljd/.local/lib, the binary was retained as dreadnaut.bin, and a /home/wiljd/.local/bin/dreadnaut wrapper now prepends that local library path. This restored exact GRAPE automorphism computations without changing repository sources; commit 80bff34 contains only the resulting verified artifacts.",
+    "timestamp": "2026-08-28T03:49:15.071Z",
+    "tags": [
+      "gap",
+      "grape",
+      "nauty",
+      "reproducibility",
+      "retroactive",
+      "tooling",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "80bff34",
+      "status": "active"
+    },
+    "commitHashes": [
+      "80bff34"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-08-28T03:49:15.073Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-08-28T03:49:15.059Z"
+    }
   }
 ]
