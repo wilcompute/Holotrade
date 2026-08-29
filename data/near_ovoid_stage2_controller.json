@@ -1,0 +1,16 @@
+{
+  "schema":"holotrade.near-ovoid-stage2-controller.v1",
+  "status":"PASS",
+  "provenanceStarts":2880,
+  "distinctPostFirstStates":2818,
+  "postFirstFreeLines":6,
+  "occupancyProfiles":{"0^6 1^28 2^6":1980,"0^6 1^29 2^4 3^1":764,"0^6 1^31 3^3":136},
+  "sourceRule":"lexicographically first busy point maximizing the number of singly occupied incident lines",
+  "sourceSignatureHistogram":{"4 singleton lines":2578,"3 singleton + 1 doubled line":302},
+  "destinationRule":"among adjacent idle destinations, lexicographically first point hitting the fewest free-after-release lines",
+  "minimumFreeLinesHitHistogram":{"1":2578,"0":302},
+  "fullPolicyMoveMatches":2880,
+  "freeLinesAfterSecondMove":9,
+  "reading":"The generic topology-aware scorer is unnecessary on the certified post-first image: one local singleton-incidence maximization followed by one adjacent free-line-hit minimization reproduces the exact second move.",
+  "boundary":"Certified only on states reached after one topology-aware move from the 2,880 optimal near-ovoids."
+}
