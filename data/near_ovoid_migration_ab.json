@@ -1,0 +1,26 @@
+{
+  "schema": "holotrade.near-ovoid-migration-ab.v1",
+  "status": "PASS",
+  "evidence": "EXHAUSTIVE FINITE CORPUS",
+  "states": 2880,
+  "paired": true,
+  "armA": "existing cheapest level-1 migration-ray law with deterministic lexicographic tie-break",
+  "armB": "restrict source to the certified four-point high-release set, then minimize the same migration-ray law",
+  "outcome": "number of free W33 line placements after releasing the migration source",
+  "summary": {
+    "improvedStates": 1682,
+    "equalStates": 1198,
+    "improvedFraction": 0.5840277777777778,
+    "rayOnlyHistogram": {"6": 1682, "7": 1198},
+    "microstateAwareHistogram": {"7": 2880},
+    "rayOnlyMeanFreeLines": 6.415972222222222,
+    "microstateAwareMeanFreeLines": 7.0,
+    "meanGainFreeLines": 0.5840277777777778,
+    "relativeMeanGain": 0.09102642559176672,
+    "bothArmsMigrationRays": 3,
+    "extraRayCostForAwarePolicy": 0
+  },
+  "implementation": "experiments/near_ovoid_migration_ab.js",
+  "theoremReading": "On the complete certified near-ovoid corpus, conditioning the source choice on the exact microstate weakly dominates the ray-only tie-break for immediate line-placement headroom and strictly improves 1682 of 2880 paired states without increasing level-1 migration rays.",
+  "boundary": "This is an exhaustive finite policy benchmark on one adversarial W33 corpus. It is not production throughput, latency, energy, or market evidence."
+}
