@@ -1,0 +1,63 @@
+{
+  "schema": "holotrade.w33-multi-failure-recovery.v1",
+  "status": "PASS",
+  "twoFailures": {
+    "cases": 1252800,
+    "initialFreeHistogram": {"0": 83520, "1": 77760, "2": 544320, "3": 547200},
+    "topologyAware": {
+      "initial0": {
+        "reach3": {"1": 83520},
+        "reach6": {"2": 48006, "3": 35514},
+        "reach9": {"3": 18507, "4": 64831, "5": 182},
+        "reach12": {"4": 7171, "5": 56504, "6": 18458, "unreached": 1387}
+      },
+      "initial1": {
+        "reach3": {"1": 77760},
+        "reach6": {"2": 74180, "3": 3580},
+        "reach9": {"3": 65669, "4": 12091},
+        "reach12": {"4": 24567, "5": 43822, "6": 8589, "unreached": 782}
+      },
+      "initial2": {
+        "reach3": {"1": 544320},
+        "reach6": {"2": 544320},
+        "reach9": {"3": 527984, "4": 16336},
+        "reach12": {"4": 306696, "5": 210140, "6": 25197, "unreached": 2287}
+      },
+      "initial3": {
+        "reach3": {"0": 547200},
+        "reach6": {"1": 547200},
+        "reach9": {"2": 213314, "3": 328485, "4": 5401},
+        "reach12": {"3": 45975, "4": 325114, "5": 150637, "6": 22911, "unreached": 2563}
+      }
+    },
+    "legacyZeroInitial": {
+      "reach3": {"1": 26340, "2": 26796, "3": 1008, "unreached": 29376},
+      "reach6": {"2": 3566, "3": 6775, "4": 360, "unreached": 72819},
+      "reach9": {"3": 592, "4": 174, "unreached": 82754},
+      "reach12": {"4": 18, "unreached": 83502}
+    }
+  },
+  "threeFailures": {
+    "allInitialPatterns": 11692800,
+    "initialFreeHistogram": {"0": 1247040, "1": 1710720, "2": 5451840, "3": 3283200},
+    "worstZeroInitialClass": {
+      "cases": 1247040,
+      "includesDefectCenter": 1169280,
+      "oneNoncenterHitOnEachFreeLine": 77760,
+      "topologyAware": {
+        "reach3": {"1": 1247040},
+        "reach6": {"2": 491766, "3": 733618, "4": 21656},
+        "reach9": {"3": 119949, "4": 939535, "5": 176568, "6": 10682, "unreached": 306},
+        "reach12": {"4": 18196, "5": 367013, "6": 476626, "unreached": 385205}
+      },
+      "legacy": {
+        "reach3": {"1": 268294, "2": 405706, "3": 23456, "4": 360, "unreached": 549224},
+        "reach6": {"2": 24144, "3": 65567, "4": 5010, "unreached": 1152319},
+        "reach9": {"3": 2280, "4": 1488, "unreached": 1243272},
+        "reach12": {"4": 78, "unreached": 1246962}
+      }
+    }
+  },
+  "reading": "All two-idle-node failure pairs are exhausted. All three-idle-node initial patterns are counted, and recovery is exhausted for the worst triples that destroy all three initial placements.",
+  "boundary": "Finite deterministic policy evidence on the declared level-1 failure model; not hardware MTTR, an SLA, or an all-triple six-step recovery census outside the zero-initial-placement class."
+}
