@@ -1,0 +1,58 @@
+{
+  "schema": "holotrade.gq24-tight-obstruction.v1",
+  "valid": true,
+  "checks": {
+    "gq24Points27": true,
+    "gq24Lines45": true,
+    "moreLinesThanPoints": true,
+    "forcedFExceedsAlpha": true,
+    "w33ForcedFIs10": true,
+    "w33ForcedFExceedsAlpha": true,
+    "w33EqualPointsAndLines": true
+  },
+  "instances": [
+    {
+      "name": "W(3,3)",
+      "s": 3,
+      "t": 3,
+      "points": 40,
+      "lines": 40,
+      "degree": 12,
+      "mu": 4,
+      "alpha": 7,
+      "forcedF": "10",
+      "fMustBeEmpty": true,
+      "centreMapCanInject": true,
+      "obstruction": "self-duality of W(q), impossible for odd q",
+      "tau1": 11,
+      "tightCase": 110
+    },
+    {
+      "name": "GQ(2,4)",
+      "s": 2,
+      "t": 4,
+      "points": 27,
+      "lines": 45,
+      "degree": 10,
+      "mu": 5,
+      "alpha": 6,
+      "forcedF": "9",
+      "fMustBeEmpty": true,
+      "centreMapCanInject": false,
+      "obstruction": "pigeonhole: more lines than points",
+      "tau1": 10,
+      "tightCase": 90
+    }
+  ],
+  "result": "tau_2(GQ(2,4)^2) != 90; interval [91, 100]",
+  "mechanism": "|F| = 1 + kt/mu = 9 exceeds alpha = 6, so every centre has multiplicity 0 or 1; but the centre map sends 45 lines to 27 points, which no injection can do",
+  "contrastWithW33": "W(3,3) has 40 points and 40 lines, so a bijection is possible on counting grounds and the contradiction needs the classical self-duality theorem. GQ(2,4) has s != t and dies by pigeonhole.",
+  "attribution": {
+    "structuralLemma": "W33-Theory: pencil reciprocity, the multiplicity trichotomy, independence of F and the pair count",
+    "proofCommit": "43049db",
+    "certificateCommit": "1513d61",
+    "addedHere": "the general form |F| = 1 + kt/mu, the observation that the conclusion is parameter-dependent, and the application to GQ(2,4) where pigeonhole suffices"
+  },
+  "caveat": "the generalisation of 'every point adjacent to F is adjacent to exactly t+1 points of F' from their q=3 statement to arbitrary (s,t) is by analogy with their derivation and should be confirmed on their side before the GQ(2,4) bound is treated as certified. The arithmetic and the pigeonhole step, which need only F empty, are established here.",
+  "boundary": "tau_2(GQ(2,4)^2) remains OPEN in [91, 100]; only the tight case is excluded."
+}

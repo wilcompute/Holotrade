@@ -1,0 +1,56 @@
+{
+  "schema": "holotrade.gq24-schlaefli-quadrangle.v1",
+  "geometry": {
+    "name": "GQ(2,4) = Q^-(5,2)",
+    "points": 27,
+    "lines": 45,
+    "order": [
+      2,
+      4
+    ],
+    "ovoidSize": 9,
+    "hasOvoid": false
+  },
+  "tau1": 10,
+  "tau1Proved": true,
+  "blockingOvoidDefect": 1,
+  "depth2Interval": [
+    90,
+    100
+  ],
+  "minimumBlockers": 27,
+  "blockerEnumerationComplete": true,
+  "centreTheorem": {
+    "profiles": {
+      "{1: 40, 2: 5}": 27
+    },
+    "allCentred": true,
+    "distinctCentres": 27,
+    "blockersPerCentre": [
+      1
+    ],
+    "bijectionWithPoints": true,
+    "centreInsideBlocker": 0
+  },
+  "alpha": 6,
+  "hoffmanBound": 9,
+  "cocliqueDeficit": 3,
+  "independentSets": 2764,
+  "pencilUnionMasks": 2728,
+  "comparisonToW33": {
+    "w33MinimumBlockers": 360,
+    "w33PerCentre": 9,
+    "w33IndependentSets": 40055,
+    "w33Masks": 37850,
+    "w33Leaves": 1600,
+    "gq24Leaves": 729
+  },
+  "priorArt": {
+    "geometryAndGroup": "W33-Theory Pass 84 and Passes 3769-3786",
+    "pass84": "PSp(4,3) = PSU(4,2) = W(E6)/Z2, 27 lines on a cubic surface",
+    "passes3769_3786": "GQ(2,4) and GQ(4,2), all exact-cover ovoids, 200 ovoids of GQ(4,2) as 40 plane ovoids plus 160 tripods, and 'W33 is the 40-plane-ovoid graph'",
+    "whatIsNewHere": "the depth-2 product blocking question on it"
+  },
+  "boundary": "tau_2(GQ(2,4)^2) is OPEN in [90, 100]. Direct minimisation reached only the product bound 100, unlike W(3,3) where symmetric search beat 121 immediately.",
+  "valid": true
+}

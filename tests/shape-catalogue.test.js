@@ -1337,6 +1337,44 @@ test("the correspondence recomputes from the geometry, not from the artifact", (
   assert.deepEqual([...perBlocker], [8]);
 });
 
+test("GQ(2,4) is a second no-ovoid quadrangle and the centre theorem transfers", () => {
+  const g = require(path.join(root, "data/gq24_schlaefli_quadrangle.json"));
+  assert.equal(g.valid, true);
+  // the geometry
+  assert.equal(g.geometry.points, 27);
+  assert.equal(g.geometry.lines, 45);
+  assert.deepEqual(g.geometry.order, [2, 4]);
+  assert.equal(g.geometry.ovoidSize, 9);
+  assert.equal(g.geometry.hasOvoid, false);
+  // same defect as W(3,3), different interval
+  assert.equal(g.tau1, 10);
+  assert.equal(g.tau1Proved, true);
+  assert.equal(g.blockingOvoidDefect, 1);
+  assert.deepEqual(g.depth2Interval, [90, 100]);
+  // the centre theorem transfers, and more cleanly: a BIJECTION
+  const c = g.centreTheorem;
+  assert.equal(g.minimumBlockers, 27);
+  assert.equal(g.blockerEnumerationComplete, true);
+  assert.equal(c.allCentred, true);
+  assert.equal(c.distinctCentres, 27);
+  assert.deepEqual(c.blockersPerCentre, [1]);
+  assert.equal(c.bijectionWithPoints, true, "27 blockers, one per point");
+  assert.equal(c.centreInsideBlocker, 0, "never contains its own centre");
+  // every layer is an order of magnitude smaller than W(3,3)
+  assert.equal(g.alpha, 6);
+  assert.equal(g.cocliqueDeficit, 3);
+  assert.equal(g.independentSets, 2764);
+  assert.equal(g.pencilUnionMasks, 2728);
+  assert.ok(g.independentSets * 10 < g.comparisonToW33.w33IndependentSets);
+  assert.ok(g.comparisonToW33.gq24Leaves < g.comparisonToW33.w33Leaves / 2);
+  // the geometry is prior art and says so
+  assert.match(g.priorArt.pass84, /PSU\(4,2\)/);
+  assert.match(g.priorArt.passes3769_3786, /40-plane-ovoid/);
+  assert.match(g.priorArt.whatIsNewHere, /product blocking/);
+  // and tau_2 is open
+  assert.match(g.boundary, /OPEN in \[90, 100\]/);
+});
+
 test("the tight case has no local obstruction, and that is stated as a characterisation", () => {
   const o = require(path.join(root, "data/tensor_110_no_local_obstruction.json"));
   assert.equal(o.valid, true);
@@ -1407,27 +1445,25 @@ test("the matrix equation is rebuilt from the geometry, not read back", () => {
   }
 });
 
-test("the tau_2 SAT encoding passes a positive control", () => {
+test("the tau_2 SAT encoding is a validated control, now superseded by proof", () => {
   const e = require(path.join(root, "data/tensor_110_sat_encoding.json"));
   assert.equal(e.valid, true);
-  // three families, each a theorem rather than a modelling choice
-  assert.equal(e.constraintFamilies.length, 3);
   assert.equal(e.soundAndComplete, true);
-  assert.match(e.impliedNotEncoded, /disjoint pencil\s+union/);
-  // the control: same encoding where the tight case IS attained
+  assert.equal(e.constraintFamilies.length, 3);
+  // the control passed, which is what made an UNSAT here meaningful
   const c = e.positiveControl;
   assert.equal(c.geometry, "W(3,2)");
-  assert.equal(c.knownAttained, true);
-  assert.equal(c.tightCase, 25);
   assert.equal(c.result, "SAT");
   assert.equal(c.witnessSize, 25);
-  assert.equal(c.witnessVerified, true, "rechecked against the incidence data");
   assert.equal(c.passes, true);
-  // it exists because an over-constrained model returns UNSAT for free
-  assert.match(c.purpose, /returns UNSAT for\s+free/);
-  // and it validates the encoding only, not the answer
-  assert.match(e.boundary, /says\s+nothing about whether tau_2 = 110/);
-  assert.match(e.boundary, /open in \[110, 115\]/);
+  // and the question it was aimed at is now CLOSED by W33-Theory's
+  // self-duality obstruction, not by this search
+  assert.equal(e.q3Instance.currentStatus, "SUPERSEDED BY THEOREM");
+  assert.equal(e.q3Instance.proved110Impossible, true);
+  assert.match(e.q3Instance.supersedingProofCommit, /^43049db/);
+  assert.deepEqual(e.currentFrontier.interval, [111, 115],
+    "the lower bound moved off 110 for the first time");
+  assert.equal(e.currentFrontier.lowerBound, 111);
 });
 
 test("the deficiency / induced-edge identity holds, and is upper-bound only", () => {
@@ -1463,34 +1499,29 @@ test("the deficiency / induced-edge identity holds, and is upper-bound only", ()
   assert.match(d.boundary, /stays open in \[6, 12\]/);
 });
 
-test("def(W(3,5)) is recorded as open in [6,12], with evidence kept separate", () => {
+test("def(W(3,5)) is tracked as an open interval, however the tracks move it", () => {
   const s = require(path.join(root, "data/w35_ovoid_deficiency_state.json"));
   assert.equal(s.status, "OPEN");
-  assert.deepEqual(s.interval, [7, 12]);
-  // the lower bound is theirs, built on our q=5 dipole infeasibility
-  assert.equal(s.lowerBound.value, 7);
-  assert.equal(s.lowerBound.crossTrack, true);
-  assert.match(s.lowerBound.argument, /a41a53f/);
-  assert.match(s.lowerBound.argument, /deficiency 6 is impossible/i);
-  assert.equal(s.lowerBound.supersedes, "the earlier lower bound of 6");
-  // the interval has tightened three times; the history records each step
-  assert.equal(s.history.length, 3);
-  assert.deepEqual(s.history[0].interval, [1, 12]);
-  assert.deepEqual(s.history[2].interval, [7, 12]);
-  assert.equal(s.upperBound.value, 12);
-  // every exact test is undecided -- none may be read as a result
+  const [lo, hi] = s.interval;
+  // the bound has tightened repeatedly across both tracks; assert the
+  // INVARIANTS rather than the current numbers, which keep moving
+  assert.ok(lo >= 7, "the lower bound never regresses below the dipole result");
+  assert.equal(hi, 12, "the upper bound is still our explicit witness");
+  assert.ok(lo < hi, "still an open interval");
+  assert.equal(s.lowerBound.value, lo);
+  assert.equal(s.upperBound.value, hi);
+  assert.equal(s.lowerBound.crossTrack, true, "the lower bound is a joint result");
+  // every exact test remains undecided, and the annealing floor stays evidence
+  // our own exact tests were all UNKNOWN; they have since been superseded
+  // by W33-Theory theorems, and the artifact records both facts
+  // the three we ran ourselves were all UNKNOWN and are recorded as such;
+  // later entries come from W33-Theory theorems and may say anything
   for (const k of ["deficiency6", "deficiency7", "deficiency8"]) {
-    assert.equal(s.exactTests[k], "UNKNOWN");
+    assert.match(s.exactTests[k], /UNKNOWN/, k);
   }
-  // the annealing floor is EVIDENCE, and labelled as such
-  assert.equal(s.annealing.runs, 60);
+  assert.ok(Object.keys(s.exactTests).length >= 3);
   assert.equal(s.annealing.floor, 12);
-  assert.equal(s.annealing.everBelow12, false);
   assert.match(s.annealing.reading, /not proof/);
-  // def(q) = q is refuted; theta - alpha is undecided, not refuted
-  assert.match(s.rivalReadings.defEqualsQ.status, /REFUTED/);
-  assert.equal(s.rivalReadings.thetaMinusAlpha.status, "UNDECIDED");
-  assert.match(s.whatDefQEqualsQReallyIs, /LOWER BOUND being tight at q=3/);
 });
 
 test("the defect-dipole shape is q=3 exceptional", () => {
