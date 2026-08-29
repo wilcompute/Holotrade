@@ -1,0 +1,17 @@
+{
+  "schema":"holotrade.near-ovoid-recovery-fsm.v1",
+  "status":"PASS",
+  "entryStates":2880,
+  "stateBits":1,
+  "blockHistogram":{"0":1440,"1":1440},
+  "datapath":"one registered block bit selecting one of two 6-bit residual hinge-point ids",
+  "selectedSourceIsHighRelease":2880,
+  "primaryCostEquivalence":{"rays":3,"hops":1,"states":2880},
+  "postMoveHeadroomEquivalence":{"freeLines":6,"states":2880},
+  "exactGenericMoveIdentityMatches":664,
+  "exactGenericMoveIdentityMismatches":2216,
+  "formalHarness":"rtl/verify_w33_near_ovoid_recovery_fsm.ys proves the 6-bit mux semantics; exhaustive software regression proves the geometric block-bit/source relation and policy-objective equivalence on all 2,880 certified entry states.",
+  "synthesisHarness":"rtl/synth_w33_near_ovoid_recovery_fsm.ys",
+  "reading":"The RTL controller is a certified alternative optimal first-move selector on the near-ovoid entry stratum, not a bit-for-bit clone of the generic software tie-break.",
+  "boundary":"No post-first state is controlled by this one-bit FSM unless separately classified; stage two uses scheduler/w33-near-ovoid-stage2-controller.js. A fresh remote Yosys run is not claimed by this certificate."
+}
