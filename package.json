@@ -12,6 +12,7 @@
     "verify": "npm test && npm run verify:rtl && npm run synth:rtl && npm run verify:shapes && npm run verify:near-ovoids && npm run verify:unitary-ladders && npm run verify:unitary-holes",
     "experiment:balancer": "node experiments/balancer_ab.js --summary",
     "experiment:near-ovoid-migration": "node experiments/near_ovoid_migration_ab.js",
+    "experiment:near-ovoid-trajectory": "node experiments/near_ovoid_migration_trajectory_ab.js --steps=6",
     "paper": "node scripts/run-paper.js",
     "verify:shapes": "node analysis/w33_shape_catalogue.js && node analysis/w33_automorphisms.js && node analysis/w33_shape_guarantees.js && node analysis/w33_shape_packing.js && node analysis/w33_level2_shapes.js",
     "verify:near-ovoids": "py -3 analysis/w33_near_ovoid_adversarial_corpus.py",
