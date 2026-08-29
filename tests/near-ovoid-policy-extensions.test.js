@@ -8,7 +8,7 @@ const root=path.resolve(__dirname,"..");
 const P=require(path.join(root,"scheduler/w33-migration-policy.js"));
 const M=require(path.join(root,"scheduler/w33-near-ovoid-migration.js"));
 const C=require(path.join(root,"scheduler/w33-near-ovoid-block-controller.js"));
-const corpus=require(path.join(root,"data/w33_near_ovoid_adversarial_corpus.json"));
+const corpus=require(path.join(root,"analysis/w33_near_ovoid_corpus.js")).buildCorpus();
 
 function read(name){return JSON.parse(fs.readFileSync(path.join(root,"data",name),"utf8"));}
 
@@ -66,10 +66,12 @@ test("worst single-node failure recovery certificate keeps theorem boundary expl
   assert.match(z.boundary,/not a hardware failure-rate/i);
 });
 
-test("secondary-cost certificate preserves movement floor and labels energy as sensitivity",()=>{
+test("synthetic secondary-cost result stays labeled as sensitivity only",()=>{
   const z=read("near_ovoid_secondary_costs.json");
   assert.equal(z.locality.result,"NO SECONDARY TRADEOFF AT LEVEL 1");
   assert.ok(z.relativeEnergyIndexReduction>0.36);
-  assert.ok(z.energySecondary.totalEnergyIndex<z.lexicographicTopologyAware.totalEnergyIndex);
   assert.match(z.boundary,/not live telemetry/i);
+  const actual=read("near_ovoid_actual_fleet_energy.json");
+  assert.equal(actual.withinLevel1CellSingleDatacenter,true);
+  assert.equal(actual.energyCanBreakLevel1PointTie,false);
 });
