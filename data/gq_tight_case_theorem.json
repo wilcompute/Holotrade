@@ -1,0 +1,173 @@
+{
+  "schema": "holotrade.gq-tight-case-theorem.v1",
+  "valid": true,
+  "theorem": "let Q be a GQ(s,t) with no ovoid satisfying the centre property; if t > s then tau_2(Q x Q) > (st+1) tau_1(Q)",
+  "provedHere": [
+    "tightness forces every row shadow minimum and every column class independent",
+    "pencil reciprocity c_L in M <=> d_M in L",
+    "centre balance #{L : c_L in M} = t+1, independent of delta",
+    "the multiplicity trichotomy m_p in {0, 1, t+1}, for all (s,t), from reciprocity and the no-triangle axiom",
+    "exactly two branches: F an ovoid, or t <= s"
+  ],
+  "inputNotProved": "the centre property -- every minimum blocker meets one pencil in delta+1 points and every other line once. Verified by enumeration per geometry, not proved.",
+  "removesCaveat": "gq24_tight_obstruction.py generalised the trichotomy by analogy and flagged it; Step 5 here proves it, so the GQ(2,4) bound no longer depends on an unconfirmed analogy",
+  "attribution": "the tight-case attack and the W(3,3) self-duality proof are W33-Theory's (43049db, 1513d61); what is added here is the proof of the trichotomy for all (s,t), the observation that delta cancels, and the t > s theorem",
+  "instances": [
+    {
+      "name": "Q^-(5,2) = GQ(2,4)",
+      "s": 2,
+      "t": 4,
+      "points": 27,
+      "lines": 45,
+      "pointsPerLine": 3,
+      "linesPerPoint": 5,
+      "ovoidSize": 9,
+      "hasOvoid": false,
+      "tau1": 10,
+      "tau1Proved": true,
+      "delta": 1,
+      "tightSize": 90,
+      "centreBalancePerLine": 5,
+      "centreProperty": {
+        "sampler": "enumerate",
+        "sampled": 27,
+        "exhaustive": true,
+        "profiles": {
+          "{1: 40, 2: 5}": 27
+        },
+        "excessIsOnePencil": 27,
+        "holdsOnEverySampled": true,
+        "distinctCentres": 27,
+        "centreInsideItsBlocker": 0
+      },
+      "branches": [
+        {
+          "multTPlus1Points": 1,
+          "mult1Points": 0,
+          "width": 1,
+          "meaning": "F is an ovoid"
+        }
+      ],
+      "branchBAvailable": false,
+      "theoremApplies": true,
+      "conclusion": "tau_2 > 90"
+    },
+    {
+      "name": "Q^-(5,3) = GQ(3,9)",
+      "s": 3,
+      "t": 9,
+      "points": 112,
+      "lines": 280,
+      "pointsPerLine": 4,
+      "linesPerPoint": 10,
+      "ovoidSize": 28,
+      "hasOvoid": false,
+      "tau1": 30,
+      "tau1Proved": true,
+      "delta": 2,
+      "tightSize": 840,
+      "centreBalancePerLine": 10,
+      "centreProperty": {
+        "sampler": "cuts",
+        "sampled": 60,
+        "exhaustive": false,
+        "profiles": {
+          "{1: 270, 3: 10}": 60
+        },
+        "excessIsOnePencil": 60,
+        "holdsOnEverySampled": true,
+        "distinctCentres": 60,
+        "centreInsideItsBlocker": 0
+      },
+      "branches": [
+        {
+          "multTPlus1Points": 1,
+          "mult1Points": 0,
+          "width": 1,
+          "meaning": "F is an ovoid"
+        }
+      ],
+      "branchBAvailable": false,
+      "theoremApplies": true,
+      "conclusion": "tau_2 > 840"
+    },
+    {
+      "name": "W(3,3) = GQ(3,3)",
+      "s": 3,
+      "t": 3,
+      "points": 40,
+      "lines": 40,
+      "pointsPerLine": 4,
+      "linesPerPoint": 4,
+      "ovoidSize": 10,
+      "hasOvoid": false,
+      "tau1": 11,
+      "tau1Proved": true,
+      "delta": 1,
+      "tightSize": 110,
+      "centreBalancePerLine": 4,
+      "centreProperty": {
+        "sampler": "enumerate",
+        "sampled": 360,
+        "exhaustive": true,
+        "profiles": {
+          "{1: 36, 2: 4}": 360
+        },
+        "excessIsOnePencil": 360,
+        "holdsOnEverySampled": true,
+        "distinctCentres": 40,
+        "centreInsideItsBlocker": 0
+      },
+      "branches": [
+        {
+          "multTPlus1Points": 0,
+          "mult1Points": 4,
+          "width": 4,
+          "meaning": "every centre map fibre is a singleton (a bijection)"
+        },
+        {
+          "multTPlus1Points": 1,
+          "mult1Points": 0,
+          "width": 1,
+          "meaning": "F is an ovoid"
+        }
+      ],
+      "branchBAvailable": true,
+      "theoremApplies": false,
+      "conclusion": "t <= s: branch (B) open, needs a geometric argument (this is the W(3,3) case)"
+    },
+    {
+      "name": "T_2*(O) = GQ(3,5)",
+      "s": 3,
+      "t": 5,
+      "points": 64,
+      "lines": 96,
+      "pointsPerLine": 4,
+      "linesPerPoint": 6,
+      "ovoidSize": 16,
+      "hasOvoid": true,
+      "tau1": 16,
+      "tau1Proved": true,
+      "delta": 0,
+      "tightSize": 256,
+      "centreBalancePerLine": 6,
+      "centreProperty": {
+        "sampler": "not run",
+        "sampled": 0,
+        "exhaustive": false,
+        "profiles": {},
+        "excessIsOnePencil": 0,
+        "holdsOnEverySampled": null,
+        "notApplicable": "delta = 0: minimum blockers are ovoids, the excess is empty and the tight case is attained",
+        "distinctCentres": 0,
+        "centreInsideItsBlocker": 0
+      },
+      "branches": [],
+      "branchBAvailable": false,
+      "theoremApplies": false,
+      "conclusion": "tight case attained: an ovoid exists, tau_2 = 256"
+    }
+  ],
+  "explainsW33": "W(3,3) has t = s, so branch (B) survives, and branch (B) is exactly the bijection whose refutation needed self-duality. The theorem shows t = s is the only hard case.",
+  "boundary": "the theorem excludes the tight SIZE only; it gives no upper bound and does not determine tau_2 for any quadrangle."
+}

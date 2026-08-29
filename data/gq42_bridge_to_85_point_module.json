@@ -1,0 +1,47 @@
+{
+  "schema": "holotrade.gq42-bridge-85-point-module.v1",
+  "valid": true,
+  "claim": "W33-Theory's 45 antipodal trade-lattice supports are the 45 points of GQ(4,2), equivalently the 45 lines of GQ(2,4)",
+  "theirSide": {
+    "commit": "fd10fd7e2",
+    "title": "Unify W33 and GQ(4,2) in the 85-point Hermitian module",
+    "objects": 45,
+    "supportSize": [
+      8
+    ],
+    "adjacency": "supports disjoint",
+    "srg": {
+      "degree": [
+        12
+      ],
+      "lambda": [
+        3
+      ],
+      "mu": [
+        3
+      ]
+    }
+  },
+  "ourSide": {
+    "objects": 45,
+    "adjacency": "lines concurrent (GQ(4,2) collinearity)",
+    "srg": {
+      "degree": [
+        12
+      ],
+      "lambda": [
+        3
+      ],
+      "mu": [
+        3
+      ]
+    },
+    "role": "domain of the centre map c : 45 lines -> 27 points in gq_tight_case_theorem.py"
+  },
+  "isomorphic": true,
+  "pairsChecked": 990,
+  "mismatches": 0,
+  "senseOfTheMap": "their DISJOINTNESS corresponds to the quadrangle's CONCURRENCE, not to disjoint lines",
+  "notClaimed": "no implication in either direction. Their Hermitian incidence and our weighting obstruction are independent results about one set.",
+  "boundary": "SRG(45,12,3,3) is unique, so the parameters alone would settle this; the explicit isomorphism is recorded so the identification does not rest on quoting a classification."
+}

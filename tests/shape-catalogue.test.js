@@ -2085,3 +2085,119 @@ test("every arithmetic relaxation of the tight case survives", () => {
   assert.match(r.conclusion, /stays open/,
     "and the exact value is still reported as open");
 });
+
+// ======================================================================
+// The t > s theorem: the tight case is impossible for a whole family,
+// and the trichotomy is proved rather than borrowed
+// ======================================================================
+
+test("the trichotomy leaves exactly two branches, and t > s kills one", () => {
+  const t = require(path.join(root, "data/gq_tight_case_theorem.json"));
+  assert.ok(t.valid);
+
+  const by = Object.fromEntries(t.instances.map((r) => [r.name, r]));
+  const gq24 = by["Q^-(5,2) = GQ(2,4)"];
+  const q53 = by["Q^-(5,3) = GQ(3,9)"];
+  const w33 = by["W(3,3) = GQ(3,3)"];
+
+  // branch (A) is always available; branch (B) needs t <= s
+  for (const r of t.instances) {
+    const wide = r.branches.filter((b) => b.mult1Points > 0);
+    assert.equal(wide.length > 0, r.t <= r.s,
+      `${r.name}: branch (B) should exist exactly when t <= s`);
+  }
+
+  // the two no-ovoid quadrangles with t > s are both excluded
+  for (const r of [gq24, q53]) {
+    assert.ok(r.delta >= 1, `${r.name} has no ovoid`);
+    assert.ok(r.t > r.s);
+    assert.ok(r.theoremApplies);
+    assert.match(r.conclusion, /^tau_2 > /);
+  }
+  assert.equal(gq24.tightSize, 90);
+  assert.equal(q53.tightSize, 840);
+
+  // W(3,3) sits on the diagonal, so the theorem must NOT claim it
+  assert.equal(w33.s, w33.t);
+  assert.equal(w33.theoremApplies, false,
+    "t = s leaves branch (B) open; that case needed self-duality, not counting");
+});
+
+test("the centre property is checked, and it does not assume delta = 1", () => {
+  const t = require(path.join(root, "data/gq_tight_case_theorem.json"));
+  const by = Object.fromEntries(t.instances.map((r) => [r.name, r]));
+
+  for (const r of t.instances) {
+    if (r.delta < 1) continue;
+    const cp = r.centreProperty;
+    assert.ok(cp.sampled > 0, `${r.name}: no minimum blockers sampled`);
+    assert.ok(cp.holdsOnEverySampled,
+      `${r.name}: the centre property failed on a sampled blocker`);
+    assert.equal(cp.centreInsideItsBlocker, 0,
+      `${r.name}: a blocker contained its own centre`);
+  }
+
+  // Q^-(5,3) has defect 2 and the excess is STILL one pencil, each of its
+  // lines met delta+1 = 3 times. That is why the argument survives delta > 1.
+  const q53 = by["Q^-(5,3) = GQ(3,9)"];
+  assert.equal(q53.delta, 2);
+  const profiles = Object.keys(q53.centreProperty.profiles);
+  assert.equal(profiles.length, 1, "one trace profile across the sample");
+  // the key is a Python dict repr, so read it with a regex rather than JSON
+  const prof = Object.fromEntries(
+    [...profiles[0].matchAll(/(\d+):\s*(\d+)/g)].map((m) => [m[1], +m[2]]));
+  assert.equal(prof[String(q53.delta + 1)], q53.linesPerPoint,
+    "the excess lines number t+1 and are met delta+1 = 3 times");
+  assert.equal(prof["1"], q53.lines - q53.linesPerPoint,
+    "every other line is met exactly once");
+
+  // GQ(2,4) is exhaustive: 27 blockers, one per point
+  const gq24 = by["Q^-(5,2) = GQ(2,4)"];
+  assert.ok(gq24.centreProperty.exhaustive);
+  assert.equal(gq24.centreProperty.distinctCentres, 27);
+});
+
+test("the counting layer alone settles neither quadrangle", () => {
+  const d = require(path.join(root, "data/gq24_centre_balance_diophantine.json"));
+  assert.ok(d.valid);
+  const by = Object.fromEntries(d.cases.map((c) => [c.name, c]));
+
+  // both Diophantine systems are feasible: the trichotomy is NOT a counting
+  // fact, which is exactly why it had to be proved
+  assert.ok(by["W(3,3)"].feasible);
+  assert.ok(by["GQ(2,4)"].feasible);
+  assert.ok(by["W(3,3)"].allOnesIsASolution, "the bijection solves W(3,3)");
+  assert.equal(by["GQ(2,4)"].uniformIsIntegral, false, "5/3 is not an integer");
+  assert.match(d.conclusion, /both systems are feasible/);
+});
+
+test("two further relaxations close, and the linear algebra cross-checks", () => {
+  const r = require(path.join(root, "data/tensor_relaxations_that_close.json"));
+  assert.ok(r.valid && r.bothClose);
+  for (const i of r.instances) {
+    assert.equal(i.integralityGain, 0,
+      `${i.name}: the size-sum IP should not beat the shadow bound`);
+    assert.ok(i.rankObstructionCloses,
+      `${i.name}: 1 should lie in the mod-p row space`);
+  }
+  // rank_3 of W(3,3) must agree with the corpus rank law, not just with itself
+  const w = r.instances.find((i) => i.name === "W(3,3)");
+  assert.equal(w.rankObstruction["3"].rankN, 25);
+  assert.match(r.boundary, /NEGATIVE/);
+});
+
+test("their 45 and our 45 are the same set, with an explicit isomorphism", () => {
+  const b = require(path.join(root, "data/gq42_bridge_to_85_point_module.json"));
+  assert.ok(b.valid && b.isomorphic);
+  assert.equal(b.mismatches, 0);
+  assert.equal(b.pairsChecked, 990);
+  // both sides are SRG(45, 12, 3, 3)
+  for (const side of [b.theirSide.srg, b.ourSide.srg]) {
+    assert.deepEqual(side.degree, [12]);
+    assert.deepEqual(side.lambda, [3]);
+    assert.deepEqual(side.mu, [3]);
+  }
+  assert.equal(b.theirSide.commit, "fd10fd7e2");
+  // and no implication is claimed in either direction
+  assert.match(b.notClaimed, /no implication/);
+});

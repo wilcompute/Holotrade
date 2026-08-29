@@ -1,0 +1,115 @@
+{
+  "schema": "holotrade.tensor-relaxations-that-close.v1",
+  "valid": true,
+  "bothClose": true,
+  "reformulation": "a depth-2 blocker is an assignment of a set R_p to each point with the union over any line a blocking set, minimising sum |R_p|",
+  "relaxation1": "integer program: w >= 0 with every line summing to >= tau_1. Its optimum equals the shadow bound in every geometry, so integrality costs nothing.",
+  "relaxation2": "N^T X N = J + delta * P N puts every row of the right side in rowspace(N), so 1 must lie in the mod-p row space of N. It does, at p = 2 and p = 3, in every geometry.",
+  "instances": [
+    {
+      "name": "W(3,3)",
+      "points": 40,
+      "lines": 40,
+      "pointsPerLine": 4,
+      "linesPerPoint": 4,
+      "tau1": 11,
+      "delta": 1,
+      "shadowBound": 110,
+      "sizeSumIntegerOptimum": 110,
+      "sizeSumProved": true,
+      "integralityGain": 0,
+      "sizeVectorTail": [
+        6,
+        6,
+        6,
+        6,
+        9,
+        10
+      ],
+      "rankObstruction": {
+        "2": {
+          "rankN": 25,
+          "rankWithOnes": 25,
+          "onesInRowspace": true
+        },
+        "3": {
+          "rankN": 25,
+          "rankWithOnes": 25,
+          "onesInRowspace": true
+        }
+      },
+      "rankObstructionCloses": true
+    },
+    {
+      "name": "GQ(2,4)",
+      "points": 27,
+      "lines": 45,
+      "pointsPerLine": 3,
+      "linesPerPoint": 5,
+      "tau1": 10,
+      "delta": 1,
+      "shadowBound": 90,
+      "sizeSumIntegerOptimum": 90,
+      "sizeSumProved": true,
+      "integralityGain": 0,
+      "sizeVectorTail": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        10
+      ],
+      "rankObstruction": {
+        "2": {
+          "rankN": 21,
+          "rankWithOnes": 21,
+          "onesInRowspace": true
+        },
+        "3": {
+          "rankN": 21,
+          "rankWithOnes": 21,
+          "onesInRowspace": true
+        }
+      },
+      "rankObstructionCloses": true
+    },
+    {
+      "name": "Q^-(5,3)",
+      "points": 112,
+      "lines": 280,
+      "pointsPerLine": 4,
+      "linesPerPoint": 10,
+      "tau1": 30,
+      "delta": 2,
+      "shadowBound": 840,
+      "sizeSumIntegerOptimum": 840,
+      "sizeSumProved": true,
+      "integralityGain": 0,
+      "sizeVectorTail": [
+        15,
+        15,
+        15,
+        15,
+        15,
+        15
+      ],
+      "rankObstruction": {
+        "2": {
+          "rankN": 91,
+          "rankWithOnes": 91,
+          "onesInRowspace": true
+        },
+        "3": {
+          "rankN": 90,
+          "rankWithOnes": 90,
+          "onesInRowspace": true
+        }
+      },
+      "rankObstructionCloses": true
+    }
+  ],
+  "relationToPriorWork": "tensor_110_no_local_obstruction.py predicted that any refutation of the tight case had to be global; W33-Theory's self-duality proof was. These two are further local invariants and they close too.",
+  "crossCheck": "rank_3(W(3,3)) = 25 matches the corpus rank law (Sastry-Sin)",
+  "boundary": "both are NEGATIVE results. They prove nothing about tau_2 and are recorded only to stop the same ground being covered again."
+}
