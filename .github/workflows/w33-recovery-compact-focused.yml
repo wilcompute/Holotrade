@@ -1,0 +1,45 @@
+name: W33 Recovery Compact Focused
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'rtl/w33_recovery_two_stage_core.v'
+      - 'rtl/verify_w33_recovery_compact_equiv.ys'
+      - 'rtl/synth_w33_recovery_compare.ys'
+      - 'scripts/gen-w33-recovery-compact.js'
+      - 'scripts/run-yosys.js'
+      - '.github/workflows/w33-recovery-compact-focused.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compact-focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install portable Yosys
+        run: python -m pip install yowasp-yosys==0.67.0.0.post1190
+      - name: Generate compact adjacency-indexed RTL
+        run: node scripts/gen-w33-recovery-compact.js
+      - name: Prove compact RTL equivalent to baseline
+        run: node scripts/run-yosys.js rtl/verify_w33_recovery_compact_equiv.ys
+      - name: Synthesize baseline and compact cores to LUT4
+        run: node scripts/run-yosys.js rtl/synth_w33_recovery_compare.ys
+      - name: Emit measured comparison
+        run: |
+          test -s rtl/build/w33_recovery_baseline_lut4.txt
+          test -s rtl/build/w33_recovery_compact_lut4.txt
+          echo '--- baseline ---'
+          cat rtl/build/w33_recovery_baseline_lut4.txt
+          echo '--- compact ---'
+          cat rtl/build/w33_recovery_compact_lut4.txt
