@@ -1,0 +1,10 @@
+read_verilog rtl/w33_recovery_two_stage_core.v
+read_verilog rtl/build/w33_recovery_two_stage_core_compact.v
+
+equiv_make w33_recovery_two_stage_core w33_recovery_two_stage_core_compact equiv
+hierarchy -check -top equiv
+proc
+opt
+equiv_simple
+equiv_induct -seq 4
+equiv_status -assert
