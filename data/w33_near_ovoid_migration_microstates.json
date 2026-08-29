@@ -1,0 +1,26 @@
+{
+  "schema":"holotrade.w33-near-ovoid-migration-microstates.v1",
+  "status":"PASS",
+  "states":2880,
+  "availabilityClasses":480,
+  "microstatesPerAvailabilityClass":6,
+  "currentAvailability":"depends only on (a,c): the three free lines are Pencil(a) minus ac",
+  "oneAdditionalFailure":"independent of m; remaining-free-line histogram across idle points is 0^1 2^9 3^20",
+  "oneReleaseMigration":{
+    "highReleasePointsPerState":4,
+    "ordinaryReleasePointsPerState":6,
+    "freeLinesAfterHighRelease":7,
+    "freeLinesAfterOrdinaryRelease":6,
+    "highReleaseSignatureDistinguishesAllSixMStates":true,
+    "commonHighReleasePointAfterForgettingM":false,
+    "pairwiseHighReleaseIntersectionValues":[0,1],
+    "microstateIntersectionGraph":"two disjoint K3 components",
+    "perTriangleCommonPoint":1,
+    "perTriangleUnionSize":10,
+    "allSixHighReleaseUnionSize":20
+  },
+  "implementation":"scheduler/w33-near-ovoid-migration.js",
+  "regression":"tests/near-ovoid-migration.test.js exhausts all 2880 corpus states",
+  "reading":"m is invisible to the current placement choice but visible to migration-source quality. A microstate-aware release can always choose one of four sources that opens seven lines; a state quotient retaining only (a,c) loses that information.",
+  "boundary":"This is an operational policy refinement, not a stronger blocking-number guarantee."
+}
