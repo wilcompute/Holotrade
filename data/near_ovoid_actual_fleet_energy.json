@@ -1,0 +1,13 @@
+{
+  "schema":"holotrade.near-ovoid-actual-fleet-energy.v1",
+  "status":"PASS",
+  "addressInvariant":"Fleet.makeNode is called with [dc.prefix, cell, W33-point], and dcId is the id of that same dc object.",
+  "withinLevel1CellSingleDatacenter":true,
+  "withinLevel1CellEnergyIndexConstant":true,
+  "level1ChosenMigrationCost":"3 rays / 1 hop",
+  "energyCanBreakLevel1PointTie":false,
+  "energyBecomesMeaningfulAt":"cross-cell or cross-datacenter candidate selection where full fabric addresses, not only W33 point digits, are available",
+  "supersedesInterpretation":"The 36.20% reduction in data/near_ovoid_secondary_costs.json is a declared synthetic point-to-site sensitivity experiment. It must not be read as an actual level-1 seeded-fleet energy saving.",
+  "reading":"In Holotrade's actual fleet address model, topology-aware within-cell migration and site-energy optimization live at different routing levels.",
+  "boundary":"Catalog energy numbers remain prototype seed data; this is a software-addressing invariant, not live telemetry or a physical energy theorem."
+}
