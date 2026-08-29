@@ -12,9 +12,10 @@ const crossRun=require(path.join(root,"experiments/w33_crossdc_energy_tiebreak.j
 
 test("19/19 policy cycles lie in one ambient PSp orbit",()=>{
   assert.equal(orbit.status,"PASS");
-  assert.equal(orbit.policyHighCycles,933);
-  assert.equal(orbit.ambientOrbitSize,12960);
-  assert.equal(orbit.cycleStabilizerOrder,2);
+  assert.equal(orbit.policyAttractor.highCycles,933);
+  assert.equal(orbit.policyAttractor.pspInvariant,false);
+  assert.equal(orbit.ambientGeometry.unorderedCycleOrbitSize,12960);
+  assert.equal(orbit.ambientGeometry.unorderedCycleStabilizer,2);
 });
 
 test("local healthy controller is exact through the 32-step corpus",()=>{
