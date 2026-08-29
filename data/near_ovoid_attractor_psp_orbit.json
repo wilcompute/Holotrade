@@ -1,0 +1,23 @@
+{
+  "schema": "holotrade.w33-attractor-psp-orbit.v1",
+  "status": "PASS",
+  "group": {"name": "PSp(4,3)", "order": 25920},
+  "policyAttractor": {
+    "highCycles": 933,
+    "highBasinStarts": 2255,
+    "pspInvariant": false,
+    "reason": "the deterministic recovery policy uses label-lexicographic tie-breaking"
+  },
+  "ambientGeometry": {
+    "unorderedCycleOrbitSize": 12960,
+    "unorderedCycleStabilizer": 2,
+    "stateOrbitSize": 6480,
+    "stateStabilizer": 4,
+    "coreOrbitSize": 1440,
+    "coreStabilizer": 18,
+    "policyCyclesInAmbientOrbit": 933,
+    "policyCoresInAmbientCoreOrbit": 590
+  },
+  "theorem": "All 933 policy-selected 19/19 cycles belong to one PSp(4,3) geometric orbit, but the policy-selected subset is not itself invariant. The full unordered geometric orbit has 12,960 cycles.",
+  "boundary": "Exact finite group/action certificate. It does not promote the label-dependent deterministic policy to a PSp-equivariant dynamics."
+}
