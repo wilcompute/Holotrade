@@ -1,0 +1,24 @@
+name: W33 Recovery Depth14 Geometry
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_recovery_koopman_depth14_geometry.js'
+      - '.github/workflows/w33-recovery-depth14-geometry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  depth14-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Certify depth-14 geometry and top merge
+        run: node analysis/w33_recovery_koopman_depth14_geometry.js
