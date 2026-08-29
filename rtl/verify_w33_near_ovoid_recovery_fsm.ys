@@ -1,0 +1,6 @@
+read_verilog rtl/w33_near_ovoid_recovery_fsm.v
+hierarchy -check -top w33_near_ovoid_recovery_mux_equiv
+proc
+flatten
+opt
+sat -verify -prove mismatch 0 -show-ports
