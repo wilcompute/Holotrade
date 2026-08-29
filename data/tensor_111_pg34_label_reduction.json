@@ -1,0 +1,22 @@
+{
+  "schema":"holotrade.tensor-111-pg34-label-reduction.v1",
+  "status":"PASS",
+  "certifiedInterval":[111,115],
+  "minimumBlockerFormula":"B(c,m)=(Adj(c) symmetric_difference C_m) minus {c}, for m in O_c",
+  "minimumBlockers":360,
+  "labelsPerCenter":9,
+  "CmSize":8,
+  "CmGraph":"K4,4",
+  "tau111":{
+    "rowSlackTotal":4,
+    "columnSlackTotal":4,
+    "minimumCleanRows":36,
+    "minimumCleanColumns":36,
+    "cleanShadow":"B(c_L,m_L)",
+    "cleanTileReciprocity":"c_L in M iff d_M in L",
+    "cleanTileMatching":"B(c_L,m_L) cap M must be matched by actual leaves to B(d_M,n_M) cap L",
+    "doubledCleanTileLowerBound":"D_cc >= 4r + 4c - 176 >= 112"
+  },
+  "reading":"A 111-leaf witness, if it exists, is a dense partial point-line duality decorated by explicit Hermitian (c,m) minimum-blocker labels and local one/two-fibre matchings.",
+  "boundary":"This reduction does not decide feasibility at 111."
+}
