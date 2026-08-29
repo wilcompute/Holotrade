@@ -1,0 +1,34 @@
+{
+  "schema":"holotrade.near-ovoid-double-failure-recovery.v1",
+  "status":"PASS",
+  "evidence":"EXHAUSTIVE FINITE TWO-IDLE-FAILURE CORPUS",
+  "design":{"startStates":2880,"firstFailure":"defect centre","secondFailure":"each other idle point","cases":83520,"steps":6},
+  "relationCases":{"adjacent:blocker-center":2880,"adjacent:other":28800,"nonadjacent":51840},
+  "topologyAware":{
+    "universalThresholds":{"free3":1,"free6":2,"free9":3},
+    "reach12":{
+      "adjacent:blocker-center":{"4":256,"5":2586,"6":38},
+      "adjacent:other":{"4":12840,"5":15960},
+      "nonadjacent":{"4":22634,"5":29206}
+    },
+    "meanFreeLinesByStep":{
+      "adjacent:blocker-center":[0,3,6,9,10.834027777777777,12.197916666666666,13.726041666666667],
+      "adjacent:other":[0,3,6,9,11.445833333333333,12.959965277777778,14.02111111111111],
+      "nonadjacent":[0,3,6,9,11.436612654320987,12.844367283950618,13.94230324074074]
+    }
+  },
+  "legacy":{
+    "reach3":{
+      "adjacent:blocker-center":{"1":1290,"2":822,"3":30,"unreached":738},
+      "adjacent:other":{"1":9576,"2":9246,"3":291,"unreached":9687},
+      "nonadjacent":{"1":15474,"2":16728,"3":687,"unreached":18951}
+    },
+    "reach6":{
+      "adjacent:blocker-center":{"2":180,"3":372,"unreached":2328},
+      "adjacent:other":{"2":1426,"3":2387,"4":144,"unreached":24843},
+      "nonadjacent":{"2":1960,"3":4016,"4":216,"unreached":45648}
+    }
+  },
+  "reading":"With the defect centre failed, topology-aware recovery is relation-independent through nine free lines: every two-failure case reaches 3, 6 and 9 placements after exactly one, two and three migrations. The relation of the second failed point first appears at the 12-line threshold.",
+  "boundary":"Exact for the declared two-idle-node failure model and deterministic policies; not a hardware MTTR, SLA or production reliability measurement."
+}
