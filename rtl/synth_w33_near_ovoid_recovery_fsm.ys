@@ -1,0 +1,5 @@
+read_verilog rtl/w33_near_ovoid_recovery_fsm.v
+hierarchy -check -top w33_near_ovoid_recovery_fsm
+proc
+opt
+stat
