@@ -1,0 +1,21 @@
+{
+  "schema": "holotrade.w33-crossdc-energy-tiebreak.v1",
+  "status": "PASS",
+  "seed": "holotrade-fleet",
+  "sources": 320,
+  "primaryCost": {"rays":7,"hops":33,"preservedForAllSources":true},
+  "equalCostCandidateRange": [52,219],
+  "changedDestinations": 148,
+  "energyIndex": {
+    "lexicographic": 15505.55,
+    "energyAware": 13547.88,
+    "relativeReduction": 0.12625446295235822
+  },
+  "carbonIndex": {
+    "lexicographic": 96016,
+    "energyAware": 72256,
+    "relativeReduction": 0.24745667431219546
+  },
+  "reading": "Site energy and carbon become legitimate secondary objectives only above the level-1 W33 cell, where full-address cross-DC candidates remain tied on exact rays/hops cost.",
+  "boundary": "Catalog baseEnergy, PUE and carbon are seeded prototype inputs, not live telemetry; this is a deterministic fleet sensitivity result, not a measured energy saving."
+}
