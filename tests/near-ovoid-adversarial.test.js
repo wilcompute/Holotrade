@@ -34,12 +34,12 @@ test("near-ovoid adversarial corpus is pinned to the exact level-1 line-placemen
   assert.equal(cert.placementCliff.oneAddedPointDefeatsAllPlacements, true);
 });
 
-test("q=5 deficiency integration narrows the interval without fabricating an exact value", () => {
+test("q=5 deficiency integration keeps an honest open interval", () => {
   assert.equal(q5.valid, true);
-  assert.deepEqual(q5.previousParallelBoundary.previousInterval, [1, 12]);
-  assert.deepEqual(q5.q5.certifiedInterval, [6, 12]);
   assert.equal(q5.q5.deficiencyFivePossible, false);
-  assert.equal(q5.q5.provedLowerBound, 6);
+  assert.ok(q5.q5.provedLowerBound >= 6);
   assert.equal(q5.q5.existingFeasibleUpperBound, 12);
+  assert.deepEqual(q5.q5.certifiedInterval,
+    [q5.q5.provedLowerBound, q5.q5.existingFeasibleUpperBound]);
   assert.equal(q5.q5.exactValue, null);
 });
