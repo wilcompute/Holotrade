@@ -1,0 +1,13 @@
+{
+  "schema": "holotrade.w33-local-recovery-equivalence.v1",
+  "status": "PASS",
+  "startStates": 2880,
+  "steps": 32,
+  "decisions": 92160,
+  "distinctVisitedStates": 25184,
+  "identity": "F_after = F + s1(source) - z(destination) - 1[shared line was singleton]",
+  "primaryFloor": "with ten busy W33 points, every busy source has at least 12-9=3 adjacent idle destinations",
+  "exactDecisionMatches": 92160,
+  "theorem": "The local incidence-score controller exactly reproduces the declared healthy topology-aware source/destination decision on all 92,160 trajectory decisions. The score formula itself is an algebraic identity for any healthy ten-busy W33 state.",
+  "boundary": "Failure-aware recovery remains a separate policy surface because failed nodes alter both free-line incidence and destination availability."
+}
