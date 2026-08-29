@@ -6,6 +6,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const frozen = require(path.join(root, "data/near_ovoid_migration_trajectory_ab.json"));
 const T = require(path.join(root, "experiments/near_ovoid_migration_trajectory_ab.js"));
+const corpus = require(path.join(root, "analysis/w33_near_ovoid_corpus.js")).buildCorpus();
 
 test("six-step near-ovoid recovery trajectories reproduce the frozen paired result", () => {
   const z = T.runExperiment({ steps: 6, includeRows: false });
@@ -15,7 +16,6 @@ test("six-step near-ovoid recovery trajectories reproduce the frozen paired resu
   assert.deepEqual(z.summary.movement, frozen.summary.movement);
   assert.deepEqual(z.summary.strictlyBetterStatesByStep,
     frozen.summary.strictlyBetterStatesByStep);
-
   assert.deepEqual(z.summary.legacy.freeLineHistogramByStep,
     frozen.summary.legacy.freeLineHistogramByStep);
   assert.deepEqual(z.summary.aware.freeLineHistogramByStep,
@@ -28,7 +28,6 @@ test("six-step near-ovoid recovery trajectories reproduce the frozen paired resu
     frozen.summary.legacy.uniqueStatesVisitedHistogram);
   assert.deepEqual(z.summary.aware.uniqueStatesVisitedHistogram,
     frozen.summary.aware.uniqueStatesVisitedHistogram);
-
   assert.equal(z.summary.legacy.cumulativeHeadroomTotal, 98186);
   assert.equal(z.summary.aware.cumulativeHeadroomTotal, 212045);
   assert.equal(z.summary.cumulativeHeadroomGainTotal, 113859);
@@ -38,8 +37,6 @@ test("six-step near-ovoid recovery trajectories reproduce the frozen paired resu
 });
 
 test("aware full migrations keep the same movement cost floor as legacy", () => {
-  // A concrete certified near-ovoid: one removal from the first frozen blocker.
-  const corpus = require(path.join(root, "data/w33_near_ovoid_adversarial_corpus.json"));
   const rec = corpus.records[0];
   const start = rec.blocker.filter((x) => x !== rec.removals[0]);
   const A = T.runArm(start, "legacy", 6);
