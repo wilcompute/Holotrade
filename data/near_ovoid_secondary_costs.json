@@ -1,0 +1,41 @@
+{
+  "schema": "holotrade.near-ovoid-secondary-costs.v1",
+  "evidence": "CATALOG-ANCHORED SENSITIVITY EXPERIMENT",
+  "design": {
+    "states": 2880,
+    "steps": 6,
+    "primaryMovement": "3 rays then 1 hop for every selected move",
+    "energyMapping": "nearest W33 distance to catalog datacenter prefix, catalog order breaks distance ties",
+    "energyIndex": "baseEnergy * PUE"
+  },
+  "mapping": {
+    "PDX-1": {"prefix": 3, "energyIndex": 37.06, "points": 15},
+    "DFW-2": {"prefix": 11, "energyIndex": 53.71, "points": 7},
+    "ARN-1": {"prefix": 19, "energyIndex": 55.64, "points": 7},
+    "DUB-3": {"prefix": 24, "energyIndex": 117.12, "points": 4},
+    "SIN-2": {"prefix": 31, "energyIndex": 167.56, "points": 4},
+    "REY-1": {"prefix": 37, "energyIndex": 29.12, "points": 3}
+  },
+  "locality": {
+    "result": "NO SECONDARY TRADEOFF AT LEVEL 1",
+    "why": "both arms remain at exactly 3 rays and 1 hop on every migration"
+  },
+  "lexicographicTopologyAware": {
+    "meanEnergyIndexByStep": [75.0058402777771, 77.40274999999959, 65.34659027777722, 66.04914236111043, 58.26413888888802, 62.9115312499991],
+    "meanFreeLinesByStep": [6.0, 9.0, 11.762152777777779, 14.17951388888889, 15.762152777777779, 16.922916666666666],
+    "totalEnergyIndex": 1166342.3799999882,
+    "totalHeadroom": 212045,
+    "siteHistogram": {"PDX-1": 7279, "DFW-2": 1472, "ARN-1": 3577, "DUB-3": 2440, "SIN-2": 1875, "REY-1": 637}
+  },
+  "energySecondary": {
+    "meanEnergyIndexByStep": [29.814749999999712, 34.115552083332176, 39.56039930555442, 51.9828090277769, 49.9675763888881, 52.92381597222151],
+    "meanFreeLinesByStep": [6.0, 9.0, 11.77951388888889, 14.252430555555556, 15.813541666666667, 16.821527777777778],
+    "totalEnergyIndex": 744090.9199999857,
+    "totalHeadroom": 212161,
+    "siteHistogram": {"PDX-1": 8812, "DFW-2": 1980, "ARN-1": 1080, "DUB-3": 362, "SIN-2": 446, "REY-1": 4600}
+  },
+  "relativeEnergyIndexReduction": 0.36203045284182056,
+  "headroomDifference": 116,
+  "reading": "Within the declared catalog-anchored sensitivity field, using energy only after movement and topology ties lowers the six-step destination energy index by 36.20% while leaving the primary 3-ray/1-hop movement floor unchanged. Future trajectory choices slightly change cumulative headroom, so this is a policy sensitivity result rather than an invariant theorem.",
+  "boundary": "The point-to-site assignment and catalog energy figures are declared simulation inputs, not live telemetry and not intrinsic finite geometry."
+}
