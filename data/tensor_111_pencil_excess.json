@@ -1,0 +1,21 @@
+{
+  "schema": "holotrade.tensor-111-pencil-excess.v1",
+  "status": "PASS",
+  "candidateLeaves": 111,
+  "lineLoadEquation": "x = N r = 11*1 + s, with s>=0 and sum(s)=4",
+  "projector": "K=(A_line-12I)(A_line-2I); K s=0 is necessary because s lies in im(N)",
+  "massFourMultisetsTested": 123410,
+  "projectorSurvivors": 40,
+  "survivors": "exactly the forty 0/1 incidence vectors of complete four-line point pencils",
+  "perAxisConsequence": {
+    "cleanLines": 36,
+    "cleanLoad": 11,
+    "dirtyLines": 4,
+    "dirtyLoad": 12,
+    "dirtyShape": "one complete point-pencil"
+  },
+  "cleanCleanDoubledTileLowerBound": 112,
+  "source": "analysis/tensor_111_pencil_excess.py",
+  "theorem": "Any 111-leaf tensor blocker must have exactly one dirty four-line pencil and 36 clean lines on each coordinate axis; no other partition of the four marginal slack units is compatible with the W33 incidence image.",
+  "boundary": "Necessary condition only; tau_2 remains in [111,115]."
+}
