@@ -2201,3 +2201,46 @@ test("their 45 and our 45 are the same set, with an explicit isomorphism", () =>
   // and no implication is claimed in either direction
   assert.match(b.notClaimed, /no implication/);
 });
+
+test("the centre property is a perp profile, and W(3,3) is the exception", () => {
+  const r = require(path.join(root, "data/gq_perp_blockers_and_h44.json"));
+  assert.ok(r.valid);
+  const by = Object.fromEntries(r.instances.map((i) => [i.name, i]));
+
+  // the classical fact, checked in every geometry including W(3,3)
+  for (const i of r.instances) {
+    assert.ok(i.perpIsBlocking, `${i.name}: p-perp should block every line`);
+    assert.equal(i.perpSize, i.s * (i.t + 1));
+    assert.equal(i.perpProfile[String(i.s)], i.t + 1,
+      `${i.name}: the perp meets the t+1 lines of its pencil s times`);
+  }
+
+  // where t > s, tau_1 attains the perp size and the blockers ARE perps,
+  // which is what makes the centre property automatic
+  for (const i of r.instances.filter((x) => x.tGreaterThanS)) {
+    assert.ok(i.tau1Proved, `${i.name}: tau_1 must be proved optimal`);
+    assert.equal(i.tau1, i.perpSize);
+    assert.equal(i.delta, i.s - 1, "delta = s(t+1) - (st+1) = s - 1");
+    assert.ok(i.allSampledArePerps);
+  }
+
+  // W(3,3) beats the perp construction by exactly one point
+  const w = by["W(3,3)"];
+  assert.equal(w.tau1, 11);
+  assert.equal(w.perpSize, 12);
+  assert.equal(r.w33IsTheException.beatsPerpBy, 1);
+  assert.equal(w.sampledThatArePerps, 0,
+    "none of W(3,3)'s minimum blockers is a perp");
+  assert.notEqual(w.delta, w.s - 1, "and its defect breaks the s-1 pattern");
+
+  // the third family
+  const h = by["H(4,4)"];
+  assert.equal(h.points, 165);
+  assert.equal(h.lines, 297);
+  assert.equal(h.tightSize, 1188);
+  assert.match(r.thirdFamily.conclusion, /tau_2\(H\(4,4\)\^2\) > 1188/);
+  assert.ok(r.thirdFamily.hermitianNotQuadric);
+
+  // the general-q statement is explicitly NOT claimed
+  assert.match(r.notClaimed, /EVERY q/);
+});

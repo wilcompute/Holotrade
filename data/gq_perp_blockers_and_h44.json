@@ -1,0 +1,134 @@
+{
+  "schema": "holotrade.gq-perp-blockers-h44.v1",
+  "valid": true,
+  "classical": "p-perp minus p is a blocking set of size s(t+1) whose profile is s on the pencil of p and 1 elsewhere. Payne-Thas; nothing new.",
+  "consequence": "where tau_1 = s(t+1) and minimum blockers are perps, the centre property of gq_tight_case_theorem.py is automatic, since delta = s-1 makes delta+1 = s",
+  "instances": [
+    {
+      "name": "GQ(2,4)",
+      "points": 27,
+      "lines": 45,
+      "s": 2,
+      "t": 4,
+      "ovoidSize": 9,
+      "tau1": 10,
+      "tau1Proved": true,
+      "delta": 1,
+      "sMinus1": 1,
+      "deltaEqualsSMinus1": true,
+      "perpSize": 10,
+      "perpIsBlocking": true,
+      "perpProfile": {
+        "2": 5,
+        "1": 40
+      },
+      "tau1EqualsPerpSize": true,
+      "sampledMinimumBlockers": 25,
+      "sampledThatArePerps": 25,
+      "allSampledArePerps": true,
+      "sampledProfiles": {
+        "{1: 40, 2: 5}": 25
+      },
+      "tGreaterThanS": true,
+      "tightSize": 90
+    },
+    {
+      "name": "Q^-(5,3)",
+      "points": 112,
+      "lines": 280,
+      "s": 3,
+      "t": 9,
+      "ovoidSize": 28,
+      "tau1": 30,
+      "tau1Proved": true,
+      "delta": 2,
+      "sMinus1": 2,
+      "deltaEqualsSMinus1": true,
+      "perpSize": 30,
+      "perpIsBlocking": true,
+      "perpProfile": {
+        "3": 10,
+        "1": 270
+      },
+      "tau1EqualsPerpSize": true,
+      "sampledMinimumBlockers": 25,
+      "sampledThatArePerps": 25,
+      "allSampledArePerps": true,
+      "sampledProfiles": {
+        "{1: 270, 3: 10}": 25
+      },
+      "tGreaterThanS": true,
+      "tightSize": 840
+    },
+    {
+      "name": "H(4,4)",
+      "points": 165,
+      "lines": 297,
+      "s": 4,
+      "t": 8,
+      "ovoidSize": 33,
+      "tau1": 36,
+      "tau1Proved": true,
+      "delta": 3,
+      "sMinus1": 3,
+      "deltaEqualsSMinus1": true,
+      "perpSize": 36,
+      "perpIsBlocking": true,
+      "perpProfile": {
+        "4": 9,
+        "1": 288
+      },
+      "tau1EqualsPerpSize": true,
+      "sampledMinimumBlockers": 25,
+      "sampledThatArePerps": 25,
+      "allSampledArePerps": true,
+      "sampledProfiles": {
+        "{1: 288, 4: 9}": 25
+      },
+      "tGreaterThanS": true,
+      "tightSize": 1188
+    },
+    {
+      "name": "W(3,3)",
+      "points": 40,
+      "lines": 40,
+      "s": 3,
+      "t": 3,
+      "ovoidSize": 10,
+      "tau1": 11,
+      "tau1Proved": true,
+      "delta": 1,
+      "sMinus1": 2,
+      "deltaEqualsSMinus1": false,
+      "perpSize": 12,
+      "perpIsBlocking": true,
+      "perpProfile": {
+        "3": 4,
+        "1": 36
+      },
+      "tau1EqualsPerpSize": false,
+      "sampledMinimumBlockers": 25,
+      "sampledThatArePerps": 0,
+      "allSampledArePerps": false,
+      "sampledProfiles": {
+        "{1: 36, 2: 4}": 25
+      },
+      "tGreaterThanS": false,
+      "tightSize": 110
+    }
+  ],
+  "thirdFamily": {
+    "name": "H(4,4) = GQ(4,8)",
+    "hermitianNotQuadric": true,
+    "delta": 3,
+    "conclusion": "tau_2(H(4,4)^2) > 1188"
+  },
+  "w33IsTheException": {
+    "tau1": 11,
+    "perpSize": 12,
+    "beatsPerpBy": 1,
+    "meaning": "W(3,3)'s minimum blockers are not perps, so its centre property is a separate fact, and it is also the quadrangle the counting argument cannot close. The two coincide."
+  },
+  "notClaimed": "that tau_1 = s(t+1) for Q^-(5,q) and H(4,q^2) at EVERY q. It is computed and proved optimal here for q = 2, 3 and for H(4,4) only, and the general statement is very plausibly known in the literature.",
+  "boundary": "this sharpens why the centre property holds; it does not change any bound. tau_2 remains undetermined for every quadrangle here."
+}
