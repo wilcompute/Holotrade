@@ -1,0 +1,58 @@
+{
+  "schema": "holotrade.near-ovoid-migration-trajectory-ab.v1",
+  "evidence": "EXHAUSTIVE FINITE CORPUS / POLICY TRAJECTORY",
+  "design": {
+    "startStates": 2880,
+    "steps": 6,
+    "busyCardinality": 10,
+    "migrationIsSizePreserving": true,
+    "movementObjectiveSharedByBothArms": "minimise rays, then hops",
+    "legacyTieBreak": "lexicographic (source,destination)",
+    "awareTieBreak": "on near-ovoids use the exact four high-release sources; then maximise post-move line headroom, maximise release-only headroom, lexicographic tie-break",
+    "revisitRule": "none; repeated states are allowed and measured rather than suppressed"
+  },
+  "summary": {
+    "movement": {
+      "raysPerStep": 3,
+      "hopsPerStep": 1,
+      "totalRaysPerTrajectory": 18,
+      "pairedExtraRayCost": 0
+    },
+    "strictlyBetterStatesByStep": [1566, 2620, 2819, 2875, 2880, 2880],
+    "legacy": {
+      "meanFreeLinesByStep": [5.285416666666666, 5.608333333333333, 5.960416666666666, 5.638888888888889, 5.960416666666666, 5.638888888888889],
+      "freeLineHistogramByStep": [
+        {"3":30,"4":432,"5":1104,"6":1314},
+        {"3":780,"4":168,"5":324,"6":610,"7":384,"8":354,"9":260},
+        {"3":42,"4":333,"5":954,"6":999,"7":45,"8":189,"9":167,"10":90,"11":18,"12":43},
+        {"3":780,"4":168,"5":333,"6":612,"7":363,"8":348,"9":236,"10":18,"11":9,"12":6,"13":7},
+        {"3":42,"4":333,"5":954,"6":999,"7":45,"8":189,"9":167,"10":90,"11":18,"12":43},
+        {"3":780,"4":168,"5":333,"6":612,"7":363,"8":348,"9":236,"10":18,"11":9,"12":6,"13":7}
+      ],
+      "cumulativeHeadroomTotal": 98186,
+      "cumulativeHeadroomMean": 34.09236111111111,
+      "minimumHeadroomHistogram": {"3":810,"4":528,"5":789,"6":753},
+      "uniqueStatesVisitedHistogram": {"2":732,"3":1098,"4":858,"5":192}
+    },
+    "aware": {
+      "meanFreeLinesByStep": [6.0, 9.0, 11.762152777777779, 14.17951388888889, 15.762152777777779, 16.922916666666666],
+      "freeLineHistogramByStep": [
+        {"6":2880},
+        {"9":2880},
+        {"11":685,"12":2195},
+        {"13":577,"14":1209,"15":1094},
+        {"14":123,"15":881,"16":1546,"17":218,"18":112},
+        {"15":89,"16":725,"17":1509,"18":433,"19":124}
+      ],
+      "cumulativeHeadroomTotal": 212045,
+      "cumulativeHeadroomMean": 73.62673611111111,
+      "minimumHeadroomHistogram": {"6":2880},
+      "uniqueStatesVisitedHistogram": {"7":2880}
+    },
+    "cumulativeHeadroomGainTotal": 113859,
+    "cumulativeHeadroomGainMean": 39.534375,
+    "relativeCumulativeHeadroomGain": 1.1596256085388956
+  },
+  "reading": "Over six full size-preserving migrations, the topology-aware tie-break maintains the same 3-ray/1-hop movement floor as the legacy policy but avoids short deterministic migration cycles and accumulates substantially more immediate W33 line-placement headroom.",
+  "boundary": "Exact for these declared policies on the complete 2,880-state adversarial corpus. The multi-step metrics are engineering-policy evidence, not a new blocking-number theorem, production throughput/latency result, or physical-fabric measurement."
+}
