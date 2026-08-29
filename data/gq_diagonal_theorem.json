@@ -1,0 +1,69 @@
+{
+  "schema": "holotrade.gq-diagonal-theorem.v1",
+  "valid": true,
+  "mixingLemma": "at t = s a branch-(B) line has all s+1 points at multiplicity 1, so U = {p : m_p = 1} is closed under collinearity; the collinearity graph is connected, so U is empty or everything",
+  "theorem": "a GQ(s,s) with no ovoid and the centre property that is NOT self-dual has tau_2 > (s^2+1) tau_1",
+  "wouldCover": "W(3,q) for every odd q -- self-dual iff q even, ovoid-free iff q odd -- but does NOT, because the centre property fails at q = 5",
+  "w35": {
+    "points": 156,
+    "lines": 156,
+    "q": 5,
+    "tau1": 29,
+    "tau1Proved": true,
+    "ovoidSize": 26,
+    "delta": 3,
+    "pointPerpSize": 30,
+    "beatsPerpBy": 1,
+    "centreProperty": {
+      "sampled": 120,
+      "centrePropertyHolds": 9,
+      "fraction": 0.075,
+      "profiles": {
+        "{1: 145, 2: 5, 3: 5, 4: 1}": 111,
+        "{1: 150, 4: 6}": 9
+      }
+    },
+    "centrePropertyFails": true,
+    "theoremApplies": false
+  },
+  "tau1Conjecture": {
+    "statement": "tau_1(W(3,q)) = q^2 + q - 1 for odd q",
+    "equivalently": "delta = q - 2",
+    "confirmations": [
+      {
+        "q": 3,
+        "tau1": 11
+      },
+      {
+        "q": 5,
+        "tau1": 29
+      }
+    ],
+    "status": "CONJECTURE on two data points, not a result"
+  },
+  "verification": {
+    "geometry": "W(3,3)",
+    "points": 40,
+    "lines": 40,
+    "t": 3,
+    "solutionsWithoutTrichotomyAtLeast": 20000,
+    "solutionsWithoutTrichotomyComplete": false,
+    "solutionsWithTrichotomy": 1,
+    "status": "OPTIMAL",
+    "allOnesSolutions": 1,
+    "ovoidSupportedSolutions": 0,
+    "uniqueAndIsAllOnes": true
+  },
+  "trichotomy": {
+    "tGreaterThanS": "impossible (gq_tight_case_theorem.py)",
+    "tEqualsS": "impossible unless self-dual (this file)",
+    "tLessThanS": "OPEN -- branch-(B) lines have s-t points of multiplicity 0 and the mixing lemma fails"
+  },
+  "attribution": {
+    "theirs": "the self-duality route and the theorem at q = 3, commits 43049db and 1513d61; their step to 'bijection' used the pair count |F| = 1 + kt/mu = 10 against alpha = 7",
+    "addedHere": "the mixing lemma, which needs neither the pair count nor the independence number, and the resulting extension from q = 3 to every odd q"
+  },
+  "conditionalOn": "the centre property, verified for W(3,3) over all 360 minimum blockers and MEASURED FALSE at q = 5",
+  "whereTheMachineryStops": "the centre property, not self-duality, is the binding constraint on the diagonal. It holds in the t > s families because their minimum blockers are point-perps, and it fails at the first diagonal case past q = 3.",
+  "boundary": "the tight SIZE is excluded; no value of tau_2 is determined for any q, and tau_2(W(3,3)^2) remains open in [111, 115]."
+}

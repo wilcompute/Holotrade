@@ -2244,3 +2244,40 @@ test("the centre property is a perp profile, and W(3,3) is the exception", () =>
   // the general-q statement is explicitly NOT claimed
   assert.match(r.notClaimed, /EVERY q/);
 });
+
+test("on the diagonal the branches cannot mix, and q=5 stops the extension", () => {
+  const d = require(path.join(root, "data/gq_diagonal_theorem.json"));
+  assert.ok(d.valid);
+
+  // the mixing lemma's sharp prediction on W(3,3): imposing only the
+  // trichotomy cuts 14370 balance solutions to exactly one, the bijection
+  const v = d.verification;
+  // a floor, deliberately: that enumeration is never run to completion
+  assert.ok(v.solutionsWithoutTrichotomyAtLeast > 10000);
+  assert.equal(v.solutionsWithTrichotomy, 1);
+  assert.equal(v.allOnesSolutions, 1);
+  assert.equal(v.ovoidSupportedSolutions, 0, "W(3,3) has no ovoid");
+  assert.equal(v.status, "OPTIMAL");
+
+  // and the extension to odd q is BLOCKED, measured not assumed
+  assert.ok(d.w35.centrePropertyFails);
+  assert.equal(d.w35.theoremApplies, false);
+  assert.ok(d.w35.centreProperty.centrePropertyHolds <
+            d.w35.centreProperty.sampled);
+  assert.match(d.wouldCover, /does NOT/);
+
+  // tau_1(W(3,5)) = 29, proved, one below the point-perp -- same margin as q=3
+  assert.equal(d.w35.tau1, 29);
+  assert.ok(d.w35.tau1Proved);
+  assert.equal(d.w35.pointPerpSize, 30);
+  assert.equal(d.w35.beatsPerpBy, 1);
+  assert.equal(d.tau1Conjecture.status.startsWith("CONJECTURE"), true,
+    "q^2+q-1 is labelled a conjecture, not a result");
+  for (const c of d.tau1Conjecture.confirmations) {
+    assert.equal(c.tau1, c.q * c.q + c.q - 1);
+  }
+
+  // the trichotomy of cases is recorded with t < s still open
+  assert.match(d.trichotomy.tLessThanS, /OPEN/);
+  assert.match(d.attribution.theirs, /43049db/);
+});
