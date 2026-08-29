@@ -1,0 +1,36 @@
+{
+  "schema": "holotrade.near-ovoid-failure-recovery.v1",
+  "evidence": "EXHAUSTIVE ADVERSARIAL SINGLE-FAILURE CORPUS",
+  "design": {
+    "startStates": 2880,
+    "failure": "the unique idle defect centre whose outage kills all three current free lines",
+    "failedNodeRemainsUnavailable": true,
+    "steps": 6,
+    "migrationIsSizePreserving": true,
+    "movementPrimary": "minimise rays, then hops"
+  },
+  "legacy": {
+    "meanFreeLinesByStepIncludingFailure": [0.0, 2.4625, 2.8618055555555557, 3.236458333333333, 2.9145833333333333, 3.236458333333333, 2.9145833333333333],
+    "firstReach": {
+      "3": {"1": 1332, "2": 822, "3": 30, "unreached": 696},
+      "6": {"2": 264, "3": 372, "unreached": 2244},
+      "9": {"3": 72, "unreached": 2808},
+      "12": {"unreached": 2880}
+    },
+    "finalHeadroomHistogram": {"0": 782, "2": 324, "3": 642, "4": 226, "5": 612, "6": 246, "7": 30, "9": 10, "10": 8},
+    "raysPerTrajectory": 18
+  },
+  "topologyAware": {
+    "meanFreeLinesByStepIncludingFailure": [0.0, 3.0, 6.0, 9.0, 11.939583333333333, 13.198958333333334, 14.546875],
+    "firstReach": {
+      "3": {"1": 2880},
+      "6": {"2": 2880},
+      "9": {"3": 2880},
+      "12": {"4": 2706, "5": 174}
+    },
+    "finalHeadroomHistogram": {"13": 72, "14": 1529, "15": 967, "16": 256, "17": 56},
+    "raysPerTrajectory": 18
+  },
+  "theorem": "For the declared worst single idle-node outage on every certified near-ovoid, the topology-aware policy restores at least 3, 6 and 9 free W33 lines after exactly 1, 2 and 3 migrations respectively in all 2,880 cases, with the same 3-ray-per-step movement floor as legacy.",
+  "boundary": "Finite adversarial recovery evidence only; not a hardware failure-rate, MTTR, SLA, or physical-fabric claim."
+}
