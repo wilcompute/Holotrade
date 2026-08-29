@@ -1,0 +1,34 @@
+{
+  "schema": "holotrade.w33-recovery-two-stage-core.v1",
+  "status": "PASS",
+  "entryStage": {
+    "states": 2880,
+    "controller": "one-bit 3+3 block selector chooses one residual hinge source",
+    "objectiveEquivalentStates": 2880,
+    "exactGenericMoveIdentityMatches": 664,
+    "rays": 3,
+    "hops": 1,
+    "freeLinesAfterMove": 6
+  },
+  "postEntryStage": {
+    "identity": "F_after = F + s1(source) - z(destination) - 1[shared line was singleton]",
+    "secondMoveExactMatches": 2880,
+    "secondMoveFreeLines": 9,
+    "longHorizonValidation": {
+      "decisions": 92160,
+      "distinctVisitedStates": 25184,
+      "exactGenericDecisionMatches": 92160
+    }
+  },
+  "rtl": {
+    "source": "rtl/w33_recovery_two_stage_core.v",
+    "embeddedGeometry": "40 exact point-line masks plus the 40 four-point W33 lines",
+    "registeredBitsAtSourceLevel": 3,
+    "registeredFields": ["valid","entry_q","block_q"],
+    "verifyHarness": "rtl/verify_w33_recovery_two_stage_core.ys",
+    "synthesisHarness": "rtl/synth_w33_recovery_two_stage_core.ys",
+    "measuredLutCount": null,
+    "measuredSynthesizedCellCount": null
+  },
+  "boundary": "Software regression proves the geometric masks and decision semantics. The current execution environment did not contain Yosys/yowasp-yosys, so no fresh synthesized LUT/cell count is claimed; the committed harness is the reproducible measurement procedure. Failure-aware decisions remain a separate policy surface."
+}
