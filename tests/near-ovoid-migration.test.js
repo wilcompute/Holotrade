@@ -26,6 +26,11 @@ test("all 2880 near-ovoids expose the exact 4-vs-6 release split", () => {
       assert.equal(z.ordinaryRelease.length, 6);
       assert.equal(z.guaranteeAfterRecommendedRelease, 7);
       assert.equal(z.guaranteeAfterOrdinaryRelease, 6);
+      assert.equal(z.residualHingePoints.length, 2);
+      assert.ok(z.chiralityBit === 0 || z.chiralityBit === 1);
+      assert.equal(z.chiralityAnchor, z.residualHingePoints[z.chiralityBit]);
+      assert.equal(z.residualHingePoints.filter((p) => z.highRelease.includes(p)).length, 1,
+        "every high-release tetrad contains exactly one residual hinge point");
       const key = `${z.defectCenter}:${z.blockerCenter}`;
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(z);
@@ -41,6 +46,10 @@ test("all 2880 near-ovoids expose the exact 4-vs-6 release split", () => {
       "all six m states must have the same current availability");
     assert.equal(new Set(xs.map((z) => z.microstateSignature)).size, 6,
       "release signatures distinguish all six hidden states");
+    assert.deepEqual(xs.reduce((C,z) => { C[z.chiralityBit]++; return C; }, [0,0]), [3,3],
+      "the residual hinge points split every six-state fibre 3+3");
+    assert.equal(new Set(xs.map((z) => z.residualHingePoints.join(","))).size, 1,
+      "the two chirality anchors are intrinsic to the oriented defect pair");
     assert.equal(xs.reduce((S, z) => {
       if (S === null) return new Set(z.highRelease);
       return new Set([...S].filter((p) => z.highRelease.includes(p)));
@@ -65,12 +74,21 @@ test("all 2880 near-ovoids expose the exact 4-vs-6 release split", () => {
       comps.push(C);
     }
     assert.deepEqual(comps.map((x)=>x.length).sort(), [3,3]);
+    const componentBits=[];
     for (const C of comps) {
       const H = C.map((i) => xs[i].highRelease);
       const common = H.reduce((S,h) => new Set([...S].filter((p)=>h.includes(p))), new Set(H[0]));
       const union = new Set(H.flat());
       assert.equal(common.size, 1);
       assert.equal(union.size, 10);
+      assert.equal(new Set(C.map((i) => xs[i].chiralityBit)).size, 1,
+        "each migration K3 is one chirality block");
+      const bit=xs[C[0]].chiralityBit;
+      componentBits.push(bit);
+      assert.equal(common.has(xs[C[0]].chiralityAnchor), true,
+        "the common high-release point of a K3 is its residual hinge anchor");
     }
+    assert.deepEqual(componentBits.sort(), [0,1],
+      "the two migration K3 components are exactly the two chirality blocks");
   }
 });
