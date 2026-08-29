@@ -1,0 +1,27 @@
+# Baseline two-stage core
+read_verilog rtl/w33_recovery_two_stage_core.v
+hierarchy -check -top w33_recovery_two_stage_core
+proc
+flatten
+opt
+memory
+opt
+techmap
+opt
+abc -g LUT4
+tee -o rtl/build/w33_recovery_baseline_lut4.txt stat
+
+design -reset
+
+# Compact adjacency-indexed core generated from the canonical substrate.
+read_verilog rtl/build/w33_recovery_two_stage_core_compact.v
+hierarchy -check -top w33_recovery_two_stage_core_compact
+proc
+flatten
+opt
+memory
+opt
+techmap
+opt
+abc -g LUT4
+tee -o rtl/build/w33_recovery_compact_lut4.txt stat
