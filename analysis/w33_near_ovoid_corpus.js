@@ -2,11 +2,13 @@
 "use strict";
 
 // Exact in-memory builder for the 2,880 optimal W33 near-ovoids, compressed as
-// 360 minimum blockers x eight removable shell points.  This is the JavaScript
+// 360 minimum blockers x eight removable shell points. This is the JavaScript
 // counterpart of analysis/w33_near_ovoid_adversarial_corpus.py and exists so
-// experiments/tests do not depend on a generated JSON file being present.
+// experiments/tests do not depend on a generated JSON file being pre-existing.
 
 const crypto = require("node:crypto");
+const fs = require("node:fs");
+const path = require("node:path");
 const S = require("../js/substrate.js");
 
 let CACHE = null;
@@ -28,15 +30,12 @@ function solveTarget(target, pointLines) {
       const F = cand[l].filter((p) => !chosenSet.has(p) && pointLines[p].every((j) => cnt[j] < target[j]));
       if (F.length < need) return;
       const key = [F.length, -need, l];
-      if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] || (key[1] === best.key[1] && key[2] < best.key[2])))) {
-        best = { key, F, need };
-      }
+      if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] || (key[1] === best.key[1] && key[2] < best.key[2])))) best = { key, F, need };
     }
     if (!best) {
       if (chosen.length === 10) solutions.add([...chosen].sort((a,b)=>a-b).join(","));
       return;
     }
-
     function combos(xs, k, start = 0, acc = []) {
       if (acc.length === k) {
         const d = new Map();
@@ -60,7 +59,6 @@ function buildCorpus() {
   const pointLines = Array.from({length:40},()=>[]);
   S.LINES.forEach((L,li)=>L.forEach((p)=>pointLines[p].push(li)));
   const blockers = new Map(), near = new Set();
-
   for (let a = 0; a < 40; a++) for (let b = 0; b < 40; b++) {
     if (a === b || !S.isAdjacent(a,b)) continue;
     const common = pointLines[a].filter((l)=>pointLines[b].includes(l));
@@ -72,11 +70,9 @@ function buildCorpus() {
     if (sols.length !== 6) throw new Error(`expected six completions for ${a}->${b}, got ${sols.length}`);
     for (const sol of sols) {
       near.add(sol.join(","));
-      const B = [...sol,a].sort((x,y)=>x-y), key=B.join(",");
-      if (!blockers.has(key)) blockers.set(key,{blocker:B,center:b,removals:new Set()});
-      const z=blockers.get(key);
-      if (z.center !== b) throw new Error("blocker center ambiguity");
-      z.removals.add(a);
+      const B = [...sol,a].sort((x,y)=>x-y), k=B.join(",");
+      if (!blockers.has(k)) blockers.set(k,{blocker:B,center:b,removals:new Set()});
+      const z=blockers.get(k); if (z.center !== b) throw new Error("blocker center ambiguity"); z.removals.add(a);
     }
   }
   if (near.size !== 2880 || blockers.size !== 360) throw new Error("corpus cardinality mismatch");
@@ -84,20 +80,17 @@ function buildCorpus() {
     .sort((x,y)=>x.blocker.join(",").localeCompare(y.blocker.join(","),undefined,{numeric:true}));
   if (!records.every((r)=>r.removals.length===8)) throw new Error("8-fold cover mismatch");
   const canon=JSON.stringify(records.map((r)=>({blocker:r.blocker,center:r.center,removals:r.removals})).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b))));
-  // The Python certificate owns the canonical records SHA.  JS ordering differs
-  // in its serialization details, so validate the structural counts here.
-  CACHE={
-    schema:"holotrade.w33-near-ovoid-adversarial-corpus.runtime.v1",
-    valid:true,
-    counts:{minimumBlockers:360,removalsPerBlocker:8,nearOvoids:2880},
-    records,
-    runtimeSha256:crypto.createHash("sha256").update(canon).digest("hex"),
-  };
+  CACHE={schema:"holotrade.w33-near-ovoid-adversarial-corpus.runtime.v1",valid:true,counts:{minimumBlockers:360,removalsPerBlocker:8,nearOvoids:2880},records,runtimeSha256:crypto.createHash("sha256").update(canon).digest("hex")};
   return CACHE;
+}
+
+function materialize(file = path.resolve(__dirname,"../data/w33_near_ovoid_adversarial_corpus.json")) {
+  const z=buildCorpus(); fs.writeFileSync(file,JSON.stringify(z,null,2)+"\n"); return file;
 }
 
 if (require.main === module) {
   const z=buildCorpus();
-  process.stdout.write(JSON.stringify({status:"PASS",counts:z.counts,runtimeSha256:z.runtimeSha256},null,2)+"\n");
+  const written=process.argv.includes("--write") ? materialize() : null;
+  process.stdout.write(JSON.stringify({status:"PASS",counts:z.counts,runtimeSha256:z.runtimeSha256,written},null,2)+"\n");
 }
-module.exports={buildCorpus,solveTarget};
+module.exports={buildCorpus,solveTarget,materialize};
