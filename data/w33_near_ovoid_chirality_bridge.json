@@ -1,0 +1,36 @@
+{
+  "schema": "holotrade.w33-near-ovoid-chirality-bridge.v1",
+  "status": "PASS",
+  "states": 2880,
+  "orientedDefectPairs": 480,
+  "microstatesPerPair": 6,
+  "chiralityHalves": 960,
+  "statesPerHalf": 3,
+  "chiralityAnchor": {
+    "definition": "the unique residual point of hinge line ac contained in the four-point high-release set",
+    "residualPointsPerPair": 2,
+    "statesPerAnchorWithinPair": 3,
+    "globalStatesPerW33PointAsAnchor": 72
+  },
+  "deterministicBitEncoding": {
+    "rule": "sort the two residual hinge point ids and use the anchor index 0/1",
+    "counts": {
+      "0": 1440,
+      "1": 1440
+    },
+    "boundary": "the anchor is geometric; the numeric bit is a serialization gauge and is not claimed invariant under relabeling"
+  },
+  "migrationIntersectionGraph": {
+    "graphPerPair": "K3 disjoint union K3",
+    "theorem": "its two connected components are exactly the two chirality-anchor blocks",
+    "commonPointOfEachK3": "its residual hinge chirality anchor"
+  },
+  "w33TheoryBridge": {
+    "groupImage": "C3 x S3 = (C3 x C3) : C2",
+    "uniqueBlockSystem": "3+3",
+    "quotient": "C2 swaps the two residual hinge anchors / chirality halves",
+    "insideEachHalf": "a three-state C3 torsor; no canonical F3 origin is assigned by Holotrade"
+  },
+  "operationalReading": "The F2 quotient is scheduler-visible during one-release migration even though the current free-line placement depends only on (a,c). The hidden threefold coordinate remains a gauge/torsor unless extra state is supplied.",
+  "boundary": "Exact finite scheduler/group-action bridge only; 'chirality' names the C2 block quotient and is not a physical particle-chirality claim."
+}
