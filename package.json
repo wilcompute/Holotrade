@@ -5,7 +5,7 @@
   "main": "js/app.js",
   "type": "commonjs",
   "scripts": {
-    "test": "node --test tests/*.test.js",
+    "test": "node analysis/w33_near_ovoid_corpus.js --write && node --test tests/*.test.js",
     "serve": "node scripts/serve.js",
     "verify:rtl": "node scripts/run-yosys.js rtl/verify.ys",
     "synth:rtl": "node scripts/run-yosys.js rtl/synth.ys",
@@ -22,7 +22,7 @@
     "experiment:near-ovoid-actual-fleet-energy": "node experiments/near_ovoid_actual_fleet_energy.js",
     "verify:w33-recovery-fsm": "node scripts/run-yosys.js rtl/verify_w33_near_ovoid_recovery_fsm.ys",
     "synth:w33-recovery-fsm": "node scripts/run-yosys.js rtl/synth_w33_near_ovoid_recovery_fsm.ys",
-    "verify:migration-recovery": "node --test tests/near-ovoid-policy-extensions.test.js tests/near-ovoid-recovery-frontiers.test.js && node analysis/w33_near_ovoid_attractor_structure.js && node experiments/near_ovoid_double_failure_recovery.js && node experiments/near_ovoid_actual_fleet_energy.js && npm run verify:w33-recovery-fsm",
+    "verify:migration-recovery": "node analysis/w33_near_ovoid_corpus.js --write && node --test tests/near-ovoid-policy-extensions.test.js tests/near-ovoid-recovery-frontiers.test.js && node analysis/w33_near_ovoid_attractor_structure.js && node experiments/near_ovoid_double_failure_recovery.js && node experiments/near_ovoid_actual_fleet_energy.js && npm run verify:w33-recovery-fsm",
     "paper": "node scripts/run-paper.js",
     "verify:shapes": "node analysis/w33_shape_catalogue.js && node analysis/w33_automorphisms.js && node analysis/w33_shape_guarantees.js && node analysis/w33_shape_packing.js && node analysis/w33_level2_shapes.js",
     "verify:near-ovoids": "py -3 analysis/w33_near_ovoid_adversarial_corpus.py",
