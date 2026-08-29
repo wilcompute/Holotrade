@@ -4,7 +4,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const path = require("node:path");
 const root = path.resolve(__dirname, "..");
-const corpus = require(path.join(root, "data/w33_near_ovoid_adversarial_corpus.json"));
+const corpus = require(path.join(root, "analysis/w33_near_ovoid_corpus.js")).buildCorpus();
 const M = require(path.join(root, "scheduler/w33-near-ovoid-migration.js"));
 
 function intersectionSize(a, b) {
@@ -47,7 +47,6 @@ test("all 2880 near-ovoids expose the exact 4-vs-6 release split", () => {
     }, null).size, 0,
       "there is no universally high-release point after m is forgotten");
 
-    // Intersecting high-release tetrads form two disjoint K3 components.
     const adj = Array.from({ length: 6 }, () => []);
     for (let i = 0; i < 6; i++) for (let j = i + 1; j < 6; j++) {
       const s = intersectionSize(xs[i].highRelease, xs[j].highRelease);
