@@ -1,0 +1,40 @@
+{
+  "schema": "holotrade.tensor-110-no-local-obstruction.v1",
+  "valid": true,
+  "checks": {
+    "occupancyForcesSingletons1440": true,
+    "occupancyForcesDoubled160": true,
+    "doubledTilesFromPencils": true,
+    "centreTheoremOnAll360": true,
+    "traceSum44": true,
+    "degreeDivisibleByFour": true,
+    "alphaCapConsistent": true,
+    "fibreProgramArithmetic": true
+  },
+  "occupancy": {
+    "incidences": 1760,
+    "tiles": 1600,
+    "singletons": 1440,
+    "doubled": 160,
+    "doubledFromPencils": 160,
+    "agree": true
+  },
+  "formulationsTried": 9,
+  "infeasibleReturned": 0,
+  "invariantsThatClose": [
+    "tile occupancy",
+    "doubled-tile identification",
+    "centre theorem",
+    "centre balance (twice)",
+    "matrix equation N^T X N = J + P N",
+    "degree identity",
+    "fibre and co-fibre independence",
+    "fibre-size program",
+    "blocker-multiset condition",
+    "eigen-coset integrality"
+  ],
+  "conclusion": "the tight case has no local obstruction; if tau_2 > 110 the failure is global",
+  "corroboration": "the symmetry-reduced Lasserre-1 SDP returns 100, below the elementary shadow bound of 110, because that bound concerns lines and a two-point cone cannot express them",
+  "dichotomy": "either an exhaustive search closes it, or it needs an idea that is not a local invariant",
+  "boundary": "this is a characterisation of why the question resists, NOT a proof either way. tau_2 remains open in [110, 115]."
+}

@@ -1337,6 +1337,30 @@ test("the correspondence recomputes from the geometry, not from the artifact", (
   assert.deepEqual([...perBlocker], [8]);
 });
 
+test("the tight case has no local obstruction, and that is stated as a characterisation", () => {
+  const o = require(path.join(root, "data/tensor_110_no_local_obstruction.json"));
+  assert.equal(o.valid, true);
+  for (const [k, v] of Object.entries(o.checks)) assert.equal(v, true, k);
+  // the occupancy count and the pencil count must agree exactly
+  const c = o.occupancy;
+  assert.equal(c.incidences, 16 * 110);
+  assert.equal(c.tiles, 1600);
+  assert.equal(c.singletons, 1440);
+  assert.equal(c.doubled, 160);
+  assert.equal(c.doubledFromPencils, 160, "40 lines x 4 pencil lines");
+  assert.equal(c.agree, true, "two independent counts of the doubled tiles");
+  assert.equal(c.singletons + c.doubled, c.tiles);
+  assert.equal(c.singletons + 2 * c.doubled, c.incidences);
+  // nine formulations, none infeasible -- that is the evidence for the claim
+  assert.equal(o.formulationsTried, 9);
+  assert.equal(o.infeasibleReturned, 0);
+  assert.ok(o.invariantsThatClose.length >= 10);
+  // and it is a characterisation, not a proof
+  assert.match(o.boundary, /NOT a proof either way/);
+  assert.match(o.boundary, /open in \[110, 115\]/);
+  assert.match(o.dichotomy, /exhaustive search|not a local invariant/);
+});
+
 test("the tight case reduces to N^T X N = J + P N, and re-derives the centre balance", () => {
   const e = require(path.join(root, "data/tensor_tight_matrix_equation.json"));
   assert.equal(e.valid, true);
