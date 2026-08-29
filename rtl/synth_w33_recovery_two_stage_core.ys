@@ -1,0 +1,11 @@
+read_verilog rtl/w33_recovery_two_stage_core.v
+hierarchy -check -top w33_recovery_two_stage_core
+proc
+flatten
+opt
+memory
+opt
+techmap
+opt
+abc -g LUT4
+stat
