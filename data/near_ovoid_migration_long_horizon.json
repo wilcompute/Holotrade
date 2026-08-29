@@ -1,0 +1,32 @@
+{
+  "schema": "holotrade.near-ovoid-migration-long-horizon.v1",
+  "evidence": "EXHAUSTIVE FINITE CORPUS / DETERMINISTIC POLICY DYNAMICS",
+  "design": {
+    "startStates": 2880,
+    "horizon": 32,
+    "cycleCap": 64,
+    "busyCardinality": 10,
+    "movementPrimary": "minimise rays, then hops"
+  },
+  "legacy": {
+    "cycleLengthHistogram": {"2": 2880},
+    "transientLengthHistogram": {"0": 732, "1": 1098, "2": 858, "3": 192},
+    "firstRepeatStepRange": [2, 5],
+    "cumulativeHeadroomTotal32": 532464,
+    "cumulativeHeadroomMean32": 184.88333333333333,
+    "lateStepMeans": [5.638888888888889, 5.960416666666666, 5.638888888888889, 5.960416666666666, 5.638888888888889],
+    "cycleHeadroomRange": [3, 13]
+  },
+  "topologyAware": {
+    "cycleLengthHistogram": {"2": 2880},
+    "transientLengthHistogram": {"5": 9, "6": 211, "7": 770, "8": 654, "9": 661, "10": 328, "11": 202, "12": 25, "13": 14, "14": 6},
+    "firstRepeatStepRange": [7, 16],
+    "cycleHeadroomHistogram": {"19/19": 2255, "17/17": 572, "16/17": 36, "16/16": 17},
+    "cumulativeHeadroomTotal32": 1596349,
+    "cumulativeHeadroomMean32": 554.2878472222222,
+    "lateStepMeans": [18.547569444444445, 18.560069444444444, 18.547569444444445, 18.560069444444444, 18.547569444444445]
+  },
+  "relativeCumulativeHeadroomGain32": 1.9980411821268669,
+  "theorem": "For the two declared deterministic migration policies on all 2,880 certified start states, every trajectory eventually enters a period-two state cycle. The topology-aware controller reaches that cycle after a 5-14 step transient and 2,255 of 2,880 cycles have 19 free W33 lines on both states.",
+  "boundary": "The cycle census is exact for these tie-breaks on the finite corpus. It is not a theorem that every ray-minimising policy has period two and is not production telemetry."
+}
