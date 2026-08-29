@@ -1,0 +1,21 @@
+{
+  "schema": "holotrade.near-ovoid-block-controller.v1",
+  "status": "PASS",
+  "states": 2880,
+  "groupBlockSystem": "the unique nontrivial 3+3 block system of the local C3 x S3 six-state action",
+  "controllerStates": 2,
+  "blockHistogram": {"0": 1440, "1": 1440},
+  "stateMeaning": "which of the two residual points on the hinge line ac belongs to the state's high-release tetrad",
+  "action": "migrate that active residual hinge point",
+  "sourceCandidatesPerDecision": 1,
+  "verified": {
+    "sourceIsHighRelease": 2880,
+    "movementRays": 3,
+    "movementHops": 1,
+    "freeLinesAfterRelease": 7,
+    "freeLinesAfterFullMove": 6,
+    "matchesFullTopologyAwareFirstMoveHeadroom": 2880
+  },
+  "reading": "The canonical 3+3 imprimitivity system compresses first-step near-ovoid source selection from ten busy points (or four high-release points) to one block-selected hinge-residual source. The two-state controller retains the exact one-step topology-aware headroom guarantee on all 2,880 states.",
+  "boundary": "The two-state controller is certified only on the near-ovoid entry stratum. After the first full migration the state generally leaves that stratum and the generic topology-aware policy resumes unless a separate controller is proved for the new orbit."
+}
