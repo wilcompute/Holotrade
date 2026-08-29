@@ -5,10 +5,11 @@ on:
     branches: [master]
     paths:
       - 'rtl/w33_recovery_two_stage_core.v'
-      - 'rtl/w33_recovery_two_stage_core_compact.v'
       - 'rtl/verify_w33_recovery_two_stage_core.ys'
+      - 'rtl/verify_w33_recovery_compact_equiv.ys'
       - 'rtl/synth_w33_recovery_two_stage_core.ys'
       - 'rtl/synth_w33_recovery_compare.ys'
+      - 'scripts/gen-w33-recovery-compact.js'
       - 'tests/w33-recovery-two-stage-rtl.test.js'
       - 'package.json'
       - '.github/workflows/w33-recovery-synth.yml'
@@ -31,7 +32,17 @@ jobs:
           python-version: '3.12'
       - name: Install portable Yosys
         run: python -m pip install yowasp-yosys==0.67.0.0.post1190
-      - name: Verify software and RTL source
+      - name: Verify baseline software and RTL source
         run: npm run verify:w33-recovery-two-stage
-      - name: Synthesize two-stage recovery core
-        run: npm run synth:w33-recovery-two-stage
+      - name: Generate compact adjacency-indexed RTL
+        run: node scripts/gen-w33-recovery-compact.js
+      - name: Prove compact RTL equivalent to baseline
+        run: node scripts/run-yosys.js rtl/verify_w33_recovery_compact_equiv.ys
+      - name: Synthesize baseline and compact cores to LUT4
+        run: node scripts/run-yosys.js rtl/synth_w33_recovery_compare.ys
+      - name: Show measured comparison
+        run: |
+          echo '--- baseline ---'
+          cat rtl/build/w33_recovery_baseline_lut4.txt
+          echo '--- compact ---'
+          cat rtl/build/w33_recovery_compact_lut4.txt
