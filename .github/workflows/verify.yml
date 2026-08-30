@@ -22,7 +22,18 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - run: npm test
+      - name: Verify W33 near-ovoid corpus
+        run: npm run verify:w33-corpus
+      - name: Run Node tests with per-file diagnostics
+        if: always()
+        run: node tools/run-node-tests-diagnostic.js
+      - name: Upload Node test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-test-diagnostics-${{ github.run_id }}
+          path: node-test-diagnostics.json
+          if-no-files-found: error
 
   rtl:
     name: RTL formal and synthesis
