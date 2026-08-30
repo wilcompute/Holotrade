@@ -1,0 +1,33 @@
+name: Node Test Diagnostic
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/node-test-diagnostic.yml'
+      - 'tools/run-node-tests-diagnostic.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Build W33 near-ovoid corpus
+        run: node analysis/w33_near_ovoid_corpus.js --write
+      - name: Run every Node test file independently
+        run: node tools/run-node-tests-diagnostic.js
+      - name: Upload diagnostic ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-test-diagnostics-${{ github.run_id }}
+          path: node-test-diagnostics.json
+          if-no-files-found: error
