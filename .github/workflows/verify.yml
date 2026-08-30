@@ -16,16 +16,20 @@ jobs:
   node-tests:
     name: Node tests
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - name: Install GAP for exact group witnesses
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install GAP/GRAPE and portable Yosys for exact witnesses
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y gap
+          sudo apt-get install -y gap gap-grape
+          python -m pip install yowasp-yosys==0.67.0.0.post1190
       - name: Build W33 near-ovoid corpus
         run: node analysis/w33_near_ovoid_corpus.js --write
       - name: Run Node tests with per-file diagnostics
