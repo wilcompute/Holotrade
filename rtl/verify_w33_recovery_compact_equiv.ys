@@ -9,6 +9,11 @@ opt
 equiv_make w33_recovery_two_stage_core w33_recovery_two_stage_core_compact equiv
 hierarchy -check -top equiv
 opt
-equiv_simple
+
+# Prove short cones first.  This deliberately inserts proven cut-points around
+# shared state/occupancy logic before the full direct SAT pass sees the large
+# 40x40-vs-40x12 decision cones.
+equiv_simple -short -seq 1
+equiv_simple -seq 1
 equiv_induct -seq 4
 equiv_status -assert
