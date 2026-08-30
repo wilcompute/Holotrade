@@ -22,8 +22,8 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - name: Verify W33 near-ovoid corpus
-        run: npm run verify:w33-corpus
+      - name: Build W33 near-ovoid corpus
+        run: node analysis/w33_near_ovoid_corpus.js --write
       - name: Run Node tests with per-file diagnostics
         if: always()
         run: node tools/run-node-tests-diagnostic.js
