@@ -6,15 +6,15 @@ const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
 
-test("q=5 ovoid deficiency frontier is rigorously [8,12]", () => {
+test("q=5 ovoid deficiency frontier is rigorously [9,12]", () => {
   const s = require(path.join(root, "data/w35_ovoid_deficiency_state.json"));
   assert.equal(s.status, "OPEN");
-  assert.deepEqual(s.interval, [8, 12]);
-  assert.equal(s.lowerBound.value, 8);
-  assert.equal(s.lowerBound.proofCommit, "67075bc4343d5c2af8d38072d46f5c1f08643584");
-  assert.match(s.lowerBound.argument, /deficiency 7 is impossible/i);
+  assert.deepEqual(s.interval, [9, 12]);
+  assert.equal(s.lowerBound.value, 9);
+  assert.equal(s.lowerBound.proofCommit, "c1025ae22e63309db3a28afbafdf1beb723cdf91");
+  assert.match(s.lowerBound.argument, /deficiency 8/i);
   assert.equal(s.rivalReadings.thetaMinusAlpha.value, 8);
-  assert.match(s.rivalReadings.thetaMinusAlpha.status, /UNDECIDED/);
+  assert.match(s.rivalReadings.thetaMinusAlpha.status, /REFUTED/);
 });
 
 test("depth-2 tensor frontier excludes the tight 110 case", () => {
