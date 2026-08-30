@@ -6,6 +6,10 @@ on:
     paths:
       - '.github/workflows/node-test-diagnostic.yml'
       - 'tools/run-node-tests-diagnostic.js'
+      - 'tests/**'
+      - 'telemetry/**'
+      - 'analysis/e8_*.js'
+      - 'data/w35_ovoid_deficiency_state.json'
   workflow_dispatch:
 
 permissions:
@@ -14,12 +18,16 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 22
+      - name: Install GAP for exact group witnesses
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gap
       - name: Build W33 near-ovoid corpus
         run: node analysis/w33_near_ovoid_corpus.js --write
       - name: Run every Node test file independently
