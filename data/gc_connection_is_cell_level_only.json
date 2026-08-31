@@ -1,0 +1,55 @@
+{
+  "schema": "holotrade.gc-cell-level-only.v1",
+  "valid": true,
+  "orders": {
+    "Sp(4,3)": 51840,
+    "PSp(4,3)": 25920,
+    "PSL(2,11)": 660,
+    "PSL(2,19)": 3420,
+    "A5": 60
+  },
+  "factorisations": {
+    "Sp(4,3)": {
+      "2": 7,
+      "3": 4,
+      "5": 1
+    },
+    "PSL(2,11)": {
+      "2": 2,
+      "3": 1,
+      "5": 1,
+      "11": 1
+    },
+    "PSL(2,19)": {
+      "2": 2,
+      "3": 2,
+      "5": 1,
+      "19": 1
+    }
+  },
+  "primeObstruction": {
+    "11dividesSp43": false,
+    "19dividesSp43": false,
+    "conclusion": "by Lagrange neither PSL(2,11) nor PSL(2,19) embeds in Sp(4,3) or any quotient, and no element of order 11 or 19 acts on the 40 points"
+  },
+  "cellGroupsDoFit": {
+    "A5divides": true,
+    "why": "the cells' groups have orders dividing 51840, the polytopes' do not"
+  },
+  "countMismatch": {
+    "spreads": 36,
+    "cellsPerSpread": 1,
+    "elevenCellNeeds": 11,
+    "fiftySevenCellNeeds": 57,
+    "orbitCheck": "25920 / 720 = 36"
+  },
+  "reproducedPriorArt": {
+    "BT2053": "spread graph is the rank-three NO_6^-(2), equivalently NO_5^{-perp}(3), local graph Kneser K(6,2), second subconstituent Johnson J(6,3); identification does not rely on the nonunique parameters (36,15,6,6)",
+    "BT2064": "regular-symplectic-spread orbits 36, 300, 1176 for q = 3, 5, 7; distinct spreads meet in exactly 1 or q+1 lines",
+    "BT2088": "exact stabiliser C_2 x S_6 of order 1440",
+    "independentCheck": "36 spreads, intersections only 1 and 4 = q+1, share-4 graph SRG(36,15,6,6) with spectrum 15, 3^15, (-3)^20, single orbit, stabiliser 720 in PSp(4,3) = 1440 modulo the centre"
+  },
+  "whatIsAdded": "the boundary: the prime argument turns 'nobody has found the polytope' into 'no such action exists', and the count mismatch agrees",
+  "measurementReading": "a spread is an optimal Pauli-grouping schedule, so NO_6^-(2) is the graph on the 36 complete MUB frames of two qutrits, two frames sharing exactly 1 or exactly 4 of their 10 bases",
+  "boundary": "a negative result bounding an inquiry, plus a reading of an already-identified graph; no bound moves and BT836's theorem is untouched"
+}

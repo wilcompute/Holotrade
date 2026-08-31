@@ -2929,3 +2929,38 @@ test("every optimal two-qutrit grouping schedule carries both GC cells", () => {
   assert.match(r.anchoredToQ3.specificPart, /only at\s+q = 3/);
   assert.match(r.whyStated, /q = 3 by default/);
 });
+
+test("the Grunbaum-Coxeter connection cannot rise above the cell", () => {
+  const r = require(path.join(root, "data/gc_connection_is_cell_level_only.json"));
+  assert.ok(r.valid);
+
+  // the prime obstruction, checked as arithmetic rather than asserted
+  assert.equal(r.orders["Sp(4,3)"], 51840);
+  assert.equal(r.orders["PSL(2,11)"], 660);
+  assert.equal(r.orders["PSL(2,19)"], 3420);
+  assert.equal(51840 % 11 === 0, r.primeObstruction["11dividesSp43"]);
+  assert.equal(51840 % 19 === 0, r.primeObstruction["19dividesSp43"]);
+  assert.equal(r.primeObstruction["11dividesSp43"], false);
+  assert.equal(r.primeObstruction["19dividesSp43"], false);
+  // the polytope groups carry primes the substrate group does not
+  assert.ok(r.factorisations["PSL(2,11)"]["11"]);
+  assert.ok(r.factorisations["PSL(2,19)"]["19"]);
+  assert.equal(r.factorisations["Sp(4,3)"]["11"], undefined);
+  assert.equal(r.factorisations["Sp(4,3)"]["19"], undefined);
+  // but the CELL groups do fit, which is why the cells appear
+  assert.ok(r.cellGroupsDoFit.A5divides);
+  assert.equal(51840 % 60, 0);
+
+  // the combinatorial agreement
+  assert.equal(r.countMismatch.spreads, 36);
+  assert.notEqual(r.countMismatch.spreads, r.countMismatch.elevenCellNeeds);
+  assert.notEqual(r.countMismatch.spreads, r.countMismatch.fiftySevenCellNeeds);
+
+  // prior art credited in detail, including the more general family
+  assert.match(r.reproducedPriorArt.BT2053, /NO_6\^-\(2\)/);
+  assert.match(r.reproducedPriorArt.BT2064, /36, 300, 1176/);
+  assert.match(r.reproducedPriorArt.BT2088, /1440/);
+  assert.match(r.reproducedPriorArt.independentCheck, /1 and 4 = q\+1/);
+  assert.match(r.whatIsAdded, /no such\s+action exists/);
+  assert.match(r.boundary, /BT836's theorem is untouched/);
+});
