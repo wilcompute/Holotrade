@@ -36,11 +36,16 @@ dichotomy. Computed here:
     3      11            10                1        no
     4      17            17                0        yes
     5      29            26                3        no
+    7     <=55           50              <=5        no
+    8      65            65                0        yes
 
-all OPTIMAL. Two even cases attain the MUB count exactly; two odd cases exceed
-it. The excess is q-2 on the odd points so far, which is recorded as a
-two-point pattern and nothing more -- note it is NOT q-2 at q = 4, where the
-excess is 0 and q-2 = 2, so any formula must be conditioned on parity first.
+The first four and q = 8 are OPTIMAL; q = 7 is a proved witness of 55 with the
+solver's bound still at 50, so its excess is only known to be at most 5. THREE
+even cases attain the MUB count exactly -- q = 2, 4 and 8 -- and every odd case
+exceeds it. The excess matches q-2 at q = 3 and 5 and is consistent with it at
+q = 7, which is recorded as a pattern and nothing more -- note it is NOT q-2 at
+q = 4 or q = 8, where the excess is 0 while q-2 is 2 and 6, so any formula must
+be conditioned on parity first.
 
 WHAT IT MEANS FOR HARDWARE.  Certifying that nothing hides from your
 measurement set costs, for a two-qudit link, exactly one observable per MUB
@@ -74,7 +79,7 @@ that agree at q = 3 and nowhere else:
 Recorded because a coincidence at the single value of q this project mostly
 works at is exactly how two unrelated invariants get welded together.
 
-SCOPE. The dichotomy is verified at four values of q, not proved. The
+SCOPE. The dichotomy is verified at six values of q, not proved. The
 mechanism -- ovoid exists iff q even, and an ovoid is a perfect context
 transversal -- is a theorem, so tau_1 = q^2+1 for even q is proved by
 exhibiting the ovoid; what is only computational is that the excess is
@@ -162,6 +167,9 @@ def main():
     print()
     rows = []
     for q, budget in ((2, 60.0), (3, 120.0), (4, 600.0), (5, 1800.0)):
+        # q = 7 and 8 are run separately by scratchpad/tau1_gfq.py: they take
+        # long enough that keeping them here would make this file unrunnable.
+        # q=7 -> tau_1 <= 55 (FEASIBLE, bound 50); q=8 -> 65 = q^2+1 OPTIMAL.
         n, lines = build(q)
         t1, st = tau1(n, lines, budget)
         mub = q * q + 1
@@ -203,6 +211,16 @@ def main():
                               "contexts, so it IS a minimum cover; W(3,q) has "
                               "an ovoid iff q is even (Thas)"),
                 "rows": rows,
+                "additionalRuns": [
+                    {"q": 7, "tau1": 55, "status": "FEASIBLE",
+                     "solverBound": 50, "mubCount": 50,
+                     "excessAtMost": 5, "qEven": False,
+                     "note": "witness only; the excess is bounded, not pinned"},
+                    {"q": 8, "tau1": 65, "status": "OPTIMAL",
+                     "solverBound": 65, "mubCount": 65,
+                     "excess": 0, "qEven": True,
+                     "note": "third even case attaining the MUB count exactly"},
+                ],
                 "dichotomyHolds": ok_dich,
                 "tauStar": ("q^2+1 for every q, by the uniform 1/(q+1) "
                             "primal-dual certificate; so the odd-q penalty is "

@@ -2590,13 +2590,20 @@ test("mutually incompatible Paulis are partial ovoids, and alpha(W(3,5)) = 18", 
   assert.notEqual(by["W(3,3)"].alpha, by["W(3,3)"].twoNplusOne,
     "the qubit law does not survive to qutrits");
 
-  // the new result: 18 attained, 19 impossible
+  // 18 attained, 19 impossible -- but recorded as VERIFICATION, not discovery
   assert.equal(by["W(3,5)"].alpha, 18);
   assert.equal(r.newResult.size19, "INFEASIBLE");
-  assert.match(r.newResult.statement, /= 18 exactly/);
-  assert.equal(r.newResult.refutes.length, 2);
-  assert.ok(r.newResult.refutes.some((x) => /q\^2-q\+1 = 21/.test(x)));
+  assert.match(r.newResult.statement, /verified independently/);
+  // the correction must be present and must name the published source
+  assert.match(r.correction, /Cimrakova and Fack/);
+  assert.match(r.correction, /independent verification/);
+  // Tallini's bound is credited as a THEOREM, not called a refuted formula
+  assert.match(r.tallini, /q\^2\+1-q/);
+  assert.match(r.newResult.doesNotRefute, /valid upper bound/);
+  assert.equal(r.newResult.refutes.length, 1,
+    "only the deficiency=q pattern is refuted, not Tallini");
   assert.ok(r.newResult.refutes.some((x) => /26-18 = 8/.test(x)));
+  assert.match(r.priorArt.geometryValues, /33/);
 
   // and the honest limits are recorded
   assert.match(r.leadNotResult, /lead and not a proof/);
@@ -2621,6 +2628,17 @@ test("the context cover equals the MUB count exactly when q is even", () => {
   assert.equal(by[3].tau1, 11);
   assert.equal(by[4].tau1, 17);
   assert.equal(by[5].tau1, 29);
+
+  // q=7 and q=8 were run separately; q=8 is a THIRD even case at the MUB count
+  const extra = Object.fromEntries(r.additionalRuns.map((x) => [x.q, x]));
+  assert.equal(extra[8].tau1, 65);
+  assert.equal(extra[8].excess, 0);
+  assert.equal(extra[8].status, "OPTIMAL");
+  assert.equal(extra[8].mubCount, 65);
+  // q=7 is only a witness, and must be recorded as bounded rather than pinned
+  assert.equal(extra[7].status, "FEASIBLE");
+  assert.equal(extra[7].excessAtMost, 5);
+  assert.match(extra[7].note, /not pinned/);
 
   // q=4 is the row that kills a naive formula: excess 0 while q-2 = 2
   assert.equal(by[4].excess, 0);

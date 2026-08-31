@@ -49,6 +49,28 @@
       "attainsMubCount": false
     }
   ],
+  "additionalRuns": [
+    {
+      "q": 7,
+      "tau1": 55,
+      "status": "FEASIBLE",
+      "solverBound": 50,
+      "mubCount": 50,
+      "excessAtMost": 5,
+      "qEven": false,
+      "note": "witness only; the excess is bounded, not pinned"
+    },
+    {
+      "q": 8,
+      "tau1": 65,
+      "status": "OPTIMAL",
+      "solverBound": 65,
+      "mubCount": 65,
+      "excess": 0,
+      "qEven": true,
+      "note": "third even case attaining the MUB count exactly"
+    }
+  ],
   "dichotomyHolds": true,
   "tauStar": "q^2+1 for every q, by the uniform 1/(q+1) primal-dual certificate; so the odd-q penalty is a pure integrality gap and does not compound across a network of product observables",
   "oddExcessPattern": "q-2 at q = 3 and 5, recorded as a two-point pattern only; it is NOT q-2 at q = 4, where the excess is 0, so parity must be conditioned on first",

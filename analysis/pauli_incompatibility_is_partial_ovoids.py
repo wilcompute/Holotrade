@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 The maximum set of mutually incompatible qudit Pauli observables IS a maximum
-partial ovoid of a symplectic polar space -- and that closes an open bound.
+partial ovoid of a symplectic polar space -- so a 2005 geometry paper already
+answered a 2024 quantum-information question.
 
 THE PHYSICS QUESTION.  The holonet blueprint's self-entanglement section
 encodes one photon as two qutrit registers, time-bin and frequency-bin, and
@@ -26,7 +27,7 @@ qutrit values are 4 for one qutrit and 7 for two, with 13 for three found by
 computer search.
 
 THE BRIDGE.  Those are not new numbers -- they are old ones, in a literature
-that does not cite this one. The n-qudit Pauli classes for prime d = q are the
+that does not cite this one, and older than the quantum paper by two decades. The n-qudit Pauli classes for prime d = q are the
 projective points of F_q^{2n}, and two Paulis commute exactly when the
 symplectic form vanishes. So the Pauli classes with commutation are precisely
 the symplectic polar space W(2n-1, q), and
@@ -44,7 +45,7 @@ Thas's theorem -- so the qutrit answer must fall short of 10, and it does, at
 argument that gives 2n+1 and invisible to the Hoffman/Lovasz spectral bound,
 both of which permit 10.
 
-WHAT IS COMPUTED AND PROVED HERE.
+WHAT IS COMPUTED HERE, all as verification rather than discovery.
 
     system        space     alpha   ceiling q^n+1   shortfall
     2 qubits      W(3,2)      5           5             0
@@ -52,32 +53,46 @@ WHAT IS COMPUTED AND PROVED HERE.
     2 qutrits     W(3,3)      7          10             3
     2 ququints    W(3,5)     18          26             8
 
-all solved to OPTIMAL. The first three reproduce known values -- 5 and 7 are
-2n+1, and 7 at W(3,3) is Sarkar-Yoder's -- which is the point: they are the
-control that the bridge is stated correctly.
+all solved to OPTIMAL. Every one reproduces a known value: 5 and 7 are the
+qubit 2n+1, 7 at W(3,3) is Sarkar-Yoder's, and 18 at W(3,5) is
+Cimrakova-Fack's. That is the point -- they are the control that the bridge is
+stated correctly, and the bridge is the contribution.
 
-THE NEW VALUE, and it closes something open. W33-Theory's Pass 5226 records
-alpha(W(3,5)) with `bound_settled: "lower only"`: a witness of size 18 found
-by restart greedy, no upper bound established, and q^2-q+1 = 21 recorded as a
-COMPARISON TARGET their search did not reach. Their own boundary note says the
-literature value for odd q is not reproduced there.
+THE q = 5 VALUE, AND A CORRECTION.  An earlier version of this file presented
+alpha(W(3,5)) = 18 as a new result. It is not. The value is PUBLISHED:
 
-It is settled here:
+    M. Cimrakova and V. Fack, "Searching for maximal partial ovoids and
+    spreads in generalized quadrangles", Bull. Belg. Math. Soc. Simon Stevin
+    12 (2005) 697-705, Table 1.
 
-    an independent set of size 18 exists (witness verified pairwise
-    non-commuting), and size 19 is INFEASIBLE.
+Their Table 1 gives the largest maximal partial ovoids by EXHAUSTIVE search:
+W(5) has |O'| = 18 with exactly 2 non-equivalent examples, and W(7) has
+|O'| = 33 with exactly 1. The column they compare against is Tallini's
+theorem, not a guess:
 
-So alpha(W(3,5)) = 18 exactly. Three consequences follow at once:
+    THEOREM (Tallini). A partial ovoid of W(q), q odd, has size at most
+    q^2 + 1 - q.
 
-  * their lower bound was tight, and the upper bound is now closed;
-  * q^2-q+1 = 21 is REFUTED as the formula for alpha(W(3,q)) -- not merely
-    unreached, but impossible;
-  * "deficiency = q", which held on the single data point q = 3 (10-7 = 3)
-    and was flagged there as "not a family", is refuted too: at q = 5 the
-    deficiency is 26 - 18 = 8, not 5.
+which is 21 at q = 5 and 43 at q = 7. So q^2-q+1 was never a candidate
+formula -- it is a proved upper bound, and the published exhaustive values
+show it is not attained at q = 5 or q = 7.
+
+What this file's computation actually is, then, is an INDEPENDENT
+VERIFICATION: size 18 attained with a witness checked pairwise
+non-commuting, and size 19 INFEASIBLE, reproducing the 2005 value by a
+different method on the same SRG(156,30,4,6).
+
+It still settles something locally. W33-Theory's Pass 5226 records
+alpha(W(3,5)) with `bound_settled: "lower only"` -- a restart-greedy witness
+of 18 with no upper bound -- and alpha(W(3,7)) likewise at 33. Both of those
+witnesses were in fact already the true maxima; the pass simply had no way to
+know it. And "deficiency = q", which held at the single point q = 3 (10-7 = 3)
+and was flagged there as "not a family", does die: at q = 5 the deficiency is
+26 - 18 = 8, not 5.
 
 In physical terms: two five-dimensional qudits admit at most EIGHTEEN mutually
-incompatible Pauli observables, where the spectral ceiling permits 26.
+incompatible Pauli observables, where the spectral ceiling permits 26 -- a
+fact available since 2005 in a literature that does not mention Paulis.
 
 WHAT IS NOT CLAIMED.  The geometry literature records MAXIMAL partial ovoids
 of W(5,q) of size q^2+q+1, which is 13 at q = 3 and agrees with Sarkar-Yoder's
@@ -212,14 +227,27 @@ def main():
                            "symplectic polar space W(2n-1,q); the maximum is "
                            "the maximum partial ovoid, ceiling q^n+1"),
                 "instances": rows,
+                "correction": ("an earlier version of this file called "
+                               "alpha(W(3,5)) = 18 new. It is published: "
+                               "Cimrakova and Fack 2005, Table 1, by "
+                               "exhaustive search, with 2 non-equivalent "
+                               "examples; W(7) is 33 with 1. This file's "
+                               "computation is an independent verification."),
+                "tallini": ("a partial ovoid of W(q), q odd, has size at most "
+                            "q^2+1-q (Tallini) -- a proved upper bound, not a "
+                            "candidate formula; it is not attained at q = 5 "
+                            "(18 < 21) or q = 7 (33 < 43)"),
                 "newResult": {
-                    "statement": "alpha(W(3,5)) = 18 exactly",
+                    "statement": "alpha(W(3,5)) = 18, verified independently",
                     "size18": "OPTIMAL, witness verified pairwise non-commuting",
                     "size19": n19,
-                    "closesOpenBound": ("W33-Theory Pass 5226 recorded "
-                                        "bound_settled 'lower only' at q=5"),
-                    "refutes": ["q^2-q+1 = 21 as the formula for alpha(W(3,q))",
-                                "deficiency = q as a family (26-18 = 8, not 5)"],
+                    "closesLocally": ("W33-Theory Pass 5226 recorded "
+                                      "bound_settled 'lower only' at q=5 and "
+                                      "q=7; both its witnesses, 18 and 33, "
+                                      "were already the published maxima"),
+                    "refutes": ["deficiency = q as a family (26-18 = 8, not 5)"],
+                    "doesNotRefute": ("Tallini's q^2+1-q, which is a valid "
+                                      "upper bound and simply not attained"),
                     "physicalReading": ("two five-dimensional qudits admit at "
                                         "most 18 mutually incompatible Pauli "
                                         "observables; the spectral ceiling "
@@ -241,6 +269,10 @@ def main():
                                  "are a long-studied topic"),
                     "w33Theory": ("Pass 5226/5227 recorded alpha(W(3,5)) >= 18 "
                                   "as a witness with no upper bound"),
+                    "geometryValues": ("Cimrakova and Fack 2005 Table 1, "
+                                       "exhaustive: W(5) -> 18 (2 examples), "
+                                       "W(7) -> 33 (1 example); upper bound "
+                                       "column is Tallini's q^2+1-q"),
                 },
                 "leadNotResult": ("the geometry literature records MAXIMAL "
                                   "partial ovoids of W(5,q) of size q^2+q+1, "

@@ -72,15 +72,17 @@
       "qEven": false
     }
   ],
+  "correction": "an earlier version of this file called alpha(W(3,5)) = 18 new. It is published: Cimrakova and Fack 2005, Table 1, by exhaustive search, with 2 non-equivalent examples; W(7) is 33 with 1. This file's computation is an independent verification.",
+  "tallini": "a partial ovoid of W(q), q odd, has size at most q^2+1-q (Tallini) -- a proved upper bound, not a candidate formula; it is not attained at q = 5 (18 < 21) or q = 7 (33 < 43)",
   "newResult": {
-    "statement": "alpha(W(3,5)) = 18 exactly",
+    "statement": "alpha(W(3,5)) = 18, verified independently",
     "size18": "OPTIMAL, witness verified pairwise non-commuting",
     "size19": "INFEASIBLE",
-    "closesOpenBound": "W33-Theory Pass 5226 recorded bound_settled 'lower only' at q=5",
+    "closesLocally": "W33-Theory Pass 5226 recorded bound_settled 'lower only' at q=5 and q=7; both its witnesses, 18 and 33, were already the published maxima",
     "refutes": [
-      "q^2-q+1 = 21 as the formula for alpha(W(3,q))",
       "deficiency = q as a family (26-18 = 8, not 5)"
     ],
+    "doesNotRefute": "Tallini's q^2+1-q, which is a valid upper bound and simply not attained",
     "physicalReading": "two five-dimensional qudits admit at most 18 mutually incompatible Pauli observables; the spectral ceiling permits 26"
   },
   "whyQubitsAreSpecial": "W(3,2) has an ovoid, so two qubits attain the ceiling and 5 = q^n+1 = 2n+1 all coincide; W(3,q) for odd q has none (Thas), so the qutrit value falls short at 7 against 10",
@@ -88,7 +90,8 @@
     "qubitLaw": "max anticommuting Pauli set on n qubits is 2n+1",
     "qudit": "Sarkar and Yoder, Quantum 8, 1307 (2024), arXiv:2302.07966: single-qudit maximum is Psi(d); 2n+1 only under equal commutator values; multi-qudit case called complicated",
     "geometry": "Thas: W(3,q) has an ovoid iff q is even; partial ovoids of symplectic polar spaces are a long-studied topic",
-    "w33Theory": "Pass 5226/5227 recorded alpha(W(3,5)) >= 18 as a witness with no upper bound"
+    "w33Theory": "Pass 5226/5227 recorded alpha(W(3,5)) >= 18 as a witness with no upper bound",
+    "geometryValues": "Cimrakova and Fack 2005 Table 1, exhaustive: W(5) -> 18 (2 examples), W(7) -> 33 (1 example); upper bound column is Tallini's q^2+1-q"
   },
   "leadNotResult": "the geometry literature records MAXIMAL partial ovoids of W(5,q) of size q^2+q+1, which is 13 at q=3 and agrees with Sarkar-Yoder's computer-verified three-qutrit value -- but maximal means unextendable, not largest, so this is a lead and not a proof",
   "notComputed": "W(5,3), whose 364 points were out of budget",
