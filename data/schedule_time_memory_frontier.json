@@ -1,0 +1,117 @@
+{
+  "schema": "holotrade.schedule-time-memory-frontier.v1",
+  "valid": true,
+  "objectives": {
+    "leaves": "schedule length; weighted set cover by |orbit|",
+    "seeds": "description length; UNWEIGHTED set cover over orbits"
+  },
+  "rows": [
+    {
+      "order": 192,
+      "orbits": 15,
+      "minLeaves": {
+        "leaves": 280,
+        "seeds": 4,
+        "status": "OPTIMAL",
+        "verified": true
+      },
+      "minSeeds": {
+        "leaves": 320,
+        "seeds": 3,
+        "status": "OPTIMAL",
+        "verified": true
+      }
+    },
+    {
+      "order": 48,
+      "orbits": 44,
+      "minLeaves": {
+        "leaves": 208,
+        "seeds": 8,
+        "status": "OPTIMAL",
+        "verified": true
+      },
+      "minSeeds": {
+        "leaves": 280,
+        "seeds": 7,
+        "status": "OPTIMAL",
+        "verified": true
+      }
+    },
+    {
+      "order": 12,
+      "orbits": 174,
+      "minLeaves": {
+        "leaves": 116,
+        "seeds": 20,
+        "status": "FEASIBLE",
+        "verified": true
+      },
+      "minSeeds": {
+        "leaves": 133,
+        "seeds": 13,
+        "status": "OPTIMAL",
+        "verified": true
+      }
+    },
+    {
+      "order": 9,
+      "orbits": 216,
+      "minLeaves": {
+        "leaves": 117,
+        "seeds": 23,
+        "status": "FEASIBLE",
+        "verified": true
+      },
+      "minSeeds": {
+        "leaves": 130,
+        "seeds": 16,
+        "status": "FEASIBLE",
+        "verified": true
+      }
+    },
+    {
+      "order": 6,
+      "orbits": 272,
+      "minLeaves": {
+        "leaves": 126,
+        "seeds": 23,
+        "status": "FEASIBLE",
+        "verified": true
+      },
+      "minSeeds": {
+        "leaves": 134,
+        "seeds": 23,
+        "status": "FEASIBLE",
+        "verified": true
+      }
+    },
+    {
+      "order": 6,
+      "orbits": 284,
+      "minLeaves": {
+        "leaves": 118,
+        "seeds": 25,
+        "status": "FEASIBLE",
+        "verified": true
+      },
+      "minSeeds": {
+        "leaves": 125,
+        "seeds": 23,
+        "status": "FEASIBLE",
+        "verified": true
+      }
+    }
+  ],
+  "timeOptimal": {
+    "leaves": 115,
+    "seeds": 39,
+    "source": "the known 115-leaf witness"
+  },
+  "memoryOptimalSeeds": 3,
+  "compressionVsWitness": 13.0,
+  "allWitnessesVerified": true,
+  "provedGap": "where both objectives solved to OPTIMAL the difference is proved, not observed -- optimising leaves does not optimise seeds",
+  "contrast": "the 11-cell and 57-cell admit no nontrivial regular quotient at all, being universal above and simple below; the substrate's schedules compress by a large factor because Sp(4,3) has a rich subgroup lattice to fold along",
+  "boundary": "subgroups come from a seeded random search, so this is a lower envelope of what was found, not a global optimum in either objective. tau_2 is untouched and stays open in [111, 115]."
+}

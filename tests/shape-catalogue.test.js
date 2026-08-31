@@ -3047,3 +3047,49 @@ test("universality makes the cell pair one fact, and simplicity makes it rigid",
   assert.equal(prod, L.facets);
   assert.match(L.verdict, /no relation to W\(3,3\) claimed/);
 });
+
+// ======================================================================
+// The schedule time/memory frontier
+// ======================================================================
+
+test("the shortest schedule and the smallest description are different", () => {
+  const r = require(path.join(root, "data/schedule_time_memory_frontier.json"));
+  assert.ok(r.valid);
+
+  // every witness on both objectives blocks all 1600 tiles
+  assert.ok(r.allWitnessesVerified);
+  for (const row of r.rows) {
+    for (const k of ["minLeaves", "minSeeds"]) {
+      assert.ok(row[k].verified, `|H|=${row.order} ${k}: must block all tiles`);
+      assert.ok(row[k].leaves > 0 && row[k].seeds > 0);
+      // seeds can never exceed the orbit count of the group
+      assert.ok(row[k].seeds <= row.orbits);
+    }
+    // the min-seeds solution never uses fewer leaves than the min-leaves one
+    assert.ok(row.minSeeds.leaves >= row.minLeaves.leaves,
+      `|H|=${row.order}: optimising seeds cannot also shorten the schedule`);
+    assert.ok(row.minSeeds.seeds <= row.minLeaves.seeds);
+  }
+
+  // the two objectives genuinely differ, and PROVABLY so where both are OPTIMAL
+  const proved = r.rows.filter((x) => x.minLeaves.status === "OPTIMAL"
+                                   && x.minSeeds.status === "OPTIMAL");
+  assert.ok(proved.length >= 2, "at least two rows proved on both objectives");
+  assert.ok(proved.some((x) => x.minSeeds.seeds < x.minLeaves.seeds),
+    "a proved row where fewer seeds cost more leaves");
+
+  // the memory-optimal end
+  assert.equal(r.memoryOptimalSeeds, 3);
+  assert.equal(r.timeOptimal.leaves, 115);
+  assert.equal(r.timeOptimal.seeds, 39);
+  assert.ok(r.compressionVsWitness > 12);
+  const big = r.rows.find((x) => x.order === 192);
+  assert.ok(big, "the order-192 subgroup must be present");
+  assert.equal(big.minSeeds.seeds, 3);
+  assert.equal(big.minSeeds.status, "OPTIMAL");
+  assert.ok(big.minSeeds.verified);
+
+  // the contrast with the incompressible polytopes, and the honest limit
+  assert.match(r.contrast, /no nontrivial\s+regular quotient/);
+  assert.match(r.boundary, /not\s+a global optimum/);
+});
