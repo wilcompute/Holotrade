@@ -1,0 +1,96 @@
+{
+  "schema": "holotrade.pauli-incompatibility-partial-ovoids.v1",
+  "valid": true,
+  "bridge": "a set of pairwise non-commuting n-qudit Paulis (prime d=q) is exactly a partial ovoid of the symplectic polar space W(2n-1,q); the maximum is the maximum partial ovoid, ceiling q^n+1",
+  "instances": [
+    {
+      "system": "2 qubits",
+      "space": "W(3,2)",
+      "n": 2,
+      "q": 2,
+      "pauliClasses": 15,
+      "alpha": 5,
+      "status": "OPTIMAL",
+      "ovoidCeiling": 5,
+      "shortfall": 0,
+      "twoNplusOne": 5,
+      "witness": {
+        "size": 5,
+        "pairwiseNonCommuting": true
+      },
+      "qEven": true
+    },
+    {
+      "system": "3 qubits",
+      "space": "W(5,2)",
+      "n": 3,
+      "q": 2,
+      "pauliClasses": 63,
+      "alpha": 7,
+      "status": "OPTIMAL",
+      "ovoidCeiling": 9,
+      "shortfall": 2,
+      "twoNplusOne": 7,
+      "witness": {
+        "size": 7,
+        "pairwiseNonCommuting": true
+      },
+      "qEven": true
+    },
+    {
+      "system": "2 qutrits",
+      "space": "W(3,3)",
+      "n": 2,
+      "q": 3,
+      "pauliClasses": 40,
+      "alpha": 7,
+      "status": "OPTIMAL",
+      "ovoidCeiling": 10,
+      "shortfall": 3,
+      "twoNplusOne": 5,
+      "witness": {
+        "size": 7,
+        "pairwiseNonCommuting": true
+      },
+      "qEven": false
+    },
+    {
+      "system": "2 ququints",
+      "space": "W(3,5)",
+      "n": 2,
+      "q": 5,
+      "pauliClasses": 156,
+      "alpha": 18,
+      "status": "OPTIMAL",
+      "ovoidCeiling": 26,
+      "shortfall": 8,
+      "twoNplusOne": 5,
+      "witness": {
+        "size": 18,
+        "pairwiseNonCommuting": true
+      },
+      "qEven": false
+    }
+  ],
+  "newResult": {
+    "statement": "alpha(W(3,5)) = 18 exactly",
+    "size18": "OPTIMAL, witness verified pairwise non-commuting",
+    "size19": "INFEASIBLE",
+    "closesOpenBound": "W33-Theory Pass 5226 recorded bound_settled 'lower only' at q=5",
+    "refutes": [
+      "q^2-q+1 = 21 as the formula for alpha(W(3,q))",
+      "deficiency = q as a family (26-18 = 8, not 5)"
+    ],
+    "physicalReading": "two five-dimensional qudits admit at most 18 mutually incompatible Pauli observables; the spectral ceiling permits 26"
+  },
+  "whyQubitsAreSpecial": "W(3,2) has an ovoid, so two qubits attain the ceiling and 5 = q^n+1 = 2n+1 all coincide; W(3,q) for odd q has none (Thas), so the qutrit value falls short at 7 against 10",
+  "priorArt": {
+    "qubitLaw": "max anticommuting Pauli set on n qubits is 2n+1",
+    "qudit": "Sarkar and Yoder, Quantum 8, 1307 (2024), arXiv:2302.07966: single-qudit maximum is Psi(d); 2n+1 only under equal commutator values; multi-qudit case called complicated",
+    "geometry": "Thas: W(3,q) has an ovoid iff q is even; partial ovoids of symplectic polar spaces are a long-studied topic",
+    "w33Theory": "Pass 5226/5227 recorded alpha(W(3,5)) >= 18 as a witness with no upper bound"
+  },
+  "leadNotResult": "the geometry literature records MAXIMAL partial ovoids of W(5,q) of size q^2+q+1, which is 13 at q=3 and agrees with Sarkar-Yoder's computer-verified three-qutrit value -- but maximal means unextendable, not largest, so this is a lead and not a proof",
+  "notComputed": "W(5,3), whose 364 points were out of budget",
+  "boundary": "the bridge is a restatement, not a theorem; its value is letting a solved literature answer an open question in another"
+}

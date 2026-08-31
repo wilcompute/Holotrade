@@ -2556,3 +2556,50 @@ test("the annealing evidence at 114 is invalidated by its own control", () => {
   }
   assert.match(r.constraintSideCeiling, /^110/);
 });
+
+// ======================================================================
+// Pauli incompatibility = partial ovoids of symplectic polar spaces
+// ======================================================================
+
+test("mutually incompatible Paulis are partial ovoids, and alpha(W(3,5)) = 18", () => {
+  const r = require(path.join(root, "data/pauli_incompatibility_is_partial_ovoids.json"));
+  assert.ok(r.valid);
+  const by = Object.fromEntries(r.instances.map((i) => [i.space, i]));
+
+  // every value solved to optimality, every witness genuinely non-commuting
+  for (const i of r.instances) {
+    assert.equal(i.status, "OPTIMAL", `${i.space} must be proved`);
+    assert.ok(i.witness.pairwiseNonCommuting,
+      `${i.space}: the witness must be pairwise non-commuting`);
+    assert.equal(i.witness.size, i.alpha);
+    assert.equal(i.ovoidCeiling, Math.pow(i.q, i.n) + 1);
+    assert.equal(i.shortfall, i.ovoidCeiling - i.alpha);
+  }
+
+  // the controls: qubits reproduce the known 2n+1 law
+  assert.equal(by["W(3,2)"].alpha, 5);
+  assert.equal(by["W(3,2)"].alpha, by["W(3,2)"].twoNplusOne);
+  assert.equal(by["W(3,2)"].shortfall, 0, "q even: an ovoid exists");
+  assert.equal(by["W(5,2)"].alpha, 7);
+  assert.equal(by["W(5,2)"].alpha, by["W(5,2)"].twoNplusOne);
+
+  // two qutrits reproduce Sarkar-Yoder's 7, short of the ceiling 10
+  assert.equal(by["W(3,3)"].alpha, 7);
+  assert.equal(by["W(3,3)"].ovoidCeiling, 10);
+  assert.equal(by["W(3,3)"].shortfall, 3);
+  assert.notEqual(by["W(3,3)"].alpha, by["W(3,3)"].twoNplusOne,
+    "the qubit law does not survive to qutrits");
+
+  // the new result: 18 attained, 19 impossible
+  assert.equal(by["W(3,5)"].alpha, 18);
+  assert.equal(r.newResult.size19, "INFEASIBLE");
+  assert.match(r.newResult.statement, /= 18 exactly/);
+  assert.equal(r.newResult.refutes.length, 2);
+  assert.ok(r.newResult.refutes.some((x) => /q\^2-q\+1 = 21/.test(x)));
+  assert.ok(r.newResult.refutes.some((x) => /26-18 = 8/.test(x)));
+
+  // and the honest limits are recorded
+  assert.match(r.leadNotResult, /lead and not a proof/);
+  assert.match(r.boundary, /restatement, not a theorem/);
+  assert.match(r.priorArt.qudit, /2302\.07966/);
+});
