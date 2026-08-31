@@ -54,10 +54,16 @@ parameters (36,15,6,6) and spectrum 15, 3^15, (-3)^20, a single orbit, and
 stabiliser order 720 in PSp(4,3) -- which is BT2088's 1440 modulo the centre,
 since |Sp(4,3)| = 2|PSp(4,3)|. Everything matches; nothing there is new.
 
-WHAT IS ADDED is the boundary: the prime argument, which converts "nobody has
-found the polytope" into "no such action exists", and the count mismatch that
-agrees with it. Anyone hoping the spreads assemble an 11-cell or a 57-cell can
-stop.
+WHAT IS ADDED -- corrected. An earlier version of this file claimed the
+boundary itself. It should not have: BT836 already states, in its
+Physics/machine reading, that "the 11-cell/57-cell groups PSL(2,11),
+PSL(2,19) are not subgroups of Sp(4,3) -- the full GC polytopes do not embed.
+What embeds is their local structure (cells)". The boundary is theirs.
+
+What this file actually adds is narrower: the one-line divisibility PROOF
+where BT836 asserts the conclusion, and the independent count mismatch, 36
+spreads against 11 and 57 cells. Anyone hoping the spreads assemble either
+polytope can stop, and now for a stated reason rather than an assertion.
 
 AND THE MEASUREMENT READING, which the geometry files do not state. Since a
 spread is exactly an optimal Pauli-grouping schedule, NO_6^-(2) is the graph on
@@ -169,9 +175,15 @@ def main():
                                          "single orbit, stabiliser 720 in "
                                          "PSp(4,3) = 1440 modulo the centre"),
                 },
-                "whatIsAdded": ("the boundary: the prime argument turns "
-                                "'nobody has found the polytope' into 'no such "
-                                "action exists', and the count mismatch agrees"),
+                "whatIsAdded": ("CORRECTED: BT836 already states the "
+                                "non-embedding of PSL(2,11) and PSL(2,19) in "
+                                "Sp(4,3). This file adds only the one-line "
+                                "divisibility proof where BT836 asserts the "
+                                "conclusion, plus the independent count "
+                                "mismatch of 36 spreads against 11 and 57 "
+                                "cells."),
+                "correctedClaim": ("an earlier version presented the boundary "
+                                   "as its own contribution; it is BT836's"),
                 "measurementReading": ("a spread is an optimal Pauli-grouping "
                                        "schedule, so NO_6^-(2) is the graph on "
                                        "the 36 complete MUB frames of two "

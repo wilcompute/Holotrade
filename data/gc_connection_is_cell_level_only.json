@@ -49,7 +49,8 @@
     "BT2088": "exact stabiliser C_2 x S_6 of order 1440",
     "independentCheck": "36 spreads, intersections only 1 and 4 = q+1, share-4 graph SRG(36,15,6,6) with spectrum 15, 3^15, (-3)^20, single orbit, stabiliser 720 in PSp(4,3) = 1440 modulo the centre"
   },
-  "whatIsAdded": "the boundary: the prime argument turns 'nobody has found the polytope' into 'no such action exists', and the count mismatch agrees",
+  "whatIsAdded": "CORRECTED: BT836 already states the non-embedding of PSL(2,11) and PSL(2,19) in Sp(4,3). This file adds only the one-line divisibility proof where BT836 asserts the conclusion, plus the independent count mismatch of 36 spreads against 11 and 57 cells.",
+  "correctedClaim": "an earlier version presented the boundary as its own contribution; it is BT836's",
   "measurementReading": "a spread is an optimal Pauli-grouping schedule, so NO_6^-(2) is the graph on the 36 complete MUB frames of two qutrits, two frames sharing exactly 1 or exactly 4 of their 10 bases",
   "boundary": "a negative result bounding an inquiry, plus a reading of an already-identified graph; no bound moves and BT836's theorem is untouched"
 }

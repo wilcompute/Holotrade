@@ -2961,6 +2961,49 @@ test("the Grunbaum-Coxeter connection cannot rise above the cell", () => {
   assert.match(r.reproducedPriorArt.BT2064, /36, 300, 1176/);
   assert.match(r.reproducedPriorArt.BT2088, /1440/);
   assert.match(r.reproducedPriorArt.independentCheck, /1 and 4 = q\+1/);
-  assert.match(r.whatIsAdded, /no such\s+action exists/);
+  assert.match(r.whatIsAdded, /^CORRECTED/);
+  assert.match(r.correctedClaim, /it is BT836's/);
   assert.match(r.boundary, /BT836's theorem is untouched/);
+});
+
+test("the 11-cell's gluing is the Paley biplane, answering BT836's open item", () => {
+  const r = require(path.join(root, "data/eleven_cell_gluing_is_the_paley_biplane.json"));
+  assert.ok(r.valid);
+
+  // Coxeter's hexad read arithmetically
+  const a = r.arithmeticReading;
+  assert.deepEqual(r.coxeter.hexad, [0, 2, 6, 7, 8, 10]);
+  assert.deepEqual(a.quadraticResidues, [1, 3, 4, 5, 9]);
+  assert.deepEqual(a.nonResidues, [2, 6, 7, 8, 10]);
+  assert.ok(a.hexadIsZeroPlusNonResidues, "02678t = {0} u non-residues");
+  assert.ok(a.complementIsResidues, "its complement is the residue set");
+
+  // the biplane, verified over every pair rather than asserted
+  const v = r.verified;
+  assert.deepEqual(v.hexadPairIntersections, [3], "Coxeter's triangle condition");
+  assert.deepEqual(v.blockSizes, [5]);
+  assert.deepEqual(v.blockPairIntersections, [2]);
+  assert.equal(v.pairsCovered, 55, "all C(11,2) pairs checked");
+  assert.deepEqual(v.everyPairInBlocks, [2], "2-(11,5,2)");
+  assert.ok(v.isBiplane_2_11_5_2);
+
+  // and the hemi-icosahedron rebuilt from the triangles
+  assert.equal(v.triangles, 10);
+  assert.equal(v.vertices, 6);
+  assert.deepEqual(v.vertexDegrees, [5], "{3,5}: five faces per vertex");
+  assert.equal(v.distinctEdges, 15);
+  assert.deepEqual(v.edgeMultiplicities, [2], "each edge in exactly 2 faces");
+  assert.ok(v.skeletonIsK6);
+  assert.ok(v.isHemiIcosahedron);
+
+  // the correction to the previous commit is carried, not buried
+  assert.match(r.correctionToPreviousCommit, /BT836 already states it/);
+  assert.match(r.answersOpenItem, /It is\./);
+  // and the limits: no PSL(2,11) inside Sp(4,3)
+  assert.match(r.boundary, /does NOT place PSL\(2,11\) inside Sp\(4,3\)/);
+
+  // the corrected file agrees
+  const g = require(path.join(root, "data/gc_connection_is_cell_level_only.json"));
+  assert.match(g.whatIsAdded, /^CORRECTED/);
+  assert.ok(g.correctedClaim);
 });
