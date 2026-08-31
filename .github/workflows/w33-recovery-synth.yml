@@ -10,6 +10,8 @@ on:
       - 'rtl/synth_w33_recovery_two_stage_core.ys'
       - 'rtl/synth_w33_recovery_compare.ys'
       - 'scripts/gen-w33-recovery-compact.js'
+      - 'scripts/run-yosys.js'
+      - 'analysis/w33_recovery_compact_source_equiv.js'
       - 'analysis/w33_recovery_edge_gradient_carrier.js'
       - 'analysis/w33_pg34_secant_microstate_product.js'
       - 'data/w33_recovery_edge_gradient_carrier.json'
@@ -34,6 +36,19 @@ jobs:
       - name: Verify recovery policy regression
         run: node --test tests/w33-recovery-two-stage-rtl.test.js
 
+  compact-source-equivalence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Generate compact adjacency-indexed RTL
+        run: node scripts/gen-w33-recovery-compact.js
+      - name: Certify source/algebra equivalence
+        run: node analysis/w33_recovery_compact_source_equiv.js
+
   geometry-certificates:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -49,17 +64,16 @@ jobs:
 
   compact-equivalence-synth:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-      - name: Install portable Yosys
-        run: python -m pip install yowasp-yosys==0.67.0.0.post1190
+      - name: Install native Yosys
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yosys
       - name: Verify baseline RTL source
         run: node scripts/run-yosys.js rtl/verify_w33_recovery_two_stage_core.ys
       - name: Generate compact adjacency-indexed RTL
