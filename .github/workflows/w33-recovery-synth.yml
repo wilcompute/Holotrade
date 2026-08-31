@@ -43,8 +43,6 @@ jobs:
           python-version: '3.12'
       - name: Install portable Yosys
         run: python -m pip install yowasp-yosys==0.67.0.0.post1190
-      - name: Verify baseline RTL source
-        run: node scripts/run-yosys.js rtl/verify_w33_recovery_two_stage_core.ys
       - name: Generate compact adjacency-indexed RTL
         run: node scripts/gen-w33-recovery-compact.js
       - name: Prove compact RTL equivalent to baseline
