@@ -2745,3 +2745,27 @@ test("the 115-leaf schedule is one Clifford gate plus 39 seeds", () => {
   assert.match(r.canonicality, /no other/);
   assert.match(r.boundary, /does not\s+lower tau_2/);
 });
+
+test("structure injection cannot reprove 110, so that route is closed", () => {
+  const r = require(path.join(root, "data/structure_injection_cannot_reprove_110.json"));
+  assert.ok(r.valid && r.isNegativeMethodResult);
+
+  // the control ran on a case whose answer is a THEOREM, and failed it
+  for (const run of r.runs) {
+    assert.equal(run.target, 110);
+    assert.equal(run.slack, 0, "r=0 is the most constrained instance");
+    assert.equal(run.knownAnswer, "INFEASIBLE");
+    assert.equal(run.status, "UNKNOWN");
+    assert.equal(run.reprovedKnownAnswer, false);
+  }
+  // and it was given real time, not a token budget
+  assert.ok(Math.max(...r.runs.map((x) => x.budgetMinutes)) >= 45);
+  assert.ok(r.controlFailed);
+
+  // the model really did inject the theory, not just more inequalities
+  assert.match(r.model, /360 known minimum blockers/);
+  assert.match(r.model, /F \+ D = 4r/);
+
+  assert.match(r.whyRouteIsClosed, /UNKNOWN at 111 would carry no information/);
+  assert.match(r.boundary, /moves no bound/);
+});

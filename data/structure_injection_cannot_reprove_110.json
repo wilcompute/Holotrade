@@ -1,0 +1,30 @@
+{
+  "schema": "holotrade.structure-injection-control.v1",
+  "valid": true,
+  "isNegativeMethodResult": true,
+  "model": "selector forcing each minimal row shadow to be one of the 360 known minimum blockers, channelled to the leaf variables, plus per-column independence indicators, with exception counts bounded by F + D = 4r",
+  "runs": [
+    {
+      "target": 110,
+      "r": 0,
+      "slack": 0,
+      "budgetMinutes": 5,
+      "status": "UNKNOWN",
+      "knownAnswer": "INFEASIBLE",
+      "reprovedKnownAnswer": false
+    },
+    {
+      "target": 110,
+      "r": 0,
+      "slack": 0,
+      "budgetMinutes": 45,
+      "status": "UNKNOWN",
+      "knownAnswer": "INFEASIBLE",
+      "reprovedKnownAnswer": false
+    }
+  ],
+  "controlFailed": true,
+  "whyRouteIsClosed": "the model cannot reprove the known infeasibility at 110 in its most constrained instance, so an UNKNOWN at 111 would carry no information and only an INFEASIBLE would -- which it cannot produce",
+  "sharpens": "tensor_110_no_local_obstruction.py concluded any refutation had to be global; this shows solvers given the full local structure still cannot close an instance whose answer is a theorem",
+  "boundary": "a negative result about a method, not about tau_2; it moves no bound and does not show that no structured encoding could work, only that this one does not. tau_2 stays open in [111, 115]."
+}
