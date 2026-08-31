@@ -2479,3 +2479,42 @@ test("blocker excess plus column dependence equals (t+1) times the slack", () =>
   assert.match(r.tightCase, /r = 0/);
   assert.match(r.boundary, /identity, not a bound/);
 });
+
+// ======================================================================
+// What the blocking numbers mean: Pauli context covering
+// ======================================================================
+
+test("tau_1 and alpha are Pauli measurement quantities, verified with matrices", () => {
+  const r = require(path.join(root, "data/w33_blocking_is_pauli_context_covering.json"));
+  assert.ok(r.valid);
+  const v = r.verifiedWithMatrices;
+
+  // the identification is checked on actual 9x9 matrices, not asserted
+  assert.equal(v.paulisBuilt, 80);
+  assert.equal(v.commutatorFormMismatches, 0,
+    "commuting must coincide with the symplectic form on every pair");
+  assert.equal(v.pairsChecked, 3160);
+  assert.equal(v.projectiveClasses, 40);
+  assert.deepEqual(v.srg.degree, [12]);
+  assert.deepEqual(v.srg.lambda, [2]);
+  assert.deepEqual(v.srg.mu, [4]);
+
+  // lines really are the maximal commuting subalgebras
+  assert.equal(v.contexts, 40);
+  assert.equal(v.contextSize, 4);
+  assert.ok(v.everyContextCommutes);
+
+  // and the two numbers come back with their combinatorial values
+  assert.equal(r.readings.tau1.value, 11);
+  assert.ok(r.readings.tau1.proved);
+  assert.equal(r.readings.alpha.value, 7);
+  assert.ok(r.readings.alpha.proved);
+  assert.match(r.readings.alpha.meaning, /non-commuting/);
+
+  // depth 2 is about LOCAL product observables, a proper subset of 4-qutrit
+  assert.equal(r.fourQutritClasses, 3280);
+  assert.equal(r.productObservables, 1600);
+  assert.ok(r.productObservables < r.fourQutritClasses);
+  assert.match(r.scopeNote, /proper\s+subset/);
+  assert.match(r.boundary, /not a new bound/);
+});

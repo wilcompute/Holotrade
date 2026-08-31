@@ -1,0 +1,44 @@
+{
+  "schema": "holotrade.w33-pauli-context-covering.v1",
+  "valid": true,
+  "source": "holonet_machine_blueprint_body.tex, 'The self-entanglement, and where the 40 comes from': C^3 (x) C^3 = End(C^3), 40 = (3^4-1)/2 points, 40 lines as maximal commuting subalgebras",
+  "verifiedWithMatrices": {
+    "paulisBuilt": 80,
+    "commutatorFormMismatches": 0,
+    "pairsChecked": 3160,
+    "projectiveClasses": 40,
+    "srg": {
+      "degree": [
+        12
+      ],
+      "lambda": [
+        2
+      ],
+      "mu": [
+        4
+      ]
+    },
+    "contexts": 40,
+    "contextSize": 4,
+    "everyContextCommutes": true
+  },
+  "readings": {
+    "tau1": {
+      "value": 11,
+      "proved": true,
+      "meaning": "fewest Pauli observables meeting every measurement context"
+    },
+    "alpha": {
+      "value": 7,
+      "proved": true,
+      "meaning": "most pairwise non-commuting Paulis; an ovoid would be ten and none exists"
+    },
+    "hemisystem": "20 observables meeting every context in exactly two -- half of every context",
+    "tau2": "smallest set of PRODUCT observables A (x) B covering every pair of local contexts on two carriers; open in [111, 115]"
+  },
+  "fourQutritClasses": 3280,
+  "productObservables": 1600,
+  "scopeNote": "the 1,600 product observables are a proper subset of the 3,280 four-qutrit Pauli classes, so depth 2 asks about LOCAL measurements only",
+  "priorArt": "the two-qutrit Pauli graph being W(3,3) is classical, and the blueprint already has the 40 count and the maximal-commuting reading; a search of both repositories for blocking sets in Pauli, commuting or context language returns nothing",
+  "boundary": "an interpretation, verified but not a new bound; tau_2 stays open in [111, 115]"
+}
