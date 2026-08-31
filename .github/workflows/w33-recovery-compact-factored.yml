@@ -1,0 +1,40 @@
+name: W33 Compact Recovery Factored Proof
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'rtl/w33_recovery_compact_score_miter.v'
+      - 'rtl/verify_w33_recovery_compact_score_miter.ys'
+      - 'rtl/synth_w33_recovery_compact_lut4.ys'
+      - 'scripts/gen-w33-recovery-compact.js'
+      - 'analysis/w33_recovery_compact_structural_equivalence.js'
+      - 'analysis/w33_recovery_compact_source_equiv.js'
+      - '.github/workflows/w33-recovery-compact-factored.yml'
+  workflow_dispatch:
+
+jobs:
+  factored-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Install native Yosys
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yosys
+      - name: Certify exact geometry and source transformation
+        run: |
+          node analysis/w33_recovery_compact_structural_equivalence.js
+          node analysis/w33_recovery_compact_source_equiv.js
+      - name: Prove score arithmetic and tie-break equivalence
+        run: node scripts/run-yosys.js rtl/verify_w33_recovery_compact_score_miter.ys
+      - name: Generate compact RTL
+        run: node scripts/gen-w33-recovery-compact.js
+      - name: Synthesize compact core to LUT4
+        run: node scripts/run-yosys.js rtl/synth_w33_recovery_compact_lut4.ys
+      - name: Show compact LUT4 measurement
+        run: cat rtl/build/w33_recovery_compact_lut4.txt
