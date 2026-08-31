@@ -44,6 +44,27 @@
       "result": "best 6 uncovered of 1600, never 0",
       "lowerBound": null,
       "verdict": "no solution found"
+    },
+    {
+      "method": "row-weighting local search, cold starts",
+      "budgetMinutes": 20,
+      "result": "failed its own calibration at 121",
+      "lowerBound": null,
+      "verdict": "no solution found"
+    },
+    {
+      "method": "LNS with exact CP-SAT sub-solves, small neighbourhoods (25-55 of 115 leaves freed)",
+      "budgetMinutes": 25,
+      "result": "3336 rounds, 0 improvements, final 115",
+      "lowerBound": null,
+      "verdict": "no improvement"
+    },
+    {
+      "method": "LNS with exact CP-SAT sub-solves, large neighbourhoods (60-110 of 115 leaves freed)",
+      "budgetMinutes": 25,
+      "result": "94 rounds, 0 improvements, final 115",
+      "lowerBound": null,
+      "verdict": "no improvement"
     }
   ],
   "control": [
@@ -65,7 +86,8 @@
     }
   ],
   "controlInvalidatesAnnealingEvidence": true,
-  "whatSurvives": "the 115-leaf witness is locally isolated: removing one leaf and repairing by single swaps stalls six tiles short of 114",
+  "whatSurvives": "the 115-leaf witness is locally isolated: removing one leaf and repairing by single swaps stalls six tiles short of 114; and 3,430 LNS rounds with exact CP-SAT sub-solves, including 94 that re-optimised 60 to 110 of the 115 leaves, never found a 114",
+  "lnsCaveat": "each LNS sub-solve had a 25-second budget, so a round finding nothing has not proved its neighbourhood empty",
   "whatIsNotEstablished": "that a 114-leaf blocker does not exist; the annealer cannot find 115 or 116 from cold either, so its failure at 114 carries no weight as an infeasibility argument",
   "newCutsUsed": "|H_q| <= (t+1)|C_q| and its transpose, invisible to the LP relaxation; their aggregate is sum_L |B_L| <= (t+1)|X|",
   "constraintSideCeiling": "110, and provably so: the diagonal always admits the trivial (s+1)-ovoid, so no counting argument of that kind passes it",

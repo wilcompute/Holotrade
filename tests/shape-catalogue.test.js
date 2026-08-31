@@ -2535,6 +2535,19 @@ test("the annealing evidence at 114 is invalidated by its own control", () => {
   assert.match(r.whatIsNotEstablished, /carries no weight/);
   assert.match(r.whatSurvives, /locally isolated/);
 
+  // the LNS rounds are the evidence that does carry weight -- exact
+  // sub-solves, thousands of overlapping neighbourhoods -- and its own
+  // limit is recorded rather than glossed
+  const lns = r.attempts.filter((a) => /LNS/.test(a.method));
+  assert.equal(lns.length, 2, "small and large neighbourhood runs");
+  for (const a of lns) assert.match(a.result, /0 improvements/);
+  assert.match(r.whatSurvives, /3,430/);
+  assert.match(r.lnsCaveat, /not proved its\s+neighbourhood empty/);
+
+  // and the searcher that failed calibration is recorded so it is not rebuilt
+  assert.ok(r.attempts.some((a) => /row-weighting/.test(a.method)
+                                 && /calibration/.test(a.result)));
+
   // and no attempt claims to have moved anything
   assert.deepEqual(r.frontier.interval, [111, 115]);
   for (const a of r.attempts) {

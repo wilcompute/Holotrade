@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Five independent attacks on the gap, and the control that stops one of them
-from being over-read.
+Seven independent attacks on the gap, and the control that stops one of
+them from being over-read.
 
 This file is a search log, not a theorem. It exists because the same searches
 keep being worth trying and keep failing in ways that are only informative if
@@ -45,6 +45,34 @@ WHAT WAS TRIED, and what each returned.
    restarts in total. Every run converged to SIX uncovered tiles and none
    reached zero.
 
+6. ROW-WEIGHTING LOCAL SEARCH, the standard method that actually works on set
+   cover: every tile carries a weight, cost is the total weight of uncovered
+   tiles, and weights of still-uncovered tiles are raised when the search
+   stalls so the landscape deforms until it escapes. It failed its own
+   calibration -- from cold it could not reach even 121, where B x B is an
+   explicit solution -- so nothing it says about 114 counts either. Recorded
+   so the next attempt does not rebuild it.
+
+7. LNS WITH EXACT SUB-SOLVES, which is the one that carries weight. Freeze a
+   random subset of the 115-leaf witness, let CP-SAT choose everything else
+   optimally, repeat with a fresh frozen set each round. Every neighbourhood
+   is explored by an exact solver rather than by a heuristic, and the frozen
+   set changes constantly, so the walk passes through asymmetric
+   configurations no orbit model can express.
+
+       freeing 25-55 leaves:   3,336 rounds, zero improvements
+       freeing 60-110 leaves:      94 rounds, zero improvements
+
+   The second row is the calibration built into the method. Freeing 110 of
+   115 leaves and re-optimising exactly is very nearly a fresh solve of the
+   whole problem, and it returns 115 every time. This is not a heuristic
+   failing to find something; it is an exact solver, run 3,430 times on
+   overlapping neighbourhoods, never finding a 114.
+
+   One honest limit: each sub-solve has a 25-second budget, so a round that
+   finds nothing has not PROVED its neighbourhood empty. Failure means "did
+   not find a 114 here in 25 seconds", not "no 114 exists here".
+
 AND THE CONTROL, which changes what number 5 means.
 
 Six uncovered out of 1,600, reproduced across three independent seeds, reads
@@ -70,7 +98,7 @@ Recording the control rather than the headline, because "three independent
 runs all stopped at six" is exactly the shape of a result that gets believed
 without one.
 
-WHERE THAT LEAVES THINGS. Five methods, no movement. The constraint side
+WHERE THAT LEAVES THINGS. Seven methods, no movement. The constraint side
 provably cannot pass 110 -- gq_tight_case_is_an_m_ovoid.py shows the diagonal
 always admits the trivial (s+1)-ovoid, so no counting argument of that kind
 reaches further -- and the symmetry side has been swept completely over cyclic
@@ -104,6 +132,17 @@ ATTEMPTS = [
     {"method": "simulated annealing at fixed size 114, seeded by the witness",
      "budgetMinutes": 45, "result": "best 6 uncovered of 1600, never 0",
      "lowerBound": None, "verdict": "no solution found"},
+    {"method": "row-weighting local search, cold starts",
+     "budgetMinutes": 20, "result": "failed its own calibration at 121",
+     "lowerBound": None, "verdict": "no solution found"},
+    {"method": "LNS with exact CP-SAT sub-solves, small neighbourhoods "
+               "(25-55 of 115 leaves freed)",
+     "budgetMinutes": 25, "result": "3336 rounds, 0 improvements, final 115",
+     "lowerBound": None, "verdict": "no improvement"},
+    {"method": "LNS with exact CP-SAT sub-solves, large neighbourhoods "
+               "(60-110 of 115 leaves freed)",
+     "budgetMinutes": 25, "result": "94 rounds, 0 improvements, final 115",
+     "lowerBound": None, "verdict": "no improvement"},
 ]
 
 CONTROL = [
@@ -115,7 +154,7 @@ CONTROL = [
 
 
 def main():
-    print("FIVE ATTACKS ON THE GAP, AND ONE CONTROL")
+    print("SEVEN ATTACKS ON THE GAP, AND ONE CONTROL")
     print("=" * 72)
     for a in ATTEMPTS:
         print("  %-52s %s" % (a["method"], a["result"]))
@@ -138,12 +177,12 @@ def main():
     print("  from cold, so its 114 result is an artifact of being seeded with")
     print("  the witness.")
     print()
-    print("  What survives: the 115-leaf witness is LOCALLY ISOLATED --")
-    print("  removing a leaf and repairing by single swaps does not reach 114")
-    print("  and stalls six tiles short. Nothing is established about whether")
-    print("  a 114-leaf blocker exists elsewhere.")
+    print("  What survives: the witness is LOCALLY ISOLATED, and 3,430 exact")
+    print("  LNS rounds -- including 94 that re-optimised 60 to 110 of the")
+    print("  115 leaves -- never found a 114 either. Each sub-solve had a")
+    print("  25-second budget, so no neighbourhood is PROVED empty.")
     print()
-    print("  Five methods, no movement. The constraint side provably cannot")
+    print("  Seven methods, no movement. The constraint side provably cannot")
     print("  pass 110, and the symmetry side is swept out over cyclic")
     print("  subgroups. What remains is an asymmetric witness no local search")
     print("  has found, or a proof that is not a counting argument.")
@@ -161,7 +200,14 @@ def main():
                 "controlInvalidatesAnnealingEvidence": bool(ok),
                 "whatSurvives": ("the 115-leaf witness is locally isolated: "
                                  "removing one leaf and repairing by single "
-                                 "swaps stalls six tiles short of 114"),
+                                 "swaps stalls six tiles short of 114; and "
+                                 "3,430 LNS rounds with exact CP-SAT "
+                                 "sub-solves, including 94 that re-optimised "
+                                 "60 to 110 of the 115 leaves, never found a "
+                                 "114"),
+                "lnsCaveat": ("each LNS sub-solve had a 25-second budget, so a "
+                              "round finding nothing has not proved its "
+                              "neighbourhood empty"),
                 "whatIsNotEstablished": ("that a 114-leaf blocker does not "
                                          "exist; the annealer cannot find 115 "
                                          "or 116 from cold either, so its "
