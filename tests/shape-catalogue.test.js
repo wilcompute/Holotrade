@@ -2281,3 +2281,70 @@ test("on the diagonal the branches cannot mix, and q=5 stops the extension", () 
   assert.match(d.trichotomy.tLessThanS, /OPEN/);
   assert.match(d.attribution.theirs, /43049db/);
 });
+
+// ======================================================================
+// The tight case is an m-ovoid question, with m = t+1
+// ======================================================================
+
+test("the tight case is exactly a {0,1,t+1} weighting, and its pure cases " +
+     "are an ovoid and a (t+1)-ovoid", () => {
+  const r = require(path.join(root, "data/gq_tight_case_is_an_m_ovoid.json"));
+  assert.ok(r.valid);
+  const by = Object.fromEntries(r.instances.map((i) => [i.name, i]));
+
+  // the (F,U) structure is not a claim about some solutions -- it held on
+  // every single weighting enumerated, in every geometry
+  for (const i of r.instances) {
+    const c = i.census;
+    assert.equal(c.structure, c.k, `${i.name}: (F,U) structure must hold on all`);
+    assert.equal(c.partialOvoid, c.k, `${i.name}: F must always be a partial ovoid`);
+    assert.equal(c.pureA, c.pureAisOvoid, `${i.name}: every pure-A is an ovoid`);
+    assert.equal(c.pureB, c.pureBisMOvoid, `${i.name}: every pure-B is a (t+1)-ovoid`);
+  }
+
+  // t > s: the (t+1)-ovoid cannot fit on a line, so nothing survives
+  for (const n of ["GQ(2,4)", "Q^-(5,3)", "H(4,4)"]) {
+    const i = by[n];
+    assert.ok(i.t > i.s);
+    assert.ok(i.mExceedsLineSize, `${n}: t+1 must exceed the line size`);
+    assert.equal(i.ovoidStatus, "INFEASIBLE");
+    assert.equal(i.mOvoidStatus, "INFEASIBLE");
+    assert.ok(i.tightCaseExcluded, `${n}: tight case must be excluded`);
+    assert.equal(i.census.k, 0);
+  }
+
+  // GQ(4,2) recovers the 200 known ovoids as a by-product
+  const g42 = by["GQ(4,2)"];
+  assert.equal(g42.census.pureA, 200, "GQ(4,2) has exactly 200 ovoids");
+  assert.equal(g42.census.k, 200 + g42.census.pureB + g42.census.mixed);
+  assert.ok(g42.census.complete, "that census is exhaustive");
+
+  // GQ(8,4) has NO ovoid but does have a 5-ovoid, so counting cannot close it
+  const g84 = by["GQ(8,4)"];
+  assert.equal(g84.ovoidStatus, "INFEASIBLE", "GQ(8,4) has no ovoid");
+  assert.equal(g84.mOvoidExists, true, "but it does have a (t+1)-ovoid");
+  assert.equal(g84.tightCaseExcluded, false);
+});
+
+test("the diagonal is provably beyond any counting argument", () => {
+  const r = require(path.join(root, "data/gq_tight_case_is_an_m_ovoid.json"));
+  const w = r.instances.find((i) => i.s === i.t);
+
+  // at t = s the (t+1)-ovoid is the whole point set, so it always exists
+  assert.equal(w.name, "W(3,3)");
+  assert.equal(w.mOvoidNeeded, w.pointsPerLine,
+    "a (t+1)-ovoid must take every point of every line");
+  assert.equal(w.mOvoidExists, true);
+  assert.equal(w.ovoidExists, false, "W(3,3) still has no ovoid (Thas)");
+  assert.equal(w.census.pureB, 1, "exactly one: the all-ones vector");
+  assert.equal(w.census.pureA, 0);
+  assert.equal(w.census.mixed, 0);
+  assert.equal(w.tightCaseExcluded, false);
+  assert.match(r.diagonalIsBeyondCounting, /PROVES/);
+
+  // and the prior art is credited, with the new part named
+  assert.match(r.priorArt.inThisRepository, /w33_shape_catalogue/);
+  assert.match(r.priorArt.whatIsNewHere, /connection to the depth-2/);
+  // the subquadrangle route is recorded as refuted, not quietly dropped
+  assert.match(r.refutedConjecture, /27/);
+});
