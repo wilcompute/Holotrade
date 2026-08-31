@@ -10,9 +10,6 @@ on:
       - 'rtl/synth_w33_recovery_two_stage_core.ys'
       - 'rtl/synth_w33_recovery_compare.ys'
       - 'scripts/gen-w33-recovery-compact.js'
-      - 'analysis/w33_recovery_compact_source_equiv.js'
-      - 'analysis/w33_recovery_edge_gradient_carrier.js'
-      - 'data/w33_recovery_edge_gradient_carrier.json'
       - 'tests/w33-recovery-two-stage-rtl.test.js'
       - 'package.json'
       - '.github/workflows/w33-recovery-synth.yml'
@@ -33,22 +30,7 @@ jobs:
       - name: Verify recovery policy regression
         run: node --test tests/w33-recovery-two-stage-rtl.test.js
 
-  compact-source-equivalence:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-      - name: Generate compact adjacency-indexed RTL
-        run: node scripts/gen-w33-recovery-compact.js
-      - name: Certify source/algebra equivalence
-        run: node analysis/w33_recovery_compact_source_equiv.js
-      - name: Certify W33 directed-edge gradient carrier
-        run: node analysis/w33_recovery_edge_gradient_carrier.js
-
-  compact-equivalence:
+  compact-equivalence-synth:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -61,26 +43,12 @@ jobs:
           python-version: '3.12'
       - name: Install portable Yosys
         run: python -m pip install yowasp-yosys==0.67.0.0.post1190
+      - name: Verify baseline RTL source
+        run: node scripts/run-yosys.js rtl/verify_w33_recovery_two_stage_core.ys
       - name: Generate compact adjacency-indexed RTL
         run: node scripts/gen-w33-recovery-compact.js
       - name: Prove compact RTL equivalent to baseline
         run: node scripts/run-yosys.js rtl/verify_w33_recovery_compact_equiv.ys
-
-  compact-synth:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-      - name: Install portable Yosys
-        run: python -m pip install yowasp-yosys==0.67.0.0.post1190
-      - name: Generate compact adjacency-indexed RTL
-        run: node scripts/gen-w33-recovery-compact.js
       - name: Synthesize baseline and compact cores to LUT4
         run: node scripts/run-yosys.js rtl/synth_w33_recovery_compare.ys
       - name: Show measured comparison

@@ -1,0 +1,24 @@
+{
+  "schema": "holotrade.w33-hemisystems-216.v1",
+  "valid": true,
+  "definition": "geometric: a set meeting every line of W(3,3) in exactly two points; for W(3,3) this is both the 2-ovoid and the hemisystem, since (t+1)/2 = 2",
+  "count": 432,
+  "enumerationComplete": true,
+  "allSize20": true,
+  "closedUnderComplementation": true,
+  "selfComplementary": 0,
+  "complementaryPairs": 216,
+  "matchesTheir216": true,
+  "theirSide": {
+    "source": "W33-Theory w33_20260831 Schlaefli hemisystem bundle",
+    "count": 216,
+    "structure": "27 x 8 hemisystem lines",
+    "route": "45 norm-8 trade-lattice minimum lines whose orthogonality graph is GQ(4,2), 27 maximal 5-cliques, signed sums of five orthogonal minima at norm 40"
+  },
+  "ourSide": {
+    "route": "the m-ovoid census forced by the depth-2 blocking problem; w33_shape_catalogue.js already records 432 at set size 20"
+  },
+  "mechanism": "a centered hemisystem vector 1_T - (1/2)1 negates under complementation, so one complementary pair is one projective line",
+  "notClaimed": "no fibre-level correspondence with their eights and no reproduction of the 27 x 8 bundle structure; only the total count and the complementation mechanism are checked",
+  "boundary": "bears on no bound; tau_2 stays open in [111, 115]"
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "holotrade.tensor-growth-rate-ten.v1",
+  "valid": true,
+  "tauStar": 10.0,
+  "nuStar": 10.0,
+  "certificate": "y = 1/4 on every point is a fractional cover of weight 10; z = 1/4 on every line is a fractional matching of weight 10; weak duality makes both optimal",
+  "certificateChecked": {
+    "coverIsUnitOnEveryLine": true,
+    "matchingIsUnitOnEveryPoint": true
+  },
+  "tau1": 11,
+  "integralityGapDepth1": "11/10",
+  "tauStarProduct": 100.00000000000004,
+  "multiplicativity": "tau*(H1 x H2) = tau*(H1) tau*(H2): the tensor of covers is a cover and the tensor of matchings is a matching, and LP duality closes both directions",
+  "sdpIdentified": "the 100 reported by the symmetry-reduced Lasserre-1 SDP in tensor_110_no_local_obstruction.py is exactly tau*(H^2), not an artifact of the relaxation",
+  "greedyOnH2": 128,
+  "greedyGuaranteeH2": 377.2588722239783,
+  "theorem": "lim tau(H^n)^(1/n) = tau*(H) = 10",
+  "proof": [
+    "tau*(H^n) = 10^n exactly",
+    "tau(H^n) >= tau*(H^n) = 10^n",
+    "greedy gives tau(H^n) <= 10^n (1 + n ln 4)",
+    "take n-th roots"
+  ],
+  "basesBefore": {
+    "lower": 10.0,
+    "upper": 10.723805294763608
+  },
+  "baseAfter": 10.0,
+  "productBoundBetterUntilDepth": 65,
+  "depthTable": [
+    {
+      "depth": 1,
+      "lowerRecursive": 11,
+      "upperProduct": 11.0,
+      "upperGreedy": 23.862943611198908
+    },
+    {
+      "depth": 2,
+      "lowerRecursive": 110,
+      "upperProduct": 115.0,
+      "upperGreedy": 377.25887222397813
+    },
+    {
+      "depth": 3,
+      "lowerRecursive": 1100,
+      "upperProduct": 1265.0,
+      "upperGreedy": 5158.883083359671
+    },
+    {
+      "depth": 4,
+      "lowerRecursive": 11000,
+      "upperProduct": 13225.0,
+      "upperGreedy": 65451.77444479562
+    },
+    {
+      "depth": 5,
+      "lowerRecursive": 110000,
+      "upperProduct": 145475.0,
+      "upperGreedy": 793147.1805599453
+    },
+    {
+      "depth": 6,
+      "lowerRecursive": 1100000,
+      "upperProduct": 1520875.0,
+      "upperGreedy": 9317766.166719344
+    },
+    {
+      "depth": 10,
+      "lowerRecursive": 11000000000,
+      "upperProduct": 20113571875.0,
+      "upperGreedy": 148629436111.98907
+    },
+    {
+      "depth": 20,
+      "lowerRecursive": 110000000000000000000,
+      "upperProduct": 4.0455577357079105e+20,
+      "upperGreedy": 2.872588722239781e+21
+    },
+    {
+      "depth": 50,
+      "lowerRecursive": 110000000000000000000000000000000000000000000000000,
+      "upperProduct": 3.2918952619789675e+51,
+      "upperGreedy": 7.031471805599454e+51
+    },
+    {
+      "depth": 70,
+      "lowerRecursive": 11000000000000000000000000000000000000000000000000000000000000000000000,
+      "upperProduct": 1.331755234223923e+72,
+      "upperGreedy": 9.804060527839234e+71
+    },
+    {
+      "depth": 80,
+      "lowerRecursive": 110000000000000000000000000000000000000000000000000000000000000000000000000000000,
+      "upperProduct": 2.6786354623470335e+82,
+      "upperGreedy": 1.1190354888959125e+82
+    },
+    {
+      "depth": 100,
+      "lowerRecursive": 11000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+      "upperProduct": 1.0836574415839575e+103,
+      "upperGreedy": 1.3962943611198906e+102
+    },
+    {
+      "depth": 120,
+      "lowerRecursive": 1100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+      "upperProduct": 4.3839987456574226e+123,
+      "upperGreedy": 1.6735532333438688e+122
+    }
+  ],
+  "boundary": "an asymptotic statement about the exponential base only. It determines no exact value: tau_2(W(3,3)^2) stays open in [111, 115], and tau(H^n)/10^n is known only to lie in [1.1, 1 + n ln 4]."
+}

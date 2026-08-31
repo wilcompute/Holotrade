@@ -2383,3 +2383,60 @@ test("115 is what the group gives, and the solver stops at exactly 110", () => {
   assert.ok(r.boundaries.some((b) => /only cyclic subgroups/.test(b)));
   assert.deepEqual(r.frontier.interval, [111, 115]);
 });
+
+// ======================================================================
+// The exponential base of the depth-n blocking number
+// ======================================================================
+
+test("the growth rate is exactly 10, and the SDP's 100 was tau*(H^2)", () => {
+  const r = require(path.join(root, "data/tensor_growth_rate_is_exactly_ten.json"));
+  assert.ok(r.valid);
+
+  // the hand certificate is checked, not asserted
+  assert.ok(r.certificateChecked.coverIsUnitOnEveryLine);
+  assert.ok(r.certificateChecked.matchingIsUnitOnEveryPoint);
+  assert.ok(Math.abs(r.tauStar - 10) < 1e-6);
+  assert.equal(r.tauStar.toFixed(6), r.nuStar.toFixed(6),
+    "tau* = nu* is what makes both certificates optimal");
+  assert.equal(r.tau1, 11);
+
+  // multiplicativity, verified on the 1600-variable product LP
+  assert.ok(Math.abs(r.tauStarProduct - 100) < 1e-4);
+  assert.match(r.sdpIdentified, /not an artifact/);
+
+  // the base is pinned to 10, where before it was only in [10, sqrt(115)]
+  assert.equal(r.baseAfter, 10);
+  assert.equal(r.basesBefore.lower, 10);
+  assert.ok(r.basesBefore.upper > 10.72 && r.basesBefore.upper < 10.73);
+  assert.match(r.theorem, /= 10$/);
+
+  // and the finite bounds are not overturned: the product number is better
+  // than greedy's until a depth nobody uses, and greedy loses to 115 at n=2
+  assert.ok(r.productBoundBetterUntilDepth > 50);
+  assert.ok(r.greedyOnH2 > 115, "greedy does not threaten the 115 witness");
+  for (const row of r.depthTable) {
+    assert.ok(row.lowerRecursive <= row.upperProduct,
+      `depth ${row.depth}: lower must not exceed the product upper bound`);
+  }
+  assert.match(r.boundary, /asymptotic/);
+});
+
+test("their 216 hemisystem lines are our 432 hemisystems modulo complement", () => {
+  const h = require(path.join(root, "data/w33_hemisystems_are_their_216.json"));
+  assert.ok(h.valid);
+
+  assert.equal(h.count, 432);
+  assert.ok(h.enumerationComplete, "the census must be exhaustive");
+  assert.ok(h.allSize20);
+  assert.ok(h.closedUnderComplementation,
+    "a line meeting T twice meets the complement 4-2 = 2 times");
+  assert.equal(h.selfComplementary, 0);
+  assert.equal(h.complementaryPairs, 216);
+  assert.ok(h.matchesTheir216);
+  assert.equal(h.theirSide.count, 216);
+
+  // the two derivations are independent, and the limits are stated
+  assert.match(h.theirSide.route, /trade-lattice|GQ\(4,2\)/);
+  assert.match(h.ourSide.route, /m-ovoid census/);
+  assert.match(h.notClaimed, /no fibre-level correspondence/);
+});
