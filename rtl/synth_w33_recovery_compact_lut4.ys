@@ -1,0 +1,11 @@
+read_verilog rtl/build/w33_recovery_two_stage_core_compact.v
+hierarchy -check -top w33_recovery_two_stage_core_compact
+proc
+flatten
+opt
+memory
+opt
+techmap
+opt
+abc -g LUT4
+tee -o rtl/build/w33_recovery_compact_lut4.txt stat
