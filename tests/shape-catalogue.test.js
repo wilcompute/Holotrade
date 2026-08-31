@@ -2845,3 +2845,46 @@ test("only the extreme load levels ever fail, and only for odd q", () => {
   assert.match(r.unifies, /only place the spectrum is obstructed/);
   assert.match(r.boundary, /NOT proved as a\s+family/);
 });
+
+test("the depth-2 perfect tile transversal is exactly tau* and does not exist", () => {
+  const r = require(path.join(root, "data/depth2_balance_spectrum.json"));
+  assert.ok(r.valid);
+
+  const by = Object.fromEntries(r.rows.map((x) => [x.m, x]));
+  // the forced size identity |X| = 100m, checked on every solved row
+  for (const row of r.rows) {
+    assert.equal(row.predictedSize, 100 * row.m);
+    if (row.actualSize !== null) {
+      assert.equal(row.actualSize, row.predictedSize);
+      assert.deepEqual(row.tileCounts, [row.m], "balance must be exact");
+      assert.ok(row.consistent);
+    }
+  }
+
+  // m = 1 is the LP optimum and is impossible, proved two independent ways
+  assert.equal(by[1].predictedSize, 100);
+  assert.equal(by[1].status, "INFEASIBLE");
+  assert.equal(r.mEqualsOneProvedTwice.solver, "INFEASIBLE");
+  assert.match(r.mEqualsOneProvedTwice.boundArgument, /111 > 100/);
+  assert.match(r.structuralReadingOfTheGap, /not\s+merely numerical/);
+
+  // the hemisystem product gives m = 4 for free, verified leaf-by-leaf
+  const h = r.hemisystemProduct;
+  assert.equal(h.hemisystemSize, 20);
+  assert.equal(h.productSize, 400);
+  assert.deepEqual(h.tileCounts, [4], "an m-ovoid squared is m^2-balanced");
+  assert.equal(by[4].actualSize, 400);
+
+  // m = 3 exists and cannot come from that construction
+  assert.equal(by[3].status, "OPTIMAL");
+  assert.equal(by[3].actualSize, 300);
+  assert.match(r.mEqualsThreeIsNotAProduct, /not a square/);
+
+  // the trade-off, as a number
+  assert.equal(r.balanceCost.bestKnownBlocker, 115);
+  assert.equal(r.balanceCost.smallestBalanced, 300);
+  assert.ok(r.balanceCost.ratio > 2.5 && r.balanceCost.ratio < 2.7);
+
+  assert.match(r.open, /m = 2/);
+  assert.match(r.boundary, /consumes that bound/);
+});

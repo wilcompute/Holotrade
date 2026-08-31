@@ -1,0 +1,65 @@
+{
+  "schema": "holotrade.depth2-balance-spectrum.v1",
+  "valid": true,
+  "sizeIdentity": "16|X| = 1600m so |X| = 100m; at m = 1 that is exactly tau*(H^2) = 100, the LP optimum",
+  "rows": [
+    {
+      "m": 1,
+      "predictedSize": 100,
+      "status": "INFEASIBLE",
+      "actualSize": null,
+      "tileCounts": null,
+      "consistent": null
+    },
+    {
+      "m": 2,
+      "predictedSize": 200,
+      "status": "UNKNOWN",
+      "actualSize": null,
+      "tileCounts": null,
+      "consistent": null
+    },
+    {
+      "m": 3,
+      "predictedSize": 300,
+      "status": "OPTIMAL",
+      "actualSize": 300,
+      "tileCounts": [
+        3
+      ],
+      "consistent": true
+    },
+    {
+      "m": 4,
+      "predictedSize": 400,
+      "status": "OPTIMAL",
+      "actualSize": 400,
+      "tileCounts": [
+        4
+      ],
+      "consistent": true
+    }
+  ],
+  "mEqualsOneProvedTwice": {
+    "solver": "INFEASIBLE",
+    "boundArgument": "tau_2 >= 111 > 100, and a 1-balanced set is a blocker of size 100"
+  },
+  "structuralReadingOfTheGap": "the LP optimum is the size of a perfect tile transversal, and no such object exists -- so tau_2 - tau* >= 11 is not merely numerical",
+  "hemisystemProduct": {
+    "hemisystemSize": 20,
+    "productSize": 400,
+    "tileCounts": [
+      4
+    ],
+    "why": "an m-ovoid squared is m^2-balanced; W(3,3) has them only at m = 2, giving the m = 4 level free"
+  },
+  "mEqualsThreeIsNotAProduct": "m = 3 was found by the solver and does not factor as a product of one-carrier objects, since 3 is not a square",
+  "balanceCost": {
+    "bestKnownBlocker": 115,
+    "smallestBalanced": 300,
+    "ratio": 2.61,
+    "reading": "insisting every pair of local contexts sees the same number of product observables costs this factor over merely covering them"
+  },
+  "open": "m = 2 at size 200 returned UNKNOWN in ten minutes",
+  "boundary": "nothing here moves tau_2, which stays open in [111, 115]; the m = 1 row consumes that bound rather than improving it"
+}
