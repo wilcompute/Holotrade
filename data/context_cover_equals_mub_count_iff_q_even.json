@@ -1,0 +1,70 @@
+{
+  "schema": "holotrade.context-cover-mub-dichotomy.v1",
+  "valid": true,
+  "dichotomy": "tau_1(W(3,q)) equals q^2+1, the complete-MUB-set size, exactly when q is even -- equivalently exactly when an ovoid exists",
+  "mechanism": "an ovoid is a perfect transversal of the contexts, so it IS a minimum cover; W(3,q) has an ovoid iff q is even (Thas)",
+  "rows": [
+    {
+      "q": 2,
+      "points": 15,
+      "contexts": 15,
+      "tau1": 5,
+      "status": "OPTIMAL",
+      "mubCount": 5,
+      "excess": 0,
+      "qEven": true,
+      "attainsMubCount": true
+    },
+    {
+      "q": 3,
+      "points": 40,
+      "contexts": 40,
+      "tau1": 11,
+      "status": "OPTIMAL",
+      "mubCount": 10,
+      "excess": 1,
+      "qEven": false,
+      "attainsMubCount": false
+    },
+    {
+      "q": 4,
+      "points": 85,
+      "contexts": 85,
+      "tau1": 17,
+      "status": "OPTIMAL",
+      "mubCount": 17,
+      "excess": 0,
+      "qEven": true,
+      "attainsMubCount": true
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "contexts": 156,
+      "tau1": 29,
+      "status": "OPTIMAL",
+      "mubCount": 26,
+      "excess": 3,
+      "qEven": false,
+      "attainsMubCount": false
+    }
+  ],
+  "dichotomyHolds": true,
+  "tauStar": "q^2+1 for every q, by the uniform 1/(q+1) primal-dual certificate; so the odd-q penalty is a pure integrality gap and does not compound across a network of product observables",
+  "oddExcessPattern": "q-2 at q = 3 and 5, recorded as a two-point pattern only; it is NOT q-2 at q = 4, where the excess is 0, so parity must be conditioned on first",
+  "twoTens": {
+    "phi4": "dim Sp(4,q) = 10 for every q (contextual-fraction denominator, w33_hesse_mermin_contextuality.py)",
+    "tauStar": "tau*(W(3,q)) = q^2+1, which is 10 only at q=3 and 26 at q=5",
+    "note": "different invariants that agree at q = 3 alone"
+  },
+  "priorArt": {
+    "inRepo": [
+      "ovoids <-> MUB basis states (2026-07-08_pass70_15vector_doily_attack.md)",
+      "36 spreads = complete MUB frames (2026-05-29_spread_square_we6_factorization.md)",
+      "Hesse = single-qutrit phase space, 4 MUBs, contextual fraction 1/10 (w33_hesse_mermin_contextuality.py)"
+    ],
+    "external": "complete MUB sets correspond to symplectic spreads: Calderbank, Cameron, Kantor, Seidel 1996; Kantor",
+    "newHere": "the covering number stated in MUB terms, and the parity dichotomy"
+  },
+  "boundary": "verified at four values of q, not proved as a family; tau_1 = q^2+1 for even q is proved by exhibiting the ovoid, but the size of the odd-q excess is computational only"
+}

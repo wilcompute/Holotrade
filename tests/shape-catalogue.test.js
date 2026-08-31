@@ -2603,3 +2603,39 @@ test("mutually incompatible Paulis are partial ovoids, and alpha(W(3,5)) = 18", 
   assert.match(r.boundary, /restatement, not a theorem/);
   assert.match(r.priorArt.qudit, /2302\.07966/);
 });
+
+test("the context cover equals the MUB count exactly when q is even", () => {
+  const r = require(path.join(root, "data/context_cover_equals_mub_count_iff_q_even.json"));
+  assert.ok(r.valid && r.dichotomyHolds);
+
+  const by = Object.fromEntries(r.rows.map((x) => [x.q, x]));
+  for (const row of r.rows) {
+    assert.equal(row.status, "OPTIMAL", `q=${row.q} must be proved`);
+    assert.equal(row.mubCount, row.q * row.q + 1);
+    assert.equal(row.excess, row.tau1 - row.mubCount);
+    // the dichotomy itself, on every row
+    assert.equal(row.attainsMubCount, row.qEven,
+      `q=${row.q}: attains the MUB count iff q is even`);
+  }
+  assert.equal(by[2].tau1, 5);
+  assert.equal(by[3].tau1, 11);
+  assert.equal(by[4].tau1, 17);
+  assert.equal(by[5].tau1, 29);
+
+  // q=4 is the row that kills a naive formula: excess 0 while q-2 = 2
+  assert.equal(by[4].excess, 0);
+  assert.match(r.oddExcessPattern, /NOT q-2 at q = 4/);
+
+  // the two tens must be kept apart
+  assert.match(r.twoTens.phi4, /every q/);
+  assert.match(r.twoTens.tauStar, /26 at q=5/);
+  assert.match(r.twoTens.note, /q = 3 alone/);
+
+  // prior art credited, new part named
+  assert.ok(r.priorArt.inRepo.length >= 3);
+  assert.ok(r.priorArt.inRepo.some((x) => /MUB basis states/.test(x)));
+  assert.ok(r.priorArt.inRepo.some((x) => /36 spreads/.test(x)));
+  assert.match(r.priorArt.external, /Kantor/);
+  assert.match(r.priorArt.newHere, /parity dichotomy/);
+  assert.match(r.boundary, /not proved as a\s+family/);
+});
