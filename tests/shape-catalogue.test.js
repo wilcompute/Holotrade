@@ -2806,3 +2806,42 @@ test("Pauli grouping is always free, unlike certification", () => {
   assert.match(r.whatIsAdded, /opposite answers/);
   assert.match(r.boundary, /classical and not proved by these/);
 });
+
+test("only the extreme load levels ever fail, and only for odd q", () => {
+  const r = require(path.join(root, "data/load_balance_spectrum_only_extremes_fail.json"));
+  assert.ok(r.valid && r.ruleHolds);
+
+  const by = Object.fromEntries(r.spectra.map((s) => [s.q, s]));
+  for (const s of r.spectra) {
+    // complementation m <-> q+1-m must pair existence, a real check
+    assert.ok(s.complementationSymmetric,
+      `q=${s.q}: existence must be symmetric under m -> q+1-m`);
+    // every intermediate level exists at every q
+    assert.ok(s.allIntermediateExist, `q=${s.q}: middles must all exist`);
+    // extremes fail exactly when q is odd
+    assert.equal(s.extremesFail, !s.qEven,
+      `q=${s.q}: extremes fail iff q is odd`);
+    for (const row of s.rows) {
+      assert.equal(row.size, row.m * (s.q * s.q + 1));
+      assert.equal(row.exists, row.count > 0);
+    }
+  }
+
+  // the W(3,3) row must reproduce the repository's own census exactly
+  const q3 = by[3].rows;
+  assert.equal(q3.find((x) => x.m === 1).exists, false, "no ovoid at q=3");
+  assert.equal(q3.find((x) => x.m === 2).count, 432, "the 432 hemisystems");
+  assert.equal(q3.find((x) => x.m === 3).exists, false);
+
+  // q=5 is what refutes the tempting "odd q admits only the hemisystem"
+  const q5 = by[5].rows;
+  for (const m of [2, 3, 4]) {
+    assert.ok(q5.find((x) => x.m === m).exists, `q=5 m=${m} must exist`);
+  }
+  assert.equal(q5.find((x) => x.m === 1).exists, false);
+  assert.equal(q5.find((x) => x.m === 5).exists, false);
+  assert.match(r.q3IsNotSpecial, /refutes it/);
+
+  assert.match(r.unifies, /only place the spectrum is obstructed/);
+  assert.match(r.boundary, /NOT proved as a\s+family/);
+});

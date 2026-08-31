@@ -1,0 +1,198 @@
+{
+  "schema": "holotrade.load-balance-spectrum.v1",
+  "valid": true,
+  "definition": "an m-ovoid meets every measurement context in exactly m observables: a perfectly load-balanced schedule",
+  "rule": "exists for every m in 1..q when q is even, and for every m in 2..q-1 when q is odd; only the two extremes are ever obstructed",
+  "extremesAre": "m = 1 is certification (an ovoid, which exists iff q is even, by Thas) and m = q is its complement",
+  "spectra": [
+    {
+      "q": 2,
+      "pauliClasses": 15,
+      "contexts": 15,
+      "rows": [
+        {
+          "m": 1,
+          "size": 5,
+          "status": "OPTIMAL",
+          "count": 6,
+          "countIsCapped": false,
+          "exists": true,
+          "isExtreme": true,
+          "isHemisystem": false
+        },
+        {
+          "m": 2,
+          "size": 10,
+          "status": "OPTIMAL",
+          "count": 6,
+          "countIsCapped": false,
+          "exists": true,
+          "isExtreme": true,
+          "isHemisystem": false
+        }
+      ],
+      "complementationSymmetric": true,
+      "extremesFail": false,
+      "allIntermediateExist": true,
+      "qEven": true
+    },
+    {
+      "q": 3,
+      "pauliClasses": 40,
+      "contexts": 40,
+      "rows": [
+        {
+          "m": 1,
+          "size": 10,
+          "status": "INFEASIBLE",
+          "count": 0,
+          "countIsCapped": false,
+          "exists": false,
+          "isExtreme": true,
+          "isHemisystem": false
+        },
+        {
+          "m": 2,
+          "size": 20,
+          "status": "OPTIMAL",
+          "count": 432,
+          "countIsCapped": false,
+          "exists": true,
+          "isExtreme": false,
+          "isHemisystem": true
+        },
+        {
+          "m": 3,
+          "size": 30,
+          "status": "INFEASIBLE",
+          "count": 0,
+          "countIsCapped": false,
+          "exists": false,
+          "isExtreme": true,
+          "isHemisystem": false
+        }
+      ],
+      "complementationSymmetric": true,
+      "extremesFail": true,
+      "allIntermediateExist": true,
+      "qEven": false
+    },
+    {
+      "q": 4,
+      "pauliClasses": 85,
+      "contexts": 85,
+      "rows": [
+        {
+          "m": 1,
+          "size": 17,
+          "status": "OPTIMAL",
+          "count": 120,
+          "countIsCapped": false,
+          "exists": true,
+          "isExtreme": true,
+          "isHemisystem": false
+        },
+        {
+          "m": 2,
+          "size": 34,
+          "status": "FEASIBLE",
+          "count": 3000,
+          "countIsCapped": true,
+          "exists": true,
+          "isExtreme": false,
+          "isHemisystem": false
+        },
+        {
+          "m": 3,
+          "size": 51,
+          "status": "FEASIBLE",
+          "count": 3000,
+          "countIsCapped": true,
+          "exists": true,
+          "isExtreme": false,
+          "isHemisystem": false
+        },
+        {
+          "m": 4,
+          "size": 68,
+          "status": "OPTIMAL",
+          "count": 120,
+          "countIsCapped": false,
+          "exists": true,
+          "isExtreme": true,
+          "isHemisystem": false
+        }
+      ],
+      "complementationSymmetric": true,
+      "extremesFail": false,
+      "allIntermediateExist": true,
+      "qEven": true
+    },
+    {
+      "q": 5,
+      "pauliClasses": 156,
+      "contexts": 156,
+      "rows": [
+        {
+          "m": 1,
+          "size": 26,
+          "status": "INFEASIBLE",
+          "count": 0,
+          "countIsCapped": false,
+          "exists": false,
+          "isExtreme": true,
+          "isHemisystem": false
+        },
+        {
+          "m": 2,
+          "size": 52,
+          "status": "FEASIBLE",
+          "count": 2000,
+          "countIsCapped": true,
+          "exists": true,
+          "isExtreme": false,
+          "isHemisystem": false
+        },
+        {
+          "m": 3,
+          "size": 78,
+          "status": "FEASIBLE",
+          "count": 2000,
+          "countIsCapped": true,
+          "exists": true,
+          "isExtreme": false,
+          "isHemisystem": true
+        },
+        {
+          "m": 4,
+          "size": 104,
+          "status": "FEASIBLE",
+          "count": 2000,
+          "countIsCapped": true,
+          "exists": true,
+          "isExtreme": false,
+          "isHemisystem": false
+        },
+        {
+          "m": 5,
+          "size": 130,
+          "status": "INFEASIBLE",
+          "count": 0,
+          "countIsCapped": false,
+          "exists": false,
+          "isExtreme": true,
+          "isHemisystem": false
+        }
+      ],
+      "complementationSymmetric": true,
+      "extremesFail": true,
+      "allIntermediateExist": true,
+      "qEven": false
+    }
+  ],
+  "ruleHolds": true,
+  "q3IsNotSpecial": "at q = 3 only the hemisystem m = 2 survives, which looks like a rule for odd q; q = 5 refutes it with m = 2, 3 and 4 all existing. q = 3 is the smallest odd case, where dropping both ends of {1,2,3} leaves only the middle",
+  "unifies": "every certification result here is the m = 1 edge of this spectrum, and that edge with its mirror is the only place the spectrum is obstructed",
+  "priorArt": "the W(3,3) row is already ours -- w33_shape_catalogue.js records m-ovoids of W(3,3) at set size 20 and nowhere else, 432 of them, reproduced exactly here; m-ovoids of generalized quadrangles are a studied topic",
+  "boundary": "verified at q = 2, 3, 4, 5 and NOT proved as a family; counts marked capped are lower bounds"
+}
