@@ -2769,3 +2769,40 @@ test("structure injection cannot reprove 110, so that route is closed", () => {
   assert.match(r.whyRouteIsClosed, /UNKNOWN at 111 would carry no information/);
   assert.match(r.boundary, /moves no bound/);
 });
+
+// ======================================================================
+// The dual measurement question: grouping vs certification
+// ======================================================================
+
+test("Pauli grouping is always free, unlike certification", () => {
+  const r = require(path.join(root, "data/the_dual_measurement_question_never_fails.json"));
+  assert.ok(r.valid && r.groupingAlwaysFree);
+
+  // every case reaches the spread value, and does so as an exact PARTITION
+  for (const row of r.rows) {
+    assert.equal(row.status, "OPTIMAL", `${row.space} must be proved`);
+    assert.equal(row.spreadValue, Math.pow(row.q, row.n) + 1);
+    assert.equal(row.excess, 0, `${row.space}: grouping must be free`);
+    assert.ok(row.isExactPartition,
+      `${row.space}: the optimum must be a spread, not an overlapping cover`);
+  }
+
+  // the rank-3 contrast: one geometry, opposite answers
+  const c = r.rank3Contrast;
+  assert.equal(c.space, "W(5,2)");
+  assert.equal(c.certification.tau1, 10);
+  assert.equal(c.certification.value, 9);
+  assert.equal(c.certification.free, false);
+  assert.equal(c.grouping.cover, 9);
+  assert.equal(c.grouping.free, true);
+  assert.ok(c.grouping.exactPartition);
+  assert.ok(c.certification.tau1 > c.grouping.cover,
+    "no ovoid but a perfect spread, in the same space");
+
+  // the duality is what is claimed, and the classical half is credited
+  assert.match(r.twoQuestions.certification, /Thas/);
+  assert.match(r.twoQuestions.grouping, /spreads always do/);
+  assert.match(r.priorArt, /2\^n\+1 commuting/);
+  assert.match(r.whatIsAdded, /opposite answers/);
+  assert.match(r.boundary, /classical and not proved by these/);
+});

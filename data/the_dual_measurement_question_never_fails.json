@@ -1,0 +1,99 @@
+{
+  "schema": "holotrade.dual-measurement-question.v1",
+  "valid": true,
+  "twoQuestions": {
+    "certification": "cover every CONTEXT with observables; optimum q^n+1 iff an ovoid exists, which by Thas means n = 2 and q even",
+    "grouping": "cover every OBSERVABLE with contexts, the Pauli-grouping problem; optimum q^n+1 iff a spread exists, and spreads always do"
+  },
+  "rows": [
+    {
+      "system": "2 qubits",
+      "space": "W(3,2)",
+      "n": 2,
+      "q": 2,
+      "pauliClasses": 15,
+      "contexts": 15,
+      "contextSize": 3,
+      "minContextCover": 5,
+      "status": "OPTIMAL",
+      "spreadValue": 5,
+      "excess": 0,
+      "isExactPartition": true
+    },
+    {
+      "system": "2 qutrits",
+      "space": "W(3,3)",
+      "n": 2,
+      "q": 3,
+      "pauliClasses": 40,
+      "contexts": 40,
+      "contextSize": 4,
+      "minContextCover": 10,
+      "status": "OPTIMAL",
+      "spreadValue": 10,
+      "excess": 0,
+      "isExactPartition": true
+    },
+    {
+      "system": "2 ququarts",
+      "space": "W(3,4)",
+      "n": 2,
+      "q": 4,
+      "pauliClasses": 85,
+      "contexts": 85,
+      "contextSize": 5,
+      "minContextCover": 17,
+      "status": "OPTIMAL",
+      "spreadValue": 17,
+      "excess": 0,
+      "isExactPartition": true
+    },
+    {
+      "system": "2 ququints",
+      "space": "W(3,5)",
+      "n": 2,
+      "q": 5,
+      "pauliClasses": 156,
+      "contexts": 156,
+      "contextSize": 6,
+      "minContextCover": 26,
+      "status": "OPTIMAL",
+      "spreadValue": 26,
+      "excess": 0,
+      "isExactPartition": true
+    },
+    {
+      "system": "3 qubits",
+      "space": "W(5,2)",
+      "n": 3,
+      "q": 2,
+      "pauliClasses": 63,
+      "contexts": 135,
+      "contextSize": 7,
+      "minContextCover": 9,
+      "status": "OPTIMAL",
+      "spreadValue": 9,
+      "excess": 0,
+      "isExactPartition": true
+    }
+  ],
+  "groupingAlwaysFree": true,
+  "rank3Contrast": {
+    "space": "W(5,2)",
+    "certification": {
+      "tau1": 10,
+      "value": 9,
+      "free": false
+    },
+    "grouping": {
+      "cover": 9,
+      "value": 9,
+      "free": true,
+      "exactPartition": true
+    },
+    "reading": "three qubits group into nine commuting settings with nothing measured twice, yet cannot be certified by nine observables"
+  },
+  "priorArt": "for qubits the grouping statement is classical: the 4^n-1 Paulis partition into 2^n+1 commuting sets, the standard MUB/symplectic-spread construction; this repository has carried spreads as MUB frames since May 2026",
+  "whatIsAdded": "the pairing -- reading grouping and certification as the two dual covering problems on one space, and the observation that they dualize to opposite answers, sharpest at rank 3",
+  "boundary": "each row is a solved instance; the universality of spreads is classical and not proved by these five rows. No tau_2 bound moves."
+}
