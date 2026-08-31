@@ -1,0 +1,79 @@
+{
+  "schema": "holotrade.tensor-114-search-log.v1",
+  "valid": true,
+  "isSearchLogNotTheorem": true,
+  "attempts": [
+    {
+      "method": "warm-started CP-SAT on the raw model",
+      "budgetMinutes": 25,
+      "result": "115",
+      "lowerBound": 101,
+      "verdict": "no improvement"
+    },
+    {
+      "method": "strengthened model, feasibility at 111",
+      "budgetMinutes": 50,
+      "result": "UNKNOWN",
+      "lowerBound": 110,
+      "verdict": "no verdict"
+    },
+    {
+      "method": "strengthened model, feasibility at 114",
+      "budgetMinutes": 25,
+      "result": "UNKNOWN",
+      "lowerBound": 110,
+      "verdict": "no verdict"
+    },
+    {
+      "method": "complete cyclic conjugacy-class sweep",
+      "budgetMinutes": 18,
+      "result": "115 by exactly one class of order 6",
+      "lowerBound": null,
+      "verdict": "no improvement"
+    },
+    {
+      "method": "C2 subspace of the witness's own stabiliser",
+      "budgetMinutes": 7,
+      "result": "115",
+      "lowerBound": 106,
+      "verdict": "no improvement"
+    },
+    {
+      "method": "simulated annealing at fixed size 114, seeded by the witness",
+      "budgetMinutes": 45,
+      "result": "best 6 uncovered of 1600, never 0",
+      "lowerBound": null,
+      "verdict": "no solution found"
+    }
+  ],
+  "control": [
+    {
+      "target": 116,
+      "starts": "pure random",
+      "budgetMinutes": 7,
+      "knownFeasible": true,
+      "bestUncovered": 33,
+      "solved": false
+    },
+    {
+      "target": 115,
+      "starts": "pure random",
+      "budgetMinutes": 7,
+      "knownFeasible": true,
+      "bestUncovered": 41,
+      "solved": false
+    }
+  ],
+  "controlInvalidatesAnnealingEvidence": true,
+  "whatSurvives": "the 115-leaf witness is locally isolated: removing one leaf and repairing by single swaps stalls six tiles short of 114",
+  "whatIsNotEstablished": "that a 114-leaf blocker does not exist; the annealer cannot find 115 or 116 from cold either, so its failure at 114 carries no weight as an infeasibility argument",
+  "newCutsUsed": "|H_q| <= (t+1)|C_q| and its transpose, invisible to the LP relaxation; their aggregate is sum_L |B_L| <= (t+1)|X|",
+  "constraintSideCeiling": "110, and provably so: the diagonal always admits the trivial (s+1)-ovoid, so no counting argument of that kind passes it",
+  "frontier": {
+    "interval": [
+      111,
+      115
+    ]
+  },
+  "boundary": "a log of failed searches with its control; it proves nothing and moves nothing"
+}

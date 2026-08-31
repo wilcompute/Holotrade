@@ -2518,3 +2518,28 @@ test("tau_1 and alpha are Pauli measurement quantities, verified with matrices",
   assert.match(r.scopeNote, /proper\s+subset/);
   assert.match(r.boundary, /not a new bound/);
 });
+
+test("the annealing evidence at 114 is invalidated by its own control", () => {
+  const r = require(path.join(root, "data/tensor_114_search_log_with_control.json"));
+  assert.ok(r.valid);
+  assert.ok(r.isSearchLogNotTheorem);
+
+  // the control ran at sizes that ARE feasible and still failed
+  for (const c of r.control) {
+    assert.ok(c.knownFeasible, "the control must target a feasible size");
+    assert.equal(c.solved, false);
+    assert.ok(c.bestUncovered > 6,
+      "cold starts do worse than the seeded 114 run, which is the point");
+  }
+  assert.ok(r.controlInvalidatesAnnealingEvidence);
+  assert.match(r.whatIsNotEstablished, /carries no weight/);
+  assert.match(r.whatSurvives, /locally isolated/);
+
+  // and no attempt claims to have moved anything
+  assert.deepEqual(r.frontier.interval, [111, 115]);
+  for (const a of r.attempts) {
+    assert.ok(/no improvement|no verdict|no solution/.test(a.verdict),
+      `${a.method} must not claim an improvement`);
+  }
+  assert.match(r.constraintSideCeiling, /^110/);
+});
