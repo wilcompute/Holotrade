@@ -65,6 +65,13 @@
       "result": "94 rounds, 0 improvements, final 115",
       "lowerBound": null,
       "verdict": "no improvement"
+    },
+    {
+      "method": "NON-CYCLIC symmetry classes from commuting pairs (orders 4, 8, 9, 24)",
+      "budgetMinutes": 20,
+      "result": "512 pairs, 9 distinct classes, best 116",
+      "lowerBound": null,
+      "verdict": "no improvement"
     }
   ],
   "control": [
@@ -86,6 +93,7 @@
     }
   ],
   "controlInvalidatesAnnealingEvidence": true,
+  "nonCyclicGapClosed": "the cyclic sweep's stated boundary is now covered: 9 non-cyclic classes of orders 4, 8, 9 and 24, best 116",
   "whatSurvives": "the 115-leaf witness is locally isolated: removing one leaf and repairing by single swaps stalls six tiles short of 114; and 3,430 LNS rounds with exact CP-SAT sub-solves, including 94 that re-optimised 60 to 110 of the 115 leaves, never found a 114",
   "lnsCaveat": "each LNS sub-solve had a 25-second budget, so a round finding nothing has not proved its neighbourhood empty",
   "whatIsNotEstablished": "that a 114-leaf blocker does not exist; the annealer cannot find 115 or 116 from cold either, so its failure at 114 carries no weight as an infeasibility argument",

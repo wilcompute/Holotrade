@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Seven independent attacks on the gap, and the control that stops one of
+Eight independent attacks on the gap, and the control that stops one of
 them from being over-read.
 
 This file is a search log, not a theorem. It exists because the same searches
@@ -53,6 +53,23 @@ WHAT WAS TRIED, and what each returned.
    explicit solution -- so nothing it says about 114 counts either. Recorded
    so the next attempt does not rebuild it.
 
+7a. NON-CYCLIC SYMMETRY, which closes a boundary this file had left open.
+   tensor_115_resists_from_both_sides.py swept every CYCLIC class of PSp(4,3)
+   and said so -- non-cyclic subgroups have different orbits, so a better
+   blocker could have hidden in one without any cyclic model seeing it.
+
+   Random pairs of Sp(4,3) elements almost always generate a large subgroup,
+   so a naive sweep found exactly one usable class. COMMUTING pairs generate
+   abelian groups of order at most ord(g)*ord(h), which lands reliably in the
+   range where the orbit model stays solvable. Building the full 25,920-element
+   group, taking centralisers of the 4,895 elements of order 2 to 4, and
+   sweeping the resulting subgroups gave 512 pairs and nine distinct
+   non-cyclic classes of orders 4, 8, 9 and 24.
+
+   Best over all of them: 116, from a group of order 9. None reached 115, let
+   alone beat it. So the witness's cyclic C6 remains the only symmetry of any
+   kind found that attains the optimum.
+
 7. LNS WITH EXACT SUB-SOLVES, which is the one that carries weight. Freeze a
    random subset of the 115-leaf witness, let CP-SAT choose everything else
    optimally, repeat with a fresh frozen set each round. Every neighbourhood
@@ -98,13 +115,14 @@ Recording the control rather than the headline, because "three independent
 runs all stopped at six" is exactly the shape of a result that gets believed
 without one.
 
-WHERE THAT LEAVES THINGS. Seven methods, no movement. The constraint side
+WHERE THAT LEAVES THINGS. Eight methods, no movement. The constraint side
 provably cannot pass 110 -- gq_tight_case_is_an_m_ovoid.py shows the diagonal
 always admits the trivial (s+1)-ovoid, so no counting argument of that kind
-reaches further -- and the symmetry side has been swept completely over cyclic
-subgroups. The remaining possibilities are an asymmetric 114-leaf blocker that
-no local search has found, or a proof at 111-114 that is not a counting
-argument. tau_2(W(3,3)^2) stays open in [111, 115].
+reaches further -- and the symmetry side has now been swept over cyclic AND non-cyclic classes,
+with only the witness's own C6 reaching 115. The remaining possibilities are an
+asymmetric 114-leaf blocker that no local search has found, or a proof at
+111-114 that is not a counting argument. tau_2(W(3,3)^2) stays open in
+[111, 115].
 """
 
 import json
@@ -143,6 +161,11 @@ ATTEMPTS = [
                "(60-110 of 115 leaves freed)",
      "budgetMinutes": 25, "result": "94 rounds, 0 improvements, final 115",
      "lowerBound": None, "verdict": "no improvement"},
+    {"method": "NON-CYCLIC symmetry classes from commuting pairs "
+               "(orders 4, 8, 9, 24)",
+     "budgetMinutes": 20,
+     "result": "512 pairs, 9 distinct classes, best 116",
+     "lowerBound": None, "verdict": "no improvement"},
 ]
 
 CONTROL = [
@@ -154,7 +177,7 @@ CONTROL = [
 
 
 def main():
-    print("SEVEN ATTACKS ON THE GAP, AND ONE CONTROL")
+    print("EIGHT ATTACKS ON THE GAP, AND ONE CONTROL")
     print("=" * 72)
     for a in ATTEMPTS:
         print("  %-52s %s" % (a["method"], a["result"]))
@@ -182,10 +205,11 @@ def main():
     print("  115 leaves -- never found a 114 either. Each sub-solve had a")
     print("  25-second budget, so no neighbourhood is PROVED empty.")
     print()
-    print("  Seven methods, no movement. The constraint side provably cannot")
-    print("  pass 110, and the symmetry side is swept out over cyclic")
-    print("  subgroups. What remains is an asymmetric witness no local search")
-    print("  has found, or a proof that is not a counting argument.")
+    print("  Eight methods, no movement. The constraint side provably cannot")
+    print("  pass 110; the symmetry side is now swept over cyclic AND")
+    print("  non-cyclic classes, and only the witness's own C6 reaches 115.")
+    print("  What remains is an asymmetric witness no local search has found,")
+    print("  or a proof that is not a counting argument.")
 
     ok = all(not c["solved"] and c["knownFeasible"] for c in CONTROL)
     if "--write" in sys.argv:
@@ -198,6 +222,9 @@ def main():
                 "attempts": ATTEMPTS,
                 "control": CONTROL,
                 "controlInvalidatesAnnealingEvidence": bool(ok),
+                "nonCyclicGapClosed": ("the cyclic sweep's stated boundary is "
+                                       "now covered: 9 non-cyclic classes of "
+                                       "orders 4, 8, 9 and 24, best 116"),
                 "whatSurvives": ("the 115-leaf witness is locally isolated: "
                                  "removing one leaf and repairing by single "
                                  "swaps stalls six tiles short of 114; and "

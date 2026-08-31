@@ -2548,6 +2548,14 @@ test("the annealing evidence at 114 is invalidated by its own control", () => {
   assert.ok(r.attempts.some((a) => /row-weighting/.test(a.method)
                                  && /calibration/.test(a.result)));
 
+  // the cyclic sweep's own stated boundary is now closed, not left open
+  const nc = r.attempts.find((a) => /NON-CYCLIC/.test(a.method));
+  assert.ok(nc, "the non-cyclic sweep must be recorded");
+  assert.match(nc.result, /9 distinct classes/);
+  assert.match(nc.result, /best 116/);
+  assert.equal(nc.verdict, "no improvement");
+  assert.match(r.nonCyclicGapClosed, /orders 4, 8, 9 and 24/);
+
   // and no attempt claims to have moved anything
   assert.deepEqual(r.frontier.interval, [111, 115]);
   for (const a of r.attempts) {
