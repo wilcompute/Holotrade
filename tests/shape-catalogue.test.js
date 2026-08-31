@@ -2657,3 +2657,49 @@ test("the context cover equals the MUB count exactly when q is even", () => {
   assert.match(r.priorArt.newHere, /parity dichotomy/);
   assert.match(r.boundary, /not proved as a\s+family/);
 });
+
+// ======================================================================
+// When is a perfect context transversal available? (Thas's classification)
+// ======================================================================
+
+test("a perfect context transversal exists only for two qudits of even dimension", () => {
+  const r = require(path.join(root, "data/perfect_context_transversal_classification.json"));
+  assert.ok(r.valid && r.allRowsMatchThas);
+  assert.match(r.theorem, /Thas/);
+
+  const by = Object.fromEntries(r.rows.map((x) => [x.space, x]));
+  for (const row of r.rows) {
+    // the geometry builder is validated by its own context count
+    assert.ok(row.contextCountMatches,
+      `${row.space}: contexts must equal prod (q^i+1)`);
+    assert.equal(row.contexts, row.contextsExpected);
+    assert.equal(row.fractionalValue, Math.pow(row.q, row.n) + 1);
+    assert.equal(row.excess, row.tau1 - row.fractionalValue);
+    // Thas's prediction: free iff n = 2 and q even
+    assert.equal(row.predictedFree, row.n === 2 && row.q % 2 === 0);
+    assert.equal(row.isFree, row.predictedFree,
+      `${row.space}: freeness must match the classification`);
+    assert.ok(row.matchesThas);
+  }
+
+  // the free ones
+  assert.equal(by["W(3,2)"].excess, 0);
+  assert.equal(by["W(3,4)"].excess, 0);
+  // the odd-q ones are not free
+  assert.equal(by["W(3,3)"].excess, 1);
+  assert.ok(by["W(3,5)"].excess > 0);
+
+  // THE decisive row: q=2 is even, but rank 3 loses the transversal
+  const three = by["W(5,2)"];
+  assert.equal(three.n, 3);
+  assert.equal(three.q, 2, "even dimension");
+  assert.equal(three.tau1, 10);
+  assert.equal(three.fractionalValue, 9);
+  assert.equal(three.excess, 1);
+  assert.equal(three.isFree, false, "a third qubit destroys the free lunch");
+  assert.equal(three.status, "OPTIMAL");
+
+  assert.ok(r.consequences.some((c) => /rank-2 phenomenon/.test(c)));
+  assert.match(r.statusNote, /FEASIBLE only bounds/);
+  assert.match(r.boundary, /the proof is Thas's/);
+});
