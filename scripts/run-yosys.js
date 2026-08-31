@@ -49,22 +49,17 @@ function runCandidate(command, args) {
 function runYosys(script) {
   const relativeScript = resolveYosysScript(script);
 
-  // Prefer native Yosys when present. Large generated W33 case tables are
-  // prohibitively slow to parse through the WASM YoWASP frontend in CI, while
-  // native Yosys runs the same checked scripts directly.
-  let status = runCandidate("yosys", ["-s", relativeScript]);
+  // pipx/pip installs this console entry point on every supported host.
+  // If it is not on PATH, retain the repository's existing Windows
+  // Python-launcher path as the explicit fallback.
+  let status = runCandidate("yowasp-yosys", ["-s", relativeScript]);
   if (status !== null) return status;
 
-  // Portable fallback used on hosts without a native package.
-  status = runCandidate("yowasp-yosys", ["-s", relativeScript]);
-  if (status !== null) return status;
-
-  // Retain the repository's Windows Python-launcher path as a final fallback.
   status = runCandidate("py", ["-3", "-c", PYTHON_RUNNER, "-s", relativeScript]);
   if (status !== null) return status;
 
   console.error(
-    "Unable to run Yosys: install native yosys, yowasp-yosys on PATH, or install yowasp-yosys for the Windows `py -3` interpreter."
+    "Unable to run Yosys: install yowasp-yosys on PATH or install it for the Windows `py -3` interpreter."
   );
   return 127;
 }

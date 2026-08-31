@@ -1,0 +1,77 @@
+{
+  "schema": "holotrade.tensor-excess-conservation.v1",
+  "valid": true,
+  "law": "F + D = (t+1) r",
+  "definitions": {
+    "F": "sum over lines of (|B_L| - tau_1), blocker excess",
+    "D": "sum over points of ((t+1)|C_q| - |H_q|), dependence",
+    "r": "|X| - (st+1) tau_1, distance above the shadow bound"
+  },
+  "proof": "sum_L |B_L| = sum_q |H_q|, both counting pairs (L,q) with q in B_L; the left is #lines*tau_1 + F and the right is (t+1)|X| - D",
+  "collisionsNotIndependent": "G = (t+1) D exactly, so the apparent second law 4F + G = 16r is four times the first",
+  "corollary": "at least #lines - (t+1)r row shadows are minimum and at least #points - (t+1)r column classes are independent",
+  "instances": [
+    {
+      "size": 115,
+      "r": 5,
+      "F": 10,
+      "D": 10,
+      "FplusD": 20,
+      "lawTarget": 20,
+      "lawHolds": true,
+      "G": 40,
+      "GequalsTPlus1D": true,
+      "rowShadowSizes": {
+        "11": 33,
+        "12": 4,
+        "13": 3
+      },
+      "colShadowSizes": {
+        "11": 33,
+        "12": 3,
+        "14": 1,
+        "13": 3
+      },
+      "columnClassSizes": {
+        "4": 9,
+        "2": 3,
+        "3": 18,
+        "1": 9,
+        "10": 1
+      },
+      "minimumRowShadows": 33,
+      "independentColumnClasses": 33,
+      "guaranteedMinimumRows": 20,
+      "guaranteedIndependentColumns": 20,
+      "name": "115-leaf symmetric witness"
+    },
+    {
+      "size": 121,
+      "r": 11,
+      "F": 0,
+      "D": 44,
+      "FplusD": 44,
+      "lawTarget": 44,
+      "lawHolds": true,
+      "G": 176,
+      "GequalsTPlus1D": true,
+      "rowShadowSizes": {
+        "11": 40
+      },
+      "colShadowSizes": {
+        "11": 40
+      },
+      "columnClassSizes": {
+        "0": 29,
+        "11": 11
+      },
+      "minimumRowShadows": 40,
+      "independentColumnClasses": 29,
+      "guaranteedMinimumRows": 0,
+      "guaranteedIndependentColumns": 0,
+      "name": "product blocker B x B"
+    }
+  ],
+  "tightCase": "at r = 0 the law forces F = D = 0, recovering the entire tight-case structure in one step",
+  "boundary": "an identity, not a bound; it excludes nothing on its own and does not move tau_2, open in [111, 115]"
+}

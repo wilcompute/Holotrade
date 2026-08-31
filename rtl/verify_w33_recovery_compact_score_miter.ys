@@ -1,3 +1,0 @@
-read_verilog rtl/w33_recovery_compact_score_miter.v
-prep -top w33_recovery_compact_score_miter
-sat -verify -prove failure 0 -show-inputs

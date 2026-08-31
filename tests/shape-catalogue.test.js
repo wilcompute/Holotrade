@@ -2440,3 +2440,42 @@ test("their 216 hemisystem lines are our 432 hemisystems modulo complement", () 
   assert.match(h.ourSide.route, /m-ovoid census/);
   assert.match(h.notClaimed, /no fibre-level correspondence/);
 });
+
+test("blocker excess plus column dependence equals (t+1) times the slack", () => {
+  const r = require(path.join(root, "data/tensor_excess_conservation_law.json"));
+  assert.ok(r.valid);
+  assert.equal(r.law, "F + D = (t+1) r");
+
+  // the law is checked on two blockers built by unrelated constructions
+  assert.equal(r.instances.length, 2);
+  for (const a of r.instances) {
+    assert.ok(a.lawHolds, `${a.name}: F + D must equal (t+1)r`);
+    assert.equal(a.FplusD, a.lawTarget);
+    assert.equal(a.lawTarget, 4 * a.r, "t+1 = 4 for W(3,3)");
+    assert.ok(a.GequalsTPlus1D, "collisions are 4D, not a separate quantity");
+    assert.equal(a.G, 4 * a.D);
+    // the corollary must actually hold, not just be stated
+    assert.ok(a.minimumRowShadows >= a.guaranteedMinimumRows);
+    assert.ok(a.independentColumnClasses >= a.guaranteedIndependentColumns);
+  }
+
+  const w = r.instances.find((a) => a.size === 115);
+  const prod = r.instances.find((a) => a.size === 121);
+  assert.equal(w.r, 5);
+  assert.equal(w.F, 10);
+  assert.equal(w.D, 10);
+  // the optimum carries a column class of size 10, which alpha = 7 forbids
+  // from being independent -- it is not a near-tight configuration
+  assert.equal(w.columnClassSizes["10"], 1);
+  assert.ok(w.minimumRowShadows < 40, "not all its row shadows are minimum");
+
+  // the product blocker has NO blocker excess at all: its 44 units are pure
+  // dependence, which is the opposite extreme
+  assert.equal(prod.r, 11);
+  assert.equal(prod.F, 0);
+  assert.equal(prod.D, 44);
+  assert.equal(prod.minimumRowShadows, 40);
+
+  assert.match(r.tightCase, /r = 0/);
+  assert.match(r.boundary, /identity, not a bound/);
+});
