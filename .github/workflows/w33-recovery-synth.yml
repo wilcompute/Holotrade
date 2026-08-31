@@ -11,6 +11,8 @@ on:
       - 'rtl/synth_w33_recovery_compare.ys'
       - 'scripts/gen-w33-recovery-compact.js'
       - 'analysis/w33_recovery_compact_source_equiv.js'
+      - 'analysis/w33_recovery_edge_gradient_carrier.js'
+      - 'data/w33_recovery_edge_gradient_carrier.json'
       - 'tests/w33-recovery-two-stage-rtl.test.js'
       - 'package.json'
       - '.github/workflows/w33-recovery-synth.yml'
@@ -43,6 +45,8 @@ jobs:
         run: node scripts/gen-w33-recovery-compact.js
       - name: Certify source/algebra equivalence
         run: node analysis/w33_recovery_compact_source_equiv.js
+      - name: Certify W33 directed-edge gradient carrier
+        run: node analysis/w33_recovery_edge_gradient_carrier.js
 
   compact-equivalence:
     runs-on: ubuntu-latest
