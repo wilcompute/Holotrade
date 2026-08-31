@@ -1,0 +1,46 @@
+{
+  "schema": "holotrade.gc-cells-in-grouping-optimum.v1",
+  "valid": true,
+  "theoremIsTheirs": "W33-Theory BT836, 'The Grunbaum-Coxeter Connection: Hemi-Dodecahedra Live Inside the Spreads'",
+  "reproduced": {
+    "spreadLines": 10,
+    "coversExactlyOnce": true,
+    "groupOrder": 25920,
+    "spreadStabiliserOrder": 720,
+    "stabiliserIsS6Order": true,
+    "a5Found": true,
+    "a5OrbitsOnLinePairs": [
+      15,
+      30
+    ],
+    "fifteenOrbitIsPetersen": true
+  },
+  "cells": {
+    "11-cell": {
+      "cells": 11,
+      "group": "PSL(2,11)",
+      "cellSkeleton": "K_6"
+    },
+    "57-cell": {
+      "cells": 57,
+      "group": "PSL(2,19)",
+      "cellSkeleton": "Petersen"
+    }
+  },
+  "groupingReading": "the minimum context cover is q^n+1 always, always OPTIMAL and always an exact partition, so a spread is what optimality forces; hence every optimal two-qutrit grouping schedule carries both cells",
+  "anchoredToQ3": {
+    "reason": "a spread of W(3,q) has q^2+1 lines and Petersen has 10 vertices, so the identification needs q^2+1 = 10, i.e. q = 3",
+    "spreadSizes": {
+      "2": 5,
+      "3": 10,
+      "4": 17,
+      "5": 26,
+      "7": 50,
+      "8": 65
+    },
+    "generalPart": "the optimal schedule is a spread at every q -- that is proved and general",
+    "specificPart": "the Petersen/K_6 reading exists only at q = 3"
+  },
+  "whyStated": "this project works at q = 3 by default and has already been caught welding two invariants together because they agreed there",
+  "boundary": "BT836's theorem is reproduced, not extended; the fusion with the grouping optimum and the generality test are what is added. No bound moves."
+}

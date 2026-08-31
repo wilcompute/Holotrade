@@ -2888,3 +2888,44 @@ test("the depth-2 perfect tile transversal is exactly tau* and does not exist", 
   assert.match(r.open, /m = 2/);
   assert.match(r.boundary, /consumes that bound/);
 });
+
+// ======================================================================
+// Grunbaum-Coxeter cells inside the optimal grouping schedule
+// ======================================================================
+
+test("every optimal two-qutrit grouping schedule carries both GC cells", () => {
+  const r = require(path.join(root, "data/grouping_optimum_carries_the_gc_cells.json"));
+  assert.ok(r.valid);
+
+  // BT836 reproduced from scratch, every step
+  const g = r.reproduced;
+  assert.equal(g.spreadLines, 10);
+  assert.ok(g.coversExactlyOnce, "a spread partitions the 40 points");
+  assert.equal(g.groupOrder, 25920);
+  assert.equal(g.spreadStabiliserOrder, 720);
+  assert.ok(g.stabiliserIsS6Order);
+  assert.ok(g.a5Found);
+  assert.deepEqual(g.a5OrbitsOnLinePairs, [15, 30], "the Kneser split");
+  assert.equal(g.fifteenOrbitIsPetersen, true);
+
+  // the cells named correctly
+  assert.equal(r.cells["11-cell"].cellSkeleton, "K_6");
+  assert.equal(r.cells["57-cell"].cellSkeleton, "Petersen");
+  assert.match(r.cells["11-cell"].group, /PSL\(2,11\)/);
+  assert.match(r.cells["57-cell"].group, /PSL\(2,19\)/);
+
+  // the theorem is credited, not claimed
+  assert.match(r.theoremIsTheirs, /BT836/);
+  assert.match(r.boundary, /reproduced, not extended/);
+
+  // and the generality test: Petersen needs 10, spreads have q^2+1 lines
+  const sizes = r.anchoredToQ3.spreadSizes;
+  for (const [q, n] of Object.entries(sizes)) {
+    assert.equal(n, Number(q) * Number(q) + 1);
+    assert.equal(n === 10, Number(q) === 3,
+      `q=${q}: a spread has 10 lines iff q = 3`);
+  }
+  assert.match(r.anchoredToQ3.generalPart, /every\s+q/);
+  assert.match(r.anchoredToQ3.specificPart, /only at\s+q = 3/);
+  assert.match(r.whyStated, /q = 3 by default/);
+});
