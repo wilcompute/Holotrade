@@ -1,0 +1,48 @@
+{
+  "schema": "holotrade.witness-clifford-compression.v1",
+  "valid": true,
+  "why": "Sp(4,3) is the two-qutrit Clifford group modulo Paulis and phases, so a stabilising element is a physical gate acting on observables",
+  "gate": [
+    [
+      0,
+      1,
+      1,
+      1
+    ],
+    [
+      2,
+      2,
+      1,
+      1
+    ],
+    [
+      1,
+      2,
+      2,
+      0
+    ],
+    [
+      2,
+      1,
+      0,
+      2
+    ]
+  ],
+  "gateOrder": 6,
+  "gateIsSymplectic": true,
+  "stabilisesWitness": true,
+  "orbitProfile": {
+    "2": 19,
+    "1": 8,
+    "6": 11,
+    "3": 1
+  },
+  "seeds": 39,
+  "witnessSize": 115,
+  "compression": 2.949,
+  "regeneratesExactly": true,
+  "regeneratedStillBlocks": true,
+  "tiles": 1600,
+  "canonicality": "the blind cyclic-class sweep in tensor_115_resists_from_both_sides.py reaches 115 from this order-6 class and from no other, so the symmetry is not incidental",
+  "boundary": "this compresses a known witness; it does not lower tau_2, which stays open in [111, 115], and a 114-leaf blocker need not be symmetric at all"
+}

@@ -2703,3 +2703,37 @@ test("a perfect context transversal exists only for two qudits of even dimension
   assert.match(r.statusNote, /FEASIBLE only bounds/);
   assert.match(r.boundary, /the proof is Thas's/);
 });
+
+test("the 115-leaf schedule is one Clifford gate plus 39 seeds", () => {
+  const r = require(path.join(root, "data/witness_compresses_under_one_clifford.json"));
+  assert.ok(r.valid);
+
+  // the gate is an explicit symplectic 4x4 over F_3 of order 6
+  assert.equal(r.gate.length, 4);
+  for (const row of r.gate) {
+    assert.equal(row.length, 4);
+    for (const x of row) assert.ok(x >= 0 && x < 3, "entries live in F_3");
+  }
+  assert.equal(r.gateOrder, 6);
+  assert.ok(r.gateIsSymplectic, "symplectic means it names a Clifford coset");
+  assert.ok(r.stabilisesWitness);
+
+  // the compression, and the regeneration that proves it is real
+  assert.equal(r.witnessSize, 115);
+  assert.equal(r.seeds, 39);
+  const total = Object.entries(r.orbitProfile)
+    .reduce((s, [len, count]) => s + Number(len) * count, 0);
+  assert.equal(total, 115, "orbit lengths must sum to the witness size");
+  const orbits = Object.values(r.orbitProfile).reduce((a, b) => a + b, 0);
+  assert.equal(orbits, r.seeds, "one seed per orbit");
+
+  // regeneration is checked by rebuilding, not by counting
+  assert.ok(r.regeneratesExactly, "seeds + gate must rebuild the witness exactly");
+  assert.ok(r.regeneratedStillBlocks, "and the rebuild must still block");
+  assert.equal(r.tiles, 1600);
+  assert.ok(r.compression > 2.9 && r.compression < 3.0);
+
+  // and the limits are stated
+  assert.match(r.canonicality, /no other/);
+  assert.match(r.boundary, /does not\s+lower tau_2/);
+});
