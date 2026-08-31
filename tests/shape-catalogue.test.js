@@ -2348,3 +2348,38 @@ test("the diagonal is provably beyond any counting argument", () => {
   // the subquadrangle route is recorded as refuted, not quietly dropped
   assert.match(r.refutedConjecture, /27/);
 });
+
+test("115 is what the group gives, and the solver stops at exactly 110", () => {
+  const r = require(path.join(root, "data/tensor_115_resists_from_both_sides.json"));
+  assert.ok(r.valid);
+
+  // the constraint side reaches the shadow bound and no further
+  const c = r.constraintSide;
+  assert.equal(c.boundBefore, 101);
+  assert.equal(c.boundAfter, 110, "exactly the shadow bound, not one more");
+  assert.equal(c.objective, 115);
+  assert.match(c.feasibilityAt111, /UNKNOWN/, "111 got no verdict either way");
+
+  // the symmetry side: every witness is verified, and only one class hits 115
+  assert.equal(r.groupOrder, 25920, "PSp(4,3)");
+  for (const row of r.symmetrySide.rows) {
+    assert.ok(row.verified, `order ${row.order}: witness must block all tiles`);
+    assert.ok(row.best >= 115, "no cyclic class beat the known witness");
+  }
+  assert.equal(r.symmetrySide.best, 115);
+  assert.deepEqual(r.symmetrySide.attainedBy, [6]);
+
+  // and that class is the witness's own stabiliser -- 115 is not a fluke
+  const st = r.witnessStabiliser;
+  assert.equal(st.order, 6);
+  assert.deepEqual(st.elementOrders, [1, 2, 3, 6]);
+  assert.equal(st.total, 115);
+  assert.equal(st.orbitProfile["6"], 11);
+  assert.ok(st.sweepRecoversIt,
+    "the blind sweep must recover 115 from the same order");
+
+  // the limits of the sweep are recorded, not glossed
+  assert.ok(r.boundaries.some((b) => /not proved minima/.test(b)));
+  assert.ok(r.boundaries.some((b) => /only cyclic subgroups/.test(b)));
+  assert.deepEqual(r.frontier.interval, [111, 115]);
+});

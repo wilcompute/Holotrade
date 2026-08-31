@@ -1,0 +1,324 @@
+{
+  "schema": "holotrade.tensor-115-resists.v1",
+  "valid": true,
+  "groupOrder": 25920,
+  "constraintSide": {
+    "model": "exact OR-encoded row and column shadows, plus the theorem that every shadow is a blocking set so has at least tau_1 = 11 points",
+    "boundBefore": 101,
+    "boundAfter": 110,
+    "objective": 115,
+    "feasibilityAt111": "UNKNOWN after 15 minutes",
+    "interpretation": "110 is exactly the shadow bound; the solver reaches it and stops, which is gq_tight_case_is_an_m_ovoid.py's theorem appearing as a number"
+  },
+  "symmetrySide": {
+    "cycleTypes": 13,
+    "subgroupsSolved": 12,
+    "rows": [
+      {
+        "orbits": 342,
+        "best": 115,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 6,
+        "cycleType": [
+          6,
+          6,
+          6,
+          6,
+          3,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "orbits": 174,
+        "best": 116,
+        "status": "OPTIMAL",
+        "verified": true,
+        "order": 12,
+        "cycleType": [
+          12,
+          12,
+          4,
+          4,
+          3,
+          2,
+          2,
+          1
+        ]
+      },
+      {
+        "orbits": 216,
+        "best": 117,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 9,
+        "cycleType": [
+          9,
+          9,
+          9,
+          3,
+          3,
+          3,
+          3,
+          1
+        ]
+      },
+      {
+        "orbits": 646,
+        "best": 117,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 3,
+        "cycleType": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "orbits": 284,
+        "best": 118,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 6,
+        "cycleType": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          3,
+          3,
+          2,
+          1,
+          1
+        ]
+      },
+      {
+        "orbits": 424,
+        "best": 118,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 4,
+        "cycleType": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "orbits": 544,
+        "best": 120,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 3,
+        "cycleType": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "orbits": 832,
+        "best": 121,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 2,
+        "cycleType": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "orbits": 320,
+        "best": 125,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 5,
+        "cycleType": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ]
+      },
+      {
+        "orbits": 272,
+        "best": 126,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 6,
+        "cycleType": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          2,
+          2
+        ]
+      },
+      {
+        "orbits": 800,
+        "best": 130,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 2,
+        "cycleType": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "orbits": 400,
+        "best": 140,
+        "status": "FEASIBLE",
+        "verified": true,
+        "order": 4,
+        "cycleType": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      }
+    ],
+    "best": 115,
+    "attainedBy": [
+      6
+    ]
+  },
+  "witnessStabiliser": {
+    "order": 6,
+    "elementOrders": [
+      1,
+      2,
+      3,
+      6
+    ],
+    "orbitProfile": {
+      "6": 11,
+      "3": 1,
+      "2": 19,
+      "1": 8
+    },
+    "total": 115,
+    "sweepRecoversIt": true
+  },
+  "boundaries": [
+    "FEASIBLE rows are upper bounds within their class, not proved minima; only the order-12 class solved to OPTIMAL",
+    "cycle type does not separate all conjugacy classes",
+    "only cyclic subgroups are swept; the true optimum need not be invariant under any nontrivial symmetry",
+    "neither attack changes any bound"
+  ],
+  "frontier": {
+    "interval": [
+      111,
+      115
+    ],
+    "lower": "W33-Theory's self-duality theorem",
+    "upper": "the 115-leaf witness, re-derived here"
+  }
+}
