@@ -1,0 +1,93 @@
+{
+  "schema": "holotrade.one-seed-commuting-orbit.v1",
+  "valid": true,
+  "rankThree": {
+    "orbits": [
+      {
+        "orbit": "diagonal",
+        "leaves": 40,
+        "meaning": "the same observable twice",
+        "blocksAllTiles": false,
+        "failingTiles": 1080,
+        "firstFailure": [
+          [
+            0,
+            4,
+            5,
+            6
+          ],
+          [
+            1,
+            13,
+            16,
+            19
+          ]
+        ]
+      },
+      {
+        "orbit": "collinear",
+        "leaves": 480,
+        "meaning": "a pair of distinct COMMUTING observables",
+        "blocksAllTiles": true,
+        "failingTiles": 0,
+        "firstFailure": null
+      },
+      {
+        "orbit": "non-collinear",
+        "leaves": 1080,
+        "meaning": "a pair of NON-COMMUTING observables",
+        "blocksAllTiles": false,
+        "failingTiles": 40,
+        "firstFailure": [
+          [
+            0,
+            4,
+            5,
+            6
+          ],
+          [
+            0,
+            4,
+            5,
+            6
+          ]
+        ]
+      }
+    ],
+    "total": 1600,
+    "why": "W(3,3) is a rank-3 permutation group, so the diagonal action on 1600 leaves has exactly three orbits"
+  },
+  "theorem": "the 480 leaves {(p,q) : p ~ q, p != q} meet every tile L x M",
+  "proof": [
+    "L = M: any two distinct points of a line are collinear",
+    "L, M meet at x: take p = x and any other q on M",
+    "L, M disjoint: p in L is collinear with exactly one point of M, by the GQ axiom"
+  ],
+  "failuresAreInformative": {
+    "diagonal": "fails on any two disjoint lines",
+    "nonCollinear": "fails on L x L: a context is a commuting set, so no non-commuting pair lives inside one -- and it is 1080 leaves against the commuting orbit's 480, so size does not help"
+  },
+  "frontier": [
+    {
+      "leaves": 115,
+      "seeds": 39,
+      "label": "time-optimal"
+    },
+    {
+      "leaves": 133,
+      "seeds": 13
+    },
+    {
+      "leaves": 320,
+      "seeds": 3
+    },
+    {
+      "leaves": 480,
+      "seeds": 1,
+      "label": "memory-optimal"
+    }
+  ],
+  "oneIsMinimal": "a schedule cannot be described by zero observables, so the memory end is optimal, not merely the best found",
+  "measurementReading": "the entire two-carrier schedule is 'measure A (x) B for every Clifford image of one commuting pair' -- 480 product observables from a single stored pair",
+  "boundary": "this settles the memory-optimal end exactly and proves it; it says nothing about tau_2, the time-optimal end, which stays open in [111, 115]"
+}

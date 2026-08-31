@@ -3093,3 +3093,49 @@ test("the shortest schedule and the smallest description are different", () => {
   assert.match(r.contrast, /no nontrivial\s+regular quotient/);
   assert.match(r.boundary, /not\s+a global optimum/);
 });
+
+test("the memory-optimal schedule is one seed: the commuting orbit", () => {
+  const r = require(path.join(root, "data/one_seed_schedule_is_the_commuting_orbit.json"));
+  assert.ok(r.valid);
+
+  // rank 3: exactly three orbits partitioning the whole 40x40 grid
+  const o = Object.fromEntries(r.rankThree.orbits.map((x) => [x.orbit, x]));
+  assert.equal(r.rankThree.orbits.length, 3);
+  assert.equal(r.rankThree.total, 1600);
+  assert.equal(o.diagonal.leaves + o.collinear.leaves + o["non-collinear"].leaves, 1600);
+  assert.equal(o.diagonal.leaves, 40);
+  assert.equal(o.collinear.leaves, 480, "40 * k = 40 * 12");
+  assert.equal(o["non-collinear"].leaves, 1080, "40 * 27");
+
+  // exactly one orbit blocks, and it is the COMMUTING one
+  assert.ok(o.collinear.blocksAllTiles);
+  assert.equal(o.collinear.failingTiles, 0);
+  assert.match(o.collinear.meaning, /COMMUTING/);
+  assert.equal(o.diagonal.blocksAllTiles, false);
+  assert.equal(o["non-collinear"].blocksAllTiles, false);
+
+  // the non-commuting orbit is bigger and still fails -- size does not help
+  assert.ok(o["non-collinear"].leaves > o.collinear.leaves);
+  assert.match(r.failuresAreInformative.nonCollinear, /size does not help/);
+  // and it fails on a tile L x L
+  assert.deepEqual(o["non-collinear"].firstFailure[0],
+                   o["non-collinear"].firstFailure[1], "fails on L x L");
+  // while the diagonal fails on DISJOINT lines
+  const d = o.diagonal.firstFailure;
+  assert.equal(d[0].filter((x) => d[1].includes(x)).length, 0, "disjoint");
+
+  // the proof is three cases, all from the quadrangle axiom
+  assert.equal(r.proof.length, 3);
+  assert.ok(r.proof.some((s) => /GQ axiom/.test(s)));
+
+  // the frontier is monotone, and one seed is minimal
+  const f = r.frontier;
+  for (let i = 1; i < f.length; i++) {
+    assert.ok(f[i].leaves > f[i - 1].leaves, "leaves increase");
+    assert.ok(f[i].seeds < f[i - 1].seeds, "seeds decrease");
+  }
+  assert.equal(f[f.length - 1].seeds, 1);
+  assert.equal(f[f.length - 1].leaves, 480);
+  assert.match(r.oneIsMinimal, /optimal, not merely the best found/);
+  assert.match(r.boundary, /says nothing about tau_2/);
+});
