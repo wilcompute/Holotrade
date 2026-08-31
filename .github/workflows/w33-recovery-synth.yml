@@ -7,9 +7,12 @@ on:
       - 'rtl/w33_recovery_two_stage_core.v'
       - 'rtl/verify_w33_recovery_two_stage_core.ys'
       - 'rtl/verify_w33_recovery_compact_equiv.ys'
+      - 'rtl/verify_w33_recovery_compact_ref_equiv.ys'
       - 'rtl/synth_w33_recovery_two_stage_core.ys'
       - 'rtl/synth_w33_recovery_compare.ys'
+      - 'rtl/synth_w33_recovery_compact_lut4.ys'
       - 'scripts/gen-w33-recovery-compact.js'
+      - 'scripts/gen-w33-recovery-compact-reference.js'
       - 'scripts/run-yosys.js'
       - 'analysis/w33_recovery_compact_source_equiv.js'
       - 'analysis/w33_recovery_edge_gradient_carrier.js'
@@ -46,7 +49,7 @@ jobs:
           node-version: 22
       - name: Generate compact adjacency-indexed RTL
         run: node scripts/gen-w33-recovery-compact.js
-      - name: Certify source/algebra equivalence
+      - name: Certify source/algebra equivalence to 1600-pair baseline
         run: node analysis/w33_recovery_compact_source_equiv.js
 
   geometry-certificates:
@@ -62,9 +65,9 @@ jobs:
       - name: Test PG34 secant labels against six-state recovery fibres
         run: node analysis/w33_pg34_secant_microstate_product.js
 
-  compact-equivalence-synth:
+  compact-bit-equivalence-synth:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -74,17 +77,29 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y yosys
-      - name: Verify baseline RTL source
-        run: node scripts/run-yosys.js rtl/verify_w33_recovery_two_stage_core.ys
-      - name: Generate compact adjacency-indexed RTL
-        run: node scripts/gen-w33-recovery-compact.js
-      - name: Prove compact RTL equivalent to baseline
-        run: node scripts/run-yosys.js rtl/verify_w33_recovery_compact_equiv.ys
-      - name: Synthesize baseline and compact cores to LUT4
-        run: node scripts/run-yosys.js rtl/synth_w33_recovery_compare.ys
-      - name: Show measured comparison
+      - name: Generate optimized and independent legacy-score 480-edge RTL
         run: |
-          echo '--- baseline ---'
-          cat rtl/build/w33_recovery_baseline_lut4.txt
-          echo '--- compact ---'
-          cat rtl/build/w33_recovery_compact_lut4.txt
+          node scripts/gen-w33-recovery-compact.js
+          node scripts/gen-w33-recovery-compact-reference.js
+      - name: Prove optimized compact RTL equivalent to legacy-score reference
+        run: node scripts/run-yosys.js rtl/verify_w33_recovery_compact_ref_equiv.ys
+      - name: Synthesize compact core to LUT4
+        run: node scripts/run-yosys.js rtl/synth_w33_recovery_compact_lut4.ys
+      - name: Show compact LUT4 measurement
+        run: cat rtl/build/w33_recovery_compact_lut4.txt
+
+  legacy-baseline-synth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Install native Yosys
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yosys
+      - name: Benchmark legacy 1600-pair baseline LUT4 synthesis
+        run: node scripts/run-yosys.js rtl/synth_w33_recovery_two_stage_core.ys
