@@ -26,8 +26,12 @@ against tau_1 = 11. The integrality gap of the single-level problem is
 therefore exactly 11/10, and it is that gap -- not the geometry -- that the
 whole depth-n question inherits.
 
-STEP 2: tau* is exactly multiplicative on this product.  For hypergraphs H1,
-H2 with product edges L x M:
+STEP 2: tau* is exactly multiplicative on this product.  This is standard
+fractional hypergraph theory, not something discovered here -- the tensor
+behaviour of tau* and nu* is textbook (Scheinerman-Ullman, Fractional Graph
+Theory), as is the greedy bound used in step 3 (Lovasz/Johnson/Chvatal). What
+is new is only the application to this object and the consequence for the
+depth-n bounds. For hypergraphs H1, H2 with product edges L x M:
 
   * if y1, y2 are fractional covers then y1 (x) y2 is one, because
     sum over (p,q) in L x M of y1(p) y2(q) = (sum_{p in L} y1)(sum_{q in M} y2)
@@ -71,6 +75,13 @@ already right, and 115^(n/2) is a good finite bound with the wrong exponential
 attached to it. Any future attempt to push the upper bound below 10^n is
 attempting something impossible, and any hope that the true base exceeds 10 is
 misplaced.
+
+PRIOR ART, SEARCHED.  A literature search for blocking sets or covering
+numbers of PRODUCTS of generalized quadrangles turned up nothing directly on
+this object -- plenty on blocking sets within a single GQ or polar space, and
+plenty on fractional covering in general, but not the product question. So the
+machinery is classical and the target appears not to be studied; the claim
+here is the combination, not either half.
 
 THE HONEST BOUNDARY.  This is an asymptotic statement about the exponential
 base and nothing more. It determines no exact value: tau_2(W(3,3)^2) stays
