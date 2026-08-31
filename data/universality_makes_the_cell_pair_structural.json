@@ -1,0 +1,77 @@
+{
+  "schema": "holotrade.universality-cell-pair.v1",
+  "valid": true,
+  "universality": {
+    "elevenCell": "the only polytope with hemi-icosahedral facets and hemi-dodecahedral vertex figures",
+    "fiftySevenCell": "the only polytope with those roles swapped",
+    "reading": "they are the two amalgamations of ONE unordered cell pair, so BT836 finding both cells in one spread is one coincidence, not two: the spread carries the amalgamation input",
+    "sourceIsClassical": true
+  },
+  "simplicity": [
+    {
+      "q": 11,
+      "order": 660,
+      "classes": 8,
+      "classSizes": [
+        1,
+        55,
+        60,
+        60,
+        110,
+        110,
+        132,
+        132
+      ],
+      "properNormalCandidates": [],
+      "isSimple": true
+    },
+    {
+      "q": 19,
+      "order": 3420,
+      "classes": 12,
+      "classSizes": [
+        1,
+        171,
+        180,
+        180,
+        342,
+        342,
+        342,
+        342,
+        380,
+        380,
+        380,
+        380
+      ],
+      "properNormalCandidates": [],
+      "isSimple": true
+    }
+  ],
+  "noRegularQuotients": "a regular quotient P/N needs N normal; both groups are simple, so N is trivial and neither polytope has a proper regular quotient",
+  "isolatedBothWays": "universal above -- nothing in the class covers them; simple below -- they cover nothing properly",
+  "onUniversalComputation": {
+    "falseFriend": "amalgamation-universal and computationally universal are unrelated notions sharing a word; no bridge is claimed",
+    "realConsequence": "universality plus simplicity is an INCOMPRESSIBILITY statement: no nontrivial regular quotient exists, so nothing encoded on them folds onto a smaller regular carrier",
+    "contrast": "the substrate's best known two-carrier schedule folds 115 observables onto 39 seeds under one order-6 Clifford gate, 2.95x, because it HAS a nontrivial invariance"
+  },
+  "largeUniversalPolytope": {
+    "facets": 10006920,
+    "factorisation": {
+      "2": 3,
+      "3": 2,
+      "5": 1,
+      "7": 1,
+      "11": 1,
+      "19": 2
+    },
+    "carriesGCPrimes": true,
+    "divisibleBySubstrateOrders": {
+      "Sp(4,3)": false,
+      "PSp(4,3)": false,
+      "PSL(2,11)": true,
+      "PSL(2,19)": true
+    },
+    "verdict": "polytope arithmetic, not substrate arithmetic; no relation to W(3,3) claimed"
+  },
+  "boundary": "the universality statements are classical and were supplied, not derived here; the simplicity and the factorisation are computed. Nothing places either polytope inside Sp(4,3), which remains impossible, and no bound moves."
+}

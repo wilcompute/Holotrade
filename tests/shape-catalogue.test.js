@@ -3007,3 +3007,43 @@ test("the 11-cell's gluing is the Paley biplane, answering BT836's open item", (
   assert.match(g.whatIsAdded, /^CORRECTED/);
   assert.ok(g.correctedClaim);
 });
+
+test("universality makes the cell pair one fact, and simplicity makes it rigid", () => {
+  const r = require(path.join(root, "data/universality_makes_the_cell_pair_structural.json"));
+  assert.ok(r.valid);
+
+  // the reframing: one cell pair, two amalgamations
+  assert.match(r.universality.reading, /one coincidence, not\s+two/);
+  assert.ok(r.universality.sourceIsClassical, "universality was supplied, not derived");
+
+  // simplicity computed, not asserted -- via conjugacy class unions
+  assert.equal(r.simplicity.length, 2);
+  const byQ = Object.fromEntries(r.simplicity.map((s) => [s.q, s]));
+  assert.equal(byQ[11].order, 660);
+  assert.equal(byQ[19].order, 3420);
+  for (const s of r.simplicity) {
+    assert.ok(s.isSimple, `PSL(2,${s.q}) must be simple`);
+    assert.deepEqual(s.properNormalCandidates, []);
+    // class sizes must sum to the group order
+    assert.equal(s.classSizes.reduce((a, b) => a + b, 0), s.order);
+    assert.equal(s.classSizes[0], 1, "the identity class");
+  }
+  assert.match(r.noRegularQuotients, /N is\s+trivial/);
+
+  // the honest answer on "universal computation"
+  assert.match(r.onUniversalComputation.falseFriend, /unrelated notions/);
+  assert.match(r.onUniversalComputation.realConsequence, /INCOMPRESSIBILITY/);
+  assert.match(r.onUniversalComputation.contrast, /2\.95x/);
+
+  // the large polytope carries GC primes but no substrate order
+  const L = r.largeUniversalPolytope;
+  assert.equal(L.facets, 10006920);
+  assert.ok(L.carriesGCPrimes);
+  assert.equal(L.divisibleBySubstrateOrders["Sp(4,3)"], false);
+  assert.equal(L.divisibleBySubstrateOrders["PSp(4,3)"], false);
+  // and the factorisation must actually multiply back
+  let prod = 1;
+  for (const [p, e] of Object.entries(L.factorisation)) prod *= Math.pow(Number(p), e);
+  assert.equal(prod, L.facets);
+  assert.match(L.verdict, /no relation to W\(3,3\) claimed/);
+});
