@@ -3139,3 +3139,43 @@ test("the memory-optimal schedule is one seed: the commuting orbit", () => {
   assert.match(r.oneIsMinimal, /optimal, not merely the best found/);
   assert.match(r.boundary, /says nothing about tau_2/);
 });
+
+test("the one-seed schedule exists at depth 2 and provably not at depth 3", () => {
+  const r = require(path.join(root, "data/one_seed_is_a_depth_two_fact.json"));
+  assert.ok(r.valid);
+
+  // depth 2: three orbits, exactly one blocks
+  assert.equal(r.depth2.orbits, 3);
+  assert.equal(r.depth2.blockingOrbits, 1);
+  assert.equal(r.depth2.blockingSize, 480);
+
+  // depth 3: eighteen orbits, none blocks
+  assert.equal(r.depth3.orbits, 18);
+  assert.equal(r.depth3.blockingOrbits, 0);
+  assert.equal(r.depth3.tiles, 64000);
+  assert.ok(r.depth3.bestCoverage < r.depth3.tiles, "the best orbit falls short");
+  for (const s of r.depth3.sampledCoverage) {
+    assert.ok(s.covers < 64000, `orbit ${s.orbitSize} must not block`);
+    // an orbit covers at most 64 tiles per leaf
+    assert.ok(s.covers <= 64 * s.orbitSize);
+  }
+
+  // the obstruction, with its arithmetic checked
+  const o = r.obstruction;
+  assert.equal(o.lineTriples, 9880, "C(40,3)");
+  assert.equal(o.withTransversal + o.withoutTransversal, o.lineTriples);
+  assert.equal(o.withoutTransversal, 1080);
+  assert.ok(o.allTransversalFreeArePairwiseDisjoint);
+  assert.match(o.why, /no triangles/);
+  assert.match(o.disjointnessProof, /exactly one point/);
+
+  // the example really is three pairwise disjoint 4-sets
+  const [A, B, C] = o.example;
+  for (const [X, Y] of [[A, B], [A, C], [B, C]]) {
+    assert.equal(X.filter((v) => Y.includes(v)).length, 0, "pairwise disjoint");
+    assert.equal(X.length, 4, "lines have 4 points");
+  }
+
+  assert.match(r.dichotomy, /destroys it at depth 3/);
+  assert.match(r.boundary, /does not rule out few-seed/);
+});

@@ -1,0 +1,69 @@
+{
+  "schema": "holotrade.one-seed-depth-two-only.v1",
+  "valid": true,
+  "depth2": {
+    "orbits": 3,
+    "blockingOrbits": 1,
+    "blockingSize": 480,
+    "reading": "distinct commuting pairs; one seed"
+  },
+  "depth3": {
+    "orbits": 18,
+    "blockingOrbits": 0,
+    "tiles": 64000,
+    "bestCoverage": 62400,
+    "bestOrbitSize": 4320,
+    "sampledCoverage": [
+      {
+        "orbitSize": 4320,
+        "covers": 62400
+      },
+      {
+        "orbitSize": 8640,
+        "covers": 59880
+      },
+      {
+        "orbitSize": 8640,
+        "covers": 58800
+      },
+      {
+        "orbitSize": 1080,
+        "covers": 32880
+      },
+      {
+        "orbitSize": 1080,
+        "covers": 18840
+      }
+    ]
+  },
+  "obstruction": {
+    "lineTriples": 9880,
+    "withTransversal": 8800,
+    "withoutTransversal": 1080,
+    "allTransversalFreeArePairwiseDisjoint": true,
+    "example": [
+      [
+        0,
+        4,
+        5,
+        6
+      ],
+      [
+        1,
+        13,
+        16,
+        19
+      ],
+      [
+        2,
+        22,
+        26,
+        30
+      ]
+    ],
+    "why": "a GQ has no triangles, so three pairwise-collinear distinct points lie on one line; such a triple meets a tile (L,M,N) only if some line meets all three",
+    "disjointnessProof": "if two of the lines meet at x and the third misses x, then x is collinear with exactly one point y of the third and xy is a transversal"
+  },
+  "dichotomy": "the axiom that makes one seed possible at depth 2 -- no triangles, exactly one collinear point off a line -- is what destroys it at depth 3",
+  "boundary": "the depth-3 negative is over all 18 orbits of the FULL group; it does not rule out few-seed schedules under proper subgroups, which have more and smaller orbits and were not swept. tau_2 is untouched."
+}
