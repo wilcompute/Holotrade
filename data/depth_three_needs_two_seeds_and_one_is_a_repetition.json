@@ -1,0 +1,177 @@
+{
+  "schema": "holotrade.depth3-two-seeds-one-repetition.v1",
+  "valid": true,
+  "tiles": 64000,
+  "orbits": [
+    {
+      "size": 4320,
+      "kind": "2 commuting pairs",
+      "covers": 62400,
+      "multiplicity": 3
+    },
+    {
+      "size": 8640,
+      "kind": "1 commuting pair",
+      "covers": 59880,
+      "multiplicity": 3
+    },
+    {
+      "size": 8640,
+      "kind": "pairwise NON-commuting",
+      "covers": 58800,
+      "multiplicity": 2
+    },
+    {
+      "size": 1080,
+      "kind": "pairwise NON-commuting",
+      "covers": 32880,
+      "multiplicity": 2
+    },
+    {
+      "size": 960,
+      "kind": "cocollinear",
+      "covers": 27400,
+      "multiplicity": 1
+    },
+    {
+      "size": 480,
+      "kind": "two equal, commuting",
+      "covers": 20800,
+      "multiplicity": 3
+    },
+    {
+      "size": 1080,
+      "kind": "two equal, non-commuting",
+      "covers": 18840,
+      "multiplicity": 3
+    },
+    {
+      "size": 40,
+      "kind": "all equal",
+      "covers": 2440,
+      "multiplicity": 1
+    }
+  ],
+  "minimumOrbits": 2,
+  "optimalCovers": 3,
+  "optimalShape": [
+    {
+      "size": 480,
+      "kind": "two equal, commuting"
+    },
+    {
+      "size": 4320,
+      "kind": "2 commuting pairs"
+    }
+  ],
+  "leaves": 4800,
+  "whyThreeAndNotNine": "the position pair of the path orbit's non-commuting pair must match the position pair of the degenerate orbit's equal pair",
+  "positionalTheorem": {
+    "rows": [
+      {
+        "orbit": 4320,
+        "kind": "2 commuting pairs",
+        "positions": [
+          0,
+          1
+        ],
+        "samePositionForAll": true,
+        "predictedTiles": 1600,
+        "misses": 1600,
+        "missesExactlyThose": true,
+        "coversAllOfThem": false
+      },
+      {
+        "orbit": 4320,
+        "kind": "2 commuting pairs",
+        "positions": [
+          0,
+          2
+        ],
+        "samePositionForAll": true,
+        "predictedTiles": 1600,
+        "misses": 1600,
+        "missesExactlyThose": true,
+        "coversAllOfThem": false
+      },
+      {
+        "orbit": 4320,
+        "kind": "2 commuting pairs",
+        "positions": [
+          1,
+          2
+        ],
+        "samePositionForAll": true,
+        "predictedTiles": 1600,
+        "misses": 1600,
+        "missesExactlyThose": true,
+        "coversAllOfThem": false
+      },
+      {
+        "orbit": 480,
+        "kind": "two equal, commuting",
+        "positions": [
+          0,
+          1
+        ],
+        "samePositionForAll": true,
+        "predictedTiles": 1600,
+        "misses": 43200,
+        "missesExactlyThose": false,
+        "coversAllOfThem": true
+      },
+      {
+        "orbit": 480,
+        "kind": "two equal, commuting",
+        "positions": [
+          0,
+          2
+        ],
+        "samePositionForAll": true,
+        "predictedTiles": 1600,
+        "misses": 43200,
+        "missesExactlyThose": false,
+        "coversAllOfThem": true
+      },
+      {
+        "orbit": 480,
+        "kind": "two equal, commuting",
+        "positions": [
+          1,
+          2
+        ],
+        "samePositionForAll": true,
+        "predictedTiles": 1600,
+        "misses": 43200,
+        "missesExactlyThose": false,
+        "coversAllOfThem": true
+      }
+    ],
+    "statement": "the path orbit whose unique non-commuting pair sits in positions (i,j) misses exactly the 1600 tiles with L_i = L_j",
+    "count": "1600 = 40 x 40",
+    "proof": "if L_i = L_j then any leaf meeting the tile has both of those coordinates on one line, so they commute, and the orbit demands they do not",
+    "converseVerified": "set equality checked on all three path orbits"
+  },
+  "correction": {
+    "supersedes": "one_seed_is_a_depth_two_fact.py",
+    "wasSaid": "the 1,080 transversal-free triples are exactly what breaks depth 3",
+    "isTrue": "they break the COCOLLINEAR orbit, the naive analogue of depth 2's commuting pairs",
+    "isFalse": "that they force the second seed -- the path orbit covers all 59,280 tiles with three distinct lines, every isotropic-regulus tile among them, and fails only where a line repeats",
+    "distinctLineTiles": 59280,
+    "pathOrbitCoversThemAll": true
+  },
+  "measurementReading": "to block depth 3 you must be allowed to measure the SAME observable on two carriers; a schedule of only genuinely three-distinct-observable measurements cannot block, however large -- the 8,640-leaf orbits are twice the path orbit's size and cover less",
+  "frontier": [
+    {
+      "depth": 2,
+      "seeds": 1,
+      "leaves": 480
+    },
+    {
+      "depth": 3,
+      "seeds": 2,
+      "leaves": 4800
+    }
+  ],
+  "boundary": "over the FULL group Sp(4,3); proper subgroups have more and smaller orbits and are not swept here. tau_2 is untouched and stays open in [111, 115]"
+}

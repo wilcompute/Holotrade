@@ -37,7 +37,12 @@ That is a transversal condition, and it fails often:
         8,800 have a common transversal line,
         1,080 have NONE.
 
-The 1,080 are exactly what breaks depth 3. And they are pairwise disjoint
+The 1,080 are exactly what breaks THIS orbit -- and only this one.
+(Correction, from depth_three_needs_two_seeds_and_one_is_a_repetition.py:
+an earlier draft of this sentence said they break depth 3 as such. They do
+not. The best depth-3 orbit covers every one of the 59,280 tiles with three
+distinct lines, these among them; what forces a second seed is degeneracy.)
+They are pairwise disjoint
 triples, necessarily: if two of the lines meet at a point x and the third
 misses x, then x is collinear with exactly one point y of the third line (the
 GQ axiom again), and the line xy is a transversal. So a transversal-free triple

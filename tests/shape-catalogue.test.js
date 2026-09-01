@@ -3273,3 +3273,64 @@ test("the depth-3 obstruction is 270 isotropic reguli carrying GQ(4,2)", () => {
   assert.match(r.priorArt.BT3769_BT3795, /opposite direction/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("depth 3 needs exactly two seeds and one of them is a repetition", () => {
+  const r = require(path.join(
+    root,
+    "data/depth_three_needs_two_seeds_and_one_is_a_repetition.json"
+  ));
+  assert.ok(r.valid);
+  assert.equal(r.tiles, 64000);
+
+  // the orbit census accounts for every point-triple
+  assert.equal(
+    r.orbits.reduce((s, o) => s + o.size * o.multiplicity, 0),
+    64000,
+    "orbit sizes sum to 40^3"
+  );
+  for (const o of r.orbits) assert.ok(o.covers < r.tiles, "no orbit blocks alone");
+
+  // exactly two orbits, three optimal covers, all the same shape
+  assert.equal(r.minimumOrbits, 2);
+  assert.equal(r.optimalCovers, 3);
+  assert.equal(r.leaves, 4800);
+  assert.equal(
+    r.optimalShape.reduce((s, x) => s + x.size, 0),
+    r.leaves
+  );
+  const kinds = r.optimalShape.map((x) => x.kind).sort();
+  assert.deepEqual(kinds, ["2 commuting pairs", "two equal, commuting"]);
+  assert.match(r.whyThreeAndNotNine, /position pair/);
+
+  // the positional theorem: 1600 = 40 x 40, set equality both ways
+  const t = r.positionalTheorem;
+  assert.equal(t.count, "1600 = 40 x 40");
+  const paths = t.rows.filter((x) => x.kind === "2 commuting pairs");
+  const degen = t.rows.filter((x) => x.kind === "two equal, commuting");
+  assert.equal(paths.length, 3, "one per position pair");
+  assert.equal(degen.length, 3);
+  for (const x of paths) {
+    assert.ok(x.samePositionForAll);
+    assert.equal(x.misses, 1600);
+    assert.equal(x.predictedTiles, 1600);
+    assert.ok(x.missesExactlyThose, "set equality, not just the count");
+  }
+  for (const x of degen) assert.ok(x.coversAllOfThem);
+  // the three path orbits use three distinct position pairs
+  assert.equal(new Set(paths.map((x) => String(x.positions))).size, 3);
+
+  // the correction is recorded, with the number that refutes the old claim
+  const c = r.correction;
+  assert.equal(c.supersedes, "one_seed_is_a_depth_two_fact.py");
+  assert.equal(c.distinctLineTiles, 59280);
+  assert.equal(40 * 39 * 38, c.distinctLineTiles);
+  assert.ok(c.pathOrbitCoversThemAll);
+  assert.match(c.isFalse, /fails only where a line\s+repeats/);
+
+  // the frontier gains a row
+  assert.deepEqual(r.frontier, [
+    { depth: 2, seeds: 1, leaves: 480 },
+    { depth: 3, seeds: 2, leaves: 4800 },
+  ]);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
