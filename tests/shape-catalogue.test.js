@@ -3179,3 +3179,41 @@ test("the one-seed schedule exists at depth 2 and provably not at depth 3", () =
   assert.match(r.dichotomy, /destroys it at depth 3/);
   assert.match(r.boundary, /does not rule out few-seed/);
 });
+
+test("the depth-3 obstruction is non-isotropy, not a missing line", () => {
+  const r = require(path.join(
+    root,
+    "data/the_depth3_obstruction_is_non_isotropy.json"
+  ));
+  assert.ok(r.valid);
+
+  // the ambient space, and W(3,3) sitting inside it
+  const a = r.ambient;
+  assert.equal(a.points, 40);
+  assert.equal(a.lines, 130, "PG(3,3) has (3^2+1)(3^2+3+1) = 130 lines");
+  assert.equal(a.isotropicLines, 40, "the 40 isotropic lines ARE W(3,3)");
+  assert.equal(a.nonIsotropicLines, 90);
+  assert.equal(a.isotropicLines + a.nonIsotropicLines, a.lines);
+
+  // the transversals exist -- q+1 = 4 of them, the opposite regulus --
+  // and none is usable, uniformly across all 1,080
+  assert.equal(r.transversalFreeTriples, 1080);
+  const keys = Object.keys(r.transversalProfile);
+  assert.deepEqual(keys, ["(4, 0)"], "exactly four transversals, none isotropic");
+  assert.equal(r.transversalProfile["(4, 0)"], 1080);
+  assert.equal(
+    Object.values(r.transversalProfile).reduce((s, v) => s + v, 0),
+    r.transversalFreeTriples
+  );
+  assert.ok(r.uniformFourZero);
+
+  // and they are one class of the group, not a scattered accident
+  assert.ok(r.singleOrbit);
+  assert.equal(r.orbitSize, r.transversalFreeTriples);
+
+  assert.match(r.classicalFact, /q\+1 transversals, always/);
+  assert.match(r.obstruction, /not a measurement context/);
+  assert.match(r.obstruction, /NON-COMMUTING/);
+  assert.match(r.invisibleFromInside, /each copy fails/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

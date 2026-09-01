@@ -1,0 +1,23 @@
+{
+  "schema": "holotrade.depth3-obstruction-non-isotropy.v1",
+  "valid": true,
+  "ambient": {
+    "points": 40,
+    "lines": 130,
+    "isotropicLines": 40,
+    "nonIsotropicLines": 90,
+    "note": "the isotropic lines ARE the lines of W(3,3); the rest carry non-commuting pairs"
+  },
+  "transversalFreeTriples": 1080,
+  "transversalProfile": {
+    "(4, 0)": 1080
+  },
+  "uniformFourZero": true,
+  "singleOrbit": true,
+  "orbitSize": 1080,
+  "classicalFact": "three pairwise skew lines of PG(3,q) determine a regulus whose opposite regulus gives q+1 transversals, always",
+  "obstruction": "not that the connecting line is missing, but that it is not a measurement context: the transversal exists projectively and carries NON-COMMUTING observables",
+  "invisibleFromInside": "seen only in W(3,3) the transversal is absent; seen in PG(3,3) it is present four times and each copy fails isotropy",
+  "fitsThePattern": "every certification result in this thread turns on commuting rather than counting; here again 4 transversals, 0 usable",
+  "boundary": "this explains the depth-3 obstruction, does not remove it, and does not bear on tau_2, which stays open in [111, 115]"
+}
