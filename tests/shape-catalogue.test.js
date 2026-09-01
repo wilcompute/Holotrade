@@ -3217,3 +3217,59 @@ test("the depth-3 obstruction is non-isotropy, not a missing line", () => {
   assert.match(r.invisibleFromInside, /each copy fails/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the depth-3 obstruction is 270 isotropic reguli carrying GQ(4,2)", () => {
+  const r = require(path.join(
+    root,
+    "data/the_depth3_obstruction_is_a_quadrangle.json"
+  ));
+  assert.ok(r.valid);
+
+  // the census adds up, and the obstruction is a third of the skew triples
+  const c = r.census;
+  assert.equal(c.total, 9880, "C(40,3)");
+  assert.equal(c.notPairwiseSkew + c.skew, c.total);
+  assert.equal(c.skewWithIsotropicTransversal + c.skewWithNone, c.skew);
+  assert.equal(c.skewWithNone, 1080);
+  assert.equal(3 * c.skewWithNone, c.skew);
+  assert.ok(c.oneThirdOfSkew);
+
+  // 270 all-isotropic reguli account for the 1,080 exactly, none left over
+  const i = r.identification;
+  assert.equal(i.allIsotropicReguli, 270);
+  assert.equal(i.subTriplesEach * i.allIsotropicReguli, c.skewWithNone);
+  assert.ok(i.exact);
+  assert.deepEqual(i.isotropicLinesPerRegulus, { 4: 1080 }, "all four isotropic");
+
+  // the opposite regulus is perp-closed onto exactly two tritangent planes
+  const o = r.oppositeRegulus;
+  assert.ok(o.perpClosed);
+  assert.deepEqual(o.polarPairsTouched, { 2: 1080 });
+  assert.deepEqual(o.incidencesPerHyperbolicLine, [48], "4320/90");
+  assert.deepEqual(o.incidencesPerPolarPair, [96], "4320/45");
+  assert.equal(48 * 90, 4320);
+  assert.equal(96 * 45, 4320);
+
+  // and the 270 edges are GQ(4,2) -- lines derived, not assumed
+  const g = r.quadrangle;
+  assert.ok(g.injective);
+  assert.equal(g.points, 45);
+  assert.equal(g.edges, 270);
+  assert.deepEqual(g.degreeSpectrum, { 12: 45 }, "12-regular");
+  assert.equal((g.edges * 2) / g.points, 12);
+  assert.equal(g.maximalCliques, 27);
+  assert.deepEqual(g.cliqueSizes, { 5: 27 }, "27 lines of size 5, nothing else");
+  assert.deepEqual(g.linesPerPoint, { 3: 45 });
+  assert.ok(g.everyEdgeInExactlyOneLine);
+  assert.ok(g.gqAxiom);
+  assert.equal(g.isomorphismType, "GQ(4,2)");
+  // parameters cohere: 27 lines * 5 points = 45 points * 3 lines
+  assert.equal(27 * 5, 45 * 3);
+  assert.match(g.linesRecoveredNotAssumed, /maximal cliques/);
+
+  // prior art is named, not absorbed
+  assert.match(r.priorArt.BT810, /45 polar pairs/);
+  assert.match(r.priorArt.Pass2023_2029, /two-transversal\s+branch/);
+  assert.match(r.priorArt.BT3769_BT3795, /opposite direction/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

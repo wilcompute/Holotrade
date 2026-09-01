@@ -1,0 +1,61 @@
+{
+  "schema": "holotrade.depth3-obstruction-is-gq42.v1",
+  "valid": true,
+  "priorArt": {
+    "BT810": "W33-Theory: 130 = 40 isotropic + 90 hyperbolic, polarity fixed-point-free giving 45 polar pairs = the 45 tritangent planes, and the Schlafli dictionary 27/36/40/40/45",
+    "Pass2023_2029": "W33-Theory: reguli of PG(3,q) with a totally isotropic ruling have either TWO t.i. transversals or NONE, never one, by the quadratic character of -det(S). Their work is the two-transversal branch; this is the other branch, counted and identified",
+    "BT3769_BT3795": "W33-Theory: relates GQ(4,2) to W(3,3) in the opposite direction, reconstructing W(3,3) from the 40 plane ovoids of GQ(4,2)",
+    "classical": "that the 45 tritangent planes and 27 lines of a cubic surface form GQ(4,2)"
+  },
+  "census": {
+    "total": 9880,
+    "notPairwiseSkew": 6640,
+    "skew": 3240,
+    "skewWithIsotropicTransversal": 2160,
+    "skewWithNone": 1080,
+    "oneThirdOfSkew": true
+  },
+  "identification": {
+    "allIsotropicReguli": 270,
+    "subTriplesEach": 4,
+    "product": 1080,
+    "exact": true,
+    "isotropicLinesPerRegulus": {
+      "4": 1080
+    }
+  },
+  "oppositeRegulus": {
+    "perpClosed": true,
+    "polarPairsTouched": {
+      "2": 1080
+    },
+    "incidencesPerHyperbolicLine": [
+      48
+    ],
+    "incidencesPerPolarPair": [
+      96
+    ],
+    "reading": "each isotropic regulus names an unordered PAIR of tritangent planes, i.e. a pair of tensor factorizations of the two-qutrit system"
+  },
+  "quadrangle": {
+    "points": 45,
+    "edges": 270,
+    "injective": true,
+    "degreeSpectrum": {
+      "12": 45
+    },
+    "maximalCliques": 27,
+    "cliqueSizes": {
+      "5": 27
+    },
+    "linesPerPoint": {
+      "3": 45
+    },
+    "everyEdgeInExactlyOneLine": true,
+    "gqAxiom": true,
+    "isomorphismType": "GQ(4,2)",
+    "linesRecoveredNotAssumed": "the 27 lines are the maximal cliques of the obstruction graph, not an input"
+  },
+  "reading": "no single Clifford orbit blocks at depth 3 because the failures are indexed by a second generalized quadrangle, the one belonging to the 27 lines, sitting inside the first; the connecting object of a bad triple is not a measurement context but a pair of tensor factorizations",
+  "boundary": "the dichotomy is Pass 2029's, the geography is BT810's, and GQ(4,2) on 45 tritangent planes is classical. Computed here: the count 270, the identification of the depth-3 obstruction with those reguli, the perp-closure onto two polar pairs, and the 27 lines as maximal cliques. tau_2 is untouched and stays open in [111, 115]"
+}
