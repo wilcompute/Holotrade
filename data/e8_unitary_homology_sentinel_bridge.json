@@ -1,0 +1,136 @@
+{
+  "schema": "holotrade.e8-unitary-homology-sentinel-bridge.v1",
+  "evidenceClass": "EXACT_GAP_MEATAXE_NORMAL_SUBGROUP_FACTORIZATION",
+  "carriers": {
+    "logicalHomology": {
+      "dimension": 40,
+      "definition": "ker(A)/im(A) for the 120-state characteristic-two adjacency differential",
+      "sourceSha256": "0558bdcbf2c42d0011a99bee6dfef64b5bf0067306a0e600d922cce8ab8cc8e0"
+    },
+    "normalTwoCore": {
+      "structure": "C2^5",
+      "order": 32
+    },
+    "w33Sentinel": {
+      "parameters": "[40,15,8]_2",
+      "minimumSupports": 45,
+      "sourceSha256": "41566f679841bfce3857d6aa6d12120f1691f77cc970309797baae386d94dab0"
+    }
+  },
+  "normalSubgroupReduction": {
+    "relationRank": 25,
+    "coinvariantDimension": 15,
+    "fixedDimension": 15,
+    "sentinelDimension": 15,
+    "compositionFactors": {
+      "coinvariants": [
+        1,
+        1,
+        1,
+        4,
+        4,
+        4
+      ],
+      "fixed": [
+        1,
+        1,
+        1,
+        4,
+        4,
+        4
+      ],
+      "sentinelInner": [
+        1,
+        1,
+        1,
+        4,
+        4,
+        4
+      ],
+      "sentinelOuter": [
+        1,
+        1,
+        1,
+        4,
+        4,
+        4
+      ]
+    },
+    "pairwiseIsomorphisms": {
+      "coinvariantsToSentinelInner": false,
+      "coinvariantsToSentinelOuter": false,
+      "fixedToSentinelInner": false,
+      "fixedToSentinelOuter": false,
+      "fixedToCoinvariants": false,
+      "sentinelInnerToOuter": false
+    },
+    "reading": "Dimension and Jordan-Holder factors coincide, but the four modules are pairwise separated by modular extension data; no two are isomorphic."
+  },
+  "exhaustiveHomRanks": {
+    "coinvariantsToSentinelInner": {
+      "dimension": 2,
+      "nonzeroRanks": [
+        1,
+        11
+      ]
+    },
+    "sentinelInnerToCoinvariants": {
+      "dimension": 2,
+      "nonzeroRanks": [
+        4,
+        5
+      ]
+    },
+    "coinvariantsToSentinelOuter": {
+      "dimension": 2,
+      "nonzeroRanks": [
+        1,
+        6
+      ]
+    },
+    "sentinelOuterToCoinvariants": {
+      "dimension": 1,
+      "nonzeroRanks": [
+        10
+      ]
+    },
+    "fixedToCoinvariants": {
+      "dimension": 3,
+      "nonzeroRanks": [
+        1,
+        4,
+        5,
+        6,
+        10
+      ]
+    },
+    "coinvariantsToFixed": {
+      "dimension": 2,
+      "nonzeroRanks": [
+        1,
+        6
+      ]
+    }
+  },
+  "universalW33Shadow": {
+    "innerIdentification": {
+      "forwardHomDimension": 2,
+      "spanOfAllForwardImages": 11,
+      "everyForwardImageInsideSentinel": true,
+      "backwardHomDimension": 2,
+      "spanOfAllBackwardImages": 11
+    },
+    "outerIdentification": {
+      "forwardHomDimension": 2,
+      "spanOfAllForwardImages": 6,
+      "everyForwardImageInsideSentinel": true,
+      "backwardHomDimension": 2,
+      "spanOfAllBackwardImages": 6
+    },
+    "everyForwardMapKillsTwoCoreRelations": true,
+    "everyBackwardImageInsideFixedHomology": true,
+    "theorem": "For both S6 identification classes, every equivariant map from 120-state logical homology to the genuine 40-point W33 carrier factors through the 15-dimensional C2^5 coinvariant quotient and lands inside the explicit [40,15,8] sentinel code. Every reverse equivariant map lands inside the 15-dimensional C2^5-fixed homology."
+  },
+  "evidenceBoundary": "The sentinel is a universal finite-module receptacle for W33-compatible shadows, not an isomorphic relabeling of logical homology. The maps are low-rank, no preferred nonzero map is selected, and no physical qubit, decoder, host identity, cryptographic authority, or dispatch binding is supplied.",
+  "sha256": "73a15b7524995f445e2db5f393db2e69905c5ba39dfaf790a254a90d12d5cdce"
+}

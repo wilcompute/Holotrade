@@ -1,0 +1,110 @@
+{
+  "schema": "holotrade.e8-sentinel-bicolour-exact-stack-rank.v1",
+  "evidenceClass": "EXACT_GAP_CHARACTERISTIC_ZERO_ROW_SPACE_RECONSTRUCTION",
+  "source": {
+    "sentinelCertificateSha256": "41566f679841bfce3857d6aa6d12120f1691f77cc970309797baae386d94dab0",
+    "companionRepository": "W33-Theory",
+    "companionInputs": [
+      "c6170fa8e",
+      "609a42c77837b4be047182ab77812958e03314f7",
+      "4c9a51597"
+    ],
+    "repair": "The earlier 372 calculation used rank modulo 1000003, which is only a lower bound for rational rank. This witness computes the rational rank and intersections directly in GAP."
+  },
+  "incidence": {
+    "fiveCircuits": 216,
+    "sixCircuits": 540,
+    "maximalOverlap": "|C5 intersection C6| = 3",
+    "uncolouredDegrees": [
+      20,
+      8
+    ],
+    "colourOrbitSizes": [
+      2160,
+      2160
+    ],
+    "eachColourDegrees": [
+      10,
+      4
+    ]
+  },
+  "rationalRowSpaces": {
+    "rankMplus": 216,
+    "rankMminus": 216,
+    "stackedRank": 372,
+    "commonDimension": 60,
+    "characteristic": "Q"
+  },
+  "jointSectorResolution": {
+    "separatorEigenvalues": [
+      -58,
+      -22,
+      -18,
+      8,
+      14,
+      62,
+      170
+    ],
+    "sectorDimensions": [
+      15,
+      15,
+      81,
+      20,
+      60,
+      24,
+      1
+    ],
+    "directCommonIntersections": [
+      0,
+      0,
+      0,
+      20,
+      0,
+      24,
+      1
+    ],
+    "doubledFifteenIsotypicCommonDimension": 15,
+    "exactCommonDecomposition": "1+15+20+24",
+    "equalsSymmetricSixtySector": false,
+    "reading": "The common colour row space contains the complete 1-, 20-, and 24-dimensional sectors plus one diagonal 15-dimensional copy inside the doubled 15-isotypic component; it has zero intersection with the symmetric 60-sector."
+  },
+  "circuitCarrierBridge": {
+    "circuitIncidenceShape": [
+      216,
+      45
+    ],
+    "circuitCarrierDimension": 45,
+    "gramScalarsByJointSector": [
+      0,
+      0,
+      0,
+      12,
+      0,
+      30,
+      120
+    ],
+    "directSectorIntersections": [
+      0,
+      0,
+      0,
+      20,
+      0,
+      24,
+      1
+    ],
+    "moduleShape": "1+20+24",
+    "plusTransportedIntoCommon": 45,
+    "minusTransportedIntoCommon": 45,
+    "plusMinusImagesEqual": true,
+    "commonComplementDimension": 15,
+    "exactSplit": "common60 = common circuit image(1+20+24) direct-sum diagonal15",
+    "reading": "The two colours transport the canonical five-circuit carrier to exactly the same 45-dimensional subspace. The entire distinction left inside their common 60-space is the complementary diagonal 15."
+  },
+  "proofBoundary": {
+    "modularRankUsedAsProof": false,
+    "characteristicZeroRankComputed": true
+  },
+  "theorem": "The two 216x540 colour-incidence matrices have rational row rank 216, stacked rational rank 372, and a 60-dimensional common row space. Their M+ and M- images of the canonical 45-dimensional five-circuit carrier coincide exactly as the 1+20+24 summand, leaving the diagonal 15 as the complementary common residue.",
+  "evidenceBoundary": "This is an exact finite circuit-incidence and rational-module theorem. It does not identify optical modes, physical qubits, hardware channels, host identities, cryptographic authority, or dispatch bindings.",
+  "sha256": "46e1f317176d9a402428d80e29ececdc6e3e1fdb3107965c376b2e95286f2677"
+}
