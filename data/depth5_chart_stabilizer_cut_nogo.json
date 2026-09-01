@@ -1,0 +1,27 @@
+{
+  "schema": "holotrade.depth5-chart-stabilizer-cut-nogo.v1",
+  "valid": true,
+  "group": {
+    "ambient": "PSp(4,3)",
+    "ambientOrder": 25920,
+    "fixedCompletionChartStabilizerOrder": 960
+  },
+  "witnessFamily": {
+    "reguliInFixedChart": 10,
+    "W33LineCoordinates": 40,
+    "orderedWitnessTiles": 240,
+    "witnessTileOrbitCountUnderChartStabilizer": 1,
+    "leavesEnumerated": 245760,
+    "distinctLeaves": 243600,
+    "relevantChartStabilizerLeafOrbits": 269
+  },
+  "coverage": {
+    "leafOrbitCountSeenByEveryWitnessTile": 269,
+    "allWitnessTilesHaveIdenticalLeafOrbitSet": true,
+    "restrictedFractionalCoverOptimum": 1,
+    "restrictedIntegerCoverOptimum": 1
+  },
+  "theorem": "Breaking PSp(4,3) only to a completion-chart stabilizer does not recover a useful linear cut from the 40 regulus coordinates. The 240 oriented bad-triple-plus-omitted-line-twice witnesses are one H-orbit, and every relevant H-leaf orbit covers every witness.",
+  "consequence": "This canonical chart-aware witness family cannot raise the current depth-five LP lower bound 13. A successful cut must break below the chart stabilizer or add genuinely nonlinear/integer structure.",
+  "boundary": "This closes only the canonical 40-coordinate regulus witness family; it is not a no-go for every possible chart-stabilizer inequality."
+}
