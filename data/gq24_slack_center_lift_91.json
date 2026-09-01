@@ -1,0 +1,109 @@
+{
+  "boundary": "Only INFEASIBLE raises the lower bound and only FEASIBLE/OPTIMAL supplies an upper witness. UNKNOWN is not evidence. The local size<=15 stability result is independent of the product solver outcome.",
+  "consequence": {
+    "certifiedLowerBound": 91,
+    "knownUpperBound": 100
+  },
+  "localStability": {
+    "everyBlockerThrough15ContainsMinimumBlocker": false,
+    "records": [
+      {
+        "counterexampleAvoidingAllMinimumBlockers": [],
+        "size": 11,
+        "status": "INFEASIBLE"
+      },
+      {
+        "counterexampleAvoidingAllMinimumBlockers": [
+          2,
+          3,
+          4,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          17,
+          18,
+          19
+        ],
+        "size": 12,
+        "status": "OPTIMAL"
+      },
+      {
+        "counterexampleAvoidingAllMinimumBlockers": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          17,
+          18,
+          19
+        ],
+        "size": 13,
+        "status": "OPTIMAL"
+      },
+      {
+        "counterexampleAvoidingAllMinimumBlockers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          17,
+          18,
+          19
+        ],
+        "size": 14,
+        "status": "OPTIMAL"
+      },
+      {
+        "counterexampleAvoidingAllMinimumBlockers": [
+          1,
+          4,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          16,
+          17,
+          21,
+          22,
+          23,
+          25,
+          26
+        ],
+        "size": 15,
+        "status": "OPTIMAL"
+      }
+    ],
+    "sizesTested": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  "schema": "holotrade.gq24-slack-center-lift-91.v1",
+  "target91": {
+    "reason": "local blocker stability through size 15 was not proved",
+    "status": "SKIPPED"
+  },
+  "theorem": "If every size-11 through size-15 blocker contains a punctured perp, then every row and column shadow of a 91-cell product blocker has a selectable canonical centre because total shadow excess is at most five on each axis. The target-91 CP-SAT model encodes exactly that valid consequence.",
+  "valid": true
+}
