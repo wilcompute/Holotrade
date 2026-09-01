@@ -1,0 +1,89 @@
+{
+  "schema": "holotrade.one-two-five-depth-seeds.v1",
+  "valid": true,
+  "reduction": "covering is Sp(4,3)-equivariant, so whether an orbit covers a tile depends only on the tile's orbit; the ground set collapses from 40^n tiles to the tile-orbits and the covering relation is read off the 4^n points of a representative's lines",
+  "rows": [
+    {
+      "depth": 2,
+      "tiles": 1600,
+      "leafOrbits": 3,
+      "tileOrbits": 3,
+      "minimumSeeds": 1,
+      "status": "OPTIMAL",
+      "leanestLeaves": 480,
+      "leanestStatus": "OPTIMAL",
+      "orbitSizes": [
+        480
+      ],
+      "bestSingleOrbitTileOrbits": 3
+    },
+    {
+      "depth": 3,
+      "tiles": 64000,
+      "leafOrbits": 18,
+      "tileOrbits": 20,
+      "minimumSeeds": 2,
+      "status": "OPTIMAL",
+      "leanestLeaves": 4800,
+      "leanestStatus": "OPTIMAL",
+      "orbitSizes": [
+        480,
+        4320
+      ],
+      "bestSingleOrbitTileOrbits": 17
+    },
+    {
+      "depth": 4,
+      "tiles": 2560000,
+      "leafOrbits": 226,
+      "tileOrbits": 270,
+      "minimumSeeds": 5,
+      "status": "OPTIMAL",
+      "leanestLeaves": 44160,
+      "leanestStatus": "OPTIMAL",
+      "orbitSizes": [
+        480,
+        480,
+        4320,
+        12960,
+        25920
+      ],
+      "bestSingleOrbitTileOrbits": 185
+    }
+  ],
+  "sequence": [
+    1,
+    2,
+    5
+  ],
+  "sequenceIsNotAResult": {
+    "bell": [
+      1,
+      2,
+      5,
+      15,
+      52
+    ],
+    "catalan": [
+      1,
+      2,
+      5,
+      14,
+      42
+    ],
+    "why": "three small integers agree with both; W33-Theory Passes 1471 and 1476 record '90 = 90' as a matching integer that needed a full decomposition to refute",
+    "theyDisagreeAt": {
+      "depth": 5,
+      "bell": 15,
+      "catalan": 14
+    },
+    "depth5NotComputed": "40^5 = 102,400,000 tuples is past this orbit enumeration"
+  },
+  "proofWasNotTight": {
+    "file": "the_seed_count_strictly_increases_with_depth.py",
+    "proved": 3,
+    "truth": 5,
+    "reading": "the witness argument is correct and captures less than half the obstruction -- there are depth-4 constraints neither witness family sees"
+  },
+  "boundary": "exact and optimal at depths 2, 3, 4 over the full group Sp(4,3). Depth 5 is not computed and no formula is claimed. Proper subgroups are not swept. tau_2 is untouched and stays open in [111, 115]"
+}

@@ -3443,3 +3443,57 @@ test("the obstruction generalizes over q but the quadrangle is q=3 only", () => 
   assert.match(r.consequence, /will not transport/);
   assert.match(r.boundary, /odd q only/);
 });
+
+test("1, 2, 5: depth 4 needs five seeds and the proof gave only three", () => {
+  const r = require(path.join(
+    root,
+    "data/one_two_five_and_the_proof_was_not_tight.json"
+  ));
+  assert.ok(r.valid);
+  assert.match(r.reduction, /equivariant/);
+
+  assert.deepEqual(r.rows.map((x) => x.depth), [2, 3, 4]);
+  for (const x of r.rows) {
+    assert.equal(x.tiles, 40 ** x.depth);
+    assert.equal(x.status, "OPTIMAL", "the minimum is proved, not found");
+    assert.equal(x.leanestStatus, "OPTIMAL");
+    assert.equal(x.orbitSizes.length, x.minimumSeeds);
+    assert.equal(
+      x.orbitSizes.reduce((s, v) => s + v, 0),
+      x.leanestLeaves
+    );
+    // the reduction really does collapse the ground set
+    assert.ok(x.tileOrbits < x.tiles);
+    // no single orbit ever suffices past depth 2
+    if (x.depth > 2) assert.ok(x.bestSingleOrbitTileOrbits < x.tileOrbits);
+  }
+
+  // depths 2 and 3 reproduce the enumerations they replace
+  assert.equal(r.rows[0].leanestLeaves, 480);
+  assert.equal(r.rows[1].leanestLeaves, 4800);
+  assert.deepEqual(r.rows[1].orbitSizes, [480, 4320]);
+  // depth 4 is the new one
+  assert.equal(r.rows[2].tileOrbits, 270);
+  assert.equal(r.rows[2].leafOrbits, 226);
+  assert.equal(r.rows[2].leanestLeaves, 44160);
+  assert.deepEqual(r.rows[2].orbitSizes, [480, 480, 4320, 12960, 25920]);
+
+  // the sequence, explicitly NOT promoted to a formula
+  assert.deepEqual(r.sequence, [1, 2, 5]);
+  const s = r.sequenceIsNotAResult;
+  assert.deepEqual(s.bell.slice(0, 3), r.sequence);
+  assert.deepEqual(s.catalan.slice(0, 3), r.sequence);
+  assert.notEqual(s.theyDisagreeAt.bell, s.theyDisagreeAt.catalan);
+  assert.equal(s.theyDisagreeAt.depth, 5);
+  assert.match(s.why, /matching integer/);
+  assert.match(s.depth5NotComputed, /102,400,000/);
+
+  // and the earlier proof is recorded as loose, not quietly dropped
+  const p = r.proofWasNotTight;
+  assert.equal(p.file, "the_seed_count_strictly_increases_with_depth.py");
+  assert.equal(p.proved, 3);
+  assert.equal(p.truth, 5);
+  assert.ok(p.proved < p.truth, "sound but not tight");
+  assert.match(r.boundary, /Depth 5 is not computed and no\s+formula is claimed/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
