@@ -3384,3 +3384,62 @@ test("the seed count strictly increases with depth: 1, 2, at least 3", () => {
   assert.match(r.boundary, /Whether three orbits SUFFICE at depth 4 is open/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the obstruction generalizes over q but the quadrangle is q=3 only", () => {
+  const r = require(path.join(
+    root,
+    "data/the_quadrangle_is_the_q_equals_three_coincidence.json"
+  ));
+  assert.ok(r.valid);
+
+  // the closed forms hold at every q tested, arithmetic checked here
+  assert.deepEqual(r.perQ.map((x) => x.q), [3, 5, 7]);
+  for (const x of r.perQ) {
+    const q = x.q;
+    assert.equal(x.linesOfW, (q * q + 1) * (q + 1));
+    assert.equal(x.disjointFromALine, q ** 3);
+    assert.equal(x.disjointFromTwo, q * q * (q - 1));
+    assert.equal(
+      x.skewTriples,
+      (x.linesOfW * q ** 3 * q * q * (q - 1)) / 6
+    );
+    assert.equal(x.allIsotropicReguli, (q ** 3 * (q - 1) * (q * q + 1)) / 2);
+    // the fraction is exact, not approximate
+    assert.equal(x.transversalFreeTriples * 2 * q, x.skewTriples * (q - 1));
+    assert.ok(x.fractionExact);
+    // the opposite regulus: q+1 lines, none isotropic
+    assert.equal(x.ambientTransversals, q + 1);
+    assert.equal(x.isotropicAmongThem, 0);
+    assert.equal(x.polarPairsNamed, (q + 1) / 2);
+  }
+  assert.deepEqual(r.perQ.map((x) => x.allIsotropicReguli), [270, 6500, 51450]);
+
+  // the elementary counts were observed, not just asserted
+  for (const c of r.elementaryChecks) {
+    assert.deepEqual(c.disjointObserved, [c.disjointPredicted]);
+    assert.equal(c.disjointFromTwoObserved, c.disjointFromTwoPredicted);
+    assert.equal(c.lines, (c.q ** 2 + 1) * (c.q + 1));
+  }
+
+  // and the split: a graph only where (q+1)/2 = 2
+  assert.deepEqual(r.perQ.map((x) => x.isAGraph), [true, false, false]);
+  assert.match(r.doesNotGeneralize.why, /\(q\+1\)\/2 polar pairs/);
+  assert.match(r.doesNotGeneralize.reading, /W\(E6\)'/);
+
+  // q=7 was counted exactly, and the sample was explicitly not trusted
+  const s = r.q7WasCountedNotSampled;
+  assert.equal(s.skewPairsThroughOneLine, 50421);
+  assert.equal(s.transversalFreeThroughOneLine, 21609);
+  assert.equal(s.totals.reguli, 51450);
+  assert.equal(s.totals.transversalFree, 2881200);
+  // the fixed-line counts scale to the totals by transitivity over 400 lines
+  assert.equal((s.skewPairsThroughOneLine * 400) / 3, s.totals.skewTriples);
+  assert.equal(
+    (s.transversalFreeThroughOneLine * 400) / 3,
+    s.totals.transversalFree
+  );
+  assert.match(s.whyNotTheSample, /neither\s+confirming nor refuting/);
+
+  assert.match(r.consequence, /will not transport/);
+  assert.match(r.boundary, /odd q only/);
+});

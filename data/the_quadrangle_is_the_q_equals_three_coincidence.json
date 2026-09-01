@@ -1,0 +1,122 @@
+{
+  "schema": "holotrade.quadrangle-is-q3-coincidence.v1",
+  "valid": true,
+  "closedForms": {
+    "linesOfW": "(q^2+1)(q+1)",
+    "disjointFromALine": "q^3, since (q+1)(q^2-q+1) = q^3+1",
+    "disjointFromTwoDisjoint": "q^2(q-1)",
+    "skewIsotropicTriples": "(q^2+1)(q+1) q^3 q^2 (q-1) / 6",
+    "allIsotropicReguli": "q^3 (q-1) (q^2+1) / 2",
+    "transversalFreeFraction": "(q-1)/(2q)",
+    "ambientTransversalProfile": "(q+1, 0) uniformly",
+    "polarPairsNamed": "(q+1)/2"
+  },
+  "perQ": [
+    {
+      "q": 3,
+      "linesOfW": 40,
+      "disjointFromALine": 27,
+      "disjointFromTwo": 18,
+      "skewTriples": 3240,
+      "allIsotropicReguli": 270,
+      "transversalFreeTriples": 1080,
+      "fractionNumerator": 2,
+      "fractionDenominator": 6,
+      "fractionExact": true,
+      "ambientTransversals": 4,
+      "isotropicAmongThem": 0,
+      "polarPairsNamed": 2,
+      "isAGraph": true
+    },
+    {
+      "q": 5,
+      "linesOfW": 156,
+      "disjointFromALine": 125,
+      "disjointFromTwo": 100,
+      "skewTriples": 325000,
+      "allIsotropicReguli": 6500,
+      "transversalFreeTriples": 130000,
+      "fractionNumerator": 4,
+      "fractionDenominator": 10,
+      "fractionExact": true,
+      "ambientTransversals": 6,
+      "isotropicAmongThem": 0,
+      "polarPairsNamed": 3,
+      "isAGraph": false
+    },
+    {
+      "q": 7,
+      "linesOfW": 400,
+      "disjointFromALine": 343,
+      "disjointFromTwo": 294,
+      "skewTriples": 6722800,
+      "allIsotropicReguli": 51450,
+      "transversalFreeTriples": 2881200,
+      "fractionNumerator": 6,
+      "fractionDenominator": 14,
+      "fractionExact": true,
+      "ambientTransversals": 8,
+      "isotropicAmongThem": 0,
+      "polarPairsNamed": 4,
+      "isAGraph": false
+    }
+  ],
+  "elementaryChecks": [
+    {
+      "q": 3,
+      "lines": 40,
+      "disjointObserved": [
+        27
+      ],
+      "disjointPredicted": 27,
+      "disjointFromTwoObserved": 18,
+      "disjointFromTwoPredicted": 18
+    },
+    {
+      "q": 5,
+      "lines": 156,
+      "disjointObserved": [
+        125
+      ],
+      "disjointPredicted": 125,
+      "disjointFromTwoObserved": 100,
+      "disjointFromTwoPredicted": 100
+    },
+    {
+      "q": 7,
+      "lines": 400,
+      "disjointObserved": [
+        343
+      ],
+      "disjointPredicted": 343,
+      "disjointFromTwoObserved": 294,
+      "disjointFromTwoPredicted": 294
+    }
+  ],
+  "generalizes": [
+    "the ambient transversal profile (q+1, 0)",
+    "the opposite regulus being closed under the polarity",
+    "the reguli being entirely isotropic",
+    "the exact counts, verified at q = 3, 5, 7"
+  ],
+  "doesNotGeneralize": {
+    "what": "the graph on polar pairs, hence GQ(4,2) and the 27 lines",
+    "why": "the opposite regulus names (q+1)/2 polar pairs, which is a PAIR -- an edge -- only at q = 3",
+    "atQ5": "a 3-uniform hypergraph on 325 vertices",
+    "atQ7": "a 4-uniform hypergraph on 1225 vertices",
+    "reading": "GQ(4,2) is the same q = 3 coincidence that makes PSp(4,3) = W(E6)', not a feature of symplectic quadrangles"
+  },
+  "q7WasCountedNotSampled": {
+    "method": "transitivity on one line: exhaustive count of skew pairs and transversal-free pairs through a fixed line of W(3,7)",
+    "skewPairsThroughOneLine": 50421,
+    "transversalFreeThroughOneLine": 21609,
+    "totals": {
+      "skewTriples": 6722800,
+      "transversalFree": 2881200,
+      "reguli": 51450
+    },
+    "whyNotTheSample": "a 400-triple random sample gave 0.3975 against a predicted 3/7 = 0.4286, about 1.3 sigma low -- neither confirming nor refuting, so it was not trusted"
+  },
+  "consequence": "any argument about depth-3 blocking that leans on GQ(4,2) is a q = 3 argument and will not transport; one leaning on the reguli will",
+  "boundary": "odd q only -- at even q the polarity has absolute points and W(3,q) has ovoids, a different regime, not run here. tau_2 is untouched and stays open in [111, 115]"
+}
