@@ -1,0 +1,50 @@
+{
+  "schema": "holotrade.tax-tracks-blocker-richness.v1",
+  "valid": true,
+  "question": "the_open_configuration_has_a_smaller_instance.py showed the tax is not a function of the ovoid deficiency, which is 1 for both; this answers what it IS a function of",
+  "notTheCentreTheorem": "a minimum blocker of either quadrangle meets a pencil's worth of lines twice and the rest once, and the property holds on every blocker of both, so it is not the difference",
+  "families": [
+    {
+      "label": "GQ(2,4)",
+      "s": 2,
+      "t": 4,
+      "points": 27,
+      "lines": 45,
+      "tau1": 10,
+      "blockers": 27,
+      "perLine": null,
+      "perPoint": 1.0,
+      "centreTheoremHolds": true,
+      "puncturedPerps": 27,
+      "sTimesTPlus1": 10,
+      "enumerationStatus": "OPTIMAL"
+    },
+    {
+      "label": "W(3,3)",
+      "s": 3,
+      "t": 3,
+      "points": 40,
+      "lines": 40,
+      "tau1": 11,
+      "blockers": 360,
+      "perLine": null,
+      "perPoint": 9.0,
+      "centreTheoremHolds": true,
+      "puncturedPerps": 0,
+      "sTimesTPlus1": 12,
+      "enumerationStatus": "OPTIMAL"
+    }
+  ],
+  "richnessRatio": 9.0,
+  "ratioIsQSquared": true,
+  "cause": {
+    "file": "gq_perp_blockers_and_h44.py",
+    "theorem": "minimum blockers of a GQ are exactly the point-perps when t > s, of size s(t+1)",
+    "exception": "W(3,3) has s = t and tau_1 = 11 < s(t+1) = 12, so its perps are not minimal",
+    "tGreaterThanS": "blockers are the perps: one per point, maximally rigid",
+    "diagonal": "perps are too big and the family opens up; gq_diagonal_theorem.py shows this case is provably beyond counting"
+  },
+  "reading": "a product of two minimum blockers always blocks at cost tau_1^2; to beat it the row shadows must be blocking sets sharing structure across rows, and with one blocker per centre there is nothing to choose, while with nine there is -- consistent with both instances, and an explanation rather than a theorem",
+  "prediction": "any ovoid-free GQ with t > s has tau(G x G) = tau_1^2 exactly, and the difficulty is confined to the diagonal s = t; falsifiable on the next such quadrangle and not tested here",
+  "boundary": "both enumerations are complete within budget and their counts are consistent with transitivity (27 = 27 x 1, 360 = 40 x 9); the centre-theorem and perp checks are exhaustive over those families; the link from richness to product behaviour is an explanation, not a proof, and the prediction is untested. tau_2 is untouched and stays open in [111, 115]"
+}

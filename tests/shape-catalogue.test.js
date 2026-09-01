@@ -3709,3 +3709,57 @@ test("the open configuration has a second, smaller, differently-behaved instance
   assert.match(r.boundary, /upper bounds only/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the composition tax tracks blocker richness, not ovoid deficiency", () => {
+  const r = require(path.join(
+    root,
+    "data/the_tax_tracks_blocker_richness_not_deficiency.json"
+  ));
+  assert.ok(r.valid);
+  assert.match(r.question, /not a function of the ovoid\s+deficiency/);
+  assert.match(r.notTheCentreTheorem, /not the difference/);
+
+  const [g, w] = r.families;
+  assert.equal(g.label, "GQ(2,4)");
+  assert.equal(w.label, "W(3,3)");
+  for (const f of r.families) {
+    assert.equal(f.enumerationStatus, "OPTIMAL", "the count is complete");
+    assert.ok(f.centreTheoremHolds, "both satisfy it, so it is not the cause");
+    assert.equal(f.sTimesTPlus1, f.s * (f.t + 1));
+    assert.equal(f.perPoint, f.blockers / f.points);
+    // GQ point/line arithmetic
+    assert.equal(f.points, (f.s + 1) * (f.s * f.t + 1));
+    assert.equal(f.lines, (f.t + 1) * (f.s * f.t + 1));
+  }
+
+  // t > s: blockers are the perps, one per point
+  assert.ok(g.t > g.s);
+  assert.equal(g.tau1, g.sTimesTPlus1, "tau_1 = s(t+1) exactly");
+  assert.equal(g.blockers, 27);
+  assert.equal(g.perPoint, 1);
+  assert.equal(g.puncturedPerps, 27, "every one is a perp");
+
+  // s = t: the diagonal, perps are too big, family opens up
+  assert.equal(w.s, w.t);
+  assert.ok(w.tau1 < w.sTimesTPlus1, "11 < 12 is the exception");
+  assert.equal(w.blockers, 360);
+  assert.equal(w.perPoint, 9);
+  assert.equal(w.puncturedPerps, 0, "not one of them is a perp");
+  assert.equal(w.blockers, w.points * 9);
+
+  // the ratio, and that it is q^2
+  assert.equal(r.richnessRatio, 9);
+  assert.ok(r.ratioIsQSquared);
+
+  // the cause is a theorem already in the repo
+  assert.equal(r.cause.file, "gq_perp_blockers_and_h44.py");
+  assert.match(r.cause.theorem, /point-perps when t > s/);
+  assert.match(r.cause.exception, /s = t/);
+  assert.match(r.cause.diagonal, /beyond counting/);
+
+  // reading and prediction are labelled as such, not promoted
+  assert.match(r.reading, /an explanation rather\s+than a theorem/);
+  assert.match(r.prediction, /not tested here/);
+  assert.match(r.boundary, /not a proof/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
