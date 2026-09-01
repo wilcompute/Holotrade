@@ -1,0 +1,53 @@
+{
+  "schema": "holotrade.minimum-blocker-parametrization.v1",
+  "valid": true,
+  "enumeration": {
+    "status": "OPTIMAL",
+    "count": 360,
+    "exhaustive": true
+  },
+  "theorem": {
+    "centreNotInB": true,
+    "whyCentreIsExcluded": "if c were in B the four pencil lines would use 1 + 4 = 5 points and the remaining six could cover only 6 x 4 = 24 of the other 36 lines",
+    "nearFarSplit": {
+      "(8, 3)": 360
+    },
+    "excludedTransversalSizes": {
+      "4": 360
+    },
+    "farCollinearPairs": {
+      "0": 360
+    },
+    "farTripleOnALine": 0,
+    "blockersPerCentre": [
+      9
+    ],
+    "farTriplesPartitionTheFar": 40,
+    "centres": 40,
+    "keyDeterminesBlocker": true,
+    "distinctKeys": 360
+  },
+  "parametrization": "minimum blockers = {(c, T) : c a point, T a block of the canonical 9-block partition of the 27 points far from c}, 360 = 40 x 9, with the eight near points forced",
+  "theFarGraph": {
+    "vertices": 27,
+    "degree": [
+      8
+    ],
+    "lambda": [
+      1
+    ],
+    "mu": [
+      0,
+      3
+    ],
+    "stronglyRegular": false,
+    "triangles": 36,
+    "trianglesPerPoint": 4,
+    "configuration": "(27_4, 36_3)",
+    "threeCocliques": 945,
+    "note": "not strongly regular, unlike almost everything else in this thread; mu takes two values"
+  },
+  "whatItBuys": "a tight-case shadow assignment was 40 choices of an 11-subset of 40 points and is now 40 choices from 360, each a pair (centre, block index in 1..9), with consistency conditions expressible in those terms -- the reduction an exhaustive attack needs",
+  "literature": "searched and found no classification of W(3,3)'s minimum blockers; the nearby published work is on blocking sets in generalised quadrangles and polar spaces and on minimum weights of the codes of generalised polygons",
+  "boundary": "exhaustive over the complete enumeration, which returned OPTIMAL, so these are properties of all 360 and not a sample; the (27_4, 36_3) reading is checked at one centre and transitive by the group. tau_2 is untouched and stays open in [111, 115]"
+}

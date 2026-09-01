@@ -3812,3 +3812,57 @@ test("GQ(2,4) lives inside W(3,3) as its 27 K(4,4)-factors", () => {
   assert.match(r.boundary, /prior art/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("every minimum blocker of W(3,3) is a point and a triple", () => {
+  const r = require(path.join(
+    root,
+    "data/every_minimum_blocker_is_a_point_and_a_triple.json"
+  ));
+  assert.ok(r.valid);
+
+  // the enumeration is complete, so these are properties of ALL of them
+  assert.equal(r.enumeration.status, "OPTIMAL");
+  assert.equal(r.enumeration.count, 360);
+  assert.ok(r.enumeration.exhaustive);
+  assert.equal(360, 40 * 9, "one per (point, block)");
+
+  const t = r.theorem;
+  // 1. the centre is never in the blocker, and the counting reason is recorded
+  assert.ok(t.centreNotInB);
+  assert.match(t.whyCentreIsExcluded, /6 x 4 = 24/);
+  // 2. eight near, three far, and the excluded set is a pencil transversal
+  assert.deepEqual(t.nearFarSplit, { "(8, 3)": 360 });
+  assert.deepEqual(t.excludedTransversalSizes, { 4: 360 });
+  assert.equal(8 + 3, 11, "the eleven points");
+  assert.equal(12 - 4, 8, "twelve neighbours minus a transversal");
+  // 3. the far triple is a coclique, never a line
+  assert.deepEqual(t.farCollinearPairs, { 0: 360 });
+  assert.equal(t.farTripleOnALine, 0);
+  // 4. nine per centre, and they partition the 27 far points at every centre
+  assert.deepEqual(t.blockersPerCentre, [9]);
+  assert.equal(t.farTriplesPartitionTheFar, t.centres);
+  assert.equal(t.centres, 40);
+  assert.equal(9 * 3, 27, "the partition is exact");
+  assert.equal(40 - 1 - 12, 27, "27 = 40 minus c minus its neighbours");
+  // 5. and the pair determines the blocker
+  assert.ok(t.keyDeterminesBlocker);
+  assert.equal(t.distinctKeys, r.enumeration.count);
+
+  // the far graph is NOT strongly regular -- mu takes two values
+  const f = r.theFarGraph;
+  assert.equal(f.vertices, 27);
+  assert.deepEqual(f.degree, [8]);
+  assert.deepEqual(f.lambda, [1], "every edge in exactly one triangle");
+  assert.deepEqual(f.mu, [0, 3]);
+  assert.equal(f.stronglyRegular, false);
+  assert.equal(f.triangles, 36);
+  assert.equal(f.trianglesPerPoint, 4);
+  assert.equal((f.triangles * 3) / f.vertices, f.trianglesPerPoint);
+  assert.ok(f.threeCocliques > 9, "the nine are singled out among many");
+
+  assert.match(r.parametrization, /360 = 40 x 9/);
+  assert.match(r.whatItBuys, /a pair \(centre, block/);
+  assert.match(r.literature, /no classification/);
+  assert.match(r.boundary, /not a sample/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
