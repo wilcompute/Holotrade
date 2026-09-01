@@ -3911,3 +3911,47 @@ test("the tau_2 interval is [111,115] and the corpus disagrees with itself", () 
   assert.match(r.boundary, /cited not reproduced/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the open configuration's floor is 91, and the negative holds at both ends", () => {
+  const r = require(path.join(root, "data/the_open_configuration_floor_is_91.json"));
+  const orig = require(path.join(
+    root, "data/the_open_configuration_has_a_smaller_instance.json"));
+  assert.ok(r.valid);
+
+  // correction one: my own understated interval, prior art now cited
+  const c = r.correctionOne;
+  assert.deepEqual(c.wrote, [90, 100]);
+  assert.deepEqual(c.correct, [91, 100]);
+  assert.equal(c.correct[0], c.wrote[0] + 1);
+  assert.equal(c.priorArtNotCited, "gq24_tight_obstruction.py");
+  assert.ok(c.mine, "recorded as my error, not someone else's");
+  assert.match(c.theirArgument, /45 lines cannot have distinct centres/);
+  assert.match(c.whyNoSelfDualityNeeded, /pigeonhole/);
+  // the earlier file's own numbers still agree on what was probed
+  assert.equal(orig.instances[1].shadow, 90);
+  assert.equal(orig.instances[1].product, 100);
+
+  // correction two ties to the richness result
+  assert.match(r.correctionTwo, /one minimum blocker per centre/);
+  assert.match(r.correctionTwo, /nine per centre/);
+
+  // the negative now holds at both ends
+  const s = r.strengthenedNegative;
+  assert.equal(s.earlierProbe.target, 99);
+  assert.equal(s.newProbe.target, 91);
+  assert.equal(s.earlierProbe.result, "UNKNOWN");
+  assert.equal(s.newProbe.result, "UNKNOWN");
+  assert.ok(s.newProbe.target < s.earlierProbe.target, "climbed from below");
+  assert.equal(s.newProbe.target, c.correct[0], "one above the proved floor");
+  assert.match(s.reading, /both\s+ends of the interval/);
+  assert.match(s.runningTotal, /eleven formulations/);
+
+  // the r >= 4 argument is offered and explicitly NOT claimed
+  const w = r.whatWouldMoveIt;
+  assert.ok(w.notClaimed, "hypothesis unverified");
+  assert.match(w.ifTrichotomySurvivedSlack, /r >= 4/);
+  assert.match(w.whyNot, /tightness/);
+  assert.match(w.theRealOpenQuestion, /geometry question, not a solver one/);
+  assert.match(r.boundary, /\[91, 100\]/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

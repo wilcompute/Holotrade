@@ -26,7 +26,11 @@ from the other side.
 WHAT THE TWO INSTANCES DO, AND THEY DIFFER.
 
     W(3,3)^2      shadow 110   product 121   best known 115   OPEN [111,115]
-    GQ(2,4)^2     shadow  90   product 100   best known 100   OPEN [ 90,100]
+    GQ(2,4)^2     shadow  90   product 100   best known 100   OPEN [ 91,100]
+
+(Correction, from the_open_configuration_floor_is_91.py: this file originally
+wrote [90, 100]. It understated known prior art -- gq24_tight_obstruction.py
+had already proved tau != 90 by pigeonhole, so the floor is 91.)
 
 W(3,3)^2 STRICTLY BEATS its product bound: 115 < 121, by six. GQ(2,4)^2 does
 not -- roughly ninety minutes of CP-SAT, including a run with explicit shadow

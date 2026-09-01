@@ -1,0 +1,43 @@
+{
+  "schema": "holotrade.open-configuration-floor-91.v1",
+  "valid": true,
+  "correctionOne": {
+    "file": "the_open_configuration_has_a_smaller_instance.py",
+    "wrote": [
+      90,
+      100
+    ],
+    "correct": [
+      91,
+      100
+    ],
+    "priorArtNotCited": "gq24_tight_obstruction.py",
+    "mine": true,
+    "note": "the same failure the 4b23ec0 interval audit was written about, committed one commit earlier, in a file that audit was checking against",
+    "theirArgument": "at |X| = 90 all 45 line-shadows are minimum blockers so all have centres; |F| = 1 + kt/mu = 9 against alpha = 6 forces F empty so centres are distinct; 45 lines cannot have distinct centres among 27 points",
+    "whyNoSelfDualityNeeded": "W(3,3) has as many lines as points so a bijection is possible on counting grounds; GQ(2,4) has 45 lines and 27 points, so pigeonhole fires"
+  },
+  "correctionTwo": "GQ(2,4) has exactly one minimum blocker per centre, all 27 punctured perps (7b15c84), so 'the shadow has a centre' and 'the shadow IS a specific 10-set' are the same statement there; W(3,3) has nine per centre",
+  "strengthenedNegative": {
+    "earlierProbe": {
+      "target": 99,
+      "result": "UNKNOWN",
+      "problem": "near the top of the interval, where infeasibility is hardest to prove"
+    },
+    "newProbe": {
+      "target": 91,
+      "result": "UNKNOWN",
+      "why": "one above a proved floor, the most constrained target available, with the full two-axis shadow encoding"
+    },
+    "reading": "the signature is not an artefact of probing near a feasible solution -- it holds at both ends of the interval",
+    "runningTotal": "eleven formulations across two quadrangles and both ends of two intervals, none INFEASIBLE"
+  },
+  "whatWouldMoveIt": {
+    "observation": "at |X| = 90 + r at most 5r of the 45 lines can have an oversized shadow, so at least 45 - 5r still have centres",
+    "ifTrichotomySurvivedSlack": "45 - 5r <= 27 would force r >= 4 and the floor would jump to 94",
+    "notClaimed": true,
+    "whyNot": "the multiplicity trichotomy is derived from pencil reciprocity, which is derived from tightness -- exactly the hypothesis slack removes",
+    "theRealOpenQuestion": "whether the trichotomy holds with defect; a geometry question, not a solver one"
+  },
+  "boundary": "corrections to an earlier file of mine and a solver non-result; the tau != 90 proof is gq24_tight_obstruction.py's, cited not reproduced; the r >= 4 argument is explicitly not claimed. tau(GQ(2,4)^2) stays open in [91, 100] and tau_2 in [111, 115]"
+}
