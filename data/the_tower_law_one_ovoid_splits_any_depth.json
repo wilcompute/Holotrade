@@ -1,0 +1,46 @@
+{
+  "schema": "holotrade.tower-law-one-ovoid-splits.v1",
+  "valid": true,
+  "priorArt": {
+    "file": "tensor_one_ovoid_suffices.py",
+    "owns": "the depth-2 theorem -- if either factor has an ovoid then tau(Q1 x Q2) = tau_1 tau_2 -- and the four instances 25, 55, 110, and [110,115] open"
+  },
+  "whatIsNew": "the same shadow argument never used the second factor's being a quadrangle, so it SPLITS a tower of arbitrary depth, not just a product",
+  "splittingTheorem": {
+    "statement": "if Q1 has an ovoid then tau(Q1 x R) = tau_1 * tau(R) for arbitrary R",
+    "upper": "B1 x X_R blocks",
+    "lower": "each line of Q1 has a shadow in R that must block R, so |X| >= (s1 t1 + 1) tau(R), and an ovoid makes tau_1 = s1 t1 + 1",
+    "consequence": "ovoid-bearing factors peel off one at a time, to any depth"
+  },
+  "quadrangles": {
+    "tau1W": 11,
+    "tau1WStatus": "OPTIMAL",
+    "tau1Q": 10,
+    "tau1QStatus": "OPTIMAL",
+    "QIsDualOfW": true,
+    "QOvoidsAreWSpreads": true,
+    "WHasNoOvoid": "Thas, odd q"
+  },
+  "depth3Verified": {
+    "tiles": 64000,
+    "BxOxO": 1100,
+    "blocksWQQ": true,
+    "shadow": 1100,
+    "tauWQQExact": true,
+    "OxOxO": 1000,
+    "blocksQQQ": true
+  },
+  "towerLaw": {
+    "formula": "tau(W^k x Q^m) = 10^m * tau(W^k)",
+    "k0": "10^m, free",
+    "k1": "11 * 10^m, free and exact",
+    "k2": "[111,115] * 10^m, the tax, open"
+  },
+  "consequences": {
+    "taxPaidOnce": "every ovoid-bearing tier multiplies by exactly 10 and adds nothing, so tower HEIGHT is free and only the ovoid-free COUNT is expensive",
+    "quotaNotAlternation": "the product is commutative, so W x Q x W and W x W x Q cost the same; arrangement is irrelevant and the budget is one ovoid-free factor -- this corrects an earlier suggestion that the tower should alternate",
+    "tau2Propagates": "[111,115] is the exact cost of tau(W^2 x Q^m) for every m divided by 10^m, so closing tau_2 closes an infinite family at once"
+  },
+  "operationalReading": "an ovoid of Q(4,3) is a spread of W(3,3), a partition of the 40 Pauli classes into 10 disjoint measurement contexts; an ovoid of W(3,3) would be 10 pairwise NON-commuting classes and none exists for odd q. The free side is the side admitting a partition, so compose through spreads, not lines",
+  "boundary": "the splitting proof is the depth-2 argument with the second factor left arbitrary; the depth-3 instance is verified leaf by leaf against all 64,000 tiles. tau(W^k) for k >= 2 is untouched and tau_2 stays open in [111, 115]. Nothing here is a claim about physical hardware"
+}

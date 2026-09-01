@@ -3596,3 +3596,51 @@ test("depth 5 is reachable, and the interval does not decide the sequence", () =
   assert.match(r.boundary, /depth 5 bounded\s+only/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("one ovoid splits a tower of any depth, so height is free", () => {
+  const r = require(path.join(
+    root,
+    "data/the_tower_law_one_ovoid_splits_any_depth.json"
+  ));
+  assert.ok(r.valid);
+
+  // prior art is named, and the new part is the splitting form
+  assert.equal(r.priorArt.file, "tensor_one_ovoid_suffices.py");
+  assert.match(r.priorArt.owns, /depth-2 theorem/);
+  assert.match(r.whatIsNew, /SPLITS a tower/);
+  assert.match(r.splittingTheorem.statement, /arbitrary R/);
+
+  // the two quadrangles, and why one is free
+  const q = r.quadrangles;
+  assert.equal(q.tau1W, 11);
+  assert.equal(q.tau1Q, 10);
+  assert.equal(q.tau1WStatus, "OPTIMAL");
+  assert.equal(q.tau1QStatus, "OPTIMAL");
+  assert.ok(q.tau1W > q.tau1Q, "no ovoid costs exactly one extra point");
+  assert.ok(q.QOvoidsAreWSpreads);
+  assert.match(q.WHasNoOvoid, /Thas/);
+  // 10 = st+1 for a GQ(3,3)
+  assert.equal(3 * 3 + 1, q.tau1Q);
+
+  // depth 3, checked against every tile
+  const d = r.depth3Verified;
+  assert.equal(d.tiles, 40 ** 3);
+  assert.equal(d.BxOxO, 1100);
+  assert.equal(d.BxOxO, 11 * 10 * 10);
+  assert.ok(d.blocksWQQ);
+  assert.equal(d.shadow, 10 * 110);
+  assert.ok(d.tauWQQExact, "upper meets lower, so it is exact not bounded");
+  assert.equal(d.OxOxO, 1000);
+  assert.equal(d.OxOxO, 10 ** 3);
+  assert.ok(d.blocksQQQ);
+
+  // the law and its three consequences
+  assert.equal(r.towerLaw.formula, "tau(W^k x Q^m) = 10^m * tau(W^k)");
+  assert.match(r.towerLaw.k2, /\[111,115\]/);
+  assert.match(r.consequences.taxPaidOnce, /height/i);
+  assert.match(r.consequences.quotaNotAlternation, /corrects an\s+earlier/);
+  assert.match(r.consequences.quotaNotAlternation, /commutative/);
+  assert.match(r.consequences.tau2Propagates, /infinite family/);
+  assert.match(r.operationalReading, /compose through spreads, not lines/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
