@@ -1,0 +1,73 @@
+{
+  "schema": "holotrade.open-configuration-smaller-instance.v1",
+  "valid": true,
+  "whyThisExists": "tau(A x B) >= tau*(A) tau(B) always and is tight the moment either factor has an ovoid (tensor_one_ovoid_suffices.py), so the whole difficulty sits in the configuration where NEITHER does -- and every attack here has run it on a single instance",
+  "gq24": {
+    "construction": "the dual of the GQ(4,2) built from the 270 isotropic reguli in a149d0b",
+    "points": 27,
+    "lines": 45,
+    "pointsPerLine": [
+      3
+    ],
+    "s": 2,
+    "t": 4,
+    "stPlusOne": 9,
+    "tau1": 10,
+    "tau1Status": "OPTIMAL",
+    "hasOvoid": false,
+    "why": "Q(5,q) never has an ovoid, and tau_1 = 10 > 9",
+    "deficiency": 1
+  },
+  "w33": {
+    "tau1": 11,
+    "tau1Status": "OPTIMAL",
+    "stPlusOne": 10,
+    "deficiency": 1
+  },
+  "sameDeficiency": true,
+  "instances": [
+    {
+      "instance": "W(3,3)^2",
+      "leaves": 1600,
+      "shadow": 110,
+      "product": 121,
+      "bestKnown": 115,
+      "beatsProduct": true,
+      "interval": [
+        111,
+        115
+      ],
+      "status": "OPEN"
+    },
+    {
+      "instance": "GQ(2,4)^2",
+      "leaves": 729,
+      "shadow": 90,
+      "product": 100,
+      "bestKnown": 100,
+      "beatsProduct": false,
+      "interval": [
+        90,
+        100
+      ],
+      "status": "OPEN"
+    }
+  ],
+  "qualitativeDifference": {
+    "w33SquaredBeatsProduct": true,
+    "byHowMuch": 6,
+    "gq24SquaredBeatsProduct": false,
+    "searchEffort": "about ninety minutes of CP-SAT including a run with explicit shadow cuts and an upper bound of 100 imposed",
+    "reading": "if it survives, the composition tax is NOT a function of the ovoid deficiency alone -- the first thing one would guess, and the thing a single instance could never test"
+  },
+  "shadowCutsNegative": {
+    "cuts": "y[L][q] <= sum_{p in L} x[p][q], y[L][q] <= 1, and sum_{q in M} y[L][q] >= 1 for every line M, on both axes",
+    "makesLpWorth": "tau*(A) tau(B)",
+    "dualBoundWithCuts": 81,
+    "dualBoundWithoutCuts": 81,
+    "shadowBound": 90,
+    "reading": "tensor_lower_sdp_ceiling.py explains the weak bound by the pairwise cone being unable to express lines; this shows that handing the line constraints over explicitly, with exact auxiliary variables, does not raise the bound either"
+  },
+  "openHere": "whether 99 is feasible for GQ(2,4)^2; INFEASIBLE would make tau = 100 exactly, the first exact value in the open configuration. That run had not returned and is recorded as unresolved rather than guessed",
+  "boundary": "tau_1 values are OPTIMAL; the product values are SEARCH RESULTS and upper bounds only; 90 and 110 are the elementary shadow bound; nothing in the open configuration is proved optimal here. tau_2 is untouched and stays open in [111, 115]"
+}

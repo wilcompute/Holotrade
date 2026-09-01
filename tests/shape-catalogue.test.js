@@ -3644,3 +3644,64 @@ test("one ovoid splits a tower of any depth, so height is free", () => {
   assert.match(r.operationalReading, /compose through spreads, not lines/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the open configuration has a second, smaller, differently-behaved instance", () => {
+  const r = require(path.join(
+    root,
+    "data/the_open_configuration_has_a_smaller_instance.json"
+  ));
+  assert.ok(r.valid);
+
+  // GQ(2,4), built as the dual of the reguli quadrangle
+  const g = r.gq24;
+  assert.match(g.construction, /270 isotropic reguli/);
+  assert.equal(g.points, 27);
+  assert.equal(g.lines, 45);
+  assert.deepEqual(g.pointsPerLine, [3]);
+  assert.equal(g.s * g.t + 1, g.stPlusOne);
+  assert.equal(g.stPlusOne, 9);
+  // 27 points * 5 lines each = 45 lines * 3 points each
+  assert.equal(27 * 5, 45 * 3);
+  assert.equal(g.tau1, 10);
+  assert.equal(g.tau1Status, "OPTIMAL");
+  assert.equal(g.hasOvoid, false);
+  assert.ok(g.tau1 > g.stPlusOne, "no ovoid means tau_1 exceeds st+1");
+  assert.equal(g.deficiency, 1);
+
+  // both factors ovoid-free with the SAME deficiency
+  assert.equal(r.w33.tau1, 11);
+  assert.equal(r.w33.deficiency, 1);
+  assert.ok(r.sameDeficiency, "the controlled comparison");
+
+  // the two instances, and their arithmetic
+  assert.equal(r.instances.length, 2);
+  for (const i of r.instances) {
+    assert.ok(i.shadow < i.product, "shadow is the weaker bound");
+    assert.ok(i.bestKnown >= i.shadow && i.bestKnown <= i.product);
+    assert.equal(i.status, "OPEN");
+  }
+  const [w, q] = r.instances;
+  assert.equal(w.shadow, 110);
+  assert.equal(w.product, 121);
+  assert.equal(q.shadow, 90);
+  assert.equal(q.product, 100);
+  assert.equal(q.leaves, 27 * 27);
+
+  // the qualitative difference is the finding
+  const d = r.qualitativeDifference;
+  assert.ok(d.w33SquaredBeatsProduct);
+  assert.equal(d.byHowMuch, 6);
+  assert.equal(d.gq24SquaredBeatsProduct, false);
+  assert.match(d.reading, /NOT a\s+function of the ovoid deficiency alone/);
+
+  // and the negative on shadow cuts
+  const s = r.shadowCutsNegative;
+  assert.equal(s.dualBoundWithCuts, s.dualBoundWithoutCuts, "cuts changed nothing");
+  assert.ok(s.dualBoundWithCuts < s.shadowBound, "below even the shadow bound");
+  assert.match(s.reading, /does not raise the bound/);
+
+  // the open item is recorded, not guessed
+  assert.match(r.openHere, /unresolved rather\s+than guessed/);
+  assert.match(r.boundary, /upper bounds only/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
