@@ -1,0 +1,140 @@
+{
+  "schema": "holotrade.seed-count-increases-with-depth.v1",
+  "valid": true,
+  "ingredients": {
+    "twoPointsOfALineCommute": true,
+    "noTriangles": true,
+    "transversalFreeTriples": 1080,
+    "transversalFreeTriplesArePairwiseDisjoint": true,
+    "disjointLinesPerLine": [
+      27
+    ],
+    "patternIsAnOrbitInvariant": "equality and commuting are Sp(4,3)-invariant"
+  },
+  "theoremA": {
+    "statement": "for every n >= 3 no single Sp(4,3) orbit blocks the depth-n tiles",
+    "cases": [
+      "a non-commuting pair (i,j) misses every tile with L_i = L_j, since two points of one line commute",
+      "an equal pair (i,j) misses every tile with L_i and L_j disjoint",
+      "all distinct and pairwise commuting forces cocollinearity, which needs a transversal of a transversal-free triple"
+    ],
+    "whyNotAtN2": "two points are always cocollinear and two lines always have a transversal, so case 3 does not close -- which is why depth 2 has one seed"
+  },
+  "theoremB": {
+    "statement": "for every n >= 4 two orbits do not suffice",
+    "proof": "the tile (L,...,L) forces one orbit to be all commuting-or-equal; the other must then have a non-commuting pair (i,j); the tile with L_i = L_j = L and a transversal-free triple (L, L_k, L_l) in two further positions defeats both",
+    "whyNotAtN3": "the repeated pair uses two of the three positions and the bad triple needs two more; and two orbits do suffice at depth 3",
+    "witnesses": [
+      {
+        "positions": [
+          0,
+          1
+        ],
+        "tile": [
+          0,
+          0,
+          5,
+          10
+        ],
+        "leaves": 256,
+        "allCommutingOrEqualLeaves": 0,
+        "leavesWithIJCommutingOrEqual": 256
+      },
+      {
+        "positions": [
+          0,
+          2
+        ],
+        "tile": [
+          0,
+          5,
+          0,
+          10
+        ],
+        "leaves": 256,
+        "allCommutingOrEqualLeaves": 0,
+        "leavesWithIJCommutingOrEqual": 256
+      },
+      {
+        "positions": [
+          0,
+          3
+        ],
+        "tile": [
+          0,
+          5,
+          10,
+          0
+        ],
+        "leaves": 256,
+        "allCommutingOrEqualLeaves": 0,
+        "leavesWithIJCommutingOrEqual": 256
+      },
+      {
+        "positions": [
+          1,
+          2
+        ],
+        "tile": [
+          5,
+          0,
+          0,
+          10
+        ],
+        "leaves": 256,
+        "allCommutingOrEqualLeaves": 0,
+        "leavesWithIJCommutingOrEqual": 256
+      },
+      {
+        "positions": [
+          1,
+          3
+        ],
+        "tile": [
+          5,
+          0,
+          10,
+          0
+        ],
+        "leaves": 256,
+        "allCommutingOrEqualLeaves": 0,
+        "leavesWithIJCommutingOrEqual": 256
+      },
+      {
+        "positions": [
+          2,
+          3
+        ],
+        "tile": [
+          5,
+          10,
+          0,
+          0
+        ],
+        "leaves": 256,
+        "allCommutingOrEqualLeaves": 0,
+        "leavesWithIJCommutingOrEqual": 256
+      }
+    ],
+    "everyWitnessKillsBoth": true
+  },
+  "counts": [
+    {
+      "depth": 2,
+      "seeds": 1,
+      "status": "exact"
+    },
+    {
+      "depth": 3,
+      "seeds": 2,
+      "status": "exact"
+    },
+    {
+      "depth": 4,
+      "seeds": 3,
+      "status": "lower bound"
+    }
+  ],
+  "standingOfThe1080": "they are not what forces the second seed -- the depth-3 path orbit covers every tile with distinct lines -- they are what forces the third",
+  "boundary": "lower bounds only, over the full group Sp(4,3). Whether three orbits SUFFICE at depth 4 is open here; the depth-4 coverage computation was not run. Proper subgroups are not swept. tau_2 is untouched and stays open in [111, 115]"
+}

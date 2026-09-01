@@ -3334,3 +3334,53 @@ test("depth 3 needs exactly two seeds and one of them is a repetition", () => {
   ]);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the seed count strictly increases with depth: 1, 2, at least 3", () => {
+  const r = require(path.join(
+    root,
+    "data/the_seed_count_strictly_increases_with_depth.json"
+  ));
+  assert.ok(r.valid);
+
+  // the three facts the proofs rest on
+  const g = r.ingredients;
+  assert.ok(g.twoPointsOfALineCommute, "case 1 rests on this");
+  assert.ok(g.noTriangles, "case 3 rests on this");
+  assert.equal(g.transversalFreeTriples, 1080);
+  assert.ok(g.transversalFreeTriplesArePairwiseDisjoint);
+  assert.deepEqual(g.disjointLinesPerLine, [27], "case 2 needs disjoint pairs");
+  // 27 disjoint + 12 meeting + itself = the 40 lines
+  assert.equal(27 + 12 + 1, 40);
+
+  // Theorem A is exhaustive on the pattern, and says why n=2 escapes
+  assert.equal(r.theoremA.cases.length, 3);
+  assert.match(r.theoremA.statement, /n >= 3/);
+  assert.match(r.theoremA.whyNotAtN2, /always have a transversal/);
+
+  // Theorem B, with all six witnesses killing both orbits outright
+  const b = r.theoremB;
+  assert.match(b.statement, /n >= 4/);
+  assert.match(b.whyNotAtN3, /two orbits do suffice at depth 3/);
+  assert.equal(b.witnesses.length, 6, "one per position pair of a 4-tuple");
+  for (const w of b.witnesses) {
+    assert.equal(w.leaves, 256, "4^4 leaves in a depth-4 tile");
+    assert.equal(w.allCommutingOrEqualLeaves, 0, "O_a misses");
+    assert.equal(w.leavesWithIJCommutingOrEqual, 256, "O_b misses");
+    // the tile really does repeat a line at the named positions
+    const [i, j] = w.positions;
+    assert.equal(w.tile[i], w.tile[j]);
+    assert.equal(new Set(w.tile).size, 3, "one repeat plus the bad pair");
+  }
+  assert.ok(b.everyWitnessKillsBoth);
+
+  // and the counts, with depth 4 honestly a lower bound
+  assert.deepEqual(r.counts.map((c) => c.seeds), [1, 2, 3]);
+  assert.deepEqual(r.counts.map((c) => c.status), [
+    "exact",
+    "exact",
+    "lower bound",
+  ]);
+  assert.match(r.standingOfThe1080, /what forces the third/);
+  assert.match(r.boundary, /Whether three orbits SUFFICE at depth 4 is open/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
