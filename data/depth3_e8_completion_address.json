@@ -1,0 +1,32 @@
+{
+  "schema": "holotrade.depth3-e8-completion-address.v1",
+  "valid": true,
+  "localDependencies": {
+    "obstructionQuadrangle": "data/the_depth3_obstruction_is_a_quadrangle.json",
+    "sentinelIdentification": "data/the_sentinel_shell_is_the_depth_three_obstruction.json",
+    "localFacts": "45 obstruction vertices, 270 edges, 27 maximal 5-cliques, every edge in exactly one clique; the 270 edges are exactly the sentinel minimum-support disjoint pairs"
+  },
+  "w33Dependency": {
+    "repository": "wilcompute/W33-Theory",
+    "verifierCommit": "322c5031b09287f0ff55ea9019f0441a00af7a4d",
+    "certificateCommit": "3deb82ee68c2e67a186342c31bbd2da4d6ddd686",
+    "certificate": "data/PART_W33_20260901_REGULUS_E8_COMPLETION_BRIDGE.json",
+    "fact": "the same 45 tritangent supports are 45 orthogonal D4+D4 packets in the selected E8/W33 lift, and each of the 27 GQ(4,2) lines partitions all 240 E8 roots into ten selected D4 subsystems"
+  },
+  "routingLaw": {
+    "obstructionEdges": 270,
+    "completionCharts": 27,
+    "edgesPerChart": 10,
+    "chartsPerPacket": 3,
+    "packetsPerChart": 5,
+    "edgeUniqueChart": true,
+    "identity": "270 = 27 * C(5,2)",
+    "selectedPacketsPerObstruction": 2,
+    "selectedRootsPerObstruction": 96,
+    "completionPackets": 3,
+    "completionRoots": 144,
+    "completedRoots": 240
+  },
+  "operationalReading": "Within the finite geometry catalogue, a depth-3 obstruction edge can be used as a deterministic address for its unique 5-packet / ten-D4 E8 completion chart.",
+  "boundary": "This is a cross-repository finite-object routing law. It does not say the E8 completion removes a blocking obstruction, improves a schedule, or defines physical dynamics. tau_2 remains untouched and open in [111, 115]."
+}
