@@ -3866,3 +3866,48 @@ test("every minimum blocker of W(3,3) is a point and a triple", () => {
   assert.match(r.boundary, /not a sample/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the tau_2 interval is [111,115] and the corpus disagrees with itself", () => {
+  const r = require(path.join(
+    root,
+    "data/the_tau2_interval_is_111_not_110.json"
+  ));
+  assert.ok(r.valid);
+  assert.deepEqual(r.certifiedInterval, [111, 115]);
+  assert.equal(r.excluded, 110);
+  assert.equal(r.certifiedInterval[0], r.excluded + 1);
+
+  // the scan found a genuine split, and the sets are disjoint
+  const s = r.scan;
+  assert.ok(s.staleCount > 0, "the disagreement is real");
+  assert.ok(s.currentCount > s.staleCount, "the current figure dominates");
+  assert.equal(s.staleOnly.length, s.staleCount);
+  assert.equal(s.currentOnly.length, s.currentCount);
+  assert.equal(s.both.length, s.bothCount);
+  for (const f of s.staleOnly) assert.ok(!s.currentOnly.includes(f));
+  // the campaign file that explains the split is itself among the stale
+  assert.ok(s.staleOnly.includes("analysis/tensor_110_no_local_obstruction.py"));
+
+  // resolution names the cross-track proof and who already cites it
+  assert.match(r.resolution.proof, /43049db/);
+  assert.match(r.resolution.proof, /centre argument/);
+  assert.ok(r.resolution.citedInHolotradeBy.length >= 4);
+  assert.ok(
+    r.resolution.citedInHolotradeBy.includes(
+      "structure_injection_cannot_reprove_110.py"
+    )
+  );
+  assert.match(r.resolution.whyTheStaleFilesExist, /never\s+returned INFEASIBLE/);
+  assert.match(r.resolution.verdict, /supersedes the local non-result/);
+
+  // and why it is not a typo: 110 is exactly the shadow bound
+  assert.equal(10 * 11, 110, "tau* x tau_1 is the shadow bound");
+  assert.match(r.whyItMatters, /tax would be zero/);
+
+  // the tenth formulation is recorded as a non-result
+  assert.equal(r.tenthFormulation.target, 111);
+  assert.equal(r.tenthFormulation.result, "UNKNOWN");
+  assert.match(r.tenthFormulation.tableIsRedundant, /logically|already one of/);
+  assert.match(r.boundary, /cited not reproduced/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
