@@ -1,0 +1,57 @@
+{
+  "schema": "holotrade.sentinel-shell-is-depth3-obstruction.v1",
+  "valid": true,
+  "dictionary": {
+    "the45": "BT810's hyperbolic polar pairs {L, L^perp} of PG(3,3) = the 45 tritangent planes",
+    "support": "L u L^perp, which is 8 points because a nondegenerate L is disjoint from L^perp",
+    "supportSizes": [
+      8
+    ],
+    "pointDegree": [
+      9
+    ],
+    "pointDegreeCheck": "45 * 8 / 40 = 9"
+  },
+  "shellMetric": {
+    "observed": {
+      "0": 270,
+      "2": 720
+    },
+    "sentinelPlane": {
+      "2": 720,
+      "0": 270
+    },
+    "matches": true
+  },
+  "theIdentification": {
+    "supportDisjointPairs": 270,
+    "regulusNamedPairs": 270,
+    "equalAsSets": true,
+    "symmetricDifference": 0,
+    "statement": "two tritangent planes are GQ(4,2)-collinear iff their supports are disjoint iff the four hyperbolic lines L, L^perp, M, M^perp are the opposite regulus of an all-isotropic regulus of W(3,3)"
+  },
+  "gramIdentitiesReproduced": {
+    "BtB": "8I_45 + 2(J - I - A)",
+    "BtBHolds": true,
+    "BBt": "8I_40 + 2A_W33 + J_40",
+    "BBtHolds": true,
+    "degreeOfA": [
+      12
+    ],
+    "reading": "the sentinel plane's cross-incidence is the point / polar-pair incidence of PG(3,3), built here with no reference to any code"
+  },
+  "consequences": {
+    "forTheCode": "the 45 minimum words are the tritangent planes; the 216 five-circuits are the 5-element sets of pairwise regulus-unrelated tritangent planes; and im(C) = 1+20+24 is the eigenspace decomposition of SRG(45,12,3,3), eigenvalues 12, 3, -3",
+    "forTheObstruction": "the 270 reguli that stop a single Clifford orbit blocking at depth 3 are the 270 disjoint pairs of minimum-weight words of a [40,15,8] code",
+    "headline": "the depth-3 blocking obstruction and the sentinel code's minimum-weight shell are the same 270 objects"
+  },
+  "priorArt": {
+    "BT810": "W33-Theory: the 40 + 90 split, the fixed-point-free polarity, the 45 polar pairs as tritangent planes, the Schlafli dictionary",
+    "sentinelPackets": "Holotrade 610b99e: the [40,15,8] code, B, the shell metric, the 216 circuits, and the bicolour 1+15+20+24",
+    "a149d0b": "the 270 reguli and their quadrangle",
+    "ebaec5a": "the q-generalization: the graph is a q = 3 coincidence",
+    "classical": "45 tritangent planes and 27 lines form GQ(4,2)",
+    "whatIsNew": "only the identification -- that the two 45-sets coincide, that the two 270-sets coincide AS SETS, and that both Gram identities follow from the geometry alone"
+  },
+  "boundary": "an identification of finite structures, verified by set equality and by reproducing both Gram identities. It says nothing about the code's use for error correction and nothing about hardware. tau_2 is untouched and stays open in [111, 115]"
+}

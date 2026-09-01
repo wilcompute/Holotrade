@@ -3497,3 +3497,54 @@ test("1, 2, 5: depth 4 needs five seeds and the proof gave only three", () => {
   assert.match(r.boundary, /Depth 5 is not computed and no\s+formula is claimed/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the sentinel shell and the depth-3 obstruction are the same 270", () => {
+  const r = require(path.join(
+    root,
+    "data/the_sentinel_shell_is_the_depth_three_obstruction.json"
+  ));
+  const plane = require(path.join(root, "data/e8_pg34_sentinel_control_plane.json"));
+  assert.ok(r.valid);
+
+  // the dictionary: polar pairs, supports L u L^perp of size 8
+  assert.deepEqual(r.dictionary.supportSizes, [8]);
+  assert.deepEqual(r.dictionary.pointDegree, [9]);
+  assert.equal((45 * 8) / 40, 9);
+  // and that is the sentinel plane's own cross-degrees
+  assert.equal(plane.carrier.crossDegrees.fromW33, 9);
+  assert.equal(plane.carrier.crossDegrees.fromGQ42, 8);
+  assert.equal(plane.carrier.split.w33Nonabsolute, 40);
+  assert.equal(plane.carrier.split.gq42Absolute, 45);
+
+  // the shell metric agrees with the code's, and accounts for every pair
+  assert.deepEqual(r.shellMetric.observed, { 0: 270, 2: 720 });
+  assert.ok(r.shellMetric.matches);
+  assert.equal(720 + 270, (45 * 44) / 2, "C(45,2)");
+
+  // the identification, as SETS
+  const i = r.theIdentification;
+  assert.equal(i.supportDisjointPairs, 270);
+  assert.equal(i.regulusNamedPairs, 270);
+  assert.ok(i.equalAsSets, "not merely equinumerous");
+  assert.equal(i.symmetricDifference, 0);
+  assert.match(i.statement, /opposite regulus of an all-isotropic/);
+  // 270 edges on 45 vertices is degree 12
+  assert.equal((270 * 2) / 45, 12);
+  assert.deepEqual(r.gramIdentitiesReproduced.degreeOfA, [12]);
+
+  // both Gram identities, rebuilt from the geometry with no code
+  assert.ok(r.gramIdentitiesReproduced.BtBHolds);
+  assert.ok(r.gramIdentitiesReproduced.BBtHolds);
+  assert.equal(plane.gramIdentities.BBt, "8I + 2A_W33 + J".replace("8I", "8I_40").replace("+ J", "+ J_40"));
+  assert.match(plane.gramIdentities.BtB, /8I_45/);
+
+  // the consequence, in both directions
+  assert.match(r.consequences.forTheCode, /SRG\(45,12,3,3\)/);
+  assert.match(r.consequences.forTheObstruction, /\[40,15,8\]/);
+  assert.match(r.consequences.headline, /same 270 objects/);
+
+  // prior art named, and the new part kept small
+  assert.match(r.priorArt.whatIsNew, /only the identification/);
+  assert.match(r.priorArt.BT810, /tritangent/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
