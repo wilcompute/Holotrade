@@ -38,7 +38,8 @@ jobs:
           PY
           git config user.name 'holotrade-evidence-bot'
           git config user.email 'holotrade-evidence-bot@users.noreply.github.com'
-          git add analysis/GQ24_SLACK_CENTER_LIFT_91.log data/gq24_slack_center_lift_91.json
+          git add data/gq24_slack_center_lift_91.json
+          git add -f analysis/GQ24_SLACK_CENTER_LIFT_91.log
           if ! git diff --cached --quiet; then
             git commit -m 'Freeze GQ24 slack-center target-91 evidence'
             git pull --rebase origin master
