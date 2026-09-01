@@ -1,0 +1,27 @@
+{
+  "boundary": "INFEASIBLE alone raises the lower bound; FEASIBLE/OPTIMAL alone proves 91; UNKNOWN is not evidence.",
+  "consequence": {
+    "certifiedLowerBound": 91,
+    "knownUpperBound": 100,
+    "solverResult": "UNKNOWN"
+  },
+  "excessArgument": {
+    "excessBudget": 5,
+    "maxCenterlessShadowsPerAxis": 2,
+    "minCenteredShadowsPerAxis": 43,
+    "minimumExcessPerCenterlessShadow": 2,
+    "minimumTotal": 450,
+    "totalShadowUpperPerAxis": 455
+  },
+  "localTheorem": {
+    "size11CenterlessBlockerStatus": "INFEASIBLE",
+    "statement": "every size-11 blocker contains a 10-point punctured-perp minimum blocker"
+  },
+  "schema": "holotrade.gq24-91-two-exception-center-model.v1",
+  "target91": {
+    "status": "UNKNOWN",
+    "wallTimeSeconds": 7200.218521054
+  },
+  "theorem": "At target 91, size-11 rigidity plus the five-unit total shadow-excess budget implies at most two centerless shadows on each axis. The CP-SAT model imposes only this proved dichotomy: a nonexceptional shadow contains one punctured perp; an exceptional shadow has size at least 12. No slack reciprocity is assumed.",
+  "valid": true
+}
