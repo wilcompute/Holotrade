@@ -3548,3 +3548,51 @@ test("the sentinel shell and the depth-3 obstruction are the same 270", () => {
   assert.match(r.priorArt.BT810, /tritangent/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("depth 5 is reachable, and the interval does not decide the sequence", () => {
+  const r = require(path.join(
+    root,
+    "data/depth_five_is_reachable_but_undecided.json"
+  ));
+  assert.ok(r.valid);
+
+  // the construction, and the size it avoids
+  assert.equal(r.construction.tuplesNeverTouched, 40 ** 5);
+  assert.equal(r.construction.tuplesNeverTouched, 102400000);
+  assert.match(r.construction.transporter, /T\[w\] = T\[v\] \. g\^-1/);
+  assert.equal(r.groupOrder, 25920);
+
+  // depth-4 inputs are the ones already established
+  assert.equal(r.depth4.pointOrbits, 226);
+  assert.equal(r.depth4.lineOrbits, 270);
+  // and the depth-5 structure it builds
+  assert.equal(r.depth5.leafOrbits, 5294);
+  assert.equal(r.depth5.tileOrbits, 6129);
+  assert.equal(r.depth5.tileOrbitsWithNoCover, 0, "every tile-orbit is coverable");
+  assert.match(r.validation, /both OPTIMAL, before depth 5 was run/);
+
+  // the bounds, and the honest status
+  const b = r.bounds;
+  assert.ok(b.lpRelaxation > 12 && b.lpRelaxation < 13);
+  assert.equal(b.lpLowerBound, Math.ceil(b.lpRelaxation));
+  assert.equal(b.cpsatStatus, "FEASIBLE");
+  assert.ok(b.cpsatNeverOptimal, "never proved optimal");
+  assert.ok(b.cpsatBestFound <= b.greedyCover, "CP-SAT improved on greedy");
+  assert.deepEqual(b.interval, [b.cpsatBound, b.cpsatBestFound]);
+  assert.ok(b.interval[0] < b.interval[1], "still an interval, not a value");
+
+  // and it does NOT decide Bell vs Catalan
+  const s = r.sequenceStillUndecided;
+  assert.deepEqual(s.known, [1, 2, 5]);
+  for (const v of [s.bellNext, s.catalanNext]) {
+    assert.ok(v >= b.interval[0] && v <= b.interval[1], "both lie inside");
+  }
+  assert.ok(s.bothInsideInterval);
+  assert.equal(s.excluded, null, "neither candidate is excluded");
+  assert.ok(s.impressionIsNotEvidence, "solver behaviour is not evidence");
+  assert.equal(s.summary, "1, 2, 5, [13, 22]");
+
+  assert.match(r.whatWouldDecideIt, /Neither is attempted here/);
+  assert.match(r.boundary, /depth 5 bounded\s+only/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

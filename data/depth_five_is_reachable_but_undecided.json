@@ -1,0 +1,55 @@
+{
+  "schema": "holotrade.depth-five-interval.v1",
+  "valid": true,
+  "construction": {
+    "problem": "collapsing tiles to orbits still needed one pass over 40^n tuples, and 40^5 = 102,400,000 is past that",
+    "idea": "an orbit of 5-tuples is an orbit of 4-tuples with representative r together with a Stab(r)-orbit on X, so depth-5 orbits are BUILT from depth-4 ones",
+    "transporter": "store a group element carrying each 4-tuple to its representative, updated along BFS edges as T[w] = T[v] . g^-1 with the products precomputed once",
+    "lookupIsConstantTime": "label the first four coordinates, transport them, read off which Stab-orbit the transported fifth lands in",
+    "tuplesNeverTouched": 102400000
+  },
+  "groupOrder": 25920,
+  "depth4": {
+    "pointOrbits": 226,
+    "lineOrbits": 270
+  },
+  "depth5": {
+    "leafOrbits": 5294,
+    "tileOrbits": 6129,
+    "tileOrbitsWithNoCover": 0
+  },
+  "validation": "the same code reproduces depth 3 = 2 (leanest 4,800 leaves, 480 + 4320) and depth 4 = 5 (leanest 44,160, 480 + 480 + 4320 + 12960 + 25920), both OPTIMAL, before depth 5 was run",
+  "bounds": {
+    "lpRelaxation": 12.671477085143657,
+    "lpLowerBound": 13,
+    "greedyCover": 24,
+    "cpsatBestFound": 22,
+    "cpsatBound": 13,
+    "cpsatStatus": "FEASIBLE",
+    "cpsatNeverOptimal": true,
+    "budgetSeconds": [
+      2400,
+      3300
+    ],
+    "interval": [
+      13,
+      22
+    ]
+  },
+  "sequenceStillUndecided": {
+    "known": [
+      1,
+      2,
+      5
+    ],
+    "bellNext": 15,
+    "catalanNext": 14,
+    "bothInsideInterval": true,
+    "excluded": null,
+    "solverImpression": "about 95 minutes of solving, the second run warm-started from a greedy 24, never found a cover below 22 while proving only 13; if the value were 14 or 15 such a solution would be a comparatively easy find",
+    "impressionIsNotEvidence": true,
+    "summary": "1, 2, 5, [13, 22]"
+  },
+  "whatWouldDecideIt": "either a better lower bound than the LP, which is loose at 12.67 against a best-known 22, or a cover below 22. Neither is attempted here",
+  "boundary": "depths 2, 3, 4 exact and optimal; depth 5 bounded only, over the full group Sp(4,3). No formula is claimed and the solver impression is explicitly not evidence. Proper subgroups are not swept. tau_2 is untouched and stays open in [111, 115]"
+}
