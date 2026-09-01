@@ -1,0 +1,43 @@
+{
+  "schema": "holotrade.gq24-inside-w33-octet-factors.v1",
+  "valid": true,
+  "notConventionallyDual": "W(3,3) is GQ(3,3) with dual Q(4,3); GQ(2,4) is Q(5,2) with dual GQ(4,2); (3,3) is not (2,4)",
+  "sameGroup": {
+    "fact": "PSp(4,3) = PSU(4,2), a classical isomorphism",
+    "orderOnPoints": 25920,
+    "inducedOn27Faithful": true,
+    "imageOrder": 25920,
+    "transitive": true,
+    "rank": 3,
+    "autOrder": 51840
+  },
+  "octetsAreK44": {
+    "count": 45,
+    "of": 45,
+    "priorArt": "the 45 induced K(4,4) octets and their 45-point overlap geometry are W33-Theory's BT766, recorded in BT1536",
+    "identification": "4952a3b matched them with BT810's polar-pair supports L u L^perp"
+  },
+  "octetFactors": {
+    "count": 27,
+    "of": 27,
+    "blocksEach": 5,
+    "blockSize": 8,
+    "covers": 40,
+    "statement": "each of GQ(4,2)'s 27 lines partitions W(3,3)'s 40 vertices into five vertex-disjoint induced K(4,4)s"
+  },
+  "collinearityIsBlockSharing": {
+    "sharedBlockCounts": {
+      "0": 216,
+      "1": 135
+    },
+    "neverMoreThanOne": true,
+    "shareOne": 135,
+    "expectedCollinear": 135,
+    "shareNone": 216,
+    "expectedNonCollinear": 216
+  },
+  "theStatement": "GQ(2,4) = the 27 K(4,4)-factors of W(3,3), two collinear exactly when they share a block",
+  "threeGeometriesOneGroup": "PG(3,3)'s 130 lines are 40 isotropic + 90 hyperbolic; the 40 are W(3,3) = GQ(3,3), the 90 in polarity pairs are GQ(4,2)'s 45 points, and the 27 factors are GQ(2,4)'s -- orders (3,3), (4,2) and (2,4) for one W(E6) in one ambient space, with 40 + 45 = 85 the sentinel control plane's carrier",
+  "effectOnTheTaxResult": "it makes the earlier comparison sharper: the 27-versus-360 blocker gap is not between unrelated objects sharing a deficiency, but between two realizations of the same group on the same space, differing only in where they sit in the t-versus-s trichotomy",
+  "boundary": "the 45 octets and their overlap geometry are prior art; PSp(4,3) = PSU(4,2) is classical; the octet/polar-pair identification is 4952a3b's. New here: that each of the 27 lines is a K(4,4)-factor, the block-sharing collinearity criterion, and the faithful rank-3 action on the 27. tau_2 is untouched and stays open in [111, 115]"
+}

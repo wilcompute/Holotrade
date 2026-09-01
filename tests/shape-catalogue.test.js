@@ -3763,3 +3763,52 @@ test("the composition tax tracks blocker richness, not ovoid deficiency", () => 
   assert.match(r.boundary, /not a proof/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("GQ(2,4) lives inside W(3,3) as its 27 K(4,4)-factors", () => {
+  const r = require(path.join(
+    root,
+    "data/gq24_lives_inside_w33_as_its_octet_factors.json"
+  ));
+  assert.ok(r.valid);
+  assert.match(r.notConventionallyDual, /\(3,3\) is not \(2,4\)/);
+
+  // one group, verified rather than quoted
+  const g = r.sameGroup;
+  assert.match(g.fact, /PSp\(4,3\) = PSU\(4,2\)/);
+  assert.equal(g.orderOnPoints, 25920);
+  assert.equal(g.imageOrder, 25920);
+  assert.ok(g.inducedOn27Faithful);
+  assert.ok(g.transitive);
+  assert.equal(g.rank, 3, "rank 3, like W(3,3) on its 40");
+  assert.equal(g.autOrder, 2 * g.orderOnPoints);
+
+  // the octets are K(4,4)s, and that census is prior art
+  assert.equal(r.octetsAreK44.count, 45);
+  assert.equal(r.octetsAreK44.of, 45);
+  assert.match(r.octetsAreK44.priorArt, /BT766/);
+  assert.match(r.octetsAreK44.identification, /4952a3b/);
+
+  // the new part: all 27 lines are factors
+  const f = r.octetFactors;
+  assert.equal(f.count, 27);
+  assert.equal(f.of, 27);
+  assert.equal(f.blocksEach * f.blockSize, 40, "5 x 8 covers W(3,3)");
+  assert.equal(f.covers, 40);
+  assert.match(f.statement, /vertex-\s*disjoint induced K\(4,4\)/);
+
+  // collinearity is block-sharing, both counts exact
+  const c = r.collinearityIsBlockSharing;
+  assert.deepEqual(Object.keys(c.sharedBlockCounts).sort(), ["0", "1"]);
+  assert.ok(c.neverMoreThanOne);
+  assert.equal(c.shareOne, c.expectedCollinear);
+  assert.equal(c.shareOne, 135);
+  assert.equal(c.shareNone, c.expectedNonCollinear);
+  assert.equal(c.shareNone, 216);
+  assert.equal(c.shareOne + c.shareNone, (27 * 26) / 2, "every pair accounted");
+
+  assert.match(r.theStatement, /27 K\(4,4\)-factors/);
+  assert.match(r.threeGeometriesOneGroup, /40 \+ 45 = 85/);
+  assert.match(r.effectOnTheTaxResult, /same group on the\s+same space/);
+  assert.match(r.boundary, /prior art/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
