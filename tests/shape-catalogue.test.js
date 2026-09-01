@@ -3700,8 +3700,12 @@ test("the open configuration has a second, smaller, differently-behaved instance
   assert.ok(s.dualBoundWithCuts < s.shadowBound, "below even the shadow bound");
   assert.match(s.reading, /does not raise the bound/);
 
-  // the open item is recorded, not guessed
-  assert.match(r.openHere, /unresolved rather\s+than guessed/);
+  // and the hardness reproduces at under half the size
+  const h = r.hardnessReproduces;
+  assert.equal(h.result, "UNKNOWN", "not INFEASIBLE, the telling part");
+  assert.equal(h.budgetSeconds, 3000);
+  assert.match(h.matchesW33Signature, /nine formulations/);
+  assert.match(h.reading, /intrinsic to the/);
   assert.match(r.boundary, /upper bounds only/);
   assert.match(r.boundary, /\[111, 115\]/);
 });

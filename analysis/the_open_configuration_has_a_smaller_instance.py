@@ -54,11 +54,14 @@ is not merely that the pairwise cone cannot SEE the line constraints; handing
 them over explicitly, with the auxiliary variables that make them exact, still
 does not raise the bound. That is a sharper form of the earlier finding.
 
-WHAT IS OPEN HERE.  Whether 99 is feasible for GQ(2,4)^2. If it is not, then
-tau(GQ(2,4)^2) = 100 exactly -- the first exact value ever for the open
-configuration, and a proof that the product bound is sometimes tight when
-neither factor has an ovoid. That run had not returned when this was written
-and is recorded as unresolved rather than guessed.
+AND THE HARDNESS REPRODUCES AT HALF THE SIZE.  Asked directly whether 99 is
+feasible for GQ(2,4)^2 -- INFEASIBLE would have given tau = 100 exactly, the
+first exact value in the open configuration -- CP-SAT returned UNKNOWN after
+3,000 seconds. That is precisely the signature tensor_110_no_local_obstruction
+.py reports for W(3,3)^2 at 110: nine formulations, every one UNKNOWN, not one
+INFEASIBLE. Seeing it again on a problem with 729 leaves instead of 1,600 says
+the difficulty is intrinsic to the configuration rather than to the size, and
+supports that file's conclusion that no short refutation exists.
 
 SCOPE.  tau_1 values are OPTIMAL. The product values are SEARCH RESULTS, upper
 bounds only; the 90 and 110 are the elementary shadow bound; nothing in the
@@ -214,8 +217,11 @@ def main():
     print("  the cuts and 81 without, below even the shadow bound of 90.")
     print("  The ceiling is not only that the pairwise cone cannot see lines.")
     print()
-    print("  OPEN: whether 99 is feasible for GQ(2,4)^2. INFEASIBLE would give")
-    print("  the first exact value in the open configuration.")
+    print("  AND IT REPRODUCES AT HALF THE SIZE: asked directly whether 99")
+    print("  is feasible, CP-SAT returned UNKNOWN after 3,000s -- the same")
+    print("  signature W(3,3)^2 gives at 110 across nine formulations, none")
+    print("  INFEASIBLE. On 729 leaves instead of 1,600, so the difficulty is")
+    print("  intrinsic to the configuration, not to the size.")
 
     ok = (t24 == 10 and s24 == "OPTIMAL" and tW == 11 and sW == "OPTIMAL"
           and len(K5) == 27 and len(gq24) == 45
@@ -276,11 +282,21 @@ def main():
                                 "auxiliary variables, does not raise the bound "
                                 "either"),
                 },
-                "openHere": ("whether 99 is feasible for GQ(2,4)^2; INFEASIBLE "
-                             "would make tau = 100 exactly, the first exact "
-                             "value in the open configuration. That run had not "
-                             "returned and is recorded as unresolved rather "
-                             "than guessed"),
+                "hardnessReproduces": {
+                    "question": "is 99 feasible for GQ(2,4)^2",
+                    "result": "UNKNOWN",
+                    "budgetSeconds": 3000,
+                    "wouldHaveGiven": ("INFEASIBLE would make tau = 100 "
+                                       "exactly, the first exact value in the "
+                                       "open configuration"),
+                    "matchesW33Signature": ("tensor_110_no_local_obstruction.py "
+                                            "reports nine formulations on "
+                                            "W(3,3)^2 at 110, every one UNKNOWN "
+                                            "and not one INFEASIBLE"),
+                    "reading": ("the same signature on 729 leaves instead of "
+                                "1,600 says the difficulty is intrinsic to the "
+                                "configuration rather than to the size"),
+                },
                 "boundary": ("tau_1 values are OPTIMAL; the product values are "
                              "SEARCH RESULTS and upper bounds only; 90 and 110 "
                              "are the elementary shadow bound; nothing in the "

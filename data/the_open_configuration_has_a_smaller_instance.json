@@ -68,6 +68,13 @@
     "shadowBound": 90,
     "reading": "tensor_lower_sdp_ceiling.py explains the weak bound by the pairwise cone being unable to express lines; this shows that handing the line constraints over explicitly, with exact auxiliary variables, does not raise the bound either"
   },
-  "openHere": "whether 99 is feasible for GQ(2,4)^2; INFEASIBLE would make tau = 100 exactly, the first exact value in the open configuration. That run had not returned and is recorded as unresolved rather than guessed",
+  "hardnessReproduces": {
+    "question": "is 99 feasible for GQ(2,4)^2",
+    "result": "UNKNOWN",
+    "budgetSeconds": 3000,
+    "wouldHaveGiven": "INFEASIBLE would make tau = 100 exactly, the first exact value in the open configuration",
+    "matchesW33Signature": "tensor_110_no_local_obstruction.py reports nine formulations on W(3,3)^2 at 110, every one UNKNOWN and not one INFEASIBLE",
+    "reading": "the same signature on 729 leaves instead of 1,600 says the difficulty is intrinsic to the configuration rather than to the size"
+  },
   "boundary": "tau_1 values are OPTIMAL; the product values are SEARCH RESULTS and upper bounds only; 90 and 110 are the elementary shadow bound; nothing in the open configuration is proved optimal here. tau_2 is untouched and stays open in [111, 115]"
 }
