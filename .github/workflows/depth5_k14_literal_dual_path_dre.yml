@@ -1,0 +1,53 @@
+name: depth5 K14 literal dual path DRE
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/depth5_k14_literal_dual_path_dre.py'
+      - '.github/workflows/depth5_k14_literal_dual_path_dre.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  exact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy ortools swiglpk
+      - name: Literal dual-path attack
+        run: |
+          set -o pipefail
+          python analysis/depth5_k14_literal_dual_path_dre.py 2>&1 | tee analysis/DEPTH5_K14_LITERAL_DUAL_PATH_DRE.log
+      - name: Freeze evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/depth5_k14_literal_dual_path_dre.json')
+          d=json.loads(p.read_text())
+          assert d['valid']
+          assert d['result'] in ('UNKNOWN','K14_FEASIBLE','K14_INFEASIBLE')
+          if d['result']=='K14_FEASIBLE':
+              assert d['certifiedIntervalUpdate']==[14,14]
+              assert d['witnessLeafOrbitIndices']
+          elif d['result']=='K14_INFEASIBLE':
+              assert d['allBranchesClosed']
+              assert d['certifiedIntervalUpdate']==[15,22]
+          else:
+              assert d['certifiedIntervalUpdate']==[14,22]
+          PY
+          git config user.name holotrade-evidence-bot
+          git config user.email holotrade-evidence-bot@users.noreply.github.com
+          git add -f data/depth5_k14_literal_dual_path_dre.json analysis/DEPTH5_K14_LITERAL_DUAL_PATH_DRE.log
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze literal dual-path K14 evidence'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
