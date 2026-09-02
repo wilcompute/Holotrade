@@ -18,9 +18,6 @@ on:
 
 jobs:
   hardware-capture:
-    # Deliberately separate from fixture CI. A runner with this label is expected
-    # to expose a real TPM2 device, measured-boot log, and configured RAPL/Kepler
-    # measurement inputs referenced by the capture config.
     runs-on: [self-hosted, linux, w33-tpm]
     timeout-minutes: 30
     steps:
@@ -39,19 +36,11 @@ jobs:
           if [ -z "$capture" ]; then capture=/etc/holotrade/w33-host-capture.json; fi
           printf 'enrollment=%s\n' "$enrollment" >> "$GITHUB_OUTPUT"
           printf 'capture=%s\n' "$capture" >> "$GITHUB_OUTPUT"
-          test -r "$enrollment"
-          test -r "$capture"
-      - name: Verify host prerequisites
+      - name: Run non-secret TPM runner preflight
         shell: bash
         run: |
           set -euo pipefail
-          command -v tpm2_makecredential
-          command -v tpm2_activatecredential
-          command -v tpm2_startauthsession
-          command -v tpm2_policysecret
-          command -v tpm2_flushcontext
-          test -c /dev/tpm0 -o -c /dev/tpmrm0
-          test -r /sys/kernel/security/tpm0/binary_bios_measurements
+          node bin/w33-tpm-runner-preflight.js '${{ steps.config.outputs.enrollment }}' '${{ steps.config.outputs.capture }}' | tee w33-tpm-runner-preflight.json
       - name: Execute real TPM MakeCredential ActivateCredential enrollment
         shell: bash
         run: |
@@ -66,13 +55,11 @@ jobs:
           node - '${{ steps.config.outputs.capture }}' <<'NODE'
           const fs=require('node:fs');
           const path=require('node:path');
-          const cfgPath=process.argv[2];
-          const cfg=JSON.parse(fs.readFileSync(path.resolve(cfgPath),'utf8'));
+          const cfg=JSON.parse(fs.readFileSync(path.resolve(process.argv[2]),'utf8'));
           const source=path.resolve(cfg.outputPath||'w33-host-bundle.json');
           if(!fs.existsSync(source)) throw new Error(`capture did not create ${source}`);
           fs.copyFileSync(source,path.resolve('w33-real-host-bundle.json'));
-          const key=path.resolve(cfg.trustedReceiptPublicKeyPath);
-          fs.copyFileSync(key,path.resolve('w33-real-trusted-receipt-public-key.pem'));
+          fs.copyFileSync(path.resolve(cfg.trustedReceiptPublicKeyPath),path.resolve('w33-real-trusted-receipt-public-key.pem'));
           NODE
           node bin/w33-verify-receipt.js w33-real-host-bundle.json w33-real-trusted-receipt-public-key.pem | tee w33-real-portable-verifier-result.json
       - name: Upload real hardware evidence
@@ -80,9 +67,18 @@ jobs:
         with:
           name: w33-real-linux-tpm-audit-bundle
           path: |
+            w33-tpm-runner-preflight.json
             w33-real-tpm-enrollment-result.json
             w33-real-host-bundle.json
             w33-real-portable-verifier-result.json
             w33-real-host-capture-verifier-output.json
           if-no-files-found: error
+          retention-days: 30
+      - name: Upload preflight even when capture fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w33-tpm-runner-preflight
+          path: w33-tpm-runner-preflight.json
+          if-no-files-found: ignore
           retention-days: 30
