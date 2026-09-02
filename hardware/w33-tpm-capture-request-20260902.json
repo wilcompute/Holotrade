@@ -1,0 +1,16 @@
+{
+  "schema": "holotrade.w33-real-hardware-capture-request.v1",
+  "requested_date": "2026-09-02",
+  "runner_labels": ["self-hosted", "linux", "w33-tpm"],
+  "enrollment_config": "/etc/holotrade/w33-tpm-enrollment.json",
+  "capture_config": "/etc/holotrade/w33-host-capture.json",
+  "requirements": {
+    "real_tpm2_device": true,
+    "measured_boot_event_log": true,
+    "makecredential_activatecredential": true,
+    "enrollment_hardwareBacked_must_be_true": true,
+    "rapl_or_kepler_measurement_from_capture_config": true,
+    "portable_verifier_must_pass": true
+  },
+  "honesty_boundary": "This request is only an execution trigger. It is not evidence that a runner exists or that a hardware bundle has passed. Only the self-hosted workflow result and uploaded audit artifact may establish that claim."
+}
