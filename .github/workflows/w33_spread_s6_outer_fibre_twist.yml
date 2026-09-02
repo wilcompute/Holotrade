@@ -1,0 +1,41 @@
+name: W33 spread S6 outer fibre twist
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_spread_s6_outer_fibre_twist.g'
+      - '.github/workflows/w33_spread_s6_outer_fibre_twist.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: holotrade-w33-s6-outer-fibre-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Install GAP/GRAPE
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gap gap-grape
+      - name: Execute exact fibre audit
+        shell: bash
+        run: |
+          set -o pipefail
+          gap -q analysis/w33_spread_s6_outer_fibre_twist.g 2>&1 | tee analysis/W33_SPREAD_S6_OUTER_FIBRE_TWIST.log
+          grep -Fq 'SPREAD S6 OUTER FIBRE TWIST: PASS' analysis/W33_SPREAD_S6_OUTER_FIBRE_TWIST.log
+      - name: Freeze evidence
+        shell: bash
+        run: |
+          git config user.name 'holotrade-evidence-bot'
+          git config user.email 'holotrade-evidence-bot@users.noreply.github.com'
+          git add -f analysis/W33_SPREAD_S6_OUTER_FIBRE_TWIST.log data/w33_spread_s6_outer_fibre_twist.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze S6 outer fibre twist evidence'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
