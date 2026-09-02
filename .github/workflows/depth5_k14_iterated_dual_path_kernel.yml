@@ -4,6 +4,8 @@ on:
     branches: [master]
     paths:
       - 'data/depth5_k14_recycled_dual_pair_kernel.json'
+      - 'analysis/depth5_k14_iterated_dual_path_kernel.py'
+      - '.github/workflows/depth5_k14_iterated_dual_path_kernel.yml'
   workflow_dispatch:
 permissions:
   contents: write
