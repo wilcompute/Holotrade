@@ -11,6 +11,10 @@ on:
         description: Absolute path on the self-hosted runner to host bundle capture config JSON
         required: true
         default: /etc/holotrade/w33-host-capture.json
+  push:
+    branches: [master]
+    paths:
+      - 'hardware/w33-tpm-capture-request-*.json'
 
 jobs:
   hardware-capture:
@@ -18,11 +22,25 @@ jobs:
     # to expose a real TPM2 device, measured-boot log, and configured RAPL/Kepler
     # measurement inputs referenced by the capture config.
     runs-on: [self-hosted, linux, w33-tpm]
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Resolve manual or push-triggered host config paths
+        id: config
+        shell: bash
+        run: |
+          set -euo pipefail
+          enrollment='${{ github.event.inputs.enrollment_config }}'
+          capture='${{ github.event.inputs.capture_config }}'
+          if [ -z "$enrollment" ]; then enrollment=/etc/holotrade/w33-tpm-enrollment.json; fi
+          if [ -z "$capture" ]; then capture=/etc/holotrade/w33-host-capture.json; fi
+          printf 'enrollment=%s\n' "$enrollment" >> "$GITHUB_OUTPUT"
+          printf 'capture=%s\n' "$capture" >> "$GITHUB_OUTPUT"
+          test -r "$enrollment"
+          test -r "$capture"
       - name: Verify host prerequisites
         shell: bash
         run: |
@@ -31,9 +49,40 @@ jobs:
           command -v tpm2_activatecredential
           command -v tpm2_startauthsession
           command -v tpm2_policysecret
+          command -v tpm2_flushcontext
           test -c /dev/tpm0 -o -c /dev/tpmrm0
           test -r /sys/kernel/security/tpm0/binary_bios_measurements
-      - name: Execute TPM MakeCredential ActivateCredential enrollment
-        run: node bin/w33-tpm-enroll.js '${{ inputs.enrollment_config }}'
-      - name: Capture and independently verify signed Linux host bundle
-        run: node bin/w33-capture-host-bundle.js '${{ inputs.capture_config }}'
+      - name: Execute real TPM MakeCredential ActivateCredential enrollment
+        shell: bash
+        run: |
+          set -euo pipefail
+          node bin/w33-tpm-enroll.js '${{ steps.config.outputs.enrollment }}' | tee w33-real-tpm-enrollment-result.json
+          node -e 'const x=require("./w33-real-tpm-enrollment-result.json"); if(!x.ok||!x.body||x.body.hardwareBacked!==true) process.exit(1)'
+      - name: Capture host bundle and require portable verifier PASS
+        shell: bash
+        run: |
+          set -euo pipefail
+          node bin/w33-capture-host-bundle.js '${{ steps.config.outputs.capture }}' | tee w33-real-host-capture-verifier-output.json
+          node - '${{ steps.config.outputs.capture }}' <<'NODE'
+          const fs=require('node:fs');
+          const path=require('node:path');
+          const cfgPath=process.argv[2];
+          const cfg=JSON.parse(fs.readFileSync(path.resolve(cfgPath),'utf8'));
+          const source=path.resolve(cfg.outputPath||'w33-host-bundle.json');
+          if(!fs.existsSync(source)) throw new Error(`capture did not create ${source}`);
+          fs.copyFileSync(source,path.resolve('w33-real-host-bundle.json'));
+          const key=path.resolve(cfg.trustedReceiptPublicKeyPath);
+          fs.copyFileSync(key,path.resolve('w33-real-trusted-receipt-public-key.pem'));
+          NODE
+          node bin/w33-verify-receipt.js w33-real-host-bundle.json w33-real-trusted-receipt-public-key.pem | tee w33-real-portable-verifier-result.json
+      - name: Upload real hardware evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: w33-real-linux-tpm-audit-bundle
+          path: |
+            w33-real-tpm-enrollment-result.json
+            w33-real-host-bundle.json
+            w33-real-portable-verifier-result.json
+            w33-real-host-capture-verifier-output.json
+          if-no-files-found: error
+          retention-days: 30
