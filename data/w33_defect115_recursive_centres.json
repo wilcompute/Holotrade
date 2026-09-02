@@ -1,0 +1,345 @@
+{
+  "axes": {
+    "col": {
+      "blockerCentres": [
+        1,
+        3,
+        6,
+        12,
+        14,
+        17,
+        23,
+        28,
+        30,
+        33,
+        39
+      ],
+      "centreConcurrencyRelationProfile": {
+        "equal": 3,
+        "noncollinear": 8
+      },
+      "centreConcurrencySetIntersection": 11,
+      "centreSet": {
+        "blocksEveryLine": true,
+        "centre": 25,
+        "farTriple": [
+          3,
+          23,
+          30
+        ],
+        "isMinimumBlocker": true,
+        "lineIntersectionProfile": {
+          "1": 36,
+          "2": 4
+        },
+        "nearEight": [
+          1,
+          6,
+          12,
+          14,
+          17,
+          28,
+          33,
+          39
+        ],
+        "size": 11
+      },
+      "centreToConcurrencyPoint": {
+        "1": 1,
+        "12": 6,
+        "14": 12,
+        "17": 14,
+        "23": 30,
+        "28": 28,
+        "3": 3,
+        "30": 23,
+        "33": 17,
+        "39": 33,
+        "6": 39
+      },
+      "concurrencySet": {
+        "blocksEveryLine": true,
+        "centre": 25,
+        "farTriple": [
+          3,
+          23,
+          30
+        ],
+        "isMinimumBlocker": true,
+        "lineIntersectionProfile": {
+          "1": 36,
+          "2": 4
+        },
+        "nearEight": [
+          1,
+          6,
+          12,
+          14,
+          17,
+          28,
+          33,
+          39
+        ],
+        "size": 11
+      },
+      "distinctOmittedLinesThatAreOversized": 7,
+      "distinctOmittedPencilLines": 7,
+      "mapImageSize": 11,
+      "mapIsBijectionOnEleven": true,
+      "minimumShadowCount": 33,
+      "multiplicityProfile": {
+        "3": 11
+      },
+      "omittedFourthPencilLineByCentre": {
+        "1": 6,
+        "12": 20,
+        "14": 39,
+        "17": 28,
+        "23": 10,
+        "28": 6,
+        "3": 14,
+        "30": 2,
+        "33": 20,
+        "39": 39,
+        "6": 28
+      },
+      "omittedLineMultiplicityProfile": {
+        "1": 3,
+        "2": 4
+      },
+      "omittedLineSetEqualsOversizedLineSet": true,
+      "omittedOccurrencesThatAreOversized": 11,
+      "oversizedShadowLines": [
+        2,
+        6,
+        10,
+        14,
+        20,
+        28,
+        39
+      ],
+      "pencilConcurrencyPoints": [
+        1,
+        3,
+        6,
+        12,
+        14,
+        17,
+        23,
+        28,
+        30,
+        33,
+        39
+      ],
+      "shadowSizeProfile": {
+        "11": 33,
+        "12": 3,
+        "13": 3,
+        "14": 1
+      }
+    },
+    "row": {
+      "blockerCentres": [
+        1,
+        3,
+        6,
+        12,
+        14,
+        17,
+        23,
+        28,
+        30,
+        33,
+        39
+      ],
+      "centreConcurrencyRelationProfile": {
+        "equal": 3,
+        "noncollinear": 8
+      },
+      "centreConcurrencySetIntersection": 11,
+      "centreSet": {
+        "blocksEveryLine": true,
+        "centre": 25,
+        "farTriple": [
+          3,
+          23,
+          30
+        ],
+        "isMinimumBlocker": true,
+        "lineIntersectionProfile": {
+          "1": 36,
+          "2": 4
+        },
+        "nearEight": [
+          1,
+          6,
+          12,
+          14,
+          17,
+          28,
+          33,
+          39
+        ],
+        "size": 11
+      },
+      "centreToConcurrencyPoint": {
+        "1": 1,
+        "12": 14,
+        "14": 17,
+        "17": 33,
+        "23": 30,
+        "28": 28,
+        "3": 3,
+        "30": 23,
+        "33": 39,
+        "39": 6,
+        "6": 12
+      },
+      "concurrencySet": {
+        "blocksEveryLine": true,
+        "centre": 25,
+        "farTriple": [
+          3,
+          23,
+          30
+        ],
+        "isMinimumBlocker": true,
+        "lineIntersectionProfile": {
+          "1": 36,
+          "2": 4
+        },
+        "nearEight": [
+          1,
+          6,
+          12,
+          14,
+          17,
+          28,
+          33,
+          39
+        ],
+        "size": 11
+      },
+      "distinctOmittedLinesThatAreOversized": 7,
+      "distinctOmittedPencilLines": 7,
+      "mapImageSize": 11,
+      "mapIsBijectionOnEleven": true,
+      "minimumShadowCount": 33,
+      "multiplicityProfile": {
+        "3": 11
+      },
+      "omittedFourthPencilLineByCentre": {
+        "1": 6,
+        "12": 28,
+        "14": 20,
+        "17": 39,
+        "23": 10,
+        "28": 6,
+        "3": 14,
+        "30": 2,
+        "33": 28,
+        "39": 20,
+        "6": 39
+      },
+      "omittedLineMultiplicityProfile": {
+        "1": 3,
+        "2": 4
+      },
+      "omittedLineSetEqualsOversizedLineSet": true,
+      "omittedOccurrencesThatAreOversized": 11,
+      "oversizedShadowLines": [
+        2,
+        6,
+        10,
+        14,
+        20,
+        28,
+        39
+      ],
+      "pencilConcurrencyPoints": [
+        1,
+        3,
+        6,
+        12,
+        14,
+        17,
+        23,
+        28,
+        30,
+        33,
+        39
+      ],
+      "shadowSizeProfile": {
+        "11": 33,
+        "12": 4,
+        "13": 3
+      }
+    }
+  },
+  "boundary": "This corrects the stronger false assumption p(c)=c.  It is an exact audit of one certified 115-leaf witness; it does not classify all defect blockers or change the certified tau_2 interval.",
+  "crossSetComparisons": {
+    "colC_colP": {
+      "equal": true,
+      "intersection": 11
+    },
+    "rowC_colC": {
+      "equal": true,
+      "intersection": 11
+    },
+    "rowC_colP": {
+      "equal": true,
+      "intersection": 11
+    },
+    "rowC_rowP": {
+      "equal": true,
+      "intersection": 11
+    },
+    "rowP_colC": {
+      "equal": true,
+      "intersection": 11
+    },
+    "rowP_colP": {
+      "equal": true,
+      "intersection": 11
+    }
+  },
+  "defectAboveShadowFloor": 5,
+  "schema": "holotrade.w33-defect115-centre-concurrency.v2",
+  "storedOrderSixSymmetry": {
+    "colC": {
+      "cycleShape": {
+        "1": 3,
+        "2": 1,
+        "6": 1
+      },
+      "invariant": true
+    },
+    "colP": {
+      "cycleShape": {
+        "1": 3,
+        "2": 1,
+        "6": 1
+      },
+      "invariant": true
+    },
+    "rowC": {
+      "cycleShape": {
+        "1": 3,
+        "2": 1,
+        "6": 1
+      },
+      "invariant": true
+    },
+    "rowP": {
+      "cycleShape": {
+        "1": 3,
+        "2": 1,
+        "6": 1
+      },
+      "invariant": true
+    }
+  },
+  "theorem": "For the stored 115-leaf W33^2 blocker, each axis has eleven blocker centres c with three minimum-shadow domain lines per centre.  Those three domain lines are concurrent at a uniquely computed point p(c), which is kept distinct from c.  The certificate records the exact c->p incidence, whether either eleven-point set is itself a minimum blocker, and how the omitted fourth lines of the p(c) pencils meet the seven oversized shadows.",
+  "valid": true,
+  "witnessLeaves": 115
+}
