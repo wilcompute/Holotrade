@@ -1,12 +1,11 @@
 // Carrier-safe automatic recovery selection for W33-profiled deployments.
 //
-// Policy order is structural, not merely economic:
-//   1. prefer a healthy same-carrier host and FULL_RESTORE;
-//   2. only when no same-carrier target exists, permit a cross-carrier
-//      NEUTRAL_CONTINUATION at a verified syscall boundary;
-//   3. never silently retype a full checkpoint.
-//
-// Within one recovery class, lower estimated recovery cost/latency wins.
+// Structural policy order:
+//   1. FULL_RESTORE only to the same construction profile *and* the exact
+//      capability epoch/revocation root pinned by the checkpoint;
+//   2. otherwise permit a NEUTRAL_CONTINUATION only at a verified syscall
+//      boundary and mint a fresh passport under the target's current authority;
+//   3. never silently retype or re-authorize an old checkpoint.
 
 "use strict";
 
@@ -20,9 +19,15 @@ function finiteNonnegative(x, name) {
 
 function normalizeCandidate(row) {
   if (!row || !row.profile || !row.nodeId) throw new TypeError("candidate requires nodeId and W33 profile");
+  if (!Number.isSafeInteger(row.capabilityEpoch) || row.capabilityEpoch < 0) {
+    throw new TypeError("candidate requires current capabilityEpoch");
+  }
+  if (!D.isDigest(row.revocationRoot)) throw new TypeError("candidate requires current revocationRoot");
   return Object.freeze({
     nodeId: String(row.nodeId),
     profile: row.profile,
+    capabilityEpoch: row.capabilityEpoch,
+    revocationRoot: row.revocationRoot,
     healthy: row.healthy !== false,
     estimatedRecoveryMs: finiteNonnegative(row.estimatedRecoveryMs ?? 0, "estimatedRecoveryMs"),
     estimatedCostUSD: finiteNonnegative(row.estimatedCostUSD ?? 0, "estimatedCostUSD"),
@@ -30,30 +35,27 @@ function normalizeCandidate(row) {
 }
 
 function score(row) {
-  // Latency dominates at millisecond scale; USD is deterministic tiebreak.
   return row.estimatedRecoveryMs + row.estimatedCostUSD * 1000;
 }
 
-function planRecovery({
-  sourcePassport,
-  candidates,
-  neutralStateDigest = null,
-  safePoint = null,
-}) {
+function sameAuthority(sourcePassport, candidate) {
+  return candidate.capabilityEpoch === sourcePassport.capabilityEpoch &&
+    candidate.revocationRoot === sourcePassport.revocationRoot;
+}
+
+function planRecovery({ sourcePassport, candidates, neutralStateDigest = null, safePoint = null }) {
   if (!sourcePassport || sourcePassport.schema !== D.SCHEMA) {
     return Object.freeze({ ok: false, code: "SOURCE_PASSPORT_INVALID" });
   }
   const rows = (candidates || []).map(normalizeCandidate).filter((x) => x.healthy);
 
   const same = rows
-    .filter((x) => x.profile.machineType === sourcePassport.machineType &&
-                   x.profile.logicalDimension === sourcePassport.logicalDimension)
     .map((x) => ({ ...x, gate: D.checkpointAdmission({
       sourcePassport,
       targetProfile: x.profile,
       kind: D.CHECKPOINT.FULL_RESTORE,
     }) }))
-    .filter((x) => x.gate.ok)
+    .filter((x) => x.gate.ok && sameAuthority(sourcePassport, x))
     .sort((a, b) => score(a) - score(b) || a.nodeId.localeCompare(b.nodeId));
 
   if (same.length) {
@@ -64,36 +66,49 @@ function planRecovery({
       nodeId: best.nodeId,
       targetMachineType: best.profile.machineType,
       targetLogicalDimension: best.profile.logicalDimension,
+      targetCapabilityEpoch: best.capabilityEpoch,
+      targetRevocationRoot: best.revocationRoot,
       startsNewMachineIdentity: false,
+      requiresPassportRemint: false,
       estimatedRecoveryMs: best.estimatedRecoveryMs,
       estimatedCostUSD: best.estimatedCostUSD,
-      reason: "same-carrier full checkpoint recovery preferred",
+      reason: "same-profile same-authority full checkpoint recovery preferred",
     });
   }
 
   const cross = rows
-    .map((x) => ({ ...x, gate: D.checkpointAdmission({
-      sourcePassport,
-      targetProfile: x.profile,
-      kind: D.CHECKPOINT.NEUTRAL_CONTINUATION,
-      safePoint,
-      neutralStateDigest,
-    }) }))
+    .map((x) => ({
+      ...x,
+      authorityChanged: !sameAuthority(sourcePassport, x),
+      gate: D.checkpointAdmission({
+        sourcePassport,
+        targetProfile: x.profile,
+        kind: D.CHECKPOINT.NEUTRAL_CONTINUATION,
+        safePoint,
+        neutralStateDigest,
+      }),
+    }))
     .filter((x) => x.gate.ok)
     .sort((a, b) => score(a) - score(b) || a.nodeId.localeCompare(b.nodeId));
 
   if (cross.length) {
     const best = cross[0];
+    const remint = best.authorityChanged || best.gate.startsNewMachineIdentity === true;
     return Object.freeze({
       ok: true,
       mode: D.CHECKPOINT.NEUTRAL_CONTINUATION,
       nodeId: best.nodeId,
       targetMachineType: best.profile.machineType,
       targetLogicalDimension: best.profile.logicalDimension,
-      startsNewMachineIdentity: best.gate.startsNewMachineIdentity === true,
+      targetCapabilityEpoch: best.capabilityEpoch,
+      targetRevocationRoot: best.revocationRoot,
+      startsNewMachineIdentity: remint,
+      requiresPassportRemint: remint,
       estimatedRecoveryMs: best.estimatedRecoveryMs,
       estimatedCostUSD: best.estimatedCostUSD,
-      reason: "no same-carrier full-restore target; using typed neutral continuation",
+      reason: best.authorityChanged
+        ? "checkpoint authority is stale on target; use typed neutral continuation and fresh passport"
+        : "no admissible full-restore target; use typed neutral continuation",
     });
   }
 
@@ -103,4 +118,49 @@ function planRecovery({
   });
 }
 
-module.exports = { normalizeCandidate, planRecovery };
+function materializeRecoveryPassport({
+  recovery,
+  sourcePassport,
+  neutralStateDigest,
+  plan,
+  profile,
+  vm,
+  contract,
+  targetState,
+}) {
+  if (!recovery || !recovery.ok || recovery.mode !== D.CHECKPOINT.NEUTRAL_CONTINUATION) {
+    throw new Error("neutral-continuation recovery plan required");
+  }
+  if (!D.isDigest(neutralStateDigest)) throw new TypeError("neutralStateDigest required");
+  const required = ["memoryCapabilityDigest", "historyRoot", "waitForRoot", "cancellationRoot", "asyncScheduleRoot", "gcRegistryRoot"];
+  for (const key of required) {
+    if (!targetState || !D.isDigest(targetState[key])) throw new TypeError(`targetState.${key} required`);
+  }
+  if (recovery.targetCapabilityEpoch !== targetState.capabilityEpoch ||
+      recovery.targetRevocationRoot !== targetState.revocationRoot) {
+    throw new Error("target authority changed after recovery planning");
+  }
+
+  return D.bindPassport({
+    plan,
+    profile,
+    vm,
+    contract,
+    guestImage: sourcePassport.guestImage,
+    memoryRoot: neutralStateDigest,
+    memoryCapabilityDigest: targetState.memoryCapabilityDigest,
+    componentLinkDigest: sourcePassport.componentLinkDigest,
+    packetRefinementDigest: sourcePassport.packetRefinementDigest,
+    historyRoot: targetState.historyRoot,
+    capabilityEpoch: targetState.capabilityEpoch,
+    revocationRoot: targetState.revocationRoot,
+    waitForRoot: targetState.waitForRoot,
+    cancellationRoot: targetState.cancellationRoot,
+    asyncScheduleRoot: targetState.asyncScheduleRoot,
+    gcRegistryRoot: targetState.gcRegistryRoot,
+    erasurePolicy: sourcePassport.erasurePolicy,
+    magicBudget: sourcePassport.magicBudget,
+  });
+}
+
+module.exports = { normalizeCandidate, sameAuthority, planRecovery, materializeRecoveryPassport };
