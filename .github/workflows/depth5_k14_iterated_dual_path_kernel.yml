@@ -1,0 +1,43 @@
+name: depth5 K14 iterated dual path kernel
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'data/depth5_k14_recycled_dual_pair_kernel.json'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy ortools
+      - name: Execute iterated multi-dual kernel
+        run: |
+          set -o pipefail
+          python analysis/depth5_k14_iterated_dual_path_kernel.py 2>&1 | tee analysis/DEPTH5_K14_ITERATED_DUAL_PATH_KERNEL.log
+      - name: Freeze evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/depth5_k14_iterated_dual_path_kernel.json').read_text())
+          assert d['valid'] is True
+          assert d['result'] in ('UNKNOWN','K14_FEASIBLE','K14_INFEASIBLE')
+          PY
+          git config user.name holotrade-evidence-bot
+          git config user.email holotrade-evidence-bot@users.noreply.github.com
+          git add -f data/depth5_k14_iterated_dual_path_kernel.json analysis/DEPTH5_K14_ITERATED_DUAL_PATH_KERNEL.log
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze depth5 K14 iterated dual-path evidence'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
