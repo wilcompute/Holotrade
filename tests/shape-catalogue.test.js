@@ -4094,3 +4094,52 @@ test("the hidden 36-quotient is the spreads, and reciprocity alone excludes 110"
   assert.equal(u.policy, "reported, not guessed at");
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("one reciprocity CSP recovers both tight-case floors and stops there", () => {
+  const r = require(path.join(
+    root, "data/reciprocity_recovers_both_floors_and_stops.json"));
+  assert.ok(r.valid);
+  assert.match(r.theCSP, /c_L in M <=> d_M in L/);
+
+  // it replaces two different bespoke endgames
+  assert.match(r.replaces["W(3,3)^2"], /self-duality/);
+  assert.match(r.replaces["GQ(2,4)^2"], /pigeonhole/);
+  assert.match(r.replaces.reading, /solver finds for itself/);
+
+  assert.equal(r.results.length, 2);
+  for (const x of r.results) {
+    // both tight cases excluded, by a model far smaller than the grid
+    assert.equal(x.tightStatus, "INFEASIBLE");
+    assert.ok(x.tightExcluded);
+    assert.equal(x.booleans, 2 * x.lines * x.points);
+    assert.equal(x.biconditionals, x.lines * x.lines);
+    assert.ok(x.booleans < x.points * x.points * x.points, "not a grid model");
+    // and both are satisfiable at one unit of slack
+    assert.equal(x.slackStatus, "OPTIMAL", "genuine existence, not UNKNOWN");
+  }
+  // the two geometries really are different objects
+  const [w, g] = r.results;
+  assert.equal(w.lines, 40);
+  assert.equal(w.points, 40);
+  assert.equal(g.lines, 45);
+  assert.equal(g.points, 27);
+  assert.equal(w.tight, 110);
+  assert.equal(g.tight, 90);
+  // tight = (st+1) * tau_1 in both
+  assert.equal(w.tight, 10 * 11);
+  assert.equal(g.tight, 9 * 10);
+
+  assert.ok(r.stopsAtSlack.bothOptimalNotUnknown);
+  assert.match(r.stopsAtSlack.reading, /reach past tightness is zero/);
+
+  // the correction to the parallel approach
+  const c = r.correction;
+  assert.equal(c.file, "gq24_slack_center_lift_91.py");
+  assert.equal(c.itsStageTwo, "SKIPPED");
+  assert.match(c.becauseItWanted, /false at size 12/);
+  assert.match(c.lemmaNotNeeded, /45 - 5r/);
+  assert.equal(c.stageTwoRunHere, "OPTIMAL");
+  assert.match(c.conclusion, /never the obstacle/);
+  assert.match(r.boundary, /\[91, 100\]/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

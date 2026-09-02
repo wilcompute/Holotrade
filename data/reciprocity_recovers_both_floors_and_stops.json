@@ -1,0 +1,52 @@
+{
+  "schema": "holotrade.reciprocity-recovers-both-floors.v1",
+  "valid": true,
+  "theCSP": "at tightness every shadow is a minimum blocker so has a centre, and clean-core reciprocity forces c : rows -> points and d : columns -> points with c_L in M <=> d_M in L; ask only whether such maps exist",
+  "replaces": {
+    "W(3,3)^2": "pencil reciprocity, the trichotomy, |F| = 1 + kt/mu = 10 against alpha = 7, and the self-duality of W(q) only for even q (W33-Theory 43049db)",
+    "GQ(2,4)^2": "the same machinery and then a pigeonhole, 45 lines against 27 points (gq24_tight_obstruction.py)",
+    "reading": "two bespoke endgames become consequences the solver finds for itself"
+  },
+  "results": [
+    {
+      "product": "W(3,3)^2",
+      "lines": 40,
+      "points": 40,
+      "booleans": 3200,
+      "biconditionals": 1600,
+      "tight": 110,
+      "dirtyPerUnitSlack": 4,
+      "tightStatus": "INFEASIBLE",
+      "slackStatus": "OPTIMAL",
+      "tightExcluded": true
+    },
+    {
+      "product": "GQ(2,4)^2",
+      "lines": 45,
+      "points": 27,
+      "booleans": 2430,
+      "biconditionals": 2025,
+      "tight": 90,
+      "dirtyPerUnitSlack": 5,
+      "tightStatus": "INFEASIBLE",
+      "slackStatus": "OPTIMAL",
+      "tightExcluded": true
+    }
+  ],
+  "stopsAtSlack": {
+    "budget": "sum_L(|S_L| - st - 1) <= (t+1) r allows at most (t+1)r dirty lines per axis",
+    "gq24AtR1": "OPTIMAL -- the structure genuinely exists",
+    "w33AtR1": "OPTIMAL -- the structure genuinely exists",
+    "bothOptimalNotUnknown": true,
+    "reading": "reciprocity is exactly a tight-case tool and its reach past tightness is zero; worth knowing precisely, since three arguments in this thread rest on it"
+  },
+  "correction": {
+    "file": "gq24_slack_center_lift_91.py",
+    "itsStageTwo": "SKIPPED",
+    "becauseItWanted": "every blocker of size 11..15 to contain a punctured perp, which is false at size 12 with an explicit counterexample",
+    "lemmaNotNeeded": "the budget already forces at least 45 - 5r shadows to be exactly size 10, and every GQ(2,4) minimum blocker is a punctured perp (7b15c84), so those have canonical centres with no stability hypothesis",
+    "stageTwoRunHere": "OPTIMAL",
+    "conclusion": "the lemma was never the obstacle"
+  },
+  "boundary": "necessary conditions only; INFEASIBLE at r = 0 excludes the tight case in both geometries, while FEASIBLE at r = 1 proves nothing about tau. tau(GQ(2,4)^2) stays in [91, 100] and tau_2 in [111, 115]"
+}
