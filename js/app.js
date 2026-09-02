@@ -1375,6 +1375,7 @@
       bicolour: ["data/e8_sentinel_bicolour_exact_stack_rank.json", "holotrade.e8-sentinel-bicolour-exact-stack-rank.v1"],
       holobox: ["data/e8_holobox_engine_goursat_bridge.json", "holotrade.e8-holobox-engine-goursat-bridge.v1"],
       two216: ["data/w33_circuit_hemisystem_gset_bridge.json", "holotrade.w33-circuit-hemisystem-gset-no-go.v1"],
+      fiveFront: ["data/w33_five_front_breakthrough.json", "holotrade.w33-five-front-breakthrough.v2"],
     };
     try {
       const entries = await Promise.all(Object.entries(sources).map(async ([key, [url, schema]]) => {
@@ -1400,12 +1401,12 @@
     const panel = $("unitaryBackendClosure");
     if (!panel) return;
     if (!unitaryBackendCertificates) {
-      panel.innerHTML = "<b>Backend closure</b> · loading eleven independent exact certificates…";
+      panel.innerHTML = "<b>Backend closure</b> · loading twelve independent exact certificates…";
       return;
     }
     const {
       closure, canonical, voltage, reversible, fractal, sentinel,
-      homologyCode, sentinelShadow, bicolour, holobox, two216,
+      homologyCode, sentinelShadow, bicolour, holobox, two216, fiveFront,
     } = unitaryBackendCertificates;
     if (closure.stableClosure.stableDimensionEachSide !== 4160 ||
         closure.stableClosure.chainLevelIntertwinerBuilt !== false ||
@@ -1433,7 +1434,18 @@
         two216.fullAutomorphismAction.stabilizersConjugate !== false ||
         two216.fullAutomorphismAction.discrepancyCount !== 11 ||
         two216.representationDiagnosis.circuitSteinberg81Multiplicity !== 1 ||
-        two216.representationDiagnosis.hemisystemSteinberg81Multiplicity !== 0) {
+        two216.representationDiagnosis.hemisystemSteinberg81Multiplicity !== 0 ||
+        fiveFront.steinbergIntertwiner.sourceFactorization !== "27chartsx40lines" ||
+        fiveFront.steinbergIntertwiner.rank !== 3 ||
+        fiveFront.fibreProduct.stabilizerOrder !== 20 ||
+        fiveFront.fibreProduct.building81Multiplicity !== 3 ||
+        fiveFront.fibreProduct.building64Multiplicity !== 3 ||
+        fiveFront.fibreProduct.commonBuildingDimension !== 435 ||
+        fiveFront.fibreProduct.buildingCrossHomDimension !== 18 ||
+        fiveFront.fibreProduct.abstractIsotypicIsomorphism !== true ||
+        fiveFront.fibreProduct.explicitIntertwinerBuilt !== false ||
+        fiveFront.microvm.generatorCount !== 2 ||
+        fiveFront.microvm.quotientStates !== 36) {
       panel.innerHTML = "<b>Backend closure</b> · certificate theorem flags disagree";
       return;
     }
@@ -1457,7 +1469,11 @@
       "216-circuit shell, exact rational elimination gives common colour space <b>60 = 45 ⊕ 15</b>; both colours have " +
       "the same <b>1 + 20 + 24</b> circuit image. The similarly sized 216 hemisystem lines are a different carrier—" +
       "their permutation characters differ on <b>11</b> automorphism classes, and only the circuit carrier contains " +
-      "the <b>Steinberg 81</b>. Finally, one W33 router digit and the " +
+      "the <b>Steinberg 81</b>. Both carriers nevertheless fibre six-to-one over the same <b>36 spreads</b>. Their " +
+      "canonical 1,296-state fibre product has stabilizer <b>F₂₀</b> and contains <b>3×81 + 3×64 = 435</b> building " +
+      "dimensions, exactly matching the corrected 27-chart × 40-line obstruction carrier; the cross-Hom dimension " +
+      "is <b>18</b>. A formal dual-carrier router executes both native generator pairs but exposes only the common " +
+      "36-state quotient across the fork—no 216-state conversion is invented. Finally, one W33 router digit and the " +
       "engine form <b>806,400</b> logical states; connected routing is a forced direct product, while the three full-router " +
       "parity pullbacks are noncanonical. None of these facts binds a host or authorizes dispatch.";
   }

@@ -1,0 +1,42 @@
+{
+  "schema": "holotrade.w33-dual-carrier-router-formal.v1",
+  "valid": true,
+  "source": {
+    "packet": "data/w33_five_front_breakthrough.json",
+    "packetSha256": "b2122a7fbae353787e6e76ea4ae8e52f72532edf86ad3b6be206dcbd9f87ae14",
+    "rtl": "rtl/w33_dual_carrier_router.v",
+    "rtlSha256": "7dd31b0bb0c4c0b7d4f2203ad7532070595e49bb340032ef8e66a1a5a228bb58",
+    "generatorCount": 2,
+    "carriers": [
+      "sentinel-circuit",
+      "complementary-hemisystem-pair"
+    ],
+    "nativeStatesPerCarrier": 216,
+    "sharedQuotientStates": 36
+  },
+  "theorem": {
+    "nativeActions": "Both exact PSp(4,3) generator pairs preserve their carrier and commute with projection to the common 36-state spread quotient.",
+    "adapter": "A cross-carrier request returns only the shared quotient state and the native 216-state output is 8'hff.",
+    "failClosed": "No RTL operation asserts a fabricated 216-to-216 conversion between the inequivalent carrier forks."
+  },
+  "positive": {
+    "script": "rtl/verify_w33_dual_carrier_router.ys",
+    "exitCode": 0,
+    "variables": 28312,
+    "clauses": 74941,
+    "proved": true,
+    "counterexample": false
+  },
+  "negativeControl": {
+    "script": "rtl/verify_w33_dual_carrier_router_control.ys",
+    "exitCode": 1,
+    "variables": 16382,
+    "clauses": 43320,
+    "proved": false,
+    "counterexample": true,
+    "mutation": "Expose state 0 when adapt=1 instead of the forbidden-state sentinel.",
+    "purpose": "Shows the no-fabricated-cross-state assertion is satisfiable and has teeth."
+  },
+  "boundary": "Exact combinational RTL over two finite permutation actions. This is not a CPU, microVM hypervisor, fabricated device, timing result, or physical identification.",
+  "sha256": "03a5c46a1dbe05b59307c49142833657557c9a1c6d3d2d88fde3d93bcbb9fbce"
+}

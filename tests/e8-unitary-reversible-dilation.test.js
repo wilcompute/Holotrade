@@ -10,14 +10,15 @@ const Runtime = require("../scheduler/e8-unitary-reversible-dilation.js");
 const frozen = require("../data/e8_unitary_reversible_dilation.json");
 
 const ROOT = path.resolve(__dirname, "..");
+const normalizedText = (value) => value.replace(/\r\n/g, "\n");
 
 test("GAP regenerates the exact reversible symplectic dilation and RTL", { timeout: 180_000 }, () => {
   const { sha256, ...body } = frozen;
   assert.equal(Freezer.digest(body), sha256);
   const generated = Freezer.generate();
   assert.deepEqual(generated.certificate, frozen);
-  assert.equal(generated.verilog,
-    fs.readFileSync(path.join(ROOT, "rtl/e8_unitary_reversible_dilation.v"), "utf8"));
+  assert.equal(normalizedText(generated.verilog),
+    normalizedText(fs.readFileSync(path.join(ROOT, "rtl/e8_unitary_reversible_dilation.v"), "utf8")));
   assert.equal(Runtime.verifyFrozen(), true);
 });
 

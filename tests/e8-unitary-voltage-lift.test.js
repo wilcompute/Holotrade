@@ -11,6 +11,7 @@ const frozen = require("../data/e8_unitary_voltage_lift.json");
 const oldGraph = require("../data/e8_unitary_hole_coset_rtl.json");
 
 const ROOT = path.resolve(__dirname, "..");
+const normalizedText = (value) => value.replace(/\r\n/g, "\n");
 
 function yosys(script, timeout = 120_000) {
   return spawnSync(process.execPath, ["scripts/run-yosys.js", script], {
@@ -26,8 +27,8 @@ test("GAP exactly regenerates the frozen affine lift and generated RTL", { timeo
   assert.equal(Freezer.digest(body), sha256);
   const generated = Freezer.generate();
   assert.deepEqual(generated.certificate, frozen);
-  assert.equal(generated.verilog,
-    fs.readFileSync(path.join(ROOT, "rtl/e8_unitary_voltage_lift.v"), "utf8"));
+  assert.equal(normalizedText(generated.verilog),
+    normalizedText(fs.readFileSync(path.join(ROOT, "rtl/e8_unitary_voltage_lift.v"), "utf8")));
   assert.equal(Lift.verifyFrozen(), true);
 });
 
