@@ -1,0 +1,33 @@
+{
+  "schema": "holotrade.w33-tpm-capture-request.v3",
+  "requestedAt": "2026-09-02T18:20:00-04:00",
+  "purpose": "Run the first real W33 TPM capture through the machine-readable runner preflight, portable host-bundle verifier, and second-stage hardware-evidence settlement path.",
+  "requiredRunnerLabels": ["self-hosted", "linux", "w33-tpm"],
+  "previousRunDiagnosis": {
+    "runId": 33687153655,
+    "jobId": 100437229102,
+    "status": "queued",
+    "runnerId": 0,
+    "runnerName": "",
+    "interpretation": "No matching online runner had accepted the job at diagnosis time."
+  },
+  "preflightRequired": true,
+  "requires": {
+    "tpmCharacterDevice": true,
+    "measuredBootEventLog": true,
+    "tpm2Tools": true,
+    "makeCredentialActivateCredential": true,
+    "physicalEnergyInput": true,
+    "enrollmentConfig": "/etc/holotrade/w33-tpm-enrollment.json",
+    "captureConfig": "/etc/holotrade/w33-host-capture.json",
+    "portableVerifierPass": true
+  },
+  "expectedArtifacts": [
+    "w33-tpm-runner-preflight.json",
+    "w33-real-tpm-enrollment-result.json",
+    "w33-real-host-bundle.json",
+    "w33-real-portable-verifier-result.json"
+  ],
+  "postCapture": "Bind the verified host-bundle digest into a separate signed hardware-evidence settlement receipt. Do not place settlement private-key material in the capture configuration.",
+  "boundary": "This request does not assert that a self-hosted runner is online. Physical runner registration/availability and real TPM execution remain external prerequisites."
+}
