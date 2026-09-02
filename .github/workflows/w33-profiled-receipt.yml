@@ -1,0 +1,18 @@
+name: W33 profiled receipt binding
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-profiled-receipt.js'
+      - 'tests/w33-profiled-receipt.test.js'
+      - '.github/workflows/w33-profiled-receipt.yml'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test tests/w33-profiled-receipt.test.js
