@@ -36,7 +36,9 @@ jobs:
           d=json.loads(Path('data/depth5_coordinate_s5_automorphism.json').read_text())
           assert d.get('valid') is True
           assert d.get('groupOrder')==120
-          assert d.get('exactMatrixAutomorphismVerified') is True
+          assert d.get('exactConstraintFamilyAutomorphismVerified') is True
+          assert d.get('distinctConstraintRows')==6128
+          assert d.get('duplicateConstraintRowsRemoved')==1
           PY
           git config user.name 'holotrade-evidence-bot'
           git config user.email 'holotrade-evidence-bot@users.noreply.github.com'
