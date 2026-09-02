@@ -9,6 +9,7 @@ on:
       - 'js/w33-measured-placement-loop.js'
       - 'js/w33-portable-audit-verifier.js'
       - 'bin/w33-verify-receipt.js'
+      - 'bin/w33-verify-linux-tpm.js'
       - 'tests/w33-tpm-eventlog-provenance.test.js'
       - 'tests/w33-tpm-wire-signature.test.js'
       - 'tests/w33-measured-placement-loop.test.js'
@@ -24,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify direct Linux TPM CLI syntax
+        run: node --check bin/w33-verify-linux-tpm.js
       - name: Verify raw PC Client TPM event-log path
         run: node --test tests/w33-tpm-eventlog-provenance.test.js
       - name: Verify raw TPMT_SIGNATURE quote path
