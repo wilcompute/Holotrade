@@ -1,0 +1,18 @@
+rec(
+  boundary := "The outer-automorphism statement is finite permutation-group structure. It does not identify the two fibre types with physical flavours, generations, or dynamical dualities.",
+  circuitFibreStabilizerOrder := 120,
+  circuitFibreStabilizerStructure := "S5",
+  fibreDegree := 6,
+  fibreS5SubgroupsConjugateInsideS6 := false,
+  groupOrder := 25920,
+  hemiFibreStabilizerOrder := 120,
+  hemiFibreStabilizerStructure := "S5",
+  inducedMultiplicity64 := [ 0, 1 ],
+  inducedMultiplicity81 := [ 1, 0 ],
+  permutationCharacterScalarProducts := [ 2, 2, 1 ],
+  quotientDegree := 36,
+  schema := "holotrade.w33-spread-s6-outer-fibre-twist.v1",
+  spreadStabilizerOrder := 720,
+  spreadStabilizerStructure := "S6",
+  theorem := "The two 216-state PSp4(3) actions are G/S5 actions over one common 36-state spread quotient G/S6. Inside the spread stabilizer S6 their six-state fibres have point stabilizers in the two nonconjugate S5 classes. Equivalently, the fibres are the two inequivalent six-point S6 actions exchanged by the exceptional outer automorphism. Inducing the two S5 types to PSp4(3) gives the complementary selector pattern: circuit sees 81 and not 64, hemisystem sees 64 and not 81.",
+  valid := true )
