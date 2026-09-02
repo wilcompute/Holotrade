@@ -1,0 +1,33 @@
+presolving:
+(round 1, exhaustive) 0 del vars, 77 del conss, 0 add conss, 0 chg bounds, 76 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 2, exhaustive) 0 del vars, 77 del conss, 0 add conss, 0 chg bounds, 76 chg sides, 0 chg coeffs, 6053 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 3, exhaustive) 0 del vars, 186 del conss, 0 add conss, 0 chg bounds, 76 chg sides, 0 chg coeffs, 6053 upgd conss, 0 impls, 0 clqs, 0 implints
+   (2.3s) probing: 76/5208 (1.5%) - 0 fixings, 0 aggregations, 0 implications, 0 bound changes
+   (2.3s) probing aborted: 75/75 successive totally useless probings
+   (3.5s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (4.3s) symmetry computation finished: 4 generators found (max: 1500, log10 of symmetry group size: 2.38) (symcode time: 0.54)
+dynamic symmetry handling statistics:
+   orbitopal reduction:       no components
+   orbital reduction:          1 components of sizes 7
+   lexicographic reduction:    7 permutations with support sizes 4784, 4784, 4528, 5192, 5144, 4940, 4940
+handled 1 out of 1 symmetry components
+presolving (4 rounds: 4 fast, 4 medium, 4 exhaustive):
+ 0 deleted vars, 186 deleted constraints, 0 added constraints, 0 tightened bounds, 0 added holes, 76 changed sides, 0 changed coefficients
+ 0 implications, 0 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)
+presolved problem has 5208 variables (5208 bin, 0 int, 0 cont) and 5944 constraints
+      1 constraints of type <knapsack>
+   5943 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 4.96
+
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+  904s|     1 |     0 | 28376 |     - |  2372M |   0 |5208 |  10k|5944 |   0 |  0 |4414 |   0 | 0.000000e+00 |      --      |    Inf | unknown
+(node 1) LP solver hit time limit in LP 1 -- using pseudo solution instead
+
+SCIP Status        : solving was interrupted [time limit reached]
+Solving Time (sec) : 904.17
+Solving Nodes      : 1
+Primal Bound       : +1.00000000000000e+20 (0 solutions)
+Dual Bound         : +0.00000000000000e+00
+Gap                : infinite
+{"CPSAT": "UNKNOWN", "SCIP": "TIMELIMIT", "kept": 5208, "newLB": 13, "result": "UNKNOWN"}

@@ -1,0 +1,34 @@
+{
+  "CPSAT": {
+    "branches": 20362,
+    "conflicts": 0,
+    "elapsedSeconds": 900.1327674388885,
+    "engine": "CP-SAT",
+    "status": "UNKNOWN"
+  },
+  "SCIP": {
+    "dualBound": 0.0,
+    "elapsedSeconds": 904.1693844795227,
+    "engine": "SCIP",
+    "nodes": 1,
+    "primalBound": 1e+20,
+    "solutions": 0,
+    "status": "TIMELIMIT"
+  },
+  "boundary": "Column reduction uses only exact duplicate/subset dominance. Solver infeasibility is a finite Boolean-combinatorial certificate status; no continuum or physical interpretation is attached.",
+  "fullModel": {
+    "K": 13,
+    "leafOrbits": 5294,
+    "tileOrbits": 6129
+  },
+  "newCertifiedLowerBound": 13,
+  "result": "UNKNOWN",
+  "safeReduction": {
+    "duplicateOrDominatedOnly": true,
+    "keptColumns": 5208,
+    "removedColumns": 86
+  },
+  "schema": "holotrade.depth5-k13-exact-feasibility-attack.v1",
+  "theorem": "If result=K13_INFEASIBLE, no thirteen-or-fewer seed-orbit cover exists for the exact 6129x5294 depth-five quotient, hence the integer cover number is at least 14. If result=K13_FEASIBLE, the recorded original leaf-orbit indices are an exact witness. UNKNOWN changes no bound.",
+  "valid": true
+}
