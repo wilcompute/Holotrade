@@ -1,0 +1,69 @@
+{
+  "boundary": "Distinct tile orbits may yield identical cover constraints, so no permutation action on the 6,129 tile-orbit labels is inferred from support equality. The theorem concerns the exact Boolean cover instance and removes only logically duplicate constraints.",
+  "constraintMultiplicityHistogram": {
+    "1": 6127,
+    "2": 1
+  },
+  "constraintOrbitSizeProfileUnderS5": {
+    "1": 2,
+    "10": 11,
+    "12": 1,
+    "120": 18,
+    "15": 5,
+    "20": 14,
+    "24": 1,
+    "30": 18,
+    "40": 2,
+    "5": 5,
+    "60": 47
+  },
+  "constraintS5OrbitCount": 124,
+  "coordinateGroup": "S5",
+  "coxeterRelationsVerified": true,
+  "distinctConstraintRows": 6128,
+  "duplicateConstraintRowsRemoved": 1,
+  "exactConstraintFamilyAutomorphismVerified": true,
+  "generators": [
+    {
+      "fixedConstraintClasses": 466,
+      "fixedLeafOrbits": 290,
+      "generator": "s01"
+    },
+    {
+      "fixedConstraintClasses": 466,
+      "fixedLeafOrbits": 290,
+      "generator": "s12"
+    },
+    {
+      "fixedConstraintClasses": 466,
+      "fixedLeafOrbits": 290,
+      "generator": "s23"
+    },
+    {
+      "fixedConstraintClasses": 466,
+      "fixedLeafOrbits": 290,
+      "generator": "s34"
+    }
+  ],
+  "groupOrder": 120,
+  "leafOrbitSizeProfileUnderS5": {
+    "1": 1,
+    "10": 8,
+    "120": 23,
+    "15": 3,
+    "20": 12,
+    "24": 2,
+    "30": 13,
+    "40": 4,
+    "5": 2,
+    "60": 26
+  },
+  "leafS5OrbitCount": 94,
+  "originalMatrixShape": [
+    6129,
+    5294
+  ],
+  "schema": "holotrade.depth5-coordinate-s5-automorphism.v2",
+  "theorem": "After exact deletion of duplicate set-cover rows, the four adjacent permutations of the five product coordinates descend to simultaneous automorphisms of the 5,294 leaf-orbit variables and the complete family of distinct depth-five cover constraints. They generate S5 of order 120. Hence S5 symmetry breaking is theorem-safe for K=13.",
+  "valid": true
+}
