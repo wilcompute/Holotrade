@@ -1,0 +1,98 @@
+{"allowed": 5038, "emptyRows": 0, "orbit": 0, "rep": 0}
+{"allowed": 5120, "emptyRows": 0, "orbit": 1, "rep": 1}
+{"allowed": 3748, "emptyRows": 0, "orbit": 3, "rep": 4}
+{"allowed": 3084, "emptyRows": 0, "orbit": 4, "rep": 5}
+{"allowed": 5099, "emptyRows": 0, "orbit": 6, "rep": 8}
+{"allowed": 3764, "emptyRows": 0, "orbit": 7, "rep": 9}
+{"allowed": 3192, "emptyRows": 0, "orbit": 8, "rep": 10}
+{"allowed": 5038, "emptyRows": 0, "orbit": 10, "rep": 15}
+{"allowed": 3205, "emptyRows": 0, "orbit": 12, "rep": 29}
+{"allowed": 4669, "emptyRows": 0, "orbit": 13, "rep": 31}
+{"allowed": 3801, "emptyRows": 0, "orbit": 14, "rep": 32}
+{"allowed": 3238, "emptyRows": 0, "orbit": 15, "rep": 34}
+{"allowed": 3265, "emptyRows": 0, "orbit": 16, "rep": 39}
+{"allowed": 3378, "emptyRows": 0, "orbit": 17, "rep": 40}
+{"allowed": 3291, "emptyRows": 0, "orbit": 18, "rep": 41}
+{"allowed": 3319, "emptyRows": 0, "orbit": 19, "rep": 42}
+{"allowed": 3319, "emptyRows": 0, "orbit": 20, "rep": 43}
+{"allowed": 3435, "emptyRows": 0, "orbit": 21, "rep": 44}
+{"allowed": 5201, "emptyRows": 0, "orbit": 23, "rep": 59}
+{"allowed": 3787, "emptyRows": 0, "orbit": 24, "rep": 60}
+{"allowed": 3298, "emptyRows": 0, "orbit": 25, "rep": 61}
+{"allowed": 5095, "emptyRows": 0, "orbit": 27, "rep": 64}
+{"allowed": 4581, "emptyRows": 0, "orbit": 28, "rep": 65}
+{"allowed": 3865, "emptyRows": 0, "orbit": 29, "rep": 66}
+{"allowed": 3865, "emptyRows": 0, "orbit": 30, "rep": 67}
+{"allowed": 5197, "emptyRows": 0, "orbit": 31, "rep": 73}
+{"allowed": 5230, "emptyRows": 0, "orbit": 32, "rep": 74}
+{"allowed": 3324, "emptyRows": 0, "orbit": 33, "rep": 75}
+{"allowed": 3274, "emptyRows": 0, "orbit": 34, "rep": 76}
+{"allowed": 3337, "emptyRows": 0, "orbit": 35, "rep": 77}
+{"allowed": 3579, "emptyRows": 0, "orbit": 36, "rep": 82}
+{"allowed": 4701, "emptyRows": 0, "orbit": 37, "rep": 84}
+{"allowed": 3709, "emptyRows": 0, "orbit": 38, "rep": 85}
+{"allowed": 3845, "emptyRows": 0, "orbit": 39, "rep": 100}
+{"allowed": 3407, "emptyRows": 0, "orbit": 40, "rep": 101}
+{"allowed": 3407, "emptyRows": 0, "orbit": 41, "rep": 102}
+{"allowed": 4164, "emptyRows": 0, "orbit": 42, "rep": 106}
+{"allowed": 3851, "emptyRows": 0, "orbit": 43, "rep": 108}
+{"allowed": 3419, "emptyRows": 0, "orbit": 44, "rep": 123}
+{"allowed": 3696, "emptyRows": 0, "orbit": 45, "rep": 129}
+{"allowed": 5118, "emptyRows": 0, "orbit": 46, "rep": 179}
+{"allowed": 5142, "emptyRows": 0, "orbit": 47, "rep": 186}
+{"allowed": 5179, "emptyRows": 0, "orbit": 48, "rep": 187}
+{"allowed": 3265, "emptyRows": 0, "orbit": 49, "rep": 198}
+{"allowed": 3250, "emptyRows": 0, "orbit": 50, "rep": 199}
+{"allowed": 3566, "emptyRows": 0, "orbit": 51, "rep": 533}
+{"allowed": 3424, "emptyRows": 0, "orbit": 52, "rep": 534}
+{"allowed": 3294, "emptyRows": 0, "orbit": 53, "rep": 543}
+{"allowed": 3416, "emptyRows": 0, "orbit": 54, "rep": 546}
+{"allowed": 4732, "emptyRows": 0, "orbit": 55, "rep": 547}
+{"allowed": 3852, "emptyRows": 0, "orbit": 56, "rep": 548}
+{"allowed": 4291, "emptyRows": 0, "orbit": 57, "rep": 551}
+{"allowed": 3299, "emptyRows": 0, "orbit": 58, "rep": 558}
+{"allowed": 3334, "emptyRows": 0, "orbit": 59, "rep": 559}
+{"allowed": 3320, "emptyRows": 0, "orbit": 60, "rep": 560}
+{"allowed": 3354, "emptyRows": 0, "orbit": 61, "rep": 561}
+{"allowed": 3659, "emptyRows": 0, "orbit": 62, "rep": 566}
+{"allowed": 3743, "emptyRows": 0, "orbit": 63, "rep": 568}
+{"allowed": 3822, "emptyRows": 0, "orbit": 64, "rep": 570}
+{"allowed": 3716, "emptyRows": 0, "orbit": 65, "rep": 571}
+{"allowed": 3821, "emptyRows": 0, "orbit": 66, "rep": 572}
+{"allowed": 3358, "emptyRows": 0, "orbit": 67, "rep": 629}
+{"allowed": 3725, "emptyRows": 0, "orbit": 68, "rep": 636}
+{"allowed": 5243, "emptyRows": 0, "orbit": 69, "rep": 854}
+{"allowed": 3210, "emptyRows": 0, "orbit": 70, "rep": 855}
+{"allowed": 3266, "emptyRows": 0, "orbit": 71, "rep": 857}
+{"allowed": 4462, "emptyRows": 0, "orbit": 72, "rep": 861}
+{"allowed": 3445, "emptyRows": 0, "orbit": 73, "rep": 862}
+{"allowed": 4596, "emptyRows": 0, "orbit": 74, "rep": 864}
+{"allowed": 3653, "emptyRows": 0, "orbit": 75, "rep": 865}
+{"allowed": 3846, "emptyRows": 0, "orbit": 76, "rep": 905}
+{"allowed": 3821, "emptyRows": 0, "orbit": 77, "rep": 907}
+{"allowed": 3802, "emptyRows": 0, "orbit": 78, "rep": 909}
+{"allowed": 3817, "emptyRows": 0, "orbit": 79, "rep": 953}
+{"allowed": 3757, "emptyRows": 0, "orbit": 80, "rep": 976}
+{"allowed": 3783, "emptyRows": 0, "orbit": 81, "rep": 978}
+{"allowed": 3783, "emptyRows": 0, "orbit": 82, "rep": 981}
+{"allowed": 4103, "emptyRows": 0, "orbit": 83, "rep": 985}
+{"allowed": 3902, "emptyRows": 0, "orbit": 84, "rep": 987}
+{"allowed": 3902, "emptyRows": 0, "orbit": 85, "rep": 990}
+{"allowed": 3929, "emptyRows": 0, "orbit": 86, "rep": 1061}
+{"allowed": 3830, "emptyRows": 0, "orbit": 87, "rep": 1067}
+{"allowed": 3780, "emptyRows": 0, "orbit": 88, "rep": 1069}
+{"allowed": 3800, "emptyRows": 0, "orbit": 89, "rep": 1070}
+{"allowed": 3253, "emptyRows": 0, "orbit": 90, "rep": 1259}
+{"allowed": 3554, "emptyRows": 0, "orbit": 91, "rep": 1292}
+{"allowed": 3773, "emptyRows": 0, "orbit": 92, "rep": 1335}
+{"allowed": 3552, "emptyRows": 0, "orbit": 93, "rep": 2884}
+{"allowedColumns": 3084, "branches": 14417111, "conflicts": 425, "elapsedSeconds": 180.04381155967712, "minimalResidualRows": 5803, "orbitIndex": 4, "representativeColumn": 5, "status": "UNKNOWN"}
+{"allowedColumns": 3192, "branches": 14885274, "conflicts": 398, "elapsedSeconds": 180.07579636573792, "minimalResidualRows": 5662, "orbitIndex": 8, "representativeColumn": 10, "status": "UNKNOWN"}
+{"allowedColumns": 3205, "branches": 41847096, "conflicts": 975538, "elapsedSeconds": 180.0937397480011, "minimalResidualRows": 5802, "orbitIndex": 12, "representativeColumn": 29, "status": "UNKNOWN"}
+{"allowedColumns": 3210, "branches": 36106716, "conflicts": 901135, "elapsedSeconds": 180.03332686424255, "minimalResidualRows": 5538, "orbitIndex": 70, "representativeColumn": 855, "status": "UNKNOWN"}
+{"allowedColumns": 3238, "branches": 40216734, "conflicts": 939928, "elapsedSeconds": 180.09050941467285, "minimalResidualRows": 5599, "orbitIndex": 15, "representativeColumn": 34, "status": "UNKNOWN"}
+{"allowedColumns": 3250, "branches": 7902, "conflicts": 0, "elapsedSeconds": 180.0695230960846, "minimalResidualRows": 5574, "orbitIndex": 50, "representativeColumn": 199, "status": "UNKNOWN"}
+{"allowedColumns": 3253, "branches": 365607, "conflicts": 2430, "elapsedSeconds": 180.06529259681702, "minimalResidualRows": 5522, "orbitIndex": 90, "representativeColumn": 1259, "status": "UNKNOWN"}
+{"allowedColumns": 3265, "branches": 14779145, "conflicts": 446, "elapsedSeconds": 180.05913591384888, "minimalResidualRows": 5798, "orbitIndex": 16, "representativeColumn": 39, "status": "UNKNOWN"}
+{"allowedColumns": 3265, "branches": 7470181, "conflicts": 118570, "elapsedSeconds": 25.405985116958618, "minimalResidualRows": 5574, "orbitIndex": 49, "representativeColumn": 198, "status": "UNKNOWN"}
+{"candidateBranches": 88, "interval": [14, 22], "result": "UNKNOWN", "solverBranchesRun": 9, "valid": true}
