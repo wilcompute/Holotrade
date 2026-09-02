@@ -1,0 +1,19 @@
+name: Reversible compute settlement
+on:
+  push:
+    paths:
+      - 'js/reversible-compute-settlement.js'
+      - 'tests/reversible-compute-settlement.test.js'
+      - '.github/workflows/reversible-compute-settlement.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run reversible settlement regression
+        run: node --test tests/reversible-compute-settlement.test.js
