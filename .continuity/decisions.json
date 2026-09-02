@@ -8230,5 +8230,52 @@
       "source": "cli",
       "timestamp": "2026-09-02T00:39:21.827Z"
     }
+  },
+  {
+    "id": "6a89bc34-cb0e-469f-85c2-9e89ece8ece4",
+    "question": "What publication records the corrected 216-character decomposition (b5b9cc6)?",
+    "answer": "Commit b5b9cc6 corrects the displayed PSp(4,3) circuit character to dimension 216, adds arithmetic and prose regression assertions, and passes the four-test GAP-backed packet. Commit b5b9cc6 is the documentation-integrity fix following d27f839.",
+    "timestamp": "2026-09-02T00:39:55.631Z",
+    "tags": [
+      "b5b9cc6",
+      "docs",
+      "gap",
+      "github",
+      "holotrade",
+      "testing",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "b5b9cc6",
+      "status": "active"
+    },
+    "commitHashes": [
+      "b5b9cc6"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T00:39:55.631Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T00:39:55.627Z"
+    }
   }
 ]
