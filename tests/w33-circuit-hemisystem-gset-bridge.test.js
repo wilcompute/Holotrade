@@ -1,6 +1,8 @@
 "use strict";
 
 const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const path=require("node:path");
 const test=require("node:test");
 const Freezer=require("../analysis/w33_circuit_hemisystem_gset_bridge.js");
 const frozen=require("../data/w33_circuit_hemisystem_gset_bridge.json");
@@ -30,11 +32,20 @@ test("the outer graph automorphism does not repair the mismatch",()=>{
 });
 
 test("Steinberg-81 is the sharp module-level separator",()=>{
+  const psp=frozen.representationDiagnosis.pspDecomposition;
+  const circuitDimension=psp.reduce((sum,row)=>sum+row.degree*row.circuitMultiplicity,0);
+  const hemisystemDimension=psp.reduce((sum,row)=>sum+row.degree*row.hemisystemMultiplicity,0);
   assert.equal(frozen.representationDiagnosis.pspCircuitDimension,216);
   assert.equal(frozen.representationDiagnosis.pspHemisystemDimension,216);
+  assert.equal(circuitDimension,216);
+  assert.equal(hemisystemDimension,216);
   assert.equal(frozen.representationDiagnosis.circuitSteinberg81Multiplicity,1);
   assert.equal(frozen.representationDiagnosis.hemisystemSteinberg81Multiplicity,0);
   assert.match(frozen.representationDiagnosis.reading,/sharp module-level separator/);
+
+  const note=fs.readFileSync(path.join(__dirname,"..","analysis","2026-09-01_THE_TWO_216S_ARE_NOT_THE_SAME_GSET.md"),"utf8");
+  assert.match(note,/circuits:\s+1 \+ 2\*15 \+ 20 \+ 24 \+ 30 \+ 30 \+ 81/);
+  assert.doesNotMatch(note,/circuits:\s+1 \+ 2\*15 \+ 20 \+ 24 \+ 30 \+ 30 \+ 30 \+ 81/);
 });
 
 test("the no-go stays at the finite G-set boundary",()=>{

@@ -41,7 +41,7 @@ The character decomposition identifies the decisive sector.  Over
 once, while the hemisystem-line action contains it zero times.  Schematically,
 
 ```text
-circuits:    1 + 2*15 + 20 + 24 + 30 + 30 + 30 + 81
+circuits:    1 + 2*15 + 20 + 24 + 30 + 30 + 81
 hemisystems: 1 + 6 + 15 + 2*20 + 30 + 60 + 64.
 ```
 

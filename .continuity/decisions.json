@@ -8186,5 +8186,49 @@
       "source": "cli",
       "timestamp": "2026-09-02T00:35:11.627Z"
     }
+  },
+  {
+    "id": "b39da94e-868a-4ba8-b81f-f8108e84403e",
+    "question": "Why correct the displayed PSp(4,3) circuit decomposition after publication?",
+    "answer": "The GAP certificate and JSON have dimension 216, but the analysis note duplicated one 30-dimensional summand in prose. Corrected the display to 1+2*15+20+24+30+30+81 and added test arithmetic plus a published-text regression so this overcount cannot recur.",
+    "timestamp": "2026-09-02T00:39:21.829Z",
+    "tags": [
+      "audit",
+      "docs",
+      "gap",
+      "holotrade",
+      "testing",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-02T00:39:21.830Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T00:39:21.827Z"
+    }
   }
 ]
