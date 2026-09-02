@@ -6,14 +6,20 @@ on:
     paths:
       - 'js/w33-tpm-eventlog-provenance.js'
       - 'js/w33-tpm-wire-signature.js'
+      - 'js/w33-tpm-credential-activation.js'
       - 'js/w33-measured-placement-loop.js'
+      - 'js/w33-host-audit-bundle.js'
       - 'js/w33-portable-audit-verifier.js'
       - 'bin/w33-verify-receipt.js'
       - 'bin/w33-verify-linux-tpm.js'
+      - 'bin/w33-tpm-enroll.js'
+      - 'bin/w33-capture-host-bundle.js'
       - 'tests/w33-tpm-eventlog-provenance.test.js'
       - 'tests/w33-tpm-wire-signature.test.js'
+      - 'tests/w33-tpm-credential-activation.test.js'
       - 'tests/w33-measured-placement-loop.test.js'
       - 'tests/w33-portable-audit-verifier.test.js'
+      - 'tests/w33-host-audit-bundle.test.js'
       - '.github/workflows/w33_20260902_raw_measure_portable.yml'
   workflow_dispatch:
 
@@ -25,13 +31,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify direct Linux TPM CLI syntax
-        run: node --check bin/w33-verify-linux-tpm.js
+      - name: Verify direct Linux TPM and enrollment CLI syntax
+        run: |
+          node --check bin/w33-verify-linux-tpm.js
+          node --check bin/w33-tpm-enroll.js
+          node --check bin/w33-capture-host-bundle.js
       - name: Verify raw PC Client TPM event-log path
         run: node --test tests/w33-tpm-eventlog-provenance.test.js
       - name: Verify raw TPMT_SIGNATURE quote path
         run: node --test tests/w33-tpm-wire-signature.test.js
+      - name: Verify MakeCredential ActivateCredential ceremony contract
+        run: node --test tests/w33-tpm-credential-activation.test.js
       - name: Verify measured closed-loop placement
         run: node --test tests/w33-measured-placement-loop.test.js
       - name: Verify portable end-to-end audit bundle
         run: node --test tests/w33-portable-audit-verifier.test.js
+      - name: Verify signed physical telemetry host bundle
+        run: node --test tests/w33-host-audit-bundle.test.js
