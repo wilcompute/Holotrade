@@ -8,10 +8,11 @@
 //      GoMicroVM deployment digest, and runtime public key.
 //
 // Holotrade does not parse AMD certificates, TPM event logs, VCEKs, or quotes
-// here.  A verdict can be called hardware-backed only when the trusted external
+// here. A verdict can be called hardware-backed only when the trusted external
 // verifier says the vendor signature, measurement policy, TCB policy, and
-// runtime-key binding all passed.  The signed verdict is then embedded in the
-// delivery-receipt metadata.
+// runtime-key binding all passed. The verified normalized result can then be
+// inserted both into receipt metadata and into the generic receipt hardware-
+// evidence field before the receipt is COSE/Ed25519 signed.
 
 "use strict";
 
@@ -21,6 +22,7 @@ const D = require("./w33-passport-deployment.js");
 const PROVIDER = Object.freeze({ TPM2: "TPM2", SEV_SNP: "SEV_SNP" });
 const VERDICT_SCHEMA = "holotrade.w33-attestation-verdict.v1";
 const BINDING_SCHEMA = "holotrade.w33-measured-boot-binding.v1";
+const HARDWARE_EVIDENCE_SCHEMA = "holotrade.hardware-evidence.v1";
 
 function stable(value) {
   if (Array.isArray(value)) return `[${value.map(stable).join(",")}]`;
@@ -136,7 +138,7 @@ function verifyVerifierVerdict(signedVerdict, challenge, trustedVerifierPublicKe
   });
 }
 
-function attachAttestationReceiptMetadata(metadata, passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
+function verifiedBinding(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
   const verification = verifyVerifierVerdict(signedVerdict, challenge, trustedVerifierPublicKey, { requireHardware: true });
   if (!verification.ok) throw new Error(`refusing unattested W33 receipt: ${verification.code}`);
   if (challenge.passportId !== passport.passportId || challenge.deploymentDigest !== contract.deploymentDigest) {
@@ -156,9 +158,36 @@ function attachAttestationReceiptMetadata(metadata, passport, contract, challeng
     verifierVerdictDigest: verification.verdictDigest,
     hardwareBacked: true,
   };
+  return Object.freeze({ ...binding, bindingDigest: sha256(binding) });
+}
+
+function attachAttestationReceiptMetadata(metadata, passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
+  const binding = verifiedBinding(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey);
+  return Object.freeze({ ...(metadata || {}), w33MeasuredBoot: binding });
+}
+
+function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
+  const binding = verifiedBinding(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey);
+  const kind = binding.provider === PROVIDER.TPM2 ? "TPM_QUOTE" : "SEV_SNP_REPORT";
   return Object.freeze({
-    ...(metadata || {}),
-    w33MeasuredBoot: Object.freeze({ ...binding, bindingDigest: sha256(binding) }),
+    schema: HARDWARE_EVIDENCE_SCHEMA,
+    hardwareAttested: true,
+    evidence: Object.freeze([
+      Object.freeze({
+        kind,
+        status: "VERIFIED",
+        reasonCode: "SIGNED_NORMALIZED_EXTERNAL_VERIFIER_VERDICT",
+        verifier: binding.verifierKeyId,
+        digest: binding.verifierVerdictDigest,
+        launchMeasurement: binding.launchMeasurement,
+        reportedTcbDigest: binding.reportedTcbDigest,
+        signerChainDigest: binding.signerChainDigest,
+        challengeDigest: binding.challengeDigest,
+        passportId: binding.passportId,
+        deploymentDigest: binding.deploymentDigest,
+        runtimePublicKeyDigest: binding.runtimePublicKeyDigest,
+      }),
+    ]),
   });
 }
 
@@ -166,10 +195,13 @@ module.exports = {
   PROVIDER,
   VERDICT_SCHEMA,
   BINDING_SCHEMA,
+  HARDWARE_EVIDENCE_SCHEMA,
   sha256,
   buildChallenge,
   verdictBody,
   signVerifierVerdict,
   verifyVerifierVerdict,
+  verifiedBinding,
   attachAttestationReceiptMetadata,
+  toReceiptHardwareEvidence,
 };
