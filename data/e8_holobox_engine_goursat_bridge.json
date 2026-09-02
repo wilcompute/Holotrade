@@ -1,0 +1,112 @@
+{
+  "schema": "holotrade.e8-holobox-engine-goursat-bridge.v1",
+  "evidenceClass": "EXACT_GAP_NORMAL_QUOTIENT_AND_SUBDIRECT_CLASSIFICATION",
+  "router": {
+    "carrier": "one local radix-40 W33 digit",
+    "vertices": 40,
+    "degree": 12,
+    "connectedGroup": "PSp(4,3)",
+    "connectedOrder": 25920,
+    "connectedSimple": true,
+    "fullGroup": "PGSp(4,3)",
+    "fullOrder": 51840,
+    "fullAbelianization": "C2",
+    "fullNormalSubgroupOrders": [
+      1,
+      25920,
+      51840
+    ],
+    "connectedAndFullPointStabilizers": [
+      648,
+      1296
+    ],
+    "outerParityVisibleInFullPointStabilizer": true,
+    "sourceGraphCertificateDigest": "ce77b3108089f1ff3745c735c5ba3d7e2b132281f2b57bd305567e4beca09b0e"
+  },
+  "engine": {
+    "controlGroup": "PSL(3,2)",
+    "controlOrder": 168,
+    "controlPerfect": true,
+    "executionGroup": "2^5:S6",
+    "executionOrder": 23040,
+    "executionAbelianization": "C2xC2",
+    "actionGroupOrder": 3870720,
+    "actionAbelianization": "C2xC2",
+    "logicalChartStates": 20160,
+    "logicalChartShape": [
+      21,
+      8,
+      15,
+      8
+    ],
+    "sourceFabricCertificateSha256": "c3a05942e8906ad8435f567a8a168289a84ec1fc2eba108ba8472f256157014a"
+  },
+  "goursat": {
+    "connectedRouter": {
+      "subdirectClasses": 1,
+      "classification": "forced direct product",
+      "groupOrder": 100329062400,
+      "reason": "PSp(4,3) is simple, and its order 25920 does not divide the engine action order 3870720."
+    },
+    "fullRouter": {
+      "subdirectClasses": 4,
+      "classification": "one direct product plus three C2 fibre products",
+      "directProductOrder": 200658124800,
+      "parityFibreProductOrder": 100329062400,
+      "executionOnlyEnumerationOrders": [
+        597196800,
+        597196800,
+        597196800,
+        1194393600
+      ],
+      "parityCharacters": [
+        {
+          "label": "permutation_sign",
+          "quotient": "C2",
+          "kernelOrder": 11520,
+          "kernelStructure": "(C2 x C2 x C2 x C2 x C2) : A6",
+          "translationCoreIntersection": 32,
+          "permutationComplementIntersection": 360,
+          "canonical": false,
+          "dispatchable": false
+        },
+        {
+          "label": "translation_parity",
+          "quotient": "C2",
+          "kernelOrder": 11520,
+          "kernelStructure": "(C2 x C2 x C2 x C2) : S6",
+          "translationCoreIntersection": 16,
+          "permutationComplementIntersection": 720,
+          "canonical": false,
+          "dispatchable": false
+        },
+        {
+          "label": "translation_xor_sign",
+          "quotient": "C2",
+          "kernelOrder": 11520,
+          "kernelStructure": "((C2 x C2 x C2 x C2) : A6) : C2",
+          "translationCoreIntersection": 16,
+          "permutationComplementIntersection": 360,
+          "canonical": false,
+          "dispatchable": false
+        }
+      ],
+      "canonicalChoice": false
+    }
+  },
+  "localCarrier": {
+    "addressShape": [
+      40,
+      20160
+    ],
+    "logicalStates": 806400,
+    "connectedOrParityActionStabilizerOrder": 124416,
+    "fullIndependentActionStabilizerOrder": 248832
+  },
+  "theorem": "For one W33 radix digit, connected PSp(4,3) routing is symmetry-independent of the 20,160-state engine action. Full PGSp(4,3) routing admits exactly three additional index-two Goursat pullbacks, selected by translation parity, S6 sign, or their XOR.",
+  "evidenceBoundary": "The three parity pullbacks are exact but noncanonical. No parity is inferred from a router vertex or engine state, no recursive depth-n parity composition has been selected, and no live host, microVM, or dispatch binding is produced.",
+  "dispatchable": false,
+  "recursiveParityPolicyBuilt": false,
+  "liveBindingBuilt": false,
+  "sha256": "a08a77f99d6b659d4b23c462237681865a262a308a34f4208611261e16c8253f"
+}

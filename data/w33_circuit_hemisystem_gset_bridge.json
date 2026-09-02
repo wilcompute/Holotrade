@@ -1,0 +1,458 @@
+{
+  "schema": "holotrade.w33-circuit-hemisystem-gset-no-go.v1",
+  "evidenceClass": "EXACT_GAP_ENUMERATION_STABILIZERS_AND_PERMUTATION_CHARACTERS",
+  "dependencies": {
+    "circuitCarrier": "data/e8_pg34_sentinel_control_plane.json",
+    "hemisystemCensus": "data/w33_hemisystems_are_their_216.json",
+    "priorBoundary": "The prior packet proved only 432 hemisystems / 216 complement-pairs and explicitly left a fibre-level correspondence unclaimed."
+  },
+  "carriers": {
+    "sentinelFiveCircuits": 216,
+    "hemisystemsModuloComplement": 216,
+    "eachTransitive": true
+  },
+  "innerPSpAction": {
+    "group": "PSp(4,3)",
+    "order": 25920,
+    "circuitStabilizerOrder": 120,
+    "hemisystemStabilizerOrder": 120,
+    "circuitStabilizerOrderHistogram": [
+      {
+        "order": 1,
+        "count": 1
+      },
+      {
+        "order": 2,
+        "count": 25
+      },
+      {
+        "order": 3,
+        "count": 20
+      },
+      {
+        "order": 4,
+        "count": 30
+      },
+      {
+        "order": 5,
+        "count": 24
+      },
+      {
+        "order": 6,
+        "count": 20
+      }
+    ],
+    "hemisystemStabilizerOrderHistogram": [
+      {
+        "order": 1,
+        "count": 1
+      },
+      {
+        "order": 2,
+        "count": 25
+      },
+      {
+        "order": 3,
+        "count": 20
+      },
+      {
+        "order": 4,
+        "count": 30
+      },
+      {
+        "order": 5,
+        "count": 24
+      },
+      {
+        "order": 6,
+        "count": 20
+      }
+    ],
+    "stabilizersConjugate": false
+  },
+  "fullAutomorphismAction": {
+    "group": "Aut(W(3,3))",
+    "order": 51840,
+    "circuitStabilizerOrder": 240,
+    "hemisystemStabilizerOrder": 240,
+    "circuitStabilizerOrderHistogram": [
+      {
+        "order": 1,
+        "count": 1
+      },
+      {
+        "order": 2,
+        "count": 51
+      },
+      {
+        "order": 3,
+        "count": 20
+      },
+      {
+        "order": 4,
+        "count": 60
+      },
+      {
+        "order": 5,
+        "count": 24
+      },
+      {
+        "order": 6,
+        "count": 60
+      },
+      {
+        "order": 10,
+        "count": 24
+      }
+    ],
+    "hemisystemStabilizerOrderHistogram": [
+      {
+        "order": 1,
+        "count": 1
+      },
+      {
+        "order": 2,
+        "count": 51
+      },
+      {
+        "order": 3,
+        "count": 20
+      },
+      {
+        "order": 4,
+        "count": 60
+      },
+      {
+        "order": 5,
+        "count": 24
+      },
+      {
+        "order": 6,
+        "count": 60
+      },
+      {
+        "order": 10,
+        "count": 24
+      }
+    ],
+    "stabilizersConjugate": false,
+    "permutationCharacterRows": [
+      {
+        "order": 1,
+        "classSize": 1,
+        "circuitFixed": 216,
+        "hemisystemFixed": 216
+      },
+      {
+        "order": 2,
+        "classSize": 36,
+        "circuitFixed": 6,
+        "hemisystemFixed": 66
+      },
+      {
+        "order": 2,
+        "classSize": 45,
+        "circuitFixed": 48,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 2,
+        "classSize": 270,
+        "circuitFixed": 12,
+        "hemisystemFixed": 20
+      },
+      {
+        "order": 2,
+        "classSize": 540,
+        "circuitFixed": 10,
+        "hemisystemFixed": 6
+      },
+      {
+        "order": 3,
+        "classSize": 80,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 3,
+        "classSize": 240,
+        "circuitFixed": 0,
+        "hemisystemFixed": 18
+      },
+      {
+        "order": 3,
+        "classSize": 480,
+        "circuitFixed": 9,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 4,
+        "classSize": 540,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 4,
+        "classSize": 540,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 4,
+        "classSize": 1620,
+        "circuitFixed": 4,
+        "hemisystemFixed": 4
+      },
+      {
+        "order": 4,
+        "classSize": 3240,
+        "circuitFixed": 2,
+        "hemisystemFixed": 2
+      },
+      {
+        "order": 5,
+        "classSize": 5184,
+        "circuitFixed": 1,
+        "hemisystemFixed": 1
+      },
+      {
+        "order": 6,
+        "classSize": 720,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 6,
+        "classSize": 1440,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 6,
+        "classSize": 1440,
+        "circuitFixed": 0,
+        "hemisystemFixed": 6
+      },
+      {
+        "order": 6,
+        "classSize": 1440,
+        "circuitFixed": 3,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 6,
+        "classSize": 1440,
+        "circuitFixed": 3,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 6,
+        "classSize": 2160,
+        "circuitFixed": 0,
+        "hemisystemFixed": 2
+      },
+      {
+        "order": 6,
+        "classSize": 4320,
+        "circuitFixed": 1,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 8,
+        "classSize": 6480,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 9,
+        "classSize": 5760,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 10,
+        "classSize": 5184,
+        "circuitFixed": 1,
+        "hemisystemFixed": 1
+      },
+      {
+        "order": 12,
+        "classSize": 4320,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      },
+      {
+        "order": 12,
+        "classSize": 4320,
+        "circuitFixed": 0,
+        "hemisystemFixed": 0
+      }
+    ],
+    "discrepancyCount": 11,
+    "sharpWitnesses": [
+      {
+        "order": 2,
+        "classSize": 36,
+        "circuitFixed": 6,
+        "hemisystemFixed": 66
+      },
+      {
+        "order": 2,
+        "classSize": 45,
+        "circuitFixed": 48,
+        "hemisystemFixed": 0
+      }
+    ]
+  },
+  "representationDiagnosis": {
+    "pspDecomposition": [
+      {
+        "irrepIndex": 1,
+        "degree": 1,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 4,
+        "degree": 6,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 8,
+        "degree": 15,
+        "circuitMultiplicity": 2,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 9,
+        "degree": 20,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 2
+      },
+      {
+        "irrepIndex": 10,
+        "degree": 24,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      },
+      {
+        "irrepIndex": 11,
+        "degree": 30,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 12,
+        "degree": 30,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      },
+      {
+        "irrepIndex": 13,
+        "degree": 30,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      },
+      {
+        "irrepIndex": 18,
+        "degree": 60,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 19,
+        "degree": 64,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 20,
+        "degree": 81,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      }
+    ],
+    "fullAutomorphismDecomposition": [
+      {
+        "irrepIndex": 1,
+        "degree": 1,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 4,
+        "degree": 6,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 7,
+        "degree": 15,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      },
+      {
+        "irrepIndex": 9,
+        "degree": 15,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 11,
+        "degree": 20,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 2
+      },
+      {
+        "irrepIndex": 14,
+        "degree": 24,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      },
+      {
+        "irrepIndex": 16,
+        "degree": 30,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 18,
+        "degree": 60,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 19,
+        "degree": 60,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      },
+      {
+        "irrepIndex": 21,
+        "degree": 64,
+        "circuitMultiplicity": 0,
+        "hemisystemMultiplicity": 1
+      },
+      {
+        "irrepIndex": 24,
+        "degree": 81,
+        "circuitMultiplicity": 1,
+        "hemisystemMultiplicity": 0
+      }
+    ],
+    "pspCircuitDimension": 216,
+    "pspHemisystemDimension": 216,
+    "circuitSteinberg81Multiplicity": 1,
+    "hemisystemSteinberg81Multiplicity": 0,
+    "reading": "The circuit carrier contains the 81-dimensional Steinberg representation once; the hemisystem-line carrier contains no Steinberg constituent. This is the sharp module-level separator behind the G-set no-go."
+  },
+  "conclusion": {
+    "equivariantBijectionExists": false,
+    "countMatchOnly": true,
+    "outerTwistRepairs": false,
+    "theorem": "The 216 sentinel five-circuits and the 216 W(3,3) hemisystems modulo complementation are distinct transitive finite-group carriers. Their stabilizers are nonconjugate already in PSp(4,3), remain nonconjugate in Aut(W(3,3)), and their full permutation characters differ. At module level the circuit carrier contains Steinberg-81 once while the hemisystem carrier contains it zero times. Equal cardinality does not furnish an equivariant dictionary."
+  },
+  "evidenceBoundary": "This is an exact finite G-set no-go. It rules out equivariant identification under the native inner and full graph-automorphism actions; it does not rule out a non-equivariant lookup table, an augmented cover, or a relation after adding extra structure. It has no physical interpretation and changes no blocking bound.",
+  "sha256": "cac50f7413fda6845f0faaae0abc189e1d607fdb4c91b55a7300b483870f454d"
+}

@@ -198,19 +198,30 @@ also tested and rejected: it has stabilizer `SmallGroup(192,1472)` and its degre
 isomorphic to the hole graph. This is an exact finite graph/group result, not a folded-cube hardware claim
 or a K3-surface construction.
 
-### The eight-front E8 backend packet
+### The sixteen-front E8 backend packet
 
 The residual graph is now compiled, factored, and connected back to the \(q=2\) carrier rather than merely
 classified. Every item below has a GAP-owned witness, a frozen SHA-256 certificate, and focused regression
-tests; the RTL row has an additional Yosys SAT proof.
+tests; the hardware rows have additional Yosys SAT proofs.
 
 | Front | Exact result | Boundary retained |
 |---|---|---|
 | Fano control codec | \(\mathrm{GL}(3,2)=(C_7{:}C_3)D_8\), a unique \(21\times8=168\) Zappa--Szép address chart; all 28,224 products and 4,741,632 associativity triples checked | abstract bus IDs, not machines; multiplication is matched-action, not coordinatewise |
 | orientation / rollback | \(2^4{:}S_6\triangleleft 2^5{:}S_6\) gives a relative \(C_2\) character and 1,134 unlabelled pairs of maximum spreads | no canonical 0/1 label and no canonical rollback: 376 outer involutions form five classes |
 | hole-graph RTL | the exact 120-state degree-20 graph is implemented both by a 1,920-bit \(GF(9)\) coordinate predicate and a 14,400-bit row ROM | Yosys proves equality on all \(2^{14}\) address pairs; synthesis is not timing or deployment evidence |
-| stable normalizer adapter | over \(C_{13}{:}C_3\), both sides stabilize at dimension 4,200; over \(D_{26}=C_{13}{:}C_2\), \(F_2[V_2]\oplus J_2^{32}\cong H_1\oplus J_1^{64}\) at dimension 4,160 | corrections are external \(C_{13}\)-trivial modules; no compatible full \(C_{13}{:}C_6\) intertwiner is built |
+| branchwise normalizer adapter | over \(C_{13}{:}C_3\), both sides stabilize at dimension 4,200; over \(D_{26}=C_{13}{:}C_2\), \(F_2[V_2]\oplus J_2^{32}\cong H_1\oplus J_1^{64}\) at dimension 4,160 | the natural \(\mathbb F_4^3\) translation pairing is killed by \(C_{13}\)-equivariance |
 | cross-prime fibre | the \(2\)-core partitions the 120 states into fifteen \(F_2^3\) fibres of size eight; each fibre is \(K_{4,4}\), while the cross-only connector over an intersecting-duad edge is exactly \(4C_4\) | the two-fibre induced union is connected and 6-regular; the old `C16` label confused component size with graph type and is retracted |
+| full normalizer closure | one 64-dimensional correction pair assembles the restrictions into an abstract \(F_2[C_{13}{:}C_6]\)-module isomorphism at dimension 4,160 | no direct 4,096-dimensional bridge and no 4,160-dimensional chain map; dispatch remains refused |
+| canonical fibre partition | the fifteen fibres are exactly the orbits of \(O_2(2^5{:}S_6)\), so the unlabelled \(15\times8\) partition is invariant under the full graph automorphism group | block names and within-fibre slot labels remain gauge choices; no inventory binding follows |
+| affine relation compiler | sixty \(T(6)\) edges use thirteen codimension-two affine relation types; each cross relation is the union of two parallel permutation channels | 171 LUT4s versus 720 for the general predicate in the same flow; this is a multichannel relation lift, not a regular one-voltage cover |
+| reversible dilation | \(U(x,y)=(x+Ay,y)\) is a 240-bit symplectic involution with 2,400 CNOTs in optimal depth 20 | exact logical circuit and exhaustive RTL identity, not a quantum-device or routing-performance claim |
+| recursive control chart | \(21\times8\times15\times8=20{,}160\) bijective logical states; Goursat forces every surjective coupling of the 168- and 120-state actions to be their direct product | the equality \(20{,}160=|A_8|\) is quarantined; these are not \(A_8\) elements, hosts, or dispatchable microVMs |
+| 85-state polarity / sentinel weld | one \(40\times45\) matrix satisfies \(BB^T=8I+2A_{W33}+J\) and \(B^TB=8I+2A_{\overline{GQ(4,2)}}\); restoring absolute loops gives \(H^2=16I+5J\), while the columns are exactly the 45 minima of \([40,15,8]_2\) and have 216 five-circuits | only 5 of its 35 chiral zero modes are index-protected under arbitrary off-diagonal perturbation; the design/code are classical, not physical E8 hardware, cryptographic integrity, or a qutrit-Clifford torsor |
+| adjacency homology / CSS code | \(A^2=0\) over \(F_2\), with \(\operatorname{im}A=[120,40,16]_2\), \(\ker A=[120,80,8]_2\), and the exact CSS code \([[120,40,8]]_2\) | a classical stabilizer-code theorem; no decoder, noise model, physical qubits, or hardware performance is supplied |
+| universal W33 shadow | every equivariant map from the 40-dimensional logical homology to a genuine 40-point W33 carrier factors through 15 coinvariants and lands in the explicit \([40,15,8]_2\) sentinel; the reverse maps land in 15 fixed dimensions | the universal image spans have dimensions 11 or 6 under the two \(S_6\) identifications; there is no isomorphic relabeling or preferred nonzero map |
+| bicolour circuit split | exact rational ranks are \(216,216,372\), so the common colour space is \(60=1+15+20+24\); both colours transport the canonical circuit carrier to the same \(45=1+20+24\) subspace | this repairs a modular-rank over-read and leaves the diagonal 15 as the exact residual; no optical or hardware mode is inferred |
+| router / engine Goursat closure | a connected W33 router is forced independent of the 20,160-state engine, giving \(40\times20{,}160=806{,}400\) local logical states; the full router admits exactly three additional \(C_2\) fibre products | the three parity pullbacks are exact but noncanonical, so no recursive parity policy, host identity, or dispatch authority is selected |
+| the two 216s separated | the 216 five-circuits and 216 hemisystem complement-pairs are distinct transitive \(PSp(4,3)\)-sets and remain distinct under the full order-51,840 automorphism group; the circuit carrier contains Steinberg-81 once, the hemisystem carrier zero times | equal cardinality is not an equivariant dictionary; 11 permutation-character discrepancies make the no-go explicit |
 
 The cross-prime quotient is especially rigid. If \(Q\) counts neighbours from one eight-state fibre into
 another, then
@@ -223,6 +234,15 @@ The off-diagonal zero relation is exactly \(KG(6,2)\), the \(q=2\) hole graph. C
 spectrum is \(20^1,8^5,0^9\), and the rational nine-dimensional zero eigenspace of the \(q=3\) graph is the
 lift of the \(+1\) eigenspace of \(KG(6,2)\).
 
+The 40- and 45-state carriers also close into one exact 85-state control plane. The cross-incidence matrix
+has rational rank 25 and chiral kernel split \(15+20\). Adding the 45 absolute-point polarity loops produces
+the symmetric \(2-(85,21,5)\) design with spectrum \(21^1,4^{45},(-4)^{39}\). Over \(F_2\), the same 45
+columns generate the doubly-even self-orthogonal \([40,15,8]\) sentinel and are exactly all its minimum
+words. The scheduler exposes each eight-point support, each 21-entry polarity row, and every one of the 216
+five-word zero-parity circuits, all non-dispatchable. The exact operator has 35 zero modes, but rectangular
+chiral index protects only 5: the witness gives an explicit off-diagonal perturbation that raises \(B\) to rank
+40 and removes the other 30. This is a finite stability boundary, not evidence for a physical flat band.
+
 There is a second, characteristic-two descent. Reducing the 120-by-120 adjacency matrix \(A\) modulo two gives
 
 \[
@@ -232,14 +252,46 @@ A^2=0,\qquad \operatorname{rank}A=40,\qquad
 
 Thus \(0\subset\operatorname{im}A\subset\ker A\subset F_2^{120}\) has associated graded dimensions
 \(40\mid40\mid40\). `scheduler/e8-unitary-fibre-switch.js` executes this exact parity transform and verifies
-that a second application vanishes. The dimension 40 is recorded as a structural target only: no graded
-piece is identified with the 40 W(3,3) points without an explicit equivariant map.
+that a second application vanishes. The code layer is now exact:
+\(\operatorname{im}A=[120,40,16]_2\), \(\ker A=[120,80,8]_2\), and using the same image basis for the two
+checks gives \([[120,40,8]]_2\). The 435 kernel words of weight eight are nontrivial logical classes because
+the image distance is 16.
 
-The synthesized compact predicate currently uses 544 iCE40 LUT4s versus 1,174 for the independent row ROM.
+The tempting 40-to-40 identification is nevertheless false. GAP tests both \(S_6\) identification classes:
+the logical homology is not the W33 point module. What survives universally is smaller and sharper. Every
+equivariant forward map kills the \(C_2^5\)-relations, factors through a 15-dimensional coinvariant, and lands
+inside the explicit \([40,15,8]_2\) sentinel. The span of all such images has dimension 11 in the inner class
+and 6 in the outer class; every reverse map lands in the corresponding 15-dimensional fixed homology.
+
+On the 216-circuit shell, the two maximal-overlap colours now have exact characteristic-zero stacked rank
+372, not merely a modular lower bound. Their common 60-space splits concretely as
+
+\[
+  \operatorname{circuit}_{45}^{+}
+  =\operatorname{circuit}_{45}^{-}
+  =\operatorname{circuit}_{45}=1\oplus20\oplus24,
+  \qquad
+  \operatorname{common}_{60}
+  =\operatorname{circuit}_{45}\oplus\operatorname{diagonal}_{15}.
+\]
+
+One similarly sized object must remain separate: the 216 circuit states are not the 216 projective
+hemisystem lines. Their order-120 stabilizers are nonconjugate in \(PSp(4,3)\), their order-240 extensions
+remain nonconjugate in \(\operatorname{Aut}(W(3,3))\), and their full permutation characters differ on eleven
+classes. The most visible witnesses are involutions fixing \(48\) versus \(0\), and \(6\) versus \(66\), states.
+The irreducible decomposition gives the conceptual separator: the circuit
+permutation module contains the 81-dimensional Steinberg representation once,
+whereas the hemisystem-line module contains it zero times.
+
+The general coordinate predicate uses 544 iCE40 LUT4s versus 1,174 for the independent row ROM. The
+affine relation compiler cuts the same logical-address decision to 171 LUT4s versus 720 for that general
+predicate under the same no-ABC flow. Its separate reversible lift uses 2,400 CNOTs in an exactly optimal
+20-layer schedule.
 Reproduce the complete packet with:
 
 ```bash
 npm run verify:e8-backend
+npm run verify:e8-hardware
 ```
 
 The upper bound \((q^3+q+2)/2\), sharp at \(q=2,3\), is published finite-geometry prior art; the contribution
@@ -256,7 +308,7 @@ A depth-2 tensor tile is \(L\times M\) for two W(3,3) lines: 16 leaves in the \(
 relevant quantity is \(\tau_2\), the fewest leaf failures that can leave **no** intact tile anywhere. Fewer
 than \(\tau_2\) failures always leave some tile whole, so \(\tau_2-1\) is a hard survivability floor.
 
-Shadow double-counting proves \(\tau_2\ge110\), and the obvious construction \(B\times B\) from an 11-point
+Shadow double-counting first gives \(\tau_2\ge110\), and the obvious construction \(B\times B\) from an 11-point
 line blocker gives 121. The gap resisted direct search: CP-SAT over all \(2^{1600}\) subsets reproduced
 exactly those endpoints and then stalled, because the problem's stabiliser \(\mathrm{Aut}(W_{33})\wr C_2\)
 has order \(51840^2\cdot2\approx5.4\times10^9\) and the solver re-explores every candidate billions of times.
@@ -270,11 +322,11 @@ beating \(11^n\) at every \(n\ge2\). The depth-3 witness is verified against all
 The structural consequence matters more than the six leaves: the witness has row support 37, not 11, so
 \(B\times B\) is **not** optimal and the product construction behind the 121 figure is strictly beatable.
 
-**\(\tau_2\) itself is still open in \([110,115]\).** The lower bound has not moved. Two models that encode
-everything tightness forces at 110 — both shadow families pinned to the exactly 360 minimum blockers, every
-fibre and co-fibre an independent set capped by \(\alpha=7\), and the degree identity linking them — each
-returned UNKNOWN rather than a decision. That is recorded as a negative result; `exactTau` is `null` in the
-engine and the tests pin the open wording.
+The tight value 110 is now excluded by the exact self-duality obstruction, so **\(\tau_2\) is open in
+\([111,115]\)**. The result removes one endpoint; it does not determine the remaining value. The 111 case has
+an exact PG\((3,4)\)-labelled partial-duality reduction, while the surviving 112--115 interval retains the
+explicit 115-leaf upper witness. `exactTau` therefore remains `null`, and the tests pin both the sharpened
+lower endpoint and the unresolved boundary.
 
 The earlier truncated external E8 JSON remains intentionally unimported. The unitary ladder above is instead
 owned by a complete local GAP witness, a canonical frozen certificate, and a deterministic replay test.
@@ -313,13 +365,24 @@ js/genetics.js              specialization and lineage model
 js/uor.js                   64-bit object-reference codec and policy scores
 js/app.js                   browser orchestration and chart rendering
 scheduler/e8-unitary-elastic-ladder.js  fail-closed H(3,4)/H(3,9) topology plans
-scheduler/e8-normalizer-stable-adapter.js exact stable plans and full-normalizer refusal
+scheduler/e8-normalizer-stable-adapter.js branchwise stable plans plus exact full-normalizer handoff
+scheduler/e8-full-normalizer-stable-closure.js abstract 4,160-state module plan, chain-level refusal
 scheduler/e8-unitary-fibre-switch.js     executable 15x8 chart and square-zero parity switch
+scheduler/e8_unitary_voltage_lift.js     thirteen-type affine relation compiler
+scheduler/e8-unitary-reversible-dilation.js reversible 240-bit logical transform
+scheduler/e8-fractal-microvm-fabric.js   bijective 20,160-state logical address chart
+scheduler/e8-pg34-sentinel-control-plane.js 85-state polarity and binary parity plans
 analysis/e8_fano_zappa_szep_codec.g      exact 168-state Fano matched-action codec
 analysis/e8_normalizer_stable_adapter.g  C13:C3 and D26 stable module arithmetic
+analysis/e8_full_normalizer_stable_closure.g full C13:C6 indecomposable closure
 analysis/e8_unitary_orientation_rollback_probe.g relative orientation and rollback no-go
 analysis/e8_unitary_hole_coset_rtl.g     GAP transport from 120 cosets to GF(9) coordinates
 analysis/e8_unitary_crossprime_fibre_differential.g q3-to-q2 quotient and rank-40 differential
+analysis/e8_unitary_canonical_fibre_partition.g intrinsic O2 orbit partition
+analysis/e8_unitary_voltage_lift.g       affine channel census and 4C4 correction
+analysis/e8_unitary_reversible_dilation.g symplectic involution and optimal CNOT layers
+analysis/e8_fractal_microvm_fabric.g     Goursat direct-product certificate
+analysis/e8_pg34_sentinel_control_plane.g polarity, sentinel, shell and PSp/S5 witness
 analysis/e8_unitary_elastic_ladders.g   GAP reconstruction and exhaustive maxima
 data/e8_unitary_elastic_ladders.json    canonical unitary-ladder certificate
 analysis/e8_unitary_hole_sector_probe.g GAP hole graphs, spectra, groups and spread orbits
@@ -329,6 +392,10 @@ data/e8_unitary_hole_sectors.json       frozen residual-geometry certificate
 tests/e8-unitary-hole-sectors.test.js   digest, theorem and anti-overread guards
 rtl/e8_unitary_hole_adj.v  compact GF(9) predicate plus independent 120-row ROM
 rtl/verify_e8_unitary_hole_adj.ys complete compact-versus-ROM SAT miter
+rtl/e8_unitary_voltage_lift.v thirteen-type affine relation predicate
+rtl/e8_unitary_reversible_dilation.v 240-bit square-zero reversible dilation
+rtl/verify_e8_unitary_voltage_lift.ys exhaustive affine-versus-ROM miter
+rtl/verify_e8_unitary_reversible_dilation.ys exhaustive involution proof
 rtl/holotrade_admit.v       admission/locality datapath + golden reference
 rtl/verify.ys               complete 2^25-output formal miter
 rtl/synth.ys                reproducible iCE40 synthesis

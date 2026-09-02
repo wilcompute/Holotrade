@@ -1042,8 +1042,11 @@ coset stabilizer above. Exact GAP calculation gives
 \]
 so the $N$-orbits form fifteen fibres of eight states and the induced block
 action is $G/N\cong S_6$. Every fibre induces $K_{4,4}$. Between two fibres
-whose duads meet, the bipartite connector is one 16-cycle; disjoint-duad
-fibres have no connecting edge. \PROVED
+whose duads meet, the \emph{cross-only} bipartite connector is $4C_4$;
+disjoint-duad fibres have no connecting edge. Including both internal
+$K_{4,4}$ graphs makes the induced two-fibre graph connected and 6-regular.
+The former ``$C_{16}$'' description confused its 16-vertex connected union
+with the cross-only graph type and is retracted here. \PROVED
 
 More precisely, if $Q_{ij}$ is the number of neighbours in fibre $j$ of any
 one vertex in fibre $i$, then the partition is equitable and
@@ -1077,6 +1080,50 @@ vanishes. It remains an abstract logical transform, not a reversible gate or
 a command to a host. In particular, the dimension match does \emph{not}
 identify any graded piece with the forty points of \W{}; that would require an
 explicit equivariant map. \PROVED
+
+The fibre partition itself is no longer a coordinate choice. GAP reconstructs
+the full graph automorphism group, takes its characteristic subgroup
+$O_2(G)\cong C_2^5$, and recovers exactly the same fifteen orbits of size eight.
+Thus the unlabelled $15\times8$ partition is intrinsic to the graph. Only the
+labels of the fifteen blocks and the eight slots inside each block remain gauge
+choices; canonical blocks do not bind those logical states to machines.
+\PROVED
+
+\subsubsection{Affine relation compiler and reversible dilation}
+
+The block quotient can be compiled more tightly than the general $GF(9)$
+predicate. Each of the sixty edges of $T(6)$ carries a codimension-two affine
+relation on $\mathbb F_2^3\times\mathbb F_2^3$. Each relation contains eight
+affine permutation graphs and has four complementary two-map decompositions;
+choosing one decomposition gives the two parallel channels whose union is
+$4C_4$. Across all base edges only thirteen relation types occur. This is an
+affine multichannel relation lift, not a regular one-voltage cover in the
+standard sense~\cite{gross1977coverings}. \PROVED
+
+The generated RTL evaluates the thirteen relation types in 171 iCE40 LUT4s
+and four carry cells under the recorded no-ABC flow. The older general
+coordinate predicate uses 720 LUT4s under that same flow, a reduction of
+76.25\%. A Yosys SAT miter proves the affine predicate equivalent to an
+independent complete 120-row reference over all $2^{14}$ address pairs. These
+are logic counts and exhaustive Boolean equivalence, not timing, power or
+board measurements. \PROVED
+
+Although $A_2$ is square-zero rather than invertible, it has a canonical
+reversible enlargement on 240 bits:
+\[
+ U(x,y)=(x+A_2y,y),\qquad
+ U=\begin{pmatrix}I&A_2\\0&I\end{pmatrix}.
+\]
+Symmetry and $A_2^2=0$ give $U^2=I$ and
+$U^{\mathsf T}\bigl(\begin{smallmatrix}0&I\\I&0\end{smallmatrix}\bigr)U
+=\bigl(\begin{smallmatrix}0&I\\I&0\end{smallmatrix}\bigr)$.
+GAP verifies $\operatorname{rank}(U-I)=40$ and fixed-space dimension 200.
+The 2,400 CNOTs form a 20-regular bipartite graph, which the witness decomposes
+into twenty perfect matchings of 120 gates. Depth 20 is optimal because every
+wire participates in twenty gates; Yosys independently proves that two RTL
+applications are the identity for every 240-bit input. This is an exact
+logical reversible circuit, not a quantum-hardware performance claim.
+\PROVED
 
 \subsubsection{Control codec, orientation boundary and compiled graph}
 
@@ -1113,11 +1160,10 @@ synthesis reports 544 LUT4 cells for the compact predicate and 1,174 for the
 row ROM. These are logic counts, not timing, power, board or physical-network
 measurements. \PROVED
 
-\subsubsection{Stable normalizer adapters are not a direct bridge}
+\subsubsection{The full normalizer closes abstractly, not at chain level}
 
-The companion normalizer calculation is also exposed fail-closed. On the odd
-$C_{13}{:}C_3$ branch, adding the two induced correction modules gives equal
-dimension 4,200. On the characteristic-two dihedral branch
+The companion normalizer calculation is also exposed fail-closed. On the
+characteristic-two dihedral branch
 $D_{26}=C_{13}{:}C_2$, the complete extension defect lies in the
 316-dimensional $C_{13}$-fixed sector:
 \[
@@ -1133,9 +1179,162 @@ stable identity
 at dimension 4,160 on each side. Both correction carriers are external with
 trivial $C_{13}$ action. The natural $\mathbb F_4^3$ fixed cone cannot replace
 them: three locally $C_3$-compatible translation pairings exist, but no
-nonzero translation is $C_{13}$-equivariant. The restrictions therefore do
-not construct one compatible $C_{13}{:}C_6$ intertwiner, and that full request
-remains refused by the scheduler. \PROVED
+nonzero translation is $C_{13}$-equivariant. \PROVED
+
+The restrictions nevertheless assemble at the level of abstract modules.
+For the full semidirect product $C_{13}{:}C_6$, with the complement acting on
+$C_{13}$ by $a\mapsto a^4$, GAP decomposes both 4,096-dimensional carriers
+into the four indecomposables obtained from $J_1,J_2$ and the nontrivial
+two-dimensional $C_3$ module. A 64-dimensional correction on each side gives
+one exact stable isomorphism at dimension 4,160. Its $C_2$ restriction recovers
+$J_2^{32}$ versus $J_1^{64}$; the former consists of 32 copies of the unique
+nonsplit class in $\operatorname{Ext}^1(\mathbf1,\mathbf1)$, while the Tate
+dimension on the latter side is 64, so the numerical defect is explained by
+$64=2\cdot32$. Its $C_3$ restriction recovers the independently computed odd
+branch. \PROVED
+
+This closes the abstract $\mathbb F_2[C_{13}{:}C_6]$ stable-module question.
+It does \emph{not} give a direct 4,096-dimensional bridge, a 4,160-by-4,160
+chain map, or a dispatchable scheduler transform. A tempting 32-cycle
+Hall--Janko carrier is also rejected: its $C_3$ cycle profile differs from the
+local extension-pair profile. The runtime therefore returns the stable plan
+and names an explicit chain-level intertwiner as the next required evidence.
+
+\subsubsection{A direct-product recursive control chart}
+
+The 168-state Fano matched-action controller and the 120-state execution switch
+compose into the bijective chart
+\[
+ 21\times8\times15\times8=20{,}160.
+\]
+This is not merely multiplication of state counts. The first action group is
+the simple group $\mathrm{PSL}(3,2)$ of order 168; the second has order 23,040
+and has no quotient of order divisible by 7. They therefore have no common
+nontrivial quotient, and Goursat's lemma forces every subdirect coupling that
+surjects onto both factors to be their direct product. The resulting product
+action has order 3,870,720 and point stabilizer 192. The coincidence
+$20{,}160=|A_8|$ is not an identification: the states are Cartesian logical
+addresses, not $A_8$ elements, hosts or microVMs. \PROVED
+
+Adding one native 40-state \W{} router digit gives an $806{,}400$-state local
+logical carrier. A second Goursat calculation proves that connected
+$\operatorname{PSp}(4,3)$ routing is forced to be independent of the engine
+action. For the full order-$51{,}840$ router group there are exactly four
+subdirect classes: the direct product and three index-two fibre products,
+selected respectively by permutation sign, translation parity and their XOR.
+All three parity pullbacks are noncanonical; no router vertex or engine state
+selects one, so the result supplies neither a recursive parity policy nor
+dispatch authority. \PROVED
+
+\subsubsection{One 85-state polarity plane and its binary sentinel}
+
+The two carrier sizes $40+45$ are blocks of one exact matrix, not merely a
+numerical partition. Let $B$ be the 40-by-45 incidence matrix whose columns are
+the eight-point trade supports. Direct GAP reconstruction from \W{} gives
+\[
+ BB^{\mathsf T}=8I_{40}+2A_{\W}+J_{40},\qquad
+ B^{\mathsf T}B=8I_{45}+2A_{\overline{GQ(4,2)}},
+ \qquad \operatorname{rank}_{\mathbb Q}B=25.
+\]
+Thus the loopless chiral operator with off-diagonal block $B$ has kernel split
+$15+20$ and spectrum
+$0^{35},\ \pm\sqrt{72}^{1},\ \pm\sqrt{12}^{24}$. \PROVED
+
+Only five of those 35 zero modes are protected by the rectangular chiral index
+under an arbitrary off-diagonal perturbation: every 40-by-45 matrix has nullity
+at least $45-40=5$. The witness adds the 40-by-45 diagonal embedding to $B$ and
+obtains rank 40, leaving exactly five zero modes in the doubled chiral operator.
+Thus the other thirty zeros require the special incidence rank/module symmetry.
+This is a finite perturbation theorem, not evidence for a physical flat band.
+\PROVED
+
+Restoring the polarity loops on the 45 absolute points completes the block
+matrix to an 85-by-85 point--polar-plane incidence matrix $H$. The same witness
+checks entry by entry
+\[
+ H^2=16I_{85}+5J_{85}.
+\]
+Hence $H$ is the symmetric $2-(85,21,5)$ design, with spectrum
+$21^1,4^{45},(-4)^{39}$, determinant $-21\,4^{84}$ and
+$H^{-1}=H/16-5J/336$. \PROVED
+
+Over $\mathbb F_2$, the columns of $B$ span a doubly-even self-orthogonal
+\([40,15,8]_2\) code. Enumerating all $2^{15}$ words gives
+\[
+ 1+45z^8+720z^{12}+6930z^{16}+17376z^{20}
+ +6930z^{24}+720z^{28}+45z^{32}+z^{40},
+\]
+and set comparison proves that the 45 columns of $B$ are exactly all 45
+minimum words. Their Hamming metric reconstructs $GQ(4,2)$: distance 16 means
+disjoint support, while distance 12 means intersection size two. The resulting
+rank-15 binary matroid has girth five and exactly 216 five-circuits; each is a
+five-coclique, every nonedge lies in three circuits, and GAP verifies the orbit
+$\mathrm{PSp}(4,3)/S_5$. \PROVED
+
+The projective design and invariant code are classical~\cite{rodrigues2008};
+the certified integration result is their explicit equality in the same $B$
+coordinates already used by the W33 and $GQ(4,2)$ schedulers. The 216-element
+circuit orbit is not identified with the order-216 projective qutrit Clifford
+group, and its parity plans are not cryptographic authentication.
+
+\subsubsection{The 120-state homology, its sentinel shadow and the two 216s}
+
+For the same 120-state adjacency differential over $\mathbb F_2$, exhaustive
+enumeration and the binary MacWilliams transform give
+\[
+ \operatorname{im}A=[120,40,16]_2,\qquad
+ \ker A=[120,80,8]_2,\qquad
+ \ker A/\operatorname{im}A\cong \mathbb F_2^{40}.
+\]
+Taking the same basis of $\operatorname{im}A$ for both CSS checks gives the
+exact code $[[120,40,8]]_2$: all 435 weight-eight kernel words are nontrivial
+logical classes because the image has minimum weight 16. This is a classical
+stabilizer-code theorem; no decoder or noise model is supplied. \PROVED
+
+The equality of dimensions does not identify this homology with the 40-point
+\W{} permutation module. GAP tests both inner and exceptional-outer $S_6$
+identifications and rejects an isomorphism. Instead, every equivariant map
+from the homology to either genuine point carrier kills the $C_2^5$
+translation relations, factors through a 15-dimensional coinvariant quotient,
+and lands inside the explicit $[40,15,8]_2$ sentinel code. The span of all
+forward images has dimension 11 in the inner class and 6 in the outer class;
+every reverse map lands in the 15-dimensional fixed homology, with the same
+two universal image dimensions. No preferred nonzero map is selected.
+\PROVED
+
+The bicolour maximal-overlap matrices $M_+$ and $M_-$ on the 216 five-circuits
+have exact rational ranks
+\[
+ \operatorname{rank}M_+=\operatorname{rank}M_-=216,\qquad
+ \operatorname{rank}\!\begin{bmatrix}M_+\\M_-\end{bmatrix}=372.
+\]
+Thus their common row space has dimension 60 and module shape
+$1+15+20+24$. Reconstructing the established 216-by-45 circuit incidence
+inside the same GAP witness proves more:
+\[
+ \operatorname{im}(C)M_+=\operatorname{im}(C)M_-,
+ \quad \dim=45,\quad
+ \operatorname{im}(C)=1+20+24.
+\]
+Consequently the common 60-space is this colour-independent circuit
+45-space direct-summed with the diagonal 15. This also repairs the earlier
+use of one finite-field rank as if it were a rational equality. \PROVED
+
+There is an equally important separation. The 432 \W{} hemisystems give 216
+projective lines after quotienting by complementation, but these are
+\emph{not} the 216 circuit states. Both actions are transitive and both
+$\operatorname{PSp}(4,3)$ stabilizers are abstractly $S_5$ of order 120, yet
+the stabilizers are nonconjugate. In the full graph automorphism group they
+grow to order 240 and remain nonconjugate; eleven conjugacy classes have
+different fixed-point counts. In particular, one involution class fixes 48
+circuits and no hemisystem lines, while another fixes 6 circuits and 66
+hemisystem lines. Equal cardinality therefore does not define an equivariant
+dictionary, even after the outer automorphism is allowed. The irreducible
+decomposition makes the separator canonical: the circuit permutation module
+contains the 81-dimensional Steinberg representation once, while the
+hemisystem-line module contains it zero times. This is the same Steinberg
+species isolated independently in the 1,080-state obstruction-product carrier
+of the companion W33 computation. \PROVED
 
 The extremal bound $(q^3+q+2)/2$ and its sharpness for $q=2,3$ are published
 finite-geometry results, not a claim of this paper~\cite{debeule2008hermitian}.
@@ -1153,8 +1352,10 @@ combinatorial search in JavaScript, eigenspace projection in Python, and
 GRAPE/nauty in GAP, which also settles that the graph's full automorphism group
 has order $51{,}840$ and that every shape orbit is unchanged under it, so the
 guarantees are exact rather than conservative. They say nothing about
-link-state routing, congestion, failure recovery, or placement across an address
-hierarchy, none of which is built.
+link-state routing, congestion-aware forwarding, physical recovery, or deployed
+placement across an address hierarchy. Healthy level-1 recovery controllers and
+failure-aware policy experiments are built and reported separately; they do not
+turn the point-graph catalogue into a network implementation.
 \end{scopebox}
 
 
@@ -1657,8 +1858,12 @@ encoded inputs, and the 1{,}600-pair canonical-point cross-check.
 The two Hermitian ladder ceilings and their hole graphs; the 120-state coset
 graph and its SAT-equivalent coordinate/ROM circuits; the $15\times8$ fibre
 quotient with weighted matrix $4I+2A(T(6))$; the square-zero rank-40
-characteristic-two adjacency; the 168-state Fano matched-action codec; and the
-stated stable-module identities and orientation/rollback no-gos.
+characteristic-two adjacency; the canonical $O_2(G)$ fibre partition; the
+171-LUT affine relation compiler and its ROM miter; the 240-bit depth-20
+reversible symplectic dilation; the 168-state Fano matched-action codec; the
+20,160-state direct-product control chart; the 85-state polarity/sentinel
+control plane and its 216 five-circuits; and the stated full-normalizer
+stable-module identity and orientation/rollback no-gos.
 
 \vspace{4pt}
 These are statements about finite software objects and encodings. They do not
@@ -1845,6 +2050,19 @@ J. De Beule, A. Klein, K. Metsch, and L. Storme,
 \emph{Designs, Codes and Cryptography}, vol. 47, nos. 1--3,
 pp. 21--34, 2008;
 \href{https://doi.org/10.1007/s10623-007-9047-8}{doi:10.1007/s10623-007-9047-8}.
+
+\bibitem{gross1977coverings}
+J. L. Gross and T. W. Tucker,
+``Generating all graph coverings by permutation voltage assignments,''
+\emph{Discrete Mathematics}, vol. 18, no. 3, pp. 273--283, 1977;
+\href{https://doi.org/10.1016/0012-365X(77)90131-5}{doi:10.1016/0012-365X(77)90131-5}.
+
+\bibitem{rodrigues2008}
+B. G. Rodrigues,
+``Self-orthogonal designs and codes from the symplectic groups $S_4(3)$ and
+$S_4(4)$,''
+\emph{Discrete Mathematics}, vol. 308, no. 10, pp. 1941--1950, 2008;
+\href{https://doi.org/10.1016/j.disc.2007.04.047}{doi:10.1016/j.disc.2007.04.047}.
 
 \end{thebibliography}
 

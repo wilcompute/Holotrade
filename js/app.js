@@ -29,6 +29,7 @@
   let unitaryHoleCertificate = null;
   let unitaryCrossprimeCertificate = null;
   let unitaryBackendCertificates = null;
+  let recoveryCertificates = null;
 
   // ---- ui state ------------------------------------------------------
   const ui = {
@@ -1368,6 +1369,12 @@
       voltage: ["data/e8_unitary_voltage_lift.json", "holotrade.e8-unitary-voltage-lift.v1"],
       reversible: ["data/e8_unitary_reversible_dilation.json", "holotrade.e8-unitary-reversible-dilation.v1"],
       fractal: ["data/e8_fractal_microvm_fabric.json", "holotrade.e8-fractal-microvm-fabric.v1"],
+      sentinel: ["data/e8_pg34_sentinel_control_plane.json", "holotrade.e8-pg34-sentinel-control-plane.v1"],
+      homologyCode: ["data/e8_unitary_homology_code_w33_obstruction.json", "holotrade.e8-unitary-homology-code-w33-obstruction.v1"],
+      sentinelShadow: ["data/e8_unitary_homology_sentinel_bridge.json", "holotrade.e8-unitary-homology-sentinel-bridge.v1"],
+      bicolour: ["data/e8_sentinel_bicolour_exact_stack_rank.json", "holotrade.e8-sentinel-bicolour-exact-stack-rank.v1"],
+      holobox: ["data/e8_holobox_engine_goursat_bridge.json", "holotrade.e8-holobox-engine-goursat-bridge.v1"],
+      two216: ["data/w33_circuit_hemisystem_gset_bridge.json", "holotrade.w33-circuit-hemisystem-gset-no-go.v1"],
     };
     try {
       const entries = await Promise.all(Object.entries(sources).map(async ([key, [url, schema]]) => {
@@ -1393,10 +1400,13 @@
     const panel = $("unitaryBackendClosure");
     if (!panel) return;
     if (!unitaryBackendCertificates) {
-      panel.innerHTML = "<b>Backend closure</b> · loading five independent exact certificates…";
+      panel.innerHTML = "<b>Backend closure</b> · loading eleven independent exact certificates…";
       return;
     }
-    const { closure, canonical, voltage, reversible, fractal } = unitaryBackendCertificates;
+    const {
+      closure, canonical, voltage, reversible, fractal, sentinel,
+      homologyCode, sentinelShadow, bicolour, holobox, two216,
+    } = unitaryBackendCertificates;
     if (closure.stableClosure.stableDimensionEachSide !== 4160 ||
         closure.stableClosure.chainLevelIntertwinerBuilt !== false ||
         canonical.partition.canonicalAsUnlabelledPartition !== true ||
@@ -1404,7 +1414,26 @@
         voltage.implementation.synthesis.affinePredicateIce40Lut4 !== 171 ||
         reversible.dilation.involution !== true || reversible.dilation.symplectic !== true ||
         reversible.cnotNetwork.layers !== 20 ||
-        fractal.fabric.states !== 20160 || fractal.independence.commonNontrivialQuotient !== false) {
+        fractal.fabric.states !== 20160 || fractal.independence.commonNontrivialQuotient !== false ||
+        sentinel.polarityDesign.matrixIdentity !== "H^2 = 16I + 5J" ||
+        sentinel.sentinel.parameters !== "[40,15,8]_2" || sentinel.shell.fiveCircuits !== 216 ||
+        sentinel.chiralProtection.rectangularIndexFloor !== 5 || sentinel.chiralProtection.exactZeroModes !== 35 ||
+        homologyCode.codes.css.parameters !== "[[120,40,8]]_2" ||
+        homologyCode.codes.image.parameters !== "[120,40,16]_2" ||
+        homologyCode.codes.kernel.parameters !== "[120,80,8]_2" ||
+        sentinelShadow.universalW33Shadow.innerIdentification.spanOfAllForwardImages !== 11 ||
+        sentinelShadow.universalW33Shadow.outerIdentification.spanOfAllForwardImages !== 6 ||
+        bicolour.rationalRowSpaces.stackedRank !== 372 ||
+        bicolour.circuitCarrierBridge.plusMinusImagesEqual !== true ||
+        bicolour.circuitCarrierBridge.commonComplementDimension !== 15 ||
+        holobox.localCarrier.logicalStates !== 806400 ||
+        holobox.goursat.connectedRouter.classification !== "forced direct product" ||
+        holobox.goursat.fullRouter.subdirectClasses !== 4 ||
+        two216.innerPSpAction.stabilizersConjugate !== false ||
+        two216.fullAutomorphismAction.stabilizersConjugate !== false ||
+        two216.fullAutomorphismAction.discrepancyCount !== 11 ||
+        two216.representationDiagnosis.circuitSteinberg81Multiplicity !== 1 ||
+        two216.representationDiagnosis.hemisystemSteinberg81Multiplicity !== 0) {
       panel.innerHTML = "<b>Backend closure</b> · certificate theorem flags disagree";
       return;
     }
@@ -1417,7 +1446,68 @@
       "The corrected affine relation compiler implements the graph in <b>171 iCE40 LUT4s</b> (13 relation types), " +
       "with Yosys equivalence against the full row ROM; its cross-only connectors are 4C₄, not C₁₆. " +
       "Its independent recursive controller chart has <b>21 × 8 × 15 × 8 = 20,160</b> logical states; " +
-      "Goursat forces the Fano and execution control groups to be independent. None of these facts binds a host or authorizes dispatch.";
+      "Goursat forces the Fano and execution control groups to be independent. A second exact weld uses one " +
+      "<b>40 × 45</b> incidence matrix to complete the <b>2-(85,21,5)</b> polarity design, generate exactly the " +
+      "45 minima of the <b>[40,15,8]₂</b> sentinel, and expose 216 five-word zero-parity circuits. The design and " +
+      "code are classical; their equality in these coordinates is the certified integration result. Of the exact " +
+      "operator's 35 zero modes, only <b>5</b> survive arbitrary off-diagonal 40 × 45 perturbations by rectangular " +
+      "index; an explicit rank-40 perturbation removes the other 30. The same 120-state differential yields the exact " +
+      "<b>[[120,40,8]]₂</b> CSS code, but its 40-dimensional homology is not the W33 point module: every equivariant " +
+      "W33 shadow factors through 15 dimensions and the total forward image spans only <b>11</b> or <b>6</b>. On the " +
+      "216-circuit shell, exact rational elimination gives common colour space <b>60 = 45 ⊕ 15</b>; both colours have " +
+      "the same <b>1 + 20 + 24</b> circuit image. The similarly sized 216 hemisystem lines are a different carrier—" +
+      "their permutation characters differ on <b>11</b> automorphism classes, and only the circuit carrier contains " +
+      "the <b>Steinberg 81</b>. Finally, one W33 router digit and the " +
+      "engine form <b>806,400</b> logical states; connected routing is a forced direct product, while the three full-router " +
+      "parity pullbacks are noncanonical. None of these facts binds a host or authorizes dispatch.";
+  }
+
+  async function loadRecoveryCertificates() {
+    try {
+      const [recoveryResponse, crossDcResponse] = await Promise.all([
+        fetch("data/w33_recovery_two_stage_core.json", { cache: "no-store" }),
+        fetch("data/w33_crossdc_energy_tiebreak.json", { cache: "no-store" }),
+      ]);
+      if (!recoveryResponse.ok || !crossDcResponse.ok) throw new Error("certificate HTTP failure");
+      const recovery = await recoveryResponse.json();
+      const crossDc = await crossDcResponse.json();
+      if (recovery.schema !== "holotrade.w33-recovery-two-stage-core.v2" ||
+          recovery.postEntryStage.startsFromActualBlockControllerMove !== true ||
+          recovery.postEntryStage.longHorizonValidation.distinctVisitedStates !== 21058 ||
+          recovery.rtl.formalEquivalenceProved !== false ||
+          crossDc.schema !== "holotrade.w33-crossdc-energy-tiebreak.v1" ||
+          crossDc.primaryCost.preservedForAllSources !== true) {
+        throw new Error("certificate theorem flags disagree");
+      }
+      recoveryCertificates = { recovery, crossDc };
+      renderRecoveryClosure();
+    } catch (err) {
+      console.error("[W33 recovery closure]", err);
+      const panel = $("w33RecoveryClosure");
+      if (panel) panel.innerHTML = "<b>Recovery closure</b> · certificate unavailable: " + fmt.esc(err.message);
+    }
+  }
+
+  function renderRecoveryClosure() {
+    const panel = $("w33RecoveryClosure");
+    if (!panel) return;
+    if (!recoveryCertificates) {
+      panel.innerHTML = "<b>Recovery closure</b> · loading exact software and modeled fleet certificates…";
+      return;
+    }
+    const { recovery, crossDc } = recoveryCertificates;
+    const horizon = recovery.postEntryStage.longHorizonValidation;
+    panel.innerHTML =
+      "<b>Recovery closure · EXACT SOFTWARE / MODELLED FLEET</b> · the actual one-bit entry controller " +
+      "reaches <b>6</b> free lines on all 2,880 near-ovoid starts; its composed second move exactly matches " +
+      "the generic policy and reaches <b>9</b> on all 2,880. The local scorer then matches all " +
+      fmt.int(horizon.decisions) + " checked decisions across " + fmt.int(horizon.distinctVisitedStates) +
+      " visited states. The current RTL consumes external selector/busy metadata and has only a structural " +
+      "harness—no SAT equivalence or LUT count. Above one cell, all 320 seeded sources preserve the exact " +
+      "7-ray / 33-hop frontier; an energy/carbon secondary tie-break changes 148 destinations and changes the " +
+      "modeled indices by <b>" + (100 * crossDc.energyIndex.relativeReduction).toFixed(4) + "% / " +
+      (100 * crossDc.carbonIndex.relativeReduction).toFixed(4) + "%</b>. Those inputs are catalog assumptions, " +
+      "not telemetry or measured savings.";
   }
 
   function renderUnitaryHoleShape(q, rung, maximumRung) {
@@ -2657,6 +2747,7 @@
     loadUnitaryHoleCertificate();
     loadUnitaryCrossprimeCertificate();
     loadUnitaryBackendCertificates();
+    loadRecoveryCertificates();
 
     $("drawerClose").addEventListener("click", closeDrawer);
     $("drawerBack").addEventListener("click", closeDrawer);
