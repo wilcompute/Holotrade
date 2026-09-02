@@ -1,0 +1,46 @@
+name: depth5 K13 strong dual fixing
+on:
+  push:
+    paths:
+      - 'analysis/depth5_k13_strong_dual_fixing.py'
+      - '.github/workflows/depth5_k13_strong_dual_fixing.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy ortools
+      - name: Execute strong dual fixing attack
+        run: |
+          set -o pipefail
+          python analysis/depth5_k13_strong_dual_fixing.py 2>&1 | tee analysis/DEPTH5_K13_STRONG_DUAL_FIXING.log
+      - name: Freeze evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/depth5_k13_strong_dual_fixing.json').read_text())
+          assert d['valid'] is True
+          assert d['symmetry']['group']=='S5'
+          assert d['symmetry']['order']==120
+          assert d['symmetry']['columnOrbitCount']==94
+          assert d['original']['distinctConstraintRows']==6128
+          PY
+          git config user.name holotrade-evidence-bot
+          git config user.email holotrade-evidence-bot@users.noreply.github.com
+          git add -f data/depth5_k13_strong_dual_fixing.json analysis/DEPTH5_K13_STRONG_DUAL_FIXING.log
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze exact depth5 K13 strong dual fixing evidence'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
