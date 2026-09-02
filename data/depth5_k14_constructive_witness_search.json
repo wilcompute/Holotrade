@@ -1,0 +1,47 @@
+{
+  "bestHeuristicSelection": [
+    12,
+    843,
+    950,
+    955,
+    965,
+    2046,
+    2071,
+    2336,
+    4285,
+    4331,
+    4467,
+    4552,
+    4655,
+    4788
+  ],
+  "bestHeuristicUncoveredRows": 111,
+  "boundary": "Heuristic scores, near-covers, and UNKNOWN CP-SAT searches are discovery information only. Only an explicit witness verified against all exact constraints upgrades the theorem.",
+  "candidatePoolColumns": 3399,
+  "certifiedIntervalUpdate": [
+    14,
+    22
+  ],
+  "heuristicStarts": 117,
+  "result": "UNKNOWN",
+  "schema": "holotrade.depth5-k14-constructive-witness.v1",
+  "solverRecords": [
+    {
+      "branches": 6908,
+      "columns": 3399,
+      "conflicts": 0,
+      "scope": "heuristic-candidate-pool",
+      "status": "UNKNOWN"
+    },
+    {
+      "branches": 10491,
+      "columns": 5294,
+      "conflicts": 0,
+      "scope": "full-5294",
+      "status": "UNKNOWN"
+    }
+  ],
+  "theorem": "No 14-cover was found by this construction-first search. UNKNOWN is not an infeasibility certificate and does not improve the certified interval.",
+  "valid": true,
+  "witnessLeafOrbitIndices": null
+}
