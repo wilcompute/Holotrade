@@ -3955,3 +3955,55 @@ test("the open configuration's floor is 91, and the negative holds at both ends"
   assert.match(r.boundary, /\[91, 100\]/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the trichotomy breaks at multiplicity three, and only its arithmetic half", () => {
+  const r = require(path.join(
+    root, "data/the_trichotomy_breaks_at_multiplicity_three.json"));
+  assert.ok(r.valid);
+  assert.match(r.question, /survives defect/);
+
+  // a real object in the defect regime
+  assert.equal(r.witness.leaves, 115);
+  assert.equal(r.witness.r, 5);
+  assert.equal(r.witness.leaves - 110, r.witness.r);
+  assert.ok(r.witness.blocksAllTiles);
+  assert.equal(r.conservation.sum, r.conservation.F + r.conservation.D);
+  assert.equal(r.conservation.expected, 4 * r.witness.r);
+  assert.ok(r.conservation.holds);
+
+  // both axes, and they agree exactly
+  const axes = [r.axes.row, r.axes.col];
+  for (const a of axes) {
+    // geometric half survives
+    assert.ok(a.everyFibreInAPencil, "fibres are concurrent");
+    assert.equal(a.disjointCollisions, 0, "not one disjoint collision");
+    // arithmetic half fails, uniformly at 3
+    assert.deepEqual(a.multiplicities, { 3: 11 });
+    assert.equal(a.distinctCentres, 11);
+    assert.equal(a.minimumShadows, 33);
+    assert.equal(a.distinctCentres * 3, a.minimumShadows);
+    assert.equal(a.fullPencils, 0, "no multiplicity-(t+1) fibre exists");
+    assert.equal(a.trichotomyRespected, false);
+  }
+  assert.deepEqual(r.axes.row.multiplicities, r.axes.col.multiplicities);
+  // 3 is strictly between the two permitted values
+  assert.ok(1 < 3 && 3 < 4, "the forbidden intermediate value");
+
+  // reciprocity fails in one direction only, and the reason is recorded
+  const rec = r.reciprocityIsOneSided;
+  assert.equal(rec.holds + rec.fails, 1320);
+  assert.ok(rec.oneSided);
+  assert.deepEqual(Object.keys(rec.modes), ["(True, False)"]);
+  assert.match(rec.why, /needs no\s+tightness/);
+  assert.ok(rec.fails <= r.conservation.D + 2, "bounded by the overlap, same order");
+
+  // where the proof snaps, and what is safe to reuse
+  assert.match(r.whereTheProofSnaps, /second link, not its\s+last/);
+  assert.match(r.geometricHalfSurvives, /needs no tightness/);
+  assert.match(r.arithmeticHalfFails, /EVERY fibre/);
+  assert.match(r.theBreakIsCheap, /available\s+immediately/);
+  assert.equal(r.whatSurvivesAndIsReusable.length, 2);
+  assert.match(r.whatSurvivesAndIsReusable[0], /ANY blocking set/);
+  assert.match(r.boundary, /not what the distribution must be/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

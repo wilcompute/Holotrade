@@ -1,0 +1,71 @@
+{
+  "schema": "holotrade.trichotomy-breaks-at-three.v1",
+  "valid": true,
+  "question": "f445379 asked whether the multiplicity trichotomy survives defect, since it is derived from pencil reciprocity and reciprocity from tightness",
+  "witness": {
+    "leaves": 115,
+    "r": 5,
+    "blocksAllTiles": true,
+    "source": "tensor_symmetric_blocker.json"
+  },
+  "conservation": {
+    "F": 10,
+    "D": 10,
+    "sum": 20,
+    "expected": 20,
+    "holds": true
+  },
+  "axes": {
+    "row": {
+      "shadowSizes": {
+        "11": 33,
+        "12": 4,
+        "13": 3
+      },
+      "minimumShadows": 33,
+      "distinctCentres": 11,
+      "multiplicities": {
+        "3": 11
+      },
+      "everyFibreInAPencil": true,
+      "disjointCollisions": 0,
+      "fullPencils": 0,
+      "trichotomyRespected": false
+    },
+    "col": {
+      "shadowSizes": {
+        "11": 33,
+        "12": 3,
+        "14": 1,
+        "13": 3
+      },
+      "minimumShadows": 33,
+      "distinctCentres": 11,
+      "multiplicities": {
+        "3": 11
+      },
+      "everyFibreInAPencil": true,
+      "disjointCollisions": 0,
+      "fullPencils": 0,
+      "trichotomyRespected": false
+    }
+  },
+  "geometricHalfSurvives": "every fibre of the centre map is contained in a pencil and there is not one disjoint collision, on either axis; this half needs no tightness",
+  "arithmeticHalfFails": "there are 11 distinct centres on each axis and EVERY fibre has multiplicity exactly 3, which is neither 1 nor t+1 = 4 -- the trichotomy is violated by every fibre at once, at the intermediate value it forbids",
+  "whereTheProofSnaps": "the 110 argument needs m in {0,1,t+1} to run |F| = 1 + kt/mu = 10 against alpha = 7, concluding F empty and all multiplicities at most one, hence bijections, hence a self-duality of W(3,3), impossible for odd q. At r = 5 F IS empty and buys nothing, because the multiplicities are 3. The chain breaks at its second link, not its last",
+  "reciprocityIsOneSided": {
+    "holds": 1308,
+    "fails": 12,
+    "modes": {
+      "(True, False)": 12
+    },
+    "oneSided": true,
+    "why": "|X n (L x M)| = sum_{p in L} |X_p n M| >= |S_L n M| = 2 whenever c_L in M needs no tightness, so overlap can manufacture spurious doubling but never destroy real doubling; the converse is the defect-limited direction, bounded by the overlap D"
+  },
+  "theBreakIsCheap": "eleven multiplicity-3 fibres fit inside a total budget of F + D = 20, so such a fibre costs on the order of two units; at r = 1 the budget is 4, which still admits one or two, so the failure is available immediately rather than only at large defect -- a coherent explanation for eleven formulations returning UNKNOWN",
+  "whatSurvivesAndIsReusable": [
+    "c_L in M implies |X n (L x M)| >= 2, for ANY blocking set",
+    "fibres of the centre map are contained in pencils"
+  ],
+  "boundary": "one witness at r = 5, measured not speculated; it establishes that the trichotomy CAN fail under defect, which is what kills lifting the 110 proof unchanged, but not what the distribution must be at r = 1. The cheapness estimate is an order-of-magnitude reading of one object, not a bound. tau_2 stays open in [111, 115]"
+}
