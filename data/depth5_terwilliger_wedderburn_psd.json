@@ -1,0 +1,74 @@
+{
+  "PSDReduction": {
+    "blockSizes": [
+      1,
+      1,
+      1,
+      2,
+      3
+    ],
+    "exact": true,
+    "statement": "Any symmetric element of this transpose-closed Terwilliger algebra is PSD iff its images in all simple real matrix blocks are PSD. Thus a symmetry-reduced moment relaxation needs only the recorded matrix blocks (plus scalar inequalities for 1x1 blocks)."
+  },
+  "boundary": "Exact rational algebra decomposition only; no new integer covering lower bound is claimed.",
+  "depth5Consequence": "The earlier pairwise conflict branch does not improve the depth-five lower bound 13. This certificate supplies the exact noncommutative block architecture for a stronger N+/Schrijver lift, but it is not itself such a lift and does not change [13,22].",
+  "matrixBlockSizesSorted": [
+    1,
+    1,
+    1,
+    2,
+    3
+  ],
+  "nextLiftContract": "A valid next program must construct moment variables/linear constraints from the 5294 seed-orbit cover model and prove that its moment matrix lies in this Terwilliger *-algebra (or in a tensor/product extension of it) before imposing these PSD blocks. No bound from an unproved embedding may be promoted.",
+  "primitiveCentralBlocks": [
+    {
+      "centralEigenvalue": "-760/3",
+      "matrixBlockSize": 1,
+      "simpleIdealDimension": 1,
+      "standardModuleMultiplicity": 6,
+      "standardModuleRank": 6
+    },
+    {
+      "centralEigenvalue": "-643/3",
+      "matrixBlockSize": 1,
+      "simpleIdealDimension": 1,
+      "standardModuleMultiplicity": 3,
+      "standardModuleRank": 3
+    },
+    {
+      "centralEigenvalue": "-919/12",
+      "matrixBlockSize": 2,
+      "simpleIdealDimension": 4,
+      "standardModuleMultiplicity": 8,
+      "standardModuleRank": 16
+    },
+    {
+      "centralEigenvalue": "-43/3",
+      "matrixBlockSize": 3,
+      "simpleIdealDimension": 9,
+      "standardModuleMultiplicity": 1,
+      "standardModuleRank": 3
+    },
+    {
+      "centralEigenvalue": "457/6",
+      "matrixBlockSize": 1,
+      "simpleIdealDimension": 1,
+      "standardModuleMultiplicity": 12,
+      "standardModuleRank": 12
+    }
+  ],
+  "schema": "holotrade.depth5-terwilliger-wedderburn-psd.v1",
+  "terwilliger": {
+    "algebraDimension": 16,
+    "centerDimension": 5,
+    "distanceLayerSizes": [
+      1,
+      12,
+      27
+    ],
+    "separatingCenterShift": 1,
+    "transposeClosed": true
+  },
+  "valid": true,
+  "wedderburnReading": "Q direct-sum Q direct-sum Q direct-sum M2(Q) direct-sum M3(Q)"
+}
