@@ -1,25 +1,22 @@
 #!/usr/bin/env python3
-"""Prove the full residual S5 coordinate symmetry of the depth-five quotient.
+"""Prove residual S5 coordinate symmetry of the exact depth-five cover problem.
 
-After quotienting W(3,3)^5 by the diagonal PSp4(3) action, the five product
-coordinates can still be permuted.  This should descend to automorphisms of the
-exact 6129-by-5294 tile-vs-seed incidence matrix, but we verify it objectwise
-instead of assuming it.
+The 6,129 diagonal-PSp tile orbits are not all distinct as set-cover rows:
+different tile orbits can have identical sets of covering leaf orbits.  The
+previous audit incorrectly required all row supports to be unique.  This
+version works at the mathematically relevant level: the family of DISTINCT
+cover constraints.  Duplicate constraints are logically identical and may be
+removed exactly.
 
-We replay the orbit construction from depth5_induced_subgroup_cuts while also
-retaining one concrete five-point leaf representative for every one of the
-5,294 diagonal-PSp leaf orbits.  For the four adjacent coordinate
-transpositions (01),(12),(23),(34) we:
-  * permute every concrete representative and recanonicalize with leaf_id;
-  * prove the resulting map is a permutation of all 5,294 leaf orbits;
-  * apply that column permutation to all 6,129 row support sets;
-  * identify every transformed row with a unique existing row support;
-  * prove the induced row map is a permutation and exact matrix automorphism.
+For the four adjacent coordinate transpositions we:
+  * permute every concrete representative of the 5,294 leaf orbits;
+  * recanonicalize to obtain exact column permutations;
+  * prove each column map is an involutive permutation;
+  * prove every distinct row support is carried to another distinct support;
+  * prove the induced maps on support classes satisfy the Coxeter S5 relations.
 
-The four involutions are then closed as permutations on leaf and tile orbit
-sets; the generated group must have order 120 and satisfy the Coxeter S5
-relations.  The certificate also freezes orbit-size/fixed-point profiles needed
-for safe symmetry breaking of the K=13 exact cover search.
+Thus coordinate S5 is an exact automorphism of the Boolean cover instance,
+with duplicate-row elimination performed before any symmetry breaking.
 """
 from __future__ import annotations
 
@@ -30,8 +27,6 @@ import random
 from array import array
 from collections import deque
 from pathlib import Path
-
-import numpy as np
 
 import depth5_induced_subgroup_cuts as old
 
@@ -102,7 +97,7 @@ def build_orbit_machine(pts,iso):
         o=[]
         for _ in range(d):o.append(v%N);v//=N
         return o
-    labP,trP,repsP=bfs(GP,4);labL,trL,repsL=bfs(GL,4);sz4=collections.Counter(labP)
+    labP,trP,repsP=bfs(GP,4);labL,trL,repsL=bfs(GL,4)
     def stab_orbits(reps,perm):
         out=[]
         for r in reps:
@@ -122,8 +117,7 @@ def build_orbit_machine(pts,iso):
     soP=stab_orbits(repsP,GP);soL=stab_orbits(repsL,GL)
     lid={};leaf_reps=[]
     for o4,r in enumerate(repsP):
-        _loc,szs,first=soP[o4]
-        d=digits(r,4)
+        _loc,szs,first=soP[o4];d=digits(r,4)
         for j in range(len(szs)):
             lid[(o4,j)]=len(lid);leaf_reps.append(tuple(d+[first[j]]))
     tiles=[]
@@ -144,8 +138,13 @@ def main():
     _leaf_id_ref,A=old.full_orbit_machine(pts,iso);assert A.shape==(6129,5294)
     assert all(leaf_id(r)==i for i,r in enumerate(leaf_reps))
 
-    rowsets=[frozenset(map(int,A.indices[A.indptr[r]:A.indptr[r+1]])) for r in range(A.shape[0])]
-    row_lookup={S:i for i,S in enumerate(rowsets)};assert len(row_lookup)==6129
+    raw=[frozenset(map(int,A.indices[A.indptr[r]:A.indptr[r+1]])) for r in range(A.shape[0])]
+    mult=collections.Counter(raw)
+    rowsets=sorted(mult,key=lambda S:(len(S),tuple(sorted(S))))
+    lookup={S:i for i,S in enumerate(rowsets)}
+    assert len(lookup)==len(rowsets)
+    duplicate_hist={str(k):v for k,v in sorted(collections.Counter(mult.values()).items())}
+
     col_gens=[];row_gens=[];records=[]
     for k in range(4):
         cg=[]
@@ -154,16 +153,16 @@ def main():
         cg=tuple(cg);assert sorted(cg)==list(range(5294));assert comp(cg,cg)==tuple(range(5294))
         rg=[]
         for S in rowsets:
-            T=frozenset(cg[j] for j in S);assert T in row_lookup;rg.append(row_lookup[T])
-        rg=tuple(rg);assert sorted(rg)==list(range(6129));assert comp(rg,rg)==tuple(range(6129))
-        # Exact support-set covariance.
-        for r in range(6129):assert frozenset(cg[j] for j in rowsets[r])==rowsets[rg[r]]
+            T=frozenset(cg[j] for j in S);assert T in lookup;rg.append(lookup[T])
+        rg=tuple(rg);assert sorted(rg)==list(range(len(rowsets)));assert comp(rg,rg)==tuple(range(len(rowsets)))
+        # Recheck all 6,129 original constraints, duplicates included.
+        assert all(frozenset(cg[j] for j in S) in lookup for S in raw)
         col_gens.append(cg);row_gens.append(rg)
         records.append({'generator':f's{k}{k+1}',
                         'fixedLeafOrbits':sum(cg[i]==i for i in range(5294)),
-                        'fixedTileOrbits':sum(rg[i]==i for i in range(6129))})
-    # Coxeter S5 relations.
-    Ic=tuple(range(5294));Ir=tuple(range(6129))
+                        'fixedConstraintClasses':sum(rg[i]==i for i in range(len(rowsets)))})
+
+    Ic=tuple(range(5294));Ir=tuple(range(len(rowsets)))
     for i in range(4):
         assert comp(col_gens[i],col_gens[i])==Ic and comp(row_gens[i],row_gens[i])==Ir
     for i in range(4):
@@ -173,20 +172,23 @@ def main():
                 assert comp(c,comp(c,c))==Ic and comp(r,comp(r,r))==Ir
             else:
                 assert comp(c,c)==Ic and comp(r,r)==Ir
-    Gc=closure(col_gens,5294);Gr=closure(row_gens,6129);assert len(Gc)==len(Gr)==120
+    Gc=closure(col_gens,5294);Gr=closure(row_gens,len(rowsets));assert len(Gc)==len(Gr)==120
 
-    out={'schema':'holotrade.depth5-coordinate-s5-automorphism.v1','valid':True,
-         'matrixShape':[6129,5294],'coordinateGroup':'S5','groupOrder':120,
-         'generators':records,
-         'leafOrbitSizeProfileUnderS5':orbit_profile(Gc,5294),
-         'tileOrbitSizeProfileUnderS5':orbit_profile(Gr,6129),
-         'leafS5OrbitCount':sum(orbit_profile(Gc,5294).values()),
-         'tileS5OrbitCount':sum(orbit_profile(Gr,6129).values()),
-         'coxeterRelationsVerified':True,'exactMatrixAutomorphismVerified':True,
-         'theorem':('The four adjacent permutations of the five product coordinates descend to exact simultaneous row/column automorphisms of the full 6129x5294 diagonal-PSp depth-five cover matrix. They generate S5 of order 120 on both orbit sets. Thus S5 lex-leader or orbit-based symmetry breaking is theorem-safe for the exact K=13 feasibility problem.'),
-         'boundary':('This symmetry reduces search redundancy only. It does not change the cover problem or by itself strengthen the lower bound.')}
+    lp=orbit_profile(Gc,5294);rp=orbit_profile(Gr,len(rowsets))
+    out={'schema':'holotrade.depth5-coordinate-s5-automorphism.v2','valid':True,
+         'originalMatrixShape':[6129,5294],
+         'distinctConstraintRows':len(rowsets),
+         'duplicateConstraintRowsRemoved':6129-len(rowsets),
+         'constraintMultiplicityHistogram':duplicate_hist,
+         'coordinateGroup':'S5','groupOrder':120,'generators':records,
+         'leafOrbitSizeProfileUnderS5':lp,'constraintOrbitSizeProfileUnderS5':rp,
+         'leafS5OrbitCount':sum(lp.values()),'constraintS5OrbitCount':sum(rp.values()),
+         'coxeterRelationsVerified':True,'exactConstraintFamilyAutomorphismVerified':True,
+         'theorem':('After exact deletion of duplicate set-cover rows, the four adjacent permutations of the five product coordinates descend to simultaneous automorphisms of the 5,294 leaf-orbit variables and the complete family of distinct depth-five cover constraints. They generate S5 of order 120. Hence S5 symmetry breaking is theorem-safe for K=13.'),
+         'boundary':('Distinct tile orbits may yield identical cover constraints, so no permutation action on the 6,129 tile-orbit labels is inferred from support equality. The theorem concerns the exact Boolean cover instance and removes only logically duplicate constraints.')}
     OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
-    print(json.dumps({'valid':True,'order':120,'leafOrbits':out['leafS5OrbitCount'],
-                      'tileOrbits':out['tileS5OrbitCount'],'gens':records},sort_keys=True))
+    print(json.dumps({'valid':True,'order':120,'distinctRows':len(rowsets),
+                      'duplicateRows':6129-len(rowsets),'leafS5Orbits':out['leafS5OrbitCount'],
+                      'constraintS5Orbits':out['constraintS5OrbitCount'],'gens':records},sort_keys=True))
 
 if __name__=='__main__':main()
