@@ -1,0 +1,49 @@
+{
+  "schema": "holotrade.anomaly-is-nondegenerate-reflection.v1",
+  "valid": true,
+  "theLaw": "g in Sp(4,3) has transvection length > residue(g) if and only if g acts as -1 on a nondegenerate subspace U =/= 0 and +1 on U^perp",
+  "cases": {
+    "q3": {
+      "q": 3,
+      "order": 51840,
+      "matrixDiameter": 5,
+      "anomalies": 91,
+      "residue2Split": {
+        "hyperbolic,2": 1260,
+        "hyperbolic,3": 90,
+        "isotropic,2": 720
+      },
+      "perHyperbolicLineProfiles": {
+        "{2: 14, 3: 1}": 90
+      },
+      "nondegenerate2Spaces": 90,
+      "predictedSetSize": 91,
+      "predictedEqualsAnomalySet": true,
+      "allPredictedAreInGroup": true
+    },
+    "q2": {
+      "q": 2,
+      "order": 720,
+      "matrixDiameter": 5,
+      "anomalies": 225,
+      "residue2Split": {
+        "hyperbolic,2": 40,
+        "isotropic,2": 45,
+        "isotropic,3": 15
+      },
+      "perHyperbolicLineProfiles": {
+        "{2: 2}": 20
+      },
+      "nondegenerate2Spaces": 20,
+      "predictedSetSize": 0,
+      "predictedEqualsAnomalySet": false,
+      "allPredictedAreInGroup": true
+    }
+  },
+  "whyTheCountIsOneFact": "dim U = 2 gives the 90 hyperbolic lines and dim U = 4 gives -I; dim 1 and 3 contribute nothing because a symplectic space has no odd-dimensional nondegenerate subspace, so 91 = 90 + 1 is one fact evaluated at the two available dimensions, not two facts",
+  "whyIsotropicIsAlwaysCheap": "a totally isotropic L satisfies L <= L^perp, so '-1 on L and +1 on L^perp' is self-contradictory and the anomalous element does not exist there; the 720 isotropic-image elements are cheap because the expensive shape cannot be built, not by counting",
+  "correctionToMyPriorCommit": "3f93821's bijection onto the 90 hyperbolic lines stands, but its closing dichotomy -- 40 isotropic cheap, 90 hyperbolic expensive, nothing else -- is an over-read: each hyperbolic line carries 15 residue-2 elements with profile {2:14, 3:1}, so 14/15 of them are cheap and the dichotomy is not a class-level fact",
+  "qOddOnly": "at q = 2, -1 = +1 so the predicted set is empty while Sp(4,2) has 225 anomalies; the characterisation fails completely rather than degrading, which independently supports 6bb8975's reading that the doily's anomalies have another source and its missing centre is the same absence one level down",
+  "architecturalReading": "the co-location claim survives in a sharper form: the extra instruction is charged not to the hyperbolic lines as a class but to one canonical involution per line, and those ninety involutions are indexed by the ninety lines whose polar pairs are the sentinel code's minimum words -- the ISA overpays on exactly one element per minimum-weight object, and on the centre",
+  "boundary": "exhaustive over all 51,840 elements: length by full BFS, residue by rank(g - I), image type by the form. The iff is set equality against a set built independently from nondegenerate subspaces, not a count match. Verified at q = 3, shown to FAIL at q = 2, untested at any other q. tau_2 is untouched"
+}

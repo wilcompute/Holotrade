@@ -4582,3 +4582,63 @@ test("the cost anomalies are the tritangent structure", () => {
   assert.match(r.boundary, /No claim\s+for other q/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("every cost anomaly is a nondegenerate reflection", () => {
+  const r = require(path.join(
+    root,
+    "data/every_cost_anomaly_is_a_nondegenerate_reflection.json"
+  ));
+  assert.equal(r.schema, "holotrade.anomaly-is-nondegenerate-reflection.v1");
+  assert.equal(r.valid, true);
+
+  const b = r.cases.q3;
+
+  // isotropic image is NEVER anomalous, and that is the mechanism
+  assert.equal(b.residue2Split["isotropic,2"], 720);
+  assert.equal(b.residue2Split["isotropic,3"], undefined, "none are anomalous");
+  assert.equal(b.residue2Split["hyperbolic,2"], 1260);
+  assert.equal(b.residue2Split["hyperbolic,3"], 90);
+  assert.equal(
+    Object.values(b.residue2Split).reduce((s, v) => s + v, 0),
+    2070,
+    "the split accounts for every residue-2 element"
+  );
+  assert.match(r.whyIsotropicIsAlwaysCheap, /self-contradictory/);
+
+  // one distinguished element per hyperbolic line, uniformly across all 90
+  const prof = b.perHyperbolicLineProfiles;
+  assert.equal(Object.keys(prof).length, 1, "the profile is uniform");
+  assert.equal(prof["{2: 14, 3: 1}"], 90);
+
+  // the law, as SET equality against an independently built set
+  assert.equal(b.nondegenerate2Spaces, 90);
+  assert.equal(b.predictedSetSize, 91);
+  assert.equal(b.anomalies, 91);
+  assert.equal(b.predictedEqualsAnomalySet, true);
+  assert.equal(b.allPredictedAreInGroup, true);
+  assert.match(r.theLaw, /if and only if/);
+  assert.match(r.whyTheCountIsOneFact, /no\s+odd-dimensional nondegenerate/);
+
+  // 91 agrees with 6bb8975 and decomposes as 3f93821 said
+  const prior = require(path.join(root, "data/length_equals_residue.json"));
+  assert.equal(prior.cases.find((c) => c.q === 3).anomalies, b.anomalies);
+  const tri = require(path.join(
+    root,
+    "data/the_cost_anomalies_are_the_tritangents.json"
+  ));
+  assert.equal(tri.decomposition.total, b.anomalies);
+  assert.equal(tri.theMap.bijectionOntoTheNinety, true, "the bijection stands");
+
+  // and the law is provably q-odd: at q=2 it predicts 0 against 225
+  const a = r.cases.q2;
+  assert.equal(a.predictedSetSize, 0, "-1 = +1, so no such element exists");
+  assert.equal(a.anomalies, 225);
+  assert.equal(a.predictedEqualsAnomalySet, false, "it FAILS, not degrades");
+  assert.match(r.qOddOnly, /fails completely rather than\s+degrading/);
+
+  // the over-read is retracted in the record
+  assert.match(r.correctionToMyPriorCommit, /over-read/);
+  assert.match(r.correctionToMyPriorCommit, /bijection.*stands/);
+  assert.match(r.boundary, /set equality against a set/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
