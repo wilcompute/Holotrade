@@ -22,8 +22,6 @@ function fixture(machineType = P.MACHINE_TYPE.CIRCUIT_ST81, magicBudget = 2) {
     artifacts: [{ name: "img", digest: "sha256:demo" }],
     magicBudget,
   });
-  // ExecutionPlan derives magicBudget from the supplied spec when constructed
-  // directly. Keep the fixture explicit so the passport cannot exceed it.
   plan.magicBudget = magicBudget;
   plan.digest = plan.computeDigest();
   plan.signature = plan.sign();
@@ -68,6 +66,7 @@ test("passport commits the complete profiled deployment context", () => {
   assert.equal(f.passport.runtimeRetype, "FORBIDDEN");
   assert.equal(f.passport.magicBudget, 2);
   assert.ok(D.verifyPassport(f.passport, f.context));
+  assert.ok(D.validatePassportIdentity(f.passport, f.plan, f.profile, f.vm, f.contract));
 });
 
 test("passport cannot inflate magic authority beyond the signed plan", () => {
@@ -125,6 +124,16 @@ test("stale or tampered passport fails exact verification", () => {
   assert.equal(D.verifyPassport({ ...f.passport, magicBudget: 999 }, f.context), false);
   assert.equal(D.verifyPassport({ ...f.passport, machineType: P.MACHINE_TYPE.PAIR_ST64 }, f.context), false);
   assert.equal(D.verifyPassport({ ...f.passport, memoryRoot: d("different-memory") }, f.context), false);
+});
+
+test("signed receipt binder refuses a passport whose internal digest is stale", () => {
+  const f = fixture();
+  const stale = { ...f.passport, memoryRoot: d("attacker-memory") };
+  assert.equal(D.validatePassportIdentity(stale, f.plan, f.profile, f.vm, f.contract), false);
+  assert.throws(
+    () => D.attachPassportReceiptMetadata({}, f.plan, f.profile, f.vm, f.contract, stale),
+    /passport identity does not verify/
+  );
 });
 
 test("generic signed receipt payload commits exact execution passport binding", () => {
