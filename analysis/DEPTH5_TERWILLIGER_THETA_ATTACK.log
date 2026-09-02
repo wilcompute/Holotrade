@@ -1,0 +1,5 @@
+(CVXPY) Sep 02 02:38:42 AM: Encountered unexpected exception importing solver HIGHS:
+ImportError('/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/highspy/_core.cpython-312-x86_64-linux-gnu.so: undefined symbol: _ZN5Highs13releaseMemoryEv')
+/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:83: RuntimeWarning: invalid value encountered in reduce
+  return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+{"Terwilliger": [16, 5], "improves": false, "packing": 4, "packingStatus": "FEASIBLE", "theta": 4.339847708861108, "valid": true}

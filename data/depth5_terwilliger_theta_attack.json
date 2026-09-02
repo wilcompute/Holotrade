@@ -1,0 +1,75 @@
+{
+  "boundary": "Only the integer packing size is an exact new lower-bound certificate. The finite Terwilliger algebra is exact. The small theta solve is numerical exploration until rational PSD certification; no numerical theta value is promoted to the depth-five lower bound.",
+  "conflictPacking": {
+    "exactCoverLowerBound": 4,
+    "feasiblePackingSize": 4,
+    "greedySize": 4,
+    "solverBestUpperBound": 11.0,
+    "solverObjective": 4,
+    "solverStatus": "FEASIBLE",
+    "strictlyImproves13": false,
+    "tileOrbitIndices": [
+      7,
+      120,
+      4678,
+      4854
+    ]
+  },
+  "depth5": {
+    "bestKnownCover": 22,
+    "leafOrbits": 5294,
+    "previousLP": 12.671477085143657,
+    "previousLowerBound": 13,
+    "tileOrbits": 6129
+  },
+  "schema": "holotrade.depth5-terwilliger-theta-attack.v1",
+  "terwilliger": {
+    "algebraDimension": 16,
+    "baseVertex": 0,
+    "centerDimension": 5,
+    "distanceLayerSizes": [
+      1,
+      12,
+      27
+    ],
+    "genericCenterCharpolyFactors": [
+      {
+        "degree": 1,
+        "factor": "3*lambda + 43",
+        "multiplicity": 3
+      },
+      {
+        "degree": 1,
+        "factor": "3*lambda + 643",
+        "multiplicity": 3
+      },
+      {
+        "degree": 1,
+        "factor": "3*lambda + 760",
+        "multiplicity": 6
+      },
+      {
+        "degree": 1,
+        "factor": "6*lambda - 457",
+        "multiplicity": 12
+      },
+      {
+        "degree": 1,
+        "factor": "12*lambda + 919",
+        "multiplicity": 16
+      }
+    ],
+    "genericCenterShift": 1,
+    "noncommutative": true
+  },
+  "theorem": "The pairwise conflict formulation is valid: every seed covers a clique of the co-coverability graph, so every pairwise-incompatible tile packing is an exact seed lower bound and Lovasz theta of the co-coverability graph is an SDP lower bound on the clique-cover number. The reported packing is checked directly against the full 6129x5294 coverage relation.",
+  "thetaProbe": {
+    "coCoverEdges": 2614,
+    "reading": "Numerical primal SDP probe only; do not round this into a theorem without a rational PSD certificate.",
+    "rigorous": false,
+    "status": "optimal",
+    "subsetSize": 90,
+    "thetaHNumerical": 4.339847708861108
+  },
+  "valid": true
+}
