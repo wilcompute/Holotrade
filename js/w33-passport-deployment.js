@@ -1,8 +1,9 @@
 // W33 execution-passport and checkpoint policy for Holotrade deployment.
 //
-// Mirrors the cross-layer integrity fields produced by the W33-Theory runtime
-// without pretending the SHA-256 digest is itself authorization.  Holotrade's
-// signed delivery receipt is the authorization/audit envelope.
+// Version 2 mirrors the W33 runtime control-plane identity as well as the
+// machine/profile identity.  A signed receipt can therefore commit the exact
+// capability epoch/revocation state, wait-for graph, cancellation decision,
+// async wake schedule, and temporal-GC registry used by an execution.
 //
 // Migration law:
 //   FULL_RESTORE          -> same construction-time carrier/profile only
@@ -15,7 +16,7 @@ const crypto = require("node:crypto");
 const P = require("./w33-execution-profile.js");
 const R = require("./w33-profiled-receipt.js");
 
-const SCHEMA = "holotrade.w33-execution-passport.v1";
+const SCHEMA = "holotrade.w33-execution-passport.v2";
 const CHECKPOINT = Object.freeze({
   FULL_RESTORE: "FULL_RESTORE",
   NEUTRAL_CONTINUATION: "NEUTRAL_CONTINUATION",
@@ -64,6 +65,12 @@ function bindPassport({
   componentLinkDigest,
   packetRefinementDigest,
   historyRoot,
+  capabilityEpoch,
+  revocationRoot,
+  waitForRoot,
+  cancellationRoot,
+  asyncScheduleRoot,
+  gcRegistryRoot,
   erasurePolicy = "EXPLICIT_DISCARD_ONLY",
   magicBudget = 0,
 }) {
@@ -75,8 +82,16 @@ function bindPassport({
     componentLinkDigest,
     packetRefinementDigest,
     historyRoot,
+    revocationRoot,
+    waitForRoot,
+    cancellationRoot,
+    asyncScheduleRoot,
+    gcRegistryRoot,
   })) {
     if (!isDigest(value)) throw new TypeError(`${name} must be sha256 content identity`);
+  }
+  if (!Number.isSafeInteger(capabilityEpoch) || capabilityEpoch < 0) {
+    throw new RangeError("capabilityEpoch must be nonnegative integer");
   }
   if (!Number.isSafeInteger(magicBudget) || magicBudget < 0) throw new RangeError("magicBudget must be nonnegative integer");
   if (Number.isSafeInteger(plan.magicBudget) && magicBudget > plan.magicBudget) {
@@ -102,6 +117,12 @@ function bindPassport({
     componentLinkDigest,
     packetRefinementDigest,
     historyRoot,
+    capabilityEpoch,
+    revocationRoot,
+    waitForRoot,
+    cancellationRoot,
+    asyncScheduleRoot,
+    gcRegistryRoot,
     erasurePolicy,
     magicBudget,
     runtimeRetype: "FORBIDDEN",
@@ -137,6 +158,12 @@ function validatePassportIdentity(passport, plan, profile, vm, contract = null) 
       componentLinkDigest: passport.componentLinkDigest,
       packetRefinementDigest: passport.packetRefinementDigest,
       historyRoot: passport.historyRoot,
+      capabilityEpoch: passport.capabilityEpoch,
+      revocationRoot: passport.revocationRoot,
+      waitForRoot: passport.waitForRoot,
+      cancellationRoot: passport.cancellationRoot,
+      asyncScheduleRoot: passport.asyncScheduleRoot,
+      gcRegistryRoot: passport.gcRegistryRoot,
       erasurePolicy: passport.erasurePolicy,
       magicBudget: passport.magicBudget,
     });
@@ -152,9 +179,6 @@ function checkpointAdmission({ sourcePassport, targetProfile, kind, safePoint = 
   }
   const sameCarrierShape = sourcePassport.machineType === targetProfile.machineType &&
     sourcePassport.logicalDimension === targetProfile.logicalDimension;
-  // A full checkpoint carries construction-profile state, not merely the
-  // abstract carrier dimension.  Digest equality closes same-shaped profile
-  // drift (for example two separately bound circuit-81 plans).
   const sameConstructionProfile = sameCarrierShape &&
     typeof targetProfile.digest === "string" &&
     sourcePassport.profileDigest === targetProfile.digest;
@@ -187,12 +211,18 @@ function attachPassportReceiptMetadata(metadata, plan, profile, vm, contract, pa
     throw new Error("execution passport identity does not verify against signed W33 receipt context");
   }
   const passportBinding = {
-    schema: "holotrade.w33-passport-receipt-binding.v1",
+    schema: "holotrade.w33-passport-receipt-binding.v2",
     passportId: passport.passportId,
     memoryRoot: passport.memoryRoot,
     componentLinkDigest: passport.componentLinkDigest,
     packetRefinementDigest: passport.packetRefinementDigest,
     historyRoot: passport.historyRoot,
+    capabilityEpoch: passport.capabilityEpoch,
+    revocationRoot: passport.revocationRoot,
+    waitForRoot: passport.waitForRoot,
+    cancellationRoot: passport.cancellationRoot,
+    asyncScheduleRoot: passport.asyncScheduleRoot,
+    gcRegistryRoot: passport.gcRegistryRoot,
     erasurePolicy: passport.erasurePolicy,
     magicBudget: passport.magicBudget,
     historyBinding: historyBinding || null,
