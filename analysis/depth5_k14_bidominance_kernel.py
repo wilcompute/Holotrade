@@ -73,7 +73,6 @@ def dominated_columns(row_ids,rowsets,active):
 
     empty={j for j,v in bits.items() if v==0}
     active-=empty
-    # Identical supports: keep the least index, all others are dominated copies.
     sig={}; duplicates=set()
     for j in sorted(active):
         v=bits[j]
@@ -81,14 +80,10 @@ def dominated_columns(row_ids,rowsets,active):
         else: sig[v]=j
     active-=duplicates
 
-    # Process large supports first. For a candidate S, any dominator has already
-    # been retained. Index retained supersets by rows they contain and test only
-    # the shortest anchor list.
     order=sorted(active,key=lambda j:(-bits[j].bit_count(),j))
     kept=[]; by_row=[[] for _ in range(m)]; dom=set()
     for j in order:
         v=bits[j]
-        # choose a covered row with the fewest existing retained supersets
         vv=v; anchors=[]
         while vv:
             lsb=vv & -vv; q=lsb.bit_length()-1; anchors.append(q); vv-=lsb
@@ -135,7 +130,6 @@ def main():
     raw=[frozenset(map(int,A.indices[A.indptr[r]:A.indptr[r+1]])) for r in range(A.shape[0])]
     rowsets=sorted(set(raw),key=lambda S:(len(S),tuple(sorted(S)))); assert len(rowsets)==6128
 
-    # Sparse column rows for exact frozen-dual loads.
     rr=[];cc=[]
     for r,S in enumerate(rowsets):
         for j in S: rr.append(r);cc.append(j)
@@ -155,8 +149,10 @@ def main():
     deadline=time.time()+GLOBAL_SECONDS
     records=[]; closed=[]; witness=None
 
-    # Start with branches expected to kernelize most: large frozen dual objective.
-    fixed.sort(key=lambda oi:(-float(certs[oi]['objective']),oi))
+    # Start with branches having the largest exact frozen dual objective.  The
+    # certificate stores sparse integer weights, so compute the objective
+    # directly rather than relying on non-existent metadata.
+    fixed.sort(key=lambda oi:(-sum(int(w) for _r,w in certs[oi]['weights']),oi))
     for oi in fixed:
         if time.time()>=deadline: break
         first=int(orbits[oi][0]); budget=13; forced=[]
@@ -169,7 +165,7 @@ def main():
         dual_fixed={j for j in active if score-int(loads[j])>12*D}
         active-=dual_fixed
         rec={'orbitIndex':oi,'representativeColumn':first,'initialResidualRows':len(rows),
-             'dualFixedColumns':len(dual_fixed),'rounds':[]}
+             'dualFixedColumns':len(dual_fixed),'rounds':[],'exactSeedDualValue':score/D}
 
         infeas=False
         for rnd in range(MAX_ROUNDS):
@@ -183,14 +179,12 @@ def main():
             if not rows:
                 cand=[first]+forced
                 assert verify(cand,rowsets); witness=sorted(cand); rec['result']='FEASIBLE_BY_FORCING'; break
-            # stop when a full round changes neither side nor forces anything
             if rmeta['before']==rmeta['after'] and cmeta['before']==cmeta['after'] and not newforce: break
         if witness is not None:
             records.append(rec); break
         if infeas:
             rec['result']='INFEASIBLE_KERNEL'; closed.append(oi); records.append(rec); continue
 
-        # Exact integer closure attempt on the bidominance kernel.
         cols=sorted(active); pos={j:q for q,j in enumerate(cols)}
         supports=[]; impossible=False
         for r in rows:
