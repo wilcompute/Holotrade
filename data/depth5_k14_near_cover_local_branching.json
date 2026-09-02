@@ -1,0 +1,64 @@
+{
+  "boundary": "Local branching preserves the full column universe and all exact constraints. Only an independently verified explicit 14-witness changes the global upper bound; UNKNOWN never does.",
+  "certifiedIntervalUpdate": [
+    14,
+    22
+  ],
+  "elapsedSeconds": 104.09737062454224,
+  "records": [
+    {
+      "branches": 10416,
+      "conflicts": 0,
+      "minimumNearCoverColumnsRetained": 12,
+      "radius": 2,
+      "status": "INFEASIBLE",
+      "wallSeconds": 25.247626481
+    },
+    {
+      "branches": 10416,
+      "conflicts": 0,
+      "minimumNearCoverColumnsRetained": 11,
+      "radius": 3,
+      "status": "INFEASIBLE",
+      "wallSeconds": 24.141778993000003
+    },
+    {
+      "branches": 10416,
+      "conflicts": 0,
+      "minimumNearCoverColumnsRetained": 10,
+      "radius": 4,
+      "status": "INFEASIBLE",
+      "wallSeconds": 26.888442554
+    },
+    {
+      "branches": 10416,
+      "conflicts": 0,
+      "minimumNearCoverColumnsRetained": 9,
+      "radius": 5,
+      "status": "INFEASIBLE",
+      "wallSeconds": 25.515778710000003
+    }
+  ],
+  "result": "UNKNOWN",
+  "schema": "holotrade.depth5-k14-near-cover-local-branching.v1",
+  "sourceNearCover": [
+    12,
+    843,
+    950,
+    955,
+    965,
+    2046,
+    2071,
+    2336,
+    4285,
+    4331,
+    4467,
+    4552,
+    4655,
+    4788
+  ],
+  "sourceUncoveredRows": 111,
+  "theorem": "No certified 14-cover was found in the executed exact Hamming neighborhoods around the best frozen near-cover. INFEASIBLE neighborhood records are exact local no-go results; UNKNOWN records do not alter the global interval.",
+  "valid": true,
+  "witnessLeafOrbitIndices": null
+}
