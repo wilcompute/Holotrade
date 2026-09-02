@@ -4350,3 +4350,48 @@ test("the fork is bridged by the fibre product, and the machine-type enum is ter
   assert.match(p.stillForbidden, /fed190d/);
   assert.match(r.boundary, /No hardware claim/);
 });
+
+test("the ISA cost model, and the transvection optimum confirming the spine", () => {
+  const r = require(path.join(root, "data/the_isa_cost_model.json"));
+  assert.ok(r.valid);
+  assert.match(r.whatAnOpcodeIs, /elements of PSp\(4,3\)/);
+
+  // the tradeoff curve: more opcodes, shorter programs, diminishing returns
+  const c = r.tradeoffCurve;
+  assert.ok(c.length >= 2);
+  for (let i = 1; i < c.length; i++) {
+    assert.ok(c[i].opcodes > c[i - 1].opcodes);
+    assert.ok(c[i].groupDiameter <= c[i - 1].groupDiameter, "monotone");
+  }
+  assert.equal(c[0].opcodes, 2, "two opcodes suffice for universality");
+  assert.ok(c[0].groupDiameter >= 10, "but the program is long");
+
+  // the transvections: one per point, 40 inverse pairs
+  const t = r.transvections;
+  assert.equal(t.count, 80);
+  assert.equal(t.count, 2 * 40, "40 inverse pairs, one per point");
+  assert.equal(t.generates, 25920);
+  assert.ok(t.isPSp, "they generate the whole group");
+  assert.equal(t.reached, t.generates, "BFS covered the group");
+  assert.equal(t.cayleyDiameter, 4);
+  assert.equal(t.stateDiameter40, 2);
+  assert.equal(t.stateDiameter216, 2);
+  // and they beat the best small set decisively
+  assert.ok(t.cayleyDiameter < c[0].groupDiameter);
+  assert.ok(t.stateDiameter216 < c[0].stateDiameter216);
+
+  // the spine's assertion is now a measured fact
+  const s = r.spineClaimConfirmed;
+  assert.match(s.claim, /zero, one, or two/);
+  assert.ok(s.isADiameterClaim);
+  assert.equal(s.measured40, 2);
+  assert.equal(s.measured216, 2);
+  assert.equal(s.verdict, "CONFIRMED");
+  assert.match(s.newPart, /216 carrier states/);
+
+  assert.match(r.literature, /CONTAINING A TRANSVECTION/);
+  assert.match(r.literature, /computed values not\s+lookups/);
+  assert.match(r.reading, /not a design decision/);
+  assert.match(r.boundary, /UPPER bounds/);
+  assert.match(r.boundary, /count opcodes, not cycles/);
+});
