@@ -1,0 +1,39 @@
+name: W33 Linux hardware audit capture
+
+on:
+  workflow_dispatch:
+    inputs:
+      enrollment_config:
+        description: Absolute path on the self-hosted runner to TPM enrollment config JSON
+        required: true
+        default: /etc/holotrade/w33-tpm-enrollment.json
+      capture_config:
+        description: Absolute path on the self-hosted runner to host bundle capture config JSON
+        required: true
+        default: /etc/holotrade/w33-host-capture.json
+
+jobs:
+  hardware-capture:
+    # Deliberately separate from fixture CI. A runner with this label is expected
+    # to expose a real TPM2 device, measured-boot log, and configured RAPL/Kepler
+    # measurement inputs referenced by the capture config.
+    runs-on: [self-hosted, linux, w33-tpm]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify host prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v tpm2_makecredential
+          command -v tpm2_activatecredential
+          command -v tpm2_startauthsession
+          command -v tpm2_policysecret
+          test -c /dev/tpm0 -o -c /dev/tpmrm0
+          test -r /sys/kernel/security/tpm0/binary_bios_measurements
+      - name: Execute TPM MakeCredential ActivateCredential enrollment
+        run: node bin/w33-tpm-enroll.js '${{ inputs.enrollment_config }}'
+      - name: Capture and independently verify signed Linux host bundle
+        run: node bin/w33-capture-host-bundle.js '${{ inputs.capture_config }}'
