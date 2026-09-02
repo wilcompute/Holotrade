@@ -3,7 +3,9 @@ on:
   push:
     paths:
       - 'js/w33-passport-deployment.js'
+      - 'js/w33-failover-orchestrator.js'
       - 'tests/w33-passport-deployment.test.js'
+      - 'tests/w33-failover-orchestrator.test.js'
       - '.github/workflows/w33-passport-deployment.yml'
   workflow_dispatch:
 
@@ -16,4 +18,4 @@ jobs:
         with:
           node-version: '24'
       - name: Run W33 passport deployment tests
-        run: node --test tests/w33-passport-deployment.test.js
+        run: node --test tests/w33-passport-deployment.test.js tests/w33-failover-orchestrator.test.js
