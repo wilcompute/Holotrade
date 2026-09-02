@@ -4486,3 +4486,49 @@ test("the latency law is 2n, and its one exception is the doily", () => {
   assert.match(r.scalingLaw.ourMachine, /ON the law/);
   assert.match(r.boundary, /not a proof of the law/);
 });
+
+test("length equals residue, and the doily's exception is having no centre", () => {
+  const r = require(path.join(root, "data/length_equals_residue.json"));
+  assert.ok(r.valid);
+  assert.match(r.whatWasUnexplained, /no mechanism/);
+  assert.match(r.lengthVersusResidue, /length >= residue always/);
+
+  const [a, b] = r.cases;
+  assert.equal(a.q, 2);
+  assert.equal(b.q, 3);
+  assert.equal(a.order, 720);
+  assert.equal(b.order, 51840);
+  // both matrix diameters are 5 -- the difference is projective
+  assert.equal(a.matrixDiameter, 5);
+  assert.equal(b.matrixDiameter, 5);
+
+  // length never drops below residue, in either group
+  for (const c of [a, b]) {
+    for (const k of Object.keys(c.table)) {
+      const [res, len] = k.split(",").map(Number);
+      assert.ok(len >= res, "a transvection has residue 1");
+    }
+    assert.equal(
+      Object.values(c.table).reduce((s, v) => s + v, 0),
+      c.order,
+      "the table accounts for every element"
+    );
+  }
+
+  // the densities, and the mechanism
+  assert.ok(a.anomalyPercent > 30);
+  assert.ok(b.anomalyPercent < 1);
+  assert.ok(r.anomalyDensityRatio > 100);
+  assert.equal(b.extremeCount, 1, "one element at the extreme");
+  assert.ok(b.extremeIsMinusI, "and it is the centre");
+  assert.equal(b.hasCentre, true);
+  assert.equal(a.hasCentre, false, "at q=2, -I = I");
+  assert.match(r.theMechanism.qOdd, /removed by projectivisation/);
+  assert.match(r.theMechanism.qTwo, /no centre/);
+  assert.match(r.theMechanism.reading, /every\s+other case is rescued/);
+
+  // and my own framing is corrected
+  assert.match(r.correctionToMyFraming, /without saying so/);
+  assert.match(r.correctionToMyFraming, /on matrices\s+Sp\(4,3\) is also 5/);
+  assert.match(r.boundary, /NOT established/);
+});
