@@ -123,6 +123,29 @@ function verifyPassport(passport, context) {
   }
 }
 
+function validatePassportIdentity(passport, plan, profile, vm, contract = null) {
+  if (!passport || passport.schema !== SCHEMA) return false;
+  try {
+    const expected = bindPassport({
+      plan,
+      profile,
+      vm,
+      contract,
+      guestImage: passport.guestImage,
+      memoryRoot: passport.memoryRoot,
+      memoryCapabilityDigest: passport.memoryCapabilityDigest,
+      componentLinkDigest: passport.componentLinkDigest,
+      packetRefinementDigest: passport.packetRefinementDigest,
+      historyRoot: passport.historyRoot,
+      erasurePolicy: passport.erasurePolicy,
+      magicBudget: passport.magicBudget,
+    });
+    return stable(expected) === stable(passport);
+  } catch (_) {
+    return false;
+  }
+}
+
 function checkpointAdmission({ sourcePassport, targetProfile, kind, safePoint = null, neutralStateDigest = null }) {
   if (!sourcePassport || sourcePassport.schema !== SCHEMA || !targetProfile) {
     return { ok: false, code: "CHECKPOINT_CONTEXT_INVALID" };
@@ -151,8 +174,8 @@ function checkpointAdmission({ sourcePassport, targetProfile, kind, safePoint = 
 
 function attachPassportReceiptMetadata(metadata, plan, profile, vm, contract, passport, historyBinding = null) {
   const base = R.attachToReceiptMetadata(metadata, plan, profile, vm, contract);
-  if (!passport || passport.profileDigest !== profile.digest || passport.planDigest !== plan.digest) {
-    throw new Error("execution passport does not match signed W33 receipt context");
+  if (!validatePassportIdentity(passport, plan, profile, vm, contract)) {
+    throw new Error("execution passport identity does not verify against signed W33 receipt context");
   }
   const passportBinding = {
     schema: "holotrade.w33-passport-receipt-binding.v1",
@@ -178,6 +201,7 @@ module.exports = {
   isDigest,
   bindPassport,
   verifyPassport,
+  validatePassportIdentity,
   checkpointAdmission,
   attachPassportReceiptMetadata,
 };
