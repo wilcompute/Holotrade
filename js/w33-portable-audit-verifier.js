@@ -4,6 +4,7 @@ const crypto = require("node:crypto");
 const Receipt = require("../runtime/receipt.js");
 const Native = require("./w33-native-attestation.js");
 const TPM = require("./w33-tpm-eventlog-provenance.js");
+const TPMWire = require("./w33-tpm-wire-signature.js");
 const Flight = require("./w33-attested-replay-receipt.js");
 const Passport = require("./w33-passport-deployment.js");
 
@@ -49,6 +50,16 @@ function verifyHardware(bundle) {
   const h = bundle && bundle.hardware;
   if (!h || typeof h !== "object") return { ok: false, code: "RAW_HARDWARE_EVIDENCE_REQUIRED" };
   if (h.provider === "TPM2") {
+    if (h.tpmtSignatureBase64) {
+      return TPMWire.verifyTpmQuoteWire({
+        rawEventLog: bytes64(h.rawEventLogBase64, "rawEventLog"),
+        tpmtSignature: bytes64(h.tpmtSignatureBase64, "TPMT_SIGNATURE"),
+        attestation: bytes64(h.attestationBase64, "attestation"),
+        akPublicKey: h.akPublicKeyPem,
+        challenge: h.challenge,
+        akTrust: h.akTrust || "PORTABLE_TRUSTED_AK",
+      });
+    }
     return TPM.verifyTpmQuoteFromRawEventLog({
       rawEventLog: bytes64(h.rawEventLogBase64, "rawEventLog"),
       attestation: bytes64(h.attestationBase64, "attestation"),
@@ -82,16 +93,12 @@ function verifyPortableBundle(bundle, trustedReceiptPublicKey) {
     const payload = signed.payload;
     const signedRecorder = payload && payload.metadata && payload.metadata.w33FlightRecorder;
     if (!Flight.verifyFlightRecorderRoot(signedRecorder)) return Object.freeze({ ok: false, code: "SIGNED_FLIGHT_RECORDER_INVALID" });
-
     if (!verifyPassportContentId(bundle.passport)) return Object.freeze({ ok: false, code: "PASSPORT_CONTENT_ID_INVALID" });
     if (bundle.passport.deploymentDigest !== signedRecorder.deploymentDigest) return Object.freeze({ ok: false, code: "PASSPORT_DEPLOYMENT_MISMATCH" });
-    if (bundle.context && !Passport.validatePassportIdentity(bundle.passport, bundle.context.plan, bundle.context.profile, bundle.context.vm, bundle.context.contract || null)) {
-      return Object.freeze({ ok: false, code: "PASSPORT_CONTEXT_INVALID" });
-    }
+    if (bundle.context && !Passport.validatePassportIdentity(bundle.passport, bundle.context.plan, bundle.context.profile, bundle.context.vm, bundle.context.contract || null)) return Object.freeze({ ok: false, code: "PASSPORT_CONTEXT_INVALID" });
 
     const authority = verifyAuthorityChain(bundle.epochCertificates, bundle.authorityPublicKeys || {});
     if (!authority.ok) return Object.freeze({ ok: false, code: authority.code, authority });
-
     const hardware = verifyHardware(bundle);
     if (!hardware.ok) return Object.freeze({ ok: false, code: hardware.code || "HARDWARE_VERIFICATION_FAILED", hardware });
 
@@ -111,18 +118,12 @@ function verifyPortableBundle(bundle, trustedReceiptPublicKey) {
       if (c.waitForRoot !== bundle.passport.waitForRoot || c.cancellationRoot !== bundle.passport.cancellationRoot || c.asyncScheduleRoot !== bundle.passport.asyncScheduleRoot) return Object.freeze({ ok: false, code: "CONCURRENCY_IDENTITY_MISMATCH" });
     }
     return Object.freeze({
-      ok: true,
-      code: "PORTABLE_W33_AUDIT_PASS",
-      flightRecorderRoot: rebuilt.flightRecorderRoot,
-      passportId: bundle.passport.passportId,
-      hardwareProvider: hardware.evidence.provider,
-      epochCertificateCount: authority.count,
-      artifactCount: payload.artifacts.length,
+      ok: true, code: "PORTABLE_W33_AUDIT_PASS", flightRecorderRoot: rebuilt.flightRecorderRoot,
+      passportId: bundle.passport.passportId, hardwareProvider: hardware.evidence.provider,
+      epochCertificateCount: authority.count, artifactCount: payload.artifacts.length,
       checks: Object.freeze({ receiptSignature: true, passportContentId: true, passportContext: bundle.context ? true : "NOT_SUPPLIED", authorityQuorums: true, rawHardwareEvidence: true, replayRoot: true, artifacts: true, concurrencyIdentity: bundle.concurrency ? true : "NOT_SUPPLIED" }),
     });
-  } catch (error) {
-    return Object.freeze({ ok: false, code: "PORTABLE_W33_AUDIT_ERROR", error: error.message });
-  }
+  } catch (error) { return Object.freeze({ ok: false, code: "PORTABLE_W33_AUDIT_ERROR", error: error.message }); }
 }
 
 module.exports = { stable, sha256, verifyPassportContentId, verifyAuthorityCertificate, verifyAuthorityChain, verifyHardware, verifyPortableBundle };
