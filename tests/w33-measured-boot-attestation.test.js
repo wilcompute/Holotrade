@@ -48,20 +48,33 @@ function signedVerdict(challenge, key, provider = A.PROVIDER.SEV_SNP, hardwareBa
   }, key);
 }
 
-test("SEV-SNP verifier verdict binds exact passport, GoMicroVM deployment and runtime key", () => {
+test("SEV-SNP verifier verdict flows from passport challenge through a signed delivery receipt", () => {
   const f = fixture();
-  const keys = crypto.generateKeyPairSync("ed25519");
+  const verifierKeys = crypto.generateKeyPairSync("ed25519");
+  const receiptKeys = crypto.generateKeyPairSync("ed25519");
   const challenge = A.buildChallenge({ passport: f.passport, contract: f.contract, runtimePublicKeyDigest: d("runtime-pubkey") });
-  const verdict = signedVerdict(challenge, keys.privateKey);
-  const checked = A.verifyVerifierVerdict(verdict, challenge, keys.publicKey);
+  const verdict = signedVerdict(challenge, verifierKeys.privateKey);
+  const checked = A.verifyVerifierVerdict(verdict, challenge, verifierKeys.publicKey);
   assert.equal(checked.ok, true); assert.equal(checked.code, "HARDWARE_ATTESTATION_VERIFIED");
 
   const passportMetadata = D.attachPassportReceiptMetadata({}, f.plan, f.profile, f.vm, f.contract, f.passport);
-  const metadata = A.attachAttestationReceiptMetadata(passportMetadata, f.passport, f.contract, challenge, verdict, keys.publicKey);
-  const payload = Receipt.deliveryPayload({ executionId: "attested-exec", nodeId: f.node.id, outcome: "settled", artifacts: [], capabilities: { findings: [] }, startedAtMs: 1, finishedAtMs: 2, nonce: "attested-nonce", metadata });
-  assert.equal(payload.metadata.w33MeasuredBoot.passportId, f.passport.passportId);
-  assert.equal(payload.metadata.w33MeasuredBoot.deploymentDigest, f.contract.deploymentDigest);
-  assert.equal(payload.metadata.w33MeasuredBoot.runtimePublicKeyDigest, d("runtime-pubkey"));
+  const metadata = A.attachAttestationReceiptMetadata(passportMetadata, f.passport, f.contract, challenge, verdict, verifierKeys.publicKey);
+  const hardwareEvidence = A.toReceiptHardwareEvidence(f.passport, f.contract, challenge, verdict, verifierKeys.publicKey);
+  const signed = Receipt.createSignedDeliveryReceipt({
+    executionId: "attested-exec", nodeId: f.node.id, outcome: "settled",
+    artifacts: [{ role: "output", bytes: 1, digest: d("attested-output") }],
+    capabilities: { findings: [] }, hardwareEvidence,
+    startedAtMs: 1, finishedAtMs: 2, nonce: "attested-nonce", metadata,
+    microvmExecuted: true,
+  }, receiptKeys.privateKey, { publicKey: receiptKeys.publicKey, keyId: "holotrade-operator" });
+  const verifiedReceipt = Receipt.verifyDeliveryReceipt(signed.envelope, receiptKeys.publicKey);
+  assert.equal(verifiedReceipt.valid, true);
+  assert.equal(verifiedReceipt.payload.runtime.hardwareAttested, true);
+  assert.equal(verifiedReceipt.payload.runtime.microvmExecuted, true);
+  assert.equal(verifiedReceipt.payload.metadata.w33MeasuredBoot.passportId, f.passport.passportId);
+  assert.equal(verifiedReceipt.payload.metadata.w33MeasuredBoot.deploymentDigest, f.contract.deploymentDigest);
+  assert.equal(verifiedReceipt.payload.metadata.w33MeasuredBoot.runtimePublicKeyDigest, d("runtime-pubkey"));
+  assert.equal(verifiedReceipt.payload.hardwareEvidence.evidence[0].reasonCode, "SIGNED_NORMALIZED_EXTERNAL_VERIFIER_VERDICT");
 });
 
 test("TPM2 normalized verdict uses same fail-closed passport challenge", () => {
@@ -69,6 +82,7 @@ test("TPM2 normalized verdict uses same fail-closed passport challenge", () => {
   const challenge = A.buildChallenge({ passport: f.passport, contract: f.contract, runtimePublicKeyDigest: d("runtime-key") });
   const verdict = signedVerdict(challenge, keys.privateKey, A.PROVIDER.TPM2);
   assert.equal(A.verifyVerifierVerdict(verdict, challenge, keys.publicKey).ok, true);
+  assert.equal(A.toReceiptHardwareEvidence(f.passport, f.contract, challenge, verdict, keys.publicKey).evidence[0].kind, "TPM_QUOTE");
 });
 
 test("tampered verifier verdict and wrong challenge are refused", () => {
@@ -87,4 +101,5 @@ test("software-only verifier evidence cannot be relabelled hardware-backed", () 
   const verdict = signedVerdict(challenge, keys.privateKey, A.PROVIDER.SEV_SNP, false);
   assert.equal(A.verifyVerifierVerdict(verdict, challenge, keys.publicKey).code, "HARDWARE_BACKING_REQUIRED");
   assert.equal(A.verifyVerifierVerdict(verdict, challenge, keys.publicKey, { requireHardware: false }).code, "VERIFIER_CONTRACT_ONLY");
+  assert.throws(() => A.toReceiptHardwareEvidence(f.passport, f.contract, challenge, verdict, keys.publicKey), /refusing unattested W33 receipt/);
 });
