@@ -1,0 +1,29 @@
+{
+  "schema": "holotrade.cost-anomalies-are-tritangents.v1",
+  "valid": true,
+  "whereThisStarts": "6bb8975 found 91 transvection-length anomalies in Sp(4,3) -- 90 at (residue 2, length 3) and one at (4,5) which is the centre; the centre was identified and the 90 were counted and left unnamed",
+  "whyNinetyIsNotFree": "PG(3,3) has 130 lines splitting 40 isotropic + 90 hyperbolic, and the 90 hyperbolic lines in polarity pairs give BT810's 45 tritangent planes = the 45 octets = the sentinel code's 45 minimum-weight words (4952a3b), carrying GQ(4,2), the 270 isotropic reguli and the depth-3 obstruction",
+  "theMap": {
+    "definition": "g -> im(g - 1)",
+    "anomalies": 90,
+    "involutions": 90,
+    "actAsMinusOneOnTheirImage": 90,
+    "imageIsHyperbolic": 90,
+    "distinctImages": 90,
+    "bijectionOntoTheNinety": true
+  },
+  "decomposition": {
+    "total": 91,
+    "hyperbolicReflections": 90,
+    "centre": 1,
+    "statement": "91 anomalies = 90 hyperbolic-line reflections + -I"
+  },
+  "pg33Split": {
+    "lines": 130,
+    "isotropic": 40,
+    "hyperbolic": 90,
+    "reading": "the isotropic lines are where the transvections live, one per point at residue 1; the hyperbolic lines are where the reflections live, the residue-2 elements that cannot be done in two. The 130 split into the cheap generators and the expensive anomalies and nothing else"
+  },
+  "architecturalReading": "an operation costs residue-many transvections except when it is a hyperbolic-line reflection, which costs one extra, and except for the centre, which is free projectively; the expensive instructions are indexed by exactly the objects carrying the error-correcting structure, so the cost anomaly is CO-LOCATED with the code -- something neither the Cayley-graph work nor the weight-enumerator work could have predicted about the other",
+  "boundary": "exhaustive over all 51,840 elements of Sp(4,3): length by full BFS, residue by rank(g-I), image by column space, hyperbolicity by the form; the bijection is set equality, not a count match. The onward chain from hyperbolic lines to tritangent planes to the sentinel code is prior art cited from BT810 and 4952a3b, not re-derived. No claim for other q. tau_2 is untouched"
+}

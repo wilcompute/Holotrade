@@ -4532,3 +4532,53 @@ test("length equals residue, and the doily's exception is having no centre", () 
   assert.match(r.correctionToMyFraming, /on matrices\s+Sp\(4,3\) is also 5/);
   assert.match(r.boundary, /NOT established/);
 });
+
+test("the cost anomalies are the tritangent structure", () => {
+  const r = require(path.join(root, "data/the_cost_anomalies_are_the_tritangents.json"));
+  assert.equal(r.schema, "holotrade.cost-anomalies-are-tritangents.v1");
+  assert.equal(r.valid, true);
+
+  // PG(3,3) splits 40 + 90, and the 90 are the hyperbolic lines
+  assert.equal(r.pg33Split.lines, 130);
+  assert.equal(r.pg33Split.isotropic, 40);
+  assert.equal(r.pg33Split.hyperbolic, 90);
+  assert.equal(
+    r.pg33Split.isotropic + r.pg33Split.hyperbolic,
+    r.pg33Split.lines,
+    "the split is exhaustive"
+  );
+
+  // g -> im(g - 1) is a BIJECTION onto them, not merely a count match
+  const m = r.theMap;
+  assert.equal(m.definition, "g -> im(g - 1)");
+  assert.equal(m.anomalies, 90);
+  assert.equal(m.involutions, 90, "every anomaly is an involution");
+  assert.equal(m.actAsMinusOneOnTheirImage, 90);
+  assert.equal(m.imageIsHyperbolic, 90, "no anomaly lands on an isotropic line");
+  assert.equal(m.distinctImages, 90, "the map is injective");
+  assert.equal(m.bijectionOntoTheNinety, true, "and onto -- set equality");
+  assert.equal(m.distinctImages, r.pg33Split.hyperbolic);
+
+  // 91 = 90 + 1, agreeing with 6bb8975's anomaly count
+  const d = r.decomposition;
+  assert.equal(d.hyperbolicReflections, 90);
+  assert.equal(d.centre, 1);
+  assert.equal(d.total, 91);
+  assert.equal(d.hyperbolicReflections + d.centre, d.total);
+  const prior = require(path.join(root, "data/length_equals_residue.json"));
+  const sp43 = prior.cases.find((c) => c.q === 3);
+  assert.equal(
+    sp43.anomalies,
+    d.total,
+    "the decomposition accounts for exactly 6bb8975's 91 anomalies"
+  );
+
+  // the reading, and its boundary
+  assert.match(r.whyNinetyIsNotFree, /tritangent/);
+  assert.match(r.whyNinetyIsNotFree, /minimum-weight words/);
+  assert.match(r.architecturalReading, /CO-LOCATED with the code/);
+  assert.match(r.pg33Split.reading, /cheap generators and the expensive/);
+  assert.match(r.boundary, /set equality, not a count match/);
+  assert.match(r.boundary, /No claim\s+for other q/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
