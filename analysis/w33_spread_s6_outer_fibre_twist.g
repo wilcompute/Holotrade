@@ -76,24 +76,25 @@ if Length(RowTypes) <> 36 or Set(List(CircuitBlocks,Length)) <> [6] or
   Error("36-by-six block system failed");
 fi;
 
-# Pick one common spread block.  Its stabilizer is S6.
-CF := CircuitBlocks[1];;
-HF := HemiBlocks[1];;
-H := Stabilizer(CircuitGroup,CF,OnSets);;
+# Pick one common spread block.  Its stabilizer is S6.  Do not use GAP's
+# read-only global CF (cyclotomic field constructor) as a variable name.
+CircuitFibreBlock := CircuitBlocks[1];;
+HemiFibreBlock := HemiBlocks[1];;
+H := Stabilizer(CircuitGroup,CircuitFibreBlock,OnSets);;
 H40 := PreImage(Iso40to216,H);;
 if Size(H) <> 720 or StructureDescription(H) <> "S6" then
   Error("spread stabilizer is not S6");
 fi;
-if Set(Orbit(H,CF[1],OnPoints)) <> Set(CF) then
+if Set(Orbit(H,CircuitFibreBlock[1],OnPoints)) <> Set(CircuitFibreBlock) then
   Error("circuit fibre is not transitive");
 fi;
-if Set(Orbit(H40,HemiLines[HF[1]],OnHemi)) <>
-   Set(List(HF,i -> HemiLines[i])) then
+if Set(Orbit(H40,HemiLines[HemiFibreBlock[1]],OnHemi)) <>
+   Set(List(HemiFibreBlock,i -> HemiLines[i])) then
   Error("hemi fibre is not transitive");
 fi;
 
-Kc := Stabilizer(H,CF[1],OnPoints);;
-Kh40 := Stabilizer(H40,HemiLines[HF[1]],OnHemi);;
+Kc := Stabilizer(H,CircuitFibreBlock[1],OnPoints);;
+Kh40 := Stabilizer(H40,HemiLines[HemiFibreBlock[1]],OnHemi);;
 Kh := Image(Iso40to216,Kh40);;
 if Size(Kc) <> 120 or Size(Kh) <> 120 or
    StructureDescription(Kc) <> "S5" or StructureDescription(Kh) <> "S5" then
