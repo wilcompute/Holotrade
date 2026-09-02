@@ -1,0 +1,16 @@
+{
+  "schema": "holotrade.w33-tpm-capture-request.v2",
+  "requestedAt": "2026-09-02T17:30:00-04:00",
+  "purpose": "Obtain the first real TPM-backed W33 host audit bundle suitable for second-stage hardware-bound settlement evidence.",
+  "requiredRunnerLabels": ["self-hosted", "linux", "w33-tpm"],
+  "requires": {
+    "tpmMakeCredentialActivateCredential": true,
+    "hardwareBacked": true,
+    "measuredBootEventLog": true,
+    "physicalEnergyMeasurement": "RAPL_OR_KEPLER",
+    "portableVerifierPass": true
+  },
+  "postcondition": "The verified host bundle digest may be admitted by js/w33-hardware-evidence-settlement.js and signed into a distinct second-stage settlement receipt.",
+  "syntheticEvidenceForbidden": true,
+  "honestyBoundary": "This request is evidence of scheduling intent only. Hardware success exists only if the self-hosted workflow executes and uploads a verifier-passing real-host artifact."
+}
