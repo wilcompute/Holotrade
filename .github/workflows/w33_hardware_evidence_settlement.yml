@@ -1,0 +1,27 @@
+name: W33 hardware evidence settlement binding
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-hardware-evidence-settlement.js'
+      - 'js/w33-host-audit-bundle.js'
+      - 'runtime/receipt.js'
+      - 'tests/w33-hardware-evidence-settlement.test.js'
+      - 'tests/w33-host-audit-bundle.test.js'
+      - '.github/workflows/w33_hardware_evidence_settlement.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify portable host bundle and second-stage settlement binding
+        run: node --test tests/w33-host-audit-bundle.test.js tests/w33-hardware-evidence-settlement.test.js
+      - name: Syntax check settlement binder
+        run: node --check js/w33-hardware-evidence-settlement.js
