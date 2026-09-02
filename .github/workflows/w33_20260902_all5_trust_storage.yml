@@ -1,0 +1,34 @@
+name: W33 trust storage and epoch failover closure
+on:
+  push:
+    paths:
+      - 'js/w33-passport-deployment.js'
+      - 'js/w33-measured-boot-attestation.js'
+      - 'js/w33-strong-root-storage.js'
+      - 'js/w33-failover-orchestrator.js'
+      - 'tests/w33-passport-deployment.test.js'
+      - 'tests/w33-measured-boot-attestation.test.js'
+      - 'tests/w33-strong-root-storage.test.js'
+      - 'tests/w33-failover-orchestrator.test.js'
+      - 'tests/w33-checkpoint-profile-drift.test.js'
+      - '.github/workflows/w33_20260902_all5_trust_storage.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Passport control-plane identity
+        run: node --test tests/w33-passport-deployment.test.js
+      - name: Measured-boot normalized attestation binding
+        run: node --test tests/w33-measured-boot-attestation.test.js
+      - name: Strong-root storage economics
+        run: node --test tests/w33-strong-root-storage.test.js
+      - name: Epoch-pinned failover and passport remint
+        run: node --test tests/w33-failover-orchestrator.test.js
+      - name: Construction-profile drift gate
+        run: node --test tests/w33-checkpoint-profile-drift.test.js
