@@ -1,0 +1,41 @@
+name: W33 defect-115 recursive centre audit
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_defect115_recursive_centres.py'
+      - '.github/workflows/w33_defect115_recursive_centres.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: w33-defect115-recursive-centres-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Audit recursive centre skeleton
+        run: python analysis/w33_defect115_recursive_centres.py
+      - name: Freeze evidence
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/w33_defect115_recursive_centres.json').read_text())
+          assert d.get('valid') is True
+          PY
+          git config user.name 'holotrade-evidence-bot'
+          git config user.email 'holotrade-evidence-bot@users.noreply.github.com'
+          git add data/w33_defect115_recursive_centres.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze defect-115 recursive centre structure'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
