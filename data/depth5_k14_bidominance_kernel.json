@@ -1,0 +1,2810 @@
+{
+  "boundary": "Row dominance, column dominance, duplicate elimination and singleton forcing are exact for unit-cost set cover. UNKNOWN solver records never improve the theorem.",
+  "branchCount": 88,
+  "branchesProcessed": 49,
+  "certifiedIntervalUpdate": [
+    14,
+    22
+  ],
+  "closedBranchCount": 0,
+  "records": [
+    {
+      "dualFixedColumns": 2209,
+      "exactSeedDualValue": 12.6714621,
+      "initialResidualRows": 6042,
+      "orbitIndex": 4,
+      "representativeColumn": 5,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3084,
+            "before": 3084,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3084,
+          "remainingRows": 5803,
+          "round": 0,
+          "rows": {
+            "after": 5803,
+            "before": 6042,
+            "distinct": 5966
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3084,
+            "before": 3084,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3084,
+          "remainingRows": 5803,
+          "round": 1,
+          "rows": {
+            "after": 5803,
+            "before": 5803,
+            "distinct": 5803
+          }
+        }
+      ],
+      "solver": {
+        "branches": 6530,
+        "budget": 13,
+        "columns": 3084,
+        "conflicts": 0,
+        "rows": 5803,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.083510198
+      }
+    },
+    {
+      "dualFixedColumns": 2101,
+      "exactSeedDualValue": 12.6648536,
+      "initialResidualRows": 5896,
+      "orbitIndex": 8,
+      "representativeColumn": 10,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3192,
+            "before": 3192,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3192,
+          "remainingRows": 5662,
+          "round": 0,
+          "rows": {
+            "after": 5662,
+            "before": 5896,
+            "distinct": 5820
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3192,
+            "before": 3192,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3192,
+          "remainingRows": 5662,
+          "round": 1,
+          "rows": {
+            "after": 5662,
+            "before": 5662,
+            "distinct": 5662
+          }
+        }
+      ],
+      "solver": {
+        "branches": 2983603,
+        "budget": 13,
+        "columns": 3192,
+        "conflicts": 43,
+        "rows": 5662,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.09166486000001
+      }
+    },
+    {
+      "dualFixedColumns": 2088,
+      "exactSeedDualValue": 12.6511385,
+      "initialResidualRows": 6042,
+      "orbitIndex": 12,
+      "representativeColumn": 29,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3205,
+            "before": 3205,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3205,
+          "remainingRows": 5802,
+          "round": 0,
+          "rows": {
+            "after": 5802,
+            "before": 6042,
+            "distinct": 5964
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3205,
+            "before": 3205,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3205,
+          "remainingRows": 5802,
+          "round": 1,
+          "rows": {
+            "after": 5802,
+            "before": 5802,
+            "distinct": 5802
+          }
+        }
+      ],
+      "solver": {
+        "branches": 97288,
+        "budget": 13,
+        "columns": 3205,
+        "conflicts": 596,
+        "rows": 5802,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.11686598700001
+      }
+    },
+    {
+      "dualFixedColumns": 2043,
+      "exactSeedDualValue": 12.6349954,
+      "initialResidualRows": 5782,
+      "orbitIndex": 50,
+      "representativeColumn": 199,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3250,
+            "before": 3250,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3250,
+          "remainingRows": 5574,
+          "round": 0,
+          "rows": {
+            "after": 5574,
+            "before": 5782,
+            "distinct": 5733
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3250,
+            "before": 3250,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3250,
+          "remainingRows": 5574,
+          "round": 1,
+          "rows": {
+            "after": 5574,
+            "before": 5574,
+            "distinct": 5574
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3012057,
+        "budget": 13,
+        "columns": 3250,
+        "conflicts": 58,
+        "rows": 5574,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.08306283
+      }
+    },
+    {
+      "dualFixedColumns": 2055,
+      "exactSeedDualValue": 12.627621,
+      "initialResidualRows": 5836,
+      "orbitIndex": 15,
+      "representativeColumn": 34,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3238,
+            "before": 3238,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3238,
+          "remainingRows": 5599,
+          "round": 0,
+          "rows": {
+            "after": 5599,
+            "before": 5836,
+            "distinct": 5758
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3238,
+            "before": 3238,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3238,
+          "remainingRows": 5599,
+          "round": 1,
+          "rows": {
+            "after": 5599,
+            "before": 5599,
+            "distinct": 5599
+          }
+        }
+      ],
+      "solver": {
+        "branches": 2945289,
+        "budget": 13,
+        "columns": 3238,
+        "conflicts": 47,
+        "rows": 5599,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.091080739
+      }
+    },
+    {
+      "dualFixedColumns": 2083,
+      "exactSeedDualValue": 12.6243354,
+      "initialResidualRows": 5800,
+      "orbitIndex": 70,
+      "representativeColumn": 855,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3210,
+            "before": 3210,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3210,
+          "remainingRows": 5538,
+          "round": 0,
+          "rows": {
+            "after": 5538,
+            "before": 5800,
+            "distinct": 5721
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3210,
+            "before": 3210,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3210,
+          "remainingRows": 5538,
+          "round": 1,
+          "rows": {
+            "after": 5538,
+            "before": 5538,
+            "distinct": 5538
+          }
+        }
+      ],
+      "solver": {
+        "branches": 2895830,
+        "budget": 13,
+        "columns": 3210,
+        "conflicts": 43,
+        "rows": 5538,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.02776251
+      }
+    },
+    {
+      "dualFixedColumns": 2027,
+      "exactSeedDualValue": 12.6039812,
+      "initialResidualRows": 5795,
+      "orbitIndex": 71,
+      "representativeColumn": 857,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3266,
+            "before": 3266,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3266,
+          "remainingRows": 5561,
+          "round": 0,
+          "rows": {
+            "after": 5561,
+            "before": 5795,
+            "distinct": 5724
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3266,
+            "before": 3266,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3266,
+          "remainingRows": 5561,
+          "round": 1,
+          "rows": {
+            "after": 5561,
+            "before": 5561,
+            "distinct": 5561
+          }
+        }
+      ],
+      "solver": {
+        "branches": 43050,
+        "budget": 13,
+        "columns": 3266,
+        "conflicts": 753,
+        "rows": 5561,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.158546132
+      }
+    },
+    {
+      "dualFixedColumns": 2028,
+      "exactSeedDualValue": 12.6023798,
+      "initialResidualRows": 6042,
+      "orbitIndex": 16,
+      "representativeColumn": 39,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3265,
+            "before": 3265,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3265,
+          "remainingRows": 5798,
+          "round": 0,
+          "rows": {
+            "after": 5798,
+            "before": 6042,
+            "distinct": 5963
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3265,
+            "before": 3265,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3265,
+          "remainingRows": 5798,
+          "round": 1,
+          "rows": {
+            "after": 5798,
+            "before": 5798,
+            "distinct": 5798
+          }
+        }
+      ],
+      "solver": {
+        "branches": 2980863,
+        "budget": 13,
+        "columns": 3265,
+        "conflicts": 63,
+        "rows": 5798,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.11641177
+      }
+    },
+    {
+      "dualFixedColumns": 2028,
+      "exactSeedDualValue": 12.6023798,
+      "initialResidualRows": 5782,
+      "orbitIndex": 49,
+      "representativeColumn": 198,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3265,
+            "before": 3265,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3265,
+          "remainingRows": 5574,
+          "round": 0,
+          "rows": {
+            "after": 5574,
+            "before": 5782,
+            "distinct": 5733
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3265,
+            "before": 3265,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3265,
+          "remainingRows": 5574,
+          "round": 1,
+          "rows": {
+            "after": 5574,
+            "before": 5574,
+            "distinct": 5574
+          }
+        }
+      ],
+      "solver": {
+        "branches": 12671355,
+        "budget": 13,
+        "columns": 3265,
+        "conflicts": 233861,
+        "rows": 5574,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.087233306
+      }
+    },
+    {
+      "dualFixedColumns": 2019,
+      "exactSeedDualValue": 12.5992779,
+      "initialResidualRows": 5810,
+      "orbitIndex": 34,
+      "representativeColumn": 76,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3274,
+            "before": 3274,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3274,
+          "remainingRows": 5571,
+          "round": 0,
+          "rows": {
+            "after": 5571,
+            "before": 5810,
+            "distinct": 5734
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3274,
+            "before": 3274,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3274,
+          "remainingRows": 5571,
+          "round": 1,
+          "rows": {
+            "after": 5571,
+            "before": 5571,
+            "distinct": 5571
+          }
+        }
+      ],
+      "solver": {
+        "branches": 12879329,
+        "budget": 13,
+        "columns": 3274,
+        "conflicts": 236313,
+        "rows": 5571,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.08792134800001
+      }
+    },
+    {
+      "dualFixedColumns": 1994,
+      "exactSeedDualValue": 12.5962711,
+      "initialResidualRows": 5802,
+      "orbitIndex": 58,
+      "representativeColumn": 558,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3299,
+            "before": 3299,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3299,
+          "remainingRows": 5563,
+          "round": 0,
+          "rows": {
+            "after": 5563,
+            "before": 5802,
+            "distinct": 5726
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3299,
+            "before": 3299,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3299,
+          "remainingRows": 5563,
+          "round": 1,
+          "rows": {
+            "after": 5563,
+            "before": 5563,
+            "distinct": 5563
+          }
+        }
+      ],
+      "solver": {
+        "branches": 12523966,
+        "budget": 13,
+        "columns": 3299,
+        "conflicts": 252666,
+        "rows": 5563,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.11161046800001
+      }
+    },
+    {
+      "dualFixedColumns": 1999,
+      "exactSeedDualValue": 12.5943032,
+      "initialResidualRows": 5795,
+      "orbitIndex": 53,
+      "representativeColumn": 543,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3294,
+            "before": 3294,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3294,
+          "remainingRows": 5561,
+          "round": 0,
+          "rows": {
+            "after": 5561,
+            "before": 5795,
+            "distinct": 5724
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3294,
+            "before": 3294,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3294,
+          "remainingRows": 5561,
+          "round": 1,
+          "rows": {
+            "after": 5561,
+            "before": 5561,
+            "distinct": 5561
+          }
+        }
+      ],
+      "solver": {
+        "branches": 12828236,
+        "budget": 13,
+        "columns": 3294,
+        "conflicts": 255646,
+        "rows": 5561,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.052506377
+      }
+    },
+    {
+      "dualFixedColumns": 1973,
+      "exactSeedDualValue": 12.5885933,
+      "initialResidualRows": 5796,
+      "orbitIndex": 60,
+      "representativeColumn": 560,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3320,
+            "before": 3320,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3320,
+          "remainingRows": 5553,
+          "round": 0,
+          "rows": {
+            "after": 5553,
+            "before": 5796,
+            "distinct": 5718
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3320,
+            "before": 3320,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3320,
+          "remainingRows": 5553,
+          "round": 1,
+          "rows": {
+            "after": 5553,
+            "before": 5553,
+            "distinct": 5553
+          }
+        }
+      ],
+      "solver": {
+        "branches": 7082,
+        "budget": 13,
+        "columns": 3320,
+        "conflicts": 0,
+        "rows": 5553,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.089768601
+      }
+    },
+    {
+      "dualFixedColumns": 2002,
+      "exactSeedDualValue": 12.5872253,
+      "initialResidualRows": 5810,
+      "orbitIndex": 18,
+      "representativeColumn": 41,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3291,
+            "before": 3291,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3291,
+          "remainingRows": 5571,
+          "round": 0,
+          "rows": {
+            "after": 5571,
+            "before": 5810,
+            "distinct": 5734
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3291,
+            "before": 3291,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3291,
+          "remainingRows": 5571,
+          "round": 1,
+          "rows": {
+            "after": 5571,
+            "before": 5571,
+            "distinct": 5571
+          }
+        }
+      ],
+      "solver": {
+        "branches": 65049,
+        "budget": 13,
+        "columns": 3291,
+        "conflicts": 286,
+        "rows": 5571,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.09220458
+      }
+    },
+    {
+      "dualFixedColumns": 1995,
+      "exactSeedDualValue": 12.5859838,
+      "initialResidualRows": 5790,
+      "orbitIndex": 25,
+      "representativeColumn": 61,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3298,
+            "before": 3298,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3298,
+          "remainingRows": 5562,
+          "round": 0,
+          "rows": {
+            "after": 5562,
+            "before": 5790,
+            "distinct": 5719
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3298,
+            "before": 3298,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3298,
+          "remainingRows": 5562,
+          "round": 1,
+          "rows": {
+            "after": 5562,
+            "before": 5562,
+            "distinct": 5562
+          }
+        }
+      ],
+      "solver": {
+        "branches": 78233,
+        "budget": 13,
+        "columns": 3298,
+        "conflicts": 463,
+        "rows": 5562,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.132145449
+      }
+    },
+    {
+      "dualFixedColumns": 1956,
+      "exactSeedDualValue": 12.5856721,
+      "initialResidualRows": 5804,
+      "orbitIndex": 35,
+      "representativeColumn": 77,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3337,
+            "before": 3337,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3337,
+          "remainingRows": 5565,
+          "round": 0,
+          "rows": {
+            "after": 5565,
+            "before": 5804,
+            "distinct": 5728
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3337,
+            "before": 3337,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3337,
+          "remainingRows": 5565,
+          "round": 1,
+          "rows": {
+            "after": 5565,
+            "before": 5565,
+            "distinct": 5565
+          }
+        }
+      ],
+      "solver": {
+        "branches": 47333,
+        "budget": 13,
+        "columns": 3337,
+        "conflicts": 150,
+        "rows": 5565,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.10273783000001
+      }
+    },
+    {
+      "dualFixedColumns": 1959,
+      "exactSeedDualValue": 12.57976,
+      "initialResidualRows": 5791,
+      "orbitIndex": 59,
+      "representativeColumn": 559,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3334,
+            "before": 3334,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3334,
+          "remainingRows": 5548,
+          "round": 0,
+          "rows": {
+            "after": 5548,
+            "before": 5791,
+            "distinct": 5713
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3334,
+            "before": 3334,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3334,
+          "remainingRows": 5548,
+          "round": 1,
+          "rows": {
+            "after": 5548,
+            "before": 5548,
+            "distinct": 5548
+          }
+        }
+      ],
+      "solver": {
+        "branches": 16674,
+        "budget": 13,
+        "columns": 3334,
+        "conflicts": 0,
+        "rows": 5548,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.07098366800001
+      }
+    },
+    {
+      "dualFixedColumns": 2040,
+      "exactSeedDualValue": 12.5776548,
+      "initialResidualRows": 5800,
+      "orbitIndex": 90,
+      "representativeColumn": 1259,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3252,
+            "before": 3253,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 1
+          },
+          "newForced": [],
+          "remainingColumns": 3252,
+          "remainingRows": 5522,
+          "round": 0,
+          "rows": {
+            "after": 5522,
+            "before": 5800,
+            "distinct": 5720
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3252,
+            "before": 3252,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3252,
+          "remainingRows": 5522,
+          "round": 1,
+          "rows": {
+            "after": 5522,
+            "before": 5522,
+            "distinct": 5522
+          }
+        }
+      ],
+      "solver": {
+        "branches": 95499,
+        "budget": 13,
+        "columns": 3252,
+        "conflicts": 819,
+        "rows": 5522,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.199273589
+      }
+    },
+    {
+      "dualFixedColumns": 1974,
+      "exactSeedDualValue": 12.5774643,
+      "initialResidualRows": 5822,
+      "orbitIndex": 19,
+      "representativeColumn": 42,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3319,
+            "before": 3319,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3319,
+          "remainingRows": 5582,
+          "round": 0,
+          "rows": {
+            "after": 5582,
+            "before": 5822,
+            "distinct": 5744
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3319,
+            "before": 3319,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3319,
+          "remainingRows": 5582,
+          "round": 1,
+          "rows": {
+            "after": 5582,
+            "before": 5582,
+            "distinct": 5582
+          }
+        }
+      ],
+      "solver": {
+        "branches": 12033742,
+        "budget": 13,
+        "columns": 3319,
+        "conflicts": 224972,
+        "rows": 5582,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.047994962
+      }
+    },
+    {
+      "dualFixedColumns": 1974,
+      "exactSeedDualValue": 12.5774643,
+      "initialResidualRows": 5822,
+      "orbitIndex": 20,
+      "representativeColumn": 43,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3319,
+            "before": 3319,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3319,
+          "remainingRows": 5582,
+          "round": 0,
+          "rows": {
+            "after": 5582,
+            "before": 5822,
+            "distinct": 5744
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3319,
+            "before": 3319,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3319,
+          "remainingRows": 5582,
+          "round": 1,
+          "rows": {
+            "after": 5582,
+            "before": 5582,
+            "distinct": 5582
+          }
+        }
+      ],
+      "solver": {
+        "branches": 16533,
+        "budget": 13,
+        "columns": 3319,
+        "conflicts": 0,
+        "rows": 5582,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.07935487600001
+      }
+    },
+    {
+      "dualFixedColumns": 1969,
+      "exactSeedDualValue": 12.5755239,
+      "initialResidualRows": 5804,
+      "orbitIndex": 33,
+      "representativeColumn": 75,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3324,
+            "before": 3324,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3324,
+          "remainingRows": 5564,
+          "round": 0,
+          "rows": {
+            "after": 5564,
+            "before": 5804,
+            "distinct": 5724
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3324,
+            "before": 3324,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3324,
+          "remainingRows": 5564,
+          "round": 1,
+          "rows": {
+            "after": 5564,
+            "before": 5564,
+            "distinct": 5564
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3070466,
+        "budget": 13,
+        "columns": 3324,
+        "conflicts": 33,
+        "rows": 5564,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.014571308
+      }
+    },
+    {
+      "dualFixedColumns": 1939,
+      "exactSeedDualValue": 12.5614246,
+      "initialResidualRows": 5794,
+      "orbitIndex": 61,
+      "representativeColumn": 561,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3354,
+            "before": 3354,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3354,
+          "remainingRows": 5550,
+          "round": 0,
+          "rows": {
+            "after": 5550,
+            "before": 5794,
+            "distinct": 5715
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3354,
+            "before": 3354,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3354,
+          "remainingRows": 5550,
+          "round": 1,
+          "rows": {
+            "after": 5550,
+            "before": 5550,
+            "distinct": 5550
+          }
+        }
+      ],
+      "solver": {
+        "branches": 13001997,
+        "budget": 13,
+        "columns": 3354,
+        "conflicts": 260011,
+        "rows": 5550,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.090686922
+      }
+    },
+    {
+      "dualFixedColumns": 1915,
+      "exactSeedDualValue": 12.5589782,
+      "initialResidualRows": 5790,
+      "orbitIndex": 17,
+      "representativeColumn": 40,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3378,
+            "before": 3378,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3378,
+          "remainingRows": 5562,
+          "round": 0,
+          "rows": {
+            "after": 5562,
+            "before": 5790,
+            "distinct": 5719
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3378,
+            "before": 3378,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3378,
+          "remainingRows": 5562,
+          "round": 1,
+          "rows": {
+            "after": 5562,
+            "before": 5562,
+            "distinct": 5562
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3076203,
+        "budget": 13,
+        "columns": 3378,
+        "conflicts": 81,
+        "rows": 5562,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.07937720700001
+      }
+    },
+    {
+      "dualFixedColumns": 1877,
+      "exactSeedDualValue": 12.5481692,
+      "initialResidualRows": 5787,
+      "orbitIndex": 54,
+      "representativeColumn": 546,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3416,
+            "before": 3416,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3416,
+          "remainingRows": 5546,
+          "round": 0,
+          "rows": {
+            "after": 5546,
+            "before": 5787,
+            "distinct": 5711
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3416,
+            "before": 3416,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3416,
+          "remainingRows": 5546,
+          "round": 1,
+          "rows": {
+            "after": 5546,
+            "before": 5546,
+            "distinct": 5546
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3110748,
+        "budget": 13,
+        "columns": 3416,
+        "conflicts": 36,
+        "rows": 5546,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.021571427
+      }
+    },
+    {
+      "dualFixedColumns": 1886,
+      "exactSeedDualValue": 12.5442284,
+      "initialResidualRows": 5796,
+      "orbitIndex": 40,
+      "representativeColumn": 101,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3407,
+            "before": 3407,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3407,
+          "remainingRows": 5556,
+          "round": 0,
+          "rows": {
+            "after": 5556,
+            "before": 5796,
+            "distinct": 5718
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3407,
+            "before": 3407,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3407,
+          "remainingRows": 5556,
+          "round": 1,
+          "rows": {
+            "after": 5556,
+            "before": 5556,
+            "distinct": 5556
+          }
+        }
+      ],
+      "solver": {
+        "branches": 2996105,
+        "budget": 13,
+        "columns": 3407,
+        "conflicts": 41,
+        "rows": 5556,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.081464654
+      }
+    },
+    {
+      "dualFixedColumns": 1886,
+      "exactSeedDualValue": 12.5442284,
+      "initialResidualRows": 5796,
+      "orbitIndex": 41,
+      "representativeColumn": 102,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3407,
+            "before": 3407,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3407,
+          "remainingRows": 5556,
+          "round": 0,
+          "rows": {
+            "after": 5556,
+            "before": 5796,
+            "distinct": 5718
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3407,
+            "before": 3407,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3407,
+          "remainingRows": 5556,
+          "round": 1,
+          "rows": {
+            "after": 5556,
+            "before": 5556,
+            "distinct": 5556
+          }
+        }
+      ],
+      "solver": {
+        "branches": 2998124,
+        "budget": 13,
+        "columns": 3407,
+        "conflicts": 75,
+        "rows": 5556,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.029153179
+      }
+    },
+    {
+      "dualFixedColumns": 1935,
+      "exactSeedDualValue": 12.5378102,
+      "initialResidualRows": 5792,
+      "orbitIndex": 67,
+      "representativeColumn": 629,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3358,
+            "before": 3358,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3358,
+          "remainingRows": 5548,
+          "round": 0,
+          "rows": {
+            "after": 5548,
+            "before": 5792,
+            "distinct": 5713
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3358,
+            "before": 3358,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3358,
+          "remainingRows": 5548,
+          "round": 1,
+          "rows": {
+            "after": 5548,
+            "before": 5548,
+            "distinct": 5548
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3080633,
+        "budget": 13,
+        "columns": 3358,
+        "conflicts": 27,
+        "rows": 5548,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.099167964
+      }
+    },
+    {
+      "dualFixedColumns": 1858,
+      "exactSeedDualValue": 12.5361917,
+      "initialResidualRows": 5825,
+      "orbitIndex": 21,
+      "representativeColumn": 44,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3435,
+            "before": 3435,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3435,
+          "remainingRows": 5581,
+          "round": 0,
+          "rows": {
+            "after": 5581,
+            "before": 5825,
+            "distinct": 5746
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3435,
+            "before": 3435,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3435,
+          "remainingRows": 5581,
+          "round": 1,
+          "rows": {
+            "after": 5581,
+            "before": 5581,
+            "distinct": 5581
+          }
+        }
+      ],
+      "solver": {
+        "branches": 7232,
+        "budget": 13,
+        "columns": 3435,
+        "conflicts": 0,
+        "rows": 5581,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.013034101
+      }
+    },
+    {
+      "dualFixedColumns": 1874,
+      "exactSeedDualValue": 12.5311222,
+      "initialResidualRows": 5805,
+      "orbitIndex": 44,
+      "representativeColumn": 123,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3419,
+            "before": 3419,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3419,
+          "remainingRows": 5561,
+          "round": 0,
+          "rows": {
+            "after": 5561,
+            "before": 5805,
+            "distinct": 5726
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3419,
+            "before": 3419,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3419,
+          "remainingRows": 5561,
+          "round": 1,
+          "rows": {
+            "after": 5561,
+            "before": 5561,
+            "distinct": 5561
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3135747,
+        "budget": 13,
+        "columns": 3419,
+        "conflicts": 22,
+        "rows": 5561,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.079259379
+      }
+    },
+    {
+      "dualFixedColumns": 1869,
+      "exactSeedDualValue": 12.5173859,
+      "initialResidualRows": 5807,
+      "orbitIndex": 52,
+      "representativeColumn": 534,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3424,
+            "before": 3424,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3424,
+          "remainingRows": 5563,
+          "round": 0,
+          "rows": {
+            "after": 5563,
+            "before": 5807,
+            "distinct": 5728
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3424,
+            "before": 3424,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3424,
+          "remainingRows": 5563,
+          "round": 1,
+          "rows": {
+            "after": 5563,
+            "before": 5563,
+            "distinct": 5563
+          }
+        }
+      ],
+      "solver": {
+        "branches": 7210,
+        "budget": 13,
+        "columns": 3424,
+        "conflicts": 0,
+        "rows": 5563,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.092162016
+      }
+    },
+    {
+      "dualFixedColumns": 1848,
+      "exactSeedDualValue": 12.5105572,
+      "initialResidualRows": 5214,
+      "orbitIndex": 73,
+      "representativeColumn": 862,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3444,
+            "before": 3445,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 1
+          },
+          "newForced": [],
+          "remainingColumns": 3444,
+          "remainingRows": 4983,
+          "round": 0,
+          "rows": {
+            "after": 4983,
+            "before": 5214,
+            "distinct": 5139
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3444,
+            "before": 3444,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3444,
+          "remainingRows": 4983,
+          "round": 1,
+          "rows": {
+            "after": 4983,
+            "before": 4983,
+            "distinct": 4983
+          }
+        }
+      ],
+      "solver": {
+        "branches": 18411,
+        "budget": 13,
+        "columns": 3444,
+        "conflicts": 0,
+        "rows": 4983,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.06809857500001
+      }
+    },
+    {
+      "dualFixedColumns": 1741,
+      "exactSeedDualValue": 12.4985335,
+      "initialResidualRows": 5269,
+      "orbitIndex": 93,
+      "representativeColumn": 2884,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3546,
+            "before": 3552,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3546,
+          "remainingRows": 5024,
+          "round": 0,
+          "rows": {
+            "after": 5024,
+            "before": 5269,
+            "distinct": 5189
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3546,
+            "before": 3546,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3546,
+          "remainingRows": 5024,
+          "round": 1,
+          "rows": {
+            "after": 5024,
+            "before": 5024,
+            "distinct": 5024
+          }
+        }
+      ],
+      "solver": {
+        "branches": 16422775,
+        "budget": 13,
+        "columns": 3546,
+        "conflicts": 258351,
+        "rows": 5024,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.023123471
+      }
+    },
+    {
+      "dualFixedColumns": 1739,
+      "exactSeedDualValue": 12.4889349,
+      "initialResidualRows": 5250,
+      "orbitIndex": 91,
+      "representativeColumn": 1292,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3548,
+            "before": 3554,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3548,
+          "remainingRows": 5006,
+          "round": 0,
+          "rows": {
+            "after": 5006,
+            "before": 5250,
+            "distinct": 5171
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3548,
+            "before": 3548,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3548,
+          "remainingRows": 5006,
+          "round": 1,
+          "rows": {
+            "after": 5006,
+            "before": 5006,
+            "distinct": 5006
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3127730,
+        "budget": 13,
+        "columns": 3548,
+        "conflicts": 40,
+        "rows": 5006,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.119277408
+      }
+    },
+    {
+      "dualFixedColumns": 1640,
+      "exactSeedDualValue": 12.4785736,
+      "initialResidualRows": 5253,
+      "orbitIndex": 75,
+      "representativeColumn": 865,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3644,
+            "before": 3653,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 9
+          },
+          "newForced": [],
+          "remainingColumns": 3644,
+          "remainingRows": 5029,
+          "round": 0,
+          "rows": {
+            "after": 5029,
+            "before": 5253,
+            "distinct": 5187
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3644,
+            "before": 3644,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3644,
+          "remainingRows": 5029,
+          "round": 1,
+          "rows": {
+            "after": 5029,
+            "before": 5029,
+            "distinct": 5029
+          }
+        }
+      ],
+      "solver": {
+        "branches": 19281,
+        "budget": 13,
+        "columns": 3644,
+        "conflicts": 0,
+        "rows": 5029,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.08073405500001
+      }
+    },
+    {
+      "dualFixedColumns": 1727,
+      "exactSeedDualValue": 12.4781418,
+      "initialResidualRows": 5790,
+      "orbitIndex": 51,
+      "representativeColumn": 533,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3560,
+            "before": 3566,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3560,
+          "remainingRows": 5549,
+          "round": 0,
+          "rows": {
+            "after": 5549,
+            "before": 5790,
+            "distinct": 5714
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3560,
+            "before": 3560,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3560,
+          "remainingRows": 5549,
+          "round": 1,
+          "rows": {
+            "after": 5549,
+            "before": 5549,
+            "distinct": 5549
+          }
+        }
+      ],
+      "solver": {
+        "branches": 7482,
+        "budget": 13,
+        "columns": 3560,
+        "conflicts": 0,
+        "rows": 5549,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.01413959700001
+      }
+    },
+    {
+      "dualFixedColumns": 1634,
+      "exactSeedDualValue": 12.4779541,
+      "initialResidualRows": 5256,
+      "orbitIndex": 62,
+      "representativeColumn": 566,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3653,
+            "before": 3659,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3653,
+          "remainingRows": 5018,
+          "round": 0,
+          "rows": {
+            "after": 5018,
+            "before": 5256,
+            "distinct": 5183
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3653,
+            "before": 3653,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3653,
+          "remainingRows": 5018,
+          "round": 1,
+          "rows": {
+            "after": 5018,
+            "before": 5018,
+            "distinct": 5018
+          }
+        }
+      ],
+      "solver": {
+        "branches": 13244691,
+        "budget": 13,
+        "columns": 3653,
+        "conflicts": 234589,
+        "rows": 5018,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.08761567100001
+      }
+    },
+    {
+      "dualFixedColumns": 1714,
+      "exactSeedDualValue": 12.4768007,
+      "initialResidualRows": 5257,
+      "orbitIndex": 36,
+      "representativeColumn": 82,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3567,
+            "before": 3579,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 12
+          },
+          "newForced": [],
+          "remainingColumns": 3567,
+          "remainingRows": 5034,
+          "round": 0,
+          "rows": {
+            "after": 5034,
+            "before": 5257,
+            "distinct": 5185
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3567,
+            "before": 3567,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3567,
+          "remainingRows": 5034,
+          "round": 1,
+          "rows": {
+            "after": 5034,
+            "before": 5034,
+            "distinct": 5034
+          }
+        }
+      ],
+      "solver": {
+        "branches": 7456,
+        "budget": 13,
+        "columns": 3567,
+        "conflicts": 0,
+        "rows": 5034,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.060753242
+      }
+    },
+    {
+      "dualFixedColumns": 1550,
+      "exactSeedDualValue": 12.4719954,
+      "initialResidualRows": 5277,
+      "orbitIndex": 63,
+      "representativeColumn": 568,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3737,
+            "before": 3743,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3737,
+          "remainingRows": 5045,
+          "round": 0,
+          "rows": {
+            "after": 5045,
+            "before": 5277,
+            "distinct": 5207
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3737,
+            "before": 3737,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3737,
+          "remainingRows": 5045,
+          "round": 1,
+          "rows": {
+            "after": 5045,
+            "before": 5045,
+            "distinct": 5045
+          }
+        }
+      ],
+      "solver": {
+        "branches": 18553,
+        "budget": 13,
+        "columns": 3737,
+        "conflicts": 0,
+        "rows": 5045,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.11797370500001
+      }
+    },
+    {
+      "dualFixedColumns": 1520,
+      "exactSeedDualValue": 12.4634666,
+      "initialResidualRows": 5236,
+      "orbitIndex": 92,
+      "representativeColumn": 1335,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3767,
+            "before": 3773,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3767,
+          "remainingRows": 5001,
+          "round": 0,
+          "rows": {
+            "after": 5001,
+            "before": 5236,
+            "distinct": 5166
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3767,
+            "before": 3767,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3767,
+          "remainingRows": 5001,
+          "round": 1,
+          "rows": {
+            "after": 5001,
+            "before": 5001,
+            "distinct": 5001
+          }
+        }
+      ],
+      "solver": {
+        "branches": 18618,
+        "budget": 13,
+        "columns": 3767,
+        "conflicts": 0,
+        "rows": 5001,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.072231676
+      }
+    },
+    {
+      "dualFixedColumns": 1577,
+      "exactSeedDualValue": 12.4599976,
+      "initialResidualRows": 5213,
+      "orbitIndex": 65,
+      "representativeColumn": 571,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3710,
+            "before": 3716,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3710,
+          "remainingRows": 4981,
+          "round": 0,
+          "rows": {
+            "after": 4981,
+            "before": 5213,
+            "distinct": 5143
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3710,
+            "before": 3710,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3710,
+          "remainingRows": 4981,
+          "round": 1,
+          "rows": {
+            "after": 4981,
+            "before": 4981,
+            "distinct": 4981
+          }
+        }
+      ],
+      "solver": {
+        "branches": 18525,
+        "budget": 13,
+        "columns": 3710,
+        "conflicts": 0,
+        "rows": 4981,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.072565517
+      }
+    },
+    {
+      "dualFixedColumns": 1545,
+      "exactSeedDualValue": 12.4519279,
+      "initialResidualRows": 6042,
+      "orbitIndex": 3,
+      "representativeColumn": 4,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3742,
+            "before": 3748,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3742,
+          "remainingRows": 5834,
+          "round": 0,
+          "rows": {
+            "after": 5834,
+            "before": 6042,
+            "distinct": 5988
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3742,
+            "before": 3742,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3742,
+          "remainingRows": 5834,
+          "round": 1,
+          "rows": {
+            "after": 5834,
+            "before": 5834,
+            "distinct": 5834
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3148596,
+        "budget": 13,
+        "columns": 3742,
+        "conflicts": 40,
+        "rows": 5834,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.073885524
+      }
+    },
+    {
+      "dualFixedColumns": 1597,
+      "exactSeedDualValue": 12.4474907,
+      "initialResidualRows": 5413,
+      "orbitIndex": 45,
+      "representativeColumn": 129,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3690,
+            "before": 3696,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3690,
+          "remainingRows": 5177,
+          "round": 0,
+          "rows": {
+            "after": 5177,
+            "before": 5413,
+            "distinct": 5342
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3690,
+            "before": 3690,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3690,
+          "remainingRows": 5177,
+          "round": 1,
+          "rows": {
+            "after": 5177,
+            "before": 5177,
+            "distinct": 5177
+          }
+        }
+      ],
+      "solver": {
+        "branches": 82968,
+        "budget": 13,
+        "columns": 3690,
+        "conflicts": 1076,
+        "rows": 5177,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.064319069
+      }
+    },
+    {
+      "dualFixedColumns": 1568,
+      "exactSeedDualValue": 12.4469103,
+      "initialResidualRows": 5289,
+      "orbitIndex": 68,
+      "representativeColumn": 636,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3719,
+            "before": 3725,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3719,
+          "remainingRows": 5054,
+          "round": 0,
+          "rows": {
+            "after": 5054,
+            "before": 5289,
+            "distinct": 5219
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3719,
+            "before": 3719,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3719,
+          "remainingRows": 5054,
+          "round": 1,
+          "rows": {
+            "after": 5054,
+            "before": 5054,
+            "distinct": 5054
+          }
+        }
+      ],
+      "solver": {
+        "branches": 7760,
+        "budget": 13,
+        "columns": 3719,
+        "conflicts": 0,
+        "rows": 5054,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.0334519
+      }
+    },
+    {
+      "dualFixedColumns": 1584,
+      "exactSeedDualValue": 12.4409371,
+      "initialResidualRows": 5406,
+      "orbitIndex": 38,
+      "representativeColumn": 85,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3697,
+            "before": 3709,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 12
+          },
+          "newForced": [],
+          "remainingColumns": 3697,
+          "remainingRows": 5180,
+          "round": 0,
+          "rows": {
+            "after": 5180,
+            "before": 5406,
+            "distinct": 5338
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3697,
+            "before": 3697,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3697,
+          "remainingRows": 5180,
+          "round": 1,
+          "rows": {
+            "after": 5180,
+            "before": 5180,
+            "distinct": 5180
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3124790,
+        "budget": 13,
+        "columns": 3697,
+        "conflicts": 22,
+        "rows": 5180,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.077357706
+      }
+    },
+    {
+      "dualFixedColumns": 1493,
+      "exactSeedDualValue": 12.4324624,
+      "initialResidualRows": 5194,
+      "orbitIndex": 89,
+      "representativeColumn": 1070,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3794,
+            "before": 3800,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3794,
+          "remainingRows": 4959,
+          "round": 0,
+          "rows": {
+            "after": 4959,
+            "before": 5194,
+            "distinct": 5124
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3794,
+            "before": 3794,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3794,
+          "remainingRows": 4959,
+          "round": 1,
+          "rows": {
+            "after": 4959,
+            "before": 4959,
+            "distinct": 4959
+          }
+        }
+      ],
+      "solver": {
+        "branches": 18887,
+        "budget": 13,
+        "columns": 3794,
+        "conflicts": 0,
+        "rows": 4959,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.09081781500001
+      }
+    },
+    {
+      "dualFixedColumns": 1510,
+      "exactSeedDualValue": 12.4307306,
+      "initialResidualRows": 5176,
+      "orbitIndex": 81,
+      "representativeColumn": 978,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3777,
+            "before": 3783,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3777,
+          "remainingRows": 4944,
+          "round": 0,
+          "rows": {
+            "after": 4944,
+            "before": 5176,
+            "distinct": 5106
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3777,
+            "before": 3777,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3777,
+          "remainingRows": 4944,
+          "round": 1,
+          "rows": {
+            "after": 4944,
+            "before": 4944,
+            "distinct": 4944
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3116100,
+        "budget": 13,
+        "columns": 3777,
+        "conflicts": 0,
+        "rows": 4944,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.066912918
+      }
+    },
+    {
+      "dualFixedColumns": 1510,
+      "exactSeedDualValue": 12.4307306,
+      "initialResidualRows": 5176,
+      "orbitIndex": 82,
+      "representativeColumn": 981,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3777,
+            "before": 3783,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 6
+          },
+          "newForced": [],
+          "remainingColumns": 3777,
+          "remainingRows": 4944,
+          "round": 0,
+          "rows": {
+            "after": 4944,
+            "before": 5176,
+            "distinct": 5106
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3777,
+            "before": 3777,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3777,
+          "remainingRows": 4944,
+          "round": 1,
+          "rows": {
+            "after": 4944,
+            "before": 4944,
+            "distinct": 4944
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3116353,
+        "budget": 13,
+        "columns": 3777,
+        "conflicts": 0,
+        "rows": 4944,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.11900199200001
+      }
+    },
+    {
+      "dualFixedColumns": 1506,
+      "exactSeedDualValue": 12.410592,
+      "initialResidualRows": 5797,
+      "orbitIndex": 24,
+      "representativeColumn": 60,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3772,
+            "before": 3787,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 15
+          },
+          "newForced": [],
+          "remainingColumns": 3772,
+          "remainingRows": 5593,
+          "round": 0,
+          "rows": {
+            "after": 5593,
+            "before": 5797,
+            "distinct": 5744
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3772,
+            "before": 3772,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3772,
+          "remainingRows": 5593,
+          "round": 1,
+          "rows": {
+            "after": 5593,
+            "before": 5593,
+            "distinct": 5593
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3156158,
+        "budget": 13,
+        "columns": 3772,
+        "conflicts": 57,
+        "rows": 5593,
+        "status": "UNKNOWN",
+        "wallSeconds": 75.067744656
+      }
+    },
+    {
+      "dualFixedColumns": 1492,
+      "exactSeedDualValue": 12.4100262,
+      "initialResidualRows": 5823,
+      "orbitIndex": 14,
+      "representativeColumn": 32,
+      "result": "UNKNOWN",
+      "rounds": [
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3793,
+            "before": 3801,
+            "duplicates": 1,
+            "empty": 0,
+            "properDominated": 7
+          },
+          "newForced": [],
+          "remainingColumns": 3793,
+          "remainingRows": 5604,
+          "round": 0,
+          "rows": {
+            "after": 5604,
+            "before": 5823,
+            "distinct": 5755
+          }
+        },
+        {
+          "budget": 13,
+          "columns": {
+            "after": 3793,
+            "before": 3793,
+            "duplicates": 0,
+            "empty": 0,
+            "properDominated": 0
+          },
+          "newForced": [],
+          "remainingColumns": 3793,
+          "remainingRows": 5604,
+          "round": 1,
+          "rows": {
+            "after": 5604,
+            "before": 5604,
+            "distinct": 5604
+          }
+        }
+      ],
+      "solver": {
+        "branches": 3153291,
+        "budget": 13,
+        "columns": 3793,
+        "conflicts": 10,
+        "rows": 5604,
+        "status": "UNKNOWN",
+        "wallSeconds": 63.12951282900001
+      }
+    }
+  ],
+  "result": "UNKNOWN",
+  "schema": "holotrade.depth5-k14-bidominance-kernel.v1",
+  "theorem": "Bi-dominance produced theorem-safe branch kernels but did not globally decide K14.",
+  "valid": true,
+  "witnessLeafOrbitIndices": null
+}
