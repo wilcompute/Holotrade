@@ -4307,3 +4307,46 @@ test("the carrier binary is not a gauge: no substrate symmetry relates the two",
   assert.match(r.whatItForbids, /irreversible\s+from inside/);
   assert.match(r.boundary, /not abstract group\s+isomorphisms/);
 });
+
+test("the fork is bridged by the fibre product, and the machine-type enum is ternary", () => {
+  const r = require(path.join(root, "data/the_fork_is_bridged.json"));
+  assert.ok(r.valid);
+  assert.match(r.whereThisStarts, /a fork, not a gauge/);
+
+  // the fibre product itself
+  const f = r.fibreProduct;
+  assert.equal(f.states, 1296);
+  assert.equal(f.states, 36 * 6 * 6);
+  assert.deepEqual(f.statesPerSpread, [36]);
+  assert.equal(f.shapePerSpread, "K(6,6)");
+  assert.equal(6 * 6, f.statesPerSpread[0], "a complete bipartite fibre");
+  assert.ok(f.transitive);
+  assert.equal(f.stabiliserOrder, 20);
+  assert.equal(f.orbitStabiliser, f.states);
+  assert.equal(25920 / f.stabiliserOrder, f.states, "orbit-stabilizer closes");
+  assert.deepEqual(f.projectionsOnto, [true, true]);
+
+  // it IS the parallel track's correspondence
+  assert.match(r.isTheirCorrespondence, /valency six/);
+  assert.match(r.isTheirCorrespondence, /rank 36/);
+
+  // the stabiliser is F20
+  const s = r.stabiliserIsF20;
+  assert.equal(s.order, 20);
+  assert.ok(s.nonAbelian);
+  assert.equal(s.subgroupsOfOrderFive, 1, "unique Sylow-5: Frobenius");
+  assert.match(s.reading, /AGL\(1,5\)/);
+
+  // the architecture, and the product-layer consequence
+  assert.match(r.architecture.oneCarrier, /sees exactly one/);
+  assert.match(r.architecture.theComposite, /1296 states/);
+  assert.match(r.architecture.noConversionNeeded, /unique up to unique/);
+
+  const p = r.productLayerIsOneEntryShort;
+  assert.equal(p.file, "js/w33-execution-profile.js");
+  assert.equal(p.enumerates.length, 2, "their enum has two entries");
+  assert.match(p.missing, /1296/);
+  assert.match(p.forced, /ternary rather than binary/);
+  assert.match(p.stillForbidden, /fed190d/);
+  assert.match(r.boundary, /No hardware claim/);
+});

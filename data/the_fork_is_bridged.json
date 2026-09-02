@@ -1,0 +1,44 @@
+{
+  "schema": "holotrade.fork-bridged-by-fibre-product.v1",
+  "valid": true,
+  "whereThisStarts": "fed190d proved the two carriers inequivalent under every substrate automorphism -- a fork, not a gauge -- leaving open whether any canonical relation exists; two bundles over a common base have exactly one, the fibre product",
+  "fibreProduct": {
+    "states": 1296,
+    "formula": "36 x 6 x 6",
+    "statesPerSpread": [
+      36
+    ],
+    "shapePerSpread": "K(6,6)",
+    "transitive": true,
+    "stabiliserOrder": 20,
+    "orbitStabiliser": 1296,
+    "projectionsOnto": [
+      true,
+      true
+    ]
+  },
+  "isTheirCorrespondence": "ad6e209 and the Steinberg witness report a smallest correspondence of valency six and rank 36 splitting into 36 copies of K(6,6); valency six because each fibre has six states, rank 36 because there are 36 fibres, complete bipartite because a fibre product pairs everything over a spread with everything else",
+  "stabiliserIsF20": {
+    "order": 20,
+    "nonAbelian": true,
+    "subgroupsOfOrderFive": 1,
+    "reading": "Stab(c,p) = Stab(c) n Stab(p), an S5 from each of the two nonconjugate classes in S6, which classically meet in the Frobenius group F20 = AGL(1,5)"
+  },
+  "architecture": {
+    "oneCarrier": "a fork: 216 states, sees exactly one of {64, 81}",
+    "theComposite": "1296 states, canonical, sees both, stabiliser F20, synchronised on the double-six",
+    "price": "six-fold state expansion per fork, paid once",
+    "noConversionNeeded": "there is no conversion instruction because there is no conversion -- only pairing; and the composite is canonical rather than an engineering convention, since fibre products are unique up to unique isomorphism"
+  },
+  "productLayerIsOneEntryShort": {
+    "file": "js/w33-execution-profile.js",
+    "enumerates": [
+      "w33.circuit216.steinberg81",
+      "w33.paired-hemisystem216.steinberg64"
+    ],
+    "missing": "a third machine type: the fibre product, 1296 states, transitive, stabiliser F20, addressing both 81 and 64",
+    "forced": "it is the ONLY other one, because a fibre product is unique up to unique isomorphism, so the field is ternary rather than binary",
+    "stillForbidden": "converting between the two forks, which fed190d rules out"
+  },
+  "boundary": "the fibre product, its size, per-spread structure, transitivity, stabiliser order and F20 signature are computed here; that both permutation modules pull back follows from the projections being onto, and the 64/81 selector pattern is ad6e209's, cited not reproduced. No hardware claim. tau_2 is untouched"
+}
