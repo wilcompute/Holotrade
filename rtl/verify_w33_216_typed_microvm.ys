@@ -1,0 +1,5 @@
+read_verilog -formal rtl/w33_216_typed_microvm.v
+hierarchy -top w33_216_typed_microvm_formal
+proc; chformal -lower; memory_map; opt; flatten; opt -full
+sat -verify -prove-asserts -show-ports
+stat

@@ -4184,3 +4184,36 @@ test("the 216 is a principal 6-fibration over the double-sixes", () => {
   assert.match(r.boundary, /dictionary\s+entry/);
   assert.match(r.boundary, /no module is written/);
 });
+
+test("the typed microVM property is proved, and its control fails", () => {
+  const r = require(path.join(root, "data/the_typed_microvm_property_is_a_theorem.json"));
+  assert.ok(r.valid);
+  assert.match(r.theOrphan, /module that did not exist/);
+
+  // the type discipline is derived, not designed
+  const t = r.typeDiscipline;
+  assert.match(t.source, /principal 6-fibration/);
+  assert.match(t.relabelling, /by construction/);
+  assert.equal(t.property, "s/6 == t/6  =>  g[s]/6 == g[t]/6");
+  assert.match(t.meaning, /cannot leak the tag into the type/);
+  assert.match(t.forced, /exactly one way to type a state/);
+
+  // the proof, and the control that gives it meaning
+  assert.equal(r.proof.verdict, "PROVED");
+  assert.equal(r.control.verdict, "COUNTEREXAMPLE");
+  assert.notEqual(r.proof.script, r.control.script);
+  for (const x of [r.proof, r.control]) {
+    assert.ok(x.variables > 30000, "a real SAT instance");
+    assert.ok(x.clauses > x.variables);
+  }
+  // the control differs only slightly -- same shape, two entries swapped
+  assert.ok(r.control.variables > r.proof.variables);
+  assert.ok(r.control.variables - r.proof.variables < 100);
+  assert.match(r.controlHasTeeth, /not vacuously true/);
+  assert.match(r.quantification, /216 x 216/);
+  assert.equal(216 * 216, 46656, "the quantified space");
+
+  assert.match(r.harnessRepair, /chformal -lower/);
+  assert.match(r.whyItMatters, /the specification IS the fibration/);
+  assert.match(r.boundary, /not a processor/);
+});
