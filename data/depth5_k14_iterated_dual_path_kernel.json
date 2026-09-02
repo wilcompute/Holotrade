@@ -1,0 +1,298 @@
+{
+  "boundary": "Floating HiGHS points are discovery aids. Failure to fix a column is not evidence it belongs to a 14-cover. UNKNOWN CP-SAT branches do not improve the certified lower bound.",
+  "branchRecords": [
+    {
+      "initialColumns": 5293,
+      "initialRows": 6042,
+      "orbitIndex": 0,
+      "representativeColumn": 0,
+      "result": "UNKNOWN_AFTER_DPF",
+      "rounds": [
+        {
+          "DRE": {
+            "afterDominance": 5862,
+            "before": 5862,
+            "distinct": 5862
+          },
+          "dualPoints": [
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 12.171477085143787,
+              "kind": "max-sum",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714621,
+              "scoreNumerator": 121714621
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 0.14343366634453275,
+              "kind": "near-opt-direction-0",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714486,
+              "scoreNumerator": 121714486
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 3.769832107601514,
+              "kind": "near-opt-direction-1",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714493,
+              "scoreNumerator": 121714493
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 5.693468074079319,
+              "kind": "near-opt-direction-2",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.171453,
+              "scoreNumerator": 121714530
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 5.746810824712607,
+              "kind": "near-opt-direction-3",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714396,
+              "scoreNumerator": 121714396
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 5.927362744910653,
+              "kind": "near-opt-direction-4",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714446,
+              "scoreNumerator": 121714446
+            }
+          ],
+          "emptyRowCount": 0,
+          "emptyRows": [],
+          "newFixedColumns": 0,
+          "remainingColumns": 5038,
+          "round": 0,
+          "rowsBeforeDRE": 5862
+        }
+      ],
+      "seed": {
+        "DRE": {
+          "afterDominance": 5862,
+          "before": 6042,
+          "distinct": 6042
+        },
+        "emptyRowCount": 0,
+        "emptyRows": [],
+        "fixedColumns": 255,
+        "score": 12.1714621
+      },
+      "solver": {
+        "branches": 19547086,
+        "conflicts": 256062,
+        "elapsedSeconds": 120.14798140525818,
+        "minimalRows": 5862,
+        "orbitIndex": 0,
+        "remainingColumns": 5038,
+        "status": "UNKNOWN"
+      }
+    },
+    {
+      "initialColumns": 5293,
+      "initialRows": 6042,
+      "orbitIndex": 1,
+      "representativeColumn": 1,
+      "result": "UNKNOWN_AFTER_DPF",
+      "rounds": [
+        {
+          "DRE": {
+            "afterDominance": 5870,
+            "before": 5870,
+            "distinct": 5870
+          },
+          "dualPoints": [
+            {
+              "fixedColumnsByPoint": 12,
+              "floatingObjective": 12.171477085143675,
+              "kind": "max-sum",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714618,
+              "scoreNumerator": 121714618
+            },
+            {
+              "fixedColumnsByPoint": 57,
+              "floatingObjective": 0.1438568915213123,
+              "kind": "near-opt-direction-0",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714432,
+              "scoreNumerator": 121714432
+            },
+            {
+              "fixedColumnsByPoint": 1,
+              "floatingObjective": 3.9029652013283993,
+              "kind": "near-opt-direction-1",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714498,
+              "scoreNumerator": 121714498
+            },
+            {
+              "fixedColumnsByPoint": 34,
+              "floatingObjective": 5.777953624051839,
+              "kind": "near-opt-direction-2",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.171453,
+              "scoreNumerator": 121714530
+            },
+            {
+              "fixedColumnsByPoint": 12,
+              "floatingObjective": 5.941759160340923,
+              "kind": "near-opt-direction-3",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714447,
+              "scoreNumerator": 121714447
+            },
+            {
+              "fixedColumnsByPoint": 27,
+              "floatingObjective": 5.913977904277605,
+              "kind": "near-opt-direction-4",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714437,
+              "scoreNumerator": 121714437
+            }
+          ],
+          "emptyRowCount": 0,
+          "emptyRows": [],
+          "newFixedColumns": 58,
+          "remainingColumns": 5062,
+          "round": 0,
+          "rowsBeforeDRE": 5870
+        },
+        {
+          "DRE": {
+            "afterDominance": 5870,
+            "before": 5870,
+            "distinct": 5870
+          },
+          "dualPoints": [
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 12.171477085143657,
+              "kind": "max-sum",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714618,
+              "scoreNumerator": 121714618
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 0.14411029540309234,
+              "kind": "near-opt-direction-0",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714432,
+              "scoreNumerator": 121714432
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 3.8746401231001153,
+              "kind": "near-opt-direction-1",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714508,
+              "scoreNumerator": 121714508
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 5.777971019081679,
+              "kind": "near-opt-direction-2",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.171453,
+              "scoreNumerator": 121714530
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 5.941776598782199,
+              "kind": "near-opt-direction-3",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714447,
+              "scoreNumerator": 121714447
+            },
+            {
+              "fixedColumnsByPoint": 0,
+              "floatingObjective": 5.913995319763619,
+              "kind": "near-opt-direction-4",
+              "maxColumnLoadNumerator": 10000000,
+              "score": 12.1714437,
+              "scoreNumerator": 121714437
+            }
+          ],
+          "emptyRowCount": 0,
+          "emptyRows": [],
+          "newFixedColumns": 0,
+          "remainingColumns": 5062,
+          "round": 1,
+          "rowsBeforeDRE": 5870
+        }
+      ],
+      "seed": {
+        "DRE": {
+          "afterDominance": 5870,
+          "before": 6042,
+          "distinct": 6042
+        },
+        "emptyRowCount": 0,
+        "emptyRows": [],
+        "fixedColumns": 173,
+        "score": 12.1714618
+      },
+      "solver": {
+        "branches": 0,
+        "conflicts": 0,
+        "elapsedSeconds": 1.0849831104278564,
+        "minimalRows": 5870,
+        "orbitIndex": 1,
+        "remainingColumns": 5062,
+        "status": "UNKNOWN"
+      }
+    }
+  ],
+  "certifiedIntervalUpdate": [
+    14,
+    22
+  ],
+  "exactness": {
+    "dominatedRowEliminationExact": true,
+    "dualDenominator": 10000000,
+    "integerDualFeasibilityReverified": true,
+    "strictFixingTest": "sum(y)-load(k) > 12"
+  },
+  "initialClosedBranches": 0,
+  "initialUnresolvedBranches": 88,
+  "inputResult": "UNKNOWN",
+  "literatureAnchor": {
+    "doi": "10.4230/LIPIcs.SEA.2026.28",
+    "implementationBoundary": "This pass uses multiple exactly verified dual-feasible points, but not the literal hidden dual-simplex iterate stream from the paper.",
+    "method": "dual-path fixing for set cover"
+  },
+  "newlyClosedBranches": 0,
+  "result": "UNKNOWN",
+  "schema": "holotrade.depth5-k14-iterated-dual-path-kernel.v1",
+  "solverRecords": [
+    {
+      "branches": 19547086,
+      "conflicts": 256062,
+      "elapsedSeconds": 120.14798140525818,
+      "minimalRows": 5862,
+      "orbitIndex": 0,
+      "remainingColumns": 5038,
+      "status": "UNKNOWN"
+    },
+    {
+      "branches": 0,
+      "conflicts": 0,
+      "elapsedSeconds": 1.0849831104278564,
+      "minimalRows": 5870,
+      "orbitIndex": 1,
+      "remainingColumns": 5062,
+      "status": "UNKNOWN"
+    }
+  ],
+  "status": "PASS",
+  "theorem": "Every DPF deletion follows from an explicitly integer-verified feasible dual of the current reduced residual set-cover model and the exact UB=13 fixing inequality. Deleted columns are therefore impossible in that normalized K14 branch. Dominated-row elimination preserves the feasible cover set. A branch is promoted to infeasible only by an empty exact row or CP-SAT INFEASIBLE; a K14 witness is accepted only after direct coverage verification.",
+  "unresolvedBranchesProcessed": 2,
+  "valid": true,
+  "witnessLeafOrbitIndices": null
+}
