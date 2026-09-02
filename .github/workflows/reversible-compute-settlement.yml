@@ -3,7 +3,9 @@ on:
   push:
     paths:
       - 'js/reversible-compute-settlement.js'
+      - 'js/w33-reversible-receipt.js'
       - 'tests/reversible-compute-settlement.test.js'
+      - 'tests/w33-reversible-receipt.test.js'
       - '.github/workflows/reversible-compute-settlement.yml'
   workflow_dispatch:
 
@@ -16,4 +18,6 @@ jobs:
         with:
           node-version: '20'
       - name: Run reversible settlement regression
-        run: node --test tests/reversible-compute-settlement.test.js
+        run: |
+          node --test tests/reversible-compute-settlement.test.js
+          node --test tests/w33-reversible-receipt.test.js
