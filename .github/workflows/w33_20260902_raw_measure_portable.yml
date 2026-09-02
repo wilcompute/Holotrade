@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - 'js/w33-tpm-eventlog-provenance.js'
+      - 'js/w33-tpm-wire-signature.js'
       - 'js/w33-measured-placement-loop.js'
       - 'js/w33-portable-audit-verifier.js'
       - 'bin/w33-verify-receipt.js'
       - 'tests/w33-tpm-eventlog-provenance.test.js'
+      - 'tests/w33-tpm-wire-signature.test.js'
       - 'tests/w33-measured-placement-loop.test.js'
       - 'tests/w33-portable-audit-verifier.test.js'
       - '.github/workflows/w33_20260902_raw_measure_portable.yml'
@@ -24,6 +26,8 @@ jobs:
           node-version: '22'
       - name: Verify raw PC Client TPM event-log path
         run: node --test tests/w33-tpm-eventlog-provenance.test.js
+      - name: Verify raw TPMT_SIGNATURE quote path
+        run: node --test tests/w33-tpm-wire-signature.test.js
       - name: Verify measured closed-loop placement
         run: node --test tests/w33-measured-placement-loop.test.js
       - name: Verify portable end-to-end audit bundle
