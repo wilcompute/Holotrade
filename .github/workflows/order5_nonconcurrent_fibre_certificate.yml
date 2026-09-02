@@ -1,0 +1,46 @@
+name: order5 nonconcurrent fibre certificate
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/order5_nonconcurrent_fibre_certificate.py'
+      - '.github/workflows/order5_nonconcurrent_fibre_certificate.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: holotrade-order5-nonconcurrent-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Dependencies
+        run: python -m pip install --disable-pip-version-check ortools
+      - name: Execute certificate
+        shell: bash
+        run: |
+          set -o pipefail
+          python analysis/order5_nonconcurrent_fibre_certificate.py 2>&1 | tee analysis/ORDER5_NONCONCURRENT_FIBRE_CERTIFICATE.log
+      - name: Freeze evidence
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/order5_nonconcurrent_fibre_certificate.json').read_text())
+          assert d.get('valid') is True and d.get('commonPencilPoints')==[]
+          PY
+          git config user.name 'holotrade-evidence-bot'
+          git config user.email 'holotrade-evidence-bot@users.noreply.github.com'
+          git add -f data/order5_nonconcurrent_fibre_certificate.json analysis/ORDER5_NONCONCURRENT_FIBRE_CERTIFICATE.log
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze order5 nonconcurrent fibre counterexample'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
