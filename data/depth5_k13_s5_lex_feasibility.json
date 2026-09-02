@@ -1,0 +1,34 @@
+{
+  "boundary": "UNKNOWN leaves the lower bound at 13. FEASIBLE records an exact witness. No tile-orbit-label permutation is inferred from duplicate row supports.",
+  "constraintMultiplicityHistogram": {
+    "1": 6127,
+    "2": 1
+  },
+  "fullModel": {
+    "K": 13,
+    "distinctConstraintRows": 6128,
+    "duplicateRowsRemoved": 1,
+    "leafOrbits": 5294,
+    "originalTileOrbits": 6129
+  },
+  "newCertifiedLowerBound": 13,
+  "result": "UNKNOWN",
+  "schema": "holotrade.depth5-k13-s5-lex-feasibility.v2",
+  "solver": {
+    "branches": 35474459,
+    "conflicts": 2912,
+    "elapsedSeconds": 1507.049744606018,
+    "engine": "CP-SAT",
+    "status": "UNKNOWN"
+  },
+  "symmetry": {
+    "adjacentGenerators": 4,
+    "constraintFamilyAutomorphismReverified": true,
+    "encoding": "explicit prefix-XNOR CNF",
+    "group": "S5",
+    "lexLeaders": 4,
+    "order": 120
+  },
+  "theorem": "Duplicate cover rows are logically redundant. Coordinate S5 acts exactly on the remaining constraint family, and every feasible cover has an S5 translate satisfying the explicit lex leaders. Therefore INFEASIBLE is equivalent to infeasibility of the original K<=13 cover problem and certifies a lower bound of 14.",
+  "valid": true
+}
