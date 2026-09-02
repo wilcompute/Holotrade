@@ -1,0 +1,46 @@
+{
+  "schema": "holotrade.two-carriers-one-base.v1",
+  "valid": true,
+  "qualification": "0d8d33e concluded 'there is exactly one way to type a state'; that holds WITHIN a carrier, and ad6e209 shows there are two carriers over one base, exchanged by the exceptional outer automorphism of S6",
+  "wrongFirstGuess": {
+    "candidate": "the 432 hemisystems themselves",
+    "orbits": 1,
+    "stabiliser": 60,
+    "fibre": 12,
+    "whyWrong": "a single orbit of 432 with stabiliser 60, fibring 12:1 -- not the degree or stabiliser the parallel track reports"
+  },
+  "theTwin": {
+    "object": "complementary hemisystem pairs",
+    "complementsAreHemisystems": true,
+    "count": 216,
+    "stabiliser": 120,
+    "transitive": true,
+    "matchesParallelTrack": true
+  },
+  "twinFibration": {
+    "spreadStabilisersContaining": 1,
+    "canonical": true,
+    "mapped": 216,
+    "spreadsHit": 36,
+    "fibreSizes": {
+      "6": 36
+    }
+  },
+  "inequivalence": {
+    "circuitStabiliser": 120,
+    "pairStabiliser": 120,
+    "indistinguishableByCounting": true,
+    "conjugateInPSp": false,
+    "method": "conjugated the circuit stabiliser by every one of the 25,920 group elements -- a proof, not a sampling",
+    "consequence": "no equivariant bijection between the carriers exists, over the base or otherwise"
+  },
+  "whatTheChoiceCosts": "ad6e209 records the complementary selector pattern: the circuit carrier sees 81 and not 64, the pair carrier sees 64 and not 81, so the gauge choice decides which module the machine can address and neither addresses both",
+  "correctedArchitecture": {
+    "base": "canonical -- the 36 double-sixes",
+    "fibration": "canonical GIVEN a carrier: exactly one spread stabiliser contains each point stabiliser",
+    "carrier": "a binary gauge choice with no canonical preference, the two exchanged by out(S6)",
+    "consequence": "the choice fixes whether the machine sees 64 or 81, and it cannot see both",
+    "onTheMicroVM": "8f2921e's proof stands -- an opcode still cannot leak the tag into the type -- but 'the type system' should read 'a type system', and a complete architecture must say which gauge it runs in, because the difference is observable rather than notational"
+  },
+  "boundary": "the twin carrier, its stabiliser, transitivity, canonicity and fibre sizes are computed here, and the inequivalence is exhaustive over the whole group. The outer-automorphism reading and the 64/81 selector pattern are ad6e209's, cited not reproduced. tau_2 is untouched"
+}

@@ -4217,3 +4217,53 @@ test("the typed microVM property is proved, and its control fails", () => {
   assert.match(r.whyItMatters, /the specification IS the fibration/);
   assert.match(r.boundary, /not a processor/);
 });
+
+test("two carriers over one base: the type system is a gauge choice", () => {
+  const r = require(path.join(root, "data/two_carriers_one_base.json"));
+  assert.ok(r.valid);
+  assert.match(r.qualification, /holds WITHIN a\s+carrier/);
+
+  // the wrong first guess is kept, not hidden
+  const w = r.wrongFirstGuess;
+  assert.equal(w.orbits, 1);
+  assert.equal(w.stabiliser, 60);
+  assert.equal(w.fibre, 12);
+  assert.equal(25920 / w.stabiliser, 432, "one orbit of 432");
+
+  // the twin: 432 pairs to 216, stabiliser doubles to 120
+  const t = r.theTwin;
+  assert.ok(t.complementsAreHemisystems);
+  assert.equal(t.count, 216);
+  assert.equal(t.count * 2, 432, "pairing halves the orbit");
+  assert.equal(t.stabiliser, 120);
+  assert.equal(t.stabiliser, 2 * w.stabiliser, "pair stabiliser doubles");
+  assert.equal(25920 / t.stabiliser, t.count);
+  assert.ok(t.transitive);
+  assert.ok(t.matchesParallelTrack);
+
+  // a second canonical 6-fibration over the SAME 36
+  const f = r.twinFibration;
+  assert.equal(f.spreadStabilisersContaining, 1);
+  assert.ok(f.canonical);
+  assert.equal(f.mapped, 216);
+  assert.equal(f.spreadsHit, 36);
+  assert.deepEqual(f.fibreSizes, { 6: 36 });
+
+  // and the carriers are inequivalent, proved exhaustively
+  const i = r.inequivalence;
+  assert.equal(i.circuitStabiliser, i.pairStabiliser);
+  assert.ok(i.indistinguishableByCounting, "same order, so counting cannot tell");
+  assert.equal(i.conjugateInPSp, false);
+  assert.match(i.method, /every one\s+of the 25,920/);
+  assert.match(i.consequence, /no equivariant bijection/);
+
+  // the corrected architecture, and the correction to my own claim
+  const a = r.correctedArchitecture;
+  assert.match(a.base, /canonical/);
+  assert.match(a.fibration, /GIVEN a carrier/);
+  assert.match(a.carrier, /binary gauge choice/);
+  assert.match(a.consequence, /cannot see both/);
+  assert.match(a.onTheMicroVM, /'a type\s+system'/);
+  assert.match(r.whatTheChoiceCosts, /81 and not 64/);
+  assert.match(r.boundary, /cited not\s+reproduced/);
+});
