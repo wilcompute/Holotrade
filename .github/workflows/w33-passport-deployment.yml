@@ -1,0 +1,19 @@
+name: W33 passport deployment
+on:
+  push:
+    paths:
+      - 'js/w33-passport-deployment.js'
+      - 'tests/w33-passport-deployment.test.js'
+      - '.github/workflows/w33-passport-deployment.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run W33 passport deployment tests
+        run: node --test tests/w33-passport-deployment.test.js
