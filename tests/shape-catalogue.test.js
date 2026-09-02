@@ -4056,3 +4056,41 @@ test("three witnesses: the geometric half survives, the pretty structure was an 
   assert.match(r.boundary, /still not a\s+proof/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the hidden 36-quotient is the spreads, and reciprocity alone excludes 110", () => {
+  const r = require(path.join(root, "data/the_hidden_36_quotient_is_the_spreads.json"));
+  assert.ok(r.valid);
+
+  // the quotient is the spread action
+  const s = r.spreadIdentification;
+  assert.equal(s.spreads, 36);
+  assert.equal(s.groupOrder, 25920);
+  assert.ok(s.transitive);
+  assert.equal(s.stabilizerOrder, 720);
+  assert.equal(s.index, 36);
+  assert.equal(s.groupOrder / s.stabilizerOrder, s.index);
+  assert.equal(s.index, s.spreads, "orbit-stabilizer closes");
+  assert.equal(720, 6 * 5 * 4 * 3 * 2, "|S6|");
+  assert.match(s.theirReport, /quotientStabilizerOrder\s+720/);
+  assert.match(s.bt809, /regular\s+spread stabilizer/);
+  assert.match(s.conclusion, /216 = 36 x 6/);
+  assert.equal(36 * 6, 216, "the circuits fibre 6:1 over the spreads");
+
+  // reciprocity alone kills 110
+  const e = r.reciprocityExcludes110;
+  assert.equal(e.status, "INFEASIBLE");
+  assert.match(e.size, /1600 biconditionals/);
+  assert.match(e.meaning, /INFEASIBLE excludes 110/);
+  assert.match(e.whyItMatters, /22 files/);
+  assert.match(e.doesNotReach111, /UNKNOWN/);
+  // the model really is far smaller than the grid
+  assert.ok(2 * 40 * 40 < 40 * 40 * 40, "3200 booleans, not a 1600-cell grid model");
+
+  // the other track's unfinished work is reported, not repaired
+  const u = r.otherTrackUnfinished;
+  assert.equal(u.runs.length, 2);
+  assert.match(u.broken, /never emits/);
+  assert.match(u.orphan, /does not\s+exist/);
+  assert.equal(u.policy, "reported, not guessed at");
+  assert.match(r.boundary, /\[111, 115\]/);
+});

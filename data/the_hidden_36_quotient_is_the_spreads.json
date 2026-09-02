@@ -1,0 +1,32 @@
+{
+  "schema": "holotrade.hidden-36-quotient-is-spreads.v1",
+  "valid": true,
+  "spreadIdentification": {
+    "theirReport": "w33_steinberg_doublecoset_colour_swap.g: valency 6, rank 36, only nonzero Gram eigenvalue 36, 36 copies of K(6,6), quotientDegree 36, quotientStabilizerOrder 720, type S6, read as strongly indicating a hidden common 36-state quotient",
+    "spreads": 36,
+    "groupOrder": 25920,
+    "transitive": true,
+    "stabilizerOrder": 720,
+    "index": 36,
+    "bt809": "W33-Theory identifies the index-36 maximal of PSp(4,3) as S6 = PSigmaL(2,9), the regular spread stabilizer",
+    "conclusion": "the hidden quotient is the spread action, and 216 = 36 x 6 makes the 216 circuits fibre six to one over the 36 spreads -- which is what the 36 copies of K(6,6) are"
+  },
+  "reciprocityExcludes110": {
+    "model": "c : clean rows -> points and d : clean columns -> points with c_L in M <=> d_M in L on every clean pair; at r = 0 nothing is dirty",
+    "size": "2 x 40 x 40 booleans, 1600 biconditionals",
+    "status": "INFEASIBLE",
+    "meaning": "any 110-blocker would induce such maps, so INFEASIBLE excludes 110",
+    "whyItMatters": "4b23ec0 found 22 files here asserting [110, 115] because the exclusion lived in W33-Theory 43049db as a citation; it is now provable inside this repository, in a model two orders of magnitude smaller than the ones that returned UNKNOWN",
+    "doesNotReach111": "the same model with one dirty line per axis returns UNKNOWN -- necessary but not sufficient, as the defect-aware note says of its own bound"
+  },
+  "otherTrackUnfinished": {
+    "runs": [
+      "w33_tau111_defect_aware_trichotomy.g",
+      "w33_steinberg_doublecoset_colour_swap.g"
+    ],
+    "broken": "w33_five_front_breakthrough.js throws reading a field its GAP source never emits",
+    "orphan": "rtl/verify_w33_216_typed_microvm.ys references rtl/w33_216_typed_microvm.v, which does not exist -- a formal harness with no module",
+    "policy": "reported, not guessed at"
+  },
+  "boundary": "the spread identification is verified and rests on BT809 for the S6 naming; the 110 exclusion is a necessary-condition model, which does exclude 110 but does not re-derive W33-Theory's argument -- it replaces it with a smaller sufficient computation. tau_2 stays open in [111, 115]"
+}
