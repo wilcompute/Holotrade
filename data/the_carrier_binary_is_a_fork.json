@@ -1,0 +1,36 @@
+{
+  "schema": "holotrade.carrier-binary-is-a-fork.v1",
+  "valid": true,
+  "theGuess": "this corpus has two unselectable binaries -- chirality (PGSp/PSp, unselectable from inside per W33-Theory Pass 346) and the carrier choice (36701d0) -- and two in one object is suspicious, so: are they the same one?",
+  "tau": {
+    "construction": "symplectic similitude, multiplier 2, a non-square mod 3",
+    "inPSp": false,
+    "normalisesPSp": true,
+    "preservesLines": true
+  },
+  "carriersUnderTau": {
+    "conjugateAfterTau": false,
+    "conjugateBeforeTau": false,
+    "reading": "inequivalent in the FULL automorphism group PGSp(4,3), not merely in PSp(4,3); chirality does not swap them"
+  },
+  "whyNot": {
+    "spreadsFixedByTau": 6,
+    "spreadStabiliserOrder": 720,
+    "tauNormalisesIt": true,
+    "tauActsInner": true,
+    "outS6RealisedBySubstrate": false,
+    "reading": "tau does induce an automorphism of the fibre group S6, and it is INNER -- so the exceptional outer automorphism that would exchange the carrier types is not induced by anything in PGSp(4,3)"
+  },
+  "correctionToMyWording": {
+    "file": "36701d0",
+    "said": "gauge choice",
+    "wrong": "a gauge choice implies a symmetry relating the options, so the difference is unobservable and the choices are intertranslatable",
+    "correct": "a FORK: the two carriers are inequivalent under every automorphism of the substrate, and the automorphism that would relate them is not available"
+  },
+  "contrast": {
+    "chirality": "a symmetry of the substrate, unselectable from inside",
+    "carrierChoice": "not a symmetry at all -- no automorphism relates the two"
+  },
+  "whatItForbids": "no gauge-transformation instruction can exist: an opcode is a permutation induced by a group element, and no element of PSp(4,3) or PGSp(4,3) carries one carrier to the other, so a machine built on one cannot be converted into a machine built on the other by anything the substrate provides; with the parallel track's selector pattern this makes the choice of addressable module a construction-time decision, irreversible from inside",
+  "boundary": "tau is constructed and verified here; the non-conjugacy is exhaustive over all 25,920 elements before and after tau; the inner/outer verdict is a direct search over all 720 elements of H. The claim concerns PGSp(4,3), the full automorphism group of W(3,3), not abstract group isomorphisms, which certainly do exchange the two S5 classes. The 64/81 selector pattern is ad6e209's, cited not reproduced. tau_2 is untouched"
+}

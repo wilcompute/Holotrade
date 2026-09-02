@@ -4267,3 +4267,43 @@ test("two carriers over one base: the type system is a gauge choice", () => {
   assert.match(r.whatTheChoiceCosts, /81 and not 64/);
   assert.match(r.boundary, /cited not\s+reproduced/);
 });
+
+test("the carrier binary is not a gauge: no substrate symmetry relates the two", () => {
+  const r = require(path.join(root, "data/the_carrier_binary_is_a_fork.json"));
+  assert.ok(r.valid);
+  assert.match(r.theGuess, /are they the same one/);
+
+  // tau is the genuine outer element
+  assert.equal(r.tau.inPSp, false, "outside PSp");
+  assert.ok(r.tau.normalisesPSp, "but normalises it");
+  assert.ok(r.tau.preservesLines, "and is a substrate symmetry");
+  assert.match(r.tau.construction, /non-square mod 3/);
+
+  // chirality does not swap the carriers
+  const c = r.carriersUnderTau;
+  assert.equal(c.conjugateBeforeTau, false);
+  assert.equal(c.conjugateAfterTau, false);
+  assert.equal(c.conjugateAfterTau, c.conjugateBeforeTau, "tau changes nothing");
+  assert.match(c.reading, /FULL automorphism group/);
+
+  // and the reason: tau acts inner on the fibre group
+  const w = r.whyNot;
+  assert.equal(w.spreadStabiliserOrder, 720);
+  assert.equal(w.spreadsFixedByTau, 6);
+  assert.ok(w.tauNormalisesIt, "so it does induce an automorphism of S6");
+  assert.ok(w.tauActsInner);
+  assert.equal(w.outS6RealisedBySubstrate, false, "the key negative");
+  assert.match(w.reading, /not induced by\s+anything in PGSp/);
+
+  // my own wording is corrected
+  const m = r.correctionToMyWording;
+  assert.equal(m.said, "gauge choice");
+  assert.match(m.wrong, /intertranslatable/);
+  assert.match(m.correct, /FORK/);
+  assert.match(r.contrast.chirality, /symmetry of the substrate/);
+  assert.match(r.contrast.carrierChoice, /not a symmetry at all/);
+
+  assert.match(r.whatItForbids, /no gauge-transformation instruction can\s+exist/);
+  assert.match(r.whatItForbids, /irreversible\s+from inside/);
+  assert.match(r.boundary, /not abstract group\s+isomorphisms/);
+});
