@@ -1,0 +1,27 @@
+{
+  "schema": "holotrade.216-principal-six-fibration.v1",
+  "valid": true,
+  "wasOnlyNumerical": "7f0d0a3 matched a stabiliser order of 720 and an index of 36 and noted 216 = 36 x 6; matching integers is how this repository gets things wrong, so the map had to be built",
+  "groupTheory": {
+    "circuitStabiliser": 120,
+    "spreadStabilisersContainingIt": 1,
+    "canonical": true,
+    "spreadStabiliser": 720,
+    "index": 6,
+    "inclusion": "S5 <= S6 at index 6"
+  },
+  "fibration": {
+    "method": "transport, not brute force: stabilisers conjugate so the map is equivariant, and PSp(4,3) is transitive on both 216 and 36, so all fibres have size 216/36 = 6",
+    "circuitsMapped": 216,
+    "wellDefined": true,
+    "spreadsHit": 36,
+    "fibreSizes": {
+      "6": 36
+    },
+    "equivarianceViolations": 0
+  },
+  "theFibreHasAName": "BT810 identifies the 36 spreads with the 36 double-sixes, whose stabiliser is S6 on six letters, and the circuit stabiliser is its point stabiliser S5; so the 216 circuits are (double-six, letter) pairs and the fibre is Schlafli's six letters",
+  "whatTheK66Were": "the other track's 36 copies of K(6,6) are this bundle seen through a correspondence",
+  "architectureReading": "a TYPE SYSTEM, derived rather than designed: the type of a state is which double-six it lies over and its tag is which letter it carries, and because exactly one spread stabiliser contains each circuit stabiliser there is exactly one way to type a state -- the discipline the orphaned verify_w33_216_typed_microvm.ys was reaching for is forced, not chosen",
+  "boundary": "the fibration is verified in full; the naming of the fibre as Schlafli's letters rests on BT810's spread / double-six identification and the standard degree-6 action of S6, a dictionary entry rather than a new computation. Nothing here is a hardware claim and no module is written. tau_2 is untouched"
+}

@@ -4143,3 +4143,44 @@ test("one reciprocity CSP recovers both tight-case floors and stops there", () =
   assert.match(r.boundary, /\[91, 100\]/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the 216 is a principal 6-fibration over the double-sixes", () => {
+  const r = require(path.join(root, "data/the_216_is_a_principal_six_fibration.json"));
+  assert.ok(r.valid);
+  assert.match(r.wasOnlyNumerical, /matching integers/);
+
+  // the containment is real, not arithmetic
+  const g = r.groupTheory;
+  assert.equal(g.circuitStabiliser, 120);
+  assert.equal(g.spreadStabiliser, 720);
+  assert.equal(g.spreadStabilisersContainingIt, 1, "canonical: exactly one");
+  assert.ok(g.canonical);
+  assert.equal(g.index, g.spreadStabiliser / g.circuitStabiliser);
+  assert.equal(g.index, 6);
+  assert.equal(720, 6 * 120, "S6 : S5");
+  assert.match(g.inclusion, /S5 <= S6/);
+  // orbit-stabilizer closes on both actions
+  assert.equal(25920 / g.circuitStabiliser, 216);
+  assert.equal(25920 / g.spreadStabiliser, 36);
+
+  // the fibration, built by transport
+  const f = r.fibration;
+  assert.match(f.method, /transport, not brute force/);
+  assert.equal(f.circuitsMapped, 216);
+  assert.ok(f.wellDefined, "independent of the transporting element");
+  assert.equal(f.spreadsHit, 36);
+  assert.deepEqual(f.fibreSizes, { 6: 36 });
+  assert.equal(f.equivarianceViolations, 0);
+  assert.equal(36 * 6, 216, "the bundle accounts for every state");
+
+  // the fibre is named, via a dictionary entry
+  assert.match(r.theFibreHasAName, /double-six, letter/);
+  assert.match(r.theFibreHasAName, /Schlafli/);
+  assert.match(r.whatTheK66Were, /seen through a correspondence/);
+
+  // the architecture reading, and its limits
+  assert.match(r.architectureReading, /derived rather than\s+designed/);
+  assert.match(r.architectureReading, /exactly one way to type a state/);
+  assert.match(r.boundary, /dictionary\s+entry/);
+  assert.match(r.boundary, /no module is written/);
+});
