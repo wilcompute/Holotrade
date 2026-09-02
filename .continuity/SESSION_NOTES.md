@@ -48,6 +48,6 @@ README, paper, website, tests, and frozen certificates.
 
 ## Publication state
 
-Work remains on branch `codex-five-front-router` until final regression,
-GitKraken commit, integration with current `origin/master`, and GitKraken push.
-
+The theorem packet is committed on `codex-five-front-router` as `bec0d62`.
+The complete backend regression passed 73/73. Integration with current
+`origin/master` and the final GitKraken push remain.

@@ -8709,5 +8709,98 @@
       "source": "cli",
       "timestamp": "2026-09-02T18:16:09.124Z"
     }
+  },
+  {
+    "id": "865de578-55cb-49d2-9b9a-ff05e9d85c69",
+    "question": "What was published in HoloTrade commit bec0d62?",
+    "answer": "Commit bec0d62 records the corrected W33 27-chart x 40-line obstruction, degree-1296 F20 fibre product, 435-dimensional common building block, 18-dimensional cross-Hom result, fail-closed dual-carrier RTL, documentation, certificates, and 73/73 backend validation.",
+    "timestamp": "2026-09-02T18:20:46.406Z",
+    "tags": [
+      "bec0d62",
+      "commit",
+      "gap",
+      "holotrade",
+      "rtl",
+      "testing",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "bec0d62",
+      "status": "active"
+    },
+    "commitHashes": [
+      "bec0d62"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T18:20:46.408Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T18:20:46.394Z"
+    }
+  },
+  {
+    "id": "fb70c66d-773c-4e9e-a5d3-66e408505766",
+    "question": "What is the publication state after HoloTrade commit bec0d62?",
+    "answer": "Commit bec0d62 is recorded, the complete backend regression passes 73/73, the parallel dirty checkout is preserved on parallel-dirty-preserved-20260902, and only integration with current origin/master plus GitKraken push remain.",
+    "timestamp": "2026-09-02T18:22:08.591Z",
+    "tags": [
+      "bec0d62",
+      "continuity",
+      "gitkraken",
+      "holotrade",
+      "publication",
+      "testing"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "bec0d62",
+      "status": "active"
+    },
+    "commitHashes": [
+      "bec0d62"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T18:22:08.593Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T18:22:08.579Z"
+    }
   }
 ]
