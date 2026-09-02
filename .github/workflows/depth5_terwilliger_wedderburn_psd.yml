@@ -1,0 +1,49 @@
+name: depth5 Terwilliger Wedderburn PSD
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/depth5_terwilliger_wedderburn_psd.py'
+      - '.github/workflows/depth5_terwilliger_wedderburn_psd.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: holotrade-depth5-terwilliger-wedderburn-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy sympy networkx
+      - name: Execute exact algebra decomposition
+        shell: bash
+        run: |
+          set -o pipefail
+          python analysis/depth5_terwilliger_wedderburn_psd.py 2>&1 | tee analysis/DEPTH5_TERWILLIGER_WEDDERBURN_PSD.log
+      - name: Freeze evidence
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/depth5_terwilliger_wedderburn_psd.json').read_text())
+          assert d.get('valid') is True
+          assert d['terwilliger']['algebraDimension']==16
+          assert d['terwilliger']['centerDimension']==5
+          assert sum(r['simpleIdealDimension'] for r in d['primitiveCentralBlocks'])==16
+          PY
+          git config user.name 'holotrade-evidence-bot'
+          git config user.email 'holotrade-evidence-bot@users.noreply.github.com'
+          git add -f data/depth5_terwilliger_wedderburn_psd.json analysis/DEPTH5_TERWILLIGER_WEDDERBURN_PSD.log
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze depth5 Terwilliger Wedderburn PSD blocks'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
