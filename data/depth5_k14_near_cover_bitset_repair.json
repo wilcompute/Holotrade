@@ -1,0 +1,60 @@
+{
+  "boundary": "This is an exact local-neighborhood search only. A local no-go does not imply global K14 infeasibility; UNKNOWN leaves the global interval unchanged.",
+  "certifiedIntervalUpdate": [
+    14,
+    22
+  ],
+  "radiusSummary": {
+    "1": {
+      "completeRadius": true,
+      "dropSetsProcessed": 14,
+      "exactlyClosedWithoutWitness": 14,
+      "maximumExposedRows": 376,
+      "minimumExposedRows": 166
+    },
+    "2": {
+      "completeRadius": true,
+      "dropSetsProcessed": 91,
+      "exactlyClosedWithoutWitness": 91,
+      "maximumExposedRows": 648,
+      "minimumExposedRows": 254
+    },
+    "3": {
+      "completeRadius": true,
+      "dropSetsProcessed": 364,
+      "exactlyClosedWithoutWitness": 364,
+      "maximumExposedRows": 974,
+      "minimumExposedRows": 370
+    },
+    "4": {
+      "completeRadius": false,
+      "dropSetsProcessed": 418,
+      "exactlyClosedWithoutWitness": 418,
+      "maximumExposedRows": 1274,
+      "minimumExposedRows": 509
+    }
+  },
+  "records": [],
+  "result": "UNKNOWN",
+  "schema": "holotrade.depth5-k14-near-cover-bitset-repair.v1",
+  "sourceNearCover": [
+    12,
+    843,
+    950,
+    955,
+    965,
+    2046,
+    2071,
+    2336,
+    4285,
+    4331,
+    4467,
+    4552,
+    4655,
+    4788
+  ],
+  "sourceUncoveredRows": 111,
+  "theorem": "Every radius marked completeRadius=true was exhaustively searched by an exact bitset branch algorithm and contains no K14 witness around the frozen near-cover. No global conclusion follows from incomplete or larger radii.",
+  "valid": true,
+  "witnessLeafOrbitIndices": null
+}
