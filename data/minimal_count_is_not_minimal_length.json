@@ -1,0 +1,63 @@
+{
+  "schema": "holotrade.count-vs-length-minimality.v1",
+  "valid": true,
+  "whatTheySettled": "BT1228 compressed the target to four projective transvections, BT1230 ruled out one and two, BT1231 closed the gap exhaustively over all C(40,3) = 9880 triples whose closures top out at 648; so the minimal generating count is exactly 4",
+  "whatNobodyAsked": "a generating set also has a diameter, which is the worst-case program length",
+  "bt1228Set": {
+    "vectors": [
+      [
+        0,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        2
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ]
+    ],
+    "generates": 25920,
+    "opcodes": 4,
+    "cayleyDiameter": 11,
+    "routingDiameter": 6,
+    "reached": 25920
+  },
+  "fullTransvectionISA": {
+    "opcodes": 40,
+    "cayleyDiameter": 4,
+    "routingDiameter": 2
+  },
+  "minimalityCost": {
+    "group": 2.75,
+    "routing": 3.0,
+    "reading": "forty opcodes buy a worst case of four; four opcodes pay eleven"
+  },
+  "notLengthOptimal": {
+    "sampled": 257,
+    "bestFound": 10,
+    "bt1228": 11,
+    "theirSetIsBeaten": true,
+    "reading": "nothing is wrong with their certificate -- it was built to witness the COUNT and does that exhaustively -- but count minimality and length minimality are different objectives and only the first had been optimised"
+  },
+  "portabilityCaveat": {
+    "theirForm": "J = [[0,I],[-I,0]], pairing (0,2) and (1,3)",
+    "underOtherPairing": 288,
+    "reading": "under the pairing (0,1),(2,3) the same four vectors close to 288 rather than 25920, so the certificate is about vectors AND a form; quoting the vectors alone does not transport. Not an error in their work, which states its J, but a trap for anything reusing the numbers"
+  },
+  "architecturalReading": "the instruction set has two independent knobs and the substrate answers them differently: universality is cheap, latency is not, and every compression away from the natural forty-opcode set costs program length",
+  "boundary": "BT1228's diameters are exact, from full BFS over the group and over every point; the diameter-10 alternative is the best of 257 sampled generating sets and is an UPPER bound on the optimal four-transvection diameter, not a proven minimum. The 216-carrier routing diameter is not computed here because that labelling is bound to the control plane's convention rather than BT1228's. tau_2 is untouched"
+}

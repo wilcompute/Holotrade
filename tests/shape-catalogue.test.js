@@ -4395,3 +4395,47 @@ test("the ISA cost model, and the transvection optimum confirming the spine", ()
   assert.match(r.boundary, /UPPER bounds/);
   assert.match(r.boundary, /count opcodes, not cycles/);
 });
+
+test("minimal instruction count is not minimal program length", () => {
+  const r = require(path.join(root, "data/minimal_count_is_not_minimal_length.json"));
+  assert.ok(r.valid);
+  assert.match(r.whatTheySettled, /9880\s+triples/);
+  assert.match(r.whatNobodyAsked, /worst-case program length/);
+
+  // their set, exact
+  const b = r.bt1228Set;
+  assert.equal(b.vectors.length, 4);
+  assert.equal(b.generates, 25920);
+  assert.equal(b.reached, 25920, "BFS covered the group");
+  assert.equal(b.opcodes, 4);
+  assert.equal(b.cayleyDiameter, 11);
+  assert.equal(b.routingDiameter, 6);
+
+  // the full ISA, and the cost of compressing to it
+  const f = r.fullTransvectionISA;
+  assert.equal(f.opcodes, 40);
+  assert.equal(f.cayleyDiameter, 4);
+  assert.equal(f.routingDiameter, 2);
+  assert.ok(b.opcodes < f.opcodes, "fewer instructions");
+  assert.ok(b.cayleyDiameter > f.cayleyDiameter, "longer programs");
+  assert.equal(r.minimalityCost.group, b.cayleyDiameter / f.cayleyDiameter);
+  assert.equal(r.minimalityCost.routing, b.routingDiameter / f.routingDiameter);
+  assert.ok(r.minimalityCost.group > 2, "roughly threefold");
+
+  // and their set is beaten on length
+  const n = r.notLengthOptimal;
+  assert.ok(n.sampled > 100);
+  assert.ok(n.bestFound < n.bt1228);
+  assert.ok(n.theirSetIsBeaten);
+  assert.match(n.reading, /different objectives/);
+
+  // the portability trap
+  const p = r.portabilityCaveat;
+  assert.match(p.theirForm, /\(0,2\) and \(1,3\)/);
+  assert.notEqual(p.underOtherPairing, 25920);
+  assert.match(p.reading, /does not transport/);
+  assert.match(p.reading, /Not an error in their work/);
+
+  assert.match(r.architecturalReading, /universality is cheap, latency is/);
+  assert.match(r.boundary, /UPPER bound/);
+});
