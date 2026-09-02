@@ -1,0 +1,47 @@
+name: depth5 K14 near-cover bitset repair
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/depth5_k14_near_cover_bitset_repair.py'
+      - '.github/workflows/depth5_k14_near_cover_bitset_repair.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy
+      - name: Exact bitset repair search
+        run: |
+          set -o pipefail
+          python analysis/depth5_k14_near_cover_bitset_repair.py 2>&1 | tee analysis/DEPTH5_K14_NEAR_COVER_BITSET_REPAIR.log
+      - name: Freeze evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/depth5_k14_near_cover_bitset_repair.json').read_text())
+          assert d['valid']
+          assert d['result'] in ('UNKNOWN','K14_FEASIBLE')
+          if d['result']=='K14_FEASIBLE':
+              assert len(d['witnessLeafOrbitIndices'])==14
+              assert d['certifiedIntervalUpdate']==[14,14]
+          PY
+          git config user.name holotrade-evidence-bot
+          git config user.email holotrade-evidence-bot@users.noreply.github.com
+          git add -f data/depth5_k14_near_cover_bitset_repair.json analysis/DEPTH5_K14_NEAR_COVER_BITSET_REPAIR.log
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze exact K14 near-cover bitset-repair evidence'
+            git pull --rebase origin master
+            git push origin HEAD:master
+          fi
