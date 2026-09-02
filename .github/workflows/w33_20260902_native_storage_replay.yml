@@ -1,0 +1,36 @@
+name: W33 native attestation storage and replay receipt closure
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-native-attestation.js'
+      - 'js/w33-storage-aware-placement.js'
+      - 'js/w33-attested-replay-receipt.js'
+      - 'js/w33-strong-root-storage.js'
+      - 'runtime/receipt.js'
+      - 'tests/w33-native-attestation.test.js'
+      - 'tests/w33-storage-aware-placement.test.js'
+      - 'tests/w33-attested-replay-receipt.test.js'
+      - '.github/workflows/w33_20260902_native_storage_replay.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Native TPM2 and SEV-SNP verifier tests
+        run: node --test tests/w33-native-attestation.test.js
+      - name: Storage-aware placement tests
+        run: node --test tests/w33-storage-aware-placement.test.js
+      - name: Attested replay receipt tests
+        run: node --test tests/w33-attested-replay-receipt.test.js
+      - name: Passport and receipt regression
+        run: |
+          node --test tests/w33-passport-deployment.test.js
+          node --test tests/w33-measured-boot-attestation.test.js
+          node --test tests/runtime-attestation.test.js
