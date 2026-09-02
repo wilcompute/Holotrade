@@ -1,0 +1,4 @@
+read_verilog -formal rtl/w33_profile_admission.v
+prep -top w33_profile_admission
+chformal -lower
+sat -prove-asserts -verify -show-inputs -show-outputs
