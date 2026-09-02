@@ -7,6 +7,7 @@ on:
       - 'js/w33-hardware-evidence-settlement.js'
       - 'js/w33-host-audit-bundle.js'
       - 'runtime/receipt.js'
+      - 'bin/w33-bind-hardware-settlement.js'
       - 'tests/w33-hardware-evidence-settlement.test.js'
       - 'tests/w33-host-audit-bundle.test.js'
       - '.github/workflows/w33_hardware_evidence_settlement.yml'
@@ -23,5 +24,7 @@ jobs:
           node-version: '22'
       - name: Verify portable host bundle and second-stage settlement binding
         run: node --test tests/w33-host-audit-bundle.test.js tests/w33-hardware-evidence-settlement.test.js
-      - name: Syntax check settlement binder
-        run: node --check js/w33-hardware-evidence-settlement.js
+      - name: Syntax check settlement binder and separated signer CLI
+        run: |
+          node --check js/w33-hardware-evidence-settlement.js
+          node --check bin/w33-bind-hardware-settlement.js
