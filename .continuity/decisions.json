@@ -8129,5 +8129,62 @@
       "source": "cli",
       "timestamp": "2026-09-02T00:33:31.651Z"
     }
+  },
+  {
+    "id": "c62cbc95-0bab-488a-a056-df19bedb7848",
+    "question": "What commit publishes the exact two-216s separation and integrated E8 backend?",
+    "answer": "HoloTrade commit d27f839 records the GAP no-go and Steinberg-81 separator, [[120,40,8]] homology code, HoloBox Goursat bridge, README/site/paper integration, certificate schemas and focused tests. Verification before commit: 69/69 backend tests, paper compile, browser JS syntax, package JSON parse.",
+    "timestamp": "2026-09-02T00:35:11.631Z",
+    "tags": [
+      "commit",
+      "e8",
+      "gap",
+      "go",
+      "holotrade",
+      "steinberg",
+      "testing",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "d27f839",
+      "status": "active"
+    },
+    "commitHashes": [
+      "d27f839"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T00:35:11.631Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": [
+        "schema"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T00:35:11.627Z"
+    }
   }
 ]
