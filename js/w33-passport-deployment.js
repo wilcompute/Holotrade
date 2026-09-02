@@ -5,9 +5,9 @@
 // signed delivery receipt is the authorization/audit envelope.
 //
 // Migration law:
-//   FULL_RESTORE          -> same construction-time carrier only
-//   NEUTRAL_CONTINUATION  -> may cross carrier only at SYSCALL_BOUNDARY and
-//                            carries a neutral-state content digest
+//   FULL_RESTORE          -> same construction-time carrier/profile only
+//   NEUTRAL_CONTINUATION  -> may change profile/carrier only at SYSCALL_BOUNDARY
+//                            and carries a neutral-state content digest
 
 "use strict";
 
@@ -150,12 +150,19 @@ function checkpointAdmission({ sourcePassport, targetProfile, kind, safePoint = 
   if (!sourcePassport || sourcePassport.schema !== SCHEMA || !targetProfile) {
     return { ok: false, code: "CHECKPOINT_CONTEXT_INVALID" };
   }
-  const sameCarrier = sourcePassport.machineType === targetProfile.machineType &&
+  const sameCarrierShape = sourcePassport.machineType === targetProfile.machineType &&
     sourcePassport.logicalDimension === targetProfile.logicalDimension;
+  // A full checkpoint carries construction-profile state, not merely the
+  // abstract carrier dimension.  Digest equality closes same-shaped profile
+  // drift (for example two separately bound circuit-81 plans).
+  const sameConstructionProfile = sameCarrierShape &&
+    typeof targetProfile.digest === "string" &&
+    sourcePassport.profileDigest === targetProfile.digest;
 
   if (kind === CHECKPOINT.FULL_RESTORE) {
-    return sameCarrier
-      ? { ok: true, code: "FULL_RESTORE_SAME_CARRIER" }
+    if (sameConstructionProfile) return { ok: true, code: "FULL_RESTORE_SAME_PROFILE" };
+    return sameCarrierShape
+      ? { ok: false, code: "PROFILE_DRIFT_FULL_RESTORE_FORBIDDEN" }
       : { ok: false, code: "CROSS_CARRIER_FULL_RESTORE_FORBIDDEN" };
   }
 
@@ -164,8 +171,10 @@ function checkpointAdmission({ sourcePassport, targetProfile, kind, safePoint = 
     if (!isDigest(neutralStateDigest)) return { ok: false, code: "NEUTRAL_STATE_DIGEST_REQUIRED" };
     return {
       ok: true,
-      code: sameCarrier ? "NEUTRAL_CONTINUATION_SAME_CARRIER" : "NEUTRAL_CONTINUATION_CROSS_CARRIER",
-      startsNewMachineIdentity: !sameCarrier,
+      code: sameConstructionProfile
+        ? "NEUTRAL_CONTINUATION_SAME_PROFILE"
+        : (sameCarrierShape ? "NEUTRAL_CONTINUATION_PROFILE_DRIFT" : "NEUTRAL_CONTINUATION_CROSS_CARRIER"),
+      startsNewMachineIdentity: !sameConstructionProfile,
       runtimeRetype: "FORBIDDEN",
     };
   }
