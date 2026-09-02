@@ -1,0 +1,4 @@
+{"colConcurrent": true, "colD": 8, "colF": 12, "colNonconcurrent": 0, "leaves": 115, "order": 6, "r": 5, "rowConcurrent": true, "rowD": 16, "rowF": 4, "rowNonconcurrent": 0}
+{"colConcurrent": true, "colD": 16, "colF": 8, "colNonconcurrent": 0, "leaves": 116, "order": 12, "r": 6, "rowConcurrent": true, "rowD": 16, "rowF": 8, "rowNonconcurrent": 0}
+{"colConcurrent": true, "colD": 20, "colF": 40, "colNonconcurrent": 0, "leaves": 125, "order": 5, "r": 15, "rowConcurrent": true, "rowD": 35, "rowF": 25, "rowNonconcurrent": 0}
+{"counterexamples": 0, "minObservedBudget": null, "minObservedR": null, "valid": true}

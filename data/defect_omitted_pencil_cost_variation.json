@@ -1,0 +1,3257 @@
+{
+  "boundary": "These are symmetry-restricted upper-bound witnesses. A counterexample falsifies the global law, but the smallest sampled r is not a theorem about the minimum defect required. tau_2 remains in [111,115].",
+  "globalConcurrencyCounterexamples": [],
+  "globalConcurrencyLawSurvivesSample": true,
+  "minimumObservedDefectBudgetFplusDWithNonconcurrentFibre": null,
+  "minimumObservedRWithNonconcurrentFibre": null,
+  "reading": "A nonconcurrent repeated centre fibre is a decisive counterexample to the previously sampled global concurrency law. Its F+D=4r value is the exact defect budget of that witness, not a lower bound on the cost of nonconcurrency. The r=1 clean-core theorem after deleting dirty pencils is a different statement and is not contradicted by a high-defect witness.",
+  "schema": "holotrade.defect-omitted-pencil-cost-variation.v2",
+  "valid": true,
+  "witnesses": [
+    {
+      "col": {
+        "D": 8,
+        "F": 12,
+        "FplusD": 20,
+        "allConcurrentOmittedOccurrencesAreOversized": true,
+        "allRepeatedFibresConcurrent": true,
+        "centreMultiplicityProfile": {
+          "3": 11
+        },
+        "concurrentOmittedSetContainedInOversized": true,
+        "concurrentOmittedSetEqualsOversized": true,
+        "concurrentRepeatedFibres": 11,
+        "distinctOmittedLines": 7,
+        "fourR": 20,
+        "minimumShadows": 33,
+        "nonconcurrentExamples": [],
+        "nonconcurrentRepeatedFibres": 0,
+        "omittedOccurrencesOnConcurrentFibres": 11,
+        "oversizedLines": [
+          3,
+          4,
+          31,
+          32,
+          33,
+          36,
+          39
+        ],
+        "oversizedNotExplainedByConcurrentOmissions": [],
+        "repeatedFibres": [
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 1,
+            "commonPencilPoints": [
+              27
+            ],
+            "concurrencyPoint": 27,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              14,
+              19,
+              25
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              33
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  27
+                ],
+                "lines": [
+                  14,
+                  19
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  27
+                ],
+                "lines": [
+                  14,
+                  25
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  27
+                ],
+                "lines": [
+                  19,
+                  25
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 2,
+            "commonPencilPoints": [
+              26
+            ],
+            "concurrencyPoint": 26,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              10,
+              21,
+              22
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              36
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  26
+                ],
+                "lines": [
+                  10,
+                  21
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  26
+                ],
+                "lines": [
+                  10,
+                  22
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  26
+                ],
+                "lines": [
+                  21,
+                  22
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 3,
+            "commonPencilPoints": [
+              31
+            ],
+            "concurrencyPoint": 31,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              7,
+              11,
+              15
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              3
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  7,
+                  11
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  7,
+                  15
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  11,
+                  15
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 5,
+            "commonPencilPoints": [
+              20
+            ],
+            "concurrencyPoint": 20,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              13,
+              17,
+              24
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              39
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  20
+                ],
+                "lines": [
+                  13,
+                  17
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  20
+                ],
+                "lines": [
+                  13,
+                  24
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  20
+                ],
+                "lines": [
+                  17,
+                  24
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 6,
+            "commonPencilPoints": [
+              25
+            ],
+            "concurrencyPoint": 25,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              6,
+              20,
+              28
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              39
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  6,
+                  20
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  6,
+                  28
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  20,
+                  28
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 7,
+            "commonPencilPoints": [
+              21
+            ],
+            "concurrencyPoint": 21,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              9,
+              18,
+              30
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              33
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  21
+                ],
+                "lines": [
+                  9,
+                  18
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  21
+                ],
+                "lines": [
+                  9,
+                  30
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  21
+                ],
+                "lines": [
+                  18,
+                  30
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 8,
+            "commonPencilPoints": [
+              19
+            ],
+            "concurrencyPoint": 19,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              5,
+              16,
+              27
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              36
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  16
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  27
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  16,
+                  27
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 9,
+            "commonPencilPoints": [
+              32
+            ],
+            "concurrencyPoint": 32,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              23,
+              26,
+              29
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              3
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  32
+                ],
+                "lines": [
+                  23,
+                  26
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  32
+                ],
+                "lines": [
+                  23,
+                  29
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  32
+                ],
+                "lines": [
+                  26,
+                  29
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 15,
+            "commonPencilPoints": [
+              24
+            ],
+            "concurrencyPoint": 24,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              2,
+              35,
+              38
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              32
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  24
+                ],
+                "lines": [
+                  2,
+                  35
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  24
+                ],
+                "lines": [
+                  2,
+                  38
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  24
+                ],
+                "lines": [
+                  35,
+                  38
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 24,
+            "commonPencilPoints": [
+              4
+            ],
+            "concurrencyPoint": 4,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              0,
+              8,
+              12
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              4
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  4
+                ],
+                "lines": [
+                  0,
+                  8
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  4
+                ],
+                "lines": [
+                  0,
+                  12
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  4
+                ],
+                "lines": [
+                  8,
+                  12
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 33,
+            "commonPencilPoints": [
+              15
+            ],
+            "concurrencyPoint": 15,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              1,
+              34,
+              37
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  34
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  37
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  34,
+                  37
+                ]
+              }
+            ]
+          }
+        ],
+        "shadowSizes": {
+          "11": 33,
+          "12": 3,
+          "13": 3,
+          "14": 1
+        }
+      },
+      "leaves": 115,
+      "r": 5,
+      "row": {
+        "D": 16,
+        "F": 4,
+        "FplusD": 20,
+        "allConcurrentOmittedOccurrencesAreOversized": false,
+        "allRepeatedFibresConcurrent": true,
+        "centreMultiplicityProfile": {
+          "3": 12
+        },
+        "concurrentOmittedSetContainedInOversized": false,
+        "concurrentOmittedSetEqualsOversized": false,
+        "concurrentRepeatedFibres": 12,
+        "distinctOmittedLines": 7,
+        "fourR": 20,
+        "minimumShadows": 36,
+        "nonconcurrentExamples": [],
+        "nonconcurrentRepeatedFibres": 0,
+        "omittedOccurrencesOnConcurrentFibres": 12,
+        "oversizedLines": [
+          4,
+          31,
+          32,
+          33
+        ],
+        "oversizedNotExplainedByConcurrentOmissions": [],
+        "repeatedFibres": [
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 4,
+            "commonPencilPoints": [
+              24
+            ],
+            "concurrencyPoint": 24,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              2,
+              35,
+              38
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              32
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  24
+                ],
+                "lines": [
+                  2,
+                  35
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  24
+                ],
+                "lines": [
+                  2,
+                  38
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  24
+                ],
+                "lines": [
+                  35,
+                  38
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 15,
+            "commonPencilPoints": [
+              33
+            ],
+            "concurrencyPoint": 33,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              3,
+              36,
+              39
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              33
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  33
+                ],
+                "lines": [
+                  3,
+                  36
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  33
+                ],
+                "lines": [
+                  3,
+                  39
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  33
+                ],
+                "lines": [
+                  36,
+                  39
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 19,
+            "commonPencilPoints": [
+              8
+            ],
+            "concurrencyPoint": 8,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              25,
+              26,
+              27
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              8
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  25,
+                  26
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  25,
+                  27
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  26,
+                  27
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 20,
+            "commonPencilPoints": [
+              5
+            ],
+            "concurrencyPoint": 5,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              16,
+              17,
+              18
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              0
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  5
+                ],
+                "lines": [
+                  16,
+                  17
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  5
+                ],
+                "lines": [
+                  16,
+                  18
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  5
+                ],
+                "lines": [
+                  17,
+                  18
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 21,
+            "commonPencilPoints": [
+              7
+            ],
+            "concurrencyPoint": 7,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              22,
+              23,
+              24
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              4
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  7
+                ],
+                "lines": [
+                  22,
+                  23
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  7
+                ],
+                "lines": [
+                  22,
+                  24
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  7
+                ],
+                "lines": [
+                  23,
+                  24
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 24,
+            "commonPencilPoints": [
+              15
+            ],
+            "concurrencyPoint": 15,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              1,
+              34,
+              37
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  34
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  37
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  34,
+                  37
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 25,
+            "commonPencilPoints": [
+              6
+            ],
+            "concurrencyPoint": 6,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              19,
+              20,
+              21
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              0
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  19,
+                  20
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  19,
+                  21
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  20,
+                  21
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 26,
+            "commonPencilPoints": [
+              2
+            ],
+            "concurrencyPoint": 2,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              9,
+              10,
+              11
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              8
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  2
+                ],
+                "lines": [
+                  9,
+                  10
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  2
+                ],
+                "lines": [
+                  9,
+                  11
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  2
+                ],
+                "lines": [
+                  10,
+                  11
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 27,
+            "commonPencilPoints": [
+              1
+            ],
+            "concurrencyPoint": 1,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              5,
+              6,
+              7
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              4
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  1
+                ],
+                "lines": [
+                  5,
+                  6
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  1
+                ],
+                "lines": [
+                  5,
+                  7
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  1
+                ],
+                "lines": [
+                  6,
+                  7
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 31,
+            "commonPencilPoints": [
+              3
+            ],
+            "concurrencyPoint": 3,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              13,
+              14,
+              15
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              12
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  13,
+                  14
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  13,
+                  15
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  14,
+                  15
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 32,
+            "commonPencilPoints": [
+              9
+            ],
+            "concurrencyPoint": 9,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              28,
+              29,
+              30
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              12
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  9
+                ],
+                "lines": [
+                  28,
+                  29
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  9
+                ],
+                "lines": [
+                  28,
+                  30
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  9
+                ],
+                "lines": [
+                  29,
+                  30
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 33,
+            "commonPencilPoints": [
+              4
+            ],
+            "concurrencyPoint": 4,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              0,
+              8,
+              12
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              4
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  4
+                ],
+                "lines": [
+                  0,
+                  8
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  4
+                ],
+                "lines": [
+                  0,
+                  12
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  4
+                ],
+                "lines": [
+                  8,
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "shadowSizes": {
+          "11": 36,
+          "12": 4
+        }
+      },
+      "solverStatus": "FEASIBLE",
+      "symmetryOrder": 6
+    },
+    {
+      "col": {
+        "D": 16,
+        "F": 8,
+        "FplusD": 24,
+        "allConcurrentOmittedOccurrencesAreOversized": true,
+        "allRepeatedFibresConcurrent": true,
+        "centreMultiplicityProfile": {
+          "3": 12
+        },
+        "concurrentOmittedSetContainedInOversized": true,
+        "concurrentOmittedSetEqualsOversized": true,
+        "concurrentRepeatedFibres": 12,
+        "distinctOmittedLines": 4,
+        "fourR": 24,
+        "minimumShadows": 36,
+        "nonconcurrentExamples": [],
+        "nonconcurrentRepeatedFibres": 0,
+        "omittedOccurrencesOnConcurrentFibres": 12,
+        "oversizedLines": [
+          15,
+          20,
+          27,
+          31
+        ],
+        "oversizedNotExplainedByConcurrentOmissions": [],
+        "repeatedFibres": [
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 3,
+            "commonPencilPoints": [
+              25
+            ],
+            "concurrencyPoint": 25,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              6,
+              28,
+              39
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              20
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  6,
+                  28
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  6,
+                  39
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  28,
+                  39
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 6,
+            "commonPencilPoints": [
+              19
+            ],
+            "concurrencyPoint": 19,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              5,
+              16,
+              36
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              27
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  16
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  36
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  16,
+                  36
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 8,
+            "commonPencilPoints": [
+              10
+            ],
+            "concurrencyPoint": 10,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              4,
+              32,
+              33
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  10
+                ],
+                "lines": [
+                  4,
+                  32
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  10
+                ],
+                "lines": [
+                  4,
+                  33
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  10
+                ],
+                "lines": [
+                  32,
+                  33
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 10,
+            "commonPencilPoints": [
+              31
+            ],
+            "concurrencyPoint": 31,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              3,
+              7,
+              11
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              15
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  3,
+                  7
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  3,
+                  11
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  7,
+                  11
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 15,
+            "commonPencilPoints": [
+              3
+            ],
+            "concurrencyPoint": 3,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              12,
+              13,
+              14
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              15
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  12,
+                  13
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  12,
+                  14
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  13,
+                  14
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 17,
+            "commonPencilPoints": [
+              23
+            ],
+            "concurrencyPoint": 23,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              2,
+              24,
+              30
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              27
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  23
+                ],
+                "lines": [
+                  2,
+                  24
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  23
+                ],
+                "lines": [
+                  2,
+                  30
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  23
+                ],
+                "lines": [
+                  24,
+                  30
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 19,
+            "commonPencilPoints": [
+              30
+            ],
+            "concurrencyPoint": 30,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              10,
+              17,
+              29
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  30
+                ],
+                "lines": [
+                  10,
+                  17
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  30
+                ],
+                "lines": [
+                  10,
+                  29
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  30
+                ],
+                "lines": [
+                  17,
+                  29
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 23,
+            "commonPencilPoints": [
+              15
+            ],
+            "concurrencyPoint": 15,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              1,
+              34,
+              37
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  34
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  37
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  34,
+                  37
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 25,
+            "commonPencilPoints": [
+              8
+            ],
+            "concurrencyPoint": 8,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              8,
+              25,
+              26
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              27
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  8,
+                  25
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  8,
+                  26
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  25,
+                  26
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 30,
+            "commonPencilPoints": [
+              38
+            ],
+            "concurrencyPoint": 38,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              18,
+              22,
+              38
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              15
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  38
+                ],
+                "lines": [
+                  18,
+                  22
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  38
+                ],
+                "lines": [
+                  18,
+                  38
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  38
+                ],
+                "lines": [
+                  22,
+                  38
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 31,
+            "commonPencilPoints": [
+              17
+            ],
+            "concurrencyPoint": 17,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              9,
+              23,
+              35
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              20
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  17
+                ],
+                "lines": [
+                  9,
+                  23
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  17
+                ],
+                "lines": [
+                  9,
+                  35
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  17
+                ],
+                "lines": [
+                  23,
+                  35
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 38,
+            "commonPencilPoints": [
+              6
+            ],
+            "concurrencyPoint": 6,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              0,
+              19,
+              21
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              20
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  0,
+                  19
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  0,
+                  21
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  19,
+                  21
+                ]
+              }
+            ]
+          }
+        ],
+        "shadowSizes": {
+          "11": 36,
+          "13": 4
+        }
+      },
+      "leaves": 116,
+      "r": 6,
+      "row": {
+        "D": 16,
+        "F": 8,
+        "FplusD": 24,
+        "allConcurrentOmittedOccurrencesAreOversized": true,
+        "allRepeatedFibresConcurrent": true,
+        "centreMultiplicityProfile": {
+          "3": 12
+        },
+        "concurrentOmittedSetContainedInOversized": true,
+        "concurrentOmittedSetEqualsOversized": true,
+        "concurrentRepeatedFibres": 12,
+        "distinctOmittedLines": 4,
+        "fourR": 24,
+        "minimumShadows": 36,
+        "nonconcurrentExamples": [],
+        "nonconcurrentRepeatedFibres": 0,
+        "omittedOccurrencesOnConcurrentFibres": 12,
+        "oversizedLines": [
+          15,
+          20,
+          27,
+          31
+        ],
+        "oversizedNotExplainedByConcurrentOmissions": [],
+        "repeatedFibres": [
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 3,
+            "commonPencilPoints": [
+              15
+            ],
+            "concurrencyPoint": 15,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              1,
+              34,
+              37
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  34
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  1,
+                  37
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  15
+                ],
+                "lines": [
+                  34,
+                  37
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 6,
+            "commonPencilPoints": [
+              38
+            ],
+            "concurrencyPoint": 38,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              18,
+              22,
+              38
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              15
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  38
+                ],
+                "lines": [
+                  18,
+                  22
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  38
+                ],
+                "lines": [
+                  18,
+                  38
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  38
+                ],
+                "lines": [
+                  22,
+                  38
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 8,
+            "commonPencilPoints": [
+              25
+            ],
+            "concurrencyPoint": 25,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              6,
+              28,
+              39
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              20
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  6,
+                  28
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  6,
+                  39
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  25
+                ],
+                "lines": [
+                  28,
+                  39
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 10,
+            "commonPencilPoints": [
+              8
+            ],
+            "concurrencyPoint": 8,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              8,
+              25,
+              26
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              27
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  8,
+                  25
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  8,
+                  26
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  25,
+                  26
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 15,
+            "commonPencilPoints": [
+              23
+            ],
+            "concurrencyPoint": 23,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              2,
+              24,
+              30
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              27
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  23
+                ],
+                "lines": [
+                  2,
+                  24
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  23
+                ],
+                "lines": [
+                  2,
+                  30
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  23
+                ],
+                "lines": [
+                  24,
+                  30
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 17,
+            "commonPencilPoints": [
+              31
+            ],
+            "concurrencyPoint": 31,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              3,
+              7,
+              11
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              15
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  3,
+                  7
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  3,
+                  11
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  7,
+                  11
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 19,
+            "commonPencilPoints": [
+              6
+            ],
+            "concurrencyPoint": 6,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              0,
+              19,
+              21
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              20
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  0,
+                  19
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  0,
+                  21
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  19,
+                  21
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 23,
+            "commonPencilPoints": [
+              17
+            ],
+            "concurrencyPoint": 17,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              9,
+              23,
+              35
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              20
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  17
+                ],
+                "lines": [
+                  9,
+                  23
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  17
+                ],
+                "lines": [
+                  9,
+                  35
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  17
+                ],
+                "lines": [
+                  23,
+                  35
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 25,
+            "commonPencilPoints": [
+              3
+            ],
+            "concurrencyPoint": 3,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              12,
+              13,
+              14
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              15
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  12,
+                  13
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  12,
+                  14
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  13,
+                  14
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 30,
+            "commonPencilPoints": [
+              19
+            ],
+            "concurrencyPoint": 19,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              5,
+              16,
+              36
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              27
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  16
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  36
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  16,
+                  36
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 31,
+            "commonPencilPoints": [
+              10
+            ],
+            "concurrencyPoint": 10,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              4,
+              32,
+              33
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  10
+                ],
+                "lines": [
+                  4,
+                  32
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  10
+                ],
+                "lines": [
+                  4,
+                  33
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  10
+                ],
+                "lines": [
+                  32,
+                  33
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 38,
+            "commonPencilPoints": [
+              30
+            ],
+            "concurrencyPoint": 30,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              10,
+              17,
+              29
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  30
+                ],
+                "lines": [
+                  10,
+                  17
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  30
+                ],
+                "lines": [
+                  10,
+                  29
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  30
+                ],
+                "lines": [
+                  17,
+                  29
+                ]
+              }
+            ]
+          }
+        ],
+        "shadowSizes": {
+          "11": 36,
+          "13": 4
+        }
+      },
+      "solverStatus": "OPTIMAL",
+      "symmetryOrder": 12
+    },
+    {
+      "col": {
+        "D": 20,
+        "F": 40,
+        "FplusD": 60,
+        "allConcurrentOmittedOccurrencesAreOversized": false,
+        "allRepeatedFibresConcurrent": true,
+        "centreMultiplicityProfile": {
+          "1": 5,
+          "2": 5
+        },
+        "concurrentOmittedSetContainedInOversized": false,
+        "concurrentOmittedSetEqualsOversized": false,
+        "concurrentRepeatedFibres": 5,
+        "distinctOmittedLines": 10,
+        "fourR": 60,
+        "minimumShadows": 15,
+        "nonconcurrentExamples": [],
+        "nonconcurrentRepeatedFibres": 0,
+        "omittedOccurrencesOnConcurrentFibres": 10,
+        "oversizedLines": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12,
+          16,
+          17,
+          18,
+          21,
+          23,
+          24,
+          26,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          39
+        ],
+        "oversizedNotExplainedByConcurrentOmissions": [
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12,
+          16,
+          17,
+          21,
+          23,
+          24,
+          30,
+          32,
+          34,
+          35,
+          39
+        ],
+        "repeatedFibres": [
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 8,
+            "commonPencilPoints": [
+              36
+            ],
+            "concurrencyPoint": 36,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              15,
+              20
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              27,
+              31
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  36
+                ],
+                "lines": [
+                  15,
+                  20
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 16,
+            "commonPencilPoints": [
+              27
+            ],
+            "concurrencyPoint": 27,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              14,
+              25
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              19,
+              33
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  27
+                ],
+                "lines": [
+                  14,
+                  25
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 27,
+            "commonPencilPoints": [
+              8
+            ],
+            "concurrencyPoint": 8,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              8,
+              27
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              25,
+              26
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  8
+                ],
+                "lines": [
+                  8,
+                  27
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 36,
+            "commonPencilPoints": [
+              38
+            ],
+            "concurrencyPoint": 38,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              22,
+              38
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              15,
+              18
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  38
+                ],
+                "lines": [
+                  22,
+                  38
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 38,
+            "commonPencilPoints": [
+              16
+            ],
+            "concurrencyPoint": 16,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              5,
+              19
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              29,
+              38
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  16
+                ],
+                "lines": [
+                  5,
+                  19
+                ]
+              }
+            ]
+          }
+        ],
+        "shadowSizes": {
+          "11": 15,
+          "12": 10,
+          "13": 15
+        }
+      },
+      "leaves": 125,
+      "r": 15,
+      "row": {
+        "D": 35,
+        "F": 25,
+        "FplusD": 60,
+        "allConcurrentOmittedOccurrencesAreOversized": false,
+        "allRepeatedFibresConcurrent": true,
+        "centreMultiplicityProfile": {
+          "2": 5,
+          "3": 5
+        },
+        "concurrentOmittedSetContainedInOversized": false,
+        "concurrentOmittedSetEqualsOversized": false,
+        "concurrentRepeatedFibres": 10,
+        "distinctOmittedLines": 15,
+        "fourR": 60,
+        "minimumShadows": 25,
+        "nonconcurrentExamples": [],
+        "nonconcurrentRepeatedFibres": 0,
+        "omittedOccurrencesOnConcurrentFibres": 15,
+        "oversizedLines": [
+          1,
+          4,
+          6,
+          9,
+          10,
+          12,
+          16,
+          18,
+          21,
+          23,
+          26,
+          29,
+          31,
+          33,
+          39
+        ],
+        "oversizedNotExplainedByConcurrentOmissions": [
+          4,
+          6,
+          9,
+          10,
+          18,
+          23,
+          26,
+          29,
+          31,
+          33
+        ],
+        "repeatedFibres": [
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 0,
+            "commonPencilPoints": [
+              6
+            ],
+            "concurrencyPoint": 6,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              0,
+              19,
+              20
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              21
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  0,
+                  19
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  0,
+                  20
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  6
+                ],
+                "lines": [
+                  19,
+                  20
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 10,
+            "commonPencilPoints": [
+              37
+            ],
+            "concurrencyPoint": 37,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              17,
+              35
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              7,
+              25
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  37
+                ],
+                "lines": [
+                  17,
+                  35
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 11,
+            "commonPencilPoints": [
+              19
+            ],
+            "concurrencyPoint": 19,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              5,
+              27,
+              36
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              16
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  27
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  5,
+                  36
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  19
+                ],
+                "lines": [
+                  27,
+                  36
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 20,
+            "commonPencilPoints": [
+              3
+            ],
+            "concurrencyPoint": 3,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              13,
+              14,
+              15
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              12
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  13,
+                  14
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  13,
+                  15
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  3
+                ],
+                "lines": [
+                  14,
+                  15
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 21,
+            "commonPencilPoints": [
+              24
+            ],
+            "concurrencyPoint": 24,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              2,
+              32
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              35,
+              38
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  24
+                ],
+                "lines": [
+                  2,
+                  32
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 28,
+            "commonPencilPoints": [
+              23
+            ],
+            "concurrencyPoint": 23,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              24,
+              30
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              2,
+              27
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  23
+                ],
+                "lines": [
+                  24,
+                  30
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 30,
+            "commonPencilPoints": [
+              31
+            ],
+            "concurrencyPoint": 31,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              3,
+              7
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              11,
+              15
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  31
+                ],
+                "lines": [
+                  3,
+                  7
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": false,
+            "blockerCentre": 32,
+            "commonPencilPoints": [
+              35
+            ],
+            "concurrencyPoint": 35,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              11,
+              34
+            ],
+            "multiplicity": 2,
+            "omittedLines": [
+              19,
+              24
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  35
+                ],
+                "lines": [
+                  11,
+                  34
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 34,
+            "commonPencilPoints": [
+              12
+            ],
+            "concurrencyPoint": 12,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              8,
+              37,
+              38
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              39
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  12
+                ],
+                "lines": [
+                  8,
+                  37
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  12
+                ],
+                "lines": [
+                  8,
+                  38
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  12
+                ],
+                "lines": [
+                  37,
+                  38
+                ]
+              }
+            ]
+          },
+          {
+            "allOmittedOversized": true,
+            "blockerCentre": 39,
+            "commonPencilPoints": [
+              14
+            ],
+            "concurrencyPoint": 14,
+            "disjointPairCount": 0,
+            "geometry": "concurrent",
+            "lines": [
+              22,
+              25,
+              28
+            ],
+            "multiplicity": 3,
+            "omittedLines": [
+              1
+            ],
+            "pairGeometry": [
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  14
+                ],
+                "lines": [
+                  22,
+                  25
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  14
+                ],
+                "lines": [
+                  22,
+                  28
+                ]
+              },
+              {
+                "disjoint": false,
+                "intersectionPoints": [
+                  14
+                ],
+                "lines": [
+                  25,
+                  28
+                ]
+              }
+            ]
+          }
+        ],
+        "shadowSizes": {
+          "11": 25,
+          "12": 5,
+          "13": 10
+        }
+      },
+      "solverStatus": "FEASIBLE",
+      "symmetryOrder": 5
+    }
+  ]
+}
