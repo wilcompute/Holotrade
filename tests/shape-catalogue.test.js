@@ -4007,3 +4007,52 @@ test("the trichotomy breaks at multiplicity three, and only its arithmetic half"
   assert.match(r.boundary, /not what the distribution must be/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("three witnesses: the geometric half survives, the pretty structure was an artefact", () => {
+  const r = require(path.join(
+    root, "data/three_witnesses_and_what_survives_variation.json"));
+  assert.ok(r.valid);
+  assert.match(r.why, /seen once on a symmetric object is not a structure/);
+
+  // three genuinely different witnesses
+  assert.equal(r.witnesses.length, 3);
+  assert.equal(new Set(r.witnesses.map((w) => w.symmetryOrder)).size, 3);
+  assert.equal(new Set(r.witnesses.map((w) => w.r)).size, 3, "three defects");
+  for (const w of r.witnesses) {
+    assert.equal(w.leaves - 110, w.r);
+    assert.ok(w.r > 0, "all in the defect regime");
+    assert.ok(w.centres > 0);
+    // multiplicities account for the minimum shadows
+    const total = Object.entries(w.multiplicities).reduce(
+      (s, [k, v]) => s + Number(k) * v, 0);
+    assert.equal(total, w.minimumShadows);
+    const fibres = Object.values(w.multiplicities).reduce((s, v) => s + v, 0);
+    assert.equal(fibres, w.centres);
+  }
+
+  // survives: three for three
+  assert.deepEqual(r.survives.observed, [true, true, true]);
+  assert.match(r.survives.why, /needs no tightness/);
+  for (const w of r.witnesses) assert.ok(w.fibresInPencils);
+
+  // fails everywhere: never {0,1,4}, and never a full pencil
+  for (const w of r.witnesses) {
+    const ms = Object.keys(w.multiplicities);
+    assert.ok(!ms.every((m) => m === "1" || m === "4"), "trichotomy violated");
+    assert.ok(!ms.includes("4"), "no full-pencil fibre in any witness");
+  }
+  assert.match(r.failsEverywhere.reading, /not an accident of one object/);
+
+  // the artefact: true for exactly one witness
+  assert.equal(r.artefact.centresAreMinimumBlocker.filter(Boolean).length, 1);
+  assert.ok(r.artefact.centresBlock.filter(Boolean).length < 3);
+  assert.match(r.artefact.heldFor, /order-6 witness alone/);
+  assert.match(r.standingRule, /until the\s+sample is varied/);
+
+  // and the two things a future attack may assume
+  assert.equal(r.whatToAssume.length, 2);
+  assert.match(r.whatToAssume[0], /ANY blocking set/);
+  assert.match(r.whatToAssume[1], /contained in pencils/);
+  assert.match(r.boundary, /still not a\s+proof/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

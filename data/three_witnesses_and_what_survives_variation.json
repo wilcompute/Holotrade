@@ -1,0 +1,91 @@
+{
+  "schema": "holotrade.three-witnesses-variation.v1",
+  "valid": true,
+  "why": "the_trichotomy_breaks_at_multiplicity_three.py measured one object, the order-6-symmetric 115-leaf witness, and found its 11 centres forming a MINIMUM blocking set with the concurrency map a permutation of them; a structure seen once on a symmetric object is not a structure",
+  "witnesses": [
+    {
+      "symmetryOrder": 6,
+      "leaves": 115,
+      "r": 5,
+      "minimumShadows": 33,
+      "centres": 11,
+      "multiplicities": {
+        "3": 11
+      },
+      "fibresInPencils": true,
+      "centresBlock": true,
+      "centresAreMinimumBlocker": true
+    },
+    {
+      "symmetryOrder": 12,
+      "leaves": 116,
+      "r": 6,
+      "minimumShadows": 36,
+      "centres": 12,
+      "multiplicities": {
+        "3": 12
+      },
+      "fibresInPencils": true,
+      "centresBlock": true,
+      "centresAreMinimumBlocker": false
+    },
+    {
+      "symmetryOrder": 5,
+      "leaves": 125,
+      "r": 15,
+      "minimumShadows": 20,
+      "centres": 10,
+      "multiplicities": {
+        "2": 10
+      },
+      "fibresInPencils": true,
+      "centresBlock": false,
+      "centresAreMinimumBlocker": false
+    }
+  ],
+  "survives": {
+    "fact": "fibres of the centre map are contained in pencils",
+    "observed": [
+      true,
+      true,
+      true
+    ],
+    "why": "needs no tightness -- two lines sharing a centre are forced concurrent by the geometry, not by the counting"
+  },
+  "failsEverywhere": {
+    "fact": "the trichotomy m in {0, 1, t+1} = {0, 1, 4}",
+    "multiplicitiesObserved": [
+      {
+        "3": 11
+      },
+      {
+        "3": 12
+      },
+      {
+        "2": 10
+      }
+    ],
+    "reading": "multiplicity 2 and 3 both occur and multiplicity 4 occurs in none, so the break is not an accident of one object and it fails toward the intermediate values rather than the extreme one the proof would tolerate"
+  },
+  "artefact": {
+    "claimAvoided": "the centres form a minimum blocking set of W(3,3), with the concurrency map a permutation of them",
+    "centresBlock": [
+      true,
+      true,
+      false
+    ],
+    "centresAreMinimumBlocker": [
+      true,
+      false,
+      false
+    ],
+    "heldFor": "the order-6 witness alone",
+    "reading": "the order-12 witness's centres block but are not minimum; the order-5 witness's do not block at all"
+  },
+  "standingRule": "a combinatorial law with no exceptions on a convenience sample is not a finding until the sample is varied; varying it cost three solver runs and removed a wrong claim before it was made",
+  "whatToAssume": [
+    "c_L in M implies |X n (L x M)| >= 2, for ANY blocking set",
+    "fibres of the centre map are contained in pencils"
+  ],
+  "boundary": "three witnesses from symmetry-restricted CP-SAT, so each is an upper-bound construction and none is optimal in its class; the negative is established by counterexample and is solid, the positive is three-for-three but still not a proof. tau_2 stays open in [111, 115]"
+}
