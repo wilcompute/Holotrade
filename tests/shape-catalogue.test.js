@@ -4439,3 +4439,50 @@ test("minimal instruction count is not minimal program length", () => {
   assert.match(r.architecturalReading, /universality is cheap, latency is/);
   assert.match(r.boundary, /UPPER bound/);
 });
+
+test("the latency law is 2n, and its one exception is the doily", () => {
+  const r = require(path.join(root, "data/the_latency_law_is_2n.json"));
+  assert.ok(r.valid);
+  assert.match(r.question, /is the\s+diameter always 2n/);
+
+  // seven cases, each exact
+  assert.equal(r.cases.length, 7);
+  assert.equal(r.tested, 7);
+  for (const c of r.cases) {
+    assert.equal(c.twoN, 2 * c.n);
+    assert.equal(c.points, (Math.pow(c.q, c.twoN) - 1) / (c.q - 1));
+    assert.equal(c.equalsTwoN, c.diameter === c.twoN);
+    assert.ok(c.diameter >= c.twoN, "never below the Cartan-Dieudonne count");
+  }
+  assert.equal(r.onTheLaw, 6, "six of seven on the law");
+
+  // the exception, and what it is
+  const e = r.exception;
+  assert.equal(e.group, "Sp(4,2)");
+  assert.equal(e.n, 2);
+  assert.equal(e.q, 2);
+  assert.equal(e.diameter, 5);
+  assert.equal(e.excess, 1);
+  assert.ok(e.isS6);
+  assert.match(e.whyItMatters, /out\(S6\)/);
+  assert.match(e.notCharacteristicTwo, /Sp\(6,2\)/);
+  // Sp(6,2) really is on the law, so q=2 alone does not explain it
+  const s62 = r.cases.find((c) => c.n === 3 && c.q === 2);
+  assert.equal(s62.diameter, 6);
+  assert.ok(s62.equalsTwoN);
+
+  // the fourth arrival at a known asymmetry
+  const f = r.fourthArrival;
+  assert.match(f.priorArt, /PASS4714/);
+  assert.match(f.theirExplanation, /SELF-DUAL/);
+  assert.match(f.thisIsTheFourth, /not looked for/);
+  assert.equal(f.sameSplitFourWays.length, 4);
+  assert.ok(f.sameSplitFourWays.some((x) => /tau_2/.test(x)));
+  assert.ok(f.sameSplitFourWays.some((x) => /carrier fork/.test(x)));
+  assert.match(f.reading, /changes sign/);
+
+  // the scaling law and our machine's position on it
+  assert.match(r.scalingLaw.reading, /logarithmic depth/);
+  assert.match(r.scalingLaw.ourMachine, /ON the law/);
+  assert.match(r.boundary, /not a proof of the law/);
+});
