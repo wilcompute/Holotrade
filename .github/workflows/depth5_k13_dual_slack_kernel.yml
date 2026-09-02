@@ -1,0 +1,35 @@
+name: depth5 K13 dual slack kernel
+on:
+  push:
+    paths:
+      - 'analysis/depth5_k13_dual_slack_kernel.py'
+      - '.github/workflows/depth5_k13_dual_slack_kernel.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: python -m pip install --disable-pip-version-check numpy scipy ortools
+      - name: Execute exact dual-slack kernel
+        run: |
+          set -o pipefail
+          python analysis/depth5_k13_dual_slack_kernel.py 2>&1 | tee analysis/DEPTH5_K13_DUAL_SLACK_KERNEL.log
+      - name: Freeze evidence
+        run: |
+          git config user.name holotrade-evidence-bot
+          git config user.email holotrade-evidence-bot@users.noreply.github.com
+          git add data/depth5_k13_dual_slack_kernel.json analysis/DEPTH5_K13_DUAL_SLACK_KERNEL.log
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze exact depth5 K13 dual-slack kernel'
+            git push origin HEAD:master
+          fi
