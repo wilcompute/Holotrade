@@ -3,19 +3,42 @@
   "status": "PASS",
   "seed": "holotrade-fleet",
   "sources": 320,
-  "primaryCost": {"rays":7,"hops":33,"preservedForAllSources":true},
-  "equalCostCandidateRange": [52,219],
+  "primaryCost": {
+    "rays": 7,
+    "hops": 33,
+    "preservedForAllSources": true
+  },
+  "equalCostCandidateRange": [
+    52,
+    219
+  ],
   "changedDestinations": 148,
+  "sourceDcCounts": {
+    "PDX-1": 54,
+    "DFW-2": 52,
+    "ARN-1": 59,
+    "DUB-3": 47,
+    "SIN-2": 49,
+    "REY-1": 59
+  },
   "energyIndex": {
     "lexicographic": 15505.55,
     "energyAware": 13547.88,
-    "relativeReduction": 0.12625446295235822
+    "relativeReduction": 0.12625608249948786
   },
   "carbonIndex": {
     "lexicographic": 96016,
     "energyAware": 72256,
-    "relativeReduction": 0.24745667431219546
+    "relativeReduction": 0.24745875687385435
   },
-  "reading": "Site energy and carbon become legitimate secondary objectives only above the level-1 W33 cell, where full-address cross-DC candidates remain tied on exact rays/hops cost.",
-  "boundary": "Catalog baseEnergy, PUE and carbon are seeded prototype inputs, not live telemetry; this is a deterministic fleet sensitivity result, not a measured energy saving."
+  "transitionCounts": {
+    "PDX-1->DFW-2|DFW-2": 54,
+    "DFW-2->PDX-1|REY-1": 52,
+    "ARN-1->DFW-2|DFW-2": 59,
+    "DUB-3->DFW-2|REY-1": 47,
+    "SIN-2->PDX-1|REY-1": 49,
+    "REY-1->DFW-2|DFW-2": 59
+  },
+  "reading": "Site energy and carbon become legitimate secondary objectives only after moving above the level-1 cell and comparing full-address cross-DC candidates at equal rays/hops cost.",
+  "boundary": "Catalog baseEnergy, PUE and carbon are seeded prototype inputs, not live telemetry. The experiment preserves the exact topology price ordering and does not claim measured energy savings."
 }

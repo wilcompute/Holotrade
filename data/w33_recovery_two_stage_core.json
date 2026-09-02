@@ -1,5 +1,5 @@
 {
-  "schema": "holotrade.w33-recovery-two-stage-core.v1",
+  "schema": "holotrade.w33-recovery-two-stage-core.v2",
   "status": "PASS",
   "entryStage": {
     "states": 2880,
@@ -11,12 +11,14 @@
     "freeLinesAfterMove": 6
   },
   "postEntryStage": {
+    "startsFromActualBlockControllerMove": true,
     "identity": "F_after = F + s1(source) - z(destination) - 1[shared line was singleton]",
     "secondMoveExactMatches": 2880,
     "secondMoveFreeLines": 9,
     "longHorizonValidation": {
+      "stepsAfterEntry": 32,
       "decisions": 92160,
-      "distinctVisitedStates": 25184,
+      "distinctVisitedStates": 21058,
       "exactGenericDecisionMatches": 92160
     }
   },
@@ -24,11 +26,25 @@
     "source": "rtl/w33_recovery_two_stage_core.v",
     "embeddedGeometry": "40 exact point-line masks plus the 40 four-point W33 lines",
     "registeredBitsAtSourceLevel": 3,
-    "registeredFields": ["valid","entry_q","block_q"],
+    "registeredFields": [
+      "valid",
+      "entry_q",
+      "block_q"
+    ],
+    "externalInputs": [
+      "block_in",
+      "residual_lo",
+      "residual_hi",
+      "busy"
+    ],
+    "derivesSelectorMetadataInternally": false,
+    "updatesBusyStateInternally": false,
     "verifyHarness": "rtl/verify_w33_recovery_two_stage_core.ys",
     "synthesisHarness": "rtl/synth_w33_recovery_two_stage_core.ys",
+    "harnessScope": "structural check/stat only; no SAT miter or behavioral equivalence proof",
+    "formalEquivalenceProved": false,
     "measuredLutCount": null,
     "measuredSynthesizedCellCount": null
   },
-  "boundary": "Software regression proves the geometric masks and decision semantics. The current execution environment did not contain Yosys/yowasp-yosys, so no fresh synthesized LUT/cell count is claimed; the committed harness is the reproducible measurement procedure. Failure-aware decisions remain a separate policy surface."
+  "boundary": "Exhaustive software regression proves the composed healthy decision semantics. The current RTL consumes externally derived selector metadata and busy-state updates; its supplied Yosys harness is structural only and has not closed elaboration or formal equivalence in the recorded toolchain. Failure-aware decisions remain a separate policy surface."
 }

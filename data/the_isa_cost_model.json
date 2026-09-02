@@ -1,0 +1,50 @@
+{
+  "schema": "holotrade.isa-cost-model-transvections.v1",
+  "valid": true,
+  "whatAnOpcodeIs": "8f2921e: an opcode is well-typed exactly when it is equivariant, so opcodes are elements of PSp(4,3)",
+  "quantities": {
+    "groupDiameter": "worst-case program realising any transformation",
+    "stateDiameter": "worst-case program routing one state to another"
+  },
+  "tradeoffCurve": [
+    {
+      "opcodes": 2,
+      "groupDiameter": 11,
+      "stateDiameter40": 5,
+      "stateDiameter216": 7
+    },
+    {
+      "opcodes": 3,
+      "groupDiameter": 8,
+      "stateDiameter40": 4,
+      "stateDiameter216": 6
+    },
+    {
+      "opcodes": 4,
+      "groupDiameter": 7,
+      "stateDiameter40": 3,
+      "stateDiameter216": 4
+    }
+  ],
+  "transvections": {
+    "count": 80,
+    "structure": "40 inverse pairs, one per point of W(3,3)",
+    "generates": 25920,
+    "isPSp": true,
+    "cayleyDiameter": 4,
+    "reached": 25920,
+    "stateDiameter40": 2,
+    "stateDiameter216": 2
+  },
+  "spineClaimConfirmed": {
+    "claim": "all address transfers require zero, one, or two rank-one symplectic transvections",
+    "isADiameterClaim": true,
+    "measured40": 2,
+    "measured216": 2,
+    "verdict": "CONFIRMED",
+    "newPart": "it extends to the 216 carrier states, not just the 40 points"
+  },
+  "literature": "diameter bounds for Cayley graphs of classical groups are known precisely for generating sets CONTAINING A TRANSVECTION, of the form (log|G|)^c, so the architecturally natural ISA is exactly the covered case; no exact diameter for PSp(4,3) appears in the accessible literature, so these are computed values not lookups",
+  "reading": "the instruction set is not a design decision either: one opcode per point, forty of them, makes routing diameter two and universality diameter four, while the minimum-instruction machine is two opcodes and pays eleven",
+  "boundary": "the transvection numbers are exact, from full BFS over the group and over every state; the random-set numbers are the best found over many trials and are UPPER bounds on the optimal diameter at each instruction count, not proven minima. The diameters count opcodes, not cycles, and nothing here is a claim about fabricated hardware"
+}

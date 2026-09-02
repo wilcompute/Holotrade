@@ -137,8 +137,13 @@ Commitments:
 |---|---|
 | host fixture | `c8e19ded8d190a57d02ddf6448217c390ffe07e7d2e3d59eb65aa0b3b8ce4ae0` |
 | market fixture | `52ce161e0a4448019c08f709b8c86cbf98362b329265f155cecef9b118e88346` |
-| replay rows | `01d3b0d1a2d6e6d0a8eea8debd833ac3a80103217fa813afa906c9368990e1df` |
-| replay certificate | `06e0721374eb2622c67d06511dca88dedcbbff0e17652a36564843044023a5d4` |
+| replay rows | `4143137a2f62c5d7aaf385e1d76ff7b8cfdf7fb6c5ec14bdfdf724dbe99dc8aa` |
+| replay certificate | `fc635ad40def451ab9716430f6c30304888d18ef972b6d5f4570dc6c9f6d0d60` |
+
+The replay schema canonicalizes computed non-integer values to 12 significant
+decimal digits before hashing. This removes one-to-two-ulp `Math.pow`
+differences between supported V8/libm builds without changing any reported
+conclusion or the input-fixture commitments.
 
 ## 7. Reproduce and recapture
 

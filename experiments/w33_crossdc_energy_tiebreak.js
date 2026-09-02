@@ -7,6 +7,8 @@
 // rays/hops equality.
 
 global.window=global;
+const fs=require("node:fs");
+const path=require("node:path");
 const S=require("../js/substrate.js");
 const {Fleet}=require("../js/fleet.js");
 const {DATACENTERS,HARDWARE,WORKLOADS,OPERATORS}=require("../data/catalog.js");
@@ -48,5 +50,9 @@ function run(){
   if(out.sources!==320||changed!==148||round(lexEnergy)!==15505.55||round(awareEnergy)!==13547.88||lexCarbon!==96016||awareCarbon!==72256)throw new Error("frozen seeded-fleet result changed");
   return out;
 }
-if(require.main===module)process.stdout.write(JSON.stringify(run(),null,2)+"\n");
+if(require.main===module){
+  const out=run(),json=JSON.stringify(out,null,2)+"\n";
+  if(process.argv.includes("--write"))fs.writeFileSync(path.join(__dirname,"..","data","w33_crossdc_energy_tiebreak.json"),json);
+  process.stdout.write(json);
+}
 module.exports={run};

@@ -1,0 +1,29 @@
+{
+  "schema": "holotrade.typed-microvm-property-theorem.v1",
+  "valid": true,
+  "theOrphan": "7f0d0a3 recorded rtl/verify_w33_216_typed_microvm.ys as a formal harness reading a module that did not exist",
+  "typeDiscipline": {
+    "source": "0d8d33e: the 216 circuits are a canonical principal 6-fibration over the 36 double-sixes with fibre S6/S5",
+    "relabelling": "states ordered by (double-six, letter) so type(s) = s/6 and tag(s) = s mod 6 hold by construction",
+    "property": "s/6 == t/6  =>  g[s]/6 == g[t]/6",
+    "meaning": "the opcode cannot leak the tag into the type; two states of one type land in one type whatever their tags",
+    "forced": "exactly one spread stabiliser contains each circuit stabiliser, so there is exactly one way to type a state"
+  },
+  "proof": {
+    "script": "rtl/verify_w33_216_typed_microvm.ys",
+    "verdict": "PROVED",
+    "variables": 38509,
+    "clauses": 112829
+  },
+  "control": {
+    "script": "rtl/verify_w33_216_typed_microvm_control.ys",
+    "verdict": "COUNTEREXAMPLE",
+    "variables": 38519,
+    "clauses": 112855
+  },
+  "quantification": "all 216 x 216 ordered state pairs, by SAT, not sampled",
+  "controlHasTeeth": "the control module is identical except that two table entries are swapped, breaking equivariance, and its harness reports a counterexample -- so the property is not vacuously true of any table",
+  "harnessRepair": "Yosys 0.68 lowers assertions to $check cells the classic sat pass cannot consume, so chformal -lower was added after proc; that is the only change to the other track's script",
+  "whyItMatters": "the first RTL here whose correctness property is a theorem about the substrate rather than design intent -- the types are not checked against a written specification, the specification IS the fibration, and an opcode is well-typed if and only if it is equivariant",
+  "boundary": "one generator's action, combinational, no state machine and no datapath; it proves that opcode's fibration property and the control's failure, and is not a processor. No claim about fabricated hardware. tau_2 is untouched"
+}

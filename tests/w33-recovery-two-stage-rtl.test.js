@@ -9,6 +9,7 @@ const S=require(path.join(root,"js/substrate.js"));
 const P=require(path.join(root,"scheduler/w33-migration-policy.js"));
 const B=require(path.join(root,"scheduler/w33-near-ovoid-block-controller.js"));
 const L=require(path.join(root,"scheduler/w33-local-recovery-controller.js"));
+const Freeze=require(path.join(root,"analysis/w33_recovery_two_stage_core.js"));
 const {buildCorpus}=require(path.join(root,"analysis/w33_near_ovoid_corpus.js"));
 
 function maskForPoint(p){
@@ -48,7 +49,7 @@ test("post-entry local scorer reproduces the exact generic second move",()=>{
   let n=0;
   for(const r of buildCorpus().records)for(const a of r.removals){
     const start=r.blocker.filter((x)=>x!==a).sort((x,y)=>x-y);
-    const first=P.chooseMigration(start,{policy:P.POLICY.TOPOLOGY_AWARE}).nextBusy;
+    const first=B.chooseMove(start).nextBusy;
     const local=L.chooseMigration(first);
     const full=P.chooseMigration(first,{policy:P.POLICY.TOPOLOGY_AWARE});
     assert.deepEqual([local.from,local.to],[full.from,full.to]);
@@ -56,4 +57,25 @@ test("post-entry local scorer reproduces the exact generic second move",()=>{
     n++;
   }
   assert.equal(n,2880);
+});
+
+test("the frozen two-stage certificate exactly replays the actual composed path",()=>{
+  const frozen=JSON.parse(fs.readFileSync(path.join(root,"data/w33_recovery_two_stage_core.json"),"utf8"));
+  assert.deepEqual(Freeze.run(),frozen);
+  assert.equal(frozen.schema,"holotrade.w33-recovery-two-stage-core.v2");
+  assert.equal(frozen.postEntryStage.startsFromActualBlockControllerMove,true);
+  assert.equal(frozen.postEntryStage.longHorizonValidation.distinctVisitedStates,21058);
+  assert.equal(frozen.rtl.formalEquivalenceProved,false);
+  assert.match(frozen.rtl.harnessScope,/no SAT miter/);
+});
+
+test("the website exposes recovery results with their hardware and telemetry boundaries",()=>{
+  const html=fs.readFileSync(path.join(root,"holotrade.html"),"utf8");
+  const app=fs.readFileSync(path.join(root,"js/app.js"),"utf8");
+  assert.match(html,/id="w33RecoveryClosure"/);
+  assert.match(html,/failure-aware recovery policies are tested separately/);
+  assert.match(app,/w33_recovery_two_stage_core\.json/);
+  assert.match(app,/21,058|fmt\.int\(horizon\.distinctVisitedStates\)/);
+  assert.match(app,/no SAT equivalence or LUT count/);
+  assert.match(app,/not telemetry or measured savings/);
 });

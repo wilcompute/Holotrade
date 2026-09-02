@@ -4143,3 +4143,392 @@ test("one reciprocity CSP recovers both tight-case floors and stops there", () =
   assert.match(r.boundary, /\[91, 100\]/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the 216 is a principal 6-fibration over the double-sixes", () => {
+  const r = require(path.join(root, "data/the_216_is_a_principal_six_fibration.json"));
+  assert.ok(r.valid);
+  assert.match(r.wasOnlyNumerical, /matching integers/);
+
+  // the containment is real, not arithmetic
+  const g = r.groupTheory;
+  assert.equal(g.circuitStabiliser, 120);
+  assert.equal(g.spreadStabiliser, 720);
+  assert.equal(g.spreadStabilisersContainingIt, 1, "canonical: exactly one");
+  assert.ok(g.canonical);
+  assert.equal(g.index, g.spreadStabiliser / g.circuitStabiliser);
+  assert.equal(g.index, 6);
+  assert.equal(720, 6 * 120, "S6 : S5");
+  assert.match(g.inclusion, /S5 <= S6/);
+  // orbit-stabilizer closes on both actions
+  assert.equal(25920 / g.circuitStabiliser, 216);
+  assert.equal(25920 / g.spreadStabiliser, 36);
+
+  // the fibration, built by transport
+  const f = r.fibration;
+  assert.match(f.method, /transport, not brute force/);
+  assert.equal(f.circuitsMapped, 216);
+  assert.ok(f.wellDefined, "independent of the transporting element");
+  assert.equal(f.spreadsHit, 36);
+  assert.deepEqual(f.fibreSizes, { 6: 36 });
+  assert.equal(f.equivarianceViolations, 0);
+  assert.equal(36 * 6, 216, "the bundle accounts for every state");
+
+  // the fibre is named, via a dictionary entry
+  assert.match(r.theFibreHasAName, /double-six, letter/);
+  assert.match(r.theFibreHasAName, /Schlafli/);
+  assert.match(r.whatTheK66Were, /seen through a correspondence/);
+
+  // the architecture reading, and its limits
+  assert.match(r.architectureReading, /derived rather than\s+designed/);
+  assert.match(r.architectureReading, /exactly one way to type a state/);
+  assert.match(r.boundary, /dictionary\s+entry/);
+  assert.match(r.boundary, /no module is written/);
+});
+
+test("the typed microVM property is proved, and its control fails", () => {
+  const r = require(path.join(root, "data/the_typed_microvm_property_is_a_theorem.json"));
+  assert.ok(r.valid);
+  assert.match(r.theOrphan, /module that did not exist/);
+
+  // the type discipline is derived, not designed
+  const t = r.typeDiscipline;
+  assert.match(t.source, /principal 6-fibration/);
+  assert.match(t.relabelling, /by construction/);
+  assert.equal(t.property, "s/6 == t/6  =>  g[s]/6 == g[t]/6");
+  assert.match(t.meaning, /cannot leak the tag into the type/);
+  assert.match(t.forced, /exactly one way to type a state/);
+
+  // the proof, and the control that gives it meaning
+  assert.equal(r.proof.verdict, "PROVED");
+  assert.equal(r.control.verdict, "COUNTEREXAMPLE");
+  assert.notEqual(r.proof.script, r.control.script);
+  for (const x of [r.proof, r.control]) {
+    assert.ok(x.variables > 30000, "a real SAT instance");
+    assert.ok(x.clauses > x.variables);
+  }
+  // the control differs only slightly -- same shape, two entries swapped
+  assert.ok(r.control.variables > r.proof.variables);
+  assert.ok(r.control.variables - r.proof.variables < 100);
+  assert.match(r.controlHasTeeth, /not vacuously true/);
+  assert.match(r.quantification, /216 x 216/);
+  assert.equal(216 * 216, 46656, "the quantified space");
+
+  assert.match(r.harnessRepair, /chformal -lower/);
+  assert.match(r.whyItMatters, /the specification IS the fibration/);
+  assert.match(r.boundary, /not a processor/);
+});
+
+test("two carriers over one base: the type system is a gauge choice", () => {
+  const r = require(path.join(root, "data/two_carriers_one_base.json"));
+  assert.ok(r.valid);
+  assert.match(r.qualification, /holds WITHIN a\s+carrier/);
+
+  // the wrong first guess is kept, not hidden
+  const w = r.wrongFirstGuess;
+  assert.equal(w.orbits, 1);
+  assert.equal(w.stabiliser, 60);
+  assert.equal(w.fibre, 12);
+  assert.equal(25920 / w.stabiliser, 432, "one orbit of 432");
+
+  // the twin: 432 pairs to 216, stabiliser doubles to 120
+  const t = r.theTwin;
+  assert.ok(t.complementsAreHemisystems);
+  assert.equal(t.count, 216);
+  assert.equal(t.count * 2, 432, "pairing halves the orbit");
+  assert.equal(t.stabiliser, 120);
+  assert.equal(t.stabiliser, 2 * w.stabiliser, "pair stabiliser doubles");
+  assert.equal(25920 / t.stabiliser, t.count);
+  assert.ok(t.transitive);
+  assert.ok(t.matchesParallelTrack);
+
+  // a second canonical 6-fibration over the SAME 36
+  const f = r.twinFibration;
+  assert.equal(f.spreadStabilisersContaining, 1);
+  assert.ok(f.canonical);
+  assert.equal(f.mapped, 216);
+  assert.equal(f.spreadsHit, 36);
+  assert.deepEqual(f.fibreSizes, { 6: 36 });
+
+  // and the carriers are inequivalent, proved exhaustively
+  const i = r.inequivalence;
+  assert.equal(i.circuitStabiliser, i.pairStabiliser);
+  assert.ok(i.indistinguishableByCounting, "same order, so counting cannot tell");
+  assert.equal(i.conjugateInPSp, false);
+  assert.match(i.method, /every one\s+of the 25,920/);
+  assert.match(i.consequence, /no equivariant bijection/);
+
+  // the corrected architecture, and the correction to my own claim
+  const a = r.correctedArchitecture;
+  assert.match(a.base, /canonical/);
+  assert.match(a.fibration, /GIVEN a carrier/);
+  assert.match(a.carrier, /binary gauge choice/);
+  assert.match(a.consequence, /cannot see both/);
+  assert.match(a.onTheMicroVM, /'a type\s+system'/);
+  assert.match(r.whatTheChoiceCosts, /81 and not 64/);
+  assert.match(r.boundary, /cited not\s+reproduced/);
+});
+
+test("the carrier binary is not a gauge: no substrate symmetry relates the two", () => {
+  const r = require(path.join(root, "data/the_carrier_binary_is_a_fork.json"));
+  assert.ok(r.valid);
+  assert.match(r.theGuess, /are they the same one/);
+
+  // tau is the genuine outer element
+  assert.equal(r.tau.inPSp, false, "outside PSp");
+  assert.ok(r.tau.normalisesPSp, "but normalises it");
+  assert.ok(r.tau.preservesLines, "and is a substrate symmetry");
+  assert.match(r.tau.construction, /non-square mod 3/);
+
+  // chirality does not swap the carriers
+  const c = r.carriersUnderTau;
+  assert.equal(c.conjugateBeforeTau, false);
+  assert.equal(c.conjugateAfterTau, false);
+  assert.equal(c.conjugateAfterTau, c.conjugateBeforeTau, "tau changes nothing");
+  assert.match(c.reading, /FULL automorphism group/);
+
+  // and the reason: tau acts inner on the fibre group
+  const w = r.whyNot;
+  assert.equal(w.spreadStabiliserOrder, 720);
+  assert.equal(w.spreadsFixedByTau, 6);
+  assert.ok(w.tauNormalisesIt, "so it does induce an automorphism of S6");
+  assert.ok(w.tauActsInner);
+  assert.equal(w.outS6RealisedBySubstrate, false, "the key negative");
+  assert.match(w.reading, /not induced by\s+anything in PGSp/);
+
+  // my own wording is corrected
+  const m = r.correctionToMyWording;
+  assert.equal(m.said, "gauge choice");
+  assert.match(m.wrong, /intertranslatable/);
+  assert.match(m.correct, /FORK/);
+  assert.match(r.contrast.chirality, /symmetry of the substrate/);
+  assert.match(r.contrast.carrierChoice, /not a symmetry at all/);
+
+  assert.match(r.whatItForbids, /no gauge-transformation instruction can\s+exist/);
+  assert.match(r.whatItForbids, /irreversible\s+from inside/);
+  assert.match(r.boundary, /not abstract group\s+isomorphisms/);
+});
+
+test("the fork is bridged by the fibre product, and the machine-type enum is ternary", () => {
+  const r = require(path.join(root, "data/the_fork_is_bridged.json"));
+  assert.ok(r.valid);
+  assert.match(r.whereThisStarts, /a fork, not a gauge/);
+
+  // the fibre product itself
+  const f = r.fibreProduct;
+  assert.equal(f.states, 1296);
+  assert.equal(f.states, 36 * 6 * 6);
+  assert.deepEqual(f.statesPerSpread, [36]);
+  assert.equal(f.shapePerSpread, "K(6,6)");
+  assert.equal(6 * 6, f.statesPerSpread[0], "a complete bipartite fibre");
+  assert.ok(f.transitive);
+  assert.equal(f.stabiliserOrder, 20);
+  assert.equal(f.orbitStabiliser, f.states);
+  assert.equal(25920 / f.stabiliserOrder, f.states, "orbit-stabilizer closes");
+  assert.deepEqual(f.projectionsOnto, [true, true]);
+
+  // it IS the parallel track's correspondence
+  assert.match(r.isTheirCorrespondence, /valency six/);
+  assert.match(r.isTheirCorrespondence, /rank 36/);
+
+  // the stabiliser is F20
+  const s = r.stabiliserIsF20;
+  assert.equal(s.order, 20);
+  assert.ok(s.nonAbelian);
+  assert.equal(s.subgroupsOfOrderFive, 1, "unique Sylow-5: Frobenius");
+  assert.match(s.reading, /AGL\(1,5\)/);
+
+  // the architecture, and the product-layer consequence
+  assert.match(r.architecture.oneCarrier, /sees exactly one/);
+  assert.match(r.architecture.theComposite, /1296 states/);
+  assert.match(r.architecture.noConversionNeeded, /unique up to unique/);
+
+  const p = r.productLayerIsOneEntryShort;
+  assert.equal(p.file, "js/w33-execution-profile.js");
+  assert.equal(p.enumerates.length, 2, "their enum has two entries");
+  assert.match(p.missing, /1296/);
+  assert.match(p.forced, /ternary rather than binary/);
+  assert.match(p.stillForbidden, /fed190d/);
+  assert.match(r.boundary, /No hardware claim/);
+});
+
+test("the ISA cost model, and the transvection optimum confirming the spine", () => {
+  const r = require(path.join(root, "data/the_isa_cost_model.json"));
+  assert.ok(r.valid);
+  assert.match(r.whatAnOpcodeIs, /elements of PSp\(4,3\)/);
+
+  // the tradeoff curve: more opcodes, shorter programs, diminishing returns
+  const c = r.tradeoffCurve;
+  assert.ok(c.length >= 2);
+  for (let i = 1; i < c.length; i++) {
+    assert.ok(c[i].opcodes > c[i - 1].opcodes);
+    assert.ok(c[i].groupDiameter <= c[i - 1].groupDiameter, "monotone");
+  }
+  assert.equal(c[0].opcodes, 2, "two opcodes suffice for universality");
+  assert.ok(c[0].groupDiameter >= 10, "but the program is long");
+
+  // the transvections: one per point, 40 inverse pairs
+  const t = r.transvections;
+  assert.equal(t.count, 80);
+  assert.equal(t.count, 2 * 40, "40 inverse pairs, one per point");
+  assert.equal(t.generates, 25920);
+  assert.ok(t.isPSp, "they generate the whole group");
+  assert.equal(t.reached, t.generates, "BFS covered the group");
+  assert.equal(t.cayleyDiameter, 4);
+  assert.equal(t.stateDiameter40, 2);
+  assert.equal(t.stateDiameter216, 2);
+  // and they beat the best small set decisively
+  assert.ok(t.cayleyDiameter < c[0].groupDiameter);
+  assert.ok(t.stateDiameter216 < c[0].stateDiameter216);
+
+  // the spine's assertion is now a measured fact
+  const s = r.spineClaimConfirmed;
+  assert.match(s.claim, /zero, one, or two/);
+  assert.ok(s.isADiameterClaim);
+  assert.equal(s.measured40, 2);
+  assert.equal(s.measured216, 2);
+  assert.equal(s.verdict, "CONFIRMED");
+  assert.match(s.newPart, /216 carrier states/);
+
+  assert.match(r.literature, /CONTAINING A TRANSVECTION/);
+  assert.match(r.literature, /computed values not\s+lookups/);
+  assert.match(r.reading, /not a design decision/);
+  assert.match(r.boundary, /UPPER bounds/);
+  assert.match(r.boundary, /count opcodes, not cycles/);
+});
+
+test("minimal instruction count is not minimal program length", () => {
+  const r = require(path.join(root, "data/minimal_count_is_not_minimal_length.json"));
+  assert.ok(r.valid);
+  assert.match(r.whatTheySettled, /9880\s+triples/);
+  assert.match(r.whatNobodyAsked, /worst-case program length/);
+
+  // their set, exact
+  const b = r.bt1228Set;
+  assert.equal(b.vectors.length, 4);
+  assert.equal(b.generates, 25920);
+  assert.equal(b.reached, 25920, "BFS covered the group");
+  assert.equal(b.opcodes, 4);
+  assert.equal(b.cayleyDiameter, 11);
+  assert.equal(b.routingDiameter, 6);
+
+  // the full ISA, and the cost of compressing to it
+  const f = r.fullTransvectionISA;
+  assert.equal(f.opcodes, 40);
+  assert.equal(f.cayleyDiameter, 4);
+  assert.equal(f.routingDiameter, 2);
+  assert.ok(b.opcodes < f.opcodes, "fewer instructions");
+  assert.ok(b.cayleyDiameter > f.cayleyDiameter, "longer programs");
+  assert.equal(r.minimalityCost.group, b.cayleyDiameter / f.cayleyDiameter);
+  assert.equal(r.minimalityCost.routing, b.routingDiameter / f.routingDiameter);
+  assert.ok(r.minimalityCost.group > 2, "roughly threefold");
+
+  // and their set is beaten on length
+  const n = r.notLengthOptimal;
+  assert.ok(n.sampled > 100);
+  assert.ok(n.bestFound < n.bt1228);
+  assert.ok(n.theirSetIsBeaten);
+  assert.match(n.reading, /different objectives/);
+
+  // the portability trap
+  const p = r.portabilityCaveat;
+  assert.match(p.theirForm, /\(0,2\) and \(1,3\)/);
+  assert.notEqual(p.underOtherPairing, 25920);
+  assert.match(p.reading, /does not transport/);
+  assert.match(p.reading, /Not an error in their work/);
+
+  assert.match(r.architecturalReading, /universality is cheap, latency is/);
+  assert.match(r.boundary, /UPPER bound/);
+});
+
+test("the latency law is 2n, and its one exception is the doily", () => {
+  const r = require(path.join(root, "data/the_latency_law_is_2n.json"));
+  assert.ok(r.valid);
+  assert.match(r.question, /is the\s+diameter always 2n/);
+
+  // seven cases, each exact
+  assert.equal(r.cases.length, 7);
+  assert.equal(r.tested, 7);
+  for (const c of r.cases) {
+    assert.equal(c.twoN, 2 * c.n);
+    assert.equal(c.points, (Math.pow(c.q, c.twoN) - 1) / (c.q - 1));
+    assert.equal(c.equalsTwoN, c.diameter === c.twoN);
+    assert.ok(c.diameter >= c.twoN, "never below the Cartan-Dieudonne count");
+  }
+  assert.equal(r.onTheLaw, 6, "six of seven on the law");
+
+  // the exception, and what it is
+  const e = r.exception;
+  assert.equal(e.group, "Sp(4,2)");
+  assert.equal(e.n, 2);
+  assert.equal(e.q, 2);
+  assert.equal(e.diameter, 5);
+  assert.equal(e.excess, 1);
+  assert.ok(e.isS6);
+  assert.match(e.whyItMatters, /out\(S6\)/);
+  assert.match(e.notCharacteristicTwo, /Sp\(6,2\)/);
+  // Sp(6,2) really is on the law, so q=2 alone does not explain it
+  const s62 = r.cases.find((c) => c.n === 3 && c.q === 2);
+  assert.equal(s62.diameter, 6);
+  assert.ok(s62.equalsTwoN);
+
+  // the fourth arrival at a known asymmetry
+  const f = r.fourthArrival;
+  assert.match(f.priorArt, /PASS4714/);
+  assert.match(f.theirExplanation, /SELF-DUAL/);
+  assert.match(f.thisIsTheFourth, /not looked for/);
+  assert.equal(f.sameSplitFourWays.length, 4);
+  assert.ok(f.sameSplitFourWays.some((x) => /tau_2/.test(x)));
+  assert.ok(f.sameSplitFourWays.some((x) => /carrier fork/.test(x)));
+  assert.match(f.reading, /changes sign/);
+
+  // the scaling law and our machine's position on it
+  assert.match(r.scalingLaw.reading, /logarithmic depth/);
+  assert.match(r.scalingLaw.ourMachine, /ON the law/);
+  assert.match(r.boundary, /not a proof of the law/);
+});
+
+test("length equals residue, and the doily's exception is having no centre", () => {
+  const r = require(path.join(root, "data/length_equals_residue.json"));
+  assert.ok(r.valid);
+  assert.match(r.whatWasUnexplained, /no mechanism/);
+  assert.match(r.lengthVersusResidue, /length >= residue always/);
+
+  const [a, b] = r.cases;
+  assert.equal(a.q, 2);
+  assert.equal(b.q, 3);
+  assert.equal(a.order, 720);
+  assert.equal(b.order, 51840);
+  // both matrix diameters are 5 -- the difference is projective
+  assert.equal(a.matrixDiameter, 5);
+  assert.equal(b.matrixDiameter, 5);
+
+  // length never drops below residue, in either group
+  for (const c of [a, b]) {
+    for (const k of Object.keys(c.table)) {
+      const [res, len] = k.split(",").map(Number);
+      assert.ok(len >= res, "a transvection has residue 1");
+    }
+    assert.equal(
+      Object.values(c.table).reduce((s, v) => s + v, 0),
+      c.order,
+      "the table accounts for every element"
+    );
+  }
+
+  // the densities, and the mechanism
+  assert.ok(a.anomalyPercent > 30);
+  assert.ok(b.anomalyPercent < 1);
+  assert.ok(r.anomalyDensityRatio > 100);
+  assert.equal(b.extremeCount, 1, "one element at the extreme");
+  assert.ok(b.extremeIsMinusI, "and it is the centre");
+  assert.equal(b.hasCentre, true);
+  assert.equal(a.hasCentre, false, "at q=2, -I = I");
+  assert.match(r.theMechanism.qOdd, /removed by projectivisation/);
+  assert.match(r.theMechanism.qTwo, /no centre/);
+  assert.match(r.theMechanism.reading, /every\s+other case is rescued/);
+
+  // and my own framing is corrected
+  assert.match(r.correctionToMyFraming, /without saying so/);
+  assert.match(r.correctionToMyFraming, /on matrices\s+Sp\(4,3\) is also 5/);
+  assert.match(r.boundary, /NOT established/);
+});

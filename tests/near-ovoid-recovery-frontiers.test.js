@@ -9,6 +9,7 @@ const P=require(path.join(root,"scheduler/w33-migration-policy.js"));
 const M=require(path.join(root,"scheduler/w33-near-ovoid-migration.js"));
 const B=require(path.join(root,"scheduler/w33-near-ovoid-block-controller.js"));
 const S2=require(path.join(root,"scheduler/w33-near-ovoid-stage2-controller.js"));
+const CrossDc=require(path.join(root,"experiments/w33_crossdc_energy_tiebreak.js"));
 const corpus=require(path.join(root,"analysis/w33_near_ovoid_corpus.js")).buildCorpus();
 function read(name){return JSON.parse(fs.readFileSync(path.join(root,"data",name),"utf8"));}
 
@@ -55,6 +56,16 @@ test("two-failure certificate has universal 1/2/3 recovery through nine lines",(
 test("actual fleet energy boundary forbids a level-1 point energy tie-break",()=>{
   const z=read("near_ovoid_actual_fleet_energy.json");
   assert.equal(z.withinLevel1CellSingleDatacenter,true);assert.equal(z.withinLevel1CellEnergyIndexConstant,true);assert.equal(z.energyCanBreakLevel1PointTie,false);
+});
+
+test("cross-DC energy sensitivity certificate exactly replays its executable",()=>{
+  const frozen=read("w33_crossdc_energy_tiebreak.json"),actual=CrossDc.run();
+  assert.deepEqual(actual,frozen);
+  assert.equal(actual.primaryCost.preservedForAllSources,true);
+  assert.equal(actual.energyIndex.relativeReduction,0.12625608249948786);
+  assert.equal(actual.carbonIndex.relativeReduction,0.24745875687385435);
+  assert.match(actual.boundary,/not live telemetry/);
+  assert.match(actual.boundary,/does not claim measured energy savings/);
 });
 
 test("FSM certificate states objective equivalence, not exact generic action identity",()=>{

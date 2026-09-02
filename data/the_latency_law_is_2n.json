@@ -1,0 +1,109 @@
+{
+  "schema": "holotrade.transvection-latency-law-2n.v1",
+  "valid": true,
+  "question": "b363f7c got Cayley diameter 4 for Sp(4,3) with the full transvection ISA, and 2n = 4; the symplectic Cartan-Dieudonne theorem says every element IS a product of transvections, so is the diameter always 2n?",
+  "cases": [
+    {
+      "n": 1,
+      "q": 2,
+      "twoN": 2,
+      "points": 3,
+      "transvections": 3,
+      "groupOrder": 6,
+      "diameter": 2,
+      "equalsTwoN": true
+    },
+    {
+      "n": 1,
+      "q": 3,
+      "twoN": 2,
+      "points": 4,
+      "transvections": 8,
+      "groupOrder": 12,
+      "diameter": 2,
+      "equalsTwoN": true
+    },
+    {
+      "n": 1,
+      "q": 5,
+      "twoN": 2,
+      "points": 6,
+      "transvections": 24,
+      "groupOrder": 60,
+      "diameter": 2,
+      "equalsTwoN": true
+    },
+    {
+      "n": 1,
+      "q": 7,
+      "twoN": 2,
+      "points": 8,
+      "transvections": 48,
+      "groupOrder": 168,
+      "diameter": 2,
+      "equalsTwoN": true
+    },
+    {
+      "n": 2,
+      "q": 2,
+      "twoN": 4,
+      "points": 15,
+      "transvections": 15,
+      "groupOrder": 720,
+      "diameter": 5,
+      "equalsTwoN": false
+    },
+    {
+      "n": 2,
+      "q": 3,
+      "twoN": 4,
+      "points": 40,
+      "transvections": 80,
+      "groupOrder": 25920,
+      "diameter": 4,
+      "equalsTwoN": true
+    },
+    {
+      "n": 3,
+      "q": 2,
+      "twoN": 6,
+      "points": 63,
+      "transvections": 63,
+      "groupOrder": 1451520,
+      "diameter": 6,
+      "equalsTwoN": true
+    }
+  ],
+  "onTheLaw": 6,
+  "tested": 7,
+  "exception": {
+    "group": "Sp(4,2)",
+    "n": 2,
+    "q": 2,
+    "diameter": 5,
+    "excess": 1,
+    "isS6": true,
+    "whyItMatters": "Sp(4,2) = S6, the unique symmetric group with an exceptional outer automorphism, and the same group whose out(S6) drives the carrier fork of fed190d -- the one place the latency law breaks is the one place the symmetry story is exceptional",
+    "notCharacteristicTwo": "Sp(6,2) has diameter exactly 6 and Sp(2,2) exactly 2, so the exception is specifically (2,2)"
+  },
+  "scalingLaw": {
+    "states": "(q^(2n) - 1)/(q - 1)",
+    "worstCaseProgram": "2n",
+    "reading": "program length = O(log_q |states|), i.e. universality at logarithmic depth: doubling the rank doubles the program and squares the state space",
+    "ourMachine": "Sp(4,3) sits ON the law at diameter 4, not on the exception"
+  },
+  "fourthArrival": {
+    "priorArt": "W33-Theory PASS4714, 'three tracks reached the point/line asymmetry independently': signing densities, association schemes, and non-backtracking walk masses",
+    "theirExplanation": "GQ(2,2) is W(3,2) and q = 2 is even, so it is precisely the SELF-DUAL member -- the one quadrangle whose two carriers are the same object",
+    "thisIsTheFourth": "Sp(4,2) is that quadrangle; the 15 points are the doily, and the diameter law breaks there for the same structural reason. A fourth arrival by a fourth method, not looked for",
+    "sameSplitFourWays": [
+      "tau_2 != 110 needs W(q) self-dual only for even q",
+      "composition tax zero at q=2 where ovoids exist (W(3,2)^2 = 25 = tau_1^2), nonzero at q=3",
+      "the carrier fork is non-gauge, driven by out(S6) = out(Sp(4,2))",
+      "the latency law is 2n at q=3 and 2n+1 at q=2"
+    ],
+    "reading": "the doily is not a small case of W(3,3) -- it is the place every argument in this thread changes sign"
+  },
+  "literature": "the symplectic Cartan-Dieudonne theorem gives that every element is a product of transvections, and factorisation-length work relates length to the residue dimension dim im(g-1); the exact maximum length for these specific groups is not in the accessible literature, so these diameters are computed rather than quoted, and the Sp(4,2) exception is the kind of thing a general bound hides",
+  "boundary": "seven cases, each an exact full BFS over the whole group with the complete transvection set; that is evidence for the 2n law and an exact counterexample at (2,2), not a proof of the law in general. No claim about larger n or about non-transvection generating sets. Sp(4,2) = S6 is classical. tau_2 is untouched"
+}

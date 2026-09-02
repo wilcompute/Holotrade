@@ -8277,5 +8277,789 @@
       "source": "cli",
       "timestamp": "2026-09-02T00:39:55.627Z"
     }
+  },
+  {
+    "id": "295c6984-7766-4420-9541-4044ce9fea94",
+    "question": "Why add the combined GAP Steinberg, double-coset, and colour-swap witness?",
+    "answer": "The five requested fronts overlap in one PSp(4,3) action stack. Added analysis/w33_steinberg_doublecoset_colour_swap.g to construct actual 1080-to-216 orbit intertwiners, enumerate all five cross-S5 double-coset relations, and test the outer-involution action on common60. The first replay exposed immutable orbit lists under SortBy, so the witness now takes shallow mutable copies before deterministic sorting.",
+    "timestamp": "2026-09-02T00:59:00.824Z",
+    "tags": [
+      "bicolour",
+      "double-coset",
+      "gap",
+      "holotrade",
+      "steinberg",
+      "testing",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-02T00:59:00.825Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T00:59:00.816Z"
+    }
+  },
+  {
+    "id": "69a8e4e5-8343-403b-9cc0-8705c4718d82",
+    "question": "What is the hidden structure of the minimum cross-S5 correspondence?",
+    "answer": "The first exact GAP run found double-coset valencies [6,30,60,60,60], with every cross relation rank 36 and zero circuit-Steinberg rank. The valency-six relation has Gram spectrum 36^36 plus 0^180. Strengthened the witness to verify objectwise that it is exactly 36 disjoint K(6,6) components, producing a common degree-36 quotient with stabilizer order 720 for the two otherwise nonisomorphic 216-actions.",
+    "timestamp": "2026-09-02T01:07:27.769Z",
+    "tags": [
+      "36",
+      "breakthrough",
+      "double-coset",
+      "gap",
+      "holotrade",
+      "quotient",
+      "s5",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-02T01:07:27.771Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T01:07:27.756Z"
+    }
+  },
+  {
+    "id": "892112a9-5ac1-4c81-a653-0f46ee798568",
+    "question": "How should the 216-state micro-VM respect the two-S5 no-go?",
+    "answer": "Use the newly proved 36 K(6,6) quotient as a typed adapter rather than inventing a forbidden circuit-to-hemisystem bijection. Extended the GAP witness to emit both 216-state generator actions, their six-to-one block maps, and the common induced 36-state generator action, with an exact equality check between the two quotient actions.",
+    "timestamp": "2026-09-02T01:10:51.223Z",
+    "tags": [
+      "double-coset",
+      "gap",
+      "go",
+      "holotrade",
+      "how",
+      "microvm",
+      "rtl",
+      "type-safety",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-02T01:10:51.226Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T01:10:51.210Z"
+    }
+  },
+  {
+    "id": "d552353a-9d03-4552-9970-9d04ab5d2060",
+    "question": "What exact inequality replaces the false multiplicity trichotomy at 111?",
+    "answer": "Added a GAP proof on the dirty-pencil complement. Clean degrees are 0^1,3^12,4^27. Reciprocity closes every non-sink repeated fibre to complete clean pencils of equal degree, killing all 648 degree-mismatch addresses. The clean-tile budget gives 112 <= Dcc <= 144 - 3*n3_paired - 12*n3_sink, so any 111 witness has at most ten triple fibres; the eleven-triple pattern of the 115 witness cannot descend to 111. This is necessary and does not yet raise tau2 above 111.",
+    "timestamp": "2026-09-02T01:12:00.288Z",
+    "tags": [
+      "breakthrough",
+      "defect",
+      "gap",
+      "holotrade",
+      "inequality",
+      "multiplicity",
+      "tau2",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-02T01:12:00.290Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T01:12:00.276Z"
+    }
+  },
+  {
+    "id": "edc0280b-7358-4062-9796-bb7a0e5915c7",
+    "question": "How is the five-front packet frozen and made hardware-replayable?",
+    "answer": "Added analysis/w33_five_front_breakthrough.js to replay both GAP owners, freeze one SHA-256 certificate, verify generator permutations and quotient equivariance, and mechanically emit rtl/w33_216_typed_microvm.v. The RTL preserves carrier type for native transitions and exposes only the common 36-state quotient on adapt; rtl/verify_w33_216_typed_microvm.ys proves bounds, quotient commutation, and rejection of a fabricated cross-carrier state.",
+    "timestamp": "2026-09-02T01:14:46.532Z",
+    "tags": [
+      "certificate",
+      "gap",
+      "holotrade",
+      "how",
+      "microvm",
+      "rtl",
+      "testing",
+      "w33",
+      "yosys"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-02T01:14:46.534Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T01:14:46.519Z"
+    }
+  },
+  {
+    "id": "5d174abc-66b7-42c9-8f9c-33200d19f428",
+    "question": "Does the defect-regime centre structure hold generally, or was it one witness?",
+    "answer": "THE GEOMETRIC HALF SURVIVES VARIATION; THE PRETTY SELF-REFERENTIAL STRUCTURE WAS AN ARTEFACT. Holotrade commit a03b124. 2c0bbb0 measured ONE object -- the order-6-symmetric 115-leaf witness -- and found its 11 centres forming a MINIMUM blocking set of W(3,3) (one of the 360) with the concurrency map c->z(c) a permutation of that same set, 3 fixed points, rows and columns identical, and 11 = tau_1. Very persuasive shape. Built blockers under other symmetry classes and reran: order-6 |X|=115 r=5 mult {3:11}; order-12 |X|=116 r=6 mult {3:12}; order-5 |X|=125 r=15 mult {2:10}. SURVIVES: fibres of the centre map contained in pencils -- True, True, True across three symmetry classes and three defects. It survives because it needs NO tightness: two lines sharing a centre are forced concurrent by geometry, not counting. FAILS EVERYWHERE: the trichotomy. Multiplicities {3},{3},{2} -- never {0,1,4}, and multiplicity 4 (a full pencil) occurs in NONE. So the break is not an accident of one object and it fails toward the INTERMEDIATE values, not the extreme one the proof would tolerate. ARTEFACT: centres-form-a-blocking-set was True,True,False and centres-are-a-MINIMUM-blocker was True,False,False -- it held for the order-6 witness ALONE, a property of its symmetry not of the defect regime. The standing rule (vary the sample before believing) caught it; three solver runs removed a wrong claim before it was made. A future attack may assume exactly two things, both unconditional and now varied: c_L in M => |X n (LxM)| >= 2 for ANY blocking set, and fibres lie in pencils. Nothing about multiplicities.",
+    "timestamp": "2026-09-02T01:19:15.581Z",
+    "tags": [
+      "frontier",
+      "holotrade",
+      "tau2",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "a03b124",
+      "status": "active"
+    },
+    "commitHashes": [
+      "a03b124"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T01:19:15.584Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "concurrency"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T01:19:15.569Z"
+    }
+  },
+  {
+    "id": "0950b755-26bc-4eb8-9171-36a2691fe799",
+    "question": "What is the other track's hidden 36-state quotient, and can Holotrade prove tau_2 != 110 locally?",
+    "answer": "IT IS THE 36 SPREADS, AND YES -- RECIPROCITY ALONE EXCLUDES 110. Holotrade commit 7f0d0a3. Four files were staged by the other track and abandoned mid-session; TWO run to all-checks-pass and are landed unmodified (w33_tau111_defect_aware_trichotomy.g and w33_steinberg_doublecoset_colour_swap.g), TWO do not and are reported not guessed at (w33_five_front_breakthrough.js throws reading a field its GAP source never emits; rtl/verify_w33_216_typed_microvm.ys references rtl/w33_216_typed_microvm.v which does not exist -- a formal harness with no module). THEIR HIDDEN QUOTIENT: the Steinberg witness reports quotientDegree 36, quotientStabilizerOrder 720, type S6, 36 copies of K(6,6), read as 'strongly indicating' a hidden common 36-state quotient. It IS THE SPREADS. Verified: W(3,3) has exactly 36 spreads, PSp(4,3) transitive on them, stabilizer order 720, index 36 -- and BT809 (W33-Theory) already names the index-36 maximal as S6 = PSigmaL(2,9), the regular spread stabilizer. 216 = 36 x 6, so the 216 circuits fibre SIX to one over the 36 spreads, which is exactly what 36 copies of K(6,6) are. Not a hidden quotient: the spread fibration. AND 110 IS NOW LOCALLY PROVABLE: 4b23ec0 found 22 files asserting the superseded [110,115] because the exclusion lived in W33-Theory 43049db as a citation and nine local formulations never returned INFEASIBLE. Clean-core reciprocity forces c: rows->points and d: columns->points with c_L in M <=> d_M in L, and at r=0 nothing is dirty -- that is 2x40x40 booleans and 1600 biconditionals, NO grid and NO blocking set, and CP-SAT returns INFEASIBLE. Any 110-blocker induces such maps, so 110 is excluded, in a model two orders of magnitude smaller than the ones that returned UNKNOWN. One dirty line per axis returns UNKNOWN, so it does not reach 111.",
+    "timestamp": "2026-09-02T01:57:05.952Z",
+    "tags": [
+      "bridge",
+      "holotrade",
+      "tau2",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "7f0d0a3",
+      "status": "active"
+    },
+    "commitHashes": [
+      "7f0d0a3"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T01:57:05.953Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T01:57:05.946Z"
+    }
+  },
+  {
+    "id": "34c1dd5d-f09e-444f-b7e6-f0048846fa20",
+    "question": "Can one method recover both tight-case floors, and how far past tightness does reciprocity reach?",
+    "answer": "ONE CSP RECOVERS BOTH; ITS REACH PAST TIGHTNESS IS EXACTLY ZERO. Holotrade commit ae2bdf6. W(3,3)^2 != 110 needed reciprocity + trichotomy + |F| = 1+kt/mu = 10 vs alpha = 7 + the self-duality of W(q) only for even q (W33-Theory 43049db); GQ(2,4)^2 != 90 needed the same machinery then a PIGEONHOLE, 45 lines vs 27 points. Two arguments, two endgames. Both fall out of ONE CSP: at tightness every shadow is a minimum blocker so has a centre, and clean-core reciprocity forces c: rows->points, d: cols->points with c_L in M <=> d_M in L. Asking only whether such maps EXIST -- no blocking set, no grid, no self-duality theorem, no pigeonhole -- gives INFEASIBLE for W(3,3)^2 (3200 booleans, 1600 biconditionals) and INFEASIBLE for GQ(2,4)^2 (2430 booleans, 2025 biconditionals). The two endgames become consequences the solver finds itself. AND IT STOPS DEAD AT r=1: with the full budget of (t+1)r dirty lines per axis, both return OPTIMAL -- not UNKNOWN -- so the structures genuinely EXIST at 111 and at 91. That is an existence result, not a solver limit: reciprocity is exactly a tight-case tool with zero reach past tightness, which matters because several arguments in this thread rest on it. CORRECTION to the parallel gq24_slack_center_lift_91.py: it SKIPS stage two because it wants every size-11..15 blocker to contain a punctured perp, false at size 12 with an explicit counterexample. The lemma is NOT needed -- the budget already forces at least 45-5r shadows to be exactly size 10, and every GQ(2,4) minimum blocker IS a punctured perp (7b15c84). Stage two on that free hypothesis returns OPTIMAL; the lemma was never the obstacle.",
+    "timestamp": "2026-09-02T02:14:13.404Z",
+    "tags": [
+      "frontier",
+      "holotrade",
+      "how",
+      "rest",
+      "tau2",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "ae2bdf6",
+      "status": "active"
+    },
+    "commitHashes": [
+      "ae2bdf6"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T02:14:13.406Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T02:14:13.393Z"
+    }
+  },
+  {
+    "id": "38d180e1-28d6-4201-922f-01585688fc5c",
+    "question": "What are the 6 in 216 = 36 x 6, and is the fibration canonical?",
+    "answer": "THE 216 IS A PRINCIPAL 6-FIBRATION OVER THE DOUBLE-SIXES, FIBRE = SCHLAFLI'S SIX LETTERS. Holotrade commit 0d8d33e. 7f0d0a3 had only MATCHED INTEGERS (stabiliser 720, index 36, 216 = 36x6), which is how this repo gets things wrong, so the map had to be built. Group theory predicts it: circuit stabiliser 120, spread stabiliser 720, 720/120 = 6 = the index-six inclusion S5 <= S6. VERIFIED: exactly ONE spread stabiliser contains the circuit stabiliser, so the map is canonical. Built by TRANSPORT not brute force (stabilisers conjugate so the map is equivariant; PSp is transitive on both 216 and 36, so all fibres have size 216/36 = 6): 216 of 216 circuits mapped, independent of the transporting element, all 36 spreads hit, fibre sizes {6:36}, zero equivariance violations. THE FIBRE HAS A NAME: BT810's Schlafli dictionary identifies the 36 spreads with the 36 DOUBLE-SIXES, whose stabiliser is S6 on six letters, and the circuit stabiliser is that action's point stabiliser S5 -- so the 216 circuits are (double-six, letter) PAIRS. The other track's 36 copies of K(6,6) are this bundle seen through a correspondence. ARCHITECTURE: this is a TYPE SYSTEM, derived not designed -- the type of a state is which double-six it lies over, its tag is which letter it carries, and because exactly one spread stabiliser contains each circuit stabiliser there is exactly ONE way to type a state. Types are the only equivariant decomposition the carrier admits. That is the discipline the orphaned rtl/verify_w33_216_typed_microvm.ys was reaching for: forced, not chosen.",
+    "timestamp": "2026-09-02T02:53:42.226Z",
+    "tags": [
+      "architecture",
+      "fibration",
+      "holotrade",
+      "how",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "0d8d33e",
+      "status": "active"
+    },
+    "commitHashes": [
+      "0d8d33e"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T02:53:42.226Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T02:53:42.223Z"
+    }
+  },
+  {
+    "id": "e1ce2d7a-4076-4430-80b7-ba412ea542c6",
+    "question": "Can an RTL module's correctness property be a theorem about the substrate rather than design intent?",
+    "answer": "YES -- THE TYPED MICROVM PROPERTY IS PROVED IN HARDWARE, WITH A CONTROL THAT FAILS. Holotrade commit 8f2921e. 7f0d0a3 recorded rtl/verify_w33_216_typed_microvm.ys as an ORPHAN: a formal harness reading a module that did not exist. 0d8d33e derived the missing type discipline instead of choosing one -- the 216 circuits are a canonical principal 6-fibration over the 36 double-sixes with fibre S6/S5, so relabelling states by (double-six, letter) makes type(s) = s/6 and tag(s) = s mod 6 true BY CONSTRUCTION. Equivariance then reads: s/6 == t/6 => g[s]/6 == g[t]/6, i.e. THE OPCODE CANNOT LEAK THE TAG INTO THE TYPE. Encoded one PSp(4,3) generator as a 216-entry table and asserted exactly that over two free 8-bit inputs: Yosys reports 'Solving problem with 38509 variables and 112829 clauses / SAT proof finished - no model found: SUCCESS', quantified over all 216x216 ordered state pairs, not sampled. CONTROL HAS TEETH: an identical module with two table entries swapped (breaking equivariance) reports 'model found: FAIL', so the property is not vacuously true of any table. HARNESS REPAIR: Yosys 0.68 lowers asserts to  cells the classic sat pass cannot consume; adding 'chformal -lower' after proc fixes it -- the only change made to the other track's script. WHY IT MATTERS: first RTL here whose correctness property is a THEOREM about the substrate rather than design intent. The types are not checked against a written spec -- the spec IS the fibration, and there is exactly one way to type a state because exactly one spread stabiliser contains each circuit stabiliser. An opcode is well-typed iff it is equivariant, and Yosys can decide that.",
+    "timestamp": "2026-09-02T03:03:24.103Z",
+    "tags": [
+      "architecture",
+      "holotrade",
+      "rtl",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "8f2921e",
+      "status": "active"
+    },
+    "commitHashes": [
+      "8f2921e"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T03:03:24.104Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T03:03:24.100Z"
+    }
+  },
+  {
+    "id": "8f29f8d7-f9cb-436c-9c51-fc2a5bc4bb17",
+    "question": "Is the typed microVM's type system canonical, or is there a second one?",
+    "answer": "THERE ARE TWO, AND THE CHOICE IS A GAUGE. Holotrade commit 36701d0, integrating the parallel track's ad6e209. My 0d8d33e said 'exactly one way to type a state' -- true WITHIN a carrier, but ad6e209 shows the two 216-state PSp(4,3) actions sit over ONE common 36-state spread quotient with fibre point stabilizers in the two NONCONJUGATE S5 classes of S6, exchanged by the exceptional outer automorphism. FINDING THE TWIN (wrong guess kept): the hemisystems themselves are wrong -- 432, a SINGLE orbit, stabiliser 60, fibring 12:1. But a hemisystem's COMPLEMENT is a hemisystem (verified on all 432), so pairing gives 216 complementary pairs with stabiliser 120, exactly the parallel track's degree and stabiliser. TWO FIBRATIONS ONE BASE: the pair carrier is transitive on 216, exactly ONE spread stabiliser contains its stabiliser, and it is a principal 6-fibration onto all 36 spreads, fibre sizes {6:36} -- identical shape to the circuit carrier. AND INEQUIVALENT: both stabilisers have order 120 so counting cannot separate them, but conjugating the circuit stabiliser by every one of the 25,920 elements gives conjugate = FALSE. A proof, not a sampling. No equivariant bijection exists over the base or otherwise. WHAT IT COSTS: ad6e209 records that the circuit carrier sees 81 and not 64, the pair carrier 64 and not 81 -- the gauge choice decides which module the machine can address and neither addresses both. CORRECTED ARCHITECTURE: base canonical (36 double-sixes); fibration canonical GIVEN a carrier; carrier a BINARY GAUGE CHOICE exchanged by out(S6). 8f2921e's RTL proof stands but 'the type system' should read 'a type system', and a complete architecture must declare which gauge it runs in because the difference is OBSERVABLE.",
+    "timestamp": "2026-09-02T03:12:44.430Z",
+    "tags": [
+      "architecture",
+      "gauge",
+      "holotrade",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "36701d0",
+      "status": "active"
+    },
+    "commitHashes": [
+      "36701d0"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T03:12:44.431Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T03:12:44.427Z"
+    }
+  },
+  {
+    "id": "9e587c6b-346d-40ee-839a-d2aa9b058f86",
+    "question": "Is the carrier binary the same unselectable choice as chirality?",
+    "answer": "NO -- AND IT IS NOT A GAUGE AT ALL, IT IS A FORK. Holotrade commit fed190d. Two unselectable binaries in one object was suspicious: chirality (PGSp = PSp.2, Pass 346 showed the substrate hosts handedness without selecting it) and the carrier choice (36701d0, two inequivalent 216-carriers over one base exchanged by out(S6)). TEST: built the outer element tau explicitly as a symplectic SIMILITUDE of multiplier 2 (a non-square mod 3) -- verified not in PSp, normalises PSp, preserves the line set. Conjugating the circuit stabiliser by tau and testing G-conjugacy to the pair stabiliser: FALSE both before and after tau. So the carriers are inequivalent in the FULL group PGSp(4,3), not merely PSp(4,3); chirality does NOT swap them. WHY: tau fixes 6 of the 36 spreads and normalises the spread stabiliser H (order 720, the very S6 whose outer automorphism should exchange the carrier types) -- but searching all 720 elements shows tau acts on H as an INNER automorphism. So out(S6) is NOT realised by any substrate symmetry; the one automorphism that would exchange the carriers exists abstractly and the substrate does not contain it. CORRECTS MY OWN WORDING in 36701d0: 'gauge choice' is wrong, because a gauge implies a symmetry relating the options so the difference is unobservable and the choices intertranslatable. Here no such symmetry exists. Chirality IS a symmetry of the substrate (unselectable from inside); the carrier choice is NOT a symmetry at all. It is a FORK -- two different machines over one base, not two coordinate systems on one machine. FORBIDS: no gauge-transformation instruction can exist, since an opcode is a permutation induced by a group element and no element of PSp or PGSp carries one carrier to the other. With ad6e209's selector pattern, the choice of addressable module is a CONSTRUCTION-TIME decision, irreversible from inside.",
+    "timestamp": "2026-09-02T03:30:23.605Z",
+    "tags": [
+      "architecture",
+      "gauge",
+      "holotrade",
+      "testing",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "fed190d",
+      "status": "active"
+    },
+    "commitHashes": [
+      "fed190d"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T03:30:23.605Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T03:30:23.601Z"
+    }
+  },
+  {
+    "id": "9644e7b1-39ce-45a0-ae19-66e77542c330",
+    "question": "Is there any canonical relation between the two forked carriers, and is the product's machine-type enum complete?",
+    "answer": "THE FIBRE PRODUCT BRIDGES THE FORK, AND THE ENUM IS TERNARY NOT BINARY. Holotrade commit 58f0df3. fed190d proved the two 216-carriers inequivalent under EVERY substrate automorphism -- a fork, not a gauge -- leaving open whether any canonical relation exists. There is exactly one: two bundles over a common base have a unique canonical bridge, the FIBRE PRODUCT, and the base is canonical (7f0d0a3, the 36 double-sixes). COMPUTED: 216 x_36 216 = 1296 states; 36 states over each spread forming a complete K(6,6); PSp(4,3) TRANSITIVE on all 1296; stabiliser order 20 with 25920/20 = 1296; both projections onto. THAT IS THE PARALLEL TRACK'S CORRESPONDENCE -- ad6e209's 'smallest correspondence of valency six and rank 36, 36 copies of K(6,6)' which they read as 'strongly indicating a hidden common quotient'. It is not a hidden quotient: valency six because each fibre has six states, rank 36 because there are 36 fibres, complete bipartite because a fibre product pairs everything over a spread with everything else. THE STABILISER NAMES ITSELF: Stab(c,p) = Stab(c) n Stab(p), an S5 from each of the two nonconjugate classes in S6, which classically meet in F20 = AGL(1,5); order 20, non-abelian, unique subgroup of order 5 -- all checked. ESCAPES fed190d WITHOUT VIOLATING IT: both projections onto, so both permutation modules pull back and the composite sees 64 AND 81. You cannot rotate one machine into the other; you CAN run both synchronised on the shared double-six. PRODUCT CONSEQUENCE: js/w33-execution-profile.js (built by the other track on fed190d) enumerates exactly TWO machine types; that enum is incomplete and completing it is FORCED -- the fibre product is a third type, 1296 states, stabiliser F20, addressing both, and it is the ONLY other one since fibre products are unique up to unique isomorphism.",
+    "timestamp": "2026-09-02T20:25:14.685Z",
+    "tags": [
+      "architecture",
+      "fibration",
+      "holotrade",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "58f0df3",
+      "status": "active"
+    },
+    "commitHashes": [
+      "58f0df3"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T20:25:14.686Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T20:25:14.683Z"
+    }
+  },
+  {
+    "id": "66056a5a-ff23-4636-ba5e-7e9cbd33a022",
+    "question": "What is the ISA cost model of the W33 machine, and is the spine's transvection claim true?",
+    "answer": "TRANSVECTIONS ARE THE OPTIMUM, AND THE SPINE'S DIAMETER-2 CLAIM IS CONFIRMED. Holotrade commit b363f7c. 8f2921e settled that an opcode is well-typed exactly when equivariant, so opcodes ARE elements of PSp(4,3) -- which makes two never-computed architectural quantities computable: the GROUP DIAMETER (worst-case program realising any transformation, Cayley graph on 25,920) and the STATE DIAMETER (worst-case routing, Schreier graph on the machine states). TRADEOFF CURVE from random generating sets: 2 opcodes -> group 11, state(40) 5, state(216) 7; 3 -> 8, 4, 6; 4 -> 7, 3, 4. Two opcodes suffice for universality (PSp(4,3) is simple and 2-generated) but the worst-case program is ELEVEN long, with sharply diminishing returns. THE SUBSTRATE BEATS THEM ALL: the symplectic transvections T(v,lam): x -> x + lam<x,v>v, one per point of W(3,3), 80 as 40 inverse pairs, generate PSp(4,3) exactly with Cayley diameter 4, address-transfer diameter 2 on the 40 points, and carrier-state diameter 2 on the 216. Four opcodes for ANY transformation and TWO for routing, against the best 2-opcode set's 11 and 7 -- a different regime, bought with 40 instructions instead of 2. SPINE CONFIRMED: the canonical architecture spine asserts 'all address transfers require zero, one, or two rank-one symplectic transvections', which is exactly a diameter-2 claim about the transvection Schreier graph. It measures 2, so the assertion carried as architecture is now a computed fact -- and it EXTENDS to the 216 carrier states, which was not previously claimed. LITERATURE: Cayley diameter bounds for classical groups are known precisely for generating sets CONTAINING A TRANSVECTION ((log|G|)^c), so the natural ISA is exactly the covered case; no exact PSp(4,3) diameter is published, so 4 and 2 are computed not looked up.",
+    "timestamp": "2026-09-02T20:38:03.542Z",
+    "tags": [
+      "architecture",
+      "holotrade",
+      "isa",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "b363f7c",
+      "status": "active"
+    },
+    "commitHashes": [
+      "b363f7c"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T20:38:03.542Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T20:38:03.539Z"
+    }
+  },
+  {
+    "id": "d177b493-6949-4c16-9188-04f12bc1b4bc",
+    "question": "Does W33-Theory's minimal transvection generating set also minimise program length?",
+    "answer": "NO -- IT IS COUNT-MINIMAL BUT NOT LENGTH-OPTIMAL, AND IT IS CONVENTION-BOUND. Holotrade commit 8bb45db. SEARCHED THE W33 REPO FIRST and found BT1228/1230/1231, which settle the minimal projective-transvection generating count EXHAUSTIVELY: BT1228 compresses to four, BT1230 rules out one and two, BT1231 checks all C(40,3) = 9880 triples whose closures top out at order 648, giving m_min = 4. That is prior art and a complete answer to the question they asked. THE SECOND COST THEY DID NOT MEASURE: the Cayley diameter = worst-case program length. Running b363f7c's machinery on their set: BT1228 four-transvection set has Cayley diameter 11 and routing diameter 6; the full 40-opcode transvection ISA has 4 and 2. So MINIMALITY COSTS about 2.8x on the group and 3.0x on routing -- forty opcodes buy a worst case of four, four opcodes pay eleven. Both endpoints exact by full BFS. AND THEIR SET IS BEATEN: sampling 257 other generating four-transvection sets turns up one with Cayley diameter 10 against BT1228's 11. Nothing is wrong with their certificate (it witnesses the COUNT, exhaustively) but count minimality and length minimality are DIFFERENT OBJECTIVES and only the first was ever optimised. PORTABILITY TRAP: BT1228/1230/1231 use J = [[0,I],[-I,0]] pairing (0,2),(1,3). Under the other common pairing (0,1),(2,3) the SAME four vectors close to only 288, not 25920. The certificate is about vectors AND a form; quoting the vectors alone does not transport. I hit this myself before reading their convention. ARCHITECTURE: the ISA has two independent knobs answered differently -- universality is cheap (2 generators for any simple group, 4 transvections in-family), latency is not (only the natural 40-opcode set reaches diameter 4).",
+    "timestamp": "2026-09-02T20:54:07.960Z",
+    "tags": [
+      "architecture",
+      "holotrade",
+      "isa",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "8bb45db",
+      "status": "active"
+    },
+    "commitHashes": [
+      "8bb45db"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T20:54:07.960Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T20:54:07.957Z"
+    }
+  },
+  {
+    "id": "7977685a-4aea-45da-b937-a1dfb2fd52e4",
+    "question": "Is the transvection ISA's worst-case program length a law, and where does it break?",
+    "answer": "IT IS 2n -- LOGARITHMIC DEPTH -- AND THE ONE EXCEPTION IS THE DOILY. Holotrade commit 860714a. b363f7c got Cayley diameter 4 for Sp(4,3) with the full transvection ISA, and 2n = 4, so I tested whether the diameter is always 2n across seven cases: Sp(2,2)=2, Sp(2,3)=2, Sp(2,5)=2, Sp(2,7)=2, Sp(4,3)=4, Sp(6,2)=6 all land exactly on 2n; Sp(4,2) gives 5 = 2n+1. NOT a characteristic-two effect since Sp(6,2) is exactly 6 -- the exception is specifically (n,q)=(2,2). THE EXCEPTION HAS A NAME IN THE CORPUS: Sp(4,2) is S6 and its 15 points are the DOILY, GQ(2,2) = W(3,2). W33-Theory's PASS4714 ('three tracks reached the point/line asymmetry independently, by three methods' -- signing densities, association schemes, non-backtracking walk masses) explains exactly this: GQ(2,2) is W(3,2) and q=2 is even so it is the SELF-DUAL member, the one quadrangle whose two carriers are the same object. My diameter is a FOURTH ARRIVAL at that asymmetry by a fourth method, unlooked for -- and their dual pair GQ(2,4)=Q(5,2)/GQ(4,2)=H(3,4) is the same pair my carrier fork runs on. THE WHOLE THREAD RUNS ON THIS SPLIT: tau_2 != 110 needs W(q) self-dual only for even q (works at 3, fails at 2); the composition tax is ZERO at q=2 where ovoids exist and W(3,2)^2 = 25 = tau_1^2, nonzero at q=3; the carrier fork is non-gauge driven by out(S6) = out(Sp(4,2)); the latency law is 2n at q=3 and 2n+1 at q=2. The doily is not a small case of W(3,3) -- it is where every argument in this thread changes sign. SCALING LAW: states ~ q^2n, program 2n, so program length = O(log_q |states|) -- universality at LOGARITHMIC DEPTH, with Sp(4,3) sitting on the law.",
+    "timestamp": "2026-09-02T21:22:36.226Z",
+    "tags": [
+      "architecture",
+      "doily",
+      "holotrade",
+      "isa",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "860714a",
+      "status": "active"
+    },
+    "commitHashes": [
+      "860714a"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T21:22:36.227Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T21:22:36.223Z"
+    }
+  },
+  {
+    "id": "01852e6d-8cf4-4f49-8156-88fddaa2ef10",
+    "question": "Why does the doily break the 2n latency law, and is the law matrix or projective?",
+    "answer": "LENGTH = RESIDUE, AND THE DOILY HAS NO CENTRE TO QUOTIENT. Holotrade commit 6bb8975. 860714a measured diameter 2n in six of seven symplectic groups and 2n+1 at Sp(4,2) but gave no MECHANISM. Here it is. A transvection has residue dim im(g-1) = 1, so length >= residue always; computing both on MATRICES for every element gives length = residue almost everywhere with an anomaly set at residue+1. DENSITIES: Sp(4,2) has 225/720 = 31.25% anomalies, Sp(4,3) has 91/51840 = 0.176% -- a factor of 178. THE SINGLE WORST ELEMENT OF Sp(4,3) IS -I: exactly one element sits at length 5, and it is diag(2,2,2,2) with residue 4, the CENTRE, checked by direct comparison. That is the entire matrix-vs-projective gap: Sp(4,3) has matrix diameter 5, -I is central so it vanishes in PSp(4,3), and the projective diameter drops to 4 = 2n. The law holds because the one element that breaks it is the one element projectivisation removes. AND THAT IS WHY THE DOILY DIFFERS: at q=2, -I = I, there is NO centre, PSp(4,2) = Sp(4,2), and a 31% anomaly set cannot be quotiented away by anything. The doily is not accidentally worse -- every other case in the sweep is rescued by its centre and the doily has none. CORRECTION TO MY OWN FRAMING: 860714a reported the sweep on the PROJECTIVE action without saying so, leaving 'the latency law is 2n' ambiguous; on matrices Sp(4,3) is also 5. The law is about PSp, which is architecturally right since machine states are projective points, but the qualifier belongs in the statement. NOT established: that odd q always rescues itself this way (verified at q=3 only).",
+    "timestamp": "2026-09-02T21:33:21.595Z",
+    "tags": [
+      "architecture",
+      "doily",
+      "holotrade",
+      "isa",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "6bb8975",
+      "status": "active"
+    },
+    "commitHashes": [
+      "6bb8975"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-02T21:33:21.595Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-02T21:33:21.592Z"
+    }
   }
 ]

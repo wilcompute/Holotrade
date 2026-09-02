@@ -1,0 +1,200 @@
+[
+ {
+  "order": 5,
+  "orbits": 320,
+  "minLeaves": {
+   "value": 125,
+   "status": "FEASIBLE",
+   "leaves": 125,
+   "seeds": 25,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 25,
+   "status": "FEASIBLE",
+   "leaves": 125,
+   "seeds": 25,
+   "verified": true
+  }
+ },
+ {
+  "order": 4,
+  "orbits": 400,
+  "minLeaves": {
+   "value": 144,
+   "status": "FEASIBLE",
+   "leaves": 144,
+   "seeds": 36,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 35,
+   "status": "FEASIBLE",
+   "leaves": 140,
+   "seeds": 35,
+   "verified": true
+  }
+ },
+ {
+  "order": 12,
+  "orbits": 174,
+  "minLeaves": {
+   "value": 116,
+   "status": "OPTIMAL",
+   "leaves": 116,
+   "seeds": 20,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 13,
+   "status": "OPTIMAL",
+   "leaves": 133,
+   "seeds": 13,
+   "verified": true
+  }
+ },
+ {
+  "order": 9,
+  "orbits": 216,
+  "minLeaves": {
+   "value": 117,
+   "status": "FEASIBLE",
+   "leaves": 117,
+   "seeds": 23,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 16,
+   "status": "FEASIBLE",
+   "leaves": 136,
+   "seeds": 16,
+   "verified": true
+  }
+ },
+ {
+  "order": 6,
+  "orbits": 272,
+  "minLeaves": {
+   "value": 126,
+   "status": "FEASIBLE",
+   "leaves": 126,
+   "seeds": 23,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 23,
+   "status": "FEASIBLE",
+   "leaves": 134,
+   "seeds": 23,
+   "verified": true
+  }
+ },
+ {
+  "order": 6,
+  "orbits": 284,
+  "minLeaves": {
+   "value": 118,
+   "status": "FEASIBLE",
+   "leaves": 118,
+   "seeds": 25,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 23,
+   "status": "FEASIBLE",
+   "leaves": 121,
+   "seeds": 23,
+   "verified": true
+  }
+ },
+ {
+  "order": 3,
+  "orbits": 646,
+  "minLeaves": {
+   "value": 120,
+   "status": "FEASIBLE",
+   "leaves": 120,
+   "seeds": 70,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 45,
+   "status": "FEASIBLE",
+   "leaves": 129,
+   "seeds": 45,
+   "verified": true
+  }
+ },
+ {
+  "order": 6,
+  "orbits": 342,
+  "minLeaves": {
+   "value": 115,
+   "status": "FEASIBLE",
+   "leaves": 115,
+   "seeds": 35,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 25,
+   "status": "FEASIBLE",
+   "leaves": 133,
+   "seeds": 25,
+   "verified": true
+  }
+ },
+ {
+  "order": 4,
+  "orbits": 424,
+  "minLeaves": {
+   "value": 116,
+   "status": "FEASIBLE",
+   "leaves": 116,
+   "seeds": 32,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 32,
+   "status": "FEASIBLE",
+   "leaves": 118,
+   "seeds": 32,
+   "verified": true
+  }
+ },
+ {
+  "order": 3,
+  "orbits": 544,
+  "minLeaves": {
+   "value": 121,
+   "status": "FEASIBLE",
+   "leaves": 121,
+   "seeds": 43,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 43,
+   "status": "FEASIBLE",
+   "leaves": 121,
+   "seeds": 43,
+   "verified": true
+  }
+ },
+ {
+  "order": 48,
+  "orbits": 44,
+  "minLeaves": {
+   "value": 208,
+   "status": "OPTIMAL",
+   "leaves": 208,
+   "seeds": 8,
+   "verified": true
+  },
+  "minSeeds": {
+   "value": 7,
+   "status": "OPTIMAL",
+   "leaves": 256,
+   "seeds": 7,
+   "verified": true
+  }
+ }
+]
