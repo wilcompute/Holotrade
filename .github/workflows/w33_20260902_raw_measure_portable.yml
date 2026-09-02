@@ -1,0 +1,30 @@
+name: W33 raw TPM measured placement and portable audit closure
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-tpm-eventlog-provenance.js'
+      - 'js/w33-measured-placement-loop.js'
+      - 'js/w33-portable-audit-verifier.js'
+      - 'bin/w33-verify-receipt.js'
+      - 'tests/w33-tpm-eventlog-provenance.test.js'
+      - 'tests/w33-measured-placement-loop.test.js'
+      - 'tests/w33-portable-audit-verifier.test.js'
+      - '.github/workflows/w33_20260902_raw_measure_portable.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify raw PC Client TPM event-log path
+        run: node --test tests/w33-tpm-eventlog-provenance.test.js
+      - name: Verify measured closed-loop placement
+        run: node --test tests/w33-measured-placement-loop.test.js
+      - name: Verify portable end-to-end audit bundle
+        run: node --test tests/w33-portable-audit-verifier.test.js
