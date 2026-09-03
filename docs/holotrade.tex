@@ -125,6 +125,7 @@
 % evidence tags
 \newcommand{\tagbox}[3]{\tikz[baseline=(X.base)]{\node[inner xsep=3.5pt,inner ysep=1.4pt,rounded corners=1.6pt,fill=#1,text=#2,font=\bfseries\sffamily\tiny] (X) {#3};}}
 \newcommand{\PROVED}{\tagbox{greenlite}{green!45!black}{PROVED}}
+\newcommand{\FORMAL}{\tagbox{cyanlite}{cyan!55!black}{FORMAL}}
 \newcommand{\MEASURED}{\tagbox{cyanlite}{cyan!55!black}{MEASURED}}
 \newcommand{\MODELLED}{\tagbox{amberlite}{amber!55!black}{MODELLED}}
 \newcommand{\PUBLISHED}{\tagbox{greylite}{grey}{PUBLISHED}}
@@ -1335,6 +1336,52 @@ contains the 81-dimensional Steinberg representation once, while the
 hemisystem-line module contains it zero times. This is the same Steinberg
 species isolated independently in the 1,080-state obstruction-product carrier
 of the companion W33 computation. \PROVED
+
+The common quotient is now constructed rather than inferred from the equality
+$216=36\cdot6$.  Both carriers map equivariantly onto the same 36 regular
+spreads (equivalently, the 36 Schlaefli double-sixes); every fibre has six
+states and its spread stabilizer is $S_6$.  The two order-120 point
+stabilizers are the two nonconjugate $S_5$ classes inside $S_6$.  The
+exceptional outer automorphism of the abstract fibre group exchanges those
+classes, but exhaustive conjugation shows that no automorphism of the
+\W{} substrate realizes that exchange.  The two 216-state machines therefore
+form a genuine carrier fork, not two gauges of one carrier. \PROVED
+
+There is nevertheless a canonical bridge: their fibre product over the
+36-state base,
+\[
+  G/S_5^{\rm circ}\times_{G/S_6}G/S_5^{\rm pair}
+  \cong G/(S_5^{\rm circ}\cap S_5^{\rm pair}),
+  \qquad |G/F_{20}|=1,296,
+\]
+where GAP identifies the intersection as $F_{20}\cong C_5{:}C_4$.
+Frobenius reciprocity gives a sharper cross-repository synthesis.  If
+$H_{81}=H_1(W(3,3))$ and $H_{64}=H_1(GQ(4,2))$, then the 1,296-state
+permutation carrier contains
+\[
+  3H_{81}\oplus3H_{64},
+  \qquad 3\cdot81+3\cdot64=435.
+\]
+The corrected 1,080-state obstruction carrier contains exactly the same
+building block, so these 435-dimensional isotypic components are abstractly
+$G$-isomorphic and their equivariant cross-Hom space has dimension
+$3^2+3^2=18$.  This computation also catches a subtle coordinate error in the
+first HoloTrade witness: the certified obstruction is 27 completion charts
+times 40 \emph{lines}, not 40 points.  The point product has
+$H_{64}$-multiplicity four and is a different $G$-set.  An explicit
+$1,296$-by-$1,080$ intertwiner is not claimed here. \PROVED
+
+The companion W33 repository already supplies a typed software ABI over the
+36-state base and same-carrier versus neutral-continuation checkpoint semantics.
+The additional result here is the exact group-action hardware lift.  The
+corresponding finite controller is executable on both forks.
+Two native generators act on each 216-state carrier, while a cross-carrier
+request returns only the common 36-state quotient and never fabricates a
+forbidden 216-to-216 conversion.  Yosys proves the quotient-commutation,
+range, and fail-closed adapter assertions for all carrier, opcode, state and
+adapter inputs; a control that exposes an invented cross-carrier state produces
+a SAT counterexample.  This is a combinational logic theorem, not a processor,
+benchmark, or fabricated-device claim. \FORMAL
 
 The extremal bound $(q^3+q+2)/2$ and its sharpness for $q=2,3$ are published
 finite-geometry results, not a claim of this paper~\cite{debeule2008hermitian}.

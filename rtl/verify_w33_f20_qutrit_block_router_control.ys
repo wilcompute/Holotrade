@@ -1,0 +1,5 @@
+read_verilog -formal rtl/w33_f20_qutrit_block_router.v
+hierarchy -top w33_f20_qutrit_block_router_control
+proc; chformal -lower; memory_map; opt; flatten; opt -full
+sat -verify -prove-asserts -show-ports
+stat

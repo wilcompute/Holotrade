@@ -9,6 +9,7 @@ const generator = require("../analysis/e8_unitary_hole_coset_rtl.js");
 const frozen = require("../data/e8_unitary_hole_coset_rtl.json");
 
 const ROOT = path.resolve(__dirname, "..");
+const normalizedText = (value) => value.replace(/\r\n/g, "\n");
 
 function add3(a, b) { return (a + b) % 3; }
 function mul3(a, b) { return (a * b) % 3; }
@@ -42,7 +43,8 @@ test("GAP exactly regenerates the frozen coset transport and both RTL implementa
   assert.equal(generator.digest(body), sha256);
   const generated = generator.generate();
   assert.deepEqual(generated.certificate, frozen);
-  assert.equal(generated.verilog, fs.readFileSync(path.join(ROOT, "rtl/e8_unitary_hole_adj.v"), "utf8"));
+  assert.equal(normalizedText(generated.verilog),
+    normalizedText(fs.readFileSync(path.join(ROOT, "rtl/e8_unitary_hole_adj.v"), "utf8")));
 });
 
 test("the compact Hermitian predicate exhausts all 2^14 address pairs", () => {

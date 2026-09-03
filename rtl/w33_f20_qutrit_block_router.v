@@ -1,0 +1,288 @@
+// Generated from data/w33_f20_qutrit_block_bridge.json.
+// F20 acts on five sites x eight nonidentity qutrit Paulis.
+module w33_f20_qutrit_block_router(input wire opcode, input wire [5:0] state, output reg valid, output reg [5:0] next_state);
+function [5:0] step_t;
+  input [5:0] state;
+  begin step_t=6'h3f; case(state)
+    6'd0: step_t=6'd32;
+    6'd1: step_t=6'd33;
+    6'd2: step_t=6'd34;
+    6'd3: step_t=6'd35;
+    6'd4: step_t=6'd36;
+    6'd5: step_t=6'd37;
+    6'd6: step_t=6'd38;
+    6'd7: step_t=6'd39;
+    6'd8: step_t=6'd0;
+    6'd9: step_t=6'd1;
+    6'd10: step_t=6'd2;
+    6'd11: step_t=6'd3;
+    6'd12: step_t=6'd4;
+    6'd13: step_t=6'd5;
+    6'd14: step_t=6'd6;
+    6'd15: step_t=6'd7;
+    6'd16: step_t=6'd8;
+    6'd17: step_t=6'd9;
+    6'd18: step_t=6'd10;
+    6'd19: step_t=6'd11;
+    6'd20: step_t=6'd12;
+    6'd21: step_t=6'd13;
+    6'd22: step_t=6'd14;
+    6'd23: step_t=6'd15;
+    6'd24: step_t=6'd16;
+    6'd25: step_t=6'd17;
+    6'd26: step_t=6'd18;
+    6'd27: step_t=6'd19;
+    6'd28: step_t=6'd20;
+    6'd29: step_t=6'd21;
+    6'd30: step_t=6'd22;
+    6'd31: step_t=6'd23;
+    6'd32: step_t=6'd24;
+    6'd33: step_t=6'd25;
+    6'd34: step_t=6'd26;
+    6'd35: step_t=6'd27;
+    6'd36: step_t=6'd28;
+    6'd37: step_t=6'd29;
+    6'd38: step_t=6'd30;
+    6'd39: step_t=6'd31;
+    default: ; endcase end
+endfunction
+function [5:0] step_m;
+  input [5:0] state;
+  begin step_m=6'h3f; case(state)
+    6'd0: step_m=6'd5;
+    6'd1: step_m=6'd2;
+    6'd2: step_m=6'd0;
+    6'd3: step_m=6'd6;
+    6'd4: step_m=6'd3;
+    6'd5: step_m=6'd1;
+    6'd6: step_m=6'd7;
+    6'd7: step_m=6'd4;
+    6'd8: step_m=6'd29;
+    6'd9: step_m=6'd26;
+    6'd10: step_m=6'd24;
+    6'd11: step_m=6'd30;
+    6'd12: step_m=6'd27;
+    6'd13: step_m=6'd25;
+    6'd14: step_m=6'd31;
+    6'd15: step_m=6'd28;
+    6'd16: step_m=6'd13;
+    6'd17: step_m=6'd10;
+    6'd18: step_m=6'd8;
+    6'd19: step_m=6'd14;
+    6'd20: step_m=6'd11;
+    6'd21: step_m=6'd9;
+    6'd22: step_m=6'd15;
+    6'd23: step_m=6'd12;
+    6'd24: step_m=6'd37;
+    6'd25: step_m=6'd34;
+    6'd26: step_m=6'd32;
+    6'd27: step_m=6'd38;
+    6'd28: step_m=6'd35;
+    6'd29: step_m=6'd33;
+    6'd30: step_m=6'd39;
+    6'd31: step_m=6'd36;
+    6'd32: step_m=6'd21;
+    6'd33: step_m=6'd18;
+    6'd34: step_m=6'd16;
+    6'd35: step_m=6'd22;
+    6'd36: step_m=6'd19;
+    6'd37: step_m=6'd17;
+    6'd38: step_m=6'd23;
+    6'd39: step_m=6'd20;
+    default: ; endcase end
+endfunction
+always @* begin valid=(state<6'd40); next_state=6'h3f; if(valid) next_state=opcode?step_m(state):step_t(state); end
+endmodule
+
+module w33_f20_qutrit_block_router_formal(input wire [5:0] state);
+function [5:0] step_t;
+  input [5:0] state;
+  begin step_t=6'h3f; case(state)
+    6'd0: step_t=6'd32;
+    6'd1: step_t=6'd33;
+    6'd2: step_t=6'd34;
+    6'd3: step_t=6'd35;
+    6'd4: step_t=6'd36;
+    6'd5: step_t=6'd37;
+    6'd6: step_t=6'd38;
+    6'd7: step_t=6'd39;
+    6'd8: step_t=6'd0;
+    6'd9: step_t=6'd1;
+    6'd10: step_t=6'd2;
+    6'd11: step_t=6'd3;
+    6'd12: step_t=6'd4;
+    6'd13: step_t=6'd5;
+    6'd14: step_t=6'd6;
+    6'd15: step_t=6'd7;
+    6'd16: step_t=6'd8;
+    6'd17: step_t=6'd9;
+    6'd18: step_t=6'd10;
+    6'd19: step_t=6'd11;
+    6'd20: step_t=6'd12;
+    6'd21: step_t=6'd13;
+    6'd22: step_t=6'd14;
+    6'd23: step_t=6'd15;
+    6'd24: step_t=6'd16;
+    6'd25: step_t=6'd17;
+    6'd26: step_t=6'd18;
+    6'd27: step_t=6'd19;
+    6'd28: step_t=6'd20;
+    6'd29: step_t=6'd21;
+    6'd30: step_t=6'd22;
+    6'd31: step_t=6'd23;
+    6'd32: step_t=6'd24;
+    6'd33: step_t=6'd25;
+    6'd34: step_t=6'd26;
+    6'd35: step_t=6'd27;
+    6'd36: step_t=6'd28;
+    6'd37: step_t=6'd29;
+    6'd38: step_t=6'd30;
+    6'd39: step_t=6'd31;
+    default: ; endcase end
+endfunction
+function [5:0] step_m;
+  input [5:0] state;
+  begin step_m=6'h3f; case(state)
+    6'd0: step_m=6'd5;
+    6'd1: step_m=6'd2;
+    6'd2: step_m=6'd0;
+    6'd3: step_m=6'd6;
+    6'd4: step_m=6'd3;
+    6'd5: step_m=6'd1;
+    6'd6: step_m=6'd7;
+    6'd7: step_m=6'd4;
+    6'd8: step_m=6'd29;
+    6'd9: step_m=6'd26;
+    6'd10: step_m=6'd24;
+    6'd11: step_m=6'd30;
+    6'd12: step_m=6'd27;
+    6'd13: step_m=6'd25;
+    6'd14: step_m=6'd31;
+    6'd15: step_m=6'd28;
+    6'd16: step_m=6'd13;
+    6'd17: step_m=6'd10;
+    6'd18: step_m=6'd8;
+    6'd19: step_m=6'd14;
+    6'd20: step_m=6'd11;
+    6'd21: step_m=6'd9;
+    6'd22: step_m=6'd15;
+    6'd23: step_m=6'd12;
+    6'd24: step_m=6'd37;
+    6'd25: step_m=6'd34;
+    6'd26: step_m=6'd32;
+    6'd27: step_m=6'd38;
+    6'd28: step_m=6'd35;
+    6'd29: step_m=6'd33;
+    6'd30: step_m=6'd39;
+    6'd31: step_m=6'd36;
+    6'd32: step_m=6'd21;
+    6'd33: step_m=6'd18;
+    6'd34: step_m=6'd16;
+    6'd35: step_m=6'd22;
+    6'd36: step_m=6'd19;
+    6'd37: step_m=6'd17;
+    6'd38: step_m=6'd23;
+    6'd39: step_m=6'd20;
+    default: ; endcase end
+endfunction
+function [5:0] step_mi;
+  input [5:0] state;
+  begin step_mi=6'h3f; case(state)
+    6'd0: step_mi=6'd2;
+    6'd1: step_mi=6'd5;
+    6'd2: step_mi=6'd1;
+    6'd3: step_mi=6'd4;
+    6'd4: step_mi=6'd7;
+    6'd5: step_mi=6'd0;
+    6'd6: step_mi=6'd3;
+    6'd7: step_mi=6'd6;
+    6'd8: step_mi=6'd18;
+    6'd9: step_mi=6'd21;
+    6'd10: step_mi=6'd17;
+    6'd11: step_mi=6'd20;
+    6'd12: step_mi=6'd23;
+    6'd13: step_mi=6'd16;
+    6'd14: step_mi=6'd19;
+    6'd15: step_mi=6'd22;
+    6'd16: step_mi=6'd34;
+    6'd17: step_mi=6'd37;
+    6'd18: step_mi=6'd33;
+    6'd19: step_mi=6'd36;
+    6'd20: step_mi=6'd39;
+    6'd21: step_mi=6'd32;
+    6'd22: step_mi=6'd35;
+    6'd23: step_mi=6'd38;
+    6'd24: step_mi=6'd10;
+    6'd25: step_mi=6'd13;
+    6'd26: step_mi=6'd9;
+    6'd27: step_mi=6'd12;
+    6'd28: step_mi=6'd15;
+    6'd29: step_mi=6'd8;
+    6'd30: step_mi=6'd11;
+    6'd31: step_mi=6'd14;
+    6'd32: step_mi=6'd26;
+    6'd33: step_mi=6'd29;
+    6'd34: step_mi=6'd25;
+    6'd35: step_mi=6'd28;
+    6'd36: step_mi=6'd31;
+    6'd37: step_mi=6'd24;
+    6'd38: step_mi=6'd27;
+    6'd39: step_mi=6'd30;
+    default: ; endcase end
+endfunction
+wire [5:0] t5=step_t(step_t(step_t(step_t(step_t(state)))));
+wire [5:0] m4=step_m(step_m(step_m(step_m(state))));
+wire [5:0] conj=step_m(step_t(step_mi(state)));
+wire [5:0] t3=step_t(step_t(step_t(state)));
+always @* if(state<6'd40) begin assert(t5==state); assert(m4==state); assert(conj==t3); assert(step_t(state)<6'd40); assert(step_m(state)<6'd40); end
+endmodule
+
+module w33_f20_qutrit_block_router_control(input wire [5:0] state);
+function [5:0] step_m;
+  input [5:0] state;
+  begin step_m=6'h3f; case(state)
+    6'd0: step_m=6'd5;
+    6'd1: step_m=6'd2;
+    6'd2: step_m=6'd0;
+    6'd3: step_m=6'd6;
+    6'd4: step_m=6'd3;
+    6'd5: step_m=6'd1;
+    6'd6: step_m=6'd7;
+    6'd7: step_m=6'd4;
+    6'd8: step_m=6'd29;
+    6'd9: step_m=6'd26;
+    6'd10: step_m=6'd24;
+    6'd11: step_m=6'd30;
+    6'd12: step_m=6'd27;
+    6'd13: step_m=6'd25;
+    6'd14: step_m=6'd31;
+    6'd15: step_m=6'd28;
+    6'd16: step_m=6'd13;
+    6'd17: step_m=6'd10;
+    6'd18: step_m=6'd8;
+    6'd19: step_m=6'd14;
+    6'd20: step_m=6'd11;
+    6'd21: step_m=6'd9;
+    6'd22: step_m=6'd15;
+    6'd23: step_m=6'd12;
+    6'd24: step_m=6'd37;
+    6'd25: step_m=6'd34;
+    6'd26: step_m=6'd32;
+    6'd27: step_m=6'd38;
+    6'd28: step_m=6'd35;
+    6'd29: step_m=6'd33;
+    6'd30: step_m=6'd39;
+    6'd31: step_m=6'd36;
+    6'd32: step_m=6'd21;
+    6'd33: step_m=6'd18;
+    6'd34: step_m=6'd16;
+    6'd35: step_m=6'd22;
+    6'd36: step_m=6'd19;
+    6'd37: step_m=6'd17;
+    6'd38: step_m=6'd23;
+    6'd39: step_m=6'd20;
+    default: ; endcase end
+endfunction
+wire [5:0] missing_clifford_multiplier=state;
+always @* if(state<6'd40) assert(missing_clifford_multiplier==step_m(state));
+endmodule

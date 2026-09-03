@@ -198,7 +198,7 @@ also tested and rejected: it has stabilizer `SmallGroup(192,1472)` and its degre
 isomorphic to the hole graph. This is an exact finite graph/group result, not a folded-cube hardware claim
 or a K3-surface construction.
 
-### The sixteen-front E8 backend packet
+### The E8 / W33 backend packet
 
 The residual graph is now compiled, factored, and connected back to the \(q=2\) carrier rather than merely
 classified. Every item below has a GAP-owned witness, a frozen SHA-256 certificate, and focused regression
@@ -222,6 +222,9 @@ tests; the hardware rows have additional Yosys SAT proofs.
 | bicolour circuit split | exact rational ranks are \(216,216,372\), so the common colour space is \(60=1+15+20+24\); both colours transport the canonical circuit carrier to the same \(45=1+20+24\) subspace | this repairs a modular-rank over-read and leaves the diagonal 15 as the exact residual; no optical or hardware mode is inferred |
 | router / engine Goursat closure | a connected W33 router is forced independent of the 20,160-state engine, giving \(40\times20{,}160=806{,}400\) local logical states; the full router admits exactly three additional \(C_2\) fibre products | the three parity pullbacks are exact but noncanonical, so no recursive parity policy, host identity, or dispatch authority is selected |
 | the two 216s separated | the 216 five-circuits and 216 hemisystem complement-pairs are distinct transitive \(PSp(4,3)\)-sets and remain distinct under the full order-51,840 automorphism group; the circuit carrier contains Steinberg-81 once, the hemisystem carrier zero times | equal cardinality is not an equivariant dictionary; 11 permutation-character discrepancies make the no-go explicit |
+| common quotient and carrier fork | both 216-state carriers fibre canonically six-to-one over the same 36 regular spreads, with the two nonconjugate \(S_5<S_6\) fibre types | the exceptional outer automorphism of abstract \(S_6\) is not realized by a substrate automorphism, so this is a fork rather than a gauge choice |
+| fibre-product building bridge | the canonical \(1{,}296=36\cdot6\cdot6\) carrier has stabilizer \(F_{20}=C_5{:}C_4\) and building block \(3\cdot81+3\cdot64=435\), exactly matching the corrected 1,080 obstruction carrier; the cross-Hom dimension is 18 | semisimplicity gives an abstract isotypic isomorphism; the explicit \(1{,}296\times1{,}080\) intertwiner remains unbuilt |
+| dual-carrier RTL router | both native generator actions preserve the same 36-state type quotient; cross-carrier adaptation returns only that quotient | Yosys proves all valid carrier/opcode/state inputs and rejects a fabricated-state control; this is finite combinational logic, not a processor or fabricated device |
 
 The cross-prime quotient is especially rigid. If \(Q\) counts neighbours from one eight-state fibre into
 another, then
@@ -282,6 +285,26 @@ classes. The most visible witnesses are involutions fixing \(48\) versus \(0\), 
 The irreducible decomposition gives the conceptual separator: the circuit
 permutation module contains the 81-dimensional Steinberg representation once,
 whereas the hemisystem-line module contains it zero times.
+
+The separation has now been turned into a usable architecture.  Both carriers
+map six-to-one onto the same 36-spread base, but no automorphism of the substrate
+exchanges their two \(S_5\) fibre types.  A single state therefore cannot be
+retyped across the fork.  The canonical alternative is the fibre product over
+the shared base: 1,296 paired states with stabilizer \(F_{20}\).  Exact GAP
+character calculations show that it contains three copies of each building
+homology, \(H_1(W(3,3))\) of dimension 81 and \(H_1(GQ(4,2))\) of dimension
+64.  That \(435\)-dimensional sum exactly matches the true
+27-completion-chart by 40-line obstruction carrier.  Using points in the
+second factor gives multiplicity four rather than three and is now explicitly
+quarantined as a different action.
+
+W33-Theory already supplies the typed software IPC and neutral checkpoint
+semantics over this base.  The generated RTL here implements both exact
+generator pairs without inventing a
+cross-carrier bijection. Same-carrier opcodes return a native 216-state
+transition; an adapter request exposes only the common 36-state quotient. The
+positive Yosys proof covers the complete declared input space, and a negative
+control that fabricates a cross-state produces a counterexample.
 
 The general coordinate predicate uses 544 iCE40 LUT4s versus 1,174 for the independent row ROM. The
 affine relation compiler cuts the same logical-address decision to 171 LUT4s versus 720 for that general

@@ -19,6 +19,9 @@ JoinRowsFive := rows -> JoinStringsWithSeparator(List(rows, JoinIntsFive), ";");
 
 Generators40Five := GeneratorsOfGroup(PSpGroup);;
 Generators45Five := Generators45;;
+Generators40LineFive := List(Generators40Five, generator ->
+  PermList(List(Lines, line -> Position(Lines,
+    Set(List(line, point -> point^generator))))));;
 
 # The 27 five-packet charts of GQ(2,4): five mutually disjoint sentinel octets.
 ChartsFive := Filtered(Combinations([1..45], 5), chart ->
@@ -30,7 +33,9 @@ Generators27Five := List(Generators45Five, generator ->
   PermList(List(ChartsFive, chart -> Position(ChartsFive,
     Set(List(chart, point -> point^generator))))));;
 
-# The 216 circuit action and the 1080 = 27 x 40 obstruction-product action.
+# The 216 circuit action and the true 1080 = 27 charts x 40 W33 lines
+# obstruction-product action.  The 40-point action is outer-related but is not
+# interchangeable with this line action inside the fixed PSp representation.
 Generators216Five := List(Generators45Five, generator ->
   PermList(List(Circuits, circuit -> Position(Circuits,
     Set(List(circuit, point -> point^generator))))));;
@@ -39,7 +44,7 @@ CircuitGroupFive := Group(Generators216Five);;
 Generators1080Five := List([1..Length(Generators40Five)], index ->
   PermList(List([1..1080], encoded ->
     ((QuoInt(encoded - 1, 40) + 1)^Generators27Five[index] - 1) * 40 +
-      (RemInt(encoded - 1, 40) + 1)^Generators40Five[index])));;
+      (RemInt(encoded - 1, 40) + 1)^Generators40LineFive[index])));;
 ObstructionGroupFive := Group(Generators1080Five);;
 if Size(CircuitGroupFive) <> 25920 or Size(ObstructionGroupFive) <> 25920 or
    Length(Orbit(ObstructionGroupFive, 1)) <> 1080 then
@@ -67,6 +72,7 @@ if Length(SteinbergPositionsFive) <> 1 then
   Error("unique circuit Steinberg character failed");
 fi;
 SteinbergCharacterFive := CircuitIrreduciblesFive[SteinbergPositionsFive[1]];;
+SteinbergValueDistributionFive := Collected(SteinbergCharacterFive);;
 CircuitClassesFive := ConjugacyClasses(CircuitGroupFive);;
 if Length(CircuitClassesFive) <> Length(SteinbergCharacterFive) or
    not ForAll(SteinbergCharacterFive, IsRat) then
@@ -267,6 +273,91 @@ if QuotientGeneratorsCircuitFive <> QuotientGeneratorsHemiFive then
   Error("the K6,6 relation failed to identify quotient actions");
 fi;
 
+# The minimum K(6,6) relation is the fibre product of the two 216 carriers
+# over their common 36-state quotient.  Its point stabilizer is the
+# intersection of the two nonconjugate S5 classes.  Compute exactly which
+# building-homology species the resulting degree-1296 permutation carrier sees.
+FibreHemiFive := CircuitOnHemiOrbitsFive[
+  OptimalDoubleCosetIndexFive][1];;
+FibreHemiStabilizerFive := Stabilizer(PSpGroup, FibreHemiFive, OnHemiFive);;
+FibreProductStabilizerFive := Intersection(
+  CircuitStabilizer40Five, FibreHemiStabilizerFive);;
+if Size(FibreProductStabilizerFive) <> 20 then
+  Error("fibre-product stabilizer is not order 20");
+fi;
+FibreOrderFiveGeneratorFive := First(
+  Elements(FibreProductStabilizerFive), element -> Order(element) = 5);;
+FibreOrderFourGeneratorFive := First(
+  Elements(FibreProductStabilizerFive), element ->
+    Order(element) = 4 and
+    FibreOrderFiveGeneratorFive^element in
+      Group(FibreOrderFiveGeneratorFive) and
+    FibreOrderFiveGeneratorFive^element <> FibreOrderFiveGeneratorFive);;
+if FibreOrderFiveGeneratorFive = fail or
+   FibreOrderFourGeneratorFive = fail or
+   Size(Group(FibreOrderFiveGeneratorFive,
+     FibreOrderFourGeneratorFive)) <> 20 then
+  Error("explicit F20 presentation generators failed");
+fi;
+FibreConjugationExponentFive := First([2..4], exponent ->
+  FibreOrderFiveGeneratorFive^FibreOrderFourGeneratorFive =
+    FibreOrderFiveGeneratorFive^exponent);;
+if FibreConjugationExponentFive = fail or
+   not FibreConjugationExponentFive in [2,3] then
+  Error("F20 semidirect-product exponent failed");
+fi;
+CircuitCharacter40Five := PermutationCharacter(
+  PSpGroup, CircuitStabilizer40Five);;
+HemiCharacter40Five := PermutationCharacter(
+  PSpGroup, FibreHemiStabilizerFive);;
+FibreProductCharacterFive := PermutationCharacter(
+  PSpGroup, FibreProductStabilizerFive);;
+Irr40Five := Irr(CharacterTable(PSpGroup));;
+Building81PositionsFive := Filtered([1..Length(Irr40Five)], index ->
+  Irr40Five[index][1] = 81 and
+  ScalarProduct(Irr40Five[index], CircuitCharacter40Five) = 1 and
+  ScalarProduct(Irr40Five[index], HemiCharacter40Five) = 0);;
+Building64PositionsFive := Filtered([1..Length(Irr40Five)], index ->
+  Irr40Five[index][1] = 64 and
+  ScalarProduct(Irr40Five[index], CircuitCharacter40Five) = 0 and
+  ScalarProduct(Irr40Five[index], HemiCharacter40Five) = 1);;
+if Length(Building81PositionsFive) <> 1 or
+   Length(Building64PositionsFive) <> 1 then
+  Error("complementary building-character selection failed");
+fi;
+FibreProductMultiplicity81Five := ScalarProduct(
+  Irr40Five[Building81PositionsFive[1]], FibreProductCharacterFive);;
+FibreProductMultiplicity64Five := ScalarProduct(
+  Irr40Five[Building64PositionsFive[1]], FibreProductCharacterFive);;
+if FibreProductMultiplicity81Five < 1 or FibreProductMultiplicity64Five < 1 then
+  Error("fibre product does not see both building homologies");
+fi;
+Iso40to1080Five := GroupHomomorphismByImages(
+  PSpGroup, ObstructionGroupFive, Generators40Five, Generators1080Five);;
+if not IsBijective(Iso40to1080Five) then
+  Error("40-to-1080 obstruction crosswalk failed");
+fi;
+ObstructionStabilizer40Five := PreImage(Iso40to1080Five,
+  Stabilizer(ObstructionGroupFive, 1));;
+ObstructionCharacter40Five := PermutationCharacter(
+  PSpGroup, ObstructionStabilizer40Five);;
+ObstructionMultiplicity81Five := ScalarProduct(
+  Irr40Five[Building81PositionsFive[1]], ObstructionCharacter40Five);;
+ObstructionMultiplicity64Five := ScalarProduct(
+  Irr40Five[Building64PositionsFive[1]], ObstructionCharacter40Five);;
+CommonBuildingDimensionFive := 81 * FibreProductMultiplicity81Five +
+  64 * FibreProductMultiplicity64Five;;
+BuildingCrossHomDimensionFive :=
+  FibreProductMultiplicity81Five * ObstructionMultiplicity81Five +
+  FibreProductMultiplicity64Five * ObstructionMultiplicity64Five;;
+if [FibreProductMultiplicity81Five, FibreProductMultiplicity64Five] <>
+     [3,3] or
+   [ObstructionMultiplicity81Five, ObstructionMultiplicity64Five] <>
+     [3,3] or CommonBuildingDimensionFive <> 435 or
+   BuildingCrossHomDimensionFive <> 18 then
+  Error("fibre product / obstruction building-block match failed");
+fi;
+
 #############################################################################
 # The outer involution is the actual bicolour exchange.  Resolve its parity on
 # common60 and on the circuit45 submodule/diagonal15 quotient.
@@ -396,15 +487,17 @@ fi;
 
 Print("STEINBERG_1080_TO_216|source=1080|target=216|sourceStabilizer=",
   Size(SourceStabilizerFive), "|homOrbitCount=", Length(SourceCircuitOrbitsFive),
+  "|sourceFactorization=27chartsx40lines",
   "|orbitSizes=", JoinIntsFive(List(SourceCircuitOrbitsFive, Length)),
   "|steinbergHomRank=", SteinbergHomRankFive,
   "|basisIndices=", JoinIntsFive(SteinbergBasisIndicesFive),
   "|basisOrbitSizes=", JoinIntsFive(List(SteinbergBasisIndicesFive,
     index -> Length(SourceCircuitOrbitsFive[index]))),
   "|basisGram=", JoinRowsFive(SteinbergBasisGramFive), "\n");
-Print("STEINBERG_PROJECTOR|degree=81|characterIndex=",
-  SteinbergPositionsFive[1], "|characterValues=",
-  JoinIntsFive(SteinbergCharacterFive), "|rank=81|idempotent=1\n");
+Print("STEINBERG_PROJECTOR|degree=81|characterValueDistribution=",
+  JoinStringsWithSeparator(List(SteinbergValueDistributionFive, pair ->
+    Concatenation(String(pair[1]), "^", String(pair[2]))), ","),
+  "|rank=81|idempotent=1\n");
 Print("TWO_S5_DOUBLE_COSETS|count=5|valencies=",
   JoinIntsFive(DoubleCosetSizesFive), "|ranks=", JoinIntsFive(CrossRanksFive),
   "|steinbergRanks=", JoinIntsFive(CrossSteinbergRanksFive),
@@ -421,6 +514,22 @@ Print("COLOUR_SWAP|outerOrder=2|exchangesColours=1|commonParity=",
   "|circuitParity=", CircuitPlusFive, ",", CircuitMinusFive,
   "|residual15Parity=", ResidualPlusFive, ",", ResidualMinusFive,
   "|common60=45+15|ambient=540\n");
+Print("FIBRE_PRODUCT_BUILDINGS|degree=1296|stabilizerOrder=",
+  Size(FibreProductStabilizerFive), "|stabilizerType=",
+  StructureDescription(FibreProductStabilizerFive),
+  "|building81Multiplicity=", FibreProductMultiplicity81Five,
+  "|building64Multiplicity=", FibreProductMultiplicity64Five,
+  "|obstruction81Multiplicity=", ObstructionMultiplicity81Five,
+  "|obstruction64Multiplicity=", ObstructionMultiplicity64Five,
+  "|commonBuildingDimension=", CommonBuildingDimensionFive,
+  "|buildingCrossHomDimension=", BuildingCrossHomDimensionFive,
+  "|abstractIsotypicIsomorphism=1|explicitIntertwinerBuilt=0|seesBoth=1",
+  "|presentationOrders=5,4|presentationExponent=",
+  FibreConjugationExponentFive,
+  "|order5Generator40=",
+  JoinIntsFive(ListPerm(FibreOrderFiveGeneratorFive, 40)),
+  "|order4Generator40=",
+  JoinIntsFive(ListPerm(FibreOrderFourGeneratorFive, 40)), "\n");
 Print("MICROVM_ACTIONS|generatorCount=", Length(Generators216Five),
   "|circuitGenerators=",
   JoinStringsWithSeparator(List(Generators216Five, generator ->
