@@ -285,6 +285,27 @@ FibreProductStabilizerFive := Intersection(
 if Size(FibreProductStabilizerFive) <> 20 then
   Error("fibre-product stabilizer is not order 20");
 fi;
+FibreOrderFiveGeneratorFive := First(
+  Elements(FibreProductStabilizerFive), element -> Order(element) = 5);;
+FibreOrderFourGeneratorFive := First(
+  Elements(FibreProductStabilizerFive), element ->
+    Order(element) = 4 and
+    FibreOrderFiveGeneratorFive^element in
+      Group(FibreOrderFiveGeneratorFive) and
+    FibreOrderFiveGeneratorFive^element <> FibreOrderFiveGeneratorFive);;
+if FibreOrderFiveGeneratorFive = fail or
+   FibreOrderFourGeneratorFive = fail or
+   Size(Group(FibreOrderFiveGeneratorFive,
+     FibreOrderFourGeneratorFive)) <> 20 then
+  Error("explicit F20 presentation generators failed");
+fi;
+FibreConjugationExponentFive := First([2..4], exponent ->
+  FibreOrderFiveGeneratorFive^FibreOrderFourGeneratorFive =
+    FibreOrderFiveGeneratorFive^exponent);;
+if FibreConjugationExponentFive = fail or
+   not FibreConjugationExponentFive in [2,3] then
+  Error("F20 semidirect-product exponent failed");
+fi;
 CircuitCharacter40Five := PermutationCharacter(
   PSpGroup, CircuitStabilizer40Five);;
 HemiCharacter40Five := PermutationCharacter(
@@ -502,7 +523,13 @@ Print("FIBRE_PRODUCT_BUILDINGS|degree=1296|stabilizerOrder=",
   "|obstruction64Multiplicity=", ObstructionMultiplicity64Five,
   "|commonBuildingDimension=", CommonBuildingDimensionFive,
   "|buildingCrossHomDimension=", BuildingCrossHomDimensionFive,
-  "|abstractIsotypicIsomorphism=1|explicitIntertwinerBuilt=0|seesBoth=1\n");
+  "|abstractIsotypicIsomorphism=1|explicitIntertwinerBuilt=0|seesBoth=1",
+  "|presentationOrders=5,4|presentationExponent=",
+  FibreConjugationExponentFive,
+  "|order5Generator40=",
+  JoinIntsFive(ListPerm(FibreOrderFiveGeneratorFive, 40)),
+  "|order4Generator40=",
+  JoinIntsFive(ListPerm(FibreOrderFourGeneratorFive, 40)), "\n");
 Print("MICROVM_ACTIONS|generatorCount=", Length(Generators216Five),
   "|circuitGenerators=",
   JoinStringsWithSeparator(List(Generators216Five, generator ->

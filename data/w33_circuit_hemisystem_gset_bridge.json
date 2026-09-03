@@ -307,67 +307,56 @@
   "representationDiagnosis": {
     "pspDecomposition": [
       {
-        "irrepIndex": 1,
         "degree": 1,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 4,
         "degree": 6,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 8,
         "degree": 15,
         "circuitMultiplicity": 2,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 9,
         "degree": 20,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 2
       },
       {
-        "irrepIndex": 10,
         "degree": 24,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
       },
       {
-        "irrepIndex": 11,
         "degree": 30,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 12,
         "degree": 30,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
       },
       {
-        "irrepIndex": 13,
         "degree": 30,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
       },
       {
-        "irrepIndex": 18,
         "degree": 60,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 19,
         "degree": 64,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 20,
         "degree": 81,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
@@ -375,67 +364,56 @@
     ],
     "fullAutomorphismDecomposition": [
       {
-        "irrepIndex": 1,
         "degree": 1,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 4,
         "degree": 6,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 7,
         "degree": 15,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
       },
       {
-        "irrepIndex": 9,
         "degree": 15,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 11,
         "degree": 20,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 2
       },
       {
-        "irrepIndex": 14,
         "degree": 24,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
       },
       {
-        "irrepIndex": 16,
         "degree": 30,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 18,
         "degree": 60,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 19,
         "degree": 60,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
       },
       {
-        "irrepIndex": 21,
         "degree": 64,
         "circuitMultiplicity": 0,
         "hemisystemMultiplicity": 1
       },
       {
-        "irrepIndex": 24,
         "degree": 81,
         "circuitMultiplicity": 1,
         "hemisystemMultiplicity": 0
@@ -454,5 +432,5 @@
     "theorem": "The 216 sentinel five-circuits and the 216 W(3,3) hemisystems modulo complementation are distinct transitive finite-group carriers. Their stabilizers are nonconjugate already in PSp(4,3), remain nonconjugate in Aut(W(3,3)), and their full permutation characters differ. At module level the circuit carrier contains Steinberg-81 once while the hemisystem carrier contains it zero times. Equal cardinality does not furnish an equivariant dictionary."
   },
   "evidenceBoundary": "This is an exact finite G-set no-go. It rules out equivariant identification under the native inner and full graph-automorphism actions; it does not rule out a non-equivariant lookup table, an augmented cover, or a relation after adding extra structure. It has no physical interpretation and changes no blocking bound.",
-  "sha256": "cac50f7413fda6845f0faaae0abc189e1d607fdb4c91b55a7300b483870f454d"
+  "sha256": "fa7f201a9ca95a02e0cff261574e5919759613a245995b9c8d6f0a89798799e4"
 }

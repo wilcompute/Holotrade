@@ -1,11 +1,11 @@
-# Session notes — 2026-09-02
+# Session notes — 2026-09-03
 
 ## Goal
 
 Reconcile both live repositories, correct the W33 obstruction carrier, prove the
 two-carrier common quotient and fibre-product bridge in GAP, expose the result as
-a fail-closed hardware contract, and publish the evidence through HoloTrade's
-README, paper, website, tests, and frozen certificates.
+a fail-closed hardware contract, then identify whether the fibre stabilizer has
+a native protected-qutrit action and publish the evidence through HoloTrade.
 
 ## Current result
 
@@ -23,14 +23,31 @@ README, paper, website, tests, and frozen certificates.
   finds the intended counterexample in the unsafe control.
 - The tau2 defect audit excludes an eleven-triple descent of the 115 witness
   but correctly leaves the certified interval `[111,115]` open.
+- The fibre stabilizer's `F20 = AGL(1,5)` presentation now acts explicitly on
+  the cyclic `[[5,1,3]]_3` qutrit block. Bare coordinate permutations expose
+  only `D10`; five determinant-one local qutrit Clifford maps restore the
+  missing order-four affine multiplier.
+- The presentation is matched generator by generator: the fibre action and the
+  physical ten-dimensional Pauli lift both satisfy
+  `T^5 = M^4 = 1` and `M T M^-1 = T^3`.
+- GAP freezes the faithful action on `5 x 8 = 40` addressed nonidentity
+  one-qutrit Paulis. Generated RTL implements those two transition tables.
+- Yosys proves closure and all three presentation laws for every valid address;
+  replacing the Clifford-compensated multiplier by identity produces the
+  intended SAT counterexample.
 
 ## Validation
 
-- GAP/Node freezer: PASS, source-bound SHA-256
-  `fc65bf978e2a910e2e6f0567c72afad2ca68f4aa65b0c8fd19ad7164d8e445d7`.
+- Five-front GAP/Node freezer: PASS, source-bound SHA-256
+  `57b1ead2bb8255f2170b3c9e915820211c5083e080695dce97d2ab1f882eda9f`.
 - Yosys formal freezer: PASS; positive UNSAT and unsafe control SAT; SHA-256
   `03a5c46a1dbe05b59307c49142833657557c9a1c6d3d2d88fde3d93bcbb9fbce`.
-- Focused contract tests: 5/5 PASS.
+- F20/qutrit GAP/Node freezer: PASS; D10 versus F20 and physical Pauli lift;
+  SHA-256 `3f30670ca5d31aedd8cd1dca785c05a75de125222184fe48b794530be3c47e99`.
+- F20/qutrit Yosys freezer: PASS; 1,950-variable positive proof and
+  234-variable mutation counterexample; SHA-256
+  `fae8ad400d906a408195b7a790e267fbbc3ff0b4a6ec45c68d2599821738ad5b`.
+- Focused F20/qutrit contract tests: 4/4 PASS.
 - JavaScript syntax and JSON parsing: PASS.
 - `docs/holotrade.tex` compiles to `docs/holotrade.pdf` with warnings only.
 
@@ -45,9 +62,13 @@ README, paper, website, tests, and frozen certificates.
   results are cited as prior art. The additive result here is the corrected
   line carrier plus the exact `1296/F20/3+3/435/18` fibre-product bridge and its
   HoloTrade hardware/publication surface.
+- W33 Pass 79 owns the cyclic five-qutrit code; W33 commits `94cf718a0` and
+  `df284a029` own the singular-K12 `[[66,8,3]]_3` storage result and bare-handoff
+  no-go. The new result is the explicit router-stabilizer/code-automorphism
+  interface, not a local or fault-tolerant recode.
 
 ## Publication state
 
-The theorem packet is committed on `codex-five-front-router` as `bec0d62`.
-The complete backend regression passed 73/73. Integration with current
-`origin/master` and the final GitKraken push remain.
+The base theorem packet is committed on `codex-five-front-router` as `bec0d62`
+with handoff commit `a404f5a`. The F20/qutrit packet, updated documentation, and
+integration with current `origin/master` remain to be committed and pushed.

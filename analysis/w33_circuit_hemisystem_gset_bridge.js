@@ -46,9 +46,9 @@ function characterRows(value){
 }
 function decompositionRows(value){
   return value.split(";").map((row)=>{
-    const [irrepIndex,degree,circuitMultiplicity,hemisystemMultiplicity]=row.split(",").map(Number);
-    return {irrepIndex,degree,circuitMultiplicity,hemisystemMultiplicity};
-  });
+    const [,degree,circuitMultiplicity,hemisystemMultiplicity]=row.split(",").map(Number);
+    return {degree,circuitMultiplicity,hemisystemMultiplicity};
+  }).sort((a,b)=>a.degree-b.degree||a.circuitMultiplicity-b.circuitMultiplicity||a.hemisystemMultiplicity-b.hemisystemMultiplicity);
 }
 
 function build(){

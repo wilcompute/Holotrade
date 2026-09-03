@@ -57,7 +57,7 @@ function build(){
   const projector=fields(line(main,"STEINBERG_PROJECTOR"));
   const dc=fields(line(main,"TWO_S5_DOUBLE_COSETS"));
   const swap=fields(line(main,"COLOUR_SWAP"));
-  const fibreProduct=fields(line(main,"FIBRE_PRODUCT_BUILDINGS"));
+  const fibreProduct=fields(section(main,"FIBRE_PRODUCT_BUILDINGS","MICROVM_ACTIONS"));
   const actions=fields(section(main,"MICROVM_ACTIONS","FIVE_FRONT_BOUNDARY"));
   const pencils=fields(line(defect,"TAU111_DELETED_PENCILS"));
   const closure=fields(line(defect,"TAU111_RECIPROCAL_CLOSURE"));
@@ -83,11 +83,12 @@ function build(){
     schema:"holotrade.w33-five-front-breakthrough.v2",
     evidenceClass:"EXACT_GAP_ACTIONS_RATIONAL_PROJECTORS_AND_FORMAL_RTL_INPUTS",
     corpusPriorArt:{
+      fibreProductCarrier:"HoloTrade 58f0df3 owns the canonical 216 x_36 216 = 1296 fibre product, its F20 point stabilizer, and the ternary machine-type observation.",
       singleGeneratorTypeProof:"HoloTrade 8f2921e proves one circuit-carrier generator preserves the canonical six-fibration in RTL.",
       heterogeneousSoftwareABI:"W33-Theory 0bdbb5422 implements SEND36/RECV36/ACK36 over the common base without carrier translation.",
       typedUniversalVM:"W33-Theory 5cb07b570 implements typed two-counter VM semantics with immutable carrier identity.",
       buildingHomology:"W33-Theory 89e39e849 identifies the 81 and 64 modules as the two building H1 representations and gives obstruction multiplicities 3+3.",
-      addedHere:"Corrects the HoloTrade obstruction from points to lines, proves the F20 fibre product has the same 3+3 building block, freezes the 18-dimensional cross-Hom count, and compiles both exact generator pairs into a quotient-only formal RTL router.",
+      addedHere:"Cites 58f0df3 for the fibre-product carrier, corrects the HoloTrade obstruction from points to lines, proves that carrier has the same 3+3 building block, freezes the 18-dimensional cross-Hom count, and compiles both exact generator pairs into a quotient-only formal RTL router.",
     },
     steinbergIntertwiner:{
       sourceCarrier:Number(st.source),targetCarrier:Number(st.target),sourceStabilizerOrder:Number(st.sourceStabilizer),
@@ -118,6 +119,12 @@ function build(){
       abstractIsotypicIsomorphism:fibreProduct.abstractIsotypicIsomorphism==="1",
       explicitIntertwinerBuilt:fibreProduct.explicitIntertwinerBuilt==="1",
       seesBoth:fibreProduct.seesBoth==="1",
+      presentation:{
+        generatorOrders:ints(fibreProduct.presentationOrders),
+        conjugationExponent:Number(fibreProduct.presentationExponent),
+        order5GeneratorOnW33Points:ints(fibreProduct.order5Generator40).map((x)=>x-1),
+        order4GeneratorOnW33Points:ints(fibreProduct.order4Generator40).map((x)=>x-1),
+      },
       theorem:"The canonical fibre product of the two inequivalent 216-state carriers is a transitive 1,296-state G/F20 carrier. Its building block is 3*81 + 3*64 = 435, exactly matching the 1,080-state obstruction carrier, so the two 435-dimensional isotypic components are abstractly G-isomorphic and their equivariant cross-Hom has dimension 18.",
     },
     tau111Defect:{

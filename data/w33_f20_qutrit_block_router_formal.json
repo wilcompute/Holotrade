@@ -1,0 +1,38 @@
+{
+  "schema": "holotrade.w33-f20-qutrit-block-router-formal.v1",
+  "status": "PASS",
+  "evidenceClass": "YOSYS_SAT_PROOF_WITH_MUTATION_CONTROL",
+  "source": {
+    "packet": "data/w33_f20_qutrit_block_bridge.json",
+    "packetSha256": "sha256:aaa3109831a7710d41be365dfec4dc61abe5518b1f1f9710db5d032fda05fdf8",
+    "rtl": "rtl/w33_f20_qutrit_block_router.v",
+    "rtlSha256": "sha256:7a92b5c420229b8a3f0bdff96ef2f839b69581fc95c7cd639b3f212dd7c19e1f",
+    "degree": 40,
+    "groupOrder": 20
+  },
+  "theorem": {
+    "closure": "Both generated transition tables map every valid six-bit address back into the forty-state Pauli address space.",
+    "presentation": "The hardware tables satisfy T^5=M^4=1 and M T M^-1=T^3 on all forty addressed nonidentity single-site qutrit Paulis.",
+    "interface": "One opcode bit selects a total, deterministic F20 generator transition on valid addresses; invalid addresses fail closed."
+  },
+  "positive": {
+    "script": "rtl/verify_w33_f20_qutrit_block_router.ys",
+    "exitCode": 0,
+    "variables": 1950,
+    "clauses": 5237,
+    "proved": true,
+    "counterexample": false
+  },
+  "negativeControl": {
+    "script": "rtl/verify_w33_f20_qutrit_block_router_control.ys",
+    "exitCode": 1,
+    "variables": 234,
+    "clauses": 622,
+    "proved": false,
+    "counterexample": true,
+    "mutation": "Replace the Clifford-compensated multiplier by the identity transition.",
+    "purpose": "Proves the order-four multiplier assertion is not vacuous and catches omission of the local Clifford compensation."
+  },
+  "boundary": "This proves the finite forty-address controller and its presentation. It is not a timing closure, physical qutrit device, threshold measurement, or fault-tolerant recode proof.",
+  "sha256": "sha256:fae8ad400d906a408195b7a790e267fbbc3ff0b4a6ec45c68d2599821738ad5b"
+}
