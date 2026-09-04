@@ -5,8 +5,10 @@ on:
     branches: [master]
     paths:
       - 'rtl/w33_capability_mmu.v'
+      - 'rtl/w33_capability_machine.v'
       - 'rtl/verify_w33_capability_mmu.ys'
       - 'rtl/synth_w33_capability_mmu.ys'
+      - 'rtl/synth_w33_capability_machine.ys'
       - '.github/workflows/w33_capability_mmu.yml'
   workflow_dispatch:
 
@@ -28,3 +30,5 @@ jobs:
         run: node scripts/run-yosys.js rtl/verify_w33_capability_mmu.ys
       - name: Synthesize MMU gate
         run: node scripts/run-yosys.js rtl/synth_w33_capability_mmu.ys
+      - name: Synthesize four-register capability machine
+        run: node scripts/run-yosys.js rtl/synth_w33_capability_machine.ys
