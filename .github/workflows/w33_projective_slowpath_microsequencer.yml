@@ -1,0 +1,22 @@
+name: W33 projective slow-path microsequencer
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_projective_slowpath_microsequencer.py'
+      - 'data/the_45_slot_rom_bijection.json'
+      - '.github/workflows/w33_projective_slowpath_microsequencer.yml'
+  workflow_dispatch:
+
+jobs:
+  exhaustive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Verify all 25,920 projective targets
+        run: python analysis/w33_projective_slowpath_microsequencer.py
