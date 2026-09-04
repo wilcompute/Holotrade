@@ -966,12 +966,12 @@
     "exhaustiveIncidenceNoGo": true
   },
   "sourceHashes": {
-    "rom": "sha256:bebced8bcdbb9a84a50a9e5fc57b6ef9554394bcba9c97d0ce6cc8c86b222ec3",
-    "payne": "sha256:c2fa103207292e053e74b8adfc7a125c13cbfee07368a6d8d9ae8bdaff13dfc6",
+    "rom": "sha256:038d32f663d6faee5e6f07cc694dea464361e79ceaf08a0b640251c804dacfa5",
+    "payne": "sha256:6a381a716007ec5aa3e2b254e78f195e0c7adfcf7091d9af52e26ef9b03443af",
     "f20Qutrit": "sha256:987758c9ee150deaf87fca92d21c53c49b62405a03a2fe728804e8fa49be07cc",
     "gap": "sha256:85768a09c41951e74d95ee7713c42fdbe9a88c2526a6b0a1c4dbd58ec96c6e15",
     "gapInput": "sha256:8ccaf055293a98a291436fe230a787ea51ca085f8efd3f97b8663e2ba7b2eae9"
   },
   "boundary": "Exact finite group actions at q=3. The selected 40-address map is one of 800 equivariant choices, not canonical. The D10<F20 line chain is an explicit group-pair isomorphism, not an identification of local Clifford hardware with W(E6). The no-go excludes only the stated F20-equivariant site-fibre incidence condition; larger symmetry, nonlinear, modular, or ancilla-mediated codecs remain open. No fault-tolerant recode, calibration, timing, or physical-performance claim is made.",
-  "sha256": "dd42a4026d1e3a24b3925333d4eff58015162a8853de492602f9e913bc6b1513"
+  "sha256": "1153ae29ea6df5ff8d299b406fa864d01233662c37f67667ed089afe3cd4f099"
 }

@@ -80,7 +80,10 @@ a native protected-qutrit action and publish the evidence through HoloTrade.
 - JavaScript syntax and JSON parsing: PASS.
 - `docs/holotrade.tex` compiles to `docs/holotrade.pdf` with warnings only.
 - F20/Payne GAP regeneration and focused Node contract: 6/6 PASS; certificate
-  SHA-256 `dd42a4026d1e3a24b3925333d4eff58015162a8853de492602f9e913bc6b1513`.
+  SHA-256 `1153ae29ea6df5ff8d299b406fa864d01233662c37f67667ed089afe3cd4f099`.
+- Certificate source hashing now canonicalizes CRLF to LF before SHA-256, so
+  Windows and GitHub Actions bind the same source text without weakening any
+  theorem value.
 - Full 84-test backend first pass: 83/84 mathematical and runtime tests passed;
   the sole failure was an unchanged boundary sentence split between JavaScript
   literals. The literal was rejoined; the focused atlas lane is now 6/6 and the
@@ -116,4 +119,6 @@ with handoff commit `a404f5a`. The completed F20/qutrit publication packet was
 merged to `master` at `7acbb22466de0817753194f93f4afb5493657673`. The current
 `codex-f20-gq-line-outer` packet adds the GAP-owned two-geometry atlas, exact
 800-map count and 0/16,000 compatibility boundary, fail-closed codec, focused
-CI, and synchronized README, paper, PDF, and website evidence surfaces.
+CI, and synchronized README, paper, PDF, and website evidence surfaces. Pull
+request #3 is open; its only observed CI failure was the now-repaired CRLF/LF
+source-hash portability mismatch.

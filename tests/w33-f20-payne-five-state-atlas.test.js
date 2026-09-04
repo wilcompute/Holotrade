@@ -11,7 +11,9 @@ const {F20PayneCodec,bootCheck}=require("../js/w33-f20-payne-codec.js");
 
 const ROOT=path.resolve(__dirname,"..");
 const packet=require("../data/w33_f20_payne_five_state_atlas.json");
-const shaFile=(rel)=>`sha256:${crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT,rel))).digest("hex")}`;
+const shaFile=(rel)=>`sha256:${crypto.createHash("sha256").update(
+  fs.readFileSync(path.join(ROOT,rel),"utf8").replace(/\r\n/g,"\n")
+).digest("hex")}`;
 
 test("GAP regenerates the F20 Payne five-state atlas byte-for-object",()=>{
   assert.equal(canonical(atlas.build()),canonical(packet));

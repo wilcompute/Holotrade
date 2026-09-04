@@ -11062,5 +11062,110 @@
       "source": "cli",
       "timestamp": "2026-09-04T05:02:22.279Z"
     }
+  },
+  {
+    "id": "6c5e6e2c-eebc-4dd2-a24f-ce202114da75",
+    "question": "Why canonicalize F20 Payne source hashes before hashing?",
+    "answer": "GitHub Actions checks out LF while the Windows workspace stores CRLF; normalize CRLF to LF in the generator and verifier before SHA-256 so the certificate binds identical source text cross-platform. Regeneration preserved all theorem values: siteCircuit [23,24,21,44,26], 800 address maps, 16000 candidates, zero coherent welds; new packet digest 1153ae29ea6df5ff8d299b406fa864d01233662c37f67667ed089afe3cd4f099.",
+    "timestamp": "2026-09-04T13:40:22.209Z",
+    "tags": [
+      "certificate",
+      "ci",
+      "f20",
+      "hashing",
+      "payne",
+      "portability",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T13:40:22.209Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "github"
+      ],
+      "patterns": [],
+      "concepts": [
+        "hashing"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T13:40:22.206Z"
+    }
+  },
+  {
+    "id": "2cfbe245-7bc3-4859-b2f4-3e33637e7683",
+    "question": "How should the session handoff record the F20 Payne CI repair?",
+    "answer": "Replace the pre-portability digest with 1153ae29ea6df5ff8d299b406fa864d01233662c37f67667ed089afe3cd4f099 and record that LF canonicalization preserves all theorem values while making Windows and GitHub Actions bind the same source text; PR #3 remains the publication vehicle.",
+    "timestamp": "2026-09-04T13:40:47.692Z",
+    "tags": [
+      "ci",
+      "docs",
+      "f20",
+      "handoff",
+      "how",
+      "payne",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T13:40:47.693Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "github"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T13:40:47.689Z"
+    }
   }
 ]

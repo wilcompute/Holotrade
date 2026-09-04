@@ -15,7 +15,10 @@ const ROM_PATH="data/the_45_slot_rom_bijection.json";
 const PAYNE_PATH="data/slow_path_is_payne_derivative.json";
 const F20_PATH="data/w33_f20_qutrit_block_bridge.json";
 
-function shaFile(file){return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");}
+function shaFile(file){
+  const canonicalText=fs.readFileSync(file,"utf8").replace(/\r\n/g,"\n");
+  return crypto.createHash("sha256").update(canonicalText).digest("hex");
+}
 function oneBased(values){return values.map((value)=>Array.isArray(value)?oneBased(value):value+1);}
 function gapAssignment(name,value){return `${name} := ${JSON.stringify(value)};;\n`;}
 function renderInput(rom,payne,f20){
