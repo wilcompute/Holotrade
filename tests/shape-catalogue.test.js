@@ -6178,3 +6178,77 @@ test("the section is constructed and the eighty lifts are corrected onto it", ()
   assert.match(r.boundary, /Only n = 2, q = 3/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the correction table is fixed: right relation, real section, closed form", () => {
+  const r = require(path.join(root, "data/correction_table_fixed.json"));
+  assert.equal(r.schema, "holotrade.correction-table-fixed.v1");
+  assert.equal(r.valid, true);
+  assert.match(r.supersedes, /0c9ac42/);
+
+  // the bug: solved at the source, but the shift happens at the image
+  const b = r.theBug;
+  assert.match(b.whatItSolved, /-<a, v>/);
+  assert.match(b.correctRelation, /\+<a, S v>/);
+  assert.match(b.why, /IMAGE/);
+  assert.match(b.whyItSurvived, /solvable 80\/80/);
+  assert.match(b.howItWasCaught, /non-circular/);
+  assert.match(b.secondSlipCaughtTheSameWay, /do not compose phase-free/);
+
+  // two independent verifications, both passing
+  const v = r.verification;
+  assert.equal(v.sectionOrder, 51840);
+  assert.equal(v.sectionHasNoPaulis, true);
+  assert.equal(v.correctedEncodingEqualsSection, 80, "per-lift, direct");
+  assert.equal(v.outOf, 80);
+  assert.equal(v.groupGeneratedByCorrected, 51840, "global");
+  assert.equal(v.pauliCount, 0);
+  assert.equal(v.isASection, true);
+  assert.equal(
+    v.groupGeneratedByCorrected,
+    v.sectionOrder,
+    "the corrected family lands exactly on the section"
+  );
+  assert.match(v.twoIndependentChecks, /would fail\s+if any single correction/);
+
+  // and the old table demonstrably failed -- it is superseded, not just amended
+  const old = require(path.join(
+    root,
+    "data/section_and_correction_table.json"
+  ));
+  assert.equal(old.correction.pauliSolved, 80, "it 'solved' 80/80 too");
+  assert.notEqual(
+    old.correction.method.includes("S v"),
+    true,
+    "the old method did not use the image"
+  );
+
+  // the closed form, with the sign that the bug flipped
+  const c = r.closedForm;
+  assert.equal(c.everyCorrectionIsAMultipleOfV, true);
+  assert.equal(c.formula, "c = -lam * Q(v)");
+  assert.equal(c.fitsNegative, 80);
+  assert.ok(c.fitsPositive < c.fitsNegative, "the positive sign does not fit");
+  assert.equal(c.fitsPositive, 32);
+  assert.match(c.signIsPropagated, /same error/);
+  assert.match(c.lift, /Pauli MULTIPLICATION/);
+
+  // the table is complete and every entry has a scalar
+  assert.equal(r.table.length, 80);
+  for (const t of r.table) {
+    assert.equal(t.v.length, 4);
+    assert.equal(t.pauliCorrection.length, 4);
+    assert.ok([0, 1, 2].includes(t.c), "the scalar exists");
+    // the correction really is c times v
+    for (let i = 0; i < 4; i++) {
+      assert.equal(t.pauliCorrection[i], (t.c * t.v[i]) % 3);
+    }
+    // and c matches the closed form
+    const Q = (t.v[0] * t.v[2] + t.v[1] * t.v[3]) % 3;
+    assert.equal(t.c, ((-t.lam * Q) % 3 + 3) % 3, "c = -lam Q(v)");
+  }
+  assert.equal(new Set(r.table.map((t) => t.v.join(","))).size, 40);
+
+  assert.match(r.boundary, /recomputed from scratch, not patched/);
+  assert.match(r.boundary, /Only n = 2/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});

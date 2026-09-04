@@ -1,0 +1,1324 @@
+{
+  "schema": "holotrade.correction-table-fixed.v1",
+  "valid": true,
+  "supersedes": "0c9ac42's correction table",
+  "theBug": {
+    "whatItSolved": "phi_gauss(v) - phi_canon(v) = -<a, v>",
+    "correctRelation": "phi_gauss(v) - phi_canon(v) = +<a, S v>",
+    "why": "conjugating by a Pauli shifts the phase at the IMAGE: phi_{P_a U}(v) = phi_U(v) - <a, S v>",
+    "whyItSurvived": "both are solvable 80/80 because a ranges over all of F_3^4, so the solve step 'succeeds' either way; only the section test distinguishes them",
+    "howItWasCaught": "the check was non-circular -- deriving a correction from the section and verifying it against that same section proves nothing, but generating the group the corrected lifts actually produce is a different question, and it failed",
+    "secondSlipCaughtTheSameWay": "folding the Pauli into the Gauss sum as a shifted exponent w^{lam (j-c)^2} is also wrong: Pauli powers do not compose phase-free, P_v^c P_v^j is not P_v^{c+j}"
+  },
+  "verification": {
+    "sectionOrder": 51840,
+    "sectionHasNoPaulis": true,
+    "correctedEncodingEqualsSection": 80,
+    "outOf": 80,
+    "groupGeneratedByCorrected": 51840,
+    "pauliCount": 0,
+    "isASection": true,
+    "twoIndependentChecks": "the first is per-lift and direct, the second global and would fail if any single correction were wrong"
+  },
+  "closedForm": {
+    "everyCorrectionIsAMultipleOfV": true,
+    "formula": "c = -lam * Q(v)",
+    "Q": "Q(v) = v0 v2 + v1 v3",
+    "fitsNegative": 80,
+    "fitsPositive": 32,
+    "outOf": 80,
+    "signIsPropagated": "the flip is exactly the propagated sign of the relation, a small confirmation that the two errors are the same error",
+    "lift": "U(v,lam) = P_{-lam Q(v) . v} . (1/sqrt 3) sum_k w^{lam k^2} P_v^k, applied as a Pauli MULTIPLICATION"
+  },
+  "census": {
+    "Q=0,lam=1,c=0": 16,
+    "Q=0,lam=2,c=0": 16,
+    "Q=1,lam=1,c=2": 12,
+    "Q=1,lam=2,c=1": 12,
+    "Q=2,lam=1,c=1": 12,
+    "Q=2,lam=2,c=2": 12
+  },
+  "table": [
+    {
+      "v": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        2,
+        0,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        2,
+        0,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        2,
+        2,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        2,
+        2,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        2,
+        1,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        2,
+        1,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        0,
+        2,
+        0
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        0,
+        2,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        0,
+        2,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        0,
+        1,
+        0
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        0,
+        1,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        0,
+        1,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        2,
+        0,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        2,
+        0,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        2,
+        1,
+        0
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        1,
+        0,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        1,
+        0,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        1,
+        2,
+        0
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        1,
+        2,
+        1
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        2,
+        1,
+        1,
+        2
+      ],
+      "c": 2
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "c": 1
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "lam": 1,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "lam": 2,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "c": 0
+    }
+  ],
+  "boundary": "the section is regenerated here and is the same 51,840 with no Paulis; the corrected table is recomputed from scratch, not patched; the closed form is checked against all eighty. Phases are read off numerically once as cube roots of unity, everything after is integer F_3. Only n = 2, q = 3 -- no claim about the shift at other q or n. tau_2 is untouched"
+}
