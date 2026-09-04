@@ -1,0 +1,30 @@
+{
+  "schema": "holotrade.w33-slowpath-gq-microcode-rom-summary.v1",
+  "valid": true,
+  "date": "2026-09-03",
+  "abstractConstruction": "H(3,4) over GF(4) with Hermitian form, independently enumerated",
+  "points": 45,
+  "lines": 27,
+  "lineSize": 5,
+  "linesPerPoint": 3,
+  "flags": 135,
+  "collinearityEdges": 270,
+  "collinearitySRG": [45, 12, 3, 3],
+  "gqAxiom": true,
+  "microcodeReading": {
+    "uniqueSlowTargetSlots": 45,
+    "lineBanks": 27,
+    "entriesPerBank": 5,
+    "incidenceReferences": 135,
+    "redundancy": "every slow target slot is represented in exactly three geometry banks",
+    "bootCheck": "line size, target multiplicity, pair uniqueness, SRG parameters and GQ axiom can be checked before a concrete anomaly catalogue is admitted"
+  },
+  "crossRepoProvenance": {
+    "projectiveCostCommit": "3a0a1945439e674171cfbd815043a69e916d0025",
+    "matrixAnticommutationCommit": "605f5e585ce1a124d1cddce9745b47d6f7592708",
+    "lineGroupCommit": "34f2a841925dec20c5fae9c3429686e8390b67ba",
+    "projectiveSlowTargets": 45,
+    "extraTransvectionsPerSlowTarget": 1
+  },
+  "boundary": "This summary certifies the abstract H(3,4) ROM shape. The concrete bijection from the 45 actual PSp anomaly target IDs to these 45 abstract slots is not yet constructed here; runtime use must fail closed until that mapping is generated and verified."
+}
