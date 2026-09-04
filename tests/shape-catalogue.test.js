@@ -6108,3 +6108,73 @@ test("the Gauss-sum lifts are NOT a homomorphic section", () => {
   assert.match(r.boundary, /NOT attempted here/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the section is constructed and the eighty lifts are corrected onto it", () => {
+  const r = require(path.join(
+    root,
+    "data/section_and_correction_table.json"
+  ));
+  assert.equal(r.schema, "holotrade.section-and-correction-table.v1");
+  assert.equal(r.valid, true);
+
+  // it delivers what the previous commit declined to attempt
+  const prev = require(path.join(
+    root,
+    "data/gauss_sum_lifts_not_a_section.json"
+  ));
+  assert.match(prev.boundary, /NOT attempted here/);
+  assert.equal(prev.result.isASection, false, "the Gauss-sum lifts were not");
+
+  // the section: exactly |Sp(4,3)|, no Paulis
+  const s = r.theSection;
+  assert.equal(s.order, 51840);
+  assert.equal(s.spOrder, 51840);
+  assert.equal(s.pauliCount, 0);
+  assert.equal(s.isASection, true);
+  assert.equal(s.order, s.spOrder, "no excess over the symplectic group");
+  assert.equal(s.generatorCount, 77);
+  assert.equal(s.verifiedNotCited, true);
+  assert.match(s.generators, /quadratic phase/);
+  assert.match(s.generators, /Fourier/);
+  assert.match(s.consequence, /bijection/);
+
+  // every correction is a genuine Pauli, and linearity was checked FIRST
+  const c = r.correction;
+  assert.equal(c.outOf, 80);
+  assert.equal(c.differenceIsLinear, 80, "all differences linear");
+  assert.equal(c.pauliSolved, 80, "all corrections solved");
+  assert.match(c.method, /BEFORE a is\s+extracted/);
+
+  // the table is complete and well-formed
+  assert.equal(r.table.length, 80);
+  const seenKeys = new Set();
+  for (const t of r.table) {
+    assert.equal(t.v.length, 4);
+    assert.ok(t.v.every((x) => x >= 0 && x <= 2));
+    assert.ok([1, 2].includes(t.lam));
+    assert.equal(t.differenceIsLinear, true);
+    assert.ok(Array.isArray(t.pauliCorrection), "a correction exists");
+    assert.equal(t.pauliCorrection.length, 4);
+    assert.ok(t.pauliCorrection.every((x) => x >= 0 && x <= 2), "F_3 vector");
+    const k = t.v.join(",") + "|" + t.lam;
+    assert.equal(seenKeys.has(k), false);
+    seenKeys.add(k);
+  }
+  assert.equal(seenKeys.size, 80);
+  assert.equal(new Set(r.table.map((t) => t.v.join(","))).size, 40);
+
+  // it matches the lift table it corrects
+  const lifts = require(path.join(root, "data/eighty_clifford_lifts.json"));
+  assert.equal(lifts.table.length, r.table.length);
+
+  // and the splitting it realises was verified earlier at n=1
+  const split = require(path.join(
+    root,
+    "data/phase_lift_has_no_obstruction.json"
+  ));
+  assert.equal(split.splitting.splits, true);
+  assert.match(r.whyItMatters, /NO\s+residual/);
+  assert.match(r.boundary, /VERIFIED here rather than cited/);
+  assert.match(r.boundary, /Only n = 2, q = 3/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
