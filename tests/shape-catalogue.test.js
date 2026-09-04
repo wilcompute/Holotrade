@@ -5200,3 +5200,60 @@ test("my 27 is their 27 -- one torsor under the qutrit Pauli group", () => {
   assert.match(r.boundary, /36 here are BT810's\s+spreads is still by invariants/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("every opcode axis anchors five minimal covers", () => {
+  const r = require(path.join(
+    root,
+    "data/opcode_axis_anchors_five_covers.json"
+  ));
+  assert.equal(r.schema, "holotrade.opcode-axis-anchors-five-covers.v1");
+  assert.equal(r.valid, true);
+
+  // every one of the 200 is anchored -- including the 160
+  const a = r.everyCoverIsAnchored;
+  assert.deepEqual(a.stabiliserOrders, { 162: 160, 648: 40 });
+  assert.deepEqual(a.pointsFixedByStabiliser, { 1: 200 }, "all 200, exactly one");
+  assert.equal(648 / 162, 4, "the small stabiliser has index 4 in the point one");
+  assert.match(a.reading, /is false/);
+
+  // the fibration is uniform: 5 per axis, 1 + 4
+  const f = r.fibration;
+  assert.deepEqual(f.coversPerAxis, { 5: 40 });
+  assert.equal(f.composition, "1 plane + 4 other, at every one of the 40");
+  assert.equal(f.alternatesFormOneOrbit, true);
+  assert.equal(f.total, 200);
+  assert.equal(40 * 5, f.total, "40 axes x 5 covers = 200");
+  assert.deepEqual(f.stabOrbitsOnFibre, [1, 4]);
+
+  // intersections: the alternates are genuinely different, not near-duplicates
+  const i = r.intersections;
+  assert.deepEqual(i.planeWithPlane, { 1: 540, 3: 240 });
+  assert.equal(
+    Object.values(i.planeWithPlane).reduce((s, v) => s + v, 0),
+    780,
+    "C(40,2)"
+  );
+  assert.equal(i.planeWithPlane["0"], undefined, "canonicals never miss");
+  assert.deepEqual(i.otherWithPlane, { 0: 1600, 2: 4320, 6: 480 });
+  assert.equal(
+    Object.values(i.otherWithPlane).reduce((s, v) => s + v, 0),
+    160 * 40
+  );
+  assert.ok(i.otherWithPlane["0"] > 0, "an alternate CAN be disjoint");
+  assert.equal(
+    Object.values(i.otherWithOther).reduce((s, v) => s + v, 0),
+    (160 * 159) / 2,
+    "C(160,2)"
+  );
+
+  // it builds on, and cites, the parallel track's Payne identification
+  assert.match(r.whereThisStarts, /slow_path_is_payne_derivative/);
+  assert.match(r.whereThisStarts, /80% of\s+the covers, unexamined/);
+  assert.match(r.operationalReading, /160 spare minimal\s+covers/);
+
+  // and the five is explicitly NOT the F20 five
+  assert.match(r.thisFiveIsNotTheF20Five, /NOT\s+transitively/);
+  assert.match(r.thisFiveIsNotTheF20Five, /two distinct fives/);
+  assert.match(r.boundary, /NO\s+claim that the four alternates have a Payne/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});

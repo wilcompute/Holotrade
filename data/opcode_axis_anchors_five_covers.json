@@ -1,0 +1,49 @@
+{
+  "schema": "holotrade.opcode-axis-anchors-five-covers.v1",
+  "valid": true,
+  "whereThisStarts": "8982d36 found 200 covers in orbits 40 and 160 and showed the 40 are the cheap opcode axes; the parallel track identified those 40 as the Payne covers (slow_path_is_payne_derivative.json). Both use the 40; neither says anything about the other 160 -- 80% of the covers, unexamined",
+  "everyCoverIsAnchored": {
+    "stabiliserOrders": {
+      "162": 160,
+      "648": 40
+    },
+    "pointsFixedByStabiliser": {
+      "1": 200
+    },
+    "reading": "every one of the 200, not just the plane ovoids, has a stabiliser fixing exactly ONE point of W(3,3); the guess that the other 160 would be unaddressable is false -- they are anchored by a smaller group, 162 against 648, index 4 in the point stabiliser"
+  },
+  "fibration": {
+    "coversPerAxis": {
+      "5": 40
+    },
+    "composition": "1 plane + 4 other, at every one of the 40",
+    "alternatesFormOneOrbit": true,
+    "stabOrbitsOnFibre": [
+      1,
+      4
+    ],
+    "total": 200,
+    "reading": "a clean 5-to-1 fibration of the 200 minimal covers onto the 40 opcode axes: one canonical cover (the Payne one) plus four alternates, equivalent under the axis's own stabiliser so none is distinguished"
+  },
+  "operationalReading": "a cover is 9 slow targets meeting every one of the 27 ROM banks exactly once. The decoder uses the canonical one per axis; there are four more per axis of equal standing -- 160 spare minimal covers the current design does not use. Free redundancy: an alternate to fall back on if a bank is corrupt, or four independent covers to cross-check a decode against, with the symmetry guaranteeing no alternate is worse",
+  "thisFiveIsNotTheF20Five": "the parallel track has an F20 Payne FIVE-state atlas where F20 = AGL(1,5) acts transitively on five things. The five here is different: the axis stabiliser acts on its fibre with orbits 1 + 4, NOT transitively, so nothing permutes these five as AGL(1,5) permutes five points. Matching the integers would be exactly the error this repository keeps paying for -- they are two distinct fives",
+  "intersections": {
+    "planeWithPlane": {
+      "1": 540,
+      "3": 240
+    },
+    "otherWithPlane": {
+      "0": 1600,
+      "2": 4320,
+      "6": 480
+    },
+    "otherWithOther": {
+      "0": 1680,
+      "1": 6480,
+      "3": 2400,
+      "4": 2160
+    },
+    "reading": "two canonical covers always share 1 or 3 targets and never miss each other entirely, while an alternate CAN be disjoint from a canonical one, so the alternates genuinely reach parts of the slow path a given canonical cover does not -- which is what makes them fallbacks rather than near-duplicates"
+  },
+  "boundary": "exhaustive: all 200 covers by complete exact-cover search, orbits and stabilisers by closure over the full 25,920-element group, anchors by fixed-point computation on every one of the 200, and the intersection census over ALL pairs. The identification of the 40 with the Payne covers is the parallel track's, cited not re-derived. NO claim that the four alternates have a Payne description -- they are anchored, but their derivation, if any, is not built here. tau_2 is untouched"
+}
