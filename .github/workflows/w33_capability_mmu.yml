@@ -19,8 +19,11 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
       - name: Install portable Yosys
-        run: npm install --no-save yosys@0.48.0 || true
+        run: python -m pip install yowasp-yosys==0.67.0.0.post1190
       - name: Prove non-escalation and dereference gate
         run: node scripts/run-yosys.js rtl/verify_w33_capability_mmu.ys
       - name: Synthesize MMU gate
