@@ -1,14 +1,16 @@
 // Production-facing PSp(4,3) compiler + certified GQ(4,2) slow-path decoder.
 //
 // This is the Node/runtime counterpart of the exhaustive Python theorem in
-// analysis/w33_projective_slowpath_microsequencer.py.  It compiles both central
+// analysis/w33_projective_slowpath_microsequencer.py. It compiles both central
 // Sp lifts algorithmically, chooses the shorter projective word, and consults
 // the boot-verified 45-target ROM only to classify/annotate the exceptional
-// branch.  The ROM never substitutes for compilation.
-
+// branch. The Payne catalogue then attaches the proved fast/slow geometry:
+// each slow target is one new line in eight W33 Payne derivatives, one weight-8
+// word of C2(W33), and one complementary center-quad pair.
 "use strict";
 
 const { SlowPathROMDecoder, matrixKey, projectiveCanonical } = require("./w33-slowpath-rom-decoder.js");
+const { PayneCoverCatalogue } = require("./w33-payne-cover-catalogue.js");
 
 const Q = 3;
 const D = 4;
@@ -23,9 +25,7 @@ function matMul(A, B) {
     let s = 0; for (let k = 0; k < D; k += 1) s += A[i][k] * B[k][j]; return mod(s);
   }));
 }
-function act(A, v) {
-  return Array.from({ length: D }, (_, i) => mod(A[i].reduce((s, x, k) => s + x * v[k], 0)));
-}
+function act(A, v) { return Array.from({ length: D }, (_, i) => mod(A[i].reduce((s, x, k) => s + x * v[k], 0))); }
 function equalMatrix(A, B) { return matrixKey(A) === matrixKey(B); }
 function symplectic(a, b) { return mod(a[0] * b[2] - a[2] * b[0] + a[1] * b[3] - a[3] * b[1]); }
 function vectorKey(v) { return v.join(""); }
@@ -63,9 +63,7 @@ AXES.forEach((v, axis) => {
 if (GEN_BY_MATRIX.size !== 80) throw new Error("transvection generator collision");
 
 const NONZERO_VECTORS = [];
-for (let n = 1; n < 81; n += 1) {
-  NONZERO_VECTORS.push([n % 3, Math.floor(n / 3) % 3, Math.floor(n / 9) % 3, Math.floor(n / 27) % 3]);
-}
+for (let n = 1; n < 81; n += 1) NONZERO_VECTORS.push([n % 3, Math.floor(n / 3) % 3, Math.floor(n / 9) % 3, Math.floor(n / 27) % 3]);
 
 function inverse(A) {
   const aug = Array.from({ length: D }, (_, i) => [...A[i], ...BASIS[i]]);
@@ -122,7 +120,6 @@ function compileSpPeeling(target) {
       if (!chosen) throw new Error("hyperbolic fix-up missing");
       peeled.push([chosen.axis, chosen.lambda]); cur = chosen.next; continue;
     }
-
     const gi = inverse(cur);
     let fallback = null; let chosen = null;
     for (const x of NONZERO_VECTORS) {
@@ -143,7 +140,6 @@ function compileSpPeeling(target) {
     if (!step) throw new Error("residue-dropping pivot missing");
     peeled.push([step.axis, step.lambda]); cur = step.next;
   }
-  // g*T1*...*Tk=I, hence execution from I is Tk^-1...T1^-1.
   return peeled.reverse().map(([axis, lambda]) => [axis, mod(-lambda)]);
 }
 
@@ -152,13 +148,16 @@ function wordProduct(word) {
   for (const [axis, lambda] of word) P = matMul(P, transvection(AXES[axis], lambda));
   return P;
 }
-
 function lexicalWord(word) { return word.map(([a, l]) => `${String(a).padStart(2, "0")}:${l}`).join("|"); }
 
 class ProjectiveMicrosequencer {
-  constructor(decoder = new SlowPathROMDecoder()) { this.decoder = decoder; }
+  constructor(decoder = new SlowPathROMDecoder(), payne = new PayneCoverCatalogue()) {
+    this.decoder = decoder;
+    this.payne = payne;
+  }
 
-  compile(matrix) {
+  compile(matrix, options = {}) {
+    if (options === null || typeof options !== "object" || Array.isArray(options)) throw new TypeError("compile options must be an object");
     const target = projectiveCanonical(matrix);
     const candidates = [target, neg(target)].map((lift, liftBit) => {
       const word = compileSpPeeling(lift);
@@ -168,6 +167,11 @@ class ProjectiveMicrosequencer {
     const best = candidates[0];
     if (matrixKey(projectiveCanonical(wordProduct(best.word))) !== matrixKey(target)) throw new Error("compiled word failed projective reconstruction");
     const slow = this.decoder.decode(target);
+    const payneGeometry = slow.slow ? this.payne.targetGeometry(slow.slot) : null;
+    const payneStaging = slow.slow && Object.prototype.hasOwnProperty.call(options, "currentAxis")
+      ? this.payne.stage(slow.slot, options.currentAxis)
+      : null;
+    if (payneStaging && payneStaging.routeDistance > 1) throw new Error("Payne staging escaped proved radius-one cover bound");
     return Object.freeze({
       target: Object.freeze(target.map((r) => Object.freeze([...r]))),
       word: Object.freeze(best.word.map((x) => Object.freeze([...x]))),
@@ -175,6 +179,8 @@ class ProjectiveMicrosequencer {
       projectiveResidue: projectiveResidue(target),
       centralLiftBit: best.liftBit,
       slow,
+      payneGeometry,
+      payneStaging,
       routeClass: slow.slow ? "GQ45_EXTRA_TRANSVECTION" : "RESIDUE_LENGTH",
     });
   }
@@ -196,7 +202,7 @@ function projectiveBfs() {
 function verifyExhaustive() {
   const seq = new ProjectiveMicrosequencer(); const dist = projectiveBfs();
   if (dist.size !== 25920) throw new Error(`PSp census ${dist.size} != 25920`);
-  const hist = new Map(); let exact = 0; let reconstruct = 0; let anomalyAgreement = 0; let slow = 0;
+  const hist = new Map(); let exact = 0; let reconstruct = 0; let anomalyAgreement = 0; let slow = 0; let geometry = 0; let staged = 0;
   for (const { matrix, distance } of dist.values()) {
     const row = seq.compile(matrix); hist.set(row.length, (hist.get(row.length) || 0) + 1);
     if (row.length === distance) exact += 1;
@@ -207,7 +213,13 @@ function verifyExhaustive() {
       slow += 1;
       if (row.length !== row.projectiveResidue + 1) throw new Error("slow target is not one-extra-transvection");
       if (!Array.isArray(row.slow.banks) || row.slow.banks.length !== 3) throw new Error("slow target lost GQ bank triple");
-    }
+      if (row.payneGeometry && row.payneGeometry.weight8Support.length === 8 && row.payneGeometry.centerQuadPair.length === 2) geometry += 1;
+      for (let currentAxis = 0; currentAxis < 40; currentAxis += 1) {
+        const stagedRow = seq.compile(matrix, { currentAxis });
+        if (!stagedRow.payneStaging || stagedRow.payneStaging.routeDistance > 1 || !stagedRow.payneGeometry.payneCoverAxes.includes(stagedRow.payneStaging.chosenAxis)) throw new Error("invalid Payne staging metadata");
+        staged += 1;
+      }
+    } else if (row.payneGeometry !== null || row.payneStaging !== null) throw new Error("fast target received slow Payne metadata");
   }
   const histogram = Object.fromEntries([...hist.entries()].sort((a, b) => a[0] - b[0]));
   const expected = { 0: 1, 1: 80, 2: 1980, 3: 13005, 4: 10854 };
@@ -217,28 +229,14 @@ function verifyExhaustive() {
     allRuntimeWordsReconstructTarget: reconstruct === dist.size,
     slowDecoderExactlyEqualsResidueAnomaly: anomalyAgreement === dist.size,
     exactly45SlowTargets: slow === 45,
+    all45SlowTargetsCarryPayneMinwordGeometry: geometry === 45,
+    all1800SlowTargetCurrentAxisPairsStageWithinOneHop: staged === 45 * 40,
     expectedLengthHistogram: JSON.stringify(histogram) === JSON.stringify(expected),
   };
-  return { schema: "holotrade.production-projective-microsequencer.v1", status: Object.values(checks).every(Boolean) ? "PASS" : "FAIL", checks, verification: { targets: dist.size, slowTargets: slow, histogram } };
+  return { schema: "holotrade.production-projective-microsequencer.v2", status: Object.values(checks).every(Boolean) ? "PASS" : "FAIL", checks, verification: { targets: dist.size, slowTargets: slow, stagedPairs: staged, histogram } };
 }
 
 if (require.main === module) {
   const out = verifyExhaustive(); console.log(JSON.stringify(out, null, 2)); process.exit(out.status === "PASS" ? 0 : 1);
 }
-
-module.exports = {
-  ProjectiveMicrosequencer,
-  AXES,
-  GENS,
-  compileSpPeeling,
-  inverse,
-  isHyperbolic,
-  matMul,
-  neg,
-  projectiveBfs,
-  projectiveResidue,
-  residue,
-  transvection,
-  verifyExhaustive,
-  wordProduct,
-};
+module.exports = { ProjectiveMicrosequencer, AXES, GENS, compileSpPeeling, inverse, isHyperbolic, matMul, neg, projectiveBfs, projectiveResidue, residue, transvection, verifyExhaustive, wordProduct };
