@@ -6,7 +6,9 @@ on:
     paths:
       - 'analysis/w33_payne_slowpath_core.py'
       - 'analysis/the_slow_path_is_the_payne_derivative.py'
+      - 'analysis/payne_cover_spectral_intertwiner.py'
       - 'data/the_45_slot_rom_bijection.json'
+      - 'data/slow_path_is_payne_derivative.json'
       - '.github/workflows/w33_payne_slowpath.yml'
   workflow_dispatch:
 
@@ -21,10 +23,16 @@ jobs:
           python-version: '3.12'
       - name: Prove Payne-derived fast/slow correspondence
         run: python analysis/the_slow_path_is_the_payne_derivative.py --write
-      - name: Recheck materialized certificate
+      - name: Recheck materialized Payne certificate
         run: test -s data/slow_path_is_payne_derivative.json && python -c "import json; d=json.load(open('data/slow_path_is_payne_derivative.json')); assert d['status']=='PASS' and all(d['checks'].values())"
+      - name: Prove 40x45 spectral intertwiner
+        run: python analysis/payne_cover_spectral_intertwiner.py --write
+      - name: Recheck spectral certificate
+        run: test -s data/payne_cover_spectral_intertwiner.json && python -c "import json; d=json.load(open('data/payne_cover_spectral_intertwiner.json')); assert d['status']=='PASS' and all(d['checks'].values())"
       - uses: actions/upload-artifact@v4
         with:
-          name: slow-path-is-payne-derivative
-          path: data/slow_path_is_payne_derivative.json
+          name: payne-fast-slow-certificates
+          path: |
+            data/slow_path_is_payne_derivative.json
+            data/payne_cover_spectral_intertwiner.json
           if-no-files-found: error
