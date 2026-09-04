@@ -37,10 +37,15 @@ test("placement can prefer slightly dearer compute when persistence and recovery
   const f = fixture();
   const ranked = P.rankStorageAwarePlacement(f.engine, f.plan, {
     forecast: f.forecast,
-    policy: { strongBlobSecondUSD: 0.00001, energyJouleUSD: 0.000001, irreversibleEraseBitUSD: 0.000001 },
+    // The energy-heavy candidate is deliberately cheaper in both base score and
+    // strong-root storage, so this scenario must price its 10 kJ strongly enough
+    // for the intended stable-storage winner. At 1e-6 USD/J it correctly wins;
+    // 1e-5 USD/J makes persistence/recovery + energy jointly decisive.
+    policy: { strongBlobSecondUSD: 0.00001, energyJouleUSD: 0.00001, irreversibleEraseBitUSD: 0.000001 },
   });
   assert.equal(ranked[0].node.id, "stable-storage");
   assert.ok(ranked[0].w33StoragePlacement.physical.strongBlobSeconds < ranked.find((x) => x.node.id === "cheap-fragile").w33StoragePlacement.physical.strongBlobSeconds);
+  assert.ok(ranked[0].scoreWithStorage < ranked.find((x) => x.node.id === "energy-heavy").scoreWithStorage);
 });
 
 test("energy term is explicit and can reject an otherwise cheap energy-heavy candidate by ranking", () => {
