@@ -1,0 +1,31 @@
+{
+  "schema": "holotrade.qutrit-transvection-compiler.v1",
+  "valid": true,
+  "theGap": "arXiv:2102.11380 decomposes any Clifford gate into a minimal product of transvections, but is built over F_2 throughout -- qubits -- with characteristic-2 machinery (residue matrix, triangularisation by congruence over GF(2), Botha's theorem). This substrate is q = 3, and b363f7c showed the transvections are its natural instruction set, so shortest-program code generation was open here",
+  "portingPitfall": "testing hyperbolicity ONCE on the input -- the obvious reading of the published algorithm -- strands 1,679 of the 51,840, every failure at residue 2 with the current element hyperbolic: a non-hyperbolic gate can peel onto a hyperbolic INTERMEDIATE and the pivot exists only for non-hyperbolic elements. The fix is to re-test every step and prefer a pivot landing non-hyperbolic. It is the same failure mode 3595bd1 found in Sp(4,2), where the induction genuinely breaks; at q = 3 a good pivot always exists, but only if the algorithm looks for it",
+  "theStep": {
+    "pick": "x with <x, g^-1 x> =/= 0",
+    "vector": "v = g^-1 x - x",
+    "scalar": "lam = <x, g^-1 x>^-1",
+    "effect": "g.T(v,lam) fixes x and has residue res(g) - 1",
+    "derivation": "g.T(v,lam) fixes x iff T(v,lam)x = g^-1 x; since T(v,lam)x = x + lam<x,v>v, v must be parallel to g^-1 x - x and lam must invert <x, g^-1 x>",
+    "atQ2": "collapses to v = x + xg, lam = 1 -- the published step; at odd q the scalar is the new content and it is forced, not chosen",
+    "hypothesis": "existence of x is exactly NON-hyperbolicity, which is why O'Meara's criterion is the hypothesis"
+  },
+  "verification": {
+    "elements": 51840,
+    "everyFactorATransvection": 51840,
+    "productReconstructsG": 51840,
+    "lengthEqualsBFSGroundTruth": 51840,
+    "longestProgram": 5,
+    "failedToCompile": 0,
+    "groupDiameter": 5,
+    "reading": "a total function, correct, and optimal POINTWISE on every input -- checked against a full breadth-first search, not against a bound"
+  },
+  "hyperbolicBranch": {
+    "fires": 91,
+    "reading": "the only irregular branch fires on exactly the 91 hyperbolic maps: the 90 indexed by the hyperbolic lines whose polar pairs are the sentinel code's 45 minimum-weight words, plus the centre -- the co-location claim made operational"
+  },
+  "runtimeCost": "the compiler never searches the group: it scans at most 80 vectors per instruction and emits at most 5, so compiling any gate is bounded work independent of the 51,840 -- the difference between a routing table and a compiler, and what makes the forty-opcode ISA implementable rather than merely optimal on paper",
+  "boundary": "exact and exhaustive at q = 3, dimension 4. The step is derived for any odd q but tested only here, and the hyperbolic fix-up is found by search rather than construction, so this is a verified compiler for Sp(4,3), not a proof for Sp(2n,q). It emits SYMPLECTIC transvections: the Clifford group is their central extension, and the phase bookkeeping needed to lift a symplectic program to an actual qutrit circuit is NOT done here. tau_2 is untouched"
+}

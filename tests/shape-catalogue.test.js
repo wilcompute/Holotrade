@@ -4702,3 +4702,65 @@ test("the length law is O'Meara's, and the doily breaks its induction", () => {
   assert.match(r.boundary, /primary sources are NOT read/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the qutrit transvection compiler is total, correct and minimal", () => {
+  const r = require(path.join(
+    root,
+    "data/the_qutrit_transvection_compiler.json"
+  ));
+  assert.equal(r.schema, "holotrade.qutrit-transvection-compiler.v1");
+  assert.equal(r.valid, true);
+
+  // the gap it fills: the published algorithm is F_2 only
+  assert.match(r.theGap, /F_2/);
+  assert.match(r.theGap, /2102\.11380/);
+
+  // the step, and the fact that the scalar is what odd q adds
+  assert.equal(r.theStep.vector, "v = g^-1 x - x");
+  assert.equal(r.theStep.scalar, "lam = <x, g^-1 x>^-1");
+  assert.match(r.theStep.atQ2, /lam = 1/);
+  assert.match(r.theStep.hypothesis, /NON-hyperbolicity/);
+
+  // exhaustive verification -- every element, and MINIMAL not just correct
+  const v = r.verification;
+  assert.equal(v.elements, 51840, "the whole of Sp(4,3)");
+  assert.equal(v.everyFactorATransvection, v.elements);
+  assert.equal(v.productReconstructsG, v.elements);
+  assert.equal(
+    v.lengthEqualsBFSGroundTruth,
+    v.elements,
+    "optimal pointwise, against a full BFS"
+  );
+  assert.equal(v.failedToCompile, 0, "a total function");
+  assert.equal(v.longestProgram, 5);
+  assert.equal(
+    v.longestProgram,
+    v.groupDiameter,
+    "the longest program is exactly the group diameter"
+  );
+
+  // the porting pitfall is recorded, with its exact cost
+  assert.match(r.portingPitfall, /1,679/);
+  assert.match(r.portingPitfall, /hyperbolic INTERMEDIATE/);
+  assert.match(r.portingPitfall, /3595bd1/);
+
+  // the irregular branch is exactly the anomaly set of the prior commits
+  assert.equal(r.hyperbolicBranch.fires, 91);
+  const om = require(path.join(root, "data/the_length_law_is_omeara.json"));
+  assert.equal(
+    r.hyperbolicBranch.fires,
+    om.cases.q3.hyperbolicMaps,
+    "the compiler's only irregular branch IS the hyperbolic-map set"
+  );
+  const tri = require(path.join(
+    root,
+    "data/the_cost_anomalies_are_the_tritangents.json"
+  ));
+  assert.equal(r.hyperbolicBranch.fires, tri.decomposition.total);
+
+  // and the boundary is honest about what is NOT done
+  assert.match(r.runtimeCost, /never searches the group/);
+  assert.match(r.boundary, /not a proof for/);
+  assert.match(r.boundary, /phase bookkeeping/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
