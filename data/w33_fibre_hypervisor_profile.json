@@ -1,0 +1,29 @@
+{
+  "schema": "holotrade.w33-fibre-hypervisor-profile.v1",
+  "valid": true,
+  "date": "2026-09-03",
+  "machineType": "w33.fibre1296.steinberg81+64",
+  "role": "HYPERVISOR_FIBRE_PRODUCT",
+  "formula": "216 x_36 216 = 36 x 6 x 6 = 1296",
+  "baseStates": 36,
+  "carrierStatesEach": 216,
+  "hypervisorStates": 1296,
+  "statesPerBase": 36,
+  "projectionDegree": 6,
+  "logicalModules": [81, 64],
+  "bothProjectionsOnto": true,
+  "oneProjectionDoesNotDetermineOther": true,
+  "runtimeRetype": "FORBIDDEN",
+  "carrierConversion": "FORBIDDEN",
+  "stabiliser": {
+    "order": 20,
+    "signature": "F20=AGL(1,5)",
+    "sourceCommit": "58f0df389db596c9ee3d7893cdf8f9685c0b18a3"
+  },
+  "implementation": {
+    "module": "js/w33-fibre-hypervisor-profile.js",
+    "tests": "tests/w33-fibre-hypervisor-profile.test.js",
+    "composition": "binds one verified CIRCUIT_ST81 guest profile and one verified PAIR_ST64 guest profile for the same ExecutionPlan"
+  },
+  "boundary": "The 1296-state fibre product is a hypervisor/composite deployment identity, not a third guest carrier and not a carrier-conversion opcode. It exposes both 81- and 64-dimensional modules through the two projections without asserting a 145-dimensional physical logical register."
+}
