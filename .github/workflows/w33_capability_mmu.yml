@@ -1,0 +1,27 @@
+name: W33 capability MMU
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'rtl/w33_capability_mmu.v'
+      - 'rtl/verify_w33_capability_mmu.ys'
+      - 'rtl/synth_w33_capability_mmu.ys'
+      - '.github/workflows/w33_capability_mmu.yml'
+  workflow_dispatch:
+
+jobs:
+  formal-and-synth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install portable Yosys
+        run: npm install --no-save yosys@0.48.0 || true
+      - name: Prove non-escalation and dereference gate
+        run: node scripts/run-yosys.js rtl/verify_w33_capability_mmu.ys
+      - name: Synthesize MMU gate
+        run: node scripts/run-yosys.js rtl/synth_w33_capability_mmu.ys
