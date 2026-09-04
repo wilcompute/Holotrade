@@ -9990,5 +9990,50 @@
       "source": "cli",
       "timestamp": "2026-09-04T04:20:44.304Z"
     }
+  },
+  {
+    "id": "592dd4b4-84bb-41e9-84a2-7201938b4bd6",
+    "question": "Why does HoloTrade commit b4636e9 follow f33fd90?",
+    "answer": "Commit b4636e9 records the exact rationale and validation handoff for publication commit f33fd90 in Continuity so later agents do not have to infer it from filenames or commit subjects.",
+    "timestamp": "2026-09-04T04:21:00.446Z",
+    "tags": [
+      "commit",
+      "continuity",
+      "handoff",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "b4636e9",
+      "status": "active"
+    },
+    "commitHashes": [
+      "b4636e9",
+      "f33fd90"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:21:00.446Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:21:00.439Z"
+    }
   }
 ]
