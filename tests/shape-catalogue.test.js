@@ -4764,3 +4764,67 @@ test("the qutrit transvection compiler is total, correct and minimal", () => {
   assert.match(r.boundary, /phase bookkeeping/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the projective ISA has exactly 45 expensive instructions", () => {
+  const r = require(path.join(root, "data/the_projective_isa_45.json"));
+  assert.equal(r.schema, "holotrade.projective-isa-45-expensive.v1");
+  assert.equal(r.valid, true);
+
+  // the centre acts as the symplectic polarity on the anomaly set
+  const c = r.centreIsThePolarity;
+  assert.equal(c.anomalySetClosedUnderNegation, true);
+  assert.equal(c.outOf, 90);
+  assert.equal(c.imageOfNegatedIsPolarLine, 90, "polar on every one, not most");
+  assert.equal(c.classes, 45);
+  assert.equal(c.outOf / c.classes, 2, "a clean two-to-one collapse");
+  assert.match(c.reading, /ACTS AS THE SYMPLECTIC POLARITY/);
+
+  // the projective cost model
+  const p = r.projectiveCostModel;
+  assert.equal(p.order, 25920);
+  assert.equal(p.opcodes, 80);
+  assert.equal(p.diameter, 4, "2n, the projective latency law");
+  assert.equal(p.matrixDiameter, 5, "Sp is still 5");
+  assert.equal(p.table["2,3"], 45);
+  assert.equal(p.anomalies, 45);
+  assert.equal(
+    Object.values(p.table).reduce((s, v) => s + v, 0),
+    p.order,
+    "the table accounts for every projective element"
+  );
+  // no cell other than (2,3) exceeds its residue
+  for (const k of Object.keys(p.table)) {
+    const [res, len] = k.split(",").map(Number);
+    assert.ok(len >= res, "length is never below residue");
+    if (len > res) assert.equal(k, "2,3", "(2,3) is the only anomalous cell");
+  }
+  // the (4,5) cell of Sp is gone: that was -I
+  assert.equal(p.table["4,5"], undefined);
+  assert.match(p.residueConvention, /NOT projectively defined/);
+
+  // the bijection: 45 expensive instructions, 45 minimum-weight codewords
+  const b = r.theBijection;
+  assert.equal(b.expensiveInstructions, 45);
+  assert.equal(b.minimumWeightCodewords, 45);
+  assert.equal(
+    b.expensiveInstructions,
+    b.minimumWeightCodewords,
+    "one expensive instruction per minimum-weight codeword"
+  );
+  assert.equal(b.reflectionsAreAllAnomalies, true, "and nothing else");
+  assert.match(b.chain, /tritangent/);
+  assert.match(b.chain, /cited prior art/);
+
+  // it supersedes the Sp-level hedge, and agrees with the Sp counts
+  const om = require(path.join(root, "data/the_length_law_is_omeara.json"));
+  assert.equal(om.cases.q3.anomalies, 91);
+  assert.equal(
+    c.outOf + 1,
+    om.cases.q3.anomalies,
+    "Sp's 91 is these 90 plus the centre that pairs them"
+  );
+  assert.match(r.supersedesTheHedge, /wrong group/);
+  assert.match(r.readingForTheMachine, /same 45 objects/);
+  assert.match(r.boundary, /min over the two\s+lifts/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
