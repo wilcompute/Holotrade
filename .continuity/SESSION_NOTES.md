@@ -35,6 +35,29 @@ a native protected-qutrit action and publish the evidence through HoloTrade.
 - Yosys proves closure and all three presentation laws for every valid address;
   replacing the Clifford-compensated multiplier by identity produces the
   intended SAT counterexample.
+- The same inner fibre `F20` has slow-target orbits `[5,10,10,20]`. Its unique
+  five-orbit is a coclique whose set stabilizer induces `S5`; the orbit of such
+  five-sets has size 216, and the fixed qutrit presentation admits exactly one
+  site-to-circuit map.
+- A different five-state geometry lives on a `GQ(4,2)` ROM line. Its inner line
+  stabilizer has image `A5`, its full `W(E6)` stabilizer has image `S5`, and the
+  unique line-preserving `F20` complement meets the inner group in exactly the
+  bare `D10` subgroup.
+- The 40 protected Pauli addresses and 40 Payne axes are each two regular
+  `F20` orbits, giving exactly 800 equivariant bijections. Exhausting all 20
+  presentation-compatible `F20` isomorphisms and all 16,000 induced maps finds
+  no map that also welds every site's eight addresses to the eight Payne covers
+  through its matched circuit target.
+- That no-go has a complete two-point defect spectrum: 9,600 candidates match
+  no address incidences, while 6,400 match exactly four of eight at every site.
+  The optimum is uniformly half-incidence (20/40), never an uneven near-weld.
+- The frozen zero-match gauge composes with the production Payne catalogue so
+  every address reaches an axis covering its matched circuit target in exactly
+  one W33-collinearity hop. The composition is deterministic but not the
+  prohibited direct equivariant weld and remains non-dispatchable.
+- The runtime codec therefore exposes the selected reproducible address map as
+  a noncanonical gauge and returns `dispatchable: false`; this exact finite
+  atlas is not presented as a fault-tolerant recode or physical route.
 
 ## Validation
 
@@ -56,6 +79,20 @@ a native protected-qutrit action and publish the evidence through HoloTrade.
   Yosys proof or mutation control, and its focused lane is now 5/5 PASS.
 - JavaScript syntax and JSON parsing: PASS.
 - `docs/holotrade.tex` compiles to `docs/holotrade.pdf` with warnings only.
+- F20/Payne GAP regeneration and focused Node contract: 6/6 PASS; certificate
+  SHA-256 `1153ae29ea6df5ff8d299b406fa864d01233662c37f67667ed089afe3cd4f099`.
+- Certificate source hashing now canonicalizes CRLF to LF before SHA-256, so
+  Windows and GitHub Actions bind the same source text without weakening any
+  theorem value.
+- Full 84-test backend first pass: 83/84 mathematical and runtime tests passed;
+  the sole failure was an unchanged boundary sentence split between JavaScript
+  literals. The literal was rejoined; the focused atlas lane is now 6/6 and the
+  dependent protected-qutrit lane is 5/5.
+- The updated paper compiles to a 258.41 KiB PDF with only pre-existing
+  fontconfig and underfull-box warnings; JavaScript syntax and workflow YAML
+  structure validate.
+- Focused CI installs GAP/GRAPE and checks both exact regeneration and runtime
+  adapter syntax on pull requests and `master` pushes.
 
 ## Reconciliation
 
@@ -78,7 +115,10 @@ a native protected-qutrit action and publish the evidence through HoloTrade.
 ## Publication state
 
 The base theorem packet is committed on `codex-five-front-router` as `bec0d62`
-with handoff commit `a404f5a`. The F20/qutrit theorem and hardware packet were
-merged to `master` at `ea0ce53`. This follow-up publication packet normalizes
-the two top-level certificate hashes, exposes the theorem in the README, paper,
-and live evidence panel, and adds the focused freeze/verify package commands.
+with handoff commit `a404f5a`. The completed F20/qutrit publication packet was
+merged to `master` at `7acbb22466de0817753194f93f4afb5493657673`. The current
+`codex-f20-gq-line-outer` packet adds the GAP-owned two-geometry atlas, exact
+800-map count and 0/16,000 compatibility boundary, fail-closed codec, focused
+CI, and synchronized README, paper, PDF, and website evidence surfaces. Pull
+request #3 is open; its only observed CI failure was the now-repaired CRLF/LF
+source-hash portability mismatch.

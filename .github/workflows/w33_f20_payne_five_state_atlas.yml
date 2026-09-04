@@ -1,0 +1,56 @@
+name: W33 F20 Payne five-state atlas
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_f20_payne_five_state_atlas.g'
+      - 'analysis/w33_f20_payne_five_state_atlas.js'
+      - 'analysis/w33_f20_payne_five_state_input.g'
+      - 'data/w33_f20_payne_five_state_atlas.json'
+      - 'data/w33_f20_qutrit_block_bridge.json'
+      - 'data/the_45_slot_rom_bijection.json'
+      - 'data/slow_path_is_payne_derivative.json'
+      - 'js/w33-f20-payne-codec.js'
+      - 'tests/w33-f20-payne-five-state-atlas.test.js'
+      - 'package.json'
+      - '.github/workflows/w33_f20_payne_five_state_atlas.yml'
+  pull_request:
+    paths:
+      - 'analysis/w33_f20_payne_five_state_atlas.g'
+      - 'analysis/w33_f20_payne_five_state_atlas.js'
+      - 'analysis/w33_f20_payne_five_state_input.g'
+      - 'data/w33_f20_payne_five_state_atlas.json'
+      - 'data/w33_f20_qutrit_block_bridge.json'
+      - 'data/the_45_slot_rom_bijection.json'
+      - 'data/slow_path_is_payne_derivative.json'
+      - 'js/w33-f20-payne-codec.js'
+      - 'tests/w33-f20-payne-five-state-atlas.test.js'
+      - 'package.json'
+      - '.github/workflows/w33_f20_payne_five_state_atlas.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: holotrade-w33-f20-payne-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install GAP/GRAPE
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gap gap-grape
+      - name: Regenerate and test the exact atlas
+        run: npm run verify:w33-f20-payne
+      - name: Check the fail-closed runtime adapter
+        run: node --check js/w33-f20-payne-codec.js

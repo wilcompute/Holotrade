@@ -1,0 +1,977 @@
+{
+  "schema": "holotrade.w33-f20-payne-five-state-atlas.v1",
+  "status": "PASS",
+  "evidenceClass": "EXACT_GAP_GROUP_ACTION_ATLAS",
+  "corpusPriorArt": {
+    "fullGroupNoGo": "W33-Theory Passes 7017-7024 prove Hom_PSp(C^27,C^40) is only the constant channel; this packet uses the permitted proper-subgroup escape route F20.",
+    "payneBridge": "HoloTrade commits a493651 through f944915 own the explicit Payne-derived 40x45 cover, its rank-25 spectral intertwiner, production catalogue, and 45 minimum-word dictionary.",
+    "protectedBlock": "HoloTrade ea0ce53 and 7acbb22 own the fibre-product F20 and its local-Clifford action on the cyclic [[5,1,3]]_3 block.",
+    "addedHere": "Places that same F20 on the Payne fast and slow carriers, builds the site-to-circuit and address-to-axis maps, identifies the inner/outer ROM-line chain, and exhausts the stronger incidence-compatible map that does not exist."
+  },
+  "fiveStateAtlas": {
+    "circuit": {
+      "geometry": "five pairwise noncollinear GQ(4,2) slow targets",
+      "slowTargets": [
+        21,
+        23,
+        24,
+        26,
+        44
+      ],
+      "inducedEdges": 0,
+      "setStabilizerOrder": 120,
+      "setStabilizerImage": "S5",
+      "carrierOrbit": 216,
+      "fibreF20SlowOrbits": [
+        5,
+        10,
+        10,
+        20
+      ],
+      "fibreF20LineOrbits": [
+        2,
+        5,
+        10,
+        10
+      ],
+      "qutritSiteToSlowTarget": [
+        23,
+        24,
+        21,
+        44,
+        26
+      ],
+      "mapCount": 1,
+      "interpretation": "For the fixed F20 generator identification, the five protected-qutrit sites map uniquely and equivariantly to the unique five-target F20 orbit. Its S5 stabilizer and 216-set orbit identify it as the existing circuit carrier, not a ROM bank."
+    },
+    "romLine": {
+      "geometry": "five pairwise collinear GQ(4,2) slow targets",
+      "innerGroupOrder": 25920,
+      "fullGroupOrder": 51840,
+      "innerLineStabilizer": {
+        "order": 960,
+        "kernelOrder": 16,
+        "image": "A5"
+      },
+      "fullLineStabilizer": {
+        "order": 1920,
+        "kernelOrder": 16,
+        "image": "S5"
+      },
+      "outerF20": {
+        "order": 20,
+        "structure": "C5 : C4",
+        "complementClasses": 1,
+        "vertexOrbits": [
+          5,
+          5,
+          5,
+          10,
+          20
+        ],
+        "lineOrbits": [
+          1,
+          1,
+          5,
+          5,
+          5,
+          10
+        ]
+      },
+      "innerIntersection": {
+        "order": 10,
+        "structure": "D10"
+      },
+      "qutritSiteToRomLinePoint": [
+        0,
+        11,
+        8,
+        12,
+        3
+      ],
+      "interpretation": "The same generator-level D10<F20 chain appears as line-preserving inner versus outer symmetry: the F20 complement acts faithfully on one ROM bank, but its intersection with the inner PSp(4,3) is exactly D10. The order-four completion occupies the outer W(E6) coset in this five-state realization."
+    }
+  },
+  "addressToPayne": {
+    "addressActionOrbits": [
+      20,
+      20
+    ],
+    "w33AxisActionOrbits": [
+      20,
+      20
+    ],
+    "basisCrosswalkOrder": 2,
+    "equivariantBijections": 800,
+    "selectedMap": "lexicographically first under the committed address, axis, and generator orderings; reproducible but not geometrically canonical",
+    "addressToW33Axis": [
+      0,
+      30,
+      9,
+      2,
+      28,
+      5,
+      29,
+      10,
+      20,
+      25,
+      37,
+      24,
+      12,
+      17,
+      33,
+      11,
+      36,
+      4,
+      6,
+      15,
+      27,
+      23,
+      18,
+      31,
+      32,
+      1,
+      14,
+      21,
+      38,
+      16,
+      35,
+      3,
+      13,
+      8,
+      19,
+      22,
+      39,
+      7,
+      26,
+      34
+    ],
+    "compiler": [
+      {
+        "address": 0,
+        "site": 0,
+        "localPauliLabel": 0,
+        "w33Axis": 0,
+        "payneSlowCover": [
+          4,
+          9,
+          18,
+          21,
+          24,
+          27,
+          30,
+          33,
+          35
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 1,
+        "site": 0,
+        "localPauliLabel": 1,
+        "w33Axis": 30,
+        "payneSlowCover": [
+          7,
+          13,
+          15,
+          26,
+          27,
+          28,
+          42,
+          43,
+          44
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 2,
+        "site": 0,
+        "localPauliLabel": 2,
+        "w33Axis": 9,
+        "payneSlowCover": [
+          2,
+          10,
+          14,
+          16,
+          21,
+          26,
+          31,
+          36,
+          41
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 3,
+        "site": 0,
+        "localPauliLabel": 3,
+        "w33Axis": 2,
+        "payneSlowCover": [
+          3,
+          4,
+          5,
+          9,
+          10,
+          11,
+          15,
+          25,
+          35
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 4,
+        "site": 0,
+        "localPauliLabel": 4,
+        "w33Axis": 28,
+        "payneSlowCover": [
+          2,
+          5,
+          6,
+          20,
+          22,
+          27,
+          34,
+          36,
+          41
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 5,
+        "site": 0,
+        "localPauliLabel": 5,
+        "w33Axis": 5,
+        "payneSlowCover": [
+          1,
+          10,
+          12,
+          19,
+          24,
+          29,
+          34,
+          39,
+          44
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 6,
+        "site": 0,
+        "localPauliLabel": 6,
+        "w33Axis": 29,
+        "payneSlowCover": [
+          0,
+          11,
+          14,
+          17,
+          19,
+          27,
+          29,
+          37,
+          39
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 7,
+        "site": 0,
+        "localPauliLabel": 7,
+        "w33Axis": 10,
+        "payneSlowCover": [
+          0,
+          10,
+          13,
+          18,
+          22,
+          28,
+          32,
+          38,
+          42
+        ],
+        "matchedCircuitTarget": 23,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 8,
+        "site": 1,
+        "localPauliLabel": 0,
+        "w33Axis": 20,
+        "payneSlowCover": [
+          2,
+          4,
+          8,
+          16,
+          21,
+          30,
+          32,
+          37,
+          44
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 9,
+        "site": 1,
+        "localPauliLabel": 1,
+        "w33Axis": 25,
+        "payneSlowCover": [
+          1,
+          11,
+          13,
+          16,
+          23,
+          26,
+          33,
+          36,
+          43
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 10,
+        "site": 1,
+        "localPauliLabel": 2,
+        "w33Axis": 37,
+        "payneSlowCover": [
+          5,
+          9,
+          17,
+          20,
+          23,
+          25,
+          38,
+          41,
+          44
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 11,
+        "site": 1,
+        "localPauliLabel": 3,
+        "w33Axis": 24,
+        "payneSlowCover": [
+          2,
+          11,
+          12,
+          20,
+          22,
+          30,
+          32,
+          40,
+          42
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 12,
+        "site": 1,
+        "localPauliLabel": 4,
+        "w33Axis": 12,
+        "payneSlowCover": [
+          7,
+          14,
+          16,
+          17,
+          18,
+          25,
+          39,
+          40,
+          41
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 13,
+        "site": 1,
+        "localPauliLabel": 5,
+        "w33Axis": 17,
+        "payneSlowCover": [
+          6,
+          14,
+          19,
+          20,
+          21,
+          26,
+          27,
+          28,
+          35
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 14,
+        "site": 1,
+        "localPauliLabel": 6,
+        "w33Axis": 33,
+        "payneSlowCover": [
+          5,
+          10,
+          16,
+          19,
+          22,
+          28,
+          31,
+          34,
+          35
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 15,
+        "site": 1,
+        "localPauliLabel": 7,
+        "w33Axis": 11,
+        "payneSlowCover": [
+          1,
+          3,
+          8,
+          18,
+          20,
+          29,
+          34,
+          36,
+          43
+        ],
+        "matchedCircuitTarget": 24,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 16,
+        "site": 2,
+        "localPauliLabel": 0,
+        "w33Axis": 36,
+        "payneSlowCover": [
+          4,
+          10,
+          15,
+          26,
+          29,
+          32,
+          38,
+          41,
+          44
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 17,
+        "site": 2,
+        "localPauliLabel": 1,
+        "w33Axis": 4,
+        "payneSlowCover": [
+          6,
+          13,
+          22,
+          23,
+          24,
+          25,
+          36,
+          37,
+          38
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 18,
+        "site": 2,
+        "localPauliLabel": 2,
+        "w33Axis": 6,
+        "payneSlowCover": [
+          2,
+          3,
+          7,
+          17,
+          24,
+          26,
+          31,
+          40,
+          42
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 19,
+        "site": 2,
+        "localPauliLabel": 3,
+        "w33Axis": 15,
+        "payneSlowCover": [
+          0,
+          4,
+          7,
+          18,
+          22,
+          27,
+          29,
+          41,
+          43
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 20,
+        "site": 2,
+        "localPauliLabel": 4,
+        "w33Axis": 27,
+        "payneSlowCover": [
+          0,
+          5,
+          8,
+          17,
+          19,
+          31,
+          33,
+          38,
+          42
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 21,
+        "site": 2,
+        "localPauliLabel": 5,
+        "w33Axis": 23,
+        "payneSlowCover": [
+          1,
+          5,
+          7,
+          16,
+          23,
+          28,
+          30,
+          39,
+          44
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 22,
+        "site": 2,
+        "localPauliLabel": 6,
+        "w33Axis": 18,
+        "payneSlowCover": [
+          1,
+          9,
+          14,
+          18,
+          20,
+          28,
+          30,
+          38,
+          40
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 23,
+        "site": 2,
+        "localPauliLabel": 7,
+        "w33Axis": 31,
+        "payneSlowCover": [
+          6,
+          7,
+          8,
+          12,
+          13,
+          14,
+          15,
+          25,
+          35
+        ],
+        "matchedCircuitTarget": 21,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 24,
+        "site": 3,
+        "localPauliLabel": 0,
+        "w33Axis": 32,
+        "payneSlowCover": [
+          3,
+          11,
+          17,
+          20,
+          23,
+          26,
+          29,
+          32,
+          35
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 25,
+        "site": 3,
+        "localPauliLabel": 1,
+        "w33Axis": 1,
+        "payneSlowCover": [
+          3,
+          10,
+          18,
+          21,
+          24,
+          25,
+          36,
+          39,
+          42
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 26,
+        "site": 3,
+        "localPauliLabel": 2,
+        "w33Axis": 14,
+        "payneSlowCover": [
+          0,
+          9,
+          12,
+          21,
+          23,
+          31,
+          33,
+          41,
+          43
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 27,
+        "site": 3,
+        "localPauliLabel": 3,
+        "w33Axis": 21,
+        "payneSlowCover": [
+          8,
+          13,
+          16,
+          17,
+          18,
+          32,
+          33,
+          34,
+          35
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 28,
+        "site": 3,
+        "localPauliLabel": 4,
+        "w33Axis": 38,
+        "payneSlowCover": [
+          3,
+          9,
+          15,
+          28,
+          31,
+          34,
+          37,
+          40,
+          43
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 29,
+        "site": 3,
+        "localPauliLabel": 5,
+        "w33Axis": 16,
+        "payneSlowCover": [
+          1,
+          4,
+          6,
+          19,
+          24,
+          26,
+          33,
+          38,
+          40
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 30,
+        "site": 3,
+        "localPauliLabel": 6,
+        "w33Axis": 35,
+        "payneSlowCover": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 31,
+        "site": 3,
+        "localPauliLabel": 7,
+        "w33Axis": 3,
+        "payneSlowCover": [
+          5,
+          11,
+          15,
+          27,
+          30,
+          33,
+          36,
+          39,
+          42
+        ],
+        "matchedCircuitTarget": 44,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 32,
+        "site": 4,
+        "localPauliLabel": 0,
+        "w33Axis": 13,
+        "payneSlowCover": [
+          7,
+          12,
+          22,
+          23,
+          24,
+          29,
+          30,
+          31,
+          35
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 33,
+        "site": 4,
+        "localPauliLabel": 1,
+        "w33Axis": 8,
+        "payneSlowCover": [
+          8,
+          12,
+          19,
+          20,
+          21,
+          25,
+          42,
+          43,
+          44
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 34,
+        "site": 4,
+        "localPauliLabel": 2,
+        "w33Axis": 19,
+        "payneSlowCover": [
+          2,
+          9,
+          13,
+          17,
+          24,
+          27,
+          34,
+          37,
+          44
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 35,
+        "site": 4,
+        "localPauliLabel": 3,
+        "w33Axis": 22,
+        "payneSlowCover": [
+          8,
+          14,
+          15,
+          29,
+          30,
+          31,
+          36,
+          37,
+          38
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 36,
+        "site": 4,
+        "localPauliLabel": 4,
+        "w33Axis": 39,
+        "payneSlowCover": [
+          0,
+          1,
+          2,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 37,
+        "site": 4,
+        "localPauliLabel": 5,
+        "w33Axis": 7,
+        "payneSlowCover": [
+          0,
+          3,
+          6,
+          21,
+          23,
+          28,
+          32,
+          37,
+          39
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 38,
+        "site": 4,
+        "localPauliLabel": 6,
+        "w33Axis": 26,
+        "payneSlowCover": [
+          6,
+          12,
+          15,
+          32,
+          33,
+          34,
+          39,
+          40,
+          41
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      },
+      {
+        "address": 39,
+        "site": 4,
+        "localPauliLabel": 7,
+        "w33Axis": 34,
+        "payneSlowCover": [
+          4,
+          11,
+          16,
+          19,
+          22,
+          25,
+          37,
+          40,
+          43
+        ],
+        "matchedCircuitTarget": 26,
+        "coverContainsMatchedTarget": false
+      }
+    ],
+    "interpretation": "Both forty-state actions are two disjoint regular F20 torsors. Any selected equivariant bijection sends each addressed nonidentity one-qutrit Pauli to a cheap W33 axis, hence to its exact nine-target Payne slow-path cover."
+  },
+  "incidenceCompatibilityNoGo": {
+    "presentationCompatibleF20Isomorphisms": 20,
+    "equivariantMapCandidates": 16000,
+    "coherentMaps": 0,
+    "overlapCensus": {
+      "selectedGaugePerSite": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "selectedGaugeMatchedAddresses": 0,
+      "maximumMatchedAddresses": 20,
+      "bestSortedPerSiteProfiles": [
+        [
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      ],
+      "matchedAddressHistogram": {
+        "0": 9600,
+        "20": 6400
+      },
+      "sortedPerSiteProfileHistogram": {
+        "0,0,0,0,0": 9600,
+        "4,4,4,4,4": 6400
+      }
+    },
+    "conditionTested": "For every site, the eight W33 axes assigned to its eight nonidentity local Paulis equal the eight Payne covers containing that site's matched slow target.",
+    "theorem": "No presentation-compatible F20 identification satisfies the site-fibre/Payne-incidence equality. The site-to-circuit and address-to-axis bridges exist separately, but F20 symmetry alone cannot weld them into that stronger incidence codec."
+  },
+  "oneHopRepair": {
+    "selectedGaugeDistanceHistogram": {
+      "1": 40
+    },
+    "selectedGaugeAllExactlyOneHop": true,
+    "interpretation": "The frozen address gauge misses the matched circuit target at all 40 addresses, but the committed Payne staging rule repairs every miss by one W33-axis hop to a cover containing that target.",
+    "provenance": "This composes the new F20 atlas with HoloTrade's already-owned all-1800-pair radius-one Payne staging theorem; it is not a direct F20-equivariant incidence weld."
+  },
+  "checks": {
+    "gapStatus": true,
+    "fullAndInnerOrders": true,
+    "lineStabilizerImages": true,
+    "outerF20MeetsInnerInD10": true,
+    "addressAndAxisActionsAreTwoRegularOrbits": true,
+    "eightHundredAddressAxisBijections": true,
+    "fibreF20ActsInsidePSp": true,
+    "fiveTargetOrbitIsCircuit": true,
+    "uniqueSiteCircuitMap": true,
+    "exhaustiveIncidenceNoGo": true
+  },
+  "sourceHashes": {
+    "rom": "sha256:038d32f663d6faee5e6f07cc694dea464361e79ceaf08a0b640251c804dacfa5",
+    "payne": "sha256:6a381a716007ec5aa3e2b254e78f195e0c7adfcf7091d9af52e26ef9b03443af",
+    "f20Qutrit": "sha256:987758c9ee150deaf87fca92d21c53c49b62405a03a2fe728804e8fa49be07cc",
+    "gap": "sha256:85768a09c41951e74d95ee7713c42fdbe9a88c2526a6b0a1c4dbd58ec96c6e15",
+    "gapInput": "sha256:8ccaf055293a98a291436fe230a787ea51ca085f8efd3f97b8663e2ba7b2eae9"
+  },
+  "boundary": "Exact finite group actions at q=3. The selected 40-address map is one of 800 equivariant choices, not canonical. The D10<F20 line chain is an explicit group-pair isomorphism, not an identification of local Clifford hardware with W(E6). The no-go excludes only the stated F20-equivariant site-fibre incidence condition; larger symmetry, nonlinear, modular, or ancilla-mediated codecs remain open. No fault-tolerant recode, calibration, timing, or physical-performance claim is made.",
+  "sha256": "1153ae29ea6df5ff8d299b406fa864d01233662c37f67667ed089afe3cd4f099"
+}
