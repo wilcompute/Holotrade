@@ -5572,3 +5572,56 @@ test("the partition's first leg is LINES, not points -- and the 36 is proved", (
   assert.match(r.whatSurvivesUnchanged, /none of those touched\s+the mislabelled leg/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the m = 2 balanced set exists, over a hemisystem pair", () => {
+  const r = require(path.join(root, "data/m_equals_two_balanced_exists.json"));
+  assert.equal(r.schema, "holotrade.m2-balanced-exists.v1");
+  assert.equal(r.valid, true);
+
+  // it closes a row the corpus flagged UNKNOWN
+  assert.match(r.theOpenRow, /UNKNOWN/);
+  const prev = require(path.join(root, "data/depth2_balance_spectrum.json"));
+  const m2 = prev.rows.find((x) => x.m === 2);
+  assert.equal(m2.status, "UNKNOWN", "the prior certificate's open row");
+  assert.equal(m2.predictedSize, 200);
+
+  // the cyclic sweep: exactly one order works, the rest are proofs
+  const sweep = r.cyclicSweep;
+  const ok = sweep.filter((x) => x.status === "OPTIMAL");
+  assert.equal(ok.length, 1, "exactly one working cyclic order");
+  assert.equal(ok[0].order, 5);
+  assert.equal(ok[0].size, 200);
+  assert.deepEqual(r.result.infeasibleOrders, [2, 4, 6, 9, 12]);
+  assert.deepEqual(r.result.unknownOrders, [3]);
+  assert.equal(r.result.feasible, true);
+  assert.equal(r.result.size, 200);
+  assert.equal(r.result.size, 100 * 2, "forced size 100m");
+
+  // independent re-verification of the witness
+  const v = r.independentVerification;
+  assert.equal(v.linePairsChecked, 1600);
+  assert.equal(v.everyTileExactlyTwo, true);
+  assert.match(v.method, /without reference\s+to the model/);
+  assert.equal(r.witness.length, 200);
+  assert.equal(new Set(r.witness).size, 200, "distinct cells");
+  for (const c of r.witness) assert.ok(c >= 0 && c < 1600);
+
+  // the structure the solver was not told about
+  assert.deepEqual(v.rowCountProfile, { 6: 20, 4: 20 });
+  const h = v.rowSplitIsHemisystemPair;
+  assert.deepEqual(Object.keys(h).map(Number).sort(), [4, 6]);
+  for (const k of Object.keys(h)) {
+    assert.equal(h[k].size, 20);
+    assert.equal(h[k].isHemisystem, true, "both halves are hemisystems");
+    assert.deepEqual(h[k].meetsEveryLineIn, { 2: 40 });
+  }
+  assert.equal(20 * 6 + 20 * 4, r.result.size);
+  assert.match(v.structureFound, /complementary pair of hemisystems/);
+  assert.match(v.structureFound, /fed190d/);
+
+  // scope: it does not touch tau_2, and the five is not the other fives
+  assert.match(r.whatItDoesNotSettle, /does NOT move tau_2/);
+  assert.match(r.cautionAboutTheFive, /two\s+distinct fives/);
+  assert.match(r.boundary, /FULL problem without symmetry is not resolved/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
