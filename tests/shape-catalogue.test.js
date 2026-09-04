@@ -5385,3 +5385,60 @@ test("the cost quadrangle is a new tower-law base with tau_1 = 9", () => {
   assert.match(r.boundary, /CITED and applied, not re-proved/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the cost quadrangle is q = 3 only", () => {
+  const r = require(path.join(root, "data/cost_quadrangle_is_q3_only.json"));
+  assert.equal(r.schema, "holotrade.cost-quadrangle-q3-only.v1");
+  assert.equal(r.valid, true);
+
+  const byQ = Object.fromEntries(r.rows.map((x) => [x.q, x]));
+  assert.deepEqual(Object.keys(byQ).map(Number).sort((a, b) => a - b), [3, 5, 7]);
+
+  // the construction is q-general and the counts follow closed forms
+  for (const q of [3, 5, 7]) {
+    const x = byQ[q];
+    assert.equal(x.everyReflectionIsHyperbolic, true, "q=" + q);
+    assert.equal(x.classes, x.classesClosedForm, "q^2(q^2+1)/2 at q=" + q);
+    assert.equal(x.degrees.length, 1, "regular at q=" + q);
+    assert.equal(x.degrees[0], x.degreeClosedForm, "q(q^2-1)/2 at q=" + q);
+    assert.equal(x.classes, (q * q * (q * q + 1)) / 2);
+    assert.equal(x.degrees[0], (q * (q * q - 1)) / 2);
+  }
+
+  // q=3: a quadrangle
+  assert.deepEqual(byQ[3].stronglyRegular, [45, 12, 3, 3]);
+  assert.equal(byQ[3].isGQ, true);
+
+  // q=5: strongly regular but NOT a quadrangle
+  assert.deepEqual(byQ[5].stronglyRegular, [325, 60, 15, 10]);
+  assert.equal(byQ[5].isGQ, false, "the GQ identity fails");
+  {
+    const [N, k, l, m] = byQ[5].stronglyRegular;
+    const s = l + 1;
+    const t = m - 1;
+    assert.notEqual((s + 1) * (s * t + 1), N, "17 x 145 is nowhere near 325");
+    // but the SRG feasibility identity does hold
+    assert.equal(k * (k - l - 1), (N - k - 1) * m);
+  }
+
+  // q=7: not strongly regular -- and precisely how it fails
+  assert.equal(byQ[7].stronglyRegular, null);
+  assert.equal(byQ[7].isGQ, false);
+  assert.equal(byQ[7].lambdaValues.length, 1, "lambda is still constant");
+  assert.ok(byQ[7].muValues.length > 1, "it is mu that splits");
+  assert.deepEqual(byQ[7].muValues, [21, 28]);
+
+  // the two-step degradation, and the scope correction it forces
+  assert.match(r.twoStepDegradation.reading, /two-step degradation, not one/);
+  assert.match(r.everythingDownstreamIsQ3Only, /holds only at q = 3/);
+  assert.match(r.everythingDownstreamIsQ3Only, /34f2a84/);
+  assert.match(r.everythingDownstreamIsQ3Only, /8982d36/);
+  assert.match(r.everythingDownstreamIsQ3Only, /48e1841/);
+
+  // and the convergence with the corpus's own q=3 coincidence result
+  assert.match(r.secondIndependentArrival, /REGULUS side/);
+  assert.match(r.secondIndependentArrival, /\(q\+1\)\/2/);
+  assert.match(r.boundary, /NOT proved/);
+  assert.match(r.boundary, /only that q = 7 is\s+not/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});

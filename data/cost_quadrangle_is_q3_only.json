@@ -1,0 +1,93 @@
+{
+  "schema": "holotrade.cost-quadrangle-q3-only.v1",
+  "valid": true,
+  "whyAsked": "605f5e5 through 48e1841 built a long chain on one object at q = 3; this repository's rule is that a law with no exceptions on a single sample is not a finding until the sample is varied",
+  "constructionIsQGeneral": "the anomalies are the reflections -1 on a nondegenerate line L and +1 on L^perp, one per hyperbolic line of PG(3,q), paired by g ~ -g because -r_L = r_{L^perp}; defined for every odd q, and every reflection built this way is verified O'Meara-hyperbolic",
+  "rows": [
+    {
+      "q": 3,
+      "points": 40,
+      "hyperbolicLines": 90,
+      "classes": 45,
+      "degrees": [
+        12
+      ],
+      "everyReflectionIsHyperbolic": true,
+      "lambdaValues": [
+        3
+      ],
+      "muValues": [
+        3
+      ],
+      "stronglyRegular": [
+        45,
+        12,
+        3,
+        3
+      ],
+      "isGQ": true,
+      "classesClosedForm": 45,
+      "degreeClosedForm": 12
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "hyperbolicLines": 650,
+      "classes": 325,
+      "degrees": [
+        60
+      ],
+      "everyReflectionIsHyperbolic": true,
+      "lambdaValues": [
+        15
+      ],
+      "muValues": [
+        10
+      ],
+      "stronglyRegular": [
+        325,
+        60,
+        15,
+        10
+      ],
+      "isGQ": false,
+      "classesClosedForm": 325,
+      "degreeClosedForm": 60
+    },
+    {
+      "q": 7,
+      "points": 400,
+      "hyperbolicLines": 2450,
+      "classes": 1225,
+      "degrees": [
+        168
+      ],
+      "everyReflectionIsHyperbolic": true,
+      "lambdaValues": [
+        21
+      ],
+      "muValues": [
+        21,
+        28
+      ],
+      "stronglyRegular": null,
+      "isGQ": false,
+      "classesClosedForm": 1225,
+      "degreeClosedForm": 168
+    }
+  ],
+  "closedForms": {
+    "classes": "q^2 (q^2 + 1) / 2",
+    "degree": "q (q^2 - 1) / 2",
+    "note": "read off three data points, NOT proved here; the graph is REGULAR at every q tested"
+  },
+  "twoStepDegradation": {
+    "q3": "SRG(45,12,3,3) and it IS GQ(4,2)",
+    "q5": "SRG(325,60,15,10) -- strongly regular but NOT a quadrangle: s = lambda+1 = 16, t = mu-1 = 9 gives (s+1)(st+1) = 17 x 145, nowhere near 325",
+    "q7": "168-regular but NOT strongly regular at all",
+    "reading": "a two-step degradation, not one: the object does not simply fall apart at q = 5, it stays strongly regular and only fails the quadrangle identity; strong regularity itself goes at q = 7"
+  },
+  "everythingDownstreamIsQ3Only": "the Schlafli configuration (fe4fb77, f624d8f), the 27 extraspecial 2^{1+4}_- groups (34f2a84), the 200 ovoids and the dual defect against W(3,3) (8982d36), and tau_1 = 9 with the new tower base (48e1841) all rest on the graph being GQ(4,2), which holds only at q = 3; none should be quoted with a 'for odd q' attached",
+  "secondIndependentArrival": "the corpus already knows the quadrangle is a q = 3 coincidence from the REGULUS side -- the_quadrangle_is_the_q_equals_three_coincidence.json shows each all-isotropic regulus names (q+1)/2 polar pairs, an EDGE only at q = 3, and records isAGraph false from q = 5 on. That is the combinatorial route; this is the algebraic route through anticommutation and word length, reaching the same verdict and adding the SHAPE of the failure the prior file does not record",
+  "boundary": "exact at q = 3, 5, 7: hyperbolic lines enumerated completely, every reflection checked to be O'Meara-hyperbolic, adjacency computed from the matrices rather than a geometric shortcut, and lambda/mu taken over ALL pairs. The closed forms are read off three data points and NOT proved. No q > 7 is tested, so 'not strongly regular for all q >= 7' is NOT established -- only that q = 7 is not. tau_2 is untouched"
+}
