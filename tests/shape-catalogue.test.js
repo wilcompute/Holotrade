@@ -4959,3 +4959,60 @@ test("the 27 lines carry the Schlafli graph and are Pauli groups", () => {
   assert.match(r.boundary, /NO claim is made that these 27 groups are Pauli/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the cost model reconstructs the cubic surface", () => {
+  const r = require(path.join(
+    root,
+    "data/the_cost_model_reconstructs_the_cubic_surface.json"
+  ));
+  assert.equal(r.schema, "holotrade.cost-model-is-the-cubic-surface.v1");
+  assert.equal(r.valid, true);
+
+  // all three Schlafli numbers, from a predicate with no geometry in it
+  const t = r.theThreeNumbers;
+  assert.equal(t.tritangentPlanes, 45);
+  assert.equal(t.lines, 27);
+  assert.equal(t.doubleSixes, 36);
+  assert.match(r.whatTheCostModelKnows, /nothing geometric/);
+  assert.match(r.whatTheCostModelKnows, /no cubic\s+surface/);
+
+  // the rigid test: 36 is not reachable by a wrong construction
+  const g = r.theRigidTest;
+  assert.deepEqual(g.meetDegree, [10], "each line meets 10");
+  assert.deepEqual(g.skewDegree, [16], "and is skew to 16");
+  assert.equal(g.meetDegree[0] + g.skewDegree[0], 26, "degrees sum to n-1");
+  assert.equal(g.sixers, 72);
+  assert.deepEqual(g.partnersPerSixer, { 1: 72 }, "exactly one partner each");
+  assert.equal(g.doubleSixes, 36);
+  assert.equal(g.sixers / 2, g.doubleSixes, "72 sixers pair into 36");
+  assert.deepEqual(g.linesCovered, { 12: 36 });
+  assert.equal(g.looseReadingGives, 756);
+  assert.notEqual(
+    g.looseReadingGives,
+    g.doubleSixes,
+    "the loose definition is off by 21x -- the count is not robust to error"
+  );
+
+  // it chains onto the earlier quadrangle results
+  const gq = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(gq.quadrangle.points, t.tritangentPlanes);
+  assert.equal(gq.quadrangle.lines, t.lines);
+  const pl = require(path.join(root, "data/the_27_lines_are_pauli_groups.json"));
+  assert.equal(pl.theSchlafliGraph.lines, t.lines);
+  assert.equal(pl.extraspecial.order, 32, "qubit-shaped, order 32");
+
+  // the cross-track citations are present and the limit is stated
+  assert.ok(r.alreadyInTheCorpus.some((s) => /BT810/.test(s)));
+  assert.ok(r.alreadyInTheCorpus.some((s) => /THE_27_FOLD_WAY/.test(s)));
+  assert.ok(r.alreadyInTheCorpus.some((s) => /0d8d33e/.test(s)));
+  assert.ok(r.alreadyInTheCorpus.some((s) => /4952a3b/.test(s)));
+  assert.match(r.whatIsNew, /COST FUNCTION produces them/);
+  assert.match(r.twoPauliGroupsOnOne27, /order-27 exponent-3/);
+  assert.match(r.twoPauliGroupsOnOne27, /2\^\{1\+4\}_-/);
+  assert.match(r.boundary, /by INVARIANTS/);
+  assert.match(r.boundary, /NOT by an explicit equivariant\s+bijection/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
