@@ -11167,5 +11167,59 @@
       "source": "cli",
       "timestamp": "2026-09-04T13:40:47.689Z"
     }
+  },
+  {
+    "id": "3941dbfd-cc02-4911-ae59-6074271461df",
+    "question": "Which commit fixes cross-platform F20 Payne certificate hashing?",
+    "answer": "Commit 73ed0ff canonicalizes CRLF to LF before atlas source SHA-256, regenerates the unchanged theorem packet at digest 1153ae29ea6df5ff8d299b406fa864d01233662c37f67667ed089afe3cd4f099, updates the matching test, and records the repair in the session handoff.",
+    "timestamp": "2026-09-04T13:41:22.620Z",
+    "tags": [
+      "certificate",
+      "ci",
+      "commit",
+      "f20",
+      "hashing",
+      "payne",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "73ed0ff",
+      "status": "active"
+    },
+    "commitHashes": [
+      "73ed0ff"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-04T13:41:22.622Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "hashing"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T13:41:22.617Z"
+    }
   }
 ]
