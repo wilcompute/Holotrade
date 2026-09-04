@@ -5016,3 +5016,78 @@ test("the cost model reconstructs the cubic surface", () => {
   assert.match(r.boundary, /NOT by an explicit equivariant\s+bijection/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the 45-slot ROM bijection is explicit and verified", () => {
+  const r = require(path.join(root, "data/the_45_slot_rom_bijection.json"));
+  assert.equal(r.schema, "holotrade.45-slot-rom-bijection.v1");
+  assert.equal(r.valid, true);
+
+  // two independent constructions, same shape
+  assert.equal(r.sideA.points, 45);
+  assert.equal(r.sideB.points, 45);
+  assert.equal(r.sideA.lines, 27);
+  assert.equal(r.sideB.lines, 27);
+  assert.deepEqual(r.sideA.degrees, [12]);
+  assert.deepEqual(r.sideB.degrees, [12]);
+  assert.equal(r.sideB.weightSplit.weight2, 18);
+  assert.equal(r.sideB.weightSplit.weight4, 27);
+  assert.equal(
+    r.sideB.weightSplit.weight2 + r.sideB.weightSplit.weight4,
+    r.sideB.points
+  );
+  assert.match(r.independence, /nothing is shared/);
+
+  // the verification, all three parts
+  const v = r.verification;
+  assert.equal(v.bijective, true);
+  assert.equal(v.edgePreservingBothDirections, true);
+  assert.equal(v.linesMappedOntoLines, true);
+  assert.match(v.method, /SET EQUALITY, not containment/);
+
+  // the table itself is complete, well-formed and a genuine bijection
+  assert.equal(r.table.length, 45);
+  const slots = new Set(r.table.map((e) => e.slot));
+  assert.equal(slots.size, 45, "every slot used exactly once");
+  for (const e of r.table) {
+    assert.ok(e.slot >= 0 && e.slot < 45);
+    assert.equal(e.h34Point.length, 4);
+    assert.ok(
+      e.h34Point.every((x) => x >= 0 && x <= 3),
+      "GF(4) coordinates"
+    );
+    assert.equal(
+      e.h34Point.filter((x) => x !== 0).length % 2,
+      0,
+      "H(3,4) points have even weight"
+    );
+    assert.equal(e.spMatrix.length, 4);
+    for (const row of e.spMatrix) {
+      assert.equal(row.length, 4);
+      assert.ok(row.every((x) => x >= 0 && x <= 2), "F_3 entries");
+    }
+  }
+  // every Sp matrix is distinct too
+  const mats = new Set(r.table.map((e) => JSON.stringify(e.spMatrix)));
+  assert.equal(mats.size, 45, "45 distinct instructions");
+
+  // the line sets on both sides: 27 lines of 5, each point on 3
+  for (const key of ["linesA", "linesB"]) {
+    const L = r[key];
+    assert.equal(L.length, 27);
+    const per = new Map();
+    for (const line of L) {
+      assert.equal(line.length, 5, key + " lines have 5 points");
+      for (const p of line) per.set(p, (per.get(p) || 0) + 1);
+    }
+    assert.equal(per.size, 45);
+    for (const [, c] of per) assert.equal(c, 3, key + ": 3 lines per point");
+  }
+
+  // it closes the gap both tracks named
+  assert.match(r.theGapNamedTwice, /fe4fb77/);
+  assert.match(r.theGapNamedTwice, /fail closed/);
+  assert.match(r.whatThisUnblocks, /27 banks of 5/);
+  assert.match(r.aChoiceNotCanonical, /THIS certificate is the\s+contract/);
+  assert.match(r.boundary, /NO claim that this particular\s+table is equivariant/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
