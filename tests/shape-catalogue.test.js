@@ -5510,3 +5510,65 @@ test("the whole machine is one projective space: 121 = 40 + 45 + 36", () => {
   assert.match(r.boundary, /NOT built at q = 5 or 7/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the partition's first leg is LINES, not points -- and the 36 is proved", () => {
+  const r = require(path.join(
+    root,
+    "data/partition_is_lines_not_points.json"
+  ));
+  assert.equal(r.schema, "holotrade.partition-is-lines-not-points.v1");
+  assert.equal(r.valid, true);
+
+  // the correction is explicit and directional
+  const c = r.correction;
+  assert.equal(c.of, "eb6cfe8");
+  assert.equal(c.equivariantToPoints, false, "NOT the points");
+  assert.equal(c.equivariantToLines, true, "it is the lines");
+  assert.match(c.whyItIsWrong, /decomposable bivector/);
+
+  // and the methodological point: invariants agreed for both candidates
+  const inv = r.invariantsCouldNotCatchIt;
+  assert.deepEqual(inv.subdegreesIsotropic, [1, 12, 27]);
+  assert.deepEqual(inv.subdegreesW33Points, [1, 12, 27]);
+  assert.deepEqual(inv.subdegreesW33Lines, [1, 12, 27]);
+  assert.equal(inv.allIdentical, true, "subdegrees cannot separate them");
+  assert.match(inv.lesson, /only\s+the explicit equivariant map separates them/);
+
+  // the last leg, upgraded from count-match to proof
+  const l = r.lastLegProved;
+  assert.deepEqual(l.subdegreesNonsquare, [1, 15, 20]);
+  assert.deepEqual(l.subdegreesSpreads, [1, 15, 20]);
+  assert.equal(l.equivariantBijection, true);
+  assert.equal(l.intertwinesAllGenerators, true);
+  assert.equal(l.generators, 80);
+  assert.match(l.wasPreviously, /COUNT MATCH ONLY/);
+  // and the prior certificate did label it that way
+  const prev = require(path.join(
+    root,
+    "data/machine_is_one_projective_space.json"
+  ));
+  assert.match(prev.atQ3.nonsquare.status, /COUNT MATCH ONLY/);
+
+  // the corrected partition, all three legs with a status
+  const p = r.correctedPartition;
+  assert.equal(p.total, 121);
+  assert.equal(p.isotropic.count, 40);
+  assert.equal(p.square.count, 45);
+  assert.equal(p.nonsquare.count, 36);
+  assert.equal(
+    p.isotropic.count + p.square.count + p.nonsquare.count,
+    p.total
+  );
+  assert.equal(p.isotropic.is, "the LINES of W(3,3)");
+  assert.equal(p.nonsquare.is, "the 36 spreads");
+  for (const k of ["isotropic", "square", "nonsquare"]) {
+    assert.match(p[k].status, /proved/, k + " is proved, not matched");
+  }
+  assert.match(p.whereTheOpcodesSit, /its DUAL/);
+  assert.match(p.whereTheOpcodesSit, /not self-dual at odd q/);
+
+  // the refutation was exhaustive, not a failed lucky search
+  assert.match(r.boundary, /failed EXHAUSTIVE search over all 40/);
+  assert.match(r.whatSurvivesUnchanged, /none of those touched\s+the mislabelled leg/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
