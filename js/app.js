@@ -1376,6 +1376,8 @@
       holobox: ["data/e8_holobox_engine_goursat_bridge.json", "holotrade.e8-holobox-engine-goursat-bridge.v1"],
       two216: ["data/w33_circuit_hemisystem_gset_bridge.json", "holotrade.w33-circuit-hemisystem-gset-no-go.v1"],
       fiveFront: ["data/w33_five_front_breakthrough.json", "holotrade.w33-five-front-breakthrough.v2"],
+      f20Qutrit: ["data/w33_f20_qutrit_block_bridge.json", "holotrade.w33-f20-qutrit-block-bridge.v1"],
+      f20QutritFormal: ["data/w33_f20_qutrit_block_router_formal.json", "holotrade.w33-f20-qutrit-block-router-formal.v1"],
     };
     try {
       const entries = await Promise.all(Object.entries(sources).map(async ([key, [url, schema]]) => {
@@ -1401,12 +1403,13 @@
     const panel = $("unitaryBackendClosure");
     if (!panel) return;
     if (!unitaryBackendCertificates) {
-      panel.innerHTML = "<b>Backend closure</b> · loading twelve independent exact certificates…";
+      panel.innerHTML = "<b>Backend closure</b> · loading fourteen independent exact/formal certificates…";
       return;
     }
     const {
       closure, canonical, voltage, reversible, fractal, sentinel,
       homologyCode, sentinelShadow, bicolour, holobox, two216, fiveFront,
+      f20Qutrit, f20QutritFormal,
     } = unitaryBackendCertificates;
     if (closure.stableClosure.stableDimensionEachSide !== 4160 ||
         closure.stableClosure.chainLevelIntertwinerBuilt !== false ||
@@ -1445,7 +1448,18 @@
         fiveFront.fibreProduct.abstractIsotypicIsomorphism !== true ||
         fiveFront.fibreProduct.explicitIntertwinerBuilt !== false ||
         fiveFront.microvm.generatorCount !== 2 ||
-        fiveFront.microvm.quotientStates !== 36) {
+        fiveFront.microvm.quotientStates !== 36 ||
+        f20Qutrit.status !== "PASS" ||
+        f20Qutrit.cyclicQutritBlock.plainPermutationImage.order !== 10 ||
+        f20Qutrit.cyclicQutritBlock.localCliffordCoordinateImage.order !== 20 ||
+        f20Qutrit.cyclicQutritBlock.addressedPauliAction.degree !== 40 ||
+        f20Qutrit.cyclicQutritBlock.addressedPauliAction.groupOrder !== 20 ||
+        f20Qutrit.fibreProductF20.conjugationExponent !== 3 ||
+        f20Qutrit.checks.commonF20Presentation !== true ||
+        f20Qutrit.checks.missingMultiplierRequiresClifford !== true ||
+        f20QutritFormal.status !== "PASS" ||
+        f20QutritFormal.positive.proved !== true ||
+        f20QutritFormal.negativeControl.counterexample !== true) {
       panel.innerHTML = "<b>Backend closure</b> · certificate theorem flags disagree";
       return;
     }
@@ -1473,7 +1487,12 @@
       "canonical 1,296-state fibre product has stabilizer <b>F₂₀</b> and contains <b>3×81 + 3×64 = 435</b> building " +
       "dimensions, exactly matching the corrected 27-chart × 40-line obstruction carrier; the cross-Hom dimension " +
       "is <b>18</b>. A formal dual-carrier router executes both native generator pairs but exposes only the common " +
-      "36-state quotient across the fork—no 216-state conversion is invented. Finally, one W33 router digit and the " +
+      "36-state quotient across the fork—no 216-state conversion is invented. Its <b>F₂₀</b> fibre stabilizer now " +
+      "acts presentation-for-presentation on the cyclic <b>[[5,1,3]]₃</b> block: bare permutations give D₁₀, while " +
+      "local qutrit Clifford compensation restores the order-four affine multiplier. GAP freezes a faithful " +
+      "<b>40-address Pauli action</b>, and Yosys proves T⁵=M⁴=1 and MTM⁻¹=T³ with a failing missing-Clifford control. " +
+      "This is protected finite control, not a router-state/codeword identification or a fault-tolerant recode. " +
+      "Finally, one W33 router digit and the " +
       "engine form <b>806,400</b> logical states; connected routing is a forced direct product, while the three full-router " +
       "parity pullbacks are noncanonical. None of these facts binds a host or authorizes dispatch.";
   }

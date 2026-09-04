@@ -225,6 +225,7 @@ tests; the hardware rows have additional Yosys SAT proofs.
 | common quotient and carrier fork | both 216-state carriers fibre canonically six-to-one over the same 36 regular spreads, with the two nonconjugate \(S_5<S_6\) fibre types | the exceptional outer automorphism of abstract \(S_6\) is not realized by a substrate automorphism, so this is a fork rather than a gauge choice |
 | fibre-product building bridge | the canonical \(1{,}296=36\cdot6\cdot6\) carrier has stabilizer \(F_{20}=C_5{:}C_4\) and building block \(3\cdot81+3\cdot64=435\), exactly matching the corrected 1,080 obstruction carrier; the cross-Hom dimension is 18 | semisimplicity gives an abstract isotypic isomorphism; the explicit \(1{,}296\times1{,}080\) intertwiner remains unbuilt |
 | dual-carrier RTL router | both native generator actions preserve the same 36-state type quotient; cross-carrier adaptation returns only that quotient | Yosys proves all valid carrier/opcode/state inputs and rejects a fabricated-state control; this is finite combinational logic, not a processor or fabricated device |
+| \(F_{20}\) protected-qutrit control | bare permutations of the cyclic \([[5,1,3]]_3\) block give only \(D_{10}\); local \(SL(2,3)\) Clifford compensation restores \(F_{20}\), with an explicit generator map satisfying \(T^5=M^4=1\) and \(MTM^{-1}=T^3\) | the faithful 40-address Pauli controller is Yosys-proved, but this is a code automorphism—not a router-state/codeword identification, local 20-to-240 embedding, threshold, or fault-tolerant recode |
 
 The cross-prime quotient is especially rigid. If \(Q\) counts neighbours from one eight-state fibre into
 another, then
@@ -306,6 +307,37 @@ transition; an adapter request exposes only the common 36-state quotient. The
 positive Yosys proof covers the complete declared input space, and a negative
 control that fabricates a cross-state produces a counterexample.
 
+The fibre stabilizer is now more than scheduler metadata. On the cyclic
+five-qutrit block, bare coordinate permutations realize only the dihedral
+subgroup \(D_{10}\). The missing affine multiplier is recovered by applying the
+same determinant-one local qutrit Clifford on all five sites together with an
+explicit stabilizer-row change. GAP then gives a presentation-matched
+isomorphism from the router stabilizer to these physical Pauli-space code
+automorphisms. The resulting faithful action on five sites times eight
+nonidentity one-qutrit Paulis is compiled into a 40-address RTL controller;
+Yosys proves closure and the full \(F_{20}\) presentation, while a controller
+with the Clifford compensation removed fails. This is a native protected
+control plane for a block, not a claim that the 1,296 router states are
+codewords.
+
+### The instruction-cost exception has a geometric address
+
+The current all-transvection Cayley metric uses all 80 nontrivial symplectic
+transvections in \(Sp(4,3)\), i.e. both scalar classes. Exhaustive enumeration
+shows that length exceeds \(\operatorname{rank}(g-I)\) exactly when \(g\) acts
+as \(-1\) on a nonzero nondegenerate subspace and as \(+1\) on its orthogonal
+complement. In dimension four this gives 90 hyperbolic-line reflections plus
+the central \(-I\): all 91 anomalies from one rule. Each hyperbolic line has
+15 residue-two elements, but only its distinguished reflection is expensive;
+the earlier “all hyperbolic elements are expensive” reading is retracted. The
+rule fails at \(q=2\), where \(-1=+1\).
+
+This sits beside, rather than superseding, Ellers's exact classification of
+\(\lambda\)-length using transvections from one fixed conjugacy class in
+\(Sp(2n,3)\). Our 80-generator, two-class word metric is different, but that
+paper is direct prior art and is now cited explicitly: [E. W. Ellers, *Linear
+Algebra and its Applications* 202 (1994), 1–23](https://doi.org/10.1016/0024-3795(94)90181-3).
+
 The general coordinate predicate uses 544 iCE40 LUT4s versus 1,174 for the independent row ROM. The
 affine relation compiler cuts the same logical-address decision to 171 LUT4s versus 720 for that general
 predicate under the same no-ABC flow. Its separate reversible lift uses 2,400 CNOTs in an exactly optimal
@@ -315,6 +347,7 @@ Reproduce the complete packet with:
 ```bash
 npm run verify:e8-backend
 npm run verify:e8-hardware
+npm run verify:w33-f20-qutrit
 ```
 
 The upper bound \((q^3+q+2)/2\), sharp at \(q=2,3\), is published finite-geometry prior art; the contribution

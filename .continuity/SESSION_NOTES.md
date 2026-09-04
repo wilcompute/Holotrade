@@ -43,19 +43,27 @@ a native protected-qutrit action and publish the evidence through HoloTrade.
 - Yosys formal freezer: PASS; positive UNSAT and unsafe control SAT; SHA-256
   `03a5c46a1dbe05b59307c49142833657557c9a1c6d3d2d88fde3d93bcbb9fbce`.
 - F20/qutrit GAP/Node freezer: PASS; D10 versus F20 and physical Pauli lift;
-  SHA-256 `3f30670ca5d31aedd8cd1dca785c05a75de125222184fe48b794530be3c47e99`.
+  canonical certificate SHA-256
+  `e8d7044c15eaba12ae115c4e1c0ca420ac349514ac06571e2042b095be730b3b`.
 - F20/qutrit Yosys freezer: PASS; 1,950-variable positive proof and
-  234-variable mutation counterexample; SHA-256
-  `fae8ad400d906a408195b7a790e267fbbc3ff0b4a6ec45c68d2599821738ad5b`.
-- Focused F20/qutrit contract tests: 4/4 PASS.
+  234-variable mutation counterexample; canonical certificate SHA-256
+  `eafbd89cb2db7d5e1e9430750e55438864bda671eb0be3b29cfe36e58fc429da`.
+- Focused F20/qutrit contract tests: 5/5 PASS, including documentation and
+  live-site publication surfaces.
+- Full exact backend regeneration reached 77/78 before exposing a stale
+  dual-carrier source hash caused by the representation-canonicality rewrite;
+  the dual-carrier formal certificate was regenerated without weakening its
+  Yosys proof or mutation control, and its focused lane is now 5/5 PASS.
 - JavaScript syntax and JSON parsing: PASS.
 - `docs/holotrade.tex` compiles to `docs/holotrade.pdf` with warnings only.
 
 ## Reconciliation
 
-- HoloTrade `origin/master` was fetched through GitKraken. Its commits after
-  this worktree's base touch attestation, storage, placement, and depth-5 K14
-  files, not this packet's changed paths.
+- HoloTrade `origin/master` was fetched through GitKraken. The base theorem and
+  first F20 bridge packet were merged at `ea0ce53`; the later 31-commit delta
+  adds the projective 45-slot slow path, `GQ(4,2)` ROM, 1296-state fibre
+  hypervisor, capability machine, and 27-state Pauli-torsor theorem without
+  modifying this packet's publication paths.
 - W33-Theory `origin-https/master` was fetched through GitKraken and reviewed
   read-only because that checkout contains a large parallel dirty tree.
 - Existing W33 universal-VM, heterogeneous-IPC, checkpoint, and modular M3
@@ -70,5 +78,7 @@ a native protected-qutrit action and publish the evidence through HoloTrade.
 ## Publication state
 
 The base theorem packet is committed on `codex-five-front-router` as `bec0d62`
-with handoff commit `a404f5a`. The F20/qutrit packet, updated documentation, and
-integration with current `origin/master` remain to be committed and pushed.
+with handoff commit `a404f5a`. The F20/qutrit theorem and hardware packet were
+merged to `master` at `ea0ce53`. This follow-up publication packet normalizes
+the two top-level certificate hashes, exposes the theorem in the README, paper,
+and live evidence panel, and adds the focused freeze/verify package commands.

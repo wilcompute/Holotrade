@@ -129,7 +129,7 @@ function build(){
     },
     boundary:"This is an exact finite stabilizer-code automorphism and router-control interface. It does not identify the 1,296 fibre-product states with qutrit codewords, does not make the nonlocal 20-to-240 embedding local, and does not close the physical calibration, threshold, or fault-tolerant recode gates.",
   };
-  return {...body,sha256:`sha256:${crypto.createHash("sha256").update(fiveFront.canonical(body)).digest("hex")}`};
+  return {...body,sha256:crypto.createHash("sha256").update(fiveFront.canonical(body)).digest("hex")};
 }
 
 function caseFunction(name,table){

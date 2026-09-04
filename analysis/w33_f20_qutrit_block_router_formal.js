@@ -75,7 +75,7 @@ function build(){
     },
     boundary:"This proves the finite forty-address controller and its presentation. It is not a timing closure, physical qutrit device, threshold measurement, or fault-tolerant recode proof.",
   };
-  return {...body,sha256:`sha256:${crypto.createHash("sha256").update(canonical(body)).digest("hex")}`};
+  return {...body,sha256:crypto.createHash("sha256").update(canonical(body)).digest("hex")};
 }
 function main(){
   const packet=build();
