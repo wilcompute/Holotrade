@@ -1,0 +1,44 @@
+{
+  "schema": "holotrade.cheap-opcodes-are-ovoids.v1",
+  "valid": true,
+  "theQuestionNobodyAsked": "every major result in this corpus turns on ovoid-or-not -- tau_1, tau_2, the hemisystems, the tower law -- and W(3,3) has 36 spreads but NO ovoid (Thas, odd q); 605f5e5 produced a SECOND quadrangle on the 45 expensive instructions and nobody asked it the same question",
+  "dualDefects": {
+    "cheapIndex": {
+      "geometry": "W(3,3)",
+      "spreads": 36,
+      "ovoids": 0,
+      "source": "Thas, odd q"
+    },
+    "expensiveSet": {
+      "geometry": "GQ(4,2)",
+      "ovoids": 200,
+      "spreads": 0
+    },
+    "reading": "exactly dual defects: the instruction geometry partitions but cannot be transversally covered; the cost geometry covers but cannot be partitioned"
+  },
+  "orbitSplit": {
+    "sizes": [
+      40,
+      160
+    ],
+    "byWhat": "PSp(4,3) acting by CONJUGATION on the 45, valid because length and residue are class functions",
+    "literature": "classical for H(3,4): 200 ovoids in two orbits 40 + 160, the 40 called PLANE ovoids as sections by the 40 non-tangent planes -- CITED, and matched exactly, but produced here by the machine's own symmetry group"
+  },
+  "sameSet": {
+    "subdegreesOvoids": [
+      1,
+      12,
+      27
+    ],
+    "subdegreesW33Points": [
+      1,
+      12,
+      27
+    ],
+    "equivariantBijection": true,
+    "generatorsChecked": 80,
+    "reading": "1+12+27 is exactly the split W33-Theory's THE_27_FOLD_WAY (Passes 368-371) builds its torsor on. Matching subdegrees is only evidence, so the map is BUILT: both actions are transitive so psi is forced once one value is chosen, and the content is that a consistent choice EXISTS, checked against every generator. The two 40-sets are the same PSp(4,3)-set"
+  },
+  "machineReading": "an ovoid of GQ(4,2) is 9 expensive instructions meeting every one of the 27 ROM banks exactly once -- a minimal transversal cover of the whole slow path. 40 of the 200 are distinguished, and those 40 ARE the cheap opcode axes. So every cheap opcode canonically names a 9-element minimal cover of the 45-instruction slow path: the fast path indexes the slow path's canonical covers, and nobody designed that. The absence of a spread says the complementary move is impossible -- the 45 cannot be partitioned into 9 disjoint banks, so a ROM can cover but never cleanly split them",
+  "boundary": "exhaustive: 200 ovoids and 0 spreads by complete exact-cover search; orbits by closure under all 80 conjugation generators; subdegrees as orbits on ordered pairs; the equivariant bijection verified against EVERY generator, not sampled. CITED not derived: the classical 200 = 40 + 160 with the 40 as plane ovoids; Thas for W(3,3) having no ovoid at odd q; THE_27_FOLD_WAY for the 1+12+27 reading. Establishing psi does NOT establish that the 27 here is the same 27 as that file's -- that remains open. tau_2 is untouched"
+}

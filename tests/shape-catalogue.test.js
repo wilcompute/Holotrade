@@ -5091,3 +5091,63 @@ test("the 45-slot ROM bijection is explicit and verified", () => {
   assert.match(r.boundary, /NO claim that this particular\s+table is equivariant/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the cheap opcodes are the expensive geometry's ovoids", () => {
+  const r = require(path.join(root, "data/cheap_opcodes_are_ovoids.json"));
+  assert.equal(r.schema, "holotrade.cheap-opcodes-are-ovoids.v1");
+  assert.equal(r.valid, true);
+
+  // exactly dual defects
+  const d = r.dualDefects;
+  assert.equal(d.cheapIndex.geometry, "W(3,3)");
+  assert.equal(d.cheapIndex.spreads, 36);
+  assert.equal(d.cheapIndex.ovoids, 0, "Thas: no ovoid at odd q");
+  assert.equal(d.expensiveSet.geometry, "GQ(4,2)");
+  assert.equal(d.expensiveSet.ovoids, 200);
+  assert.equal(d.expensiveSet.spreads, 0, "and no spread");
+  // the inversion is the point
+  assert.ok(d.cheapIndex.spreads > 0 && d.cheapIndex.ovoids === 0);
+  assert.ok(d.expensiveSet.ovoids > 0 && d.expensiveSet.spreads === 0);
+  assert.match(d.reading, /dual defects/);
+
+  // the orbit split matches the literature, via the machine's own group
+  assert.deepEqual(r.orbitSplit.sizes, [40, 160]);
+  assert.equal(
+    r.orbitSplit.sizes.reduce((a, b) => a + b, 0),
+    d.expensiveSet.ovoids,
+    "the orbits account for all 200"
+  );
+  assert.match(r.orbitSplit.byWhat, /CONJUGATION/);
+  assert.match(r.orbitSplit.byWhat, /class functions/);
+  assert.match(r.orbitSplit.literature, /CITED/);
+
+  // same PSp-set: subdegrees AND an equivariant bijection
+  const s = r.sameSet;
+  assert.deepEqual(s.subdegreesOvoids, [1, 12, 27]);
+  assert.deepEqual(s.subdegreesW33Points, [1, 12, 27]);
+  assert.deepEqual(s.subdegreesOvoids, s.subdegreesW33Points);
+  assert.equal(
+    s.subdegreesOvoids.reduce((a, b) => a + b, 0),
+    40,
+    "subdegrees sum to the degree"
+  );
+  assert.equal(s.equivariantBijection, true, "built, not just matched");
+  assert.equal(s.generatorsChecked, 80, "checked on every generator");
+  assert.match(s.reading, /Matching subdegrees is only\s+evidence/);
+
+  // an ovoid is a minimal cover of the 27 banks: 9 points x 3 lines = 27
+  const gq = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(gq.quadrangle.points, 45);
+  assert.equal(gq.quadrangle.lines, 27);
+  assert.equal(9 * 3, gq.quadrangle.lines, "9 points x 3 lines each = 27 banks");
+  assert.match(r.machineReading, /every cheap opcode canonically names a/);
+  assert.match(r.machineReading, /cover but never cleanly split/);
+
+  // and the honest limit on the cross-track 27
+  assert.match(r.boundary, /verified\s+against EVERY generator, not sampled/);
+  assert.match(r.boundary, /does NOT establish that the 27/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
