@@ -5888,3 +5888,52 @@ test("why depth five resists is a property of the instance", () => {
   assert.match(r.diagnosis, /no unit clause anywhere/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the complement half is demonstrated, not just asserted", () => {
+  const r = require(path.join(root, "data/complement_half_demonstrated.json"));
+  assert.equal(r.schema, "holotrade.complement-half-demonstrated.v1");
+  assert.equal(r.valid, true);
+
+  // the prior file did claim it constructively
+  const prev = require(path.join(root, "data/balance_spectrum_complete.json"));
+  assert.match(prev.boundary, /constructive/);
+  assert.match(r.whatWasAsserted, /calling something constructive and\s+constructing it are different/);
+
+  // the check itself: both halves, all tiles, from the committed artefact
+  const c = r.complementCheck;
+  assert.equal(c.readFromDisk, true);
+  assert.equal(c.witnessSource, "data/m_equals_two_balanced_exists.json");
+  assert.equal(c.tilesRecounted, 1600);
+  assert.equal(c.X.size, 200);
+  assert.equal(c.X.m, 2);
+  assert.deepEqual(c.X.tileCounts, { 2: 1600 });
+  assert.equal(c.X.isBalanced, true);
+  assert.equal(c.complement.size, 1400);
+  assert.equal(c.complement.m, 14);
+  assert.deepEqual(c.complement.tileCounts, { 14: 1600 });
+  assert.equal(c.complement.isBalanced, true);
+  assert.equal(c.sizeIs100m, true);
+  // the two sizes partition the grid, and each is 100m
+  assert.equal(c.X.size + c.complement.size, 1600);
+  assert.equal(c.X.size, 100 * c.X.m);
+  assert.equal(c.complement.size, 100 * c.complement.m);
+  assert.equal(c.X.m + c.complement.m, 16, "m + (16-m)");
+  // and 14 really is in the spectrum the prior file claimed
+  assert.ok(prev.spectrum.includes(14));
+
+  // the C3 row, with its budget recorded
+  const c3 = r.c3Row;
+  assert.equal(c3.symmetry, "C3");
+  assert.equal(c3.budgetSeconds, 430);
+  assert.ok(c3.budgetSeconds > c3.priorBudgetSeconds);
+  assert.equal(c3.priorStatus, "UNKNOWN");
+  assert.equal(c3.loadBearing, false);
+  const bal = require(path.join(root, "data/m_equals_two_balanced_exists.json"));
+  assert.equal(bal.result.feasible, true, "m=2 settled by C5 regardless");
+
+  // honest about size and limits
+  assert.match(r.whyItIsWorthDoing, /neither item moves a bound/);
+  assert.match(r.boundary, /AS COMMITTED, read\s+from disk/);
+  assert.match(r.boundary, /NOT\s+evidence that no C3-invariant/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});

@@ -1,0 +1,40 @@
+{
+  "schema": "holotrade.complement-half-demonstrated.v1",
+  "valid": true,
+  "whatWasAsserted": "c74fbb1 justified m = 9..14 by complementation and called it CONSTRUCTIVE, but never took a committed witness and exhibited its complement; calling something constructive and constructing it are different, and the second is cheap here",
+  "complementCheck": {
+    "witnessSource": "data/m_equals_two_balanced_exists.json",
+    "readFromDisk": true,
+    "X": {
+      "size": 200,
+      "tileCounts": {
+        "2": 1600
+      },
+      "isBalanced": true,
+      "m": 2
+    },
+    "complement": {
+      "size": 1400,
+      "tileCounts": {
+        "14": 1600
+      },
+      "isBalanced": true,
+      "m": 14
+    },
+    "sizeIs100m": true,
+    "tilesRecounted": 1600
+  },
+  "c3Row": {
+    "m": 2,
+    "symmetry": "C3",
+    "orbitVars": 646,
+    "budgetSeconds": 430,
+    "status": "UNKNOWN",
+    "priorBudgetSeconds": 200,
+    "priorStatus": "UNKNOWN",
+    "loadBearing": false,
+    "note": "nothing mathematical hangs on it -- m = 2 is feasible by the C5 witness -- but the sweep table should not look abandoned at the first budget that failed"
+  },
+  "whyItIsWorthDoing": "neither item moves a bound. The first converts an assertion into a demonstration where the gap between them was one function call -- exactly the kind of gap that later gets quoted as though it had been checked. The second puts a number on an UNKNOWN so the next person knows 430 seconds was already spent",
+  "boundary": "the complement verification is exhaustive over all 1600 tiles and uses the witness AS COMMITTED, read from disk rather than recomputed, so it checks the artefact the corpus actually holds. The C3 result is a solver outcome at 430 seconds and is NOT evidence that no C3-invariant 2-balanced set exists. tau_2 is untouched"
+}
