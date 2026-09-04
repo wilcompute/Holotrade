@@ -1,0 +1,278 @@
+{
+  "schema": "holotrade.stale-frontier-audit-semantic.v1",
+  "valid": true,
+  "theExclusion": "110 is excluded by W33-Theory commit 43049db, certificate 1513d61, by the self-duality / centre argument; the interval is [111, 115]. CITED, not reproduced here",
+  "whatThePriorAuditDidNotDo": {
+    "commit": "4b23ec0",
+    "matched": "the literal interval string '[110, 115]'",
+    "filesFound": 22,
+    "limitation1": "files posing 110 as open in prose, or quoting a different stale interval such as [110, 121], were invisible to it",
+    "limitation2": "it was a REPORT -- nothing applied the fix, and the stale statements are still there",
+    "consequence": "the hazard CLAUDE.md names, a question sitting open while its answer is a committed theorem, is live right now, and one cause is that the audit meant to catch it was pattern-limited"
+  },
+  "classificationRule": {
+    "STALE": "the field states tau_2's frontier or openness with lower bound 110, or asks whether 110 is attained as though undecided",
+    "DEFENSIBLE": "the field uses 110 as a shadow or counting bound, bounds a METHOD rather than tau_2, quotes a historical or published interval labelled as such, or acknowledges the exclusion",
+    "staleMarks": [
+      "tau_2 (?:remains|stays|is) OPEN in \\[110",
+      "tau_2 (?:remains|stays|is) open in \\[110",
+      "open in \\[110",
+      "whether \\|X\\| = 110 is attained",
+      "is the double-count bound 110 attained"
+    ],
+    "defensibleMarks": [
+      "shadow bound",
+      "double[- ]count",
+      "counting obstruction",
+      "bounds the METHOD",
+      "METHOD family",
+      "does exclude 110",
+      "published",
+      "prior art",
+      "reformulation of the 110 case",
+      "110 proof",
+      "exactly 110",
+      "true value (?:is |in )?\\[111",
+      "111",
+      "!=\\s*110",
+      "SUPERSEDED",
+      "no longer defines",
+      "proves tau_2"
+    ]
+  },
+  "counts": {
+    "flagged": 30,
+    "stale": 22,
+    "defensible": 8
+  },
+  "stale": [
+    {
+      "file": "tensor_110_no_local_obstruction.json",
+      "field": "conclusion",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "the tight case has no local obstruction; if tau_2 > 110 the failure is global"
+    },
+    {
+      "file": "tensor_110_no_local_obstruction.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "this is a characterisation of why the question resists, NOT a proof either way. tau_2 remains open in [110, 115]."
+    },
+    {
+      "file": "tensor_blocking_reformulation.json",
+      "field": "open",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "whether |X| = 110 is attained; no verdict is claimed here"
+    },
+    {
+      "file": "tensor_blocking_structure.json",
+      "field": "publishedInterval",
+      "isInterval": true,
+      "verdict": "STALE",
+      "text": "INTERVAL [110, 121]"
+    },
+    {
+      "file": "tensor_close_at_114.json",
+      "field": "intervalUnchanged",
+      "isInterval": true,
+      "verdict": "STALE",
+      "text": "INTERVAL [110, 115]"
+    },
+    {
+      "file": "tensor_close_at_114_two_sided.json",
+      "field": "intervalUnchanged",
+      "isInterval": true,
+      "verdict": "STALE",
+      "text": "INTERVAL [110, 115]"
+    },
+    {
+      "file": "tensor_lower_sdp_ceiling.json",
+      "field": "conclusion",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "a symmetry-reduced Lasserre-1 SDP returns the plain fractional bound and does not reach 110"
+    },
+    {
+      "file": "tensor_lower_sdp_ceiling.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "this bounds the METHOD family, not tau_2, which stays open in [110, 115]"
+    },
+    {
+      "file": "tensor_multiplicativity_ovoid_defect.json",
+      "field": "w33Interval",
+      "isInterval": true,
+      "verdict": "STALE",
+      "text": "INTERVAL [110, 115]"
+    },
+    {
+      "file": "tensor_near_ovoid_shadow_closure.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "This is an exact equivalent reformulation of the 110 case and a certified structural audit of the 115 witness. It does not prove the shadow-label CSP infeasible or feasible; tau_2 remains open in [110"
+    },
+    {
+      "file": "tensor_one_ovoid_suffices.json",
+      "field": "contrast",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "same 40x40 grid, same 1600 tiles of 16 leaves: line x line is open in [110,115], line x pencil is exactly 110"
+    },
+    {
+      "file": "tensor_one_ovoid_suffices.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "this closes three products and explains the fourth; it does NOT decide tau_2(W(3,3)), which stays open in [110, 115]"
+    },
+    {
+      "file": "tensor_symmetric_blocker.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "tau_2 remains OPEN in [110, 115]. The lower bound is unchanged by this run."
+    },
+    {
+      "file": "tensor_tight_centred.json",
+      "field": "intervalUnchanged",
+      "isInterval": true,
+      "verdict": "STALE",
+      "text": "INTERVAL [110, 115]"
+    },
+    {
+      "file": "tensor_tight_degree_sequences.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "a degree sequence is necessary for a 110-leaf blocker and never sufficient; nothing here bounds tau_2 unless the count is zero and the enumeration is complete"
+    },
+    {
+      "file": "tensor_tight_matrix_equation.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "everything closes, so this proves nothing about tau_2, which stays open in [110, 115]. A matrix identity that restates a problem is easy to oversell and this one is recorded as a reformulation plus a "
+    },
+    {
+      "file": "tensor_tight_obstructions.json",
+      "field": "question",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "is the double-count bound 110 attained by a depth-2 tile blocker?"
+    },
+    {
+      "file": "tensor_tight_rows_and_columns.json",
+      "field": "intervalUnchanged",
+      "isInterval": true,
+      "verdict": "STALE",
+      "text": "INTERVAL [110, 115]"
+    },
+    {
+      "file": "tensor_tight_symmetry_exclusion.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "this is evidence, not proof: 32 classes are undecided, and an asymmetric tight blocker is not excluded by any of it. tau_2 stays open in [110, 115]."
+    },
+    {
+      "file": "tensor_tight_two_sided.json",
+      "field": "intervalUnchanged",
+      "isInterval": true,
+      "verdict": "STALE",
+      "text": "INTERVAL [110, 115]"
+    },
+    {
+      "file": "the_tower_law_one_ovoid_splits_any_depth.json",
+      "field": "priorArt.owns",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "the depth-2 theorem -- if either factor has an ovoid then tau(Q1 x Q2) = tau_1 tau_2 -- and the four instances 25, 55, 110, and [110,115] open"
+    },
+    {
+      "file": "w33_ovoid_deficiency.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "STALE",
+      "text": "deficiency is a new invariant of W(3,q); it is not claimed to determine tau_2, which stays open in [110, 115]"
+    }
+  ],
+  "defensible": [
+    {
+      "file": "second_multiplicative_instance.json",
+      "field": "itDoesNotTouchW33",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "the undecided row stays undecided for the reason the certificate gives: delta = 1 opens an interval of width tau_1 * delta = 11 between 110 and 121, with the true value in [111,115] inside it. Adding "
+    },
+    {
+      "file": "tensor_110_sat_encoding.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "The SAT model remains a useful validated encoding and positive control, but no longer defines the mathematical frontier: the self-duality obstruction proves tau_2 != 110."
+    },
+    {
+      "file": "tensor_blocking_structure.json",
+      "field": "stillOpen",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "beating 121 requires a support of 12 or more points; the double count still permits 110 and an integer fibre-size weighting summing to 11 on every line does exist, so no counting obstruction rules it "
+    },
+    {
+      "file": "tensor_tight_self_duality_obstruction.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "This excludes only 110. It does not decide whether 111,112,113,114, or 115 is optimal."
+    },
+    {
+      "file": "the_hidden_36_quotient_is_the_spreads.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "the spread identification is verified and rests on BT809 for the S6 naming; the 110 exclusion is a necessary-condition model, which does exclude 110 but does not re-derive W33-Theory's argument -- it "
+    },
+    {
+      "file": "the_open_configuration_has_a_smaller_instance.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "tau_1 values are OPTIMAL; the product values are SEARCH RESULTS and upper bounds only; 90 and 110 are the elementary shadow bound; nothing in the open configuration is proved optimal here. tau_2 is un"
+    },
+    {
+      "file": "the_tau2_interval_is_111_not_110.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "the scan covers analysis/, data/ and research/ in this repository; the proof that 110 is excluded is W33-Theory's, cited not reproduced; the UNKNOWN at 111 is a solver outcome and not evidence either "
+    },
+    {
+      "file": "the_trichotomy_breaks_at_multiplicity_three.json",
+      "field": "boundary",
+      "isInterval": false,
+      "verdict": "DEFENSIBLE",
+      "text": "one witness at r = 5, measured not speculated; it establishes that the trichotomy CAN fail under defect, which is what kills lifting the 110 proof unchanged, but not what the distribution must be at r"
+    }
+  ],
+  "dataFilesTheLiteralScanMissed": [
+    "data/tensor_blocking_reformulation.json",
+    "data/tensor_blocking_structure.json",
+    "data/tensor_close_at_114.json",
+    "data/tensor_close_at_114_two_sided.json",
+    "data/tensor_multiplicativity_ovoid_defect.json",
+    "data/tensor_tight_centred.json",
+    "data/tensor_tight_degree_sequences.json",
+    "data/tensor_tight_obstructions.json",
+    "data/tensor_tight_rows_and_columns.json",
+    "data/tensor_tight_two_sided.json",
+    "data/the_tower_law_one_ovoid_splits_any_depth.json"
+  ],
+  "theOneMostWorthKeeping": "tensor_blocking_structure's 'no COUNTING obstruction rules it out' stays TRUE after the theorem, because the theorem is not a counting argument -- it is the self-duality obstruction. That is why this had to be classified rather than bulk-replaced",
+  "whyNotRewritten": "these are frozen certificates with tests asserting their values; a bulk 110 -> 111 substitution would break the suite and corrupt the defensible fields where 110 is the correct number. What the corpus needs is the field-by-field worklist, which is what this emits",
+  "boundary": "the exclusion of 110 is W33-Theory's theorem, cited not reproduced. The classification is by a stated rule applied uniformly, but it is a judgement about wording and a reader may reasonably move an individual field across the line -- the rule is published here so that is checkable. NO certificate is modified by this file. This changes no bound: tau_2 is still open in [111, 115]"
+}

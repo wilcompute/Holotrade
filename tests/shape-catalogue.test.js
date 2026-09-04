@@ -5760,3 +5760,70 @@ test("the second multiplicative instance, and 48e1841's converse is retracted", 
   assert.match(r.boundary, /NOT an\s+independent verification/);
   assert.match(r.boundary, /tau_2 for W\(3,3\) is untouched/);
 });
+
+test("the stale-frontier audit is semantic, not a string match", () => {
+  const r = require(path.join(
+    root,
+    "data/stale_frontier_audit_semantic.json"
+  ));
+  assert.equal(r.schema, "holotrade.stale-frontier-audit-semantic.v1");
+  assert.equal(r.valid, true);
+
+  // the exclusion is sourced, not asserted
+  assert.match(r.theExclusion, /43049db/);
+  assert.match(r.theExclusion, /CITED, not reproduced/);
+
+  // what the prior audit did and did not do
+  const p = r.whatThePriorAuditDidNotDo;
+  assert.equal(p.commit, "4b23ec0");
+  assert.match(p.matched, /literal interval string/);
+  assert.match(p.limitation2, /nothing applied the fix/);
+  const prior = require(path.join(
+    root,
+    "data/the_tau2_interval_is_111_not_110.json"
+  ));
+  assert.equal(p.filesFound, prior.scan.staleCount);
+  assert.deepEqual(prior.certifiedInterval, [111, 115]);
+  assert.equal(prior.excluded, 110);
+
+  // the classification is by a published rule
+  assert.ok(Array.isArray(r.classificationRule.staleMarks));
+  assert.ok(Array.isArray(r.classificationRule.defensibleMarks));
+  assert.match(r.classificationRule.STALE, /lower bound\s+110/);
+
+  // counts are consistent and every row carries a verdict
+  assert.equal(r.counts.stale + r.counts.defensible, r.counts.flagged);
+  assert.equal(r.stale.length, r.counts.stale);
+  assert.equal(r.defensible.length, r.counts.defensible);
+  assert.ok(r.counts.stale >= 15, "the backlog is substantial");
+  for (const x of r.stale.concat(r.defensible)) {
+    assert.ok(x.file && x.field && x.verdict);
+    assert.ok(["STALE", "DEFENSIBLE"].includes(x.verdict));
+  }
+
+  // the audit must not have read its own output
+  const self = "stale_frontier_audit_semantic.json";
+  for (const x of r.stale.concat(r.defensible)) {
+    assert.notEqual(x.file, self, "no self-contamination");
+  }
+
+  // the files the literal scan missed are genuinely absent from its list
+  const priorData = new Set(
+    prior.scan.staleOnly.filter((f) => f.startsWith("data/"))
+  );
+  assert.ok(r.dataFilesTheLiteralScanMissed.length >= 5);
+  for (const f of r.dataFilesTheLiteralScanMissed) {
+    assert.equal(priorData.has(f), false, f + " was not in the literal scan");
+  }
+
+  // the certificate that already acknowledges the exclusion is NOT called stale
+  const defFiles = r.defensible.map((x) => x.file);
+  assert.ok(defFiles.includes("tensor_110_sat_encoding.json"));
+  assert.ok(defFiles.includes("tensor_blocking_structure.json"));
+  assert.match(r.theOneMostWorthKeeping, /not a\s+counting argument/);
+
+  // nothing was rewritten, and no bound moved
+  assert.match(r.whyNotRewritten, /would break the suite/);
+  assert.match(r.boundary, /NO certificate is modified/);
+  assert.match(r.boundary, /still open\s+in \[111, 115\]/);
+});
