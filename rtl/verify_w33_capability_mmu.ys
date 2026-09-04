@@ -1,0 +1,6 @@
+read_verilog rtl/w33_capability_mmu.v
+hierarchy -check -top w33_capability_mmu_formal
+proc
+flatten
+opt
+sat -verify -prove mismatch 0 -show-ports
