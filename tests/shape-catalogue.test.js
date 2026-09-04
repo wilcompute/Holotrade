@@ -5309,3 +5309,79 @@ test("the Schlafli triple is closed by equivariant maps", () => {
   assert.match(r.boundary, /CITED not derived/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the cost quadrangle is a new tower-law base with tau_1 = 9", () => {
+  const r = require(path.join(root, "data/cost_quadrangle_tower_base.json"));
+  assert.equal(r.schema, "holotrade.cost-quadrangle-tower-base.v1");
+  assert.equal(r.valid, true);
+
+  // tau_1 = 9, and the lower bound is pure counting
+  const t = r.tau1;
+  assert.equal(t.points, 45);
+  assert.equal(t.lines, 27);
+  assert.deepEqual(t.linesPerPoint, [3]);
+  assert.deepEqual(t.pointsPerLine, [5]);
+  assert.equal(t.countingBound, 9, "27 lines / 3 lines per point");
+  assert.equal(t.value, 9);
+  assert.equal(t.value, t.countingBound, "the counting bound is attained");
+  assert.equal(t.defect, 0, "tau_1 = st+1 exactly");
+  assert.equal(t.witness.length, 9);
+
+  // minimum blockers ARE the ovoids -- that is what defect zero means
+  const m = r.minimumBlockersAreOvoids;
+  assert.equal(m.minimumBlockers, 200);
+  assert.equal(m.ovoids, 200);
+  assert.equal(m.identical, true);
+  const ov = require(path.join(root, "data/cheap_opcodes_are_ovoids.json"));
+  assert.equal(
+    ov.dualDefects.expensiveSet.ovoids,
+    m.ovoids,
+    "the same 200 ovoids as 8982d36"
+  );
+
+  // the four-quadrangle dichotomy holds row by row
+  assert.equal(r.fourQuadrangles.length, 4);
+  for (const g of r.fourQuadrangles) {
+    assert.equal(
+      g.defect,
+      g.tau1 - g.stPlus1,
+      g.geometry + ": defect is tau_1 - (st+1)"
+    );
+    assert.equal(
+      g.ovoid,
+      g.defect === 0,
+      g.geometry + ": ovoid iff defect zero"
+    );
+    assert.equal(
+      g.towerBase !== null,
+      g.ovoid,
+      g.geometry + ": tower law applies iff ovoid"
+    );
+    if (g.ovoid) assert.equal(g.towerBase, g.tau1);
+    assert.equal(g.stPlus1, g.st[0] * g.st[1] + 1);
+  }
+  // exactly one of each dual pair bears an ovoid
+  const byPair = [
+    ["W(3,3)", "dual of W(3,3)"],
+    ["GQ(2,4)", "GQ(4,2) the cost quadrangle"],
+  ];
+  for (const [a, b] of byPair) {
+    const ga = r.fourQuadrangles.find((x) => x.geometry === a);
+    const gb = r.fourQuadrangles.find((x) => x.geometry === b);
+    assert.notEqual(ga.ovoid, gb.ovoid, a + " / " + b + ": exactly one");
+  }
+
+  // the new base, and that it is smaller than the existing one
+  assert.match(r.newTowerBase.pure, /9\^m/);
+  assert.match(r.newTowerBase.combined, /EXCEPT its W-factors/);
+  assert.match(r.newTowerBase.smallestYet, /base 10/);
+  assert.ok(9 < 10, "the new base is smaller than d9a9c59's");
+
+  // what tau_2 measures -- and it stays open
+  assert.match(r.whatTau2Measures, /9\^2 = 81 exactly/);
+  assert.match(r.whatTau2Measures, /between 6 and 10 off the square/);
+  assert.equal(11 * 11 - 115, 6);
+  assert.equal(11 * 11 - 111, 10);
+  assert.match(r.boundary, /CITED and applied, not re-proved/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
