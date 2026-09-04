@@ -1,0 +1,31 @@
+{
+  "schema": "holotrade.gauss-lifts-not-a-section.v1",
+  "valid": true,
+  "whatWasOpen": "0fb6a0f tabulated the eighty lifts in closed form and verified each, but flagged as unsettled whether they form a homomorphic section; the first attempt hashed floats and its number was disclosed as an artefact",
+  "exactEncoding": {
+    "representation": "U P_v U^dag = w^{phi(v)} P_{Sv}",
+    "composition": "(S1,phi1)(S2,phi2) = (S1 S2, phi2 + phi1 o S2)",
+    "arithmetic": "pure F_3, no unitaries and no rounding",
+    "phaseReadoffError": 2.5757413442395863e-15
+  },
+  "phiIsNotLinear": {
+    "linearLifts": 0,
+    "zerosPerLift": {
+      "26": 16,
+      "44": 64
+    },
+    "whatIsAccountedFor": "26 is |v^perp| - 1, a FLOOR: a transvection fixes v^perp pointwise so those Paulis must conjugate with no phase. The lifts with 44 zeros have eighteen more vanishing phases than that predicts and are NOT explained here -- recorded as measured. An earlier guess that the count was uniformly 26 came from three examples and was wrong",
+    "linearityWouldRequire": "S to preserve the Pauli cocycle, by phi(u+v) = phi(u) + phi(v) + c(Su,Sv) - c(u,v); a transvection does not, so an earlier linearity test was the wrong test"
+  },
+  "result": {
+    "groupOrderExceeded": 200038,
+    "cappedAt": 200000,
+    "hitCap": true,
+    "spOrder": 51840,
+    "containsPaulis": true,
+    "isASection": false
+  },
+  "doesNotOverturnTheSplitting": "d6bcf30 verified the splitting at n = 1 and the odd-p result is cited, so a homomorphic section EXISTS. What is now known is that the obvious Gauss-sum choice is not one: lifting each generator naturally and independently does not assemble into a section, which is what a nontrivial cocycle looks like even when the extension splits",
+  "compilerUnaffected": "0fb6a0f stated the usable claim correctly: each lift is individually verified, so a compiled word realises its target up to a Pauli and a global phase, which is what a stabilizer compiler tracks anyway. What closes is the stronger hope that the Pauli correction would vanish -- for these lifts it does not",
+  "boundary": "the group generation is exact integer arithmetic in F_3, capped at 200,000; the run exceeded the cap, which suffices for 'not 51,840', and a Pauli is exhibited, which gives 'contains Paulis'. The Pauli COUNT from that run is PARTIAL because enumeration stopped at the cap, so only 'at least one' is claimed, never a subgroup order. Constructing a corrected section by adjusting each lift by a Pauli is NOT attempted here. tau_2 is untouched"
+}

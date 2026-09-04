@@ -6050,3 +6050,61 @@ test("the eighty Clifford lifts are tabulated in closed form and verified", () =
   assert.match(r.boundary, /NUMERICAL at 1e-7/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the Gauss-sum lifts are NOT a homomorphic section", () => {
+  const r = require(path.join(
+    root,
+    "data/gauss_sum_lifts_not_a_section.json"
+  ));
+  assert.equal(r.schema, "holotrade.gauss-lifts-not-a-section.v1");
+  assert.equal(r.valid, true);
+
+  // it settles what the prior commit flagged open
+  const prev = require(path.join(root, "data/eighty_clifford_lifts.json"));
+  assert.match(prev.notSettled, /whether THIS choice is one is open/);
+  assert.match(r.whatWasOpen, /disclosed as an artefact/);
+
+  // the encoding is exact: no unitaries, no rounding, after one safe readout
+  const e = r.exactEncoding;
+  assert.match(e.arithmetic, /pure F_3/);
+  assert.ok(e.phaseReadoffError < 1e-12, "phases are cube roots to 1e-12");
+
+  // phi is not linear, and the zero-sets are NOT uniform
+  const q = r.phiIsNotLinear;
+  assert.equal(q.linearLifts, 0, "no lift has a linear phase function");
+  assert.deepEqual(q.zerosPerLift, { 26: 16, 44: 64 });
+  assert.equal(
+    Object.values(q.zerosPerLift).reduce((a, b) => a + b, 0),
+    80,
+    "all eighty accounted for"
+  );
+  assert.ok(Object.keys(q.zerosPerLift).length > 1, "not uniform");
+  // and the unexplained part is labelled as unexplained
+  assert.match(q.whatIsAccountedFor, /FLOOR/);
+  assert.match(q.whatIsAccountedFor, /NOT explained here/);
+  assert.match(q.whatIsAccountedFor, /came from three examples\s+and was wrong/);
+
+  // the negative result itself
+  const res = r.result;
+  assert.equal(res.isASection, false);
+  assert.equal(res.containsPaulis, true);
+  assert.equal(res.spOrder, 51840);
+  assert.equal(res.hitCap, true);
+  assert.ok(res.groupOrderExceeded > res.spOrder, "far past |Sp(4,3)|");
+
+  // it does not overturn the splitting, and says which claim survives
+  assert.match(r.doesNotOverturnTheSplitting, /section EXISTS/);
+  assert.match(r.doesNotOverturnTheSplitting, /nontrivial cocycle/);
+  const split = require(path.join(
+    root,
+    "data/phase_lift_has_no_obstruction.json"
+  ));
+  assert.equal(split.splitting.splits, true, "n=1 splitting still stands");
+  assert.match(r.compilerUnaffected, /up to a Pauli and a global\s+phase/);
+
+  // and the partial count is not dressed up as a subgroup order
+  assert.match(r.boundary, /PARTIAL because/);
+  assert.match(r.boundary, /never a subgroup order/);
+  assert.match(r.boundary, /NOT attempted here/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
