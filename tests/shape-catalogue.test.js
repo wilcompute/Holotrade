@@ -5625,3 +5625,64 @@ test("the m = 2 balanced set exists, over a hemisystem pair", () => {
   assert.match(r.boundary, /FULL problem without symmetry is not resolved/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the balance spectrum is complete: holes at 1 and 15 only", () => {
+  const r = require(path.join(root, "data/balance_spectrum_complete.json"));
+  assert.equal(r.schema, "holotrade.balance-spectrum-complete.v1");
+  assert.equal(r.valid, true);
+
+  // the complementation lemma is a proof, and it is stated as one
+  const c = r.complementationLemma;
+  assert.equal(c.isAProofNotASearch, true);
+  assert.match(c.statement, /16-m/);
+  assert.match(c.proof, /16 - m for every tile/);
+
+  // the sweep: m=2..8 all feasible, verified, and at size 100m
+  const byM = Object.fromEntries(r.sweep.map((x) => [x.m, x]));
+  assert.equal(byM[1].status, "INFEASIBLE");
+  for (let m = 2; m <= 8; m++) {
+    assert.equal(byM[m].status, "OPTIMAL", "m=" + m);
+    assert.equal(byM[m].size, 100 * m, "size is 100m at m=" + m);
+    assert.equal(byM[m].sizeIs100m, true);
+    assert.equal(byM[m].verified, true, "re-verified at m=" + m);
+    assert.equal(byM[m].complement, 16 - m);
+  }
+
+  // the spectrum and its holes
+  assert.deepEqual(r.holes, [1, 15]);
+  assert.equal(r.spectrum.length, 15, "15 of the 17 levels");
+  for (let m = 0; m <= 16; m++) {
+    assert.equal(
+      r.spectrum.includes(m),
+      !r.holes.includes(m),
+      "level " + m
+    );
+  }
+  // the spectrum is symmetric about 8, as the lemma forces
+  for (const m of r.spectrum) {
+    assert.ok(r.spectrum.includes(16 - m), "symmetric at " + m);
+  }
+  for (const m of r.holes) {
+    assert.ok(r.holes.includes(16 - m), "holes come in complementary pairs");
+  }
+
+  // it extends the prior certificate rather than contradicting it
+  const prev = require(path.join(root, "data/depth2_balance_spectrum.json"));
+  for (const row of prev.rows) {
+    if (row.status === "OPTIMAL") {
+      assert.equal(
+        byM[row.m].size,
+        row.actualSize,
+        "C5 search reproduces the corpus size at m=" + row.m
+      );
+    }
+  }
+  assert.match(r.crossCheck, /WITHOUT\s+symmetry/);
+
+  // the reading, and the honest sourcing of the m=1 row
+  assert.match(r.theHolesAreTheOvoidLevels, /product\s+analogue of an ovoid/);
+  assert.match(r.theHolesAreTheOvoidLevels, /once at\s+each end and nowhere in between/);
+  assert.match(r.boundary, /GLOBAL infeasibility is the corpus's, CITED/);
+  assert.match(r.boundary, /only that no C5-invariant\s+one exists/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
