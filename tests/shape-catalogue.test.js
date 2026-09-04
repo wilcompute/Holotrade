@@ -4642,3 +4642,63 @@ test("every cost anomaly is a nondegenerate reflection", () => {
   assert.match(r.boundary, /set equality against a set/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the length law is O'Meara's, and the doily breaks its induction", () => {
+  const r = require(path.join(root, "data/the_length_law_is_omeara.json"));
+  assert.equal(r.schema, "holotrade.length-law-is-omeara.v1");
+  assert.equal(r.valid, true);
+
+  // the retraction is on the record, with sources
+  assert.match(r.retraction, /novelty claim is withdrawn/);
+  assert.ok(r.sources.some((s) => /O'Meara/.test(s)));
+  assert.ok(r.sources.some((s) => /Callan/.test(s)));
+  assert.ok(r.sources.some((s) => /2102\.11380/.test(s)));
+  assert.ok(r.sources.some((s) => /Ellers/.test(s)));
+
+  // at q=3 the criterion is exact, as SETS
+  const b = r.cases.q3;
+  assert.equal(b.anomalies, 91);
+  assert.equal(b.hyperbolicMaps, 91);
+  assert.equal(b.anomaliesEqualHyperbolic, true);
+
+  // at q=2 it is a strict subset -- the doily again
+  const a = r.cases.q2;
+  assert.equal(a.anomalies, 225);
+  assert.equal(a.hyperbolicMaps, 15);
+  assert.equal(a.anomaliesEqualHyperbolic, false);
+  assert.equal(a.hyperbolicIsSubset, true);
+  assert.equal(a.anomalies - a.hyperbolicMaps, 210);
+
+  // and the cascade is the mechanism
+  assert.equal(a.induction["2,3,hyperbolic"], 15);
+  assert.equal(a.induction["3,4,every drop lands hyperbolic"], 90);
+  assert.equal(a.induction["4,5,clean step exists"], 120);
+  assert.equal(
+    a.induction["2,3,hyperbolic"] +
+      a.induction["3,4,every drop lands hyperbolic"] +
+      a.induction["4,5,clean step exists"],
+    a.anomalies,
+    "the three cells account for every q=2 anomaly"
+  );
+  assert.match(r.theDoilyBreaksTheInduction, /CASCADE from 15 seeds/);
+
+  // Ellers' one-class metric is genuinely different at odd q
+  assert.equal(b.allTransvections, 80);
+  assert.equal(b.oneClassTransvections, 40);
+  assert.equal(b.allDiameter, 5);
+  assert.equal(b.oneClassDiameter, 6, "one class is strictly worse at q=3");
+  assert.equal(b.lengthsDifferOn, 38264);
+  assert.ok(b.lengthsDifferOn / b.order > 0.7, "they differ on most elements");
+  assert.equal(a.lengthsDifferOn, 0, "at q=2 only one lambda exists");
+  assert.equal(a.allTransvections, a.oneClassTransvections);
+
+  // my characterisation is demoted to a q-odd coincidence
+  assert.match(r.myCharacterisationIsQOddOnly, /empty at q = 2/);
+  assert.match(r.terminologyTrap, /Do not conflate/);
+
+  // and the corpus-internal part is kept, correctly scoped
+  assert.match(r.whatSurvivesAsOurs, /minimum-weight/);
+  assert.match(r.whatSurvivesAsOurs, /not about symplectic groups/);
+  assert.match(r.boundary, /primary sources are NOT read/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});

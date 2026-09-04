@@ -1,0 +1,65 @@
+{
+  "schema": "holotrade.length-law-is-omeara.v1",
+  "valid": true,
+  "retraction": "ba7ac5a stated as new that length > residue in Sp(4,3) exactly for elements acting as -1 on a nondegenerate U and +1 on U^perp; that is the classical hyperbolic-map theorem, and at q = 3 the anomaly set equals the set of O'Meara hyperbolic maps exactly (91 = 91, as sets). The novelty claim is withdrawn",
+  "sources": [
+    "O'Meara, Symplectic Groups, AMS Mathematical Surveys 16, 1978",
+    "Callan, The generation of Sp(F_2) by transvections, J. Algebra 42 (1976) 378-390",
+    "Pllaha, Volanto, Tirkkonen, Decomposition of Clifford Gates, arXiv:2102.11380 -- where the theorem is quoted in this form, and the only one of the three actually read here",
+    "Ellers 1994, one-conjugacy-class lambda-length -- a NEIGHBOURING metric, flagged by the parallel track"
+  ],
+  "myCharacterisationIsQOddOnly": "'-1 on a nondegenerate U' coincides with hyperbolicity at q = 3 but is empty at q = 2 where 15 hyperbolic maps exist; the general criterion is O'Meara's",
+  "terminologyTrap": "'hyperbolic map' (<v, vF> = 0 for all v) and 'hyperbolic line' (a 2-space of PG(3,3) on which the form is nondegenerate) are unrelated notions both appearing here, with counts 91 and 90 at q = 3 -- one apart. Do not conflate them",
+  "whatSurvivesAsOurs": "3f93821's bijection g -> im(g-1) from the 90 residue-2 anomalies onto the 90 hyperbolic LINES, whose polar pairs are BT810's 45 tritangent planes = the sentinel code's 45 minimum-weight words; that co-location is about this substrate, not about symplectic groups, and the literature sharpens it rather than superseding it",
+  "cases": {
+    "q3": {
+      "q": 3,
+      "order": 51840,
+      "allTransvections": 80,
+      "allDiameter": 5,
+      "oneClassTransvections": 40,
+      "oneClassDiameter": 6,
+      "lengthsDifferOn": 38264,
+      "anomalies": 91,
+      "hyperbolicMaps": 91,
+      "anomaliesEqualHyperbolic": true,
+      "hyperbolicIsSubset": true,
+      "induction": {
+        "1,1,every drop lands hyperbolic": 80,
+        "2,2,clean step exists": 540,
+        "2,2,every drop lands hyperbolic": 1440,
+        "2,3,hyperbolic": 90,
+        "3,3,clean step exists": 11520,
+        "3,3,every drop lands hyperbolic": 5040,
+        "4,4,clean step exists": 29448,
+        "4,4,every drop lands hyperbolic": 3680,
+        "4,5,hyperbolic": 1
+      }
+    },
+    "q2": {
+      "q": 2,
+      "order": 720,
+      "allTransvections": 15,
+      "allDiameter": 5,
+      "oneClassTransvections": 15,
+      "oneClassDiameter": 5,
+      "lengthsDifferOn": 0,
+      "anomalies": 225,
+      "hyperbolicMaps": 15,
+      "anomaliesEqualHyperbolic": false,
+      "hyperbolicIsSubset": true,
+      "induction": {
+        "1,1,every drop lands hyperbolic": 15,
+        "2,2,clean step exists": 85,
+        "2,3,hyperbolic": 15,
+        "3,3,clean step exists": 210,
+        "3,4,every drop lands hyperbolic": 90,
+        "4,4,clean step exists": 184,
+        "4,5,clean step exists": 120
+      }
+    }
+  },
+  "theDoilyBreaksTheInduction": "at q = 2 hyperbolicity is a strict subset: 225 anomalies against 15 hyperbolic maps. The classical residue-dropping step succeeds on all of them, but the induction needs it to land non-hyperbolic, and for the 90 at (res 3, len 4) EVERY drop lands hyperbolic; the 120 at (res 4, len 5) then have those as their only exits. The anomaly is a CASCADE from 15 seeds, not 225 independent exceptions, and at q = 3 nothing propagates because 80 transvections leave escape routes that 15 do not",
+  "separateMetric": "Ellers' lambda-length counts transvections from one conjugacy class; at q = 3 that is 40 generators with diameter 6 against 80 with diameter 5, and the two lengths differ on 38,264 of 51,840 elements, while at q = 2 they coincide exactly. Prior art to cite, but it does not settle the all-transvection numbers used here",
+  "boundary": "exhaustive over Sp(4,2) and Sp(4,3): length by full BFS, residue by rank(g - I), hyperbolicity by testing <v, vF> over every v, comparisons by set equality. The primary sources are NOT read here -- only the secondhand statement in arXiv:2102.11380 -- so the q = 2 discrepancy may reflect hypotheses those sources carry rather than an error in them. tau_2 is untouched"
+}
