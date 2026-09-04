@@ -4894,3 +4894,68 @@ test("the expensive instructions form a quadrangle under anticommutation", () =>
   assert.match(r.boundary, /NOT established here/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the 27 lines carry the Schlafli graph and are Pauli groups", () => {
+  const r = require(path.join(root, "data/the_27_lines_are_pauli_groups.json"));
+  assert.equal(r.schema, "holotrade.27-lines-are-pauli-groups.v1");
+  assert.equal(r.valid, true);
+
+  // (1) the 2n+1 ceiling is attained and never exceeded
+  const c = r.ceiling;
+  assert.deepEqual(c.maximalSetSizes, { 5: 27 }, "every maximal set has 5");
+  assert.equal(c.bound, "2n + 1 = 5");
+  assert.equal(c.attained, true);
+  assert.equal(c.nothingExceedsIt, true, "no 6 anticommuting reflections");
+
+  // (2) both halves of the configuration, on the same data
+  const s = r.theSchlafliGraph;
+  assert.equal(s.lines, 27);
+  assert.deepEqual(s.meetGraph, [27, 10, 1, 5]);
+  assert.equal(s.isGQ24Collinearity, true);
+  assert.deepEqual(s.complement, [27, 16, 10, 8]);
+  assert.equal(s.isSchlafli, true);
+  // the meet graph and its complement partition K27
+  assert.equal(s.meetGraph[1] + s.complement[1], 26, "degrees sum to n-1");
+  assert.match(s.automorphismGroup, /51,840/);
+  assert.match(s.automorphismGroup, /CITED not recomputed/);
+
+  // and it is the DUAL of the 45-point quadrangle from 605f5e5
+  const gq = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(gq.quadrangle.lines, s.lines, "27 lines there, 27 points here");
+  assert.deepEqual(gq.quadrangle.stronglyRegular, [45, 12, 3, 3]);
+
+  // (3) extraspecial 2^{1+4}_-, uniformly
+  const e = r.extraspecial;
+  assert.equal(e.order, 32);
+  assert.equal(e.centreOrder, 2);
+  assert.equal(e.derivedEqualsCentre, true);
+  assert.equal(e.quotientOrder, 16);
+  assert.equal(e.quotientElementaryAbelian, true);
+  assert.equal(e.order, e.centreOrder * e.quotientOrder, "|G| = |Z|.|G/Z|");
+  assert.equal(e.involutions, 11);
+  assert.equal(e.orderFourElements, 20);
+  assert.equal(
+    e.involutions + e.orderFourElements,
+    e.order - 1,
+    "every non-identity element has order 2 or 4"
+  );
+  assert.equal(e.type, "2^{1+4}_- = D8 o Q8");
+  assert.match(e.typeReasoning, /minus type 11 and 20/);
+  assert.equal(e.uniformAcrossAllLines, true);
+
+  // one centre, and it is the -I that does the polarity
+  assert.equal(r.oneCentre.distinctCentres, 1);
+  assert.equal(r.oneCentre.isCentreOfSp43, true);
+  assert.match(r.oneCentre.reading, /three jobs/);
+  const p45 = require(path.join(root, "data/the_projective_isa_45.json"));
+  assert.match(p45.centreIsThePolarity.reading, /SYMPLECTIC POLARITY/);
+
+  // the strangeness, and the honest limits
+  assert.match(r.whatIsStrange, /2-GROUPS/);
+  assert.match(r.whatIsStrange, /knows nothing about the field/);
+  assert.match(r.boundary, /NO claim is made that these 27 groups are Pauli/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});

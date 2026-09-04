@@ -1,0 +1,51 @@
+{
+  "schema": "holotrade.27-lines-are-pauli-groups.v1",
+  "valid": true,
+  "whereThisStarts": "605f5e5 showed the 45 expensive instructions form GQ(4,2) under anticommutation with 27 lines recovered as maximal cliques; a line is 5 pairwise ANTICOMMUTING involutions, and 2n+1 = 5 is the classical ceiling on an anticommuting set in a rank-n symplectic space, so the lines are maximal anticommuting sets at the theoretical maximum",
+  "ceiling": {
+    "maximalSetSizes": {
+      "5": 27
+    },
+    "bound": "2n + 1 = 5",
+    "attained": true,
+    "nothingExceedsIt": true
+  },
+  "theSchlafliGraph": {
+    "lines": 27,
+    "meetGraph": [
+      27,
+      10,
+      1,
+      5
+    ],
+    "isGQ24Collinearity": true,
+    "complement": [
+      27,
+      16,
+      10,
+      8
+    ],
+    "isSchlafli": true,
+    "reading": "the dual quadrangle is not an analogy but present on the same data: 45 points give GQ(4,2), 27 lines give GQ(2,4), and the complement of the latter is the Schlafli graph of the 27 lines of a cubic surface",
+    "automorphismGroup": "Aut(Schlafli) = W(E6) of order 51,840 = |Sp(4,3)| -- classical, CITED not recomputed"
+  },
+  "extraspecial": {
+    "order": 32,
+    "centreOrder": 2,
+    "derivedEqualsCentre": true,
+    "quotientOrder": 16,
+    "quotientElementaryAbelian": true,
+    "involutions": 11,
+    "orderFourElements": 20,
+    "uniformAcrossAllLines": true,
+    "type": "2^{1+4}_- = D8 o Q8",
+    "typeReasoning": "order 32 with |Z| = 2, G' = Z and G/Z elementary abelian of order 16 is extraspecial 2^{1+4}; plus type has 19 involutions and 12 elements of order 4, minus type 11 and 20, so these are all minus type -- the two-qubit Pauli shape"
+  },
+  "oneCentre": {
+    "distinctCentres": 1,
+    "isCentreOfSp43": true,
+    "reading": "-I now has three jobs: it implements the symplectic polarity on the 45 anomalies (3a0a194), it explains why Sp's anomaly count looked like 90 + 1, and it is the common centre of every one of these 27 extraspecial groups"
+  },
+  "whatIsStrange": "this substrate is q = 3 and its instruction set is qutrit Clifford, yet its cost anomalies generate 2-GROUPS -- 27 copies of an extraspecial group of order 32, indexed by the 27 lines of a cubic surface. The characteristic-two structure is not imported; it comes from anticommutation, a sign condition that knows nothing about the field. The qubit shape lives inside the qutrit machine, and the cost model is where it shows",
+  "boundary": "exhaustive; the 45 are 3a0a194's anomaly classes, cliques by Bron-Kerbosch, SRG parameters and group orders computed rather than assumed, extraspecial type settled by the involution/order-4 census against the standard classification. CITED and not derived: GQ(4,2)-GQ(2,4) duality; the Schlafli graph as SRG(27,16,10,8) on the 27 lines of a cubic surface; Aut(Schlafli) = W(E6) of order 51,840; the 2n+1 ceiling; and the involution counts distinguishing the two extraspecial types. NO claim is made that these 27 groups are Pauli groups of an actual qubit register -- the isomorphism type is what is established, not a physical identification. tau_2 is untouched"
+}
