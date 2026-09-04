@@ -5442,3 +5442,71 @@ test("the cost quadrangle is q = 3 only", () => {
   assert.match(r.boundary, /only that q = 7 is\s+not/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the whole machine is one projective space: 121 = 40 + 45 + 36", () => {
+  const r = require(path.join(
+    root,
+    "data/machine_is_one_projective_space.json"
+  ));
+  assert.equal(r.schema, "holotrade.machine-is-one-projective-space.v1");
+  assert.equal(r.valid, true);
+
+  // the counting identity, recomputed from the formulas
+  for (const row of r.theIdentity.rows) {
+    const q = row.q;
+    assert.equal(row.pointsOfPG4, (q ** 5 - 1) / (q - 1));
+    assert.equal(row.isotropic, (q + 1) * (q * q + 1));
+    assert.equal(row.square, (q * q * (q * q + 1)) / 2);
+    assert.equal(row.nonsquare, (q * q * (q * q - 1)) / 2);
+    assert.equal(
+      row.pointsOfPG4,
+      row.isotropic + row.square + row.nonsquare,
+      "identity at q=" + q
+    );
+    assert.equal(row.identityHolds, true);
+  }
+  assert.match(r.theIdentity.viaClassicalIsomorphism, /Sp\(4,q\) = O\(5,q\)/);
+
+  // q=3 is the machine
+  const a = r.atQ3;
+  assert.equal(a.total, 121);
+  assert.equal(a.isotropic.count, 40);
+  assert.equal(a.square.count, 45);
+  assert.equal(a.nonsquare.count, 36);
+  assert.equal(
+    a.isotropic.count + a.square.count + a.nonsquare.count,
+    a.total
+  );
+
+  // and the three claims carry DIFFERENT epistemic status, correctly labelled
+  assert.match(a.isotropic.status, /CITED/);
+  assert.match(a.square.status, /PROVED here by explicit isomorphism/);
+  assert.match(a.nonsquare.status, /COUNT MATCH ONLY/);
+
+  // the isomorphism itself
+  const i = r.isomorphism;
+  assert.deepEqual(i.vertices, [45, 45]);
+  assert.equal(i.found, true);
+  assert.equal(i.bijective, true);
+  assert.equal(i.edgePreservingBothWays, true);
+  assert.match(i.sideA, /ANTICOMMUTATION/);
+  assert.match(i.sideB, /PERPENDICULARITY/);
+  assert.match(i.whyTheRelationsCorrespond, /commuting ones in PSp/);
+
+  // it explains the q-dependence that 424111b only measured
+  const q3 = require(path.join(root, "data/cost_quadrangle_is_q3_only.json"));
+  const byQ = Object.fromEntries(q3.rows.map((x) => [x.q, x]));
+  for (const q of [3, 5, 7]) {
+    const row = r.theIdentity.rows.find((x) => x.q === q);
+    assert.equal(
+      byQ[q].classes,
+      row.square,
+      "the cost classes ARE the square class at q=" + q
+    );
+  }
+  assert.match(r.whatItExplains, /ORBIT\s+SIZES/);
+  assert.match(r.whatItExplains, /never a quadrangle in general/);
+  assert.match(r.theStatement, /ONE point set, sorted by the value of a\s+single form/);
+  assert.match(r.boundary, /NOT built at q = 5 or 7/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
