@@ -1,0 +1,5 @@
+read_verilog rtl/w33_capability_mmu.v
+hierarchy -check -top w33_capability_mmu
+proc
+opt
+stat
