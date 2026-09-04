@@ -5,6 +5,8 @@ on:
     branches: [master]
     paths:
       - 'analysis/w33_projective_slowpath_microsequencer.py'
+      - 'js/w33-projective-microsequencer.js'
+      - 'js/w33-slowpath-rom-decoder.js'
       - 'data/the_45_slot_rom_bijection.json'
       - '.github/workflows/w33_projective_slowpath_microsequencer.yml'
   workflow_dispatch:
@@ -12,11 +14,16 @@ on:
 jobs:
   exhaustive:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - name: Verify all 25,920 projective targets
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Verify Python theorem over all 25,920 projective targets
         run: python analysis/w33_projective_slowpath_microsequencer.py
+      - name: Verify production Node compiler/decoder over all 25,920 targets
+        run: node js/w33-projective-microsequencer.js
