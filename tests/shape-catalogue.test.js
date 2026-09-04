@@ -6252,3 +6252,58 @@ test("the correction table is fixed: right relation, real section, closed form",
   assert.match(r.boundary, /Only n = 2/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the correction was a convention, not an obstruction", () => {
+  const r = require(path.join(root, "data/correction_was_a_convention.json"));
+  assert.equal(r.schema, "holotrade.correction-was-a-convention.v1");
+  assert.equal(r.valid, true);
+  assert.equal(r.answer, "an artefact");
+
+  // one convention lands on the section; the others do not
+  assert.deepEqual(r.landsOnSection, { 0: 32, 1: 32, 2: 80 });
+  assert.equal(r.landsOnSection["2"], 80, "no correction needed at t=2");
+  assert.ok(
+    r.landsOnSection["0"] < r.landsOnSection["2"],
+    "the raw Pauli genuinely fails"
+  );
+
+  // and t=2 is the Weyl operator by BOTH defining properties
+  const w = r.weylProperties;
+  assert.equal(w.powersAreDisplacements["2"], "160/160");
+  assert.equal(w.adjointIsOpposite["2"], "80/80");
+  for (const t of ["0", "1"]) {
+    assert.notEqual(w.powersAreDisplacements[t], "160/160", "t=" + t + " fails");
+    assert.notEqual(w.adjointIsOpposite[t], "80/80", "t=" + t + " fails");
+  }
+  assert.match(w.reading, /raw product X\^a Z\^b satisfies neither/);
+
+  // it accounts for all three earlier failures
+  assert.equal(r.explainsEveryFailure.length, 3);
+  assert.ok(r.explainsEveryFailure.some((s) => /0fb6a0f/.test(s)));
+  assert.ok(r.explainsEveryFailure.some((s) => /P_v\^c P_v\^j/.test(s)));
+  assert.ok(r.explainsEveryFailure.some((s) => /0c9ac42/.test(s)));
+  // and those failures are on the record
+  const notSec = require(path.join(
+    root,
+    "data/gauss_sum_lifts_not_a_section.json"
+  ));
+  assert.equal(notSec.result.isASection, false);
+  const fixed = require(path.join(root, "data/correction_table_fixed.json"));
+  assert.match(fixed.theBug.correctRelation, /S v/);
+
+  // the final form needs no correction at all
+  const f = r.finalForm;
+  assert.equal(f.noCorrection, true);
+  assert.equal(f.groupOrder, 51840);
+  assert.equal(f.pauliCount, 0);
+  assert.equal(f.isASection, true);
+  assert.match(f.operator, /w\^\{2 Q\(v\)\}/);
+  assert.match(f.lift, /sum_k w\^\{lam k\^2\} D_v\^k/);
+  // it is strictly simpler than the corrected-table route it replaces
+  assert.match(fixed.closedForm.lift, /Pauli MULTIPLICATION/);
+
+  // and the convention claim is scoped
+  assert.match(r.boundary, /is NOT claimed/);
+  assert.match(r.boundary, /Only n = 2, q = 3/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
