@@ -5989,3 +5989,64 @@ test("the phase lift has no obstruction: the qutrit Clifford group splits", () =
   assert.match(r.boundary, /not in exact\s+cyclotomic arithmetic/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the eighty Clifford lifts are tabulated in closed form and verified", () => {
+  const r = require(path.join(root, "data/eighty_clifford_lifts.json"));
+  assert.equal(r.schema, "holotrade.eighty-clifford-lifts.v1");
+  assert.equal(r.valid, true);
+
+  // it delivers what the prior commit called engineering
+  const prev = require(path.join(
+    root,
+    "data/phase_lift_has_no_obstruction.json"
+  ));
+  assert.match(prev.whatItChangesForTheCompiler, /TABULATION/);
+  assert.match(r.whatWasPromised, /would be the cheap move/);
+
+  // the closed form, and its collapse at p=3
+  const f = r.closedForm;
+  assert.match(f.formula, /w\^\{lam k\^2\}/);
+  assert.equal(f.generalP, "a = -(2 lam)^{-1} mod p");
+  assert.equal(f.collapsesAtP3, true, "a = lam at p=3");
+
+  // verification is exhaustive, not sampled
+  const v = r.verification;
+  assert.equal(v.lifts, 80);
+  assert.equal(v.unitary, 80);
+  assert.equal(v.realisesItsTransvection, 80);
+  assert.equal(v.conjugationsChecked, 6400, "80 lifts x 80 Paulis");
+  assert.equal(v.conjugationsChecked, v.lifts * 80);
+  assert.equal(v.isASample, false);
+
+  // the commutation sign is pinned by evidence, both ways measured
+  const c = r.commutationConvention;
+  assert.equal(c.minusSignViolations, 0);
+  assert.ok(c.plusSignViolations > 0, "the other sign genuinely fails");
+  assert.match(c.correct, /w\^\{-<u,v>\}/);
+
+  // the table is complete and well formed
+  assert.equal(r.table.length, 80);
+  const seen = new Set();
+  for (const t of r.table) {
+    assert.equal(t.v.length, 4);
+    assert.ok(t.v.every((x) => x >= 0 && x <= 2), "F_3 coordinates");
+    assert.ok([1, 2].includes(t.lam));
+    assert.equal(t.a, t.lam, "a = lam at p = 3");
+    assert.equal(t.unitary, true);
+    assert.equal(t.realisesItsTransvection, true);
+    const k = t.v.join(",") + "|" + t.lam;
+    assert.equal(seen.has(k), false, "no duplicate (v, lam)");
+    seen.add(k);
+  }
+  assert.equal(seen.size, 80);
+  // 40 projective points x 2 values of lam
+  assert.equal(new Set(r.table.map((t) => t.v.join(","))).size, 40);
+
+  // and the failed attempt is disclosed as an artefact, not reported as data
+  assert.match(r.notSettled, /NOT established/);
+  assert.match(r.notSettled, /ARTEFACT/);
+  assert.match(r.notSettled, /whether THIS choice is one is open/);
+  assert.match(r.stillUsable, /up to a Pauli and a global phase/);
+  assert.match(r.boundary, /NUMERICAL at 1e-7/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
