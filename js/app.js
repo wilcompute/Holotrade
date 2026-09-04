@@ -1378,6 +1378,7 @@
       fiveFront: ["data/w33_five_front_breakthrough.json", "holotrade.w33-five-front-breakthrough.v2"],
       f20Qutrit: ["data/w33_f20_qutrit_block_bridge.json", "holotrade.w33-f20-qutrit-block-bridge.v1"],
       f20QutritFormal: ["data/w33_f20_qutrit_block_router_formal.json", "holotrade.w33-f20-qutrit-block-router-formal.v1"],
+      f20PayneAtlas: ["data/w33_f20_payne_five_state_atlas.json", "holotrade.w33-f20-payne-five-state-atlas.v1"],
     };
     try {
       const entries = await Promise.all(Object.entries(sources).map(async ([key, [url, schema]]) => {
@@ -1403,13 +1404,13 @@
     const panel = $("unitaryBackendClosure");
     if (!panel) return;
     if (!unitaryBackendCertificates) {
-      panel.innerHTML = "<b>Backend closure</b> · loading fourteen independent exact/formal certificates…";
+      panel.innerHTML = "<b>Backend closure</b> · loading fifteen independent exact/formal certificates…";
       return;
     }
     const {
       closure, canonical, voltage, reversible, fractal, sentinel,
       homologyCode, sentinelShadow, bicolour, holobox, two216, fiveFront,
-      f20Qutrit, f20QutritFormal,
+      f20Qutrit, f20QutritFormal, f20PayneAtlas,
     } = unitaryBackendCertificates;
     if (closure.stableClosure.stableDimensionEachSide !== 4160 ||
         closure.stableClosure.chainLevelIntertwinerBuilt !== false ||
@@ -1459,7 +1460,18 @@
         f20Qutrit.checks.missingMultiplierRequiresClifford !== true ||
         f20QutritFormal.status !== "PASS" ||
         f20QutritFormal.positive.proved !== true ||
-        f20QutritFormal.negativeControl.counterexample !== true) {
+        f20QutritFormal.negativeControl.counterexample !== true ||
+        f20PayneAtlas.status !== "PASS" ||
+        f20PayneAtlas.fiveStateAtlas.circuit.carrierOrbit !== 216 ||
+        f20PayneAtlas.fiveStateAtlas.circuit.mapCount !== 1 ||
+        f20PayneAtlas.fiveStateAtlas.romLine.innerIntersection.structure !== "D10" ||
+        f20PayneAtlas.addressToPayne.equivariantBijections !== 800 ||
+        f20PayneAtlas.incidenceCompatibilityNoGo.equivariantMapCandidates !== 16000 ||
+        f20PayneAtlas.incidenceCompatibilityNoGo.coherentMaps !== 0 ||
+        f20PayneAtlas.incidenceCompatibilityNoGo.overlapCensus.maximumMatchedAddresses !== 20 ||
+        f20PayneAtlas.incidenceCompatibilityNoGo.overlapCensus.matchedAddressHistogram[0] !== 9600 ||
+        f20PayneAtlas.incidenceCompatibilityNoGo.overlapCensus.matchedAddressHistogram[20] !== 6400 ||
+        f20PayneAtlas.oneHopRepair.selectedGaugeDistanceHistogram[1] !== 40) {
       panel.innerHTML = "<b>Backend closure</b> · certificate theorem flags disagree";
       return;
     }
@@ -1491,6 +1503,11 @@
       "acts presentation-for-presentation on the cyclic <b>[[5,1,3]]₃</b> block: bare permutations give D₁₀, while " +
       "local qutrit Clifford compensation restores the order-four affine multiplier. GAP freezes a faithful " +
       "<b>40-address Pauli action</b>, and Yosys proves T⁵=M⁴=1 and MTM⁻¹=T³ with a failing missing-Clifford control. " +
+      "That same F₂₀ maps the five sites uniquely onto one <b>five-target slow circuit</b>; a ROM line instead realizes " +
+      "the inner/outer chain <b>D₁₀ &lt; F₂₀</b>. The 40 Pauli addresses admit <b>800</b> equivariant W33-axis maps, but an " +
+      "exhaustive census splits the 16,000 candidate welds into <b>9,600 zero-incidence</b> and <b>6,400 uniform half-incidence</b> " +
+      "maps—four of eight at every site, never a perfect weld. The frozen gauge's 40 misses are each repaired by exactly " +
+      "<b>one W33-axis hop</b> through the production Payne catalogue, but that repair is non-equivariant and non-dispatchable. " +
       "This is protected finite control, not a router-state/codeword identification or a fault-tolerant recode. " +
       "Finally, one W33 router digit and the " +
       "engine form <b>806,400</b> logical states; connected routing is a forced direct product, while the three full-router " +

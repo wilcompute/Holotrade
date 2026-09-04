@@ -226,6 +226,7 @@ tests; the hardware rows have additional Yosys SAT proofs.
 | fibre-product building bridge | the canonical \(1{,}296=36\cdot6\cdot6\) carrier has stabilizer \(F_{20}=C_5{:}C_4\) and building block \(3\cdot81+3\cdot64=435\), exactly matching the corrected 1,080 obstruction carrier; the cross-Hom dimension is 18 | semisimplicity gives an abstract isotypic isomorphism; the explicit \(1{,}296\times1{,}080\) intertwiner remains unbuilt |
 | dual-carrier RTL router | both native generator actions preserve the same 36-state type quotient; cross-carrier adaptation returns only that quotient | Yosys proves all valid carrier/opcode/state inputs and rejects a fabricated-state control; this is finite combinational logic, not a processor or fabricated device |
 | \(F_{20}\) protected-qutrit control | bare permutations of the cyclic \([[5,1,3]]_3\) block give only \(D_{10}\); local \(SL(2,3)\) Clifford compensation restores \(F_{20}\), with an explicit generator map satisfying \(T^5=M^4=1\) and \(MTM^{-1}=T^3\) | the faithful 40-address Pauli controller is Yosys-proved, but this is a code automorphism—not a router-state/codeword identification, local 20-to-240 embedding, threshold, or fault-tolerant recode |
+| \(F_{20}\) Payne five-state atlas | the five protected sites map uniquely to the fibre \(F_{20}\)'s five-target slow circuit; separately, a ROM line has inner image \(A_5\), full \(W(E_6)\) image \(S_5\), and a line-preserving \(F_{20}\) whose inner intersection is exactly \(D_{10}\) | among 16,000 presentation-compatible address/site maps, 9,600 match zero incidences and 6,400 match exactly four of eight at every site; perfect welding never occurs, while production Payne staging repairs the frozen gauge in exactly one W33-axis hop per address |
 
 The cross-prime quotient is especially rigid. If \(Q\) counts neighbours from one eight-state fibre into
 another, then
@@ -320,6 +321,40 @@ with the Clifford compensation removed fails. This is a native protected
 control plane for a block, not a claim that the 1,296 router states are
 codewords.
 
+That control group now has an object-level address on the new Payne slow path.
+Inside \(PSp(4,3)\), the fibre \(F_{20}\) has slow-target orbits
+\(5+10+10+20\). Its unique five-orbit is a coclique with full \(S_5\)
+set-stabilizer; its \(PSp(4,3)\)-orbit has size 216, so it is precisely one of
+the existing five-target circuit states. For the fixed generator map, the five
+qutrit sites have one and only one equivariant bijection to that circuit.
+
+A five-entry ROM bank is the complementary five-state realization. Its
+stabilizer maps to \(A_5\) inside \(PSp(4,3)\), but to \(S_5\) in the full
+order-51,840 \(W(E_6)\) action. GAP finds one conjugacy class of line-preserving
+\(F_{20}\) complements, and its intersection with the inner group is exactly
+\(D_{10}\). Thus the same generator-level chain
+\(D_{10}<F_{20}\) appears as bare versus Clifford-compensated code control and
+as inner versus outer ROM-line symmetry. This is a group-pair isomorphism, not
+an assertion that a local Clifford gate physically implements a Weyl-group
+motion.
+
+The 40 addressed one-site Paulis and the 40 W33/Payne axes each split as two
+regular \(F_{20}\)-orbits. There are exactly 800 equivariant bijections; the
+certificate freezes a reproducible lexicographic choice, and the fail-closed
+`F20PayneCodec` thereby assigns every Pauli address a nine-target Payne cover
+while retaining the gauge choice and `dispatchable: false` boundary. The tempting stronger weld is
+false: after varying all 20 presentation-compatible \(F_{20}\) isomorphisms and
+all 16,000 induced address/site maps, none sends each site's eight Pauli labels
+onto the eight covers containing its matched circuit target. The subgroup
+bridge is real, but \(F_{20}\) alone does not determine the full incidence
+codec. GAP sharpens this from a zero count to a complete defect spectrum:
+9,600 candidates match no address at any site, while 6,400 match exactly four
+of eight at every site. Thus the best possible equivariant gauge is uniformly
+half-incidence, never an uneven near miss. Composing the frozen gauge with the
+separately proved production Payne staging rule repairs all 40 misses in
+exactly one W33-axis hop. The repair is deterministic and certificate-checked,
+but it breaks the direct equivariant weld and remains `dispatchable: false`.
+
 ### The instruction-cost exception has a geometric address
 
 The current all-transvection Cayley metric uses all 80 nontrivial symplectic
@@ -348,6 +383,7 @@ Reproduce the complete packet with:
 npm run verify:e8-backend
 npm run verify:e8-hardware
 npm run verify:w33-f20-qutrit
+npm run verify:w33-f20-payne
 ```
 
 The upper bound \((q^3+q+2)/2\), sharp at \(q=2,3\), is published finite-geometry prior art; the contribution

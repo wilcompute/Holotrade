@@ -10035,5 +10035,986 @@
       "source": "cli",
       "timestamp": "2026-09-04T04:21:00.439Z"
     }
+  },
+  {
+    "id": "9f55335a-245b-48cb-ae69-39dc495525ef",
+    "question": "What exact five-state atlas links the F20 qutrit block to the new Payne slow path?",
+    "answer": "GAP proves two distinct realizations. The inner fibre F20 acts on a unique five-target GQ(4,2) coclique with S5 stabilizer and 216-set orbit, giving a unique generator-matched qutrit-site to slow-circuit map. A ROM line instead has inner image A5 and full W(E6) image S5; its unique F20 complement meets PSp(4,3) in D10, exactly mirroring the bare D10 versus completed F20 chain. The 40 qutrit-Pauli addresses and 40 W33 axes are two regular F20 torsor pairs with 800 equivariant bijections. Exhausting all 20 F20 presentation isomorphisms and 16,000 map candidates finds zero that also identify each site's eight addresses with the eight Payne covers through its matched target.",
+    "timestamp": "2026-09-04T04:35:11.908Z",
+    "tags": [
+      "breakthrough",
+      "f20",
+      "gap",
+      "no-go",
+      "payne",
+      "qutrit",
+      "schlafli",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:35:11.909Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:35:11.905Z"
+    }
+  },
+  {
+    "id": "f01ecc08-2e69-427d-a529-68c2689e6308",
+    "question": "How is the F20 Payne five-state atlas made reproducible?",
+    "answer": "Add a source-adapting Node freezer, GAP-owned one-based input, frozen JSON certificate, four focused tests that rerun GAP byte-for-object, and verify/freeze package commands. The focused lane passes 4/4 and rechecks the 51840/25920 group tower, circuit and ROM-line chains, 800 address maps, and 16000-candidate no-go.",
+    "timestamp": "2026-09-04T04:36:15.836Z",
+    "tags": [
+      "certificate",
+      "f20",
+      "gap",
+      "go",
+      "how",
+      "node",
+      "package",
+      "payne",
+      "testing"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:36:15.838Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:36:15.833Z"
+    }
+  },
+  {
+    "id": "bf9afabf-7f7b-4f17-bb81-5eca3cc31034",
+    "question": "How should the F20 Payne atlas be exposed without overclaiming?",
+    "answer": "Add one exact backend row and a paper subsection distinguishing the inner five-target circuit from an outer-completed ROM line; show the 800 address-to-axis transports and the 0-of-16000 incidence-weld no-go together. The live panel loads and fail-closes on the atlas certificate, while all surfaces state that the selected map is noncanonical and neither a fault-tolerant recode nor a physical Weyl motion.",
+    "timestamp": "2026-09-04T04:37:33.317Z",
+    "tags": [
+      "boundary",
+      "docs",
+      "f20",
+      "go",
+      "how",
+      "paper",
+      "payne",
+      "website"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:37:33.318Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:37:33.313Z"
+    }
+  },
+  {
+    "id": "9ebc7ee1-328b-4706-b117-c5fb0614f02e",
+    "question": "Why did the F20 Payne publication test fail on its first run?",
+    "answer": "The README contained the intended TeX-delimited F_{20} label, but the regex expected it without the literal Markdown delimiters. Narrow the assertion to the unique phrase Payne five-state atlas; no theorem or publication text changed.",
+    "timestamp": "2026-09-04T04:37:55.800Z",
+    "tags": [
+      "correction",
+      "docs",
+      "testing",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:37:55.801Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:37:55.798Z"
+    }
+  },
+  {
+    "id": "e8076a5a-d39a-4fe9-8e62-89d7d86a6cf8",
+    "question": "Did the F20 Payne atlas publication packet validate?",
+    "answer": "Yes. The focused command reruns GAP and passes 5/5 tests, including source hashes, the circuit/ROM distinction, the 800-map bridge, the 16000-candidate no-go, and README/paper/site synchronization. The paper rebuilt successfully to a 257.90 KiB PDF; only existing underfull-box and fontconfig warnings remain.",
+    "timestamp": "2026-09-04T04:38:22.276Z",
+    "tags": [
+      "f20",
+      "gap",
+      "go",
+      "paper",
+      "payne",
+      "pdf",
+      "testing",
+      "website"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:38:22.277Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "go"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:38:22.273Z"
+    }
+  },
+  {
+    "id": "192be8e9-bef0-4534-a348-9cdc557e99a2",
+    "question": "How does the five-state atlas become usable without pretending its gauge choice is canonical?",
+    "answer": "Add F20PayneCodec: a boot-checked, non-dispatchable runtime adapter from each of 40 protected one-qutrit Pauli addresses to its selected W33 axis, nine-target Payne cover, and matched circuit target. It exposes the 800-choice gauge in every compiled row, rejects invalid addresses/sites, and keeps the no-fault-tolerant-recode boundary. Focused validation now passes 6/6.",
+    "timestamp": "2026-09-04T04:39:31.810Z",
+    "tags": [
+      "boundary",
+      "codec",
+      "f20",
+      "how",
+      "payne",
+      "runtime",
+      "testing"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:39:31.810Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:39:31.806Z"
+    }
+  },
+  {
+    "id": "32d696ff-c0f8-45f8-8846-a9f103d63fd8",
+    "question": "How is the new F20/Payne exact atlas protected in CI?",
+    "answer": "Added a focused pull-request and master workflow that installs GAP/GRAPE, regenerates the certificate, runs all six contract tests, and syntax-checks the fail-closed runtime codec.",
+    "timestamp": "2026-09-04T04:41:35.338Z",
+    "tags": [
+      "ci",
+      "f20",
+      "gap",
+      "holotrade",
+      "how",
+      "payne",
+      "testing"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:41:35.339Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:41:35.334Z"
+    }
+  },
+  {
+    "id": "73b2a170-26c7-447f-9248-2ac1ff0788af",
+    "question": "What is the current session handoff after the F20/Payne breakthrough?",
+    "answer": "Updated session notes with the two inequivalent five-state geometries, the exact 800-map atlas, the exhaustive 0-of-16000 incidence boundary, the fail-closed runtime contract, validations, and publication state.",
+    "timestamp": "2026-09-04T04:41:36.623Z",
+    "tags": [
+      "documentation",
+      "holotrade",
+      "payne",
+      "session"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:41:36.624Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:41:36.619Z"
+    }
+  },
+  {
+    "id": "a203f12d-7302-40d0-bbd7-8d5b86f4942f",
+    "question": "Why was the dual-carrier formal certificate regenerated during the F20/Payne integration?",
+    "answer": "The full five-front lane exposed stale source hashes after upstream theorem and RTL canonicalization. Regeneration changed only the two bound source hashes and certificate digest; the positive Yosys proof remains UNSAT at 28,312 variables and the unsafe mutation remains SAT at 16,382 variables.",
+    "timestamp": "2026-09-04T04:43:48.146Z",
+    "tags": [
+      "certificate",
+      "holotrade",
+      "integration",
+      "testing",
+      "why",
+      "yosys"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:43:48.146Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:43:48.140Z"
+    }
+  },
+  {
+    "id": "10a32a91-bea7-4798-a412-3768d84d8980",
+    "question": "Why was the F20/qutrit bridge certificate regenerated during the Payne atlas integration?",
+    "answer": "The full integration lane found that both GAP source files had been canonicalized after the certificate was frozen. Fresh construction differs only in their source hashes and packet digest; the theorem remains bare D10, Clifford-completed C5:C4, multiplier 3.",
+    "timestamp": "2026-09-04T04:49:06.283Z",
+    "tags": [
+      "certificate",
+      "f20",
+      "gap",
+      "integration",
+      "qutrit",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:49:06.284Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:49:06.280Z"
+    }
+  },
+  {
+    "id": "c807c250-6877-4860-a9b6-fccc8935c4cc",
+    "question": "Why was the F20/qutrit router formal certificate regenerated with the bridge certificate?",
+    "answer": "Its only drift was the newly canonical F20/qutrit packet hash. The RTL hash and proof outcomes are unchanged: the 1,950-variable positive case remains UNSAT and the 234-variable unsafe multiplier remains SAT.",
+    "timestamp": "2026-09-04T04:49:21.793Z",
+    "tags": [
+      "certificate",
+      "f20",
+      "integration",
+      "qutrit",
+      "why",
+      "yosys"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:49:21.794Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:49:21.790Z"
+    }
+  },
+  {
+    "id": "1eb151e8-cd74-485f-b00a-db952d57670f",
+    "question": "Why did the F20/Payne atlas digest change after dependent certificate repair?",
+    "answer": "The atlas source-binds the protected-qutrit certificate, so the upstream hash-only canonicalization correctly propagated into its sourceHashes and digest. GAP recomputation preserves site map 23,24,21,44,26, exactly 800 address maps, 16,000 incidence candidates, and zero coherent welds; new digest a121b3866eadcd1d52dda768d012791c629c8e8fec31577230be0f2e369378f9.",
+    "timestamp": "2026-09-04T04:52:06.071Z",
+    "tags": [
+      "certificate",
+      "f20",
+      "gap",
+      "integration",
+      "payne",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:52:06.071Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:52:06.068Z"
+    }
+  },
+  {
+    "id": "e4c13f73-27b4-458b-a919-f3a1e45b683b",
+    "question": "What is the complete incidence-defect spectrum of the 16,000 F20-compatible Payne weld candidates?",
+    "answer": "GAP proves an exact two-level spectrum: 9,600 candidates match 0 of 40 address incidences, while 6,400 match exactly 4 of 8 at every one of the five sites, for 20 total. No intermediate profile and no perfect weld occur; the equivariant optimum is uniform half-incidence.",
+    "timestamp": "2026-09-04T04:58:51.187Z",
+    "tags": [
+      "breakthrough",
+      "f20",
+      "gap",
+      "incidence",
+      "payne"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:58:51.187Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:58:51.184Z"
+    }
+  },
+  {
+    "id": "e665da75-5d48-449f-96e7-1e83f782f345",
+    "question": "How does production routing cross the F20 incidence obstruction without overstating it?",
+    "answer": "The frozen zero-match gauge composes with the independently proved Payne catalogue so every one of its 40 address-axis misses reaches an axis covering the matched circuit target in exactly one W33-collinearity hop. The runtime cross-checks the production catalogue and keeps the repair non-equivariant and dispatchable false.",
+    "timestamp": "2026-09-04T04:58:52.320Z",
+    "tags": [
+      "holotrade",
+      "how",
+      "payne",
+      "runtime",
+      "safety",
+      "staging"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:58:52.320Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:58:52.317Z"
+    }
+  },
+  {
+    "id": "9117e0cd-ddc4-405c-8120-d079f70bdf82",
+    "question": "Where is the sharpened F20/Payne defect theorem published?",
+    "answer": "Updated README, paper, live certificate gate, and website loading surface with the 9600/6400 zero-versus-uniform-half dichotomy and exact one-hop non-dispatchable repair.",
+    "timestamp": "2026-09-04T04:58:53.455Z",
+    "tags": [
+      "docs",
+      "holotrade",
+      "paper",
+      "payne",
+      "website"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:58:53.456Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:58:53.452Z"
+    }
+  },
+  {
+    "id": "bdb4ce2b-1182-480d-8930-ac0a77d2edcb",
+    "question": "Why was the live evidence sentence rejoined after the full backend run?",
+    "answer": "The first full 84-test run passed 83 tests and failed only because an existing documentation guard searches the literal boundary phrase in source while the new text split it across two JavaScript literals. Rejoined the unchanged sentence so the guard remains effective; no theorem or runtime behavior changed.",
+    "timestamp": "2026-09-04T04:59:24.725Z",
+    "tags": [
+      "compatibility",
+      "holotrade",
+      "javascript",
+      "testing",
+      "website",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:59:24.726Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "javascript",
+        "java"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:59:24.722Z"
+    }
+  },
+  {
+    "id": "be7f6ab0-8f1c-480c-add9-5dcac8283370",
+    "question": "What is the final handoff state of the sharpened F20/Payne packet?",
+    "answer": "Session notes now record the 9600 zero-match versus 6400 uniform-half defect spectrum, the exact one-hop production repair, updated digest dd42a4026d1e3a24b3925333d4eff58015162a8853de492602f9e913bc6b1513, and the single source-format guard found in the first full backend pass.",
+    "timestamp": "2026-09-04T04:59:42.119Z",
+    "tags": [
+      "f20",
+      "holotrade",
+      "payne",
+      "session",
+      "testing"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:59:42.119Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:59:42.115Z"
+    }
+  },
+  {
+    "id": "63e9c330-3d67-4473-bb55-67d7c4381ec2",
+    "question": "Why were two F20/Payne test expectations updated after sharpening the theorem?",
+    "answer": "The guards still expected the earlier prose 'none of 16,000' and 'not a fault-tolerant recode'. Updated them to require the stronger 9,600/6,400 defect split and the new explicit 'neither is a fault-tolerant recode' runtime boundary; behavior and theorem data were already correct.",
+    "timestamp": "2026-09-04T05:00:12.896Z",
+    "tags": [
+      "docs",
+      "f20",
+      "payne",
+      "testing",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T05:00:12.897Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T05:00:12.893Z"
+    }
+  },
+  {
+    "id": "08f35b23-237e-4976-9d5d-a13d8aa2efe8",
+    "question": "Why was the new README defect-spectrum guard made whitespace-tolerant?",
+    "answer": "The prose correctly wraps 'match' and 'no address incidences' across a Markdown line boundary. Changed only the test regex to accept whitespace there while still requiring the exact 9,600 claim.",
+    "timestamp": "2026-09-04T05:00:35.300Z",
+    "tags": [
+      "compatibility",
+      "docs",
+      "testing",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T05:00:35.300Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T05:00:35.296Z"
+    }
+  },
+  {
+    "id": "a4243c19-94bd-43ca-b7b5-8524b5f46dff",
+    "question": "Why was the README defect guard corrected a second time?",
+    "answer": "Inspection of the actual README showed the published phrase is '9,600 candidates match no address at any site', not 'no address incidences'. Corrected the test to the exact user-facing language instead of weakening it.",
+    "timestamp": "2026-09-04T05:00:58.700Z",
+    "tags": [
+      "compatibility",
+      "docs",
+      "testing",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T05:00:58.700Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T05:00:58.695Z"
+    }
+  },
+  {
+    "id": "35bd90c4-f151-4ee0-b77e-d4d403a0e8f6",
+    "question": "Why was the final live-panel assertion updated?",
+    "answer": "One remaining focused assertion still required the superseded 0/16,000 wording. Replaced it with exact checks for the live panel's stronger 9,600 zero-incidence and 6,400 uniform half-incidence claims.",
+    "timestamp": "2026-09-04T05:01:23.304Z",
+    "tags": [
+      "f20",
+      "payne",
+      "testing",
+      "website",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T05:01:23.305Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T05:01:23.301Z"
+    }
+  },
+  {
+    "id": "588fd9dc-c0ed-424a-afe2-9f9c1bf9ae3d",
+    "question": "What validation is green after the incidence-spectrum publication update?",
+    "answer": "Focused GAP/runtime atlas tests pass 6/6, dependent protected-qutrit publication tests pass 5/5, JavaScript syntax and workflow YAML structure validate, and the revised paper compiles to 258.41 KiB with only pre-existing warnings.",
+    "timestamp": "2026-09-04T05:01:50.879Z",
+    "tags": [
+      "f20",
+      "javascript",
+      "paper",
+      "payne",
+      "testing",
+      "validation"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T05:01:50.879Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "javascript",
+        "java"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T05:01:50.875Z"
+    }
   }
 ]
