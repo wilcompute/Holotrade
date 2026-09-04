@@ -5257,3 +5257,55 @@ test("every opcode axis anchors five minimal covers", () => {
   assert.match(r.boundary, /NO\s+claim that the four alternates have a Payne/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the Schlafli triple is closed by equivariant maps", () => {
+  const r = require(path.join(root, "data/schlafli_triple_closed.json"));
+  assert.equal(r.schema, "holotrade.schlafli-triple-closed.v1");
+  assert.equal(r.valid, true);
+
+  // the last leg: 36 double-sixes = 36 spreads, equivariantly
+  const t = r.theThirtySix;
+  assert.equal(t.spreadsOfW33, 36);
+  assert.equal(t.doubleSixesFromCostGeometry, 36);
+  assert.equal(t.sixers, 72);
+  assert.equal(t.sixers / 2, t.doubleSixesFromCostGeometry);
+  assert.equal(t.transitiveOnDoubleSixes, true);
+  assert.equal(t.transitiveOnSpreads, true);
+  assert.equal(t.equivariantBijection, true, "built, not by invariants");
+  assert.equal(t.generatorsChecked, 80);
+  assert.match(t.whatIsAdded, /FROM THE COST\s+MODEL/);
+
+  // the whole ledger, and each leg cross-checked against its own certificate
+  const L = r.ledger;
+  assert.deepEqual(Object.keys(L).sort(), ["27", "36", "40", "45"]);
+  for (const k of Object.keys(L)) {
+    assert.ok(L[k].costObject && L[k].corpusObject && L[k].commit);
+  }
+  const t27 = require(path.join(root, "data/my_27_is_their_27.json"));
+  assert.equal(t27.equivariantBijection.intertwinesElationGroup, true);
+  const rom = require(path.join(root, "data/the_45_slot_rom_bijection.json"));
+  assert.equal(rom.verification.linesMappedOntoLines, true);
+  assert.equal(rom.table.length, 45);
+  const ov = require(path.join(root, "data/cheap_opcodes_are_ovoids.json"));
+  assert.equal(ov.sameSet.equivariantBijection, true);
+  assert.equal(ov.sameSet.generatorsChecked, 80);
+
+  // the three Schlafli numbers agree with the derivation that started it
+  const cs = require(path.join(
+    root,
+    "data/the_cost_model_reconstructs_the_cubic_surface.json"
+  ));
+  assert.equal(cs.theThreeNumbers.lines, 27);
+  assert.equal(cs.theThreeNumbers.doubleSixes, t.doubleSixesFromCostGeometry);
+  assert.equal(cs.theThreeNumbers.tritangentPlanes, rom.table.length);
+  // and that file's invariants-only hedge is the thing now discharged
+  assert.match(cs.boundary, /by INVARIANTS/);
+  assert.match(r.theLastLeg, /still outstanding/);
+
+  // the claim is bounded: nothing new was discovered, it was identified
+  assert.match(r.whatItLicenses, /ONE object/);
+  assert.match(r.whatItDoesNotSay, /discovered anything\s+the corpus lacked/);
+  assert.match(r.whatItDoesNotSay, /it IS the geometry/);
+  assert.match(r.boundary, /CITED not derived/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
