@@ -1,0 +1,23 @@
+name: W33 slow-path ROM decoder
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-slowpath-rom-decoder.js'
+      - 'tests/w33-slowpath-rom-decoder.test.js'
+      - 'data/the_45_slot_rom_bijection.json'
+      - '.github/workflows/w33_slowpath_rom_decoder.yml'
+  workflow_dispatch:
+
+jobs:
+  decoder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify concrete 45-target decoder
+        run: node --test tests/w33-slowpath-rom-decoder.test.js
