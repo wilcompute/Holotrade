@@ -9944,5 +9944,51 @@
       "source": "cli",
       "timestamp": "2026-09-04T04:20:09.271Z"
     }
+  },
+  {
+    "id": "d9ea21f2-c6e7-419e-9070-6a35b7aed886",
+    "question": "What did HoloTrade commit f33fd90 publish?",
+    "answer": "Commit f33fd90 publishes the F20 protected-qutrit control bridge: bare D10 versus Clifford-completed F20, source-bound GAP/Node and Yosys certificates, refreshed dual-carrier proof hashes, focused package commands, and synchronized README, paper, HTML, and live evidence surfaces.",
+    "timestamp": "2026-09-04T04:20:44.333Z",
+    "tags": [
+      "commit",
+      "docs",
+      "f20",
+      "node",
+      "qutrit",
+      "yosys"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "f33fd90",
+      "status": "active"
+    },
+    "commitHashes": [
+      "f33fd90"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-04T04:20:44.342Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T04:20:44.304Z"
+    }
   }
 ]
