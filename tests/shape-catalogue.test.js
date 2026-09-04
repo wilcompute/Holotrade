@@ -5827,3 +5827,64 @@ test("the stale-frontier audit is semantic, not a string match", () => {
   assert.match(r.boundary, /NO certificate is modified/);
   assert.match(r.boundary, /still open\s+in \[111, 115\]/);
 });
+
+test("why depth five resists is a property of the instance", () => {
+  const r = require(path.join(root, "data/why_depth_five_resists.json"));
+  assert.equal(r.schema, "holotrade.why-depth-five-resists.v1");
+  assert.equal(r.valid, true);
+  assert.equal(r.isNegativeMethodResult, true, "labelled as such");
+
+  // the packing route is closed by a PROOF, not a timeout
+  const d = r.lpRouteClosedByDuality;
+  assert.equal(d.isAProof, true);
+  assert.equal(d.integerPackingCeiling, Math.floor(d.lp));
+  assert.equal(d.lpCeiling, Math.ceil(d.lp - 1e-9));
+  assert.ok(
+    d.integerPackingCeiling < d.lpCeiling,
+    "any integer packing is WEAKER than the LP's own ceiling"
+  );
+  assert.match(d.argument, /LP dual IS the fractional\s+packing/);
+
+  // the decision reformulation was tried and returned UNKNOWN
+  assert.equal(r.decisionReformulation.length, 2);
+  for (const x of r.decisionReformulation) {
+    assert.equal(x.status, "UNKNOWN");
+    assert.equal(x.budgetSeconds, 240);
+  }
+
+  // reductions genuinely do not bite
+  const red = r.reductions;
+  assert.equal(red.tileConstraints, 6129);
+  assert.equal(red.forcedLeavesFromSingletons, 0, "no unit clauses at all");
+  assert.equal(red.variableCountUnchanged, true);
+  assert.equal(red.leafVariablesRelevant, 5294);
+  assert.ok(
+    red.afterRemovingDominated > 0.95 * red.tileConstraints,
+    "dominance removes under 5%"
+  );
+
+  // the measurements that explain it
+  const m = r.measurements;
+  assert.ok(m.leafOptionsPerTile.min >= 50, "every tile has 50+ options");
+  assert.ok(m.largestLeafCoversFraction < 0.2, "no leaf covers a fifth");
+  assert.ok(m.density > 0.1 && m.density < 0.15);
+  assert.equal(m.incidences, 3640843);
+  // and they reproduce the corpus's numbers exactly
+  const prior = require(path.join(
+    root,
+    "data/depth_five_is_reachable_but_undecided.json"
+  ));
+  assert.ok(Math.abs(m.lp - prior.bounds.lpRelaxation) < 1e-6);
+  assert.equal(m.greedy, prior.bounds.greedyCover);
+  assert.equal(m.bestKnown, prior.bounds.cpsatBestFound);
+  assert.ok(m.integralityGap > 1.7 && m.integralityGap < 1.8);
+
+  // the interval is NOT moved, and the file says so
+  assert.deepEqual(prior.bounds.interval, [13, 22]);
+  assert.match(r.boundary, /MOVES NO BOUND/);
+  assert.match(r.boundary, /NOT\s+evidence that longer budgets would fail/);
+  assert.match(r.implication, /will not be separated by\s+more solver/);
+  assert.match(r.implication, /GEOMETRY/);
+  assert.match(r.diagnosis, /no unit clause anywhere/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
