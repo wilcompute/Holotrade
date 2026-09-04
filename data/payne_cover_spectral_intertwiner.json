@@ -1,0 +1,40 @@
+{
+  "boundary": "Exact integer/rational linear algebra on the committed finite incidence data. Spectral transform is a mathematical statement only; no physical unitary, quantum channel, or energy advantage is claimed.",
+  "checks": {
+    "BBt_identity": true,
+    "BtB_identity": true,
+    "adjacent_fast_covers_intersect_3_opposite_intersect_1": true,
+    "collinear_slow_targets_share_0_covers_noncollinear_share_2": true,
+    "column_sums_8": true,
+    "rank_25": true,
+    "row_sums_9": true,
+    "shifted_anti_intertwiner": true
+  },
+  "gramIdentities": [
+    "B B^T = 8 I_40 + J_40 + 2 A_W33",
+    "B^T B = 6 I_45 + 2 J_45 - 2 A_GQ45",
+    "A_W33 B + B A_GQ45 = 5 J_40x45 - B"
+  ],
+  "incidence": {
+    "columnWeight": 8,
+    "fastPairCensus": {
+      "adj0_intersection1": 540,
+      "adj1_intersection3": 240
+    },
+    "rank": 25,
+    "rowWeight": 9,
+    "shape": [40,45],
+    "slowPairCensus": {
+      "adj0_cocovers2": 720,
+      "adj1_cocovers0": 270
+    }
+  },
+  "nontrivialChannel": "B^T maps the 24-dimensional W33 eigenvalue +2 sector isomorphically onto the 24-dimensional GQ(4,2) eigenvalue -3 sector, with squared singular value 12; W33 eigenvalue -4 (dimension 15) and slow eigenvalue +3 (dimension 20) lie in the respective kernels.",
+  "schema": "holotrade.payne-cover-spectral-intertwiner.v1",
+  "singularSpectrum": {
+    "0": 20,
+    "sqrt(12)": 24,
+    "sqrt(72)": 1
+  },
+  "status": "PASS"
+}
