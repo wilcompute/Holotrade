@@ -14,6 +14,7 @@ function bootCheck(){
   let catalogue=null;
   try{catalogue=new PayneCoverCatalogue();}catch(_error){errors.push("PAYNE_CATALOGUE");}
   if(atlas.schema!=="holotrade.w33-f20-payne-five-state-atlas.v1"||atlas.status!=="PASS")errors.push("ATLAS_CERT");
+  if(!/^[0-9a-f]{64}$/.test(atlas.sha256||""))errors.push("ATLAS_DIGEST");
   const bridge=atlas.addressToPayne||{};
   const rows=bridge.compiler||[];
   if(bridge.equivariantBijections!==800)errors.push("GAUGE_COUNT");
@@ -42,6 +43,8 @@ class F20PayneCodec{
     const boot=bootCheck();
     if(!boot.ok)throw new Error(`F20 Payne codec boot refused: ${boot.errors.join(",")}`);
     this.schema=atlas.schema;
+    this.atlasDigest=`sha256:${atlas.sha256}`;
+    this.gaugeId=this.atlasDigest;
     this.gaugeChoice=atlas.addressToPayne.selectedMap;
     this.equivariantChoices=atlas.addressToPayne.equivariantBijections;
     this.catalogue=new PayneCoverCatalogue();
@@ -53,6 +56,8 @@ class F20PayneCodec{
     return Object.freeze({
       schema:"holotrade.w33-f20-payne-compiled-address.v1",
       dispatchable:false,
+      atlasDigest:this.atlasDigest,
+      gaugeId:this.gaugeId,
       gaugeChoice:this.gaugeChoice,
       address:row.address,
       site:row.site,

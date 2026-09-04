@@ -98,11 +98,22 @@ test("the README, paper, and live evidence panel publish the atlas and no-go",()
 
 test("the runtime codec fails closed and preserves the selected gauge boundary",()=>{
   assert.deepEqual(bootCheck(),{ok:true,errors:[]});
+  const validDigest=packet.sha256;
+  packet.sha256="not-a-certificate-digest";
+  try{
+    assert.ok(bootCheck().errors.includes("ATLAS_DIGEST"));
+    assert.throws(()=>new F20PayneCodec(),/ATLAS_DIGEST/);
+  }finally{
+    packet.sha256=validDigest;
+  }
   const codec=new F20PayneCodec();
   assert.equal(codec.equivariantChoices,800);
+  assert.equal(codec.gaugeId,`sha256:${packet.sha256}`);
   for(let address=0;address<40;address+=1){
     const row=codec.compile(address);
     assert.equal(row.dispatchable,false);
+    assert.equal(row.atlasDigest,codec.gaugeId);
+    assert.equal(row.gaugeId,codec.gaugeId);
     assert.equal(row.payneSlowCover.length,9);
     assert.equal(row.matchedCircuitTarget,codec.circuitTargetForSite(row.site));
     assert.equal(row.coverContainsMatchedTarget,false);

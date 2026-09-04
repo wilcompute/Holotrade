@@ -11221,5 +11221,58 @@
       "source": "cli",
       "timestamp": "2026-09-04T13:41:22.617Z"
     }
+  },
+  {
+    "id": "c98ecbf2-53bb-43a2-bc80-9a9962099014",
+    "question": "How should the noncanonical F20 Payne gauge be bound in runtime receipts?",
+    "answer": "Fail closed unless the frozen atlas carries a 64-hex SHA-256, then expose the prefixed atlas digest as both atlasDigest and stable gaugeId on the codec and every compiled address. The digest binds the selected 40-address map, so receipts and cache keys no longer depend on mutable explanatory prose; tests mutate the digest and require boot refusal.",
+    "timestamp": "2026-09-04T13:42:42.697Z",
+    "tags": [
+      "cache",
+      "certificate",
+      "codec",
+      "f20",
+      "gauge",
+      "how",
+      "payne",
+      "review",
+      "runtime"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T13:42:42.698Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "cache"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T13:42:42.694Z"
+    }
   }
 ]
