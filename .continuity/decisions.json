@@ -11274,5 +11274,52 @@
       "source": "cli",
       "timestamp": "2026-09-04T13:42:42.694Z"
     }
+  },
+  {
+    "id": "e968c6d6-1fe6-4dea-aa1c-4500a8acd4f8",
+    "question": "Which commit makes F20 Payne runtime receipts certificate-stable?",
+    "answer": "Commit 4fa3025 validates the atlas digest at boot, exposes its prefixed SHA-256 as atlasDigest and gaugeId on every compiled row, and adds a mutation test proving malformed digests refuse codec construction. The exact GAP-backed lane remains 6/6 PASS.",
+    "timestamp": "2026-09-04T13:43:09.486Z",
+    "tags": [
+      "certificate",
+      "codec",
+      "commit",
+      "f20",
+      "gauge",
+      "payne",
+      "runtime"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "commitHash": "4fa3025",
+      "status": "active"
+    },
+    "commitHashes": [
+      "4fa3025"
+    ],
+    "history": [
+      {
+        "timestamp": "2026-09-04T13:43:09.487Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T13:43:09.484Z"
+    }
   }
 ]
