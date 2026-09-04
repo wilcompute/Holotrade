@@ -5937,3 +5937,55 @@ test("the complement half is demonstrated, not just asserted", () => {
   assert.match(r.boundary, /NOT\s+evidence that no C3-invariant/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the phase lift has no obstruction: the qutrit Clifford group splits", () => {
+  const r = require(path.join(root, "data/phase_lift_has_no_obstruction.json"));
+  assert.equal(r.schema, "holotrade.phase-lift-no-obstruction.v1");
+  assert.equal(r.valid, true);
+
+  // it addresses a boundary the compiler actually stated
+  const comp = require(path.join(
+    root,
+    "data/the_qutrit_transvection_compiler.json"
+  ));
+  assert.match(comp.boundary, /phase bookkeeping/);
+  assert.match(r.theBoundaryLeft, /hard, easy or impossible/);
+
+  // the group orders are the expected ones
+  const g = r.oneQutritGroups;
+  assert.equal(g.pauliModGlobalPhase, 9);
+  assert.equal(g.cliffordModGlobalPhase, 216);
+  assert.equal(g.quotient, 24);
+  assert.equal(
+    g.cliffordModGlobalPhase,
+    g.pauliModGlobalPhase * g.quotient,
+    "|C| = |P| . |C/P|"
+  );
+
+  // the complement, which is what splitting means
+  const s = r.splitting;
+  assert.equal(s.splits, true);
+  assert.equal(s.complementOrder, 24);
+  assert.equal(s.complementOrder, g.quotient, "a complement has quotient order");
+  assert.equal(s.pauliIntersection, 1, "trivial intersection with the Paulis");
+  assert.match(s.consequence, /no 2-cocycle, no\s+phase table/);
+
+  // the qubit contrast is cited, not claimed as derived here
+  assert.match(r.literature, /odd prime p/);
+  assert.match(r.literature, /NOT such a\s+semidirect product/);
+  assert.match(r.literature, /cited for general n/);
+
+  // the q=2 pattern is flagged as an observation, not a theorem
+  assert.match(r.sameDichotomyAsTheSession, /6bb8975/);
+  assert.match(r.sameDichotomyAsTheSession, /3595bd1/);
+  assert.match(r.sameDichotomyAsTheSession, /OBSERVATION/);
+  assert.match(r.sameDichotomyAsTheSession, /not a claim that\s+these are the same theorem/);
+
+  // the compiler consequence, and its honest limits
+  assert.match(r.whatItChangesForTheCompiler, /lifts TERMWISE/);
+  assert.match(r.whatItChangesForTheCompiler, /rather than\s+'not known how'/);
+  assert.match(r.boundary, /NOT verified at n = 2/);
+  assert.match(r.boundary, /eighty canonical\s+lifts are NOT produced here/);
+  assert.match(r.boundary, /not in exact\s+cyclotomic arithmetic/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
