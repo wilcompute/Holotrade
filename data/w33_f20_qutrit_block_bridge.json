@@ -318,9 +318,9 @@
     "transitionTablesSatisfyPresentation": true
   },
   "sourceHashes": {
-    "fibreGap": "sha256:1e3ca43a44ca40acfccca0b63849447a71a8fe35b5f5ec2bccd319675cd1e791",
-    "qutritGap": "sha256:56fda2f020b9973adb097ae7440f3d94e32524ff327aedea3812f1fa58c477ff"
+    "fibreGap": "sha256:48f769938f9fc3fce3134685b0b0f10d9184d8bc5a84a1d1f29bff8783b8e4f4",
+    "qutritGap": "sha256:b48f4f6e7ff70810e988781e431074b6c4f2bd673a99cd6c33e67db47ed58135"
   },
   "boundary": "This is an exact finite stabilizer-code automorphism and router-control interface. It does not identify the 1,296 fibre-product states with qutrit codewords, does not make the nonlocal 20-to-240 embedding local, and does not close the physical calibration, threshold, or fault-tolerant recode gates.",
-  "sha256": "sha256:3f30670ca5d31aedd8cd1dca785c05a75de125222184fe48b794530be3c47e99"
+  "sha256": "e8d7044c15eaba12ae115c4e1c0ca420ac349514ac06571e2042b095be730b3b"
 }

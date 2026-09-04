@@ -4,7 +4,7 @@
   "evidenceClass": "YOSYS_SAT_PROOF_WITH_MUTATION_CONTROL",
   "source": {
     "packet": "data/w33_f20_qutrit_block_bridge.json",
-    "packetSha256": "sha256:aaa3109831a7710d41be365dfec4dc61abe5518b1f1f9710db5d032fda05fdf8",
+    "packetSha256": "sha256:14c05bf16cf9dc7606d8082dca2306e2c02600296dd259a9e98d63589306a32b",
     "rtl": "rtl/w33_f20_qutrit_block_router.v",
     "rtlSha256": "sha256:7a92b5c420229b8a3f0bdff96ef2f839b69581fc95c7cd639b3f212dd7c19e1f",
     "degree": 40,
@@ -34,5 +34,5 @@
     "purpose": "Proves the order-four multiplier assertion is not vacuous and catches omission of the local Clifford compensation."
   },
   "boundary": "This proves the finite forty-address controller and its presentation. It is not a timing closure, physical qutrit device, threshold measurement, or fault-tolerant recode proof.",
-  "sha256": "sha256:fae8ad400d906a408195b7a790e267fbbc3ff0b4a6ec45c68d2599821738ad5b"
+  "sha256": "eafbd89cb2db7d5e1e9430750e55438864bda671eb0be3b29cfe36e58fc429da"
 }

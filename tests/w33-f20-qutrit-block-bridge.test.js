@@ -36,7 +36,7 @@ test("the fibre stabilizer and qutrit code automorphisms share an explicit F20 p
   assert.equal(new Set(action.translation).size,40);
   assert.equal(new Set(action.multiplier).size,40);
   const body={...packet}; delete body.sha256;
-  assert.equal(packet.sha256,`sha256:${crypto.createHash("sha256").update(fiveFront.canonical(body)).digest("hex")}`);
+  assert.equal(packet.sha256,crypto.createHash("sha256").update(fiveFront.canonical(body)).digest("hex"));
 });
 
 test("the Yosys proof is source-bound and the missing-Clifford mutation fails",()=>{
@@ -49,7 +49,7 @@ test("the Yosys proof is source-bound and the missing-Clifford mutation fails",(
   assert.equal(proof.negativeControl.counterexample,true);
   assert.notEqual(proof.negativeControl.exitCode,0);
   const body={...proof}; delete body.sha256;
-  assert.equal(proof.sha256,`sha256:${crypto.createHash("sha256").update(formal.canonical(body)).digest("hex")}`);
+  assert.equal(proof.sha256,crypto.createHash("sha256").update(formal.canonical(body)).digest("hex"));
 });
 
 test("the certificate keeps the locality and fault-tolerance boundary explicit",()=>{
@@ -57,4 +57,20 @@ test("the certificate keeps the locality and fault-tolerance boundary explicit",
   assert.match(packet.boundary,/does not make the nonlocal 20-to-240 embedding local/);
   assert.match(packet.boundary,/does not close the physical calibration, threshold, or fault-tolerant recode gates/);
   assert.match(proof.boundary,/not a timing closure/);
+});
+
+test("the README, paper, and live evidence panel expose the theorem and its boundary",()=>{
+  const read=rel=>fs.readFileSync(path.join(ROOT,rel),"utf8");
+  const readme=read("README.md");
+  const paper=read("docs/holotrade.tex");
+  const app=read("js/app.js");
+  const site=read("holotrade.html");
+  assert.equal(readme.includes("bare permutations of the cyclic \\([[5,1,3]]_3\\) block"),true);
+  assert.match(readme,/Ellers's exact classification/);
+  assert.match(paper,/fibre stabilizer is a protected five-qutrit control group/);
+  assert.match(paper,/ellers1994transvections/);
+  assert.match(app,/w33_f20_qutrit_block_bridge\.json/);
+  assert.match(app,/not a router-state\/codeword identification or a fault-tolerant recode/);
+  assert.match(site,/id="unitaryBackendClosure"/);
+  assert.match(site,/fibre-router, protected-qutrit-control/);
 });
