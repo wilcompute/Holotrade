@@ -1,9 +1,10 @@
 // Production catalogue for the 40 cheap-axis -> 45 slow-target Payne covers.
-// The certificate is generated and proved by analysis/the_slow_path_is_the_payne_derivative.py.
+// Certificates are generated and proved by the focused finite-geometry workflow.
 "use strict";
 
 const cert = require("../data/slow_path_is_payne_derivative.json");
 const spectral = require("../data/payne_cover_spectral_intertwiner.json");
+const minwords = require("../data/slow_targets_are_w33_minimum_words.json");
 const rom = require("../data/the_45_slot_rom_bijection.json");
 
 const Q = 3;
@@ -28,11 +29,13 @@ const AXES = buildAxes();
 
 function intersectionSize(a, b) { let n = 0; for (const x of a) if (b.has(x)) n += 1; return n; }
 function collinearSlow(a, b) { return rom.linesB.some((line) => line.includes(a) && line.includes(b)); }
+function sortedNumeric(xs) { return [...xs].sort((a, b) => a - b); }
 
 function bootCheck() {
   const errors = [];
   if (cert.schema !== "holotrade.slow-path-is-payne-derivative.v1" || cert.status !== "PASS") errors.push("PAYNE_CERT");
   if (spectral.schema !== "holotrade.payne-cover-spectral-intertwiner.v1" || spectral.status !== "PASS") errors.push("SPECTRAL_CERT");
+  if (minwords.schema !== "holotrade.slow-targets-are-w33-minimum-words.v1" || minwords.status !== "PASS") errors.push("MINWORD_CERT");
   if (!rom.valid || !Array.isArray(rom.linesB) || rom.linesB.length !== 27) errors.push("ROM_CERT");
   const raw = cert.equivariant40 && cert.equivariant40.covers;
   if (!raw || Object.keys(raw).length !== 40) errors.push("COVERS_NOT_40");
@@ -42,6 +45,11 @@ function bootCheck() {
   covers.forEach((s, a) => s.forEach((t) => byTarget[t].push(a)));
   if (byTarget.some((a) => a.length !== 8)) errors.push("TARGET_NOT_IN_8_COVERS");
   if (AXES.length !== 40 || key(AXES[0]) !== cert.baseW33Vector.join("")) errors.push("AXIS_ORDER_MISMATCH");
+  for (let t = 0; t < 45; t += 1) {
+    const row = minwords.dictionary && minwords.dictionary[String(t)];
+    if (!row || JSON.stringify(sortedNumeric(row.weight8Support)) !== JSON.stringify(sortedNumeric(byTarget[t]))) errors.push(`MINWORD_SUPPORT_${t}`);
+    if (!row || !Array.isArray(row.centerQuadPair) || row.centerQuadPair.length !== 2 || row.centerQuadPair.some((q) => q.length !== 4)) errors.push(`CENTER_QUAD_PAIR_${t}`);
+  }
   for (let i = 0; i < 40; i += 1) for (let j = i + 1; j < 40; j += 1) {
     const want = symplectic(AXES[i], AXES[j]) === 0 ? 3 : 1;
     if (intersectionSize(covers[i], covers[j]) !== want) errors.push(`FAST_PAIR_${i}_${j}`);
@@ -58,8 +66,8 @@ class PayneCoverCatalogue {
   constructor() {
     const b = bootCheck();
     if (!b.ok) throw new Error(`Payne cover catalogue boot refused: ${b.errors.slice(0, 8).join(",")}`);
-    this.covers = b.covers.map((s) => Object.freeze([...s].sort((a, b) => a - b)));
-    this.byTarget = b.byTarget.map((a) => Object.freeze([...a].sort((x, y) => x - y)));
+    this.covers = b.covers.map((s) => Object.freeze(sortedNumeric(s)));
+    this.byTarget = b.byTarget.map((a) => Object.freeze(sortedNumeric(a)));
     this.schema = cert.schema;
   }
   coverForAxis(axis) {
@@ -69,6 +77,19 @@ class PayneCoverCatalogue {
   axesForTarget(slot) {
     if (!Number.isInteger(slot) || slot < 0 || slot >= 45) throw new RangeError("slot must be 0..44");
     return this.byTarget[slot];
+  }
+  targetGeometry(slot) {
+    if (!Number.isInteger(slot) || slot < 0 || slot >= 45) throw new RangeError("slot must be 0..44");
+    const row = minwords.dictionary[String(slot)];
+    return Object.freeze({
+      slot,
+      payneCoverAxes: this.axesForTarget(slot),
+      weight8Support: Object.freeze([...row.weight8Support]),
+      centerQuadPair: Object.freeze(row.centerQuadPair.map((q) => Object.freeze([...q]))),
+      codeLabel: "C2(W33)[40,16,8]_MINIMUM_WORD",
+      priorE8Label: "SELECTED_D4_PERP_D4",
+      e8Evidence: "REPO_PRIOR_WORK_NOT_REDERIVED_HERE",
+    });
   }
   role(axis, slot) { return this.coverForAxis(axis).includes(slot) ? "NEW_HYPERBOLIC_LINE" : "INHERITED_W33_LINE"; }
   axisDistance(a, b) {
