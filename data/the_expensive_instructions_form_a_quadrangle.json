@@ -1,0 +1,46 @@
+{
+  "schema": "holotrade.expensive-instructions-quadrangle.v1",
+  "valid": true,
+  "whereThisStarts": "3a0a194 showed the projective ISA has exactly 45 expensive instructions, one per minimum-weight codeword -- a counting statement. 45 is the tritangent count of a cubic surface, whose partner is 27, so if the cost structure is really Schlafli the 45 must carry a GEOMETRY, not merely a cardinality",
+  "theRelation": {
+    "stricltyCommuting": 0,
+    "antiCommuting": 270,
+    "remaining": 720,
+    "totalPairs": 990,
+    "reading": "not one pair of the 45 commutes; the relation is entirely anticommutation, the Pauli incompatibility relation -- the same one making mutually incompatible Paulis partial ovoids of a symplectic polar space in this corpus. In PSp the sign vanishes, so these are exactly the projectively commuting pairs, which is why the machine sees them as compatible and the matrix group does not"
+  },
+  "quadrangle": {
+    "points": 45,
+    "edges": 270,
+    "degrees": {
+      "12": 45
+    },
+    "stronglyRegular": [
+      45,
+      12,
+      3,
+      3
+    ],
+    "maximalCliqueSizes": {
+      "5": 27
+    },
+    "lines": 27,
+    "linesPerPoint": {
+      "3": 45
+    },
+    "flags": 135,
+    "gqAxiom": true,
+    "isomorphismType": "GQ(4,2) = H(3,4)",
+    "linesRecoveredNotAssumed": "the 27 lines are the maximal cliques, found by Bron-Kerbosch, not an input"
+  },
+  "geometricForm": {
+    "rule": "adjacent <=> L n M = empty AND L n M^perp = empty",
+    "meetsMOnly": 414,
+    "meetsPolarOnly": 306,
+    "meetsNeither": 270,
+    "refutedAlternative": "that M is spanned by a point of L and a point of L^perp accounts for 0 of the 270 -- tested, not assumed"
+  },
+  "duality": "GQ(4,2) is the point-line DUAL of GQ(2,4), the carrier geometry (27 points, 45 lines, tau_1 = 10, no ovoid). Instructions live on W(3,3), states on GQ(2,4), and the cost irregularity on GQ(2,4)'s dual: the anomaly is not a defect scattered through the instruction set, it is a second geometry, the one belonging to the 27 lines",
+  "convergence": "a149d0b built GQ(4,2) on these same 45 polar pairs from the depth-3 blocking obstruction, joined by all-isotropic reguli, reporting 45 vertices, 270 edges, 12-regular, 27 maximal cliques all of size 5, GQ axiom. Identical invariants from blocking sets rather than Cayley-graph lengths: the same quadrangle answers 'which triples fail to block' and 'which instructions cost extra'",
+  "boundary": "exhaustive over all 51,840 elements; the 45 are 3a0a194's anomaly classes, the relation is tested on matrices, SRG parameters and the 27 lines are computed rather than assumed, and the GQ axiom is checked on every point-line pair. GQ(4,2) on 45 tritangent planes is classical, as is its duality with GQ(2,4); what is computed here is that the ISA's anomaly set carries it under anticommutation. The match with a149d0b is by INVARIANTS only -- that the identity map on polar pairs is an isomorphism between the two graphs is NOT established here. tau_2 is untouched"
+}

@@ -4828,3 +4828,69 @@ test("the projective ISA has exactly 45 expensive instructions", () => {
   assert.match(r.boundary, /min over the two\s+lifts/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the expensive instructions form a quadrangle under anticommutation", () => {
+  const r = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(r.schema, "holotrade.expensive-instructions-quadrangle.v1");
+  assert.equal(r.valid, true);
+
+  // the relation is ENTIRELY anticommutation -- zero commuting pairs
+  const rel = r.theRelation;
+  assert.equal(rel.stricltyCommuting, 0, "not one pair commutes");
+  assert.equal(rel.antiCommuting, 270);
+  assert.equal(rel.totalPairs, 990, "C(45,2)");
+  assert.equal(
+    rel.stricltyCommuting + rel.antiCommuting + rel.remaining,
+    rel.totalPairs,
+    "the trichotomy is exhaustive"
+  );
+  assert.match(rel.reading, /Pauli incompatibility/);
+
+  // and the graph is GQ(4,2), with the 27 lines recovered not assumed
+  const q = r.quadrangle;
+  assert.equal(q.points, 45);
+  assert.equal(q.edges, 270);
+  assert.deepEqual(q.stronglyRegular, [45, 12, 3, 3]);
+  assert.deepEqual(q.maximalCliqueSizes, { 5: 27 }, "nothing but K5 survives");
+  assert.equal(q.lines, 27);
+  assert.deepEqual(q.linesPerPoint, { 3: 45 });
+  assert.equal(q.flags, 135);
+  assert.equal(q.flags, q.lines * 5);
+  assert.equal(q.flags, q.points * 3);
+  assert.equal(q.gqAxiom, true);
+  assert.equal(q.isomorphismType, "GQ(4,2) = H(3,4)");
+  assert.match(q.linesRecoveredNotAssumed, /Bron-Kerbosch/);
+  // the SRG parameters are exactly GQ(s,t) with s=4,t=2
+  const [n, k, lam, mu] = q.stronglyRegular;
+  const s = 4;
+  const t = 2;
+  assert.equal(n, (s + 1) * (s * t + 1));
+  assert.equal(k, s * (t + 1));
+  assert.equal(lam, s - 1);
+  assert.equal(mu, t + 1);
+
+  // the geometric rule, and the refuted alternative
+  const g = r.geometricForm;
+  assert.match(g.rule, /L n M = empty AND L n M\^perp = empty/);
+  assert.equal(g.meetsNeither, 270, "adjacency is exactly total skewness");
+  assert.equal(
+    g.meetsMOnly + g.meetsPolarOnly + g.meetsNeither,
+    rel.totalPairs
+  );
+  assert.match(g.refutedAlternative, /accounts for 0 of the 270/);
+
+  // it upgrades 3a0a194 from a count to a geometry
+  const p45 = require(path.join(root, "data/the_projective_isa_45.json"));
+  assert.equal(q.points, p45.theBijection.expensiveInstructions);
+  assert.equal(q.points, p45.theBijection.minimumWeightCodewords);
+
+  // duality with the carrier, and the honest limit on the convergence
+  assert.match(r.duality, /DUAL of GQ\(2,4\)/);
+  assert.match(r.convergence, /a149d0b/);
+  assert.match(r.boundary, /INVARIANTS only/);
+  assert.match(r.boundary, /NOT established here/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
