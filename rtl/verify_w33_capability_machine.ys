@@ -1,0 +1,19 @@
+read_verilog rtl/w33_capability_mmu.v rtl/w33_capability_machine.v
+hierarchy -check -top w33_capability_machine
+proc
+memory
+flatten
+opt
+# From a reset state, with the privileged mint/load path disabled, no sequence
+# of guest derivation/dereference instructions or backend root commits can make
+# any selected architectural register tagged. inspect_reg remains free, so a
+# counterexample may choose any of the four registers.
+sat -seq 5 \
+    -set priv_load 0 \
+    -set-at 1 rst 1 \
+    -set-at 2 rst 0 \
+    -set-at 3 rst 0 \
+    -set-at 4 rst 0 \
+    -set-at 5 rst 0 \
+    -prove inspect_tag 0 \
+    -show-ports
