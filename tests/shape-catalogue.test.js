@@ -5151,3 +5151,52 @@ test("the cheap opcodes are the expensive geometry's ovoids", () => {
   assert.match(r.boundary, /does NOT establish that the 27/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("my 27 is their 27 -- one torsor under the qutrit Pauli group", () => {
+  const r = require(path.join(root, "data/my_27_is_their_27.json"));
+  assert.equal(r.schema, "holotrade.my-27-is-their-27.v1");
+  assert.equal(r.valid, true);
+
+  // it closes a named open item
+  assert.match(r.whatWasOpen, /8982d36/);
+  assert.match(r.whatWasOpen, /does NOT establish/);
+
+  // both 27s are transitive Stab(p0)-sets
+  const s = r.stabiliser;
+  assert.equal(s.order, 648, "25920/40");
+  assert.deepEqual(s.orbitsOnOppositePoints, [27]);
+  assert.deepEqual(s.orbitsOnMy27Lines, [27]);
+
+  // the elation group: order 27, exponent 3, NONabelian, regular on BOTH
+  const e = r.elationGroup;
+  assert.equal(e.sylow3Order, 81);
+  assert.equal(e.exponent, 3, "exponent 3, not 9");
+  assert.equal(e.nonabelian, true, "the abelian one fails to be regular");
+  assert.equal(e.regularOnOppositePoints, true, "their result, reproduced");
+  assert.equal(e.regularOnMy27Lines, true, "the new half");
+
+  // and the bijection is explicit
+  assert.equal(r.equivariantBijection.bijective, true);
+  assert.equal(r.equivariantBijection.intertwinesElationGroup, true);
+  assert.match(r.equivariantBijection.reading, /explicit rather than abstract/);
+
+  // a 3-group and 27 2-groups now provably on one object
+  const pl = require(path.join(root, "data/the_27_lines_are_pauli_groups.json"));
+  assert.equal(pl.theSchlafliGraph.lines, 27);
+  assert.equal(pl.extraspecial.order, 32, "2-groups");
+  assert.equal(pl.oneCentre.isCentreOfSp43, true);
+  assert.match(r.whatSitsOnOne27, /3-GROUP/);
+  assert.match(r.whatSitsOnOne27, /2-GROUPS/);
+  assert.match(r.whatSitsOnOne27, /now a\s+statement about one object/);
+
+  // the search limit is declared, not glossed
+  assert.equal(e.order27SubgroupsFound, 1);
+  assert.match(r.limitOnTheSearch, /TWO elements of order 3/);
+  assert.match(r.limitOnTheSearch, /NOT enumerated here/);
+  assert.match(r.limitOnTheSearch, /does not re-derive their\s+classification/);
+
+  // and the 36 is explicitly NOT claimed
+  assert.match(r.boundary, /closes the 27 question ONLY/);
+  assert.match(r.boundary, /36 here are BT810's\s+spreads is still by invariants/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
