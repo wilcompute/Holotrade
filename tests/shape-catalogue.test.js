@@ -5686,3 +5686,77 @@ test("the balance spectrum is complete: holes at 1 and 15 only", () => {
   assert.match(r.boundary, /only that no C5-invariant\s+one exists/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the second multiplicative instance, and 48e1841's converse is retracted", () => {
+  const r = require(path.join(
+    root,
+    "data/second_multiplicative_instance.json"
+  ));
+  assert.equal(r.schema, "holotrade.second-multiplicative-instance.v1");
+  assert.equal(r.valid, true);
+
+  // the correction: the converse is NOT proved in the corpus
+  assert.equal(r.correction.of, "48e1841");
+  assert.equal(r.priorTheorem.converseProved, false);
+  assert.match(r.priorTheorem.converseBoundary, /does not by itself imply/);
+  assert.match(r.correction.whyItIsAnOverRead, /CONVERSE/);
+  assert.match(r.correction.whatStands, /fact about\s+W\(3,3\), not a law about defect/);
+  assert.match(r.correction.correctStatement, /FORCES/);
+  // and it really is the prior certificate's own wording
+  const prior = require(path.join(
+    root,
+    "data/tensor_multiplicativity_ovoid_defect.json"
+  ));
+  assert.equal(prior.converseProved, false);
+  assert.equal(r.priorTheorem.converseBoundary, prior.converseBoundary);
+
+  // every row satisfies the GQ arithmetic and the width formula
+  for (const x of r.table) {
+    assert.equal(x.points, (x.s + 1) * (x.s * x.t + 1), x.name);
+    assert.equal(x.lines, (x.t + 1) * (x.s * x.t + 1), x.name);
+    assert.equal(x.ovoidSize, x.s * x.t + 1, x.name);
+    assert.equal(x.ovoidDefect, x.tau1 - x.ovoidSize, x.name);
+    assert.equal(x.hasOvoid, x.ovoidDefect === 0, x.name);
+    assert.equal(x.shadowLower, x.ovoidSize * x.tau1, x.name);
+    assert.equal(x.productUpper, x.tau1 * x.tau1, x.name);
+    assert.equal(x.widthFormulaHolds, true, x.name);
+    assert.equal(
+      x.intervalWidth,
+      x.tau1 * x.ovoidDefect,
+      "width = tau_1 * delta at " + x.name
+    );
+    // multiplicativity is claimed exactly when delta = 0
+    assert.equal(x.multiplicative, x.ovoidDefect === 0 ? true : null, x.name);
+  }
+
+  // the new row
+  const n = r.newRow;
+  assert.equal(n.s, 4);
+  assert.equal(n.t, 2);
+  assert.equal(n.points, 45);
+  assert.equal(n.lines, 27);
+  assert.equal(n.tau1, 9);
+  assert.equal(n.ovoidDefect, 0);
+  assert.equal(n.tau2, 81);
+  assert.equal(n.intervalWidth, 0);
+  assert.equal(n.multiplicative, true);
+  // consistent with where tau_1 = 9 was established
+  const tb = require(path.join(root, "data/cost_quadrangle_tower_base.json"));
+  assert.equal(tb.tau1.value, n.tau1);
+  assert.equal(tb.tau1.defect, n.ovoidDefect);
+
+  // two confirmed rows now, not one
+  const mult = r.table.filter((x) => x.multiplicative === true);
+  assert.equal(mult.length, 2, "GQ(2,2) and GQ(4,2)");
+  assert.ok(mult.some((x) => x.s === 2 && x.t === 2));
+  assert.ok(mult.some((x) => x.s === 4 && x.t === 2));
+  assert.match(r.whyItMatters, /not W\(3,2\)/);
+
+  // and W(3,3) is untouched
+  const w = r.table.find((x) => x.s === 3 && x.t === 3);
+  assert.equal(w.tau2, null, "still undecided");
+  assert.equal(w.intervalWidth, 11);
+  assert.match(r.itDoesNotTouchW33, /decides no delta = 1/);
+  assert.match(r.boundary, /NOT an\s+independent verification/);
+  assert.match(r.boundary, /tau_2 for W\(3,3\) is untouched/);
+});
