@@ -6540,3 +6540,94 @@ test("the exterior-square theorem is q-general -- both halves, at 3, 5 and 7", (
   assert.match(r.boundary, /theorem\s+about the reflection set/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the polar-incidence 24/15 split is q-general, with closed forms", () => {
+  const r = JSON.parse(fs.readFileSync("data/polar_incidence_split_q_general.json"));
+  assert.equal(r.valid, true);
+  assert.match(r.extends, /o5_polar_incidence_splits_the_w33_24_15_modules/);
+  assert.match(r.extends, /entirely at q = 3/);
+
+  // WHY it should generalise: the orbits are hyperbolic/elliptic sections
+  assert.match(r.whyItShouldGeneralise, /16 = \(q\+1\)\^2 = \|Q\+\(3,q\)\|/);
+  assert.match(r.whyItShouldGeneralise, /10 = q\^2\+1 = \|Q-\(3,q\)\|/);
+  assert.match(r.whyItShouldGeneralise, /OVOID of Q\(4,q\), dually a SPREAD/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+
+  const exp = {
+    3: { v: 40, sq: 45, ns: 36, DD: [12, 6, 3], CC: [6, 3, -3], lam: 18, f: 24, g: 15 },
+    5: { v: 156, sq: 325, ns: 300, DD: [60, 15, 10], CC: [40, 10, -10], lam: 100, f: 90, g: 65 },
+    7: { v: 400, sq: 1225, ns: 1176, DD: [168, 28, 21], CC: [126, 21, -21], lam: 294, f: 224, g: 175 },
+  };
+
+  for (const x of r.rows) {
+    const e = exp[x.q];
+    const q = x.q;
+
+    // the geometry: sizes and column weights are the section sizes
+    assert.equal(x.v, e.v);
+    assert.equal(x.v, (q + 1) * (q * q + 1));
+    assert.equal(x.squares, e.sq);
+    assert.equal(x.nonsquares, e.ns);
+    assert.equal(x.squares + x.nonsquares, q ** 4, "nonsingular points = q^4");
+    assert.equal(x.wD, (q + 1) ** 2, "hyperbolic section |Q+(3,q)|");
+    assert.equal(x.wC, q * q + 1, "elliptic section |Q-(3,q)| -- an ovoid");
+    assert.deepEqual(x.srg, [e.v, q * (q + 1), q - 1, q + 1]);
+
+    // the decomposition is exact ENTRYWISE, and matches the closed form
+    assert.deepEqual(x.DD, e.DD);
+    assert.deepEqual(x.CC, e.CC);
+    assert.equal(x.DDexact, true);
+    assert.equal(x.CCexact, true);
+    assert.equal(x.closedFormsMatch, true);
+    assert.deepEqual(x.DDclosedForm, e.DD);
+    assert.deepEqual(x.CCclosedForm, e.CC);
+
+    // the A-terms cancel identically -- c_D = -c_C = q(q-1)/2
+    assert.equal(x.DD[2], (q * (q - 1)) / 2);
+    assert.equal(x.CC[2], -x.DD[2]);
+    assert.equal(x.aTermsCancel, true);
+    assert.deepEqual(x.sumIJ, [q * q * (q - 1), q * q]);
+    assert.deepEqual(x.sumIJ, x.sumClosedForm);
+
+    // one frame constant for BOTH orbits, and the ranks are the multiplicities
+    assert.equal(x.lambda, q * q * (q - 1));
+    assert.equal(x.lambda, e.lam);
+    assert.equal(x.frameD, true);
+    assert.equal(x.frameC, true);
+    assert.equal(x.rankD0, e.f);
+    assert.equal(x.rankC0, e.g);
+    assert.equal(x.f, (q * (q + 1) ** 2) / 2);
+    assert.equal(x.g, (q * (q * q + 1)) / 2);
+    assert.equal(1 + x.f + x.g, x.v, "trivial + f + g exhausts the module");
+    assert.equal(x.ranksAreMultiplicities, true);
+
+    // transmission: the spread sector is annihilated, the other transmitted
+    assert.equal(x.NCisAllOnes, true, "every nonsquare section is a spread");
+    assert.deepEqual(x.NDvalues, [1, q + 1]);
+    assert.equal(x.NDisJplusQB, true, "N D = J + q B");
+    assert.deepEqual(x.columnWeightsOfB, [2 * (q + 1)]);
+    assert.equal(x.forcedTwoQPlusTwo, true);
+  }
+
+  // q = 3 is exactly the parallel track's committed numbers
+  const three = r.rows[0];
+  assert.deepEqual(three.DD, [12, 6, 3]);
+  assert.deepEqual(three.CC, [6, 3, -3]);
+  assert.deepEqual(three.sumIJ, [18, 9]);
+  assert.equal(three.lambda, 18);
+
+  assert.match(r.theATermsCancel, /identity in q, not a coincidence of one\s+prime/);
+  assert.match(r.theFrameConstantIsShared, /equality of their two 18s was\s+not an accident/);
+  assert.match(r.theGeneralStatement, /tight-frame realizations of the two\s+nontrivial W\(3,q\) line-permutation\s+modules/);
+  assert.match(r.whyTwoQPlusTwoIsForced, /forces a = 2\(q\+1\) with\s+no freedom/);
+  assert.match(r.whyTwoQPlusTwoIsForced, /what\s+is CHECKED here/);
+
+  // fitted-not-proved is stated, and the GQ scope is left alone
+  assert.match(r.boundary, /FITTED to\s+three primes/);
+  assert.match(r.boundary, /consistency rather than proof/);
+  assert.match(r.boundary, /fourth prime\s+would be a real test/);
+  assert.match(r.boundary, /ENTRYWISE/);
+  assert.match(r.boundary, /q = 3 only \(424111b\)/);
+  assert.match(r.boundary, /tau_2/);
+});
