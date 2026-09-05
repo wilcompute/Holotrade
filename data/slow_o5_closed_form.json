@@ -1,0 +1,35 @@
+{
+  "boundary": "Exact at q=3 for the committed Sp/PSp realization. The exterior-square construction itself is classical/q-general, but the identification of the cost orbit with a GQ is q=3-only and no q-general GQ claim is made.",
+  "checks": {
+    "all_45_slow_coordinates_distinct": true,
+    "all_slow_eigenspaces_are_complementary_nondegenerate": true,
+    "anticommutation_equals_O5_perpendicularity_all_990_pairs": true,
+    "exterior_square_equivariance_all_3600_cases": true,
+    "formula_is_projective_under_g_to_minus_g": true,
+    "orthogonal_partition_is_40_45_36": true,
+    "projective_W_has_121_points": true,
+    "slow_coordinates_exhaust_square_orbit": true
+  },
+  "coordinatesBySlot": {
+    "0": [1,0,0,0,0,1], "1": [1,1,1,2,2,1], "2": [1,2,2,1,1,1], "3": [0,1,0,1,2,1], "4": [0,1,2,0,2,2],
+    "5": [0,0,1,1,0,2], "6": [1,2,0,2,1,0], "7": [1,1,2,0,2,0], "8": [1,0,1,1,0,0], "9": [0,1,2,0,2,1],
+    "10": [0,1,0,1,2,2], "11": [0,0,1,1,0,1], "12": [1,2,1,0,1,0], "13": [1,1,0,1,2,0], "14": [1,0,2,2,0,0],
+    "15": [0,0,1,1,0,0], "16": [1,0,2,1,0,2], "17": [1,1,2,1,2,1], "18": [0,1,0,0,2,2], "19": [1,2,1,2,1,1],
+    "20": [1,0,1,2,0,2], "21": [0,1,0,0,2,1], "22": [1,1,0,0,2,0], "23": [1,2,0,0,1,0], "24": [0,1,0,0,2,0],
+    "25": [0,1,0,1,2,0], "26": [1,2,2,2,1,2], "27": [0,1,1,0,2,2], "28": [1,0,0,2,0,1], "29": [1,1,1,0,2,0],
+    "30": [0,1,1,0,2,0], "31": [1,2,2,0,1,0], "32": [1,0,0,1,0,1], "33": [0,1,1,0,2,1], "34": [1,1,1,1,2,2],
+    "35": [0,1,2,0,2,0], "36": [0,1,0,2,2,0], "37": [1,2,0,1,1,0], "38": [1,1,0,2,2,0], "39": [0,1,0,2,2,1],
+    "40": [1,1,2,2,2,2], "41": [1,0,2,0,0,1], "42": [0,1,0,2,2,2], "43": [1,0,1,0,0,1], "44": [1,2,1,1,1,2]
+  },
+  "formula": "c(g)=phat(ker(g-I))-phat(ker(g+I)), phat(span(a,b))=(a wedge b)/<a,b>",
+  "machineReading": "A slow target matrix determines, without a lookup search, both its 8-axis K4,4/minimum-word support (from its two eigenspaces) and its unique square O(5,3) coordinate (from the difference of their normalized Pluecker bivectors).",
+  "quadraticModule": {
+    "Q": "b_01 b_23 - b_02 b_13 + b_03 b_12",
+    "ambient": "W=ker(omega: Lambda^2 F3^4 -> F3)",
+    "omegaCoordinateLaw": "b_02+b_13=0",
+    "partition": [40,45,36]
+  },
+  "schema": "holotrade.slow-o5-closed-form.v1",
+  "status": "PASS",
+  "theorem": "The executable 45 slow targets map by an explicit basis-independent exterior-square formula onto exactly the square nonisotropic orbit of P(W). The map intertwines every transvection and turns slow-target anticommutation into O(5,3) perpendicularity. No graph-isomorphism search is required."
+}
