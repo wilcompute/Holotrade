@@ -6631,3 +6631,95 @@ test("the polar-incidence 24/15 split is q-general, with closed forms", () => {
   assert.match(r.boundary, /q = 3 only \(424111b\)/);
   assert.match(r.boundary, /tau_2/);
 });
+
+test("the SRG at q = 3 and 5 is a tangent-passant fusion, and nothing beyond", () => {
+  const r = JSON.parse(fs.readFileSync("data/srg_is_a_tangent_passant_fusion.json"));
+  assert.equal(r.valid, true);
+
+  // it explains something the corpus had only measured
+  assert.match(r.whatWasUnexplained, /two-step degradation, not one/);
+  assert.match(r.whatWasUnexplained, /three data points and no reason/);
+  assert.match(r.reproducedInASecondModel, /instead of\s+the Plucker model/);
+
+  // the invariant carries the orbit's normalisation target t, not just c^2-4
+  assert.match(r.theInvariantIsTheLineType, /c\^2 - 4t\^2/);
+  assert.match(r.theInvariantIsTheLineType, /\|<u,v> cap Q\| in \{2,1,0\}/);
+  // and the two-valuedness is FORCED by the conic, not fitted
+  assert.match(r.whyExactlyTwoValues, /nondegenerate conic/);
+  assert.match(r.whyExactlyTwoValues, /no third count is available/);
+  assert.match(r.whyExactlyTwoValues, /FORCED by the conic, not fitted/);
+  assert.match(r.theLaw, /values EXCHANGED/);
+
+  // EXACT rows: both orbits, all pairs, at q = 3, 5, 7
+  assert.deepEqual(
+    r.exactRows.map((x) => [x.q, x.orbit]),
+    [[3, "sq"], [3, "ns"], [5, "sq"], [5, "ns"], [7, "sq"], [7, "ns"]]
+  );
+  for (const x of r.exactRows) {
+    const q = x.q;
+    assert.equal(x.exhaustive, true);
+    assert.equal(x.isAssociationScheme, true);
+    assert.equal(x.degreesConstant, true);
+    assert.equal(x.lawHolds, true);
+    // (q+1)/2 folded classes, and the degrees partition the orbit
+    assert.equal(Object.keys(x.valuesByClass).length, (q + 1) / 2);
+    const dsum = Object.values(x.degrees).reduce((a, b) => a + b, 0);
+    assert.equal(dsum, x.n - 1, "the classes partition the other points");
+    // every value is one of the two conic counts, never a third
+    for (const v of Object.values(x.valuesByClass)) {
+      assert.equal(v.length, 1, "constant on the class");
+      assert.ok(v[0] === (q * (q + 1)) / 2 || v[0] === (q * (q - 1)) / 2);
+    }
+    // and the two orbits carry the SAME law with the values exchanged
+    const hi = (q * (q + 1)) / 2, lo = (q * (q - 1)) / 2;
+    for (const [c, v] of Object.entries(x.valuesByClass)) {
+      const secant = x.lineTypes[c] === 2;
+      assert.equal(v[0], secant === (x.orbit === "sq") ? hi : lo);
+    }
+  }
+  // the square orbit at q=3 is exactly 424111b's SRG(45,12,3,3)
+  const q3 = r.exactRows[0];
+  assert.equal(q3.n, 45);
+  assert.equal(q3.degrees["0"], 12);
+  assert.deepEqual(q3.valuesByClass, { 0: [3], 1: [3] });
+  // and q=5 is SRG(325,60,15,10)
+  const q5 = r.exactRows[2];
+  assert.equal(q5.n, 325);
+  assert.equal(q5.degrees["0"], 60);
+  assert.deepEqual(q5.valuesByClass, { 0: [15], 1: [10], 2: [10] });
+  // q=7 is where mu splits 28 vs 21 -- 424111b's observation, now explained
+  const q7 = r.exactRows[4];
+  assert.deepEqual(q7.valuesByClass, { 0: [21], 1: [28], 2: [21], 3: [21] });
+  assert.equal(q7.lineTypes["1"], 2, "c=1 is a SECANT at q=7 -- that is the break");
+
+  // SAMPLED rows reach q = 23 and are labelled non-exhaustive
+  assert.deepEqual(r.sampledRows.map((x) => x.q), [11, 13, 17, 19, 23]);
+  for (const x of r.sampledRows) {
+    assert.equal(x.exhaustive, false);
+    assert.equal(x.lawHolds, true);
+    assert.ok(x.pairsPerClass >= 40);
+  }
+  assert.equal(r.sampledRows[4].n, 140185);
+
+  // SRG holds at 3 and 5 and at no larger prime tested
+  const srg = r.exactRows.filter((x) => x.orbit === "sq").map((x) => x.stronglyRegular)
+    .concat(r.sampledRows.map((x) => x.stronglyRegular));
+  assert.deepEqual(srg, [true, true, false, false, false, false, false, false]);
+  assert.match(r.srgCharacterisation, /no c in\s+1\.\.\(q-1\)\/2 has c\^2-4 a nonzero square/);
+  assert.match(r.whyQ5IsNotASecondAccidentOfTheSameKind, /at q = 3 there is one/);
+  assert.match(r.whyQ5IsNotASecondAccidentOfTheSameKind, /collapse onto c = 0/);
+  assert.match(r.lambdaObeysTheSameLaw, /same statement/);
+
+  // prior art is cited and the novelty claim is explicitly narrowed
+  assert.match(r.priorArt, /arXiv:2402\.05055/);
+  assert.match(r.priorArt, /Adriaensen and De\s+Boeck/);
+  assert.match(r.priorArt, /parabolic only\s+in even characteristic/);
+  assert.match(r.priorArt, /arXiv:2608\.20064/);
+  assert.match(r.whatIsClaimed, /NOT the scheme/);
+  assert.match(r.whatIsClaimed, /NOT the spectrum/);
+
+  assert.match(r.boundary, /SAMPLED at 40 pairs per class/);
+  assert.match(r.boundary, /NOT proved beyond them/);
+  assert.match(r.boundary, /no prime powers/);
+  assert.match(r.boundary, /tau_2/);
+});
