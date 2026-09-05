@@ -1,0 +1,79 @@
+{
+  "checks": {
+    "all_15_adjoint_coordinates_have_3_signed_quadratic_terms": true,
+    "double_adjoint_identity_holds_over_integers": true,
+    "pfaffian_has_15_signed_cubic_terms": true,
+    "q3_decomposables_are_jordan_rank_one": true,
+    "q3_numeric_double_adjoint_sanity": true,
+    "q3_numeric_rank_dictionary_sanity": true,
+    "severi_jordan_dimensions_are_6_9_15_27": true,
+    "therefore_identity_holds_in_characteristic_3": true
+  },
+  "correction": {
+    "replacement": "The co-Pfaffian adjoint is defined integrally and its double-adjoint identity is an integer polynomial identity, so q=3 is included.",
+    "supersedesBoundary": "q=3 excluded from the adjoint test because the gradient construction divides by small integers"
+  },
+  "crossRepoProvenance": {
+    "boundary": "These paths are provenance for the already-existing W33 Albert/E6 cubic implementation; this Holotrade verifier does not network-fetch the other repository in CI.",
+    "files": [
+      "tools/compute_e6_cubic_tensor.py",
+      "analysis/w33_magic_square_substrate.py",
+      "rtl/w33_pass2632_e6_cubic_gate.sv",
+      "rtl/w33_pass2660_e6_cartan_cubic.sv"
+    ],
+    "observedHead": "5b0c41211bb44d718e1fc89a667c5cd3de6f694e",
+    "repository": "wilcompute/W33-Theory"
+  },
+  "exactPolynomialCertificate": {
+    "adjointCoordinateDegree": 2,
+    "adjointTermsPerCoordinate": [
+      3
+    ],
+    "baseRing": "Z",
+    "consequence": "Reduction modulo every prime preserves the polynomial identity; in particular q=3 is admitted. Characteristic 2 still requires separate geometric interpretation.",
+    "identity": "(X#)# = Pf(X) X",
+    "independentAlternatingCoordinates": 15,
+    "pfaffianDegree": 3,
+    "pfaffianTerms": 15,
+    "zeroDifferenceCoordinates": 15
+  },
+  "literatureAnchor": {
+    "citation": "A. Iliev and L. Manivel, Severi varieties and their varieties of reductions, arXiv:math/0306328",
+    "role": "Classical identification of the four rank-three Jordan/Severi members, including J3(H) ~ exterior-square six-space with Pfaffian cubic and J3(O) as the E6 member."
+  },
+  "q3Sanity": {
+    "decomposablesRankOnePassed": 1200,
+    "decomposablesTested": 1200,
+    "doubleAdjointPassed": 1200,
+    "randomTested": 1200,
+    "rankDictionaryPassed": 1200
+  },
+  "schema": "holotrade.rank-three-jordan-severi-bridge.v1",
+  "series": {
+    "dimensions": [
+      6,
+      9,
+      15,
+      27
+    ],
+    "exceptionalMember": {
+      "cubicNorm": "determinant",
+      "dimension": 27,
+      "group": "E6 determinant-preserving exceptional member",
+      "model": "Albert algebra J3(O)"
+    },
+    "members": [
+      "J3(R)",
+      "J3(C)",
+      "J3(H)",
+      "J3(O)"
+    ],
+    "rank3Member": {
+      "cubicNorm": "Pfaffian",
+      "dimension": 15,
+      "model": "Lambda^2(F^6) / 6x6 alternating matrices",
+      "rankOneLocus": "Gr(2,6) after passage to the classical split/complex model"
+    }
+  },
+  "status": "PASS"
+}
