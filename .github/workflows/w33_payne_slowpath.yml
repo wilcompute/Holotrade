@@ -10,10 +10,12 @@ on:
       - 'analysis/slow_targets_are_w33_minwords.py'
       - 'analysis/slow_target_eigenspaces_are_the_minword_support.py'
       - 'analysis/the_slow_orbit_has_a_closed_exterior_square_formula.py'
+      - 'analysis/the_121_orbit_dictionary_is_formulaic.py'
       - 'data/the_45_slot_rom_bijection.json'
       - 'data/slow_path_is_payne_derivative.json'
       - 'data/payne_cover_spectral_intertwiner.json'
       - 'data/slow_targets_are_w33_minimum_words.json'
+      - 'data/slow_o5_closed_form.json'
       - '.github/workflows/w33_payne_slowpath.yml'
   workflow_dispatch:
 
@@ -46,6 +48,10 @@ jobs:
         run: python analysis/the_slow_orbit_has_a_closed_exterior_square_formula.py --write
       - name: Recheck O5 closed-form certificate
         run: test -s data/slow_o5_closed_form.json && python -c "import json; d=json.load(open('data/slow_o5_closed_form.json')); assert d['status']=='PASS' and all(d['checks'].values())"
+      - name: Prove the full 121-point orthogonal dictionary formulaically
+        run: python analysis/the_121_orbit_dictionary_is_formulaic.py --write
+      - name: Recheck 121-point dictionary certificate
+        run: test -s data/orthogonal_121_formulaic_dictionary.json && python -c "import json; d=json.load(open('data/orthogonal_121_formulaic_dictionary.json')); assert d['status']=='PASS' and all(d['checks'].values())"
       - uses: actions/upload-artifact@v4
         with:
           name: payne-fast-slow-certificates
@@ -55,4 +61,5 @@ jobs:
             data/slow_targets_are_w33_minimum_words.json
             data/slow_target_eigenspaces_are_the_minword_support.json
             data/slow_o5_closed_form.json
+            data/orthogonal_121_formulaic_dictionary.json
           if-no-files-found: error
