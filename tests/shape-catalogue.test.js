@@ -6417,3 +6417,57 @@ test("the hemisystem structure was rare, not typical", () => {
   assert.match(r.boundary, /STRONGER, not weaker/);
   assert.match(r.boundary, /tau_2 is\s+untouched/);
 });
+
+test("there is no canonical 2-balanced set", () => {
+  const r = require(path.join(
+    root,
+    "data/no_canonical_two_balanced_set.json"
+  ));
+  assert.equal(r.schema, "holotrade.no-canonical-2-balanced.v1");
+  assert.equal(r.valid, true);
+
+  // it retracts a suggestion made one commit earlier
+  const prev = require(path.join(
+    root,
+    "data/hemisystem_structure_was_rare.json"
+  ));
+  assert.match(prev.uniformProfileExists.reading, /canonical/);
+  assert.match(r.whatISuggested, /aesthetic judgement dressed as a\s+structural one/);
+
+  // uniformity buys no symmetry at all
+  const s = r.stabilisers;
+  assert.deepEqual(s.rowUniform, [5]);
+  assert.deepEqual(s.doublyUniform, [5]);
+  assert.equal(s.imposedC5, 5);
+  assert.equal(
+    s.rowUniform[0],
+    s.imposedC5,
+    "the stabiliser is exactly the imposed symmetry"
+  );
+  assert.match(s.reading, /buys no\s+structure at all/);
+
+  // both families found, all with the same trivial stabiliser
+  assert.ok(r.rowUniform.length >= 6);
+  assert.ok(r.doublyUniform.length >= 6);
+  for (const x of r.rowUniform.concat(r.doublyUniform)) {
+    assert.equal(x.size, 200);
+    assert.equal(x.stabiliser, 5);
+    assert.equal(x.symmetric, false);
+  }
+  // and the doubly-uniform ones really do have uniform columns
+  for (const x of r.doublyUniform) {
+    assert.equal(x.columnUniform, true);
+  }
+  // while row-uniform alone does not guarantee it
+  assert.equal(r.rowUniformDoesNotImplyColumnUniform, true);
+  assert.equal(r.noneIsSymmetric, true);
+
+  // the methodological pattern is named
+  assert.match(r.thePattern, /both failed on\s+inspection/);
+  assert.match(r.thePattern, /which solution the solver happened to print/);
+
+  // and the sample limit is stated in the right direction
+  assert.match(r.boundary, /can never come out below 5/);
+  assert.match(r.boundary, /no canonical object was\s+FOUND, not that none/);
+  assert.match(r.boundary, /tau_2 is\s+untouched/);
+});

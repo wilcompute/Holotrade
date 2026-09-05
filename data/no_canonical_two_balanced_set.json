@@ -1,0 +1,268 @@
+{
+  "schema": "holotrade.no-canonical-2-balanced.v1",
+  "valid": true,
+  "whatISuggested": "c1f4357 refuted the hemisystem structure as a property and then offered a replacement: 'if any single 2-balanced set deserves to be called canonical it is that one'. That was an aesthetic judgement dressed as a structural one",
+  "rowUniform": [
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "4": 15,
+        "6": 15,
+        "8": 5,
+        "2": 5
+      },
+      "columnUniform": false,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "4": 15,
+        "6": 15,
+        "8": 5,
+        "2": 5
+      },
+      "columnUniform": false,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "7": 10,
+        "3": 5,
+        "11": 5,
+        "5": 10,
+        "1": 10
+      },
+      "columnUniform": false,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "7": 5,
+        "4": 10,
+        "3": 5,
+        "11": 5,
+        "1": 5,
+        "8": 5,
+        "2": 5
+      },
+      "columnUniform": false,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "8": 5,
+        "4": 15,
+        "2": 5,
+        "6": 15
+      },
+      "columnUniform": false,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "1": 5,
+        "11": 5,
+        "3": 5,
+        "4": 10,
+        "7": 5,
+        "8": 5,
+        "2": 5
+      },
+      "columnUniform": false,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "1": 10,
+        "11": 5,
+        "5": 10,
+        "7": 10,
+        "3": 5
+      },
+      "columnUniform": false,
+      "symmetric": false
+    }
+  ],
+  "doublyUniform": [
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    },
+    {
+      "size": 200,
+      "stabiliser": 5,
+      "columnProfile": {
+        "5": 40
+      },
+      "columnUniform": true,
+      "symmetric": false
+    }
+  ],
+  "stabilisers": {
+    "rowUniform": [
+      5
+    ],
+    "doublyUniform": [
+      5
+    ],
+    "imposedC5": 5,
+    "reading": "five is exactly the C5 imposed to make the search tractable; nothing in these objects is fixed by anything else, so 'uniform' buys no structure at all"
+  },
+  "rowUniformDoesNotImplyColumnUniform": true,
+  "noneIsSymmetric": true,
+  "thePattern": "two consecutive instincts about this object -- the hemisystem split 'explains the size', then the uniform profile is 'canonical' -- both looked structural and both failed on inspection. The balance equations by themselves single nothing out: the solution space is large, heterogeneous and flat, and every apparent landmark in it so far has been an artefact of which solution the solver happened to print first",
+  "boundary": "all solutions here are C5-invariant so the stabiliser can never come out below 5, and the measurement is really 'is it bigger than 5' -- it is not, in 24 solutions across two constraint sets. Twelve of each is a CAPPED sample, not an enumeration, so this shows no canonical object was FOUND, not that none exists. The stabiliser is computed against the full 25,920-element PSp(4,3) acting diagonally, not sampled. tau_2 is untouched"
+}
