@@ -8,9 +8,11 @@ on:
       - 'analysis/the_slow_path_is_the_payne_derivative.py'
       - 'analysis/payne_cover_spectral_intertwiner.py'
       - 'analysis/slow_targets_are_w33_minwords.py'
+      - 'analysis/slow_target_eigenspaces_are_the_minword_support.py'
       - 'data/the_45_slot_rom_bijection.json'
       - 'data/slow_path_is_payne_derivative.json'
       - 'data/payne_cover_spectral_intertwiner.json'
+      - 'data/slow_targets_are_w33_minimum_words.json'
       - '.github/workflows/w33_payne_slowpath.yml'
   workflow_dispatch:
 
@@ -35,6 +37,10 @@ jobs:
         run: python analysis/slow_targets_are_w33_minwords.py --write
       - name: Recheck minimum-word dictionary
         run: test -s data/slow_targets_are_w33_minimum_words.json && python -c "import json; d=json.load(open('data/slow_targets_are_w33_minimum_words.json')); assert d['status']=='PASS' and all(d['checks'].values())"
+      - name: Derive minimum-word support directly from target eigenspaces
+        run: python analysis/slow_target_eigenspaces_are_the_minword_support.py --write
+      - name: Recheck direct eigenspace decoder
+        run: test -s data/slow_target_eigenspaces_are_the_minword_support.json && python -c "import json; d=json.load(open('data/slow_target_eigenspaces_are_the_minword_support.json')); assert d['status']=='PASS' and all(d['checks'].values())"
       - uses: actions/upload-artifact@v4
         with:
           name: payne-fast-slow-certificates
@@ -42,4 +48,5 @@ jobs:
             data/slow_path_is_payne_derivative.json
             data/payne_cover_spectral_intertwiner.json
             data/slow_targets_are_w33_minimum_words.json
+            data/slow_target_eigenspaces_are_the_minword_support.json
           if-no-files-found: error
