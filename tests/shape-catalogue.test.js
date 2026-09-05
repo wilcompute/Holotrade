@@ -7094,3 +7094,84 @@ test("the rank-3 replacement is a cubic Jordan algebra, the A5 sibling of E6's",
   assert.match(r.boundary, /Characteristic 2 is untouched/);
   assert.match(r.boundary, /series being exactly\s+four long/);
 });
+
+test("the orbit census is the weight enumerator of a PUBLISHED code", () => {
+  const r = JSON.parse(fs.readFileSync("data/orbit_census_is_a_published_code.json"));
+  assert.equal(r.valid, true);
+
+  // the census this session computed, and the code's weights, are one thing
+  const nogo = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  const census3 = nogo.orbitsExhaustiveRank2["3"];
+  const wd3 = r.rows.find((x) => x.q === 3).weightDistribution;
+  assert.deepEqual(
+    Object.values(census3).sort((a, b) => a - b),
+    Object.values(wd3).sort((a, b) => a - b),
+    "the orbit census IS the weight enumerator"
+  );
+  assert.deepEqual(wd3, { 24: 90, 27: 80, 30: 72 });
+
+  const cg = { 3: [40, 24], 5: [156, 120], 7: [400, 336] };
+  for (const x of r.rows) {
+    const q = x.q;
+    assert.equal(x.K, 5);
+    assert.equal(x.N, cg[q][0]);
+    assert.equal(x.minimumDistance, cg[q][1]);
+    assert.equal(x.isThreeWeight, true);
+    assert.equal(x.sumIsQ5, true);
+    assert.equal(x.matchesOrbitPrediction, true);
+    assert.deepEqual(x.weightDistribution, x.predictedFromOrbits);
+
+    // Cardinali-Giuzzi Main Theorem at n = k = 2, matched exactly
+    assert.equal(x.cgN, (q ** 4 - 1) / (q - 1));
+    assert.equal(x.cgK, 5);
+    assert.equal(x.cgD, q ** 3 - q);
+    assert.equal(x.matchesCardinaliGiuzzi, true);
+    assert.equal(x.N, x.cgN);
+    assert.equal(x.minimumDistance, x.cgD);
+
+    // the section sizes, and which one is largest
+    assert.deepEqual(x.sectionSizes, {
+      tangent: q * q + q + 1,
+      hyperbolic: (q + 1) ** 2,
+      elliptic: q * q + 1,
+    });
+    assert.equal(x.largestSectionIsHyperbolic, true);
+    // d = N - (q+1)^2 = q^3 - q, the one-line derivation
+    assert.equal(x.N - x.sectionSizes.hyperbolic, q ** 3 - q);
+    assert.equal(x.minWeightIsHyperbolicOrbit, true);
+  }
+
+  // attribution is explicit and novelty is explicitly disclaimed
+  assert.match(r.priorArt, /Cardinali and Luca Giuzzi/);
+  assert.match(r.priorArt, /arXiv:1503\.05456/);
+  assert.match(r.priorArt, /Linear Algebra and its Applications 488 \(2016\)/);
+  assert.match(r.priorArt, /FULL WEIGHT ENUMERATOR/);
+  assert.match(r.noNoveltyClaimed, /none for the code/);
+  assert.match(r.failureModeFive, /rediscovery/);
+  assert.match(r.failureModeFive, /none of it is new/);
+  assert.match(r.failureModeFive, /citation rather than\s+the coincidence/);
+
+  // what IS ours is stated modestly and tied to the octets
+  assert.match(r.whatIsOurs, /one-line geometric derivation/);
+  assert.match(r.whatIsOurs, /d = N - \(q\+1\)\^2 = q\^3 - q/);
+  assert.match(r.whatIsOurs, /MINIMUM-WEIGHT CODEWORDS\s+ARE THE OCTET SECTIONS/);
+
+  // Klein correspondence and the twistor dictionary, flagged as analogy
+  assert.match(r.theKleinCorrespondence, /Klein\s+quadric Q\+\(5,q\)/);
+  assert.match(r.theKleinCorrespondence, /Klein correspondence\s+with one bivector fixed/);
+  const t = r.theTwistorDictionary;
+  assert.equal(t["infinity twistor"], "omega");
+  assert.match(t["compactified complexified Minkowski space"], /Klein quadric/);
+  assert.match(t["conformal group broken to Poincare"], /Sp\(4,q\) = O\(5,q\)/);
+  assert.match(t.status, /STRUCTURAL ANALOGY, not a physical claim/);
+  assert.match(t.status, /nothing about\s+field equations/);
+
+  // and it ties back to the rank ceiling
+  assert.match(r.andItClosesTheRankStory, /degree 2/);
+  assert.match(r.andItClosesTheRankStory, /Gr\(2,4\)\s+is a quadric and Gr\(2,6\) is not/);
+
+  assert.match(r.boundary, /ENUMERATIONS not\s+samples/);
+  assert.match(r.boundary, /NOT a line-by-line comparison/);
+  assert.match(r.boundary, /q even is excluded/);
+  assert.match(r.boundary, /tau_2/);
+});

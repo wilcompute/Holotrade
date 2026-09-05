@@ -1,0 +1,111 @@
+{
+  "schema": "holotrade.orbit-census-published-code.v1",
+  "valid": true,
+  "theFind": "the exhaustive O(5,q) orbit census reported in ae04deb and the weight enumerator of the projective code of the quadric Q(4,q) are the same numbers, because a codeword is a linear functional on W whose weight is N - |H cap Q|, and H = p^perp by the polarity, so the weight depends only on the orbit of p: three orbits, three weights, multiplicity (q-1) times the orbit size",
+  "rows": [
+    {
+      "q": 3,
+      "N": 40,
+      "K": 5,
+      "weightDistribution": {
+        "24": 90,
+        "27": 80,
+        "30": 72
+      },
+      "predictedFromOrbits": {
+        "24": 90,
+        "27": 80,
+        "30": 72
+      },
+      "matchesOrbitPrediction": true,
+      "isThreeWeight": true,
+      "sumIsQ5": true,
+      "minimumDistance": 24,
+      "sectionSizes": {
+        "tangent": 13,
+        "hyperbolic": 16,
+        "elliptic": 10
+      },
+      "largestSectionIsHyperbolic": true,
+      "cgN": 40,
+      "cgK": 5,
+      "cgD": 24,
+      "matchesCardinaliGiuzzi": true,
+      "minWeightIsHyperbolicOrbit": true
+    },
+    {
+      "q": 5,
+      "N": 156,
+      "K": 5,
+      "weightDistribution": {
+        "120": 1300,
+        "125": 624,
+        "130": 1200
+      },
+      "predictedFromOrbits": {
+        "120": 1300,
+        "125": 624,
+        "130": 1200
+      },
+      "matchesOrbitPrediction": true,
+      "isThreeWeight": true,
+      "sumIsQ5": true,
+      "minimumDistance": 120,
+      "sectionSizes": {
+        "tangent": 31,
+        "hyperbolic": 36,
+        "elliptic": 26
+      },
+      "largestSectionIsHyperbolic": true,
+      "cgN": 156,
+      "cgK": 5,
+      "cgD": 120,
+      "matchesCardinaliGiuzzi": true,
+      "minWeightIsHyperbolicOrbit": true
+    },
+    {
+      "q": 7,
+      "N": 400,
+      "K": 5,
+      "weightDistribution": {
+        "336": 7350,
+        "343": 2400,
+        "350": 7056
+      },
+      "predictedFromOrbits": {
+        "336": 7350,
+        "343": 2400,
+        "350": 7056
+      },
+      "matchesOrbitPrediction": true,
+      "isThreeWeight": true,
+      "sumIsQ5": true,
+      "minimumDistance": 336,
+      "sectionSizes": {
+        "tangent": 57,
+        "hyperbolic": 64,
+        "elliptic": 50
+      },
+      "largestSectionIsHyperbolic": true,
+      "cgN": 400,
+      "cgK": 5,
+      "cgD": 336,
+      "matchesCardinaliGiuzzi": true,
+      "minWeightIsHyperbolicOrbit": true
+    }
+  ],
+  "priorArt": "Ilaria Cardinali and Luca Giuzzi, 'Minimum distance of Symplectic Grassmann codes', arXiv:1503.05456, Linear Algebra and its Applications 488 (2016) 124-134. Their Main Theorem gives N = prod_{i=0}^{k-1}(q^{2n-2i}-1)/(q^{i+1}-1), K = C(2n,k) - C(2n,k-2), and for k = 2 minimum distance q^{4n-5} - q^{2n-3}. At n = k = 2 this is N = (q^4-1)/(q-1), K = 5, d = q^3 - q, i.e. exactly [40,5,24], [156,5,120], [400,5,336]. Since k = n this is simultaneously a line Symplectic Grassmann code and the Lagrangian-Grassmannian code of rank 2, whose FULL WEIGHT ENUMERATOR the abstract states they provide",
+  "noNoveltyClaimed": "none for the code, its parameters, or its weight distribution -- all of that is Cardinali-Giuzzi",
+  "failureModeFive": "CLAUDE.md's most expensive failure mode is rediscovery: correct mathematics, sound witnesses, proportionate framing, and false novelty. Every number in the census is right and none of it is new. This file exists so the corpus carries the citation rather than the coincidence",
+  "whatIsOurs": "a one-line geometric derivation of their minimum distance: the three hyperplane sections of Q(4,q) are the tangent cone, the hyperbolic section and the elliptic section, of sizes q^2+q+1, (q+1)^2 and q^2+1; (q+1)^2 is the largest for every q > 0, so d = N - (q+1)^2 = q^3 - q, which is their q^{4n-5} - q^{2n-3} at n = 2. And the maximum-section hyperplanes are exactly the hyperbolic orbit, so THE MINIMUM-WEIGHT CODEWORDS ARE THE OCTET SECTIONS of c9e6be7 -- the same objects carrying the K(q+1,q+1) grids, the 2(q+1) thick points, and at q = 3 only the (c,m) minimum-blocker labels of aa42b38",
+  "theKleinCorrespondence": "Lambda^2(F^4) with the Pfaffian IS the Klein correspondence: lines of PG(3,q) <-> points of the Klein quadric Q+(5,q). Fixing the alternating form omega selects the hyperplane ker(omega), and Q(4,q) = Q+(5,q) cap ker(omega), whose points are exactly the totally isotropic lines -- W(3,q). The whole apparatus is the Klein correspondence with one bivector fixed",
+  "theTwistorDictionary": {
+    "twistor space PG(3,C)": "PG(3,q)",
+    "compactified complexified Minkowski space": "Klein quadric Q+(5,q)",
+    "infinity twistor": "omega",
+    "conformal group broken to Poincare": "Q+(5,q) -> Q(4,q), i.e. Sp(4,q) = O(5,q)",
+    "status": "a STRUCTURAL ANALOGY, not a physical claim: no metric, no signature, no real form, nothing about field equations. What it does say is where the corpus's five-space came from"
+  },
+  "andItClosesTheRankStory": "the Klein correspondence exists because the Pfaffian on Lambda^2(F^4) has degree 2, which is the same fact ae04deb isolated as the reason the polar apparatus is rank-two only and c6d1077 continued as the reason rank 3 is a cubic Jordan algebra. Twistor theory's attachment to four dimensions and this corpus's rank ceiling are one statement: Gr(2,4) is a quadric and Gr(2,6) is not",
+  "boundary": "q = 3, 5, 7, exhaustive over all q^5 codewords, so the weight distributions are ENUMERATIONS not samples. The identification with Cardinali-Giuzzi is by their Main Theorem's N, K and d, quoted from the paper and matched against the computation; their weight-enumerator section is cited from the abstract's statement rather than transcribed, so 'the enumerator is theirs' is an attribution made on the strength of matching parameters plus the abstract, NOT a line-by-line comparison. Three weights is a consequence of three orbits and is not by itself evidence of anything. The twistor dictionary is an analogy of structures with no claim about physics. q even is excluded throughout: there the symplectic and orthogonal pictures differ and K is 6, not 5. Nothing here touches tau_2"
+}
