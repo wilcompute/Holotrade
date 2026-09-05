@@ -7312,3 +7312,86 @@ test("the E6 cubic closes the Jordan series, and one corpus realization is wrong
   assert.match(r.boundary, /quoted as\s+classical/);
   assert.match(r.boundary, /tau_2/);
 });
+
+test("the 40 are E6's 3A2 subsystems -- graph in Python, group in GAP", () => {
+  const r = JSON.parse(fs.readFileSync("data/forty_are_e6_subsystems.json"));
+  const g = JSON.parse(fs.readFileSync("data/e6_3a2_forty_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(g.valid, true);
+  assert.equal(g.engine, "GAP");
+
+  // the counting bridge: 51840 / 1296 = 40
+  assert.equal(51840 / 1296, 40);
+  assert.equal(Math.pow(6, 3) * 6, 1296);
+
+  // the two engines agree on the construction
+  assert.equal(r.counts.roots, 72);
+  assert.equal(r.counts.A2subsystems, 120);
+  assert.equal(r.counts.threeA2subsystems, 40);
+  assert.equal(g.roots, r.counts.roots);
+  assert.equal(g.a2Subsystems, r.counts.A2subsystems);
+  assert.equal(g.threeA2Subsystems, r.counts.threeA2subsystems);
+  assert.equal(g.rootsPerThreeA2, 18);
+
+  // GRAPH side (Python): SRG(40,12,2,4), complement, 40 lines, alpha = 10
+  assert.equal(r.graph.adjacency, "share no root");
+  assert.deepEqual(r.graph.srg, [40, 12, 2, 4]);
+  assert.equal(r.graph.isSRG, true);
+  assert.deepEqual(r.graph.complementSrg, [40, 27, 18, 18]);
+  assert.equal(r.graph.complementIsSRG, true);
+  assert.equal(r.graph.srg[1] + r.graph.complementSrg[1], 39);
+  assert.equal(r.graph.maximalFourCliques, 40);
+  assert.deepEqual(Object.keys(r.counts.sharedRootProfile).sort(), ["0", "6"]);
+
+  // the ovoid discriminator picks Q(4,3), not W(3,3)
+  assert.equal(r.independenceNumber, 10);
+  assert.equal(r.identifiedAs, "Q(4,3)");
+  assert.match(r.whichGQ, /alpha\(W\(3,3\)\) = 7/);
+  assert.match(r.whyThatIsTheRightAnswer, /40 LINES of W\(3,3\)/);
+  // and it agrees with the corpus's own recorded deficit
+  const mult = JSON.parse(fs.readFileSync("data/tensor_multiplicativity_ovoid_defect.json"));
+  assert.equal(mult.w33CocliqueOvoidDeficit, 3);
+  assert.equal(10 - mult.w33CocliqueOvoidDeficit, 7);
+
+  // the identification is explicit, not parametric
+  assert.equal(r.explicitIsomorphism.constructed, true);
+  assert.equal(r.explicitIsomorphism.verified, true);
+  assert.equal(r.explicitIsomorphism.verifiedOnOrderedPairs, 1600);
+  assert.match(r.explicitIsomorphism.note, /does NOT rest on matching SRG/);
+
+  // GROUP side (GAP): faithful, transitive, rank 3, and NAMED
+  assert.equal(g.weylOrder, 51840);
+  assert.equal(g.actionDegree, 40);
+  assert.equal(g.actionOrder, 51840);
+  assert.equal(g.kernel, 1);
+  assert.equal(g.faithful, true);
+  assert.equal(g.transitive, true);
+  assert.equal(g.pointStabiliser, 1296);
+  assert.equal(g.actionOrder / g.pointStabiliser, 40);
+  assert.deepEqual(g.subdegrees, [1, 12, 27]);
+  assert.equal(g.rank, 3);
+  assert.equal(g.subdegrees.reduce((a, b) => a + b, 0), 40);
+  assert.equal(g.structureDescription, "O(5,3) : C2");
+  assert.equal(g.halfIsPSp43, true);
+  assert.equal(g.actionOrder / 2, 25920);
+  // the graph's valency IS the middle subdegree
+  assert.equal(g.subdegrees[1], r.graph.srg[1]);
+  assert.equal(g.subdegrees[2], r.graph.complementSrg[1]);
+  assert.match(g.reading, /as a G-SET, not merely as a graph/);
+  assert.match(r.gapCompanion, /O\(5,3\) : C2/);
+  assert.match(r.gapCompanion, /FAITHFUL/);
+
+  // what it joins, and the instinct it redeems
+  assert.match(r.whatThisJoins, /45 tritangents and 36 double-sixes/);
+  assert.match(r.itRedeemsTheInstinct, /9a202a2/);
+  assert.match(r.itRedeemsTheInstinct, /not the\s+wrong SUBGROUP/);
+  assert.match(r.itRedeemsTheInstinct, /instinct was right; the graded\s+piece was wrong/);
+
+  // novelty explicitly disclaimed on both sides
+  assert.match(r.noveltyNotClaimed, /classical/);
+  assert.match(r.noveltyNotClaimed, /Payne-Thas/);
+  assert.match(r.noveltyNotClaimed, /not the mathematics/);
+  assert.match(g.boundary, /No novelty is claimed/);
+  assert.match(r.boundary, /nothing generalises/);
+  assert.match(r.boundary, /tau_2/);
+});
