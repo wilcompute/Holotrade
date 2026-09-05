@@ -9,6 +9,7 @@ on:
       - 'analysis/payne_cover_spectral_intertwiner.py'
       - 'analysis/slow_targets_are_w33_minwords.py'
       - 'analysis/slow_target_eigenspaces_are_the_minword_support.py'
+      - 'analysis/the_slow_orbit_has_a_closed_exterior_square_formula.py'
       - 'data/the_45_slot_rom_bijection.json'
       - 'data/slow_path_is_payne_derivative.json'
       - 'data/payne_cover_spectral_intertwiner.json'
@@ -41,6 +42,10 @@ jobs:
         run: python analysis/slow_target_eigenspaces_are_the_minword_support.py --write
       - name: Recheck direct eigenspace decoder
         run: test -s data/slow_target_eigenspaces_are_the_minword_support.json && python -c "import json; d=json.load(open('data/slow_target_eigenspaces_are_the_minword_support.json')); assert d['status']=='PASS' and all(d['checks'].values())"
+      - name: Prove closed exterior-square formula for the 45 slow targets
+        run: python analysis/the_slow_orbit_has_a_closed_exterior_square_formula.py --write
+      - name: Recheck O5 closed-form certificate
+        run: test -s data/slow_o5_closed_form.json && python -c "import json; d=json.load(open('data/slow_o5_closed_form.json')); assert d['status']=='PASS' and all(d['checks'].values())"
       - uses: actions/upload-artifact@v4
         with:
           name: payne-fast-slow-certificates
@@ -49,4 +54,5 @@ jobs:
             data/payne_cover_spectral_intertwiner.json
             data/slow_targets_are_w33_minimum_words.json
             data/slow_target_eigenspaces_are_the_minword_support.json
+            data/slow_o5_closed_form.json
           if-no-files-found: error
