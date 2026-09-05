@@ -6723,3 +6723,92 @@ test("the SRG at q = 3 and 5 is a tangent-passant fusion, and nothing beyond", (
   assert.match(r.boundary, /no prime powers/);
   assert.match(r.boundary, /tau_2/);
 });
+
+test("the octet matrix is q-general, and its kernel is forced", () => {
+  const r = JSON.parse(fs.readFileSync("data/octet_matrix_q_general.json"));
+  assert.equal(r.valid, true);
+  assert.match(r.whatWasAsked, /w33_bt768_o5_24_15_closure/);
+  assert.match(r.whatWasAsked, /missing 15-sector object killed by M/);
+  assert.equal(r.closedForm, "B B^T = (q^2 - 1) I + J + (q - 1) A_points");
+
+  const exp = {
+    3: { n: 40, oct: 45, top: 72, mid: 12, f: 24, g: 15 },
+    5: { n: 156, oct: 325, top: 300, mid: 40, f: 90, g: 65 },
+    7: { n: 400, oct: 1225, top: 784, mid: 84, f: 224, g: 175 },
+  };
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+
+  for (const x of r.rows) {
+    const q = x.q, e = exp[q];
+    assert.equal(x.points, e.n);
+    assert.equal(x.octets, e.oct);
+
+    // the octet is K(q+1,q+1) -- BT768's K4,4 at q=3
+    assert.deepEqual(x.octetSize, [2 * (q + 1)]);
+    assert.deepEqual(x.internalDegrees, [[q + 1]]);
+    assert.equal(x.isCompleteBipartite, true);
+
+    // the Gram matrix, entrywise, against the closed form
+    assert.deepEqual(x.BBT, [q * q - 1, 1, q - 1]);
+    assert.deepEqual(x.closedForm, [q * q - 1, 1, q - 1]);
+    assert.equal(x.BBTexact, true);
+    assert.equal(x.closedFormMatches, true);
+    assert.deepEqual(x.rowWeight, [q * q]);
+    assert.deepEqual(x.columnWeight, [2 * (q + 1)]);
+
+    // spectrum: top^1, 2q(q-1)^f, 0^g
+    const p = x.predictedSpectrum;
+    assert.equal(p.topValue, e.top);
+    assert.equal(p.middleValue, e.mid);
+    assert.equal(p.middleValue, 2 * q * (q - 1));
+    assert.equal(p.middle, e.f);
+    assert.equal(p.middle, (q * (q + 1) ** 2) / 2);
+    assert.equal(p.zero, e.g);
+    assert.equal(p.zero, (q * (q * q + 1)) / 2);
+    assert.equal(p.top, 1);
+    assert.equal(x.spectrumMatches, true);
+    assert.equal(1 + p.middle + p.zero, x.points);
+
+    // THE KERNEL IS AN IDENTITY, not an observation
+    assert.equal(x.kernelIsForced, true);
+    assert.equal(q * q - 1, (q - 1) * (q + 1));
+    assert.equal(x.BBT[0] - x.BBT[2] * (q + 1), 0, "eigenvalue on the g-sector");
+  }
+
+  // q=3 reproduces BT768 exactly
+  const q3 = r.rows[0];
+  assert.deepEqual(q3.BBT, [8, 1, 2]);
+  assert.equal(q3.predictedSpectrum.topValue, 72);
+  assert.equal(q3.predictedSpectrum.middleValue, 12);
+  assert.equal(q3.predictedSpectrum.middle, 24);
+  assert.equal(q3.predictedSpectrum.zero, 15);
+
+  assert.match(r.theAnnihilationIsForced, /identically\s+in q/);
+  assert.match(r.theAnnihilationIsForced, /NOT independent/);
+  assert.match(r.theAnnihilationIsForced, /15, 65, 175/);
+  assert.match(r.andWhatItKillsIsTheSpreadSector, /ba74506/);
+  assert.match(r.theOctetGeneralises, /K\(q\+1,q\+1\)/);
+
+  // the point graph is used, and the q-odd non-self-duality is flagged
+  assert.match(r.boundary, /POINT collinearity graph/);
+  assert.match(r.boundary, /self-dual only for q even/);
+  assert.match(r.boundary, /EXCEPT the kernel identity/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the Weyl-lift verification defers to the proof that superseded it", () => {
+  const r = JSON.parse(fs.readFileSync("data/weyl_lift_is_q_general.json"));
+  assert.equal(r.valid, true);
+  const n = r.nowProvedElsewhere;
+  assert.match(n, /it does not prove\s+it/);
+  assert.match(n, /40a798487/);
+  assert.match(n, /EVERY\s+odd prime p and EVERY n/);
+  assert.match(n, /a = -\(2 lambda\)\^\(-1\)/);
+  // their h is this file's measured phase
+  assert.match(n, /h = 2\^\(-1\)/);
+  assert.match(n, /t = \(p\+1\)\/2 = 2\^\(-1\)/);
+  // ownership is recorded but explicitly subordinated to the proof
+  assert.match(n, /ownership is not\s+the point/);
+  assert.match(n, /strictly stronger/);
+  assert.match(n, /should quote the\s+theorem instead/);
+});

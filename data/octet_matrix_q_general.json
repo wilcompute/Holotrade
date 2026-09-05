@@ -1,0 +1,150 @@
+{
+  "schema": "holotrade.octet-matrix-q-general.v1",
+  "valid": true,
+  "whatWasAsked": "analysis/w33_bt768_o5_24_15_closure.py (Theory-of-Everything 7b4ad2101) records that BT768 constructed 45 intrinsic W33 K4,4 octets with point/octet incidence M and proved M M^T = 8I + J + 2A with spectrum 72^1, 12^24, 0^15, and 'ended by asking for the missing 15-sector object killed by M'. That commit answers it at q = 3; both halves are q-general",
+  "rows": [
+    {
+      "q": 3,
+      "points": 40,
+      "octets": 45,
+      "octetSize": [
+        8
+      ],
+      "internalDegrees": [
+        [
+          4
+        ]
+      ],
+      "isCompleteBipartite": true,
+      "BBT": [
+        8,
+        1,
+        2
+      ],
+      "BBTexact": true,
+      "closedForm": [
+        8,
+        1,
+        2
+      ],
+      "closedFormMatches": true,
+      "rowWeight": [
+        9
+      ],
+      "columnWeight": [
+        8
+      ],
+      "spectrum": {
+        "zero": 15,
+        "middle": 24,
+        "top": 1
+      },
+      "predictedSpectrum": {
+        "zero": 15,
+        "middle": 24,
+        "top": 1,
+        "middleValue": 12,
+        "topValue": 72
+      },
+      "spectrumMatches": true,
+      "kernelIsForced": true
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "octets": 325,
+      "octetSize": [
+        12
+      ],
+      "internalDegrees": [
+        [
+          6
+        ]
+      ],
+      "isCompleteBipartite": true,
+      "BBT": [
+        24,
+        1,
+        4
+      ],
+      "BBTexact": true,
+      "closedForm": [
+        24,
+        1,
+        4
+      ],
+      "closedFormMatches": true,
+      "rowWeight": [
+        25
+      ],
+      "columnWeight": [
+        12
+      ],
+      "spectrum": {
+        "zero": 65,
+        "middle": 90,
+        "top": 1
+      },
+      "predictedSpectrum": {
+        "zero": 65,
+        "middle": 90,
+        "top": 1,
+        "middleValue": 40,
+        "topValue": 300
+      },
+      "spectrumMatches": true,
+      "kernelIsForced": true
+    },
+    {
+      "q": 7,
+      "points": 400,
+      "octets": 1225,
+      "octetSize": [
+        16
+      ],
+      "internalDegrees": [
+        [
+          8
+        ]
+      ],
+      "isCompleteBipartite": true,
+      "BBT": [
+        48,
+        1,
+        6
+      ],
+      "BBTexact": true,
+      "closedForm": [
+        48,
+        1,
+        6
+      ],
+      "closedFormMatches": true,
+      "rowWeight": [
+        49
+      ],
+      "columnWeight": [
+        16
+      ],
+      "spectrum": {
+        "zero": 175,
+        "middle": 224,
+        "top": 1
+      },
+      "predictedSpectrum": {
+        "zero": 175,
+        "middle": 224,
+        "top": 1,
+        "middleValue": 84,
+        "topValue": 784
+      },
+      "spectrumMatches": true,
+      "kernelIsForced": true
+    }
+  ],
+  "theOctetGeneralises": "ba74506 showed N D = J + q B with B of column weight 2(q+1), and B is exactly M; inside an octet every point is collinear with exactly q+1 others and the complement splits into two cliques of size q+1, so the octet is K(q+1,q+1) and BT768's K(4,4) is its q = 3 member -- the grid Q+(3,q) seen from the W33 side, two reguli of q+1 lines",
+  "closedForm": "B B^T = (q^2 - 1) I + J + (q - 1) A_points",
+  "theAnnihilationIsForced": "on the g-sector A_points takes the value -(q+1), so the eigenvalue of B B^T there is (q^2-1) - (q-1)(q+1) = 0 identically in q; the I and A coefficients are NOT independent, and that identity is the whole reason the kernel exists. 'M kills a 15-dimensional sector' is therefore not a q = 3 coincidence but the q = 3 instance of an identity, and the sector killed always has dimension g = q(q^2+1)/2: 15, 65, 175",
+  "andWhatItKillsIsTheSpreadSector": "ba74506 showed N C = J with N C0 = 0 at q = 3, 5, 7, because an elliptic section of Q(4,q) is an ovoid and dually a spread; the object missing at q = 3 is missing in the same way, and is the same object, at every q tested",
+  "boundary": "q = 3, 5, 7 only, and the closed forms are read off three primes and verified against them rather than proved -- EXCEPT the kernel identity (q^2-1) = (q-1)(q+1), which is an identity in q and needs no fitting once the decomposition is granted. What IS proved for each q tested is the decomposition itself, checked ENTRYWISE over the whole matrix, together with the octet sizes, the internal degrees and the bipartition into two cliques. A_points is the POINT collinearity graph of W(3,q), which for odd q is NOT isomorphic to the line graph (W(3,q) is self-dual only for q even) though it is co-parametric; the decomposition is against the point graph throughout. q even and n > 2 are untouched, and so is tau_2"
+}
