@@ -6812,3 +6812,72 @@ test("the Weyl-lift verification defers to the proof that superseded it", () => 
   assert.match(n, /strictly stronger/);
   assert.match(n, /should quote the\s+theorem instead/);
 });
+
+test("the (c,m) minimum-blocker labels are octets, and minimality is q=3 only", () => {
+  const r = JSON.parse(fs.readFileSync("data/minimum_blocker_labels_are_octets.json"));
+  assert.equal(r.valid, true);
+
+  // the corpus certificate this identifies against, quoted and still present
+  const src = JSON.parse(fs.readFileSync("data/tensor_111_pg34_label_reduction.json"));
+  assert.equal(src.minimumBlockers, 360);
+  assert.equal(src.labelsPerCenter, 9);
+  assert.equal(src.CmSize, 8);
+  assert.equal(src.CmGraph, "K4,4");
+  assert.match(src.minimumBlockerFormula, /Adj\(c\) symmetric_difference C_m/);
+  assert.match(r.whatTheCorpusHad, /left as a lookup/);
+
+  // each of its four constants is an octet constant
+  const t = r.theyAreTheOctets;
+  assert.match(t.CmSize, /2\(q\+1\)/);
+  assert.match(t.CmGraph, /K\(q\+1,q\+1\)/);
+  assert.match(t.labelsPerCentre, /q\^2/);
+  assert.match(t.minimumBlockers, /q\^2 \(q\+1\)\(q\^2\+1\)/);
+  assert.match(t.reading, /octets THROUGH c/);
+  assert.match(t.reading, /point-octet incidence/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+  const inc = { 3: 360, 5: 3900, 7: 19600 };
+  for (const x of r.rows) {
+    const q = x.q;
+    // the octet constants, matching c9e6be7
+    assert.deepEqual(x.octetSize, [2 * (q + 1)]);
+    assert.deepEqual(x.internalDegree, [q + 1]);
+    assert.deepEqual(x.labelsPerCentre, [q * q]);
+    assert.equal(x.incidences, inc[q]);
+    assert.equal(x.incidences, x.incidencesClosedForm);
+    assert.equal(x.incidences, q * q * (q + 1) * (q * q + 1));
+
+    // every labelled set really is a blocking set, and they are all distinct
+    assert.equal(x.allAreBlockingSets, true);
+    assert.equal(x.allDistinct, true);
+    assert.equal(x.distinct, x.incidences);
+
+    // the size is q^2+q-1, forced by the internal degree
+    assert.deepEqual(x.blockerSize, [q * q + q - 1]);
+    assert.equal(x.blockerSizeClosedForm, q * q + q - 1);
+    assert.equal(x.blockerSize[0], q * (q + 1) + 2 * (q + 1) - 2 * (q + 1) - 1);
+
+    // and the excess over the ovoid-defect bound is exactly q-3
+    assert.equal(x.ovoidDefectBound, q * q + 2);
+    assert.equal(x.excessOverBound, q - 3);
+    assert.equal(x.meetsBound, q === 3);
+  }
+
+  // q=3 reproduces the corpus count exactly, and is the only prime that does
+  assert.equal(r.rows[0].incidences, src.minimumBlockers);
+  assert.equal(r.rows[0].blockerSize[0], 11);
+  assert.deepEqual(r.rows.map((x) => x.meetsBound), [true, false, false]);
+  assert.deepEqual(r.rows.map((x) => x.excessOverBound), [0, 2, 4]);
+
+  assert.match(r.theSizeIsForced, /INTERNAL DEGREE of the octet/);
+  assert.match(r.theSizeIsForced, /with nothing\s+fitted/);
+  assert.match(r.andThatIsWhyQ3, /coincidence\s+is q - 3 = 0/);
+
+  // tau_2 is explicitly not moved, and the honest form of the negative is kept
+  assert.match(r.effectOnTau2, /none on the interval/);
+  assert.match(r.boundary, /QUOTED\s+from tensor_111_pg34_label_reduction/);
+  assert.match(r.boundary, /not independently that no other minimum\s+blockers exist/);
+  assert.match(r.boundary, /is NOT decided here/);
+  assert.match(r.boundary, /if tau_1\(W\(3,5\)\) were itself 29/);
+  assert.match(r.boundary, /tau_2 remains open in \[111,115\]/);
+});
