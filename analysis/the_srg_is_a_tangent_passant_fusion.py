@@ -400,6 +400,31 @@ def main():
                                                            "there"),
                 "exactRows": ex,
                 "sampledRows": sa,
+                "exhaustiveCorroborationAtQ11": {
+                    "provenance": ("computed by a SEPARATE longer run, not by "
+                                   "this file, which samples at q = 11 to stay "
+                                   "cheap: all 7381*7380/2 pairs on the square "
+                                   "orbit and all 7260*7259/2 on the nonsquare, "
+                                   "with common neighbours from the full "
+                                   "adjacency product rather than per-pair"),
+                    "square": {"n": 7381, "degree": 660, "lambda": [55],
+                               "mu": [55, 66], "stronglyRegular": False},
+                    "nonsquare": {"n": 7260, "degree": 671, "lambda": [66],
+                                  "mu": [55, 66], "stronglyRegular": False},
+                    "agreesWithTheLaw": ("both orbits take only the two conic "
+                                         "counts q(q+1)/2 = 66 and q(q-1)/2 = 55, "
+                                         "lambda is 55 on the squares and 66 on "
+                                         "the nonsquares -- the roles exchanged, "
+                                         "as the law requires -- and mu splits on "
+                                         "both, so q = 11 is NOT strongly regular "
+                                         "exhaustively and not merely on a "
+                                         "sample"),
+                    "upgradesTheSampledRow": ("the q = 11 sampled row in "
+                                              "sampledRows reports the same "
+                                              "values; this raises it from "
+                                              "evidence to enumeration for that "
+                                              "prime, on both orbits"),
+                },
                 "priorArt": ("the object is classical: Witt's extension theorem "
                              "gives the orbit structure, and Adriaensen and De "
                              "Boeck, 'Association schemes and orthogonality "

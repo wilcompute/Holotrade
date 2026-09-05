@@ -525,6 +525,35 @@
       "exhaustive": false
     }
   ],
+  "exhaustiveCorroborationAtQ11": {
+    "provenance": "computed by a SEPARATE longer run, not by this file, which samples at q = 11 to stay cheap: all 7381*7380/2 pairs on the square orbit and all 7260*7259/2 on the nonsquare, with common neighbours from the full adjacency product rather than per-pair",
+    "square": {
+      "n": 7381,
+      "degree": 660,
+      "lambda": [
+        55
+      ],
+      "mu": [
+        55,
+        66
+      ],
+      "stronglyRegular": false
+    },
+    "nonsquare": {
+      "n": 7260,
+      "degree": 671,
+      "lambda": [
+        66
+      ],
+      "mu": [
+        55,
+        66
+      ],
+      "stronglyRegular": false
+    },
+    "agreesWithTheLaw": "both orbits take only the two conic counts q(q+1)/2 = 66 and q(q-1)/2 = 55, lambda is 55 on the squares and 66 on the nonsquares -- the roles exchanged, as the law requires -- and mu splits on both, so q = 11 is NOT strongly regular exhaustively and not merely on a sample",
+    "upgradesTheSampledRow": "the q = 11 sampled row in sampledRows reports the same values; this raises it from evidence to enumeration for that prime, on both orbits"
+  },
   "priorArt": "the object is classical: Witt's extension theorem gives the orbit structure, and Adriaensen and De Boeck, 'Association schemes and orthogonality graphs on anisotropic points of polar spaces' (arXiv:2402.05055; Des. Codes Cryptogr. 2025), build the analogous scheme on anisotropic points of ELLIPTIC and HYPERBOLIC quadrics for odd q with the same line-type indexing, and state that they compute the spectrum of orthogonality graphs on anisotropic points of non-degenerate quadrics in odd characteristic. Their scheme sections cover elliptic and hyperbolic at odd q and parabolic only in even characteristic, and the follow-up arXiv:2608.20064 is explicitly epsilon in {+,-} with no parabolic case, so the parabolic odd-q graph here is not the subject of either -- but its spectrum is plausibly covered by or immediate from the first",
   "whatIsClaimed": "NOT the scheme, NOT the line-type indexing and NOT the spectrum. Only the explicit two-valued common-neighbour law, the tangent-passant fusion that makes it two rather than three, the characterisation SRG <=> q in {3,5} verified at eight primes, and the local use of turning 424111b's unexplained two-step degradation into a mechanism",
   "boundary": "q = 3, 5, 7 are EXACT and exhaustive on BOTH orbits -- every pair of points is used, and the association-scheme property is checked by computing all intersection numbers. q = 11 through 23 are SAMPLED at 40 pairs per class, each pair's count computed exactly against the whole orbit, so constancy within a class is evidence there rather than enumeration, with Witt's transitivity the thing that upgrades it. SRG <=> q in {3,5} is verified for primes up to 23 and is NOT proved beyond them, though the secant-solution argument says what would have to fail. n = 2 and odd PRIME q only: no prime powers, no q even (where the square/nonsquare split does not exist), no larger rank. Nothing here touches tau_2, or the exterior-square correspondence, which is q-general for unrelated reasons (64e6406)"

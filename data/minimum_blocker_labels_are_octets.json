@@ -34,7 +34,11 @@
       "meetsBound": true,
       "labelsPerCentre": [
         9
-      ]
+      ],
+      "ovoidSize": 10,
+      "blockingOvoidDefect": 1,
+      "minimumPossibleDefect": 1,
+      "defectIsMinimal": true
     },
     {
       "q": 5,
@@ -60,7 +64,11 @@
       "meetsBound": false,
       "labelsPerCentre": [
         25
-      ]
+      ],
+      "ovoidSize": 26,
+      "blockingOvoidDefect": 3,
+      "minimumPossibleDefect": 1,
+      "defectIsMinimal": false
     },
     {
       "q": 7,
@@ -86,11 +94,17 @@
       "meetsBound": false,
       "labelsPerCentre": [
         49
-      ]
+      ],
+      "ovoidSize": 50,
+      "blockingOvoidDefect": 5,
+      "minimumPossibleDefect": 1,
+      "defectIsMinimal": false
     }
   ],
   "theSizeIsForced": "|Adj(c)| = q(q+1) and |C_m| = 2(q+1); c lies in its own octet but not in Adj(c); and |Adj(c) cap C_m| = q+1 is exactly the INTERNAL DEGREE of the octet, which c9e6be7 proved is q+1 because the octet is K(q+1,q+1). Hence |B(c,m)| = q(q+1) + 2(q+1) - 2(q+1) - 1 = q^2 + q - 1, with nothing fitted",
   "andThatIsWhyQ3": "W(3,q) has no ovoid for odd q, so every blocking set has at least q^2 + 2 points; the octet construction lands at q^2 + q - 1, an excess of exactly q - 3 -- zero at q = 3 and growing linearly after. The label apparatus the 111-analysis rests on is not a general feature of W(3,q) computed at q = 3: it is a coincidence of one prime, and the coincidence is q - 3 = 0",
+  "inTheCorpusOwnVocabulary": "tensor_multiplicativity_ovoid_defect.json defines the blocking ovoid defect delta = tau_1 - (st+1) and records delta = 11 - 10 = 1 for W(3,3). The octet construction achieves delta = (q^2+q-1) - (q^2+1) = q - 2, against a minimum possible defect of 1 whenever no ovoid exists. So the octet blocker is minimum iff q - 2 = 1, i.e. q = 3 -- the same statement as the q - 3 excess, in the corpus's own invariant",
+  "tau1AtQ5IsOpen": "whether the q^2+2 bound is ATTAINED beyond q = 3 was probed and NOT settled: CP-SAT on W(3,5) returns UNKNOWN at size 27 and at size 28 (200s and 600s budgets, 8 workers) and SAT at 29 -- the 29 being independently exhibited by the octet construction itself. Controls pass: W(3,3) is UNSAT at 10 (no ovoid) and SAT at 11. So tau_1(W(3,5)) lies in [27,29] and is undecided here. If it is 29 the octet blockers are minimum at q = 5 too, and only the coincidence with the BOUND is q = 3; if it is 27 or 28 they are not minimum. This is a concrete open sub-question the harness in this file can be pointed at",
   "effectOnTau2": "none on the interval. What it does is explain the provenance of the objects the 111-argument manipulates -- the labels are O(5,q) polar sections, the centre is a point of the section's thick set, the K4,4 is the grid Q+(3,3) -- and say that any attempt to argue about tau_2(W(3,q)) for larger q by transporting the (c,m) apparatus fails at the first step, because there the labelled sets are not minimum",
   "boundary": "the identification is verified at q = 3 against the corpus's own count of 360; that count is QUOTED from tensor_111_pg34_label_reduction.json and not re-derived, so what is proved here is that the 360 octet-labelled sets are DISTINCT BLOCKING SETS OF SIZE 11, not independently that no other minimum blockers exist. The size formula and the q - 3 excess are verified at q = 3, 5, 7 and derived from the octet internal degree, itself proved for those three primes. q^2 + 2 is the ovoid-defect LOWER bound, valid for all odd q because W(3,q) has no ovoid; whether it is ATTAINED for q > 3, i.e. the actual value of tau_1(W(3,q)), is NOT decided here, so 'not minimum for q > 3' is stated against the bound -- if tau_1(W(3,5)) were itself 29 the construction would still be minimum there and only the coincidence with the bound would be q = 3. q even and n > 2 untouched; tau_2 remains open in [111,115]"
 }

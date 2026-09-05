@@ -6718,6 +6718,36 @@ test("the SRG at q = 3 and 5 is a tangent-passant fusion, and nothing beyond", (
   assert.match(r.whatIsClaimed, /NOT the scheme/);
   assert.match(r.whatIsClaimed, /NOT the spectrum/);
 
+  // an independent exhaustive run at q=11 confirms the sampled row, both orbits
+  const c11 = r.exhaustiveCorroborationAtQ11;
+  assert.match(c11.provenance, /SEPARATE longer run, not by\s+this file/);
+  assert.equal(c11.square.n, 7381);
+  assert.equal(c11.nonsquare.n, 7260);
+  assert.deepEqual(c11.square.lambda, [55]);
+  assert.deepEqual(c11.nonsquare.lambda, [66]);
+  assert.deepEqual(c11.square.mu, [55, 66]);
+  assert.deepEqual(c11.nonsquare.mu, [55, 66]);
+  assert.equal(c11.square.stronglyRegular, false);
+  assert.equal(c11.nonsquare.stronglyRegular, false);
+  // 55 and 66 are exactly the two conic counts at q=11
+  assert.equal(55, (11 * (11 - 1)) / 2);
+  assert.equal(66, (11 * (11 + 1)) / 2);
+  // lambda swaps between the orbits, as the law requires
+  assert.notDeepEqual(c11.square.lambda, c11.nonsquare.lambda);
+  // and it agrees with what this file sampled
+  const s11 = r.sampledRows.find((x) => x.q === 11);
+  assert.deepEqual(s11.valuesByClass["0"], c11.square.lambda);
+  const sampledMu = [
+    ...new Set(
+      Object.entries(s11.valuesByClass)
+        .filter(([k]) => k !== "0")
+        .map(([, v]) => v[0])
+    ),
+  ].sort((a, b) => a - b);
+  assert.deepEqual(sampledMu, c11.square.mu);
+  assert.match(c11.agreesWithTheLaw, /roles exchanged/);
+  assert.match(c11.upgradesTheSampledRow, /evidence to enumeration/);
+
   assert.match(r.boundary, /SAMPLED at 40 pairs per class/);
   assert.match(r.boundary, /NOT proved beyond them/);
   assert.match(r.boundary, /no prime powers/);
@@ -6880,4 +6910,26 @@ test("the (c,m) minimum-blocker labels are octets, and minimality is q=3 only", 
   assert.match(r.boundary, /is NOT decided here/);
   assert.match(r.boundary, /if tau_1\(W\(3,5\)\) were itself 29/);
   assert.match(r.boundary, /tau_2 remains open in \[111,115\]/);
+
+  // the same statement in the corpus's own invariant: delta = q-2 vs minimum 1
+  const mult = JSON.parse(fs.readFileSync("data/tensor_multiplicativity_ovoid_defect.json"));
+  assert.equal(mult.twoDeficits.blockingOvoidDefect, 1);
+  for (const x of r.rows) {
+    assert.equal(x.ovoidSize, x.q * x.q + 1);
+    assert.equal(x.blockingOvoidDefect, x.q - 2);
+    assert.equal(x.minimumPossibleDefect, 1);
+    assert.equal(x.defectIsMinimal, x.q === 3);
+  }
+  assert.equal(r.rows[0].blockingOvoidDefect, mult.twoDeficits.blockingOvoidDefect);
+  assert.deepEqual(r.rows.map((x) => x.blockingOvoidDefect), [1, 3, 5]);
+  assert.match(r.inTheCorpusOwnVocabulary, /\(q\^2\+q-1\) - \(q\^2\+1\) = q - 2/);
+  assert.match(r.inTheCorpusOwnVocabulary, /minimum iff q - 2 = 1/);
+
+  // tau_1(W(3,5)) is left explicitly undecided, with the measurement recorded
+  assert.match(r.tau1AtQ5IsOpen, /UNKNOWN at size 27 and at size\s+28/);
+  assert.match(r.tau1AtQ5IsOpen, /SAT\s+at 29/);
+  assert.match(r.tau1AtQ5IsOpen, /Controls\s+pass/);
+  assert.match(r.tau1AtQ5IsOpen, /UNSAT at 10 \(no ovoid\)/);
+  assert.match(r.tau1AtQ5IsOpen, /\[27,29\]/);
+  assert.match(r.tau1AtQ5IsOpen, /undecided here/);
 });

@@ -58,6 +58,27 @@ the 111-analysis rests on is therefore not a general feature of W(3,q) that
 happens to be computed at q = 3: it is a coincidence of one prime, and the
 coincidence is q - 3 = 0.
 
+IN THE CORPUS'S OWN INVARIANT.  tensor_multiplicativity_ovoid_defect.json
+defines the blocking ovoid defect delta = tau_1 - (st+1) and records
+delta = 11 - 10 = 1 for W(3,3). The octet construction achieves
+
+    delta = (q^2 + q - 1) - (q^2 + 1) = q - 2  =  1, 3, 5
+
+against a minimum possible defect of 1 whenever no ovoid exists. So the octet
+blocker is minimum iff q - 2 = 1, i.e. q = 3 -- the same statement as the q - 3
+excess, said in the invariant the corpus already uses.
+
+AND tau_1(W(3,5)) IS A CONCRETE OPEN SUB-QUESTION.  Whether the q^2+2 bound is
+ATTAINED beyond q = 3 was probed and NOT settled: CP-SAT on W(3,5) returns
+UNKNOWN at size 27 and at size 28 (200s and 600s budgets, eight workers) and SAT
+at 29 -- the 29 exhibited independently by the octet construction itself.
+Controls pass, W(3,3) being UNSAT at 10 (no ovoid) and SAT at 11. So
+tau_1(W(3,5)) lies in [27,29], undecided. If it is 29 the octet blockers are
+minimum at q = 5 as well and only the coincidence WITH THE BOUND is q = 3; if it
+is 27 or 28 they are not minimum at all beyond q = 3. Either way the label
+apparatus stops being canonical after q = 3; which of the two it is remains to
+be decided.
+
 WHAT THIS DOES AND DOES NOT DO TO tau_2.  It does not move the interval. What it
 does is explain the provenance of the objects the 111-argument manipulates --
 the labels are O(5,q) polar sections, the centre is a point of the section's
@@ -185,6 +206,11 @@ def study(q):
         "excessOverBound": (q * q + q - 1) - (q * q + 2),
         "meetsBound": (q * q + q - 1) == (q * q + 2),
         "labelsPerCentre": sorted(set(B.sum(1).tolist())),
+        # the corpus's own invariant: delta = |blocker| - (st+1), ovoid size q^2+1
+        "ovoidSize": q * q + 1,
+        "blockingOvoidDefect": (q * q + q - 1) - (q * q + 1),
+        "minimumPossibleDefect": 1,
+        "defectIsMinimal": ((q * q + q - 1) - (q * q + 1)) == 1,
     }
 
 
@@ -225,6 +251,10 @@ def main():
         print("    %2d        %3d        %3d       %d         %s"
               % (r["q"], r["blockerSizeClosedForm"], r["ovoidDefectBound"],
                  r["excessOverBound"], r["meetsBound"]))
+    print("  and in the corpus's own invariant, the blocking ovoid defect")
+    print("  delta = |blocker| - (q^2+1) is q - 2 = %s against a minimum"
+          % [r["blockingOvoidDefect"] for r in rows])
+    print("  possible defect of 1: minimal iff q - 2 = 1, i.e. q = 3.")
     print("  zero exactly at q = 3. The label apparatus the 111-analysis")
     print("  rests on is a coincidence of one prime, and the coincidence is")
     print("  q - 3 = 0.")
@@ -240,7 +270,9 @@ def main():
              and r["labelsPerCentre"] == [r["q"] ** 2]
              and r["incidences"] == r["incidencesClosedForm"]
              and r["excessOverBound"] == r["q"] - 3 for r in rows)
-    ok = ok and rows[0]["incidences"] == 360 and rows[0]["meetsBound"]
+    ok = (ok and rows[0]["incidences"] == 360 and rows[0]["meetsBound"]
+          and all(r["blockingOvoidDefect"] == r["q"] - 2 for r in rows)
+          and [r["defectIsMinimal"] for r in rows] == [True, False, False])
 
     if "--write" in sys.argv:
         p = os.path.join(ROOT, "data", "minimum_blocker_labels_are_octets.json")
@@ -288,6 +320,33 @@ def main():
                                    "feature of W(3,q) computed at q = 3: it is a "
                                    "coincidence of one prime, and the coincidence "
                                    "is q - 3 = 0"),
+                "inTheCorpusOwnVocabulary": ("tensor_multiplicativity_ovoid_"
+                                             "defect.json defines the blocking "
+                                             "ovoid defect delta = tau_1 - (st+1) "
+                                             "and records delta = 11 - 10 = 1 for "
+                                             "W(3,3). The octet construction "
+                                             "achieves delta = (q^2+q-1) - (q^2+1) "
+                                             "= q - 2, against a minimum possible "
+                                             "defect of 1 whenever no ovoid "
+                                             "exists. So the octet blocker is "
+                                             "minimum iff q - 2 = 1, i.e. q = 3 -- "
+                                             "the same statement as the q - 3 "
+                                             "excess, in the corpus's own "
+                                             "invariant"),
+                "tau1AtQ5IsOpen": ("whether the q^2+2 bound is ATTAINED beyond "
+                                   "q = 3 was probed and NOT settled: CP-SAT on "
+                                   "W(3,5) returns UNKNOWN at size 27 and at size "
+                                   "28 (200s and 600s budgets, 8 workers) and SAT "
+                                   "at 29 -- the 29 being independently exhibited "
+                                   "by the octet construction itself. Controls "
+                                   "pass: W(3,3) is UNSAT at 10 (no ovoid) and "
+                                   "SAT at 11. So tau_1(W(3,5)) lies in [27,29] "
+                                   "and is undecided here. If it is 29 the octet "
+                                   "blockers are minimum at q = 5 too, and only "
+                                   "the coincidence with the BOUND is q = 3; if "
+                                   "it is 27 or 28 they are not minimum. This is "
+                                   "a concrete open sub-question the harness in "
+                                   "this file can be pointed at"),
                 "effectOnTau2": ("none on the interval. What it does is explain "
                                  "the provenance of the objects the 111-argument "
                                  "manipulates -- the labels are O(5,q) polar "
