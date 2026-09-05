@@ -7093,6 +7093,19 @@ test("the rank-3 replacement is a cubic Jordan algebra, the A5 sibling of E6's",
   assert.match(r.boundary, /q = 3 is excluded/);
   assert.match(r.boundary, /Characteristic 2 is untouched/);
   assert.match(r.boundary, /series being exactly\s+four long/);
+
+  // the q=3 exclusion is closed by the parallel track's integral proof
+  const n = r.nowProvedIntegrallyAndAtQ3;
+  assert.match(n, /EXCLUDES q = 3/);
+  assert.match(n, /INTEGER POLYNOMIALS/);
+  assert.match(n, /exact\s+sparse coefficient arithmetic/);
+  assert.match(n, /co-Pfaffian gradient/);
+  assert.match(n, /every characteristic including three/);
+  assert.match(n, /should quote that theorem\s+instead/);
+  // and it supports, rather than undercuts, the 9a202a2 correction's scoping
+  assert.match(n, /Albert J3\(O\) determinant as its\s+E6 cubic/);
+  assert.match(n, /supports rather\s+than contradicts 9a202a2/);
+  assert.match(n, /one parenthetical realization in\s+one file/);
 });
 
 test("the orbit census is the weight enumerator of a PUBLISHED code", () => {
