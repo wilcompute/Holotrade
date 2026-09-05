@@ -1,0 +1,43 @@
+name: W33 rank-three exact Sp6 orbit census
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/the_rank_three_exact_sp6_orbit_census.py'
+      - 'analysis/the_rank_three_exact_sp6_generators.g'
+      - 'data/rank_three_exact_sp6_orbit_census.json'
+      - '.github/workflows/w33_rank3_exact_sp6_orbit_census.yml'
+  workflow_dispatch:
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install exact dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy
+          sudo apt-get update -qq
+          sudo apt-get install -y gap
+      - name: Verify the six generators generate full Sp(6,3)
+        run: gap -q analysis/the_rank_three_exact_sp6_generators.g
+      - name: Recompute every projective orbit and full weight enumerator
+        run: python analysis/the_rank_three_exact_sp6_orbit_census.py --write
+      - name: Check committed certificate
+        run: >-
+          python -c "import json; d=json.load(open('data/rank_three_exact_sp6_orbit_census.json'));
+          assert d['status']=='PASS'; assert all(d['checks'].values());
+          assert len(d['orbits'])==9; assert sum(x['projectiveSize'] for x in d['orbits'])==2391484;
+          assert d['minimumDistance']==2160 and d['minimumProjectiveOrbitSize']==7371;
+          assert d['weightEnumerator']=={'0':1,'2160':14742,'2187':7280,'2376':221130,'2403':1179360,'2430':2116296,'2457':1244160}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rank-three-exact-sp6-orbit-census
+          path: data/rank_three_exact_sp6_orbit_census.json
+          if-no-files-found: error
