@@ -6307,3 +6307,59 @@ test("the correction was a convention, not an obstruction", () => {
   assert.match(r.boundary, /Only n = 2, q = 3/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the Weyl lift is q-general: a section at p = 3, 5 and 7", () => {
+  const r = require(path.join(root, "data/weyl_lift_is_q_general.json"));
+  assert.equal(r.schema, "holotrade.weyl-lift-q-general.v1");
+  assert.equal(r.valid, true);
+
+  assert.deepEqual(r.rows.map((x) => x.p), [3, 5, 7]);
+  for (const x of r.rows) {
+    const p = x.p;
+    // the group orders are the arithmetic ones
+    assert.equal(x.pauli, p * p, "Pauli mod phase is p^2 at p=" + p);
+    assert.equal(x.quotient, (p * p - 1) * p, "|SL(2,p)| at p=" + p);
+    assert.equal(x.quotient, x.expectedQuotient);
+    assert.equal(x.clifford, x.pauli * x.quotient, "|C| = |P|.|C/P|");
+    // exactly one displacement normalisation
+    assert.equal(x.weylT.length, 1, "unique t at p=" + p);
+    assert.equal(x.t, x.weylT[0]);
+    assert.equal(x.tIsHalfInverse, true, "t = 2^{-1} at p=" + p);
+    assert.equal(x.t, (p + 1) / 2, "t = (p+1)/2 at p=" + p);
+    assert.equal((2 * x.t) % p, 1, "2t = 1 mod p");
+    // every lift verified, and the family is a section
+    assert.equal(x.lifts, (p + 1) * (p - 1), "one per projective v and lam");
+    assert.equal(x.verified, x.lifts, "all verified at p=" + p);
+    assert.equal(x.generated, x.quotient, "generates exactly |SL(2,p)|");
+    assert.equal(x.pauliIntersection, 1, "trivial Pauli intersection");
+    assert.equal(x.isASection, true, "section at p=" + p);
+  }
+
+  // the phase claim is upgraded from c003b33, and scoped as a pattern
+  const prev = require(path.join(
+    root,
+    "data/correction_was_a_convention.json"
+  ));
+  assert.match(prev.boundary, /is NOT claimed/, "c003b33 declined it");
+  assert.match(r.thePhaseIsHalfInverse, /PATTERN/);
+  assert.match(r.thePhaseIsHalfInverse, /not a proof\s+for all p/);
+
+  // the geometry/compiler split, against the q=3-only geometry result
+  const q3 = require(path.join(root, "data/cost_quadrangle_is_q3_only.json"));
+  const byQ = Object.fromEntries(q3.rows.map((x) => [x.q, x]));
+  assert.equal(byQ[3].isGQ, true, "geometry: quadrangle at 3");
+  assert.equal(byQ[5].isGQ, false, "geometry: not at 5");
+  assert.equal(byQ[7].stronglyRegular, null, "geometry: not even SRG at 7");
+  // ...while the compiler construction works at all three
+  for (const x of r.rows) assert.equal(x.isASection, true);
+  assert.match(r.theSessionSplitsCleanly, /accident of small parameters/);
+
+  // the third float-hashing bug is disclosed with its mechanism
+  assert.match(r.aBugWorthRecording, /-0\.0/);
+  assert.match(r.aBugWorthRecording, /Third floating-point-hashing/);
+  assert.match(r.aBugWorthRecording, /expected integer was known in advance/);
+
+  assert.match(r.boundary, /n = 2 is verified only at p = 3/);
+  assert.match(r.boundary, /characteristic 2 -- where the/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
