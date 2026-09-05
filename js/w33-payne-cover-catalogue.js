@@ -1,42 +1,36 @@
 // Production catalogue for the 40 cheap-axis -> 45 slow-target Payne covers.
-// Certificates are generated and proved by the focused finite-geometry workflow.
+//
+// Cover incidence remains certificate-backed, but target geometry is now decoded
+// directly from the slow target matrix via ker(g-I) and ker(g+I). The frozen
+// minimum-word dictionary is consulted only inside the independent eigenspace
+// decoder's boot check; it is no longer the source of runtime geometry.
 "use strict";
 
 const cert = require("../data/slow_path_is_payne_derivative.json");
 const spectral = require("../data/payne_cover_spectral_intertwiner.json");
-const minwords = require("../data/slow_targets_are_w33_minimum_words.json");
 const rom = require("../data/the_45_slot_rom_bijection.json");
-
-const Q = 3;
-function mod(x) { const y = x % Q; return y < 0 ? y + Q : y; }
-function symplectic(a, b) { return mod(a[0] * b[2] - a[2] * b[0] + a[1] * b[3] - a[3] * b[1]); }
-function key(v) { return v.join(""); }
-function canon(v) {
-  const i = v.findIndex((x) => mod(x) !== 0);
-  if (i < 0) throw new Error("zero axis");
-  const z = mod(v[i]) === 1 ? 1 : 2;
-  return v.map((x) => mod(z * x));
-}
-function buildAxes() {
-  const m = new Map();
-  for (let n = 1; n < 81; n += 1) {
-    const v = [n % 3, Math.floor(n / 3) % 3, Math.floor(n / 9) % 3, Math.floor(n / 27) % 3];
-    const c = canon(v); m.set(key(c), c);
-  }
-  return [...m.values()].sort((a, b) => key(a).localeCompare(key(b)));
-}
-const AXES = buildAxes();
+const {
+  AXES,
+  axisDistance,
+  bootCheck: eigenspaceBootCheck,
+  geometryFromMatrix,
+  stageFromMatrix,
+  symplectic,
+} = require("./w33-slowpath-eigenspace-geometry.js");
 
 function intersectionSize(a, b) { let n = 0; for (const x of a) if (b.has(x)) n += 1; return n; }
 function collinearSlow(a, b) { return rom.linesB.some((line) => line.includes(a) && line.includes(b)); }
 function sortedNumeric(xs) { return [...xs].sort((a, b) => a - b); }
+const ROM_BY_SLOT = new Map((rom.table || []).map((row) => [row.slot, row]));
 
 function bootCheck() {
   const errors = [];
   if (cert.schema !== "holotrade.slow-path-is-payne-derivative.v1" || cert.status !== "PASS") errors.push("PAYNE_CERT");
   if (spectral.schema !== "holotrade.payne-cover-spectral-intertwiner.v1" || spectral.status !== "PASS") errors.push("SPECTRAL_CERT");
-  if (minwords.schema !== "holotrade.slow-targets-are-w33-minimum-words.v1" || minwords.status !== "PASS") errors.push("MINWORD_CERT");
-  if (!rom.valid || !Array.isArray(rom.linesB) || rom.linesB.length !== 27) errors.push("ROM_CERT");
+  if (!rom.valid || !Array.isArray(rom.linesB) || rom.linesB.length !== 27 || ROM_BY_SLOT.size !== 45) errors.push("ROM_CERT");
+  const eig = eigenspaceBootCheck();
+  if (!eig.ok) errors.push(...eig.errors.map((e) => `EIGENSPACE_${e}`));
+
   const raw = cert.equivariant40 && cert.equivariant40.covers;
   if (!raw || Object.keys(raw).length !== 40) errors.push("COVERS_NOT_40");
   const covers = Array.from({ length: 40 }, (_, a) => new Set((raw && raw[String(a)]) || []));
@@ -44,12 +38,19 @@ function bootCheck() {
   const byTarget = Array.from({ length: 45 }, () => []);
   covers.forEach((s, a) => s.forEach((t) => byTarget[t].push(a)));
   if (byTarget.some((a) => a.length !== 8)) errors.push("TARGET_NOT_IN_8_COVERS");
-  if (AXES.length !== 40 || key(AXES[0]) !== cert.baseW33Vector.join("")) errors.push("AXIS_ORDER_MISMATCH");
+
+  // The runtime derivation and the global Payne incidence certificate must agree
+  // on every target, so a stale ROM or certificate fails closed at boot.
   for (let t = 0; t < 45; t += 1) {
-    const row = minwords.dictionary && minwords.dictionary[String(t)];
-    if (!row || JSON.stringify(sortedNumeric(row.weight8Support)) !== JSON.stringify(sortedNumeric(byTarget[t]))) errors.push(`MINWORD_SUPPORT_${t}`);
-    if (!row || !Array.isArray(row.centerQuadPair) || row.centerQuadPair.length !== 2 || row.centerQuadPair.some((q) => q.length !== 4)) errors.push(`CENTER_QUAD_PAIR_${t}`);
+    const row = ROM_BY_SLOT.get(t);
+    if (!row) { errors.push(`ROM_SLOT_${t}`); continue; }
+    try {
+      const g = geometryFromMatrix(row.spMatrix);
+      if (JSON.stringify(g.payneCoverAxes) !== JSON.stringify(sortedNumeric(byTarget[t]))) errors.push(`EIGENSPACE_COVER_${t}`);
+      for (let a = 0; a < 40; a += 1) if (stageFromMatrix(row.spMatrix, a).routeDistance > 1) errors.push(`EIGENSPACE_RADIUS_${t}_${a}`);
+    } catch (e) { errors.push(`EIGENSPACE_SLOT_${t}_${e.message}`); }
   }
+
   for (let i = 0; i < 40; i += 1) for (let j = i + 1; j < 40; j += 1) {
     const want = symplectic(AXES[i], AXES[j]) === 0 ? 3 : 1;
     if (intersectionSize(covers[i], covers[j]) !== want) errors.push(`FAST_PAIR_${i}_${j}`);
@@ -59,7 +60,7 @@ function bootCheck() {
     const want = collinearSlow(i, j) ? 0 : 2;
     if (co !== want) errors.push(`SLOW_PAIR_${i}_${j}`);
   }
-  return { ok: errors.length === 0, errors, covers, byTarget };
+  return { ok: errors.length === 0, errors, covers, byTarget, matrixDerivedGeometry: true };
 }
 
 class PayneCoverCatalogue {
@@ -69,6 +70,7 @@ class PayneCoverCatalogue {
     this.covers = b.covers.map((s) => Object.freeze(sortedNumeric(s)));
     this.byTarget = b.byTarget.map((a) => Object.freeze(sortedNumeric(a)));
     this.schema = cert.schema;
+    this.geometryDerivation = "TARGET_MATRIX_EIGENSPACES";
   }
   coverForAxis(axis) {
     if (!Number.isInteger(axis) || axis < 0 || axis >= 40) throw new RangeError("axis must be 0..39");
@@ -80,30 +82,19 @@ class PayneCoverCatalogue {
   }
   targetGeometry(slot) {
     if (!Number.isInteger(slot) || slot < 0 || slot >= 45) throw new RangeError("slot must be 0..44");
-    const row = minwords.dictionary[String(slot)];
-    return Object.freeze({
-      slot,
-      payneCoverAxes: this.axesForTarget(slot),
-      weight8Support: Object.freeze([...row.weight8Support]),
-      centerQuadPair: Object.freeze(row.centerQuadPair.map((q) => Object.freeze([...q]))),
-      codeLabel: "C2(W33)[40,16,8]_MINIMUM_WORD",
-      priorE8Label: "SELECTED_D4_PERP_D4",
-      e8Evidence: "REPO_PRIOR_WORK_NOT_REDERIVED_HERE",
-    });
+    const row = ROM_BY_SLOT.get(slot); if (!row) throw new Error(`missing ROM slot ${slot}`);
+    const g = geometryFromMatrix(row.spMatrix);
+    if (JSON.stringify(g.payneCoverAxes) !== JSON.stringify(this.axesForTarget(slot))) throw new Error(`matrix-derived geometry disagrees with Payne cover certificate at slot ${slot}`);
+    return Object.freeze({ slot, ...g });
   }
   role(axis, slot) { return this.coverForAxis(axis).includes(slot) ? "NEW_HYPERBOLIC_LINE" : "INHERITED_W33_LINE"; }
-  axisDistance(a, b) {
-    if (a === b) return 0;
-    return symplectic(AXES[a], AXES[b]) === 0 ? 1 : 2;
-  }
+  axisDistance(a, b) { return axisDistance(a, b); }
   stage(slot, currentAxis = null) {
-    const choices = this.axesForTarget(slot);
-    if (currentAxis === null || currentAxis === undefined) {
-      return Object.freeze({ slot, chosenAxis: choices[0], routeDistance: null, role: "NEW_HYPERBOLIC_LINE", candidateAxes: choices });
-    }
-    if (!Number.isInteger(currentAxis) || currentAxis < 0 || currentAxis >= 40) throw new RangeError("currentAxis must be 0..39");
-    const chosenAxis = [...choices].sort((a, b) => this.axisDistance(currentAxis, a) - this.axisDistance(currentAxis, b) || a - b)[0];
-    return Object.freeze({ slot, currentAxis, chosenAxis, routeDistance: this.axisDistance(currentAxis, chosenAxis), role: "NEW_HYPERBOLIC_LINE", candidateAxes: choices });
+    if (!Number.isInteger(slot) || slot < 0 || slot >= 45) throw new RangeError("slot must be 0..44");
+    const row = ROM_BY_SLOT.get(slot); if (!row) throw new Error(`missing ROM slot ${slot}`);
+    const staged = stageFromMatrix(row.spMatrix, currentAxis);
+    if (JSON.stringify(staged.candidateAxes) !== JSON.stringify(this.axesForTarget(slot))) throw new Error(`matrix-derived staging disagrees with Payne certificate at slot ${slot}`);
+    return Object.freeze({ slot, ...staged });
   }
 }
 
