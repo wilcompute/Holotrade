@@ -12,6 +12,7 @@ on:
       - 'analysis/the_slow_orbit_has_a_closed_exterior_square_formula.py'
       - 'analysis/the_121_orbit_dictionary_is_formulaic.py'
       - 'analysis/the_payne_intertwiner_is_o5_polar_heavy_incidence.py'
+      - 'analysis/o5_polar_incidence_splits_the_w33_24_15_modules.py'
       - 'data/the_45_slot_rom_bijection.json'
       - 'data/slow_path_is_payne_derivative.json'
       - 'data/payne_cover_spectral_intertwiner.json'
@@ -57,6 +58,10 @@ jobs:
         run: python analysis/the_payne_intertwiner_is_o5_polar_heavy_incidence.py --write
       - name: Recheck polar heavy-incidence certificate
         run: test -s data/payne_o5_polar_heavy_incidence.json && python -c "import json; d=json.load(open('data/payne_o5_polar_heavy_incidence.json')); assert d['status']=='PASS' and all(d['checks'].values())"
+      - name: Prove the O5 polar 24 plus 15 harmonic split
+        run: python analysis/o5_polar_incidence_splits_the_w33_24_15_modules.py --write
+      - name: Recheck 24 plus 15 split certificate
+        run: test -s data/o5_polar_w33_24_15_split.json && python -c "import json; d=json.load(open('data/o5_polar_w33_24_15_split.json')); assert d['status']=='PASS' and all(d['checks'].values())"
       - uses: actions/upload-artifact@v4
         with:
           name: payne-fast-slow-certificates
@@ -68,4 +73,5 @@ jobs:
             data/slow_o5_closed_form.json
             data/orthogonal_121_formulaic_dictionary.json
             data/payne_o5_polar_heavy_incidence.json
+            data/o5_polar_w33_24_15_split.json
           if-no-files-found: error
