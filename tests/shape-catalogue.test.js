@@ -7244,3 +7244,71 @@ test("the rank-3 strata are not orbits, and at q=3 the form is degenerate", () =
   assert.match(r.boundary, /No claim is made about the exact orbit count/);
   assert.match(r.boundary, /tau_2/);
 });
+
+test("the E6 cubic closes the Jordan series, and one corpus realization is wrong", () => {
+  const r = JSON.parse(fs.readFileSync("data/e6_cubic_closes_the_series.json"));
+  assert.equal(r.valid, true);
+
+  // it closes the half c6d1077 explicitly declined to claim
+  const prev = JSON.parse(fs.readFileSync("data/rank_three_is_a_jordan_algebra.json"));
+  assert.match(prev.notClaimed, /NOT examined/);
+  assert.match(r.whatWasLeftOpen, /c6d1077/);
+  assert.match(r.whatWasLeftOpen, /did NOT\s+claim/);
+
+  // (1) the epsilon-cubic is identically zero, with the reason
+  assert.deepEqual(r.epsilonCubicVanishes.map((x) => x.q), [3, 5, 7, 11, 13]);
+  for (const e of r.epsilonCubicVanishes) {
+    assert.equal(e.nonzero, 0);
+    assert.equal(e.identicallyZero, true);
+  }
+  assert.match(r.whyItVanishes, /\(-1\)\^3 = -1/);
+
+  // (2) no invariant cubic on 3x3x3, with the control returning exactly 1
+  for (const i of r.invariantCubicDimensions) {
+    assert.equal(i.control_3x3.monomials, 6);
+    assert.equal(i.control_3x3.invariantCubics, 1, "the determinant");
+    assert.equal(i.controlIsOne, true);
+    assert.equal(i.test_3x3x3.monomials, 36);
+    assert.equal(i.test_3x3x3.invariantCubics, 0);
+    assert.equal(i.testIsZero, true);
+  }
+  assert.match(r.theControl, /9-dimensional member H_3\(C\)/);
+  assert.match(r.whichTwentySeven, /78 = 27 \+ 24 \+ 27/);
+  assert.match(r.whichTwentySeven, /degrees\s+6, 9 and 12/);
+
+  // (3) the correct model IS a cubic norm, and works at q = 3
+  assert.deepEqual(r.cartanChecks.map((x) => x.q), [3, 5, 7, 11]);
+  for (const c of r.cartanChecks) {
+    assert.equal(c.adjointExact, true);
+    assert.equal(c.adjointHeld, c.trials);
+    assert.equal(c.trials, 200);
+    assert.equal(c.normNotIdenticallyZero, true);
+    assert.ok(c.normNonzero > 100, "and N is genuinely non-vanishing");
+  }
+  const q3 = r.cartanChecks.find((x) => x.q === 3);
+  assert.equal(q3.adjointExact, true, "holds at the substrate's own prime");
+  assert.ok(q3.normNonzero > 0, "where the broken realization gives zero");
+  assert.match(r.theCorrectModel, /det A \+ det B \+ det C - tr\(ABC\)/);
+  assert.match(r.theCorrectModel, /INCLUDING at q = 3/);
+
+  // the series, all three members by one test
+  const S = r.theSeriesIsComplete;
+  assert.match(S["9"], /H_3\(C\)/);
+  assert.match(S["15"], /Pfaffian/);
+  assert.match(S["15"], /c6d1077/);
+  assert.match(S["27"], /H_3\(O\)/);
+  assert.match(S.reading, /ONE series/);
+  assert.match(S.reading, /now made/);
+
+  // and the correction is scoped: headline stands, one sentence fails
+  assert.match(r.whatTheCorpusSays, /is NOT challenged/);
+  assert.match(r.whatThisDoesNotSay, /does not touch the Lloyd-Braunstein/);
+  assert.match(r.whatThisDoesNotSay, /ONE parenthetical realization in\s+ONE file/);
+  assert.match(r.whatThisDoesNotSay, /fourth\s+failure mode/);
+  assert.match(r.whatThisDoesNotSay, /coordinate change, not a retraction/);
+
+  assert.match(r.boundary, /ZERO answer is/);
+  assert.match(r.boundary, /overwhelming but not a proof/);
+  assert.match(r.boundary, /quoted as\s+classical/);
+  assert.match(r.boundary, /tau_2/);
+});

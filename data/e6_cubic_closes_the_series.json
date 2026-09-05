@@ -1,0 +1,125 @@
+{
+  "schema": "holotrade.e6-cubic-closes-series.v1",
+  "valid": true,
+  "whatWasLeftOpen": "c6d1077 showed the rank-3 symplectic invariant is the 15-dimensional cubic Jordan algebra H_3(H) and explicitly did NOT claim the corpus's gate cubic is the H_3(O) norm, because how the gate layer defines its cubic had not been examined",
+  "whatTheCorpusSays": "analysis/w33_cv_universality_cubic.py identifies the degree-3 piece as 'the E6 CARTAN CUBIC on the matter 27 = 3 (x) 3 (x) 3, the epsilon-cubic that sl(3,F_3)^3 preserves'. The headline -- Lloyd-Braunstein needs degree 2 plus degree 3 and the substrate supplies both -- is fine and is NOT challenged. The parenthetical realization is",
+  "epsilonCubicVanishes": [
+    {
+      "q": 3,
+      "trials": 200,
+      "nonzero": 0,
+      "identicallyZero": true
+    },
+    {
+      "q": 5,
+      "trials": 200,
+      "nonzero": 0,
+      "identicallyZero": true
+    },
+    {
+      "q": 7,
+      "trials": 200,
+      "nonzero": 0,
+      "identicallyZero": true
+    },
+    {
+      "q": 11,
+      "trials": 200,
+      "nonzero": 0,
+      "identicallyZero": true
+    },
+    {
+      "q": 13,
+      "trials": 200,
+      "nonzero": 0,
+      "identicallyZero": true
+    }
+  ],
+  "whyItVanishes": "exchanging two of the three tensor factors reverses all three epsilon symbols, giving (-1)^3 = -1, so the contraction equals its own negative and is identically zero",
+  "invariantCubicDimensions": [
+    {
+      "q": 5,
+      "control_3x3": {
+        "monomials": 6,
+        "invariantCubics": 1
+      },
+      "test_3x3x3": {
+        "monomials": 36,
+        "invariantCubics": 0
+      },
+      "controlIsOne": true,
+      "testIsZero": true
+    },
+    {
+      "q": 7,
+      "control_3x3": {
+        "monomials": 6,
+        "invariantCubics": 1
+      },
+      "test_3x3x3": {
+        "monomials": 36,
+        "invariantCubics": 0
+      },
+      "controlIsOne": true,
+      "testIsZero": true
+    },
+    {
+      "q": 11,
+      "control_3x3": {
+        "monomials": 6,
+        "invariantCubics": 1
+      },
+      "test_3x3x3": {
+        "monomials": 36,
+        "invariantCubics": 0
+      },
+      "controlIsOne": true,
+      "testIsZero": true
+    }
+  ],
+  "theControl": "3 (x) 3 under SL(3)^2 returns exactly ONE invariant cubic, the determinant, which is itself the 9-dimensional member H_3(C) of the same Severi series -- so the method finds cubic norms exactly where they exist, and the zero for 3 (x) 3 (x) 3 is calibrated",
+  "whichTwentySeven": "3 (x) 3 (x) 3 is not the minuscule 27: it is the graded piece of the E6 ADJOINT under the Z/3-grading, 78 = 27 + 24 + 27 with 24 = dim sl(3)^3, and the invariants of that theta-group are classically of degrees 6, 9 and 12 (Vinberg-Elashvili) -- no cubic, which the computation independently shows",
+  "theCorrectModel": "the minuscule 27 restricts to SL(3)^3 as (3,3bar,1) + (1,3,3bar) + (3bar,1,3), three copies of M_3, and there the E6 Cartan cubic is N(A,B,C) = det A + det B + det C - tr(ABC), which satisfies the cubic-norm adjoint identity exactly with no scalar correction, INCLUDING at q = 3 where the broken realization is the zero form",
+  "cartanChecks": [
+    {
+      "q": 3,
+      "trials": 200,
+      "adjointHeld": 200,
+      "adjointExact": true,
+      "normNonzero": 132,
+      "normNotIdenticallyZero": true
+    },
+    {
+      "q": 5,
+      "trials": 200,
+      "adjointHeld": 200,
+      "adjointExact": true,
+      "normNonzero": 163,
+      "normNotIdenticallyZero": true
+    },
+    {
+      "q": 7,
+      "trials": 200,
+      "adjointHeld": 200,
+      "adjointExact": true,
+      "normNonzero": 164,
+      "normNotIdenticallyZero": true
+    },
+    {
+      "q": 11,
+      "trials": 200,
+      "adjointHeld": 200,
+      "adjointExact": true,
+      "normNonzero": 185,
+      "normNotIdenticallyZero": true
+    }
+  ],
+  "theSeriesIsComplete": {
+    "9": "H_3(C), det of a 3x3 matrix, SL(3)^2, unique invariant",
+    "15": "H_3(H), Pfaffian on Lambda^2(F^6), SL(6), c6d1077 300/300",
+    "27": "H_3(O), det A + det B + det C - tr(ABC), E6, 200/200 here",
+    "reading": "the rank-3 symplectic obstruction and the corpus's gate cubic are the 15- and 27-dimensional members of ONE series; this is the claim c6d1077 declined to make, and it is now made"
+  },
+  "whatThisDoesNotSay": "it does not touch the Lloyd-Braunstein argument, the degree-2/degree-3 conclusion, or the existence of the E6 cubic -- all stand, and the corpus's own 27-36-45 cubic-surface triangle is about the right 27, whose lines are the weights of the minuscule representation. What fails is ONE parenthetical realization in ONE file. That is CLAUDE.md's fourth failure mode exactly -- a sound file with one ungrounded sentence, which a file-level audit passes and only reading the sentence catches. The fix is a coordinate change, not a retraction",
+  "boundary": "the invariant-cubic dimensions are computed by imposing invariance on random group elements and tensors and taking a nullspace over GF(q), so a nonzero answer is certain but a ZERO answer is 'no invariant survived 400 independent linear conditions on a 36-dimensional space' -- overwhelming but not a proof, with the 3 (x) 3 control returning exactly 1 as the calibration. The adjoint identity is checked on 200 random elements per prime at q = 3, 5, 7, 11, a demonstration rather than a proof, though it is a polynomial identity that would hold formally. That N(A,B,C) is THE E6 Cartan cubic, and that the theta-group invariants have degrees 6, 9, 12, are quoted as classical and not re-derived. No claim is made about gate universality, the physical layer, or tau_2"
+}
