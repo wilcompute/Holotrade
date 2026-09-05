@@ -7175,3 +7175,72 @@ test("the orbit census is the weight enumerator of a PUBLISHED code", () => {
   assert.match(r.boundary, /q even is excluded/);
   assert.match(r.boundary, /tau_2/);
 });
+
+test("the rank-3 strata are not orbits, and at q=3 the form is degenerate", () => {
+  const r = JSON.parse(fs.readFileSync("data/rank_three_strata_are_not_orbits.json"));
+  assert.equal(r.valid, true);
+  assert.match(r.whyLook, /fe3e8fd/);
+
+  // CORRECTION ONE: degeneracy exactly when q | n
+  const deg = r.degeneracyTable;
+  assert.deepEqual(
+    deg.map((x) => [x.n, x.q, x.rankOfInducedForm, x.degenerate]),
+    [[2, 3, 5, false], [2, 5, 5, false], [3, 3, 13, true],
+     [3, 5, 14, false], [3, 7, 14, false]]
+  );
+  for (const x of deg) {
+    assert.equal(x.degenerate, x.qDividesN, "degenerate exactly when q | n");
+    assert.equal(x.degenerate, x.rankOfInducedForm < x.dimKerOmega);
+  }
+  assert.match(r.correctionOne, /13 of 14 -- DEGENERATE/);
+  assert.match(r.correctionOne, /STRICTLY STRONGER than stated/);
+  assert.match(r.correctionOne, /conclusion is unaffected/);
+  // and the earlier certificate it corrects still stands on its q=5 witnesses
+  const nogo = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  assert.equal(nogo.decisiveWitnesses["5"].zero.sameQclass, true);
+  assert.equal(nogo.decisiveWitnesses["5"].zero.differentRank, true);
+
+  // CORRECTION TWO: weight is a function of the stratum at rank 2, not rank 3
+  const r2 = r.strata["2,3"], r3 = r.strata["3,3"];
+  assert.equal(r2.exhaustive, true);
+  assert.equal(r2.weightIsFunctionOfStratum, true);
+  assert.deepEqual(r2.distinctWeights, [24, 27, 30]);
+  assert.equal(Object.keys(r2.byStratum).length, 3);
+  for (const w of Object.values(r2.byStratum)) assert.equal(w.length, 1);
+
+  assert.equal(r3.weightIsFunctionOfStratum, false);
+  assert.equal(Object.keys(r3.byStratum).length, 7);
+  assert.deepEqual(r3.byStratum["6,zero"], [2187, 2430], "the split stratum");
+  assert.ok(
+    Object.values(r3.byStratum).filter((w) => w.length > 1).length >= 1,
+    "at least one stratum carries two weights => more than 7 orbits"
+  );
+  assert.match(r.correctionTwo, /AT LEAST EIGHT/);
+  assert.match(r.correctionTwo, /strengthens the no-go/);
+
+  // code lengths match Cardinali-Giuzzi at both ranks
+  assert.equal(r2.N, 40);
+  assert.equal(r2.cgN, 40);
+  assert.equal(r2.cgK, 5);
+  assert.equal(r2.cgD, 24);
+  assert.equal(r2.matchesCGlength, true);
+  assert.equal(r3.N, 3640);
+  assert.equal(r3.cgN, 3640);
+  assert.equal(r3.cgK, 14);
+  assert.equal(r3.cgD, 2160);
+  assert.equal(r3.matchesCGlength, true);
+  assert.equal(r3.cgD, 3 ** 7 - 3 ** 3);
+
+  // the negative is recorded with BOTH reasons, including the biased harness
+  assert.match(r.theNegativeWorthRecording, /q\^7 - q\^3 = 2160/);
+  assert.match(r.theNegativeWorthRecording, /smallest\s+seen was 2187/);
+  assert.match(r.theNegativeWorthRecording, /unbiased but covers only/);
+  assert.match(r.theNegativeWorthRecording, /WORSE/);
+  assert.match(r.theNegativeWorthRecording, /CANNOT see two thirds/);
+  assert.match(r.theNegativeWorthRecording, /not in doubt/);
+  assert.ok(!r3.distinctWeights.includes(2160), "the harness genuinely misses it");
+
+  assert.match(r.boundary, /LOWER bound/);
+  assert.match(r.boundary, /No claim is made about the exact orbit count/);
+  assert.match(r.boundary, /tau_2/);
+});

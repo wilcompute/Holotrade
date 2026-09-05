@@ -1,0 +1,131 @@
+{
+  "schema": "holotrade.rank-three-strata-not-orbits.v1",
+  "valid": true,
+  "whyLook": "fe3e8fd identified the rank-2 orbit census with the weight enumerator of the Cardinali-Giuzzi line Symplectic Grassmann code; the same family is defined at every rank, so the rank-3 member is a free probe of ae04deb's claims, and it found two things wrong with how they were phrased",
+  "correctionOne": "ae04deb reported 'invariant symmetric forms = 1' at n = 3 for q = 3 and 5 and left it there. The form exists at both, but at q = 3 its rank on ker(omega) is 13 of 14 -- DEGENERATE -- and the condition is exactly q | n, which at n = 3 singles out q = 3. So there the obstruction is STRICTLY STRONGER than stated: not merely no orthogonal geometry controlling the orbits, but no nondegenerate form at all. ae04deb's conclusion is unaffected because its decisive witnesses were exhibited at q = 5 as well, where the form is nondegenerate",
+  "degeneracyTable": [
+    {
+      "n": 2,
+      "q": 3,
+      "dimKerOmega": 5,
+      "rankOfInducedForm": 5,
+      "degenerate": false,
+      "qDividesN": false
+    },
+    {
+      "n": 2,
+      "q": 5,
+      "dimKerOmega": 5,
+      "rankOfInducedForm": 5,
+      "degenerate": false,
+      "qDividesN": false
+    },
+    {
+      "n": 3,
+      "q": 3,
+      "dimKerOmega": 14,
+      "rankOfInducedForm": 13,
+      "degenerate": true,
+      "qDividesN": true
+    },
+    {
+      "n": 3,
+      "q": 5,
+      "dimKerOmega": 14,
+      "rankOfInducedForm": 14,
+      "degenerate": false,
+      "qDividesN": false
+    },
+    {
+      "n": 3,
+      "q": 7,
+      "dimKerOmega": 14,
+      "rankOfInducedForm": 14,
+      "degenerate": false,
+      "qDividesN": false
+    }
+  ],
+  "correctionTwo": "ae04deb said 'seven classes appear where rank 2 has three', which is true and was worded as classes; the natural reading is that they are the orbits, and they are not. Computing the codeword weight for each stratum, at rank 2 every stratum carries exactly one weight, but at rank 3 the stratum (bivector rank 6, class zero) carries TWO. So (rank, class) is not a complete invariant and the true orbit count at rank 3 is AT LEAST EIGHT -- which again strengthens the no-go, the rank-3 structure being further from the rank-2 trichotomy than seven classes suggested",
+  "strata": {
+    "2,3": {
+      "N": 40,
+      "exhaustive": true,
+      "byStratum": {
+        "2,zero": [
+          27
+        ],
+        "4,nonsquare": [
+          24
+        ],
+        "4,square": [
+          30
+        ]
+      },
+      "counts": {
+        "2,zero": 80,
+        "4,nonsquare": 90,
+        "4,square": 72
+      },
+      "weightIsFunctionOfStratum": true,
+      "distinctWeights": [
+        24,
+        27,
+        30
+      ],
+      "cgN": 40,
+      "cgK": 5,
+      "cgD": 24,
+      "matchesCGlength": true
+    },
+    "3,3": {
+      "N": 3640,
+      "exhaustive": false,
+      "byStratum": {
+        "2,zero": [
+          2187
+        ],
+        "4,nonsquare": [
+          2376
+        ],
+        "4,square": [
+          2430
+        ],
+        "4,zero": [
+          2430
+        ],
+        "6,nonsquare": [
+          2457
+        ],
+        "6,square": [
+          2430
+        ],
+        "6,zero": [
+          2187,
+          2430
+        ]
+      },
+      "counts": {
+        "2,zero": 76,
+        "4,nonsquare": 7140,
+        "4,square": 5593,
+        "4,zero": 5374,
+        "6,nonsquare": 9526,
+        "6,square": 11021,
+        "6,zero": 11198
+      },
+      "weightIsFunctionOfStratum": false,
+      "distinctWeights": [
+        2187,
+        2376,
+        2430,
+        2457
+      ],
+      "cgN": 3640,
+      "cgK": 14,
+      "cgD": 2160,
+      "matchesCGlength": true
+    }
+  },
+  "theNegativeWorthRecording": "at rank 3 neither an unbiased direct sample of 60,000 functionals nor a 150,000-sample stratum pass found a codeword of Cardinali-Giuzzi's minimum weight q^7 - q^3 = 2160; the smallest seen was 2187 = q^7. The direct sample is unbiased but covers only 1.25% of 3^14. The stratum pass is WORSE: it indexes functionals by points through the invariant form, which at q = 3 is degenerate, so it reaches only a 13-dimensional image inside the 14-dimensional dual and CANNOT see two thirds of the codewords. The published minimum distance is not in doubt; what is recorded is that this harness does not reach it, and why",
+  "boundary": "the degeneracy table is EXACT, computed as the rank over GF(q) of the induced form restricted to ker(omega). The rank-2 weight-by-stratum table is EXHAUSTIVE. The rank-3 table is from 150,000 samples and is therefore a LOWER bound on the weights per stratum: a stratum shown with one weight may carry more, so 'at least eight orbits' is a lower bound, and the two weights found in (6, zero) are what makes it strictly greater than seven. No claim is made about the exact orbit count at rank 3, about the weight enumerator of the rank-3 code, or about q = 5 and 7 at rank 3, which were not run for weights. Nothing here revises fe3e8fd's attribution or touches tau_2"
+}
