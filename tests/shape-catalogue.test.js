@@ -6363,3 +6363,57 @@ test("the Weyl lift is q-general: a section at p = 3, 5 and 7", () => {
   assert.match(r.boundary, /characteristic 2 -- where the/);
   assert.match(r.boundary, /tau_2 is untouched/);
 });
+
+test("the hemisystem structure was rare, not typical", () => {
+  const r = require(path.join(
+    root,
+    "data/hemisystem_structure_was_rare.json"
+  ));
+  assert.equal(r.schema, "holotrade.hemisystem-structure-rare.v1");
+  assert.equal(r.valid, true);
+
+  // the earlier claim, and that it was one witness
+  const prev = require(path.join(
+    root,
+    "data/m_equals_two_balanced_exists.json"
+  ));
+  assert.match(
+    prev.independentVerification.structureFound,
+    /complementary pair of hemisystems/
+  );
+  assert.match(r.whatWasSaid, /it was\s+ONE witness/);
+
+  // the negative: one in sixty
+  const v = r.varyingIt;
+  assert.equal(v.solutionsCollected, 60);
+  assert.equal(v.allRowClassesAreHemisystems, 1, "exactly one, mine");
+  assert.equal(
+    v.allRowClassesAreHemisystems + v.notHemisystems,
+    v.solutionsCollected
+  );
+  assert.ok(
+    v.allRowClassesAreHemisystems / v.solutionsCollected < 0.05,
+    "under 5% -- rare, not typical"
+  );
+  assert.ok(v.distinctRowProfiles >= 10, "the space is heterogeneous");
+  assert.match(v.reading, /fifth failure mode/);
+
+  // profiles are consistent with the solution count
+  const total = Object.values(r.profiles).reduce((a, b) => a + b, 0);
+  assert.equal(total, v.solutionsCollected);
+  assert.equal(Object.keys(r.profiles).length, v.distinctRowProfiles);
+
+  // a uniform profile exists and is argued to be the more canonical one
+  assert.ok(r.uniformProfileExists.count >= 1);
+  assert.match(r.uniformProfileExists.profile, /exactly five partners/);
+  assert.match(r.uniformProfileExists.reading, /40 x 5 = 200/);
+
+  // what survives is stated, and the sample limit is stated as strengthening
+  assert.match(r.whatSurvives, /m = 2 is feasible/);
+  assert.match(r.whatSurvives, /c74fbb1 is untouched/);
+  const spec = require(path.join(root, "data/balance_spectrum_complete.json"));
+  assert.deepEqual(spec.holes, [1, 15], "the spectrum result stands");
+  assert.match(r.boundary, /SAMPLE, not an enumeration/);
+  assert.match(r.boundary, /STRONGER, not weaker/);
+  assert.match(r.boundary, /tau_2 is\s+untouched/);
+});
