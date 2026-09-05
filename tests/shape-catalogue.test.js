@@ -7030,3 +7030,67 @@ test("the polar apparatus is rank-two only, and the obstruction is Pfaffian degr
   assert.match(r.boundary, /nothing here retracts\s+any earlier result/);
   assert.match(r.boundary, /different axis from rank/);
 });
+
+test("the rank-3 replacement is a cubic Jordan algebra, the A5 sibling of E6's", () => {
+  const r = JSON.parse(fs.readFileSync("data/rank_three_is_a_jordan_algebra.json"));
+  assert.equal(r.valid, true);
+
+  // it is the positive half of the ae04deb no-go
+  const nogo = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  assert.match(nogo.theObstruction, /DEGREE\s+n/);
+  assert.match(r.whereThisComesFrom, /ae04deb/);
+  assert.match(r.whereThisComesFrom, /positive half/);
+
+  // the one-line reason the whole W(3,3) apparatus exists
+  assert.match(r.theCleanestForm, /Gr\(2,4\) = \{Pf = 0\} is a QUADRIC/);
+  assert.match(r.theCleanestForm, /Klein quadric/);
+  assert.match(r.theCleanestForm, /Gr\(2,6\) is the rank-one locus of a CUBIC/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [5, 7, 11]);
+  for (const x of r.rows) {
+    // the defining cubic-norm identity holds with NO exceptions
+    assert.equal(x.adjointIdentityExact, true);
+    assert.equal(x.adjointIdentityHeld, x.adjointIdentityTested);
+    assert.ok(x.adjointIdentityTested >= 250);
+    // every decomposable bivector is Jordan rank 1
+    assert.equal(x.decomposableAllRankOne, true);
+    assert.equal(x.decomposableAreRankOne, x.decomposableTested);
+    assert.ok(x.decomposableTested >= 300);
+    assert.deepEqual(Object.keys(x.decomposableStrata), ["2,1"]);
+    // and no stratum ever falls outside the dictionary
+    assert.equal(x.dictionaryHolds, true);
+    for (const k of Object.keys(x.randomStrata)) {
+      assert.ok(["2,1", "4,2", "6,3"].includes(k));
+    }
+  }
+
+  // the dictionary itself
+  assert.match(r.theRankDictionary["2"], /Jordan rank 1/);
+  assert.match(r.theRankDictionary["2"], /Gr\(2,6\)/);
+  assert.match(r.theRankDictionary["4"], /Jordan rank 2/);
+  assert.match(r.theRankDictionary["6"], /Jordan rank 3/);
+  assert.match(r.theRankDictionary.reading, /not noise/);
+
+  // the series is cited as classical, with the right dimensions
+  assert.match(r.theSeriesIsClassical, /6, 9, 15, 27/);
+  assert.match(r.theSeriesIsClassical, /P\^5, P\^8, P\^14 and P\^26/);
+  assert.match(r.theSeriesIsClassical, /Gr\(2,6\) = G\(1,5\) in P\^14/);
+  assert.match(r.theSeriesIsClassical, /CITED, not claimed/);
+
+  // the corpus connection, and what was searched to support it
+  assert.match(r.whyItMattersHere, /deg-2 symplectic \+ deg-3 E6\s+cubic/);
+  assert.match(r.whyItMattersHere, /A5\s+member of the SAME series/);
+  assert.match(r.priorArtSearched, /OCTONION end/);
+  assert.match(r.priorArtSearched, /BT293/);
+  assert.match(r.priorArtSearched, /Cabello-Severini-Winter/);
+
+  // and the identification of the two ends is explicitly NOT claimed
+  assert.match(r.notClaimed, /NOT examined/);
+  assert.match(r.notClaimed, /left as the open half/);
+  assert.match(r.notClaimed, /No consequence is claimed/);
+
+  assert.match(r.boundary, /DEMONSTRATIONS at those primes rather than proofs/);
+  assert.match(r.boundary, /q = 3 is excluded/);
+  assert.match(r.boundary, /Characteristic 2 is untouched/);
+  assert.match(r.boundary, /series being exactly\s+four long/);
+});

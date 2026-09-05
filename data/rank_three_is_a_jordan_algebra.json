@@ -1,0 +1,71 @@
+{
+  "schema": "holotrade.rank-three-jordan.v1",
+  "valid": true,
+  "whereThisComesFrom": "ae04deb showed the polar apparatus is rank-two only, because the Pfaffian on Lambda^2(F^2n) has degree n and degree 2 happens once. That is a no-go; this is its positive half, because a degree-3 invariant is not nothing, it is a cubic norm",
+  "theCleanestForm": "Lambda^2(F^4) is 6-dimensional with Pf of degree 2, so Gr(2,4) = {Pf = 0} is a QUADRIC -- the Klein quadric -- and the entire W(3,3) <-> O(5,q) machinery exists because of that one fact; Lambda^2(F^6) is 15-dimensional with Pf of degree 3, so Gr(2,6) is the rank-one locus of a CUBIC and no quadric",
+  "rows": [
+    {
+      "q": 5,
+      "adjointIdentityHeld": 300,
+      "adjointIdentityTested": 300,
+      "adjointIdentityExact": true,
+      "randomStrata": {
+        "4,2": 59,
+        "6,3": 241
+      },
+      "decomposableTested": 400,
+      "decomposableAreRankOne": 400,
+      "decomposableAllRankOne": true,
+      "decomposableStrata": {
+        "2,1": 400
+      },
+      "dictionaryHolds": true
+    },
+    {
+      "q": 7,
+      "adjointIdentityHeld": 300,
+      "adjointIdentityTested": 300,
+      "adjointIdentityExact": true,
+      "randomStrata": {
+        "4,2": 45,
+        "6,3": 255
+      },
+      "decomposableTested": 400,
+      "decomposableAreRankOne": 400,
+      "decomposableAllRankOne": true,
+      "decomposableStrata": {
+        "2,1": 400
+      },
+      "dictionaryHolds": true
+    },
+    {
+      "q": 11,
+      "adjointIdentityHeld": 300,
+      "adjointIdentityTested": 300,
+      "adjointIdentityExact": true,
+      "randomStrata": {
+        "4,2": 24,
+        "6,3": 276
+      },
+      "decomposableTested": 400,
+      "decomposableAreRankOne": 400,
+      "decomposableAllRankOne": true,
+      "decomposableStrata": {
+        "2,1": 400
+      },
+      "dictionaryHolds": true
+    }
+  ],
+  "theAdjointIdentity": "a cubic Jordan algebra is exactly a cubic form N with an adjoint # satisfying (x#)# = N(x) x; with N = Pf on 6x6 alternating matrices over F_q and # the gradient of Pf, this holds on every one of 300 random matrices at each of q = 5, 7, 11, exactly and with no scalar correction, so Lambda^2(F_q^6) with the Pfaffian is a cubic norm structure in odd characteristic",
+  "theRankDictionary": {
+    "2": "Jordan rank 1, X# = 0, decomposable, Gr(2,6)",
+    "4": "Jordan rank 2, X# nonzero and N = 0",
+    "6": "Jordan rank 3, N nonzero",
+    "reading": "the seven-class stratification that broke the rank-2 apparatus in ae04deb is the Jordan rank crossed with the square class of the auxiliary quadratic form, not noise"
+  },
+  "theSeriesIsClassical": "the rank-3 Jordan algebras H_3(A) for A = R, C, H, O have dimensions 3 + 3 dim A = 6, 9, 15, 27 and their rank-one loci are the four Severi varieties, in P^5, P^8, P^14 and P^26 (Zak's classification; see also Scorza varieties). The third member is exactly Lambda^2(F^6) with the Pfaffian norm, its Severi variety being Gr(2,6) = G(1,5) in P^14. This is standard and is CITED, not claimed",
+  "whyItMattersHere": "the corpus's architecture layer already carries a degree-2 / degree-3 split, 'gates = deg-2 symplectic + deg-3 E6 cubic'. Those two degrees are now the Pfaffian degrees at symplectic rank 2 and rank 3, and the rank-3 cubic is the A5 member of the SAME series whose E6 member is the 27-dimensional cubic. So a statement about gates acquires a candidate geometric origin: symplectic rank 2 against symplectic rank 3",
+  "priorArtSearched": "the corpus holds the OCTONION end of the series -- BT293 has the Cayley plane and F_4, BT441 has the 27 -- and does not hold the quaternion member: a search of both repositories finds no Severi variety, no Gr(2,6), no Pfaffian cubic and no H_3(H), the only 'Severi' hits being Cabello-Severini-Winter",
+  "notClaimed": "that the corpus's 'E6 cubic' IS the H_3(O) norm. That is the natural reading and standard mathematics, but how the gate layer actually defines its cubic was NOT examined, so the identification of the two ends of the series is left as the open half. No consequence is claimed for tau_2, for gate universality, or for the physical layer",
+  "boundary": "odd q only, and q = 5, 7, 11 at that: the adjoint identity is checked on 300 random alternating matrices per prime and the rank dictionary on 400 decomposables per prime, so both are DEMONSTRATIONS at those primes rather than proofs, though the identity is a classical polynomial identity and would hold formally. q = 3 is excluded from the adjoint test because the gradient construction of # divides by small integers there; the rank dictionary is unaffected. Characteristic 2 is untouched and genuinely different. n > 3 is untouched: the Pfaffian keeps degree n and there is no fifth Jordan member, the series being exactly four long"
+}
