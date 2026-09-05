@@ -7,7 +7,12 @@ on:
       - 'analysis/w33_projective_slowpath_microsequencer.py'
       - 'js/w33-projective-microsequencer.js'
       - 'js/w33-slowpath-rom-decoder.js'
+      - 'js/w33-payne-cover-catalogue.js'
+      - 'js/w33-slowpath-eigenspace-geometry.js'
       - 'data/the_45_slot_rom_bijection.json'
+      - 'data/slow_path_is_payne_derivative.json'
+      - 'data/payne_cover_spectral_intertwiner.json'
+      - 'data/slow_targets_are_w33_minimum_words.json'
       - '.github/workflows/w33_projective_slowpath_microsequencer.yml'
   workflow_dispatch:
 
@@ -25,5 +30,7 @@ jobs:
           node-version: '22'
       - name: Verify Python theorem over all 25,920 projective targets
         run: python analysis/w33_projective_slowpath_microsequencer.py
+      - name: Boot-check direct eigenspace geometry decoder
+        run: node -e "const g=require('./js/w33-slowpath-eigenspace-geometry.js'); const b=g.bootCheck(); if(!b.ok) throw new Error(b.errors.join(','));"
       - name: Verify production Node compiler/decoder over all 25,920 targets
         run: node js/w33-projective-microsequencer.js
