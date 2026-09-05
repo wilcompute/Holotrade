@@ -6933,3 +6933,100 @@ test("the (c,m) minimum-blocker labels are octets, and minimality is q=3 only", 
   assert.match(r.tau1AtQ5IsOpen, /\[27,29\]/);
   assert.match(r.tau1AtQ5IsOpen, /undecided here/);
 });
+
+test("the polar apparatus is rank-two only, and the obstruction is Pfaffian degree", () => {
+  const r = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  assert.equal(r.valid, true);
+
+  // the first guess is recorded as WRONG: an invariant form exists at both ranks
+  assert.match(r.theFirstGuessWasWrong, /is\s+FALSE/);
+  assert.match(r.theFirstGuessWasWrong, /exists at every rank/);
+  const byRank = {};
+  for (const f of r.invariantForms) {
+    assert.equal(f.invariantSymmetricForms, 1, "one invariant form at every rank");
+    assert.equal(f.pfaffianDegree, f.n, "Pfaffian degree IS n");
+    byRank[f.n] = f.dimKerOmega;
+  }
+  assert.equal(byRank[2], 5);
+  assert.equal(byRank[3], 14);
+
+  // the obstruction is the degree, not the absence
+  assert.match(r.theObstruction, /DEGREE\s+n/);
+  assert.match(r.theObstruction, /n = 2 it is QUADRATIC/);
+  assert.match(r.theObstruction, /n = 3 it is CUBIC/);
+  assert.match(r.theObstruction, /Degree 2 happens once/);
+
+  // rank 2: exactly three classes, exhaustively, and rank determined by Q
+  assert.deepEqual(Object.keys(r.orbitsExhaustiveRank2).sort(), ["3", "5", "7"]);
+  for (const q of ["3", "5", "7"]) {
+    assert.equal(Object.keys(r.orbitsExhaustiveRank2[q]).length, 3);
+  }
+  assert.equal(r.rankIsFunctionOfQclass.n2, true);
+
+  // and the partition is the convention-free one
+  const sizes = r.orbitSizesRank2Projective;
+  assert.deepEqual(
+    [sizes["3"].isotropic, sizes["3"].big, sizes["3"].small],
+    [40, 45, 36]
+  );
+  assert.deepEqual(
+    [sizes["5"].isotropic, sizes["5"].big, sizes["5"].small],
+    [156, 325, 300]
+  );
+  assert.deepEqual(
+    [sizes["7"].isotropic, sizes["7"].big, sizes["7"].small],
+    [400, 1225, 1176]
+  );
+  for (const q of ["3", "5", "7"]) {
+    const n = Number(q);
+    assert.deepEqual(
+      [sizes[q].isotropic, sizes[q].big, sizes[q].small].sort((a, b) => a - b),
+      sizes[q].closedForms.sort((a, b) => a - b)
+    );
+    assert.equal(sizes[q].isotropic, (n + 1) * (n * n + 1));
+    assert.equal(sizes[q].big, (n * n * (n * n + 1)) / 2);
+    assert.equal(sizes[q].small, (n * n * (n * n - 1)) / 2);
+  }
+  // the label swap between certificates is named, not smoothed over
+  assert.match(r.aLabelConventionWarning, /two NAMES swap between files/);
+  assert.match(r.aLabelConventionWarning, /PARTITION is\s+identical/);
+  assert.match(r.aLabelConventionWarning, /convention artefact/);
+
+  // rank 3: seven classes, and rank NOT determined by Q
+  for (const q of ["3", "5"]) {
+    assert.equal(Object.keys(r.orbitsSampledRank3[q]).length, 7);
+  }
+  assert.equal(r.rankIsFunctionOfQclass.n3, false);
+
+  // carried by explicit re-verified witnesses, not by the sample
+  for (const q of ["3", "5"]) {
+    const w = r.decisiveWitnesses[q];
+    assert.ok(Object.keys(w).length >= 2, "witnesses in at least two Q-classes");
+    for (const [cls, p] of Object.entries(w)) {
+      assert.equal(p.sameQclass, true);
+      assert.equal(p.differentRank, true);
+      assert.equal(p.recheckClassA, cls);
+      assert.equal(p.recheckClassB, cls);
+      assert.equal(p.recheckRankA, p.rankA);
+      assert.equal(p.recheckRankB, p.rankB);
+      assert.notEqual(p.rankA, p.rankB);
+      assert.ok([2, 4, 6].includes(p.rankA) && [2, 4, 6].includes(p.rankB));
+    }
+    // the zero class is the strongest witness: ranks 2 and 6 share it
+    assert.deepEqual([w.zero.rankA, w.zero.rankB], [2, 6]);
+  }
+
+  assert.match(r.theCeilingIsB2equalsC2, /RIGID\s+IN RANK/);
+  assert.match(r.theCeilingIsB2equalsC2, /cannot work/);
+  assert.match(r.groupOrdersSayTheSame, /dimension 21 inside SO\(14\) of\s+dimension 91/);
+
+  // the E6-cubic resonance is flagged as a question, explicitly not claimed
+  assert.match(r.flaggedNotClaimed, /NOT investigated/);
+  assert.match(r.flaggedNotClaimed, /no\s+identification is asserted/);
+  assert.match(r.flaggedNotClaimed, /twice found substantive and twice\s+found to be nothing/);
+
+  assert.match(r.boundary, /EXHAUSTIVE over ker\(omega\)/);
+  assert.match(r.boundary, /SAMPLED/);
+  assert.match(r.boundary, /nothing here retracts\s+any earlier result/);
+  assert.match(r.boundary, /different axis from rank/);
+});
