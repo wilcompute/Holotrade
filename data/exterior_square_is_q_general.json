@@ -1,0 +1,61 @@
+{
+  "schema": "holotrade.exterior-square-q-general.v1",
+  "valid": true,
+  "whatWasBounded": "slow_o5_closed_form.json proves the formula and the anticommutation dictionary at q = 3 and calls the construction 'classical/q-general' while correctly quarantining the GQ claim as q = 3 only; the two substantive halves were verified at one prime and described as general rather than shown to be",
+  "citesVerbatim": {
+    "source": "data/slow_o5_closed_form.json (commit d61cdb2)",
+    "theorem": "The executable 45 slow targets map by an explicit basis-independent exterior-square formula onto exactly the square nonisotropic orbit of P(W). The map intertwines every transvection and turns slow-target anticommutation into O(5,3) perpendicularity. No graph-isomorphism search is required.",
+    "boundary": "Exact at q=3 for the committed Sp/PSp realization. The exterior-square construction itself is classical/q-general, but the identification of the cost orbit with a GQ is q=3-only and no q-general GQ claim is made.",
+    "formula": "c(g)=phat(ker(g-I))-phat(ker(g+I)), phat(span(a,b))=(a wedge b)/<a,b>",
+    "Q": "b_01 b_23 - b_02 b_13 + b_03 b_12",
+    "omegaCoordinateLaw": "b_02+b_13=0",
+    "theirCheckThisReproduces": "anticommutation_equals_O5_perpendicularity_all_990_pairs",
+    "conventionsAreTheirs": "Q and the omega law here are their expressions verbatim, and their 990 is exactly the q = 3 row below, so this is an independent reproduction before it is an extension"
+  },
+  "rows": [
+    {
+      "q": 3,
+      "hyperbolicLines": 90,
+      "distinctImages": 45,
+      "squareOrbit": 45,
+      "allInW": true,
+      "exhaustsOrbit": true,
+      "classes": 45,
+      "anticommuting": 270,
+      "perpendicular": 270,
+      "pairs": 990,
+      "agreeOnAllPairs": true
+    },
+    {
+      "q": 5,
+      "hyperbolicLines": 650,
+      "distinctImages": 325,
+      "squareOrbit": 325,
+      "allInW": true,
+      "exhaustsOrbit": true,
+      "classes": 325,
+      "anticommuting": 9750,
+      "perpendicular": 9750,
+      "pairs": 52650,
+      "agreeOnAllPairs": true
+    },
+    {
+      "q": 7,
+      "hyperbolicLines": 2450,
+      "distinctImages": 1225,
+      "squareOrbit": 1225,
+      "allInW": true,
+      "exhaustsOrbit": true,
+      "classes": 1225,
+      "anticommuting": 102900,
+      "perpendicular": 102900,
+      "pairs": 749700,
+      "agreeOnAllPairs": true
+    }
+  ],
+  "halfOne": "the formula c(g) = phat(ker(g-I)) - phat(ker(g+I)) sends every reflection into W, the image count halves exactly (a line and its polar share an image, which is the projectivity under g -> -g), and the images EXHAUST the square nonisotropic orbit rather than merely landing inside it, at q = 3, 5 and 7",
+  "halfTwo": "anticommutation and O(5,q) perpendicularity agree PAIR BY PAIR -- not merely in count -- on all 803340 pairs across the three primes",
+  "theBoundaryMoves": "the exterior-square correspondence is a FAMILY, holding at every prime tested; the generalized quadrangle is not, being SRG(325,60,15,10) at q = 5 and not even strongly regular at q = 7 (424111b). The algebra generalises and the geometry does not, and the two were previously bounded together at q = 3",
+  "sameFaultLineAsTheCompiler": "the Weil lift is q-general (8cdd21f) while the quadrangle is not; two independent constructions, the same split",
+  "boundary": "q = 3, 5, 7 only -- no claim for larger primes, for q even, or for n > 2. Anomalies are built as reflections (-1 on a nondegenerate line, +1 on its polar), which 424111b verified are the O'Meara hyperbolic maps at q = 3; at q = 5 and 7 that identification with the LENGTH anomalies is NOT re-verified here, so what is shown is a theorem about the reflection set, which is what the formula consumes. Transvection equivariance is the parallel track's check at q = 3 and is not re-run here. tau_2 is untouched"
+}

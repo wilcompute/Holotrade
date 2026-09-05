@@ -6471,3 +6471,72 @@ test("there is no canonical 2-balanced set", () => {
   assert.match(r.boundary, /no canonical object was\s+FOUND, not that none/);
   assert.match(r.boundary, /tau_2 is\s+untouched/);
 });
+
+test("the exterior-square theorem is q-general -- both halves, at 3, 5 and 7", () => {
+  const r = JSON.parse(fs.readFileSync("data/exterior_square_is_q_general.json"));
+  assert.equal(r.valid, true);
+
+  // the parallel track's own theorem and boundary, quoted verbatim
+  const c = r.citesVerbatim;
+  assert.match(c.source, /slow_o5_closed_form\.json/);
+  assert.match(c.boundary, /classical\/q-general/);
+  assert.match(c.boundary, /q=3-only and no q-general GQ claim is made/);
+  assert.match(c.theorem, /square nonisotropic\s+orbit of P\(W\)/);
+  assert.match(c.theorem, /O\(5,3\) perpendicularity/);
+  // their conventions, used unchanged -- so this reproduces before it extends
+  assert.equal(c.Q, "b_01 b_23 - b_02 b_13 + b_03 b_12");
+  assert.equal(c.omegaCoordinateLaw, "b_02+b_13=0");
+  assert.match(c.theirCheckThisReproduces, /all_990_pairs/);
+  assert.match(c.conventionsAreTheirs, /independent reproduction\s+before it is an extension/);
+  // if their certificate is checked out, the quotes must still match it
+  if (fs.existsSync("data/slow_o5_closed_form.json")) {
+    const src = JSON.parse(fs.readFileSync("data/slow_o5_closed_form.json"));
+    assert.equal(c.boundary, src.boundary);
+    assert.equal(c.theorem, src.theorem);
+    assert.equal(c.Q, src.quadraticModule.Q);
+    assert.equal(c.omegaCoordinateLaw, src.quadraticModule.omegaCoordinateLaw);
+    assert.equal(c.formula, src.formula);
+    assert.equal(src.checks[c.theirCheckThisReproduces], true);
+  }
+  assert.match(r.whatWasBounded, /verified at one\s+prime and described as general rather than\s+shown to be/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+
+  // HALF ONE: the formula lands on, and exhausts, the square orbit
+  const one = { 3: [90, 45], 5: [650, 325], 7: [2450, 1225] };
+  for (const x of r.rows) {
+    assert.deepEqual([x.hyperbolicLines, x.distinctImages], one[x.q]);
+    assert.equal(x.squareOrbit, x.distinctImages, "image count IS the orbit");
+    assert.equal(x.allInW, true);
+    assert.equal(x.exhaustsOrbit, true);
+    // the image count halves exactly -- a line and its polar share an image
+    assert.equal(x.hyperbolicLines, 2 * x.distinctImages);
+  }
+  assert.match(r.halfOne, /EXHAUST the square nonisotropic\s+orbit/);
+
+  // HALF TWO: anticommutation IS perpendicularity, pair by pair
+  const two = { 3: [45, 270, 990], 5: [325, 9750, 52650], 7: [1225, 102900, 749700] };
+  let pairs = 0;
+  for (const x of r.rows) {
+    assert.deepEqual([x.classes, x.anticommuting, x.pairs], two[x.q]);
+    assert.equal(x.perpendicular, x.anticommuting);
+    assert.equal(x.agreeOnAllPairs, true, "agreement is pairwise, not just in count");
+    assert.equal(x.pairs, (x.classes * (x.classes - 1)) / 2);
+    pairs += x.pairs;
+  }
+  assert.equal(pairs, 803340);
+  assert.match(r.halfTwo, /PAIR BY PAIR -- not merely in count/);
+
+  // the algebra generalises; the geometry does not
+  assert.match(r.theBoundaryMoves, /correspondence is a FAMILY/);
+  assert.match(r.theBoundaryMoves, /SRG\(325,60,15,10\) at q = 5/);
+  assert.match(r.theBoundaryMoves, /not even\s+strongly regular at q = 7/);
+  assert.match(r.theBoundaryMoves, /algebra generalises and the geometry does\s+not/);
+  assert.match(r.sameFaultLineAsTheCompiler, /Weil lift is q-general/);
+
+  // and what is NOT shown is stated
+  assert.match(r.boundary, /q = 3, 5, 7 only/);
+  assert.match(r.boundary, /NOT\s+re-verified here/);
+  assert.match(r.boundary, /theorem\s+about the reflection set/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
