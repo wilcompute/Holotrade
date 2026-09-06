@@ -7408,3 +7408,71 @@ test("the 40 are E6's 3A2 subsystems -- graph in Python, group in GAP", () => {
   assert.match(r.boundary, /nothing generalises/);
   assert.match(r.boundary, /tau_2/);
 });
+
+test("the tau_2 = 111 question reduces to exactly three cases", () => {
+  const r = JSON.parse(fs.readFileSync("data/the_111_question_has_three_cases.json"));
+  const g = JSON.parse(fs.readFileSync("data/tau2_111_three_cases_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(g.valid, true);
+  assert.equal(g.engine, "GAP");
+
+  // the reduction rests on a QUOTED forced structure, still present
+  const pencil = JSON.parse(fs.readFileSync("data/tensor_111_pencil_excess.json"));
+  assert.equal(pencil.candidateLeaves, 111);
+  assert.equal(pencil.perAxisConsequence.cleanLines, 36);
+  assert.equal(pencil.perAxisConsequence.dirtyLines, 4);
+  assert.match(pencil.perAxisConsequence.dirtyShape, /point-pencil/);
+  assert.match(r.theReduction, /COMPLETE and LOSSLESS symmetry\s+break/);
+
+  // GAP: rank 3 => exactly three diagonal orbits, with the residual groups
+  assert.equal(g.points, 40);
+  assert.equal(g.imageOrder, 25920);
+  assert.equal(g.pointStabiliser, 648);
+  assert.deepEqual(g.subdegrees, [1, 12, 27]);
+  assert.equal(g.rank, 3);
+  assert.equal(g.diagonalOrbitsOnOrderedPairs, 3);
+  assert.deepEqual(g.residualStabilisers, { equal: 648, collinear: 54, noncollinear: 24 });
+  assert.equal(1 * g.residualStabilisers.equal, 648);
+  assert.equal(12 * g.residualStabilisers.collinear, 648);
+  assert.equal(27 * g.residualStabilisers.noncollinear, 648);
+  assert.equal(g.orbitTimesResidualIs648, true);
+  assert.equal(g.allOrbitalsSelfPaired, true);
+  assert.match(g.boundary, /RepresentativeAction/);
+
+  // exactly three cases were run, one per orbit
+  assert.equal(r.cases.length, 3);
+  assert.deepEqual(r.cases.map((c) => c.case), ["equal", "collinear", "noncollinear"]);
+  for (const c of r.cases) {
+    assert.equal(c.cRow, 0);
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(c.status));
+    assert.ok(c.budget >= 60, "a budget the file completes at");
+  }
+
+  // CONTROLS: the model is sound, so UNKNOWN is the instance not the encoding
+  const ctl = r.controls;
+  assert.equal(ctl.tau1BlockerSize, 11);
+  assert.equal(ctl.tau1IsEleven, true);
+  assert.equal(ctl.explicitBlockerSize, 440);
+  assert.equal(ctl.explicitBlockerMissedPairs, 0);
+  assert.equal(ctl.explicitBlockerAccepted, true);
+  assert.equal(ctl.loadSum, ctl.loadExpected);
+  assert.equal(ctl.loadSum, 4 * ctl.explicitBlockerSize);
+  assert.match(ctl.reading, /instance being hard rather than the encoding being\s+wrong/);
+
+  // the negative is recorded as a negative, at one budget
+  assert.equal(r.allUnknown, true);
+  assert.match(r.whatThisIsWorth, /does NOT move tau_2/);
+  assert.match(r.whatThisIsWorth, /\[111,115\]/);
+  assert.match(r.whatThisIsWorth, /residual group\s+of order 648/);
+  assert.match(r.boundary, /NEGATIVE at the budgets run/);
+  // the longer run is reported as a separate run, and the crash is disclosed
+  assert.match(r.aLongerIndependentRun, /240 seconds/);
+  assert.match(r.aLongerIndependentRun, /ALSO returned UNKNOWN/);
+  assert.match(r.aLongerIndependentRun, /exit code\s+4/);
+  assert.match(r.aLongerIndependentRun, /not a\s+solver verdict/);
+  assert.match(r.boundary, /UNKNOWN\s+is not evidence of feasibility OR of\s+infeasibility/);
+
+  // and the control that could not be run is recorded as not run
+  assert.match(r.aControlThatCouldNotBeRun, /no point ordering/);
+  assert.match(r.aControlThatCouldNotBeRun, /NO conclusion whatever is\s+drawn/);
+});
