@@ -1,0 +1,51 @@
+{
+  "schema": "holotrade.schlafli-triangle-one-polynomial.v1",
+  "valid": true,
+  "whatWasAlreadyHeld": "two legs were in place. gq24_schlaefli_quadrangle.py has GQ(2,4) = Q-(5,2) with 27 points and 45 lines and its link to the 27 lines on a cubic surface, citing corpus Pass 84 for PSp(4,3) = PSU(4,2) = W(E6)/Z2. And Theory-of-Everything fdc9f1d75 / 8a4933dde proves each of the 36 double-sixes cuts an exact signed Pfaffian section from the 27-coordinate Cartan cubic, with 1de360304 making the 36-chain PSp(4,3)-equivariant. So the 36 are SECTIONS and the 27 are COORDINATES; the 45 were the leg with no stated relation to the polynomial",
+  "theAnswer": "the 45 are its MONOMIALS. N(A,B,C) = det A + det B + det C - tr(ABC) has 18 determinant terms and 27 trace terms, 45 in all, each a product of three distinct coordinates with all supports distinct",
+  "checks": {
+    "lines": 45,
+    "allLinesSizeThree": true,
+    "allSupportsDistinct": true,
+    "linesPerPoint": [
+      5
+    ],
+    "incidences": 135,
+    "maxLinesThroughAPointPair": 1,
+    "gqAxiomCounts": {
+      "1": 1080
+    },
+    "gqAxiomHolds": true,
+    "collinearitySRG": [
+      27,
+      10,
+      1,
+      5
+    ],
+    "isSRG": true,
+    "coordinates": 27,
+    "monomials": 45,
+    "determinantTerms": 18,
+    "traceTerms": 27
+  },
+  "schlafliGraph": [
+    27,
+    16,
+    10,
+    8
+  ],
+  "complementOfSchlafli": [
+    27,
+    10,
+    1,
+    5
+  ],
+  "theTriangleIsOneObject": {
+    "27": "the cubic's coordinates = the 27 lines",
+    "45": "the cubic's monomials = the 45 tritangent planes",
+    "36": "the cubic's Pfaffian sections = the 36 double-sixes (Theory-of-Everything fdc9f1d75)",
+    "reading": "coordinates, monomials, sections -- given the polynomial, all three legs and their incidences are readable off it, with nothing imported"
+  },
+  "noveltyNotClaimed": "the geometry is classical and already in this corpus: that the 27 lines and 45 tritangents of a cubic surface form GQ(2,4) is standard, gq24_schlaefli_quadrangle.py already carries GQ(2,4) with those parameters, and Pass 84 already has PSp(4,3) = W(E6)/Z2. What is offered is the REALIZATION -- that this incidence is literally the term structure of the Cartan cubic in the SL(3)^3 coordinates, points being variables and lines being monomials, verified against all four quadrangle axioms rather than asserted -- together with the observation that all three legs are features of one polynomial. A search of both repositories for '45 monomials' and for a monomial/GQ(2,4) identification found nothing, which is weak evidence and is treated as none",
+  "boundary": "exact and exhaustive over the integers: all 45 monomials enumerated from the closed form, all 135 incidences, all coordinate pairs, and all 1080 non-incident point-line pairs checked for the GQ axiom. There is no field here and no q -- the monomial structure is a statement about the polynomial's shape, not about any F_q realization, though 9a202a2's adjoint check gives the same polynomial its cubic-norm status over F_q. The identification of the 36 sections is QUOTED from Theory-of-Everything fdc9f1d75 and not re-derived. Nothing here touches tau_2, the rank ceiling, or the physical layer"
+}

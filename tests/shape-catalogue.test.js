@@ -7676,3 +7676,62 @@ test("the 111 clean-core centre maps cannot be injective, so the 110 hinge is fa
   assert.match(r.boundary, /a FEASIBLE one excludes nothing/);
   assert.match(r.boundary, /\[111,115\]/);
 });
+
+test("the Schlaefli 27-36-45 triangle is coordinates, monomials and sections of one cubic", () => {
+  const r = JSON.parse(fs.readFileSync("data/schlafli_triangle_one_polynomial.json"));
+  assert.equal(r.valid, true);
+  const c = r.checks;
+
+  // the polynomial's shape: 18 determinant terms + 27 trace terms = 45
+  assert.equal(c.coordinates, 27);
+  assert.equal(c.determinantTerms, 18);
+  assert.equal(c.traceTerms, 27);
+  assert.equal(c.monomials, 45);
+  assert.equal(c.determinantTerms + c.traceTerms, c.monomials);
+  assert.equal(c.allLinesSizeThree, true);
+  assert.equal(c.allSupportsDistinct, true);
+
+  // the four GQ(2,4) axioms, all verified rather than asserted
+  assert.deepEqual(c.linesPerPoint, [5]);
+  assert.equal(c.incidences, 135);
+  assert.equal(c.incidences, 45 * 3);
+  assert.equal(c.incidences, 27 * 5);
+  assert.equal(c.maxLinesThroughAPointPair, 1);
+  assert.equal(c.gqAxiomHolds, true);
+  assert.deepEqual(c.gqAxiomCounts, { 1: 1080 });
+  // GQ(2,4) parameter identities
+  assert.equal((2 + 1) * (2 * 4 + 1), 27);
+  assert.equal((4 + 1) * (2 * 4 + 1), 45);
+
+  // collinearity graph is the COMPLEMENT of the Schlaefli graph
+  assert.equal(c.isSRG, true);
+  assert.deepEqual(c.collinearitySRG, [27, 10, 1, 5]);
+  assert.deepEqual(r.schlafliGraph, [27, 16, 10, 8]);
+  assert.deepEqual(r.complementOfSchlafli, c.collinearitySRG);
+  assert.equal(10 + 16, 26, "degrees sum to n-1");
+
+  // and it agrees with the GQ(2,4) the corpus already carries
+  const gq = JSON.parse(fs.readFileSync("data/gq24_schlaefli_quadrangle.json"));
+  assert.equal(gq.geometry.points, 27);
+  assert.equal(gq.geometry.lines, 45);
+  assert.deepEqual(gq.geometry.order, [2, 4]);
+  assert.equal(gq.geometry.hasOvoid, false);
+
+  // the three legs
+  const t = r.theTriangleIsOneObject;
+  assert.match(t["27"], /coordinates/);
+  assert.match(t["45"], /monomials/);
+  assert.match(t["36"], /Pfaffian sections/);
+  assert.match(t["36"], /fdc9f1d75/);
+  assert.match(t.reading, /nothing imported/);
+
+  // novelty is bounded to the realization, not the geometry
+  assert.match(r.noveltyNotClaimed, /classical and already in\s+this corpus/);
+  assert.match(r.noveltyNotClaimed, /gq24_schlaefli_quadrangle/);
+  assert.match(r.noveltyNotClaimed, /Pass 84/);
+  assert.match(r.noveltyNotClaimed, /What is offered is the REALIZATION/);
+  assert.match(r.noveltyNotClaimed, /weak evidence and\s+is treated as none/);
+  assert.match(r.boundary, /no field here and no q/);
+  assert.match(r.boundary, /QUOTED from/);
+  assert.match(r.boundary, /tau_2/);
+});
