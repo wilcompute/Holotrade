@@ -7890,6 +7890,13 @@ test("the symmetric attack on 114: control passes, and the fix-free involution i
   // payoff asymmetry stated, UNSAT not over-read
   assert.match(r.whatWouldAndWouldNotFollow, /SAT at 114 improves the upper\s+bound/);
   assert.match(r.whatWouldAndWouldNotFollow, /asymmetric 114\s+witness could still exist/);
+  // a 6.7x budget increase changed nothing, and that is on record
+  const lb = r.aLongerBudgetChangedNothing;
+  assert.match(lb, /300 seconds per class instead of 45/);
+  assert.match(lb, /exactly the same verdicts/);
+  assert.match(lb, /No class moved/);
+  assert.match(lb, /change the ENCODING or\s+the symmetry group rather than the clock/);
+
   assert.match(r.boundary, /UNKNOWN rows are nothing/);
   assert.match(r.boundary, /\[111,115\]/);
 });

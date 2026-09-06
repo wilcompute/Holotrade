@@ -8,7 +8,7 @@
     "fixedPoints": 13,
     "orbits": 646,
     "status": "SAT",
-    "seconds": 10.4,
+    "seconds": 6.5,
     "verification": {
       "cells": 115,
       "distinct": 115,
@@ -58,7 +58,7 @@
       "fixedPoints": 0,
       "orbits": 800,
       "status": "UNSAT",
-      "seconds": 0.3,
+      "seconds": 0.1,
       "budget": 45.0
     }
   ],
@@ -67,7 +67,7 @@
     {
       "size": 110,
       "status": "UNSAT",
-      "seconds": 0.3,
+      "seconds": 0.1,
       "parityTrivial": false
     },
     {
@@ -79,7 +79,7 @@
     {
       "size": 112,
       "status": "UNSAT",
-      "seconds": 0.3,
+      "seconds": 0.2,
       "parityTrivial": false
     },
     {
@@ -91,7 +91,7 @@
     {
       "size": 114,
       "status": "UNSAT",
-      "seconds": 0.3,
+      "seconds": 0.1,
       "parityTrivial": false
     },
     {
@@ -115,7 +115,7 @@
     {
       "size": 118,
       "status": "UNKNOWN",
-      "seconds": 20.0,
+      "seconds": 20.1,
       "parityTrivial": false
     },
     {
@@ -127,11 +127,12 @@
     {
       "size": 120,
       "status": "UNKNOWN",
-      "seconds": 20.1,
+      "seconds": 20.0,
       "parityTrivial": false
     }
   ],
   "fixedPointFreeReading": "the fixed-point-free involution has all 800 cell-orbits of size 2 and NO fixed cells, so |X| must be EVEN. Every odd size is therefore excluded by parity alone -- including 115, which appears as UNSAT here and does NOT contradict the known 115 witness: that witness simply cannot carry this symmetry, because 115 is odd. The content is in the EVEN sizes, where parity says nothing: [110, 112, 114] come back UNSAT from the solver, while 116, 118 and 120 are UNKNOWN. So no blocker of size 110, 112 or 114 admits a fixed-point-free involution, and with parity covering the odd sizes, no blocker of size at most 115 admits one at all",
+  "aLongerBudgetChangedNothing": "the same five-class sweep at 114 was run again at 300 seconds per class instead of 45, a 6.7x increase, and returned exactly the same verdicts: four UNKNOWN and the fixed-point-free UNSAT. No class moved. So the four undecided classes are not sitting just past the budget, and the next attempt should change the ENCODING or the symmetry group rather than the clock. Recorded so that budget is not spent re-confirming it -- the corpus already burned 2400 s and 2700 s on the unconstrained version of the same question",
   "theSmallTheorem": "no 114-leaf blocker is invariant under a FIXED-POINT-FREE involution -- that row returns UNSAT immediately. The class is invisible at 111, where every symmetry must fix both pencil centres and therefore has at least two fixed points; it only becomes testable at 114, where the pencil structure is not forced",
   "whatWouldAndWouldNotFollow": "a SAT at 114 improves the upper bound to [111,114] outright. An UNSAT rules out only SYMMETRIC witnesses of that one type, which is much weaker: an asymmetric 114 witness could still exist. The asymmetry of the payoffs is why budget goes here rather than to the lower end, and it is also why the UNSAT that did land must not be over-read",
   "boundary": "diagonal PSp(4,3) action at q = 3. The five prime-order subgroup classes are computed by conjugacy-deduplication in the full 25,920-element group, and by Cauchy they cover every possible nontrivial symmetry -- so an all-UNSAT sweep WOULD be a complete statement about symmetric witnesses. That is not what was obtained: four of five classes returned UNKNOWN. The UNSAT row is a theorem, the UNKNOWN rows are nothing, and budgets are recorded per row because they are the only thing separating an UNKNOWN from a decision. tau_2 remains open in [111,115]"

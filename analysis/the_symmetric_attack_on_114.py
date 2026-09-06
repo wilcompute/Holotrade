@@ -385,6 +385,16 @@ def main():
                     "fixed-point-free involution, and with parity covering the "
                     "odd sizes, no blocker of size at most 115 admits one at "
                     "all" % (ffevenUnsat,)),
+                "aLongerBudgetChangedNothing": ("the same five-class sweep at "
+                    "114 was run again at 300 seconds per class instead of 45, a "
+                    "6.7x increase, and returned exactly the same verdicts: four "
+                    "UNKNOWN and the fixed-point-free UNSAT. No class moved. So "
+                    "the four undecided classes are not sitting just past the "
+                    "budget, and the next attempt should change the ENCODING or "
+                    "the symmetry group rather than the clock. Recorded so that "
+                    "budget is not spent re-confirming it -- the corpus already "
+                    "burned 2400 s and 2700 s on the unconstrained version of the "
+                    "same question"),
                 "theSmallTheorem": ("no 114-leaf blocker is invariant under a "
                                     "FIXED-POINT-FREE involution -- that row "
                                     "returns UNSAT immediately. The class is "
