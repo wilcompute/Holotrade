@@ -7578,3 +7578,57 @@ test("no 111-leaf blocker admits an involution, so its stabiliser has odd order"
   assert.match(r.boundary, /transpose-type symmetry/);
   assert.match(r.boundary, /\[111,115\]/);
 });
+
+test("the 111 clean-core centre maps cannot be injective, so the 110 hinge is false", () => {
+  const r = JSON.parse(fs.readFileSync("data/the_111_centre_maps_cannot_be_injective.json"));
+  assert.equal(r.valid, true);
+
+  // the 110 argument it is testing against, still present and still bijective
+  const dual = JSON.parse(fs.readFileSync("data/tensor_tight_self_duality_obstruction.json"));
+  assert.equal(dual.tightCandidate, 110);
+  assert.equal(dual.centreMultiplicity.centreMapsBijective, true);
+  assert.equal(dual.centreMultiplicity.thereforeFEmpty, true);
+  assert.match(dual.classicalInput, /self-dual iff q is even/);
+  assert.match(r.whyThisIsTheDecisiveStep, /Bijectivity is the hinge/);
+
+  // the clean core is exactly 36 because the dirty lines are a pencil
+  const pencil = JSON.parse(fs.readFileSync("data/tensor_111_pencil_excess.json"));
+  assert.equal(pencil.perAxisConsequence.cleanLines, 36);
+  assert.equal(pencil.perAxisConsequence.dirtyLines, 4);
+  assert.equal(36 + 4, 40);
+
+  assert.equal(r.rows.length, 3);
+  assert.deepEqual(r.rows.map((x) => x.case), ["equal", "collinear", "noncollinear"]);
+  for (const x of r.rows) {
+    assert.equal(x.cleanRowLines, 36);
+    assert.equal(x.cleanColLines, 36);
+    assert.equal(x.cRow, 0);
+    // THE RESULT: reciprocity alone is satisfiable, injectively it is not
+    assert.equal(x.reciprocityOnly, "SAT");
+    assert.equal(x.reciprocityInjective, "UNSAT");
+    assert.ok(x.injectiveSeconds < 30, "and the UNSAT is fast, not a timeout");
+    // the maximum lies strictly below the injective case
+    assert.ok(x.maxDistinctFound !== null);
+    assert.ok(x.maxDistinctFound < 36, "strictly below injective");
+    assert.equal(x.maxDistinctFound, 12);
+    assert.deepEqual(x.maxDistinctProfile, { 3: 12 });
+    assert.equal(12 * 3, 36, "the profile accounts for every clean line");
+  }
+
+  assert.match(r.theResult, /CANNOT\s+be injective/);
+  assert.match(r.theResult, /it is\s+FALSE/);
+  assert.match(r.theResult, /replace the hinge rather than sharpen it/);
+  assert.match(r.bothEndsAreClosed, /1872 tile-incidences against 1776/);
+  assert.match(r.bothEndsAreClosed, /all-distinct centres\s+die on reciprocity/);
+
+  // the 12 is a witness, so a lower bound, and the file says so
+  assert.match(r.whatLivesInBetween, /FEASIBLE rather than OPTIMAL/);
+  assert.match(r.whatLivesInBetween, /LOWER bound on the\s+maximum/);
+  assert.match(r.whatLivesInBetween, /strictly\s+below 36/);
+
+  // and the relaxation asymmetry is stated: SAT excludes nothing
+  assert.match(r.boundary, /CENTRE-LEVEL RELAXATION only/);
+  assert.match(r.boundary, /do\s+NOT by themselves exclude 111/);
+  assert.match(r.boundary, /a FEASIBLE one excludes nothing/);
+  assert.match(r.boundary, /\[111,115\]/);
+});
