@@ -7626,6 +7626,23 @@ test("the 111 clean-core centre maps cannot be injective, so the 110 hinge is fa
   assert.match(r.whatLivesInBetween, /LOWER bound on the\s+maximum/);
   assert.match(r.whatLivesInBetween, /strictly\s+below 36/);
 
+  // the label layer does not close it either -- both variants SAT
+  for (const x of r.rows) {
+    assert.equal(x.labelLevel, "SAT");
+    assert.equal(x.labelLevelWithMatchingSizes, "SAT");
+  }
+  const lab = r.theLabelLayerDoesNotCloseItEither;
+  assert.match(lab, /360\s+minimum blockers/);
+  assert.match(lab, /IF that matching is a\s+bijection/);
+  assert.match(lab, /Both are\s+SAT in all three cases/);
+  assert.match(lab, /reach the LEAF\s+level/);
+  assert.match(lab, /confirms it rather\s+than moving it/);
+  // the corpus's own boundary, which this agrees with
+  const red = JSON.parse(fs.readFileSync("data/tensor_111_pg34_label_reduction.json"));
+  assert.match(red.boundary, /does not decide feasibility at 111/);
+  assert.equal(red.minimumBlockers, 360);
+  assert.match(red.tau111.cleanTileMatching, /matched by actual leaves/);
+
   // and the relaxation asymmetry is stated: SAT excludes nothing
   assert.match(r.boundary, /CENTRE-LEVEL RELAXATION only/);
   assert.match(r.boundary, /do\s+NOT by themselves exclude 111/);

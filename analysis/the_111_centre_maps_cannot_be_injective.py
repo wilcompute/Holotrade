@@ -57,6 +57,17 @@ OPTIMAL at its budget, so 12 is a LOWER bound on the maximum, not the maximum;
 what is proved is that the maximum lies strictly below 36, because 36 is the
 injective case and that is UNSAT.
 
+AND THE LABEL LAYER DOES NOT CLOSE IT EITHER.  Giving each clean line a full
+(c,m) label out of the 360 minimum blockers B(c,m) = (Adj(c) sym-diff C_m)\{c},
+with reciprocity on the centres, and then additionally the size condition that
+the corpus's cleanTileMatching implies IF that matching is a bijection --
+|B(c_L,m_L) cap M| = |B(d_M,n_M) cap L| on every clean pair -- leaves both
+variants SAT in all three cases. So labels plus reciprocity plus matching SIZES
+is still satisfiable, and any exclusion of 111 has to reach the LEAF level, the
+actual matchings, rather than stopping at labels and cardinalities. That is
+where the corpus's own boundary already put it; this confirms it rather than
+moving it.
+
 SCOPE.  The UNSAT results are theorems about the CENTRE-LEVEL relaxation: they
 say no assignment of centres satisfies reciprocity injectively. They do not by
 themselves exclude 111, because a witness must satisfy much more than
@@ -77,6 +88,7 @@ import os
 import sys
 import time
 
+import numpy as np
 from ortools.sat.python import cp_model
 
 ROOT = r"C:\Repos\Holotrade"
@@ -114,6 +126,110 @@ def geometry():
         for a in l:
             coll[a] |= set(l) - {a}
     return L, coll
+
+
+def octet_labels(L):
+    """The 360 (c,m) minimum-blocker labels: B(c,m) = (Adj(c) sym-diff C_m)\{c}
+    with C_m the octet through c (aa42b38 identifies O_c with the octets)."""
+    PAIR = ((0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3))
+
+    def nm(v):
+        i = next(k for k, x in enumerate(v) if x % Q)
+        z = pow(v[i] % Q, -1, Q)
+        return tuple((z * x) % Q for x in v)
+
+    pts = sorted({nm(v) for v in itertools.product(range(Q), repeat=4) if any(v)})
+    pidx = {p: i for i, p in enumerate(pts)}
+
+    def sf(u, v):
+        return (u[0] * v[2] - u[2] * v[0] + u[1] * v[3] - u[3] * v[1]) % Q
+
+    def wed(u, v):
+        return tuple((u[i] * v[j] - u[j] * v[i]) % Q for (i, j) in PAIR)
+
+    lines = {}
+    for a, b in itertools.combinations(pts, 2):
+        if sf(a, b) % Q:
+            continue
+        S = set()
+        for x in range(Q):
+            for y in range(Q):
+                if x or y:
+                    w = tuple((x * a[k] + y * b[k]) % Q for k in range(4))
+                    if any(w):
+                        S.add(nm(w))
+        lines.setdefault(nm(wed(a, b)), set()).update(S)
+    Lk = sorted(lines)
+
+    def Qf(b):
+        return (b[0] * b[5] - b[1] * b[4] + b[2] * b[3]) % Q
+
+    def nm6(b):
+        i = next(k for k, x in enumerate(b) if x % Q)
+        z = pow(b[i] % Q, -1, Q)
+        return tuple((z * x) % Q for x in b)
+
+    PW = sorted({nm6(b) for b in itertools.product(range(Q), repeat=6)
+                 if any(b) and (b[1] + b[4]) % Q == 0})
+
+    def Bf(u, v):
+        s = tuple((u[i] + v[i]) % Q for i in range(6))
+        return (Qf(s) - Qf(u) - Qf(v)) % Q
+
+    sq = {(x * x) % Q for x in range(1, Q)}
+    SQ = [b for b in PW if Qf(b) % Q in sq]
+    D = np.array([[1 if Bf(y, c) % Q == 0 else 0 for c in SQ]
+                  for y in [nm6(k) for k in Lk]], dtype=np.int64)
+    N = np.zeros((40, 40), dtype=np.int64)
+    for li, k in enumerate(Lk):
+        for p in lines[k]:
+            N[pidx[p], li] = 1
+    Bm = ((N @ D) - 1) // Q
+    octs = [frozenset(i for i in range(40) if Bm[i, c])
+            for c in range(Bm.shape[1])]
+    adj = [set() for _ in range(40)]
+    for l in L:
+        for a in l:
+            adj[a] |= set(l) - {a}
+    labels = []
+    for C in octs:
+        for c in C:
+            labels.append((c, frozenset((adj[c] ^ C) - {c})))
+    return labels
+
+
+def label_level(L, labels, c_row, c_col, size_cond, budget):
+    """Element constraints, so the model is linear in the pairs rather than
+    quadratic in the 360 labels."""
+    R = [li for li in range(40) if c_row not in L[li]]
+    C = [li for li in range(40) if c_col not in L[li]]
+    Ls = [set(x) for x in L]
+    cIn = [[1 if ca in Ls[j] else 0 for j in range(40)] for ca, _ in labels]
+    sz = [[len(Ba & Ls[j]) for j in range(40)] for _, Ba in labels]
+    m = cp_model.CpModel()
+    lr = {li: m.NewIntVar(0, len(labels) - 1, "") for li in R}
+    lc = {mj: m.NewIntVar(0, len(labels) - 1, "") for mj in C}
+    for li in R:
+        for mj in C:
+            a = m.NewBoolVar("")
+            m.AddElement(lr[li], [cIn[t][mj] for t in range(len(labels))], a)
+            b = m.NewBoolVar("")
+            m.AddElement(lc[mj], [cIn[t][li] for t in range(len(labels))], b)
+            m.Add(a == b)
+            if size_cond:
+                u = m.NewIntVar(0, 11, "")
+                v = m.NewIntVar(0, 11, "")
+                m.AddElement(lr[li], [sz[t][mj] for t in range(len(labels))], u)
+                m.AddElement(lc[mj], [sz[t][li] for t in range(len(labels))], v)
+                m.Add(u == v)
+    s = cp_model.CpSolver()
+    s.parameters.max_time_in_seconds = budget
+    s.parameters.num_search_workers = 8
+    t = time.time()
+    res = s.Solve(m)
+    st = {cp_model.OPTIMAL: "SAT", cp_model.FEASIBLE: "SAT",
+          cp_model.INFEASIBLE: "UNSAT"}.get(res, "UNKNOWN")
+    return st, round(time.time() - t, 1)
 
 
 def build(L, c_row, c_col):
@@ -199,6 +315,8 @@ def main():
             optbudget = float(a.split("=", 1)[1])
 
     L, coll = geometry()
+    LAB = octet_labels(L)
+    assert len(LAB) == 360 and all(len(b) == 11 for _, b in LAB)
     cases = [("equal", 0),
              ("collinear", min(coll[0])),
              ("noncollinear", min(set(range(40)) - {0} - coll[0]))]
@@ -208,7 +326,12 @@ def main():
         st0, s0, p0, nR, nC = solve(L, 0, c_col, False, budget)
         st1, s1, _, _, _ = solve(L, 0, c_col, True, budget)
         k, kst, kprof, ks = max_distinct(L, 0, c_col, optbudget)
-        rows.append({"case": label, "cRow": 0, "cCol": c_col,
+        lab0, ls0 = label_level(L, LAB, 0, c_col, False, budget)
+        lab1, ls1 = label_level(L, LAB, 0, c_col, True, budget)
+        rows.append({"labelLevel": lab0, "labelLevelSeconds": ls0,
+                     "labelLevelWithMatchingSizes": lab1,
+                     "labelLevelSizesSeconds": ls1,
+                     "case": label, "cRow": 0, "cCol": c_col,
                      "cleanRowLines": nR, "cleanColLines": nC,
                      "reciprocityOnly": st0, "reciprocitySeconds": s0,
                      "firstSolutionProfile": p0,
@@ -239,11 +362,22 @@ def main():
     print("  solutions with %s distinct centres of uniform multiplicity 3."
           % [r["maxDistinctFound"] for r in rows])
     print()
+    print("  THE LABEL LAYER DOES NOT CLOSE IT EITHER. Giving each clean line")
+    print("  a full (c,m) label out of the 360 minimum blockers, with")
+    print("  reciprocity, and then also the size condition implied if the")
+    print("  corpus's cleanTileMatching is a bijection -- both are SAT in all")
+    print("  three cases: %s / %s. So any exclusion of 111 must reach the LEAF"
+          % ([r["labelLevel"] for r in rows],
+             [r["labelLevelWithMatchingSizes"] for r in rows]))
+    print("  level; labels and cardinalities are not enough.")
+    print()
     print("  SCOPE: these are theorems about the CENTRE-LEVEL RELAXATION. An")
     print("  infeasible relaxation would exclude 111; a feasible one excludes")
     print("  nothing, and the SAT rows are exactly that. 111 is not decided.")
 
-    ok = (all(r["reciprocityInjective"] == "UNSAT" for r in rows)
+    ok = (all(r["labelLevel"] == "SAT" for r in rows)
+          and all(r["labelLevelWithMatchingSizes"] == "SAT" for r in rows)
+          and all(r["reciprocityInjective"] == "UNSAT" for r in rows)
           and all(r["reciprocityOnly"] == "SAT" for r in rows)
           and all(r["cleanRowLines"] == 36 and r["cleanColLines"] == 36
                   for r in rows)
@@ -303,6 +437,37 @@ def main():
                                        "proved is that the maximum lies strictly "
                                        "below 36, since 36 is the injective case "
                                        "and that is UNSAT"),
+                "theLabelLayerDoesNotCloseItEither": ("adding the blocker-label "
+                                                      "layer does not help. Each "
+                                                      "clean line gets a full "
+                                                      "(c,m) label out of the 360 "
+                                                      "minimum blockers "
+                                                      "B(c,m) = (Adj(c) sym-diff "
+                                                      "C_m) minus {c}, with "
+                                                      "reciprocity on the "
+                                                      "centres; and then, "
+                                                      "additionally, the size "
+                                                      "condition that the corpus's "
+                                                      "cleanTileMatching implies "
+                                                      "IF that matching is a "
+                                                      "bijection, namely "
+                                                      "|B(c_L,m_L) cap M| = "
+                                                      "|B(d_M,n_M) cap L| for "
+                                                      "every clean pair. Both are "
+                                                      "SAT in all three cases. So "
+                                                      "the label layer plus "
+                                                      "reciprocity plus matching "
+                                                      "SIZES is still satisfiable, "
+                                                      "and any exclusion of 111 "
+                                                      "has to reach the LEAF "
+                                                      "level -- the actual "
+                                                      "matchings -- rather than "
+                                                      "stopping at labels and "
+                                                      "cardinalities. That is "
+                                                      "exactly where the corpus's "
+                                                      "own boundary put it, and "
+                                                      "this confirms it rather "
+                                                      "than moving it"),
                 "boundary": ("the UNSAT results are theorems about the "
                              "CENTRE-LEVEL RELAXATION only: no assignment of "
                              "centres satisfies reciprocity injectively. They do "
