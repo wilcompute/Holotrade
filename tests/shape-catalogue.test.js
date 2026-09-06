@@ -7507,3 +7507,67 @@ test("the tau_2 = 111 question reduces to exactly three cases", () => {
   assert.match(r.aControlThatCouldNotBeRun, /no point ordering/);
   assert.match(r.aControlThatCouldNotBeRun, /NO conclusion whatever is\s+drawn/);
 });
+
+test("no 111-leaf blocker admits an involution, so its stabiliser has odd order", () => {
+  const r = JSON.parse(fs.readFileSync("data/the_111_symmetric_witnesses.json"));
+  const g = JSON.parse(fs.readFileSync("data/tau2_111_three_cases_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(g.valid, true);
+
+  // the logic is stated, both halves of it
+  assert.match(r.whyPrimeOrderSuffices, /must fix both pencil\s+centres/);
+  assert.match(r.whyPrimeOrderSuffices, /Cauchy/);
+  assert.match(r.whyPrimeOrderSuffices, /SUFFICIENT, not merely\s+indicative/);
+  assert.match(r.whyThisIsTheRightQuestion, /stabiliser of order\s+6/);
+  // and the 115 stabiliser it contrasts against is the corpus's own
+  const w115 = JSON.parse(fs.readFileSync("data/tensor_115_resists_from_both_sides.json"));
+  assert.equal(w115.witnessStabiliser.order, 6);
+  assert.equal(w115.witnessStabiliser.total, 115);
+
+  // 18 instances, none satisfiable
+  assert.ok(r.instances.length >= 18);
+  assert.equal(r.anySat, false);
+  for (const x of r.instances) {
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(x.status));
+    assert.ok([2, 3].includes(x.subgroupOrder));
+    assert.ok([648, 54, 24].includes(x.residualOrder));
+    assert.ok(x.orbitVariables < 1600, "invariance collapses the cells");
+  }
+
+  // THE DECISIVE SLICE: order 2, one class per case, all UNSAT
+  const two = r.instances.filter((x) => x.subgroupOrder === 2);
+  assert.equal(two.length, 3);
+  assert.deepEqual(two.map((x) => x.case).sort(),
+    ["collinear", "equal", "noncollinear"]);
+  for (const x of two) assert.equal(x.status, "UNSAT");
+  assert.equal(r.orderTwoSlice.allUnsat, true);
+  assert.equal(r.orderTwoSlice.oneClassPerCase, true);
+  assert.equal(r.orderTwoSlice.complete, true);
+
+  // completeness is GAP-certified, not assumed -- this is load-bearing
+  assert.equal(g.exactlyOneInvolutionClassPerCase, true);
+  for (const c of ["equal", "collinear", "noncollinear"]) {
+    assert.equal(g.primeOrderSubgroupClasses[c].order2, 1);
+  }
+  assert.deepEqual(
+    ["equal", "collinear", "noncollinear"].map((c) => g.primeOrderSubgroupClasses[c].order3),
+    [5, 9, 1]
+  );
+  assert.match(g.whyThatMatters, /EVERY involution class tested/);
+  assert.match(g.whyThatMatters, /certified rather than\s+assumed/);
+  // the number of order-3 instances run matches the certified class counts
+  const three = r.instances.filter((x) => x.subgroupOrder === 3);
+  assert.equal(three.length, 5 + 9 + 1);
+
+  // the theorem, and the contrast that gives it teeth
+  assert.match(r.theOddOrderTheorem, /ODD ORDER/);
+  assert.match(r.theOddOrderTheorem, /3-group/);
+  assert.match(r.theOddOrderTheorem, /order 6, which is EVEN/);
+  assert.match(r.theOddOrderTheorem, /complete because every case has exactly\s+one class/);
+
+  // UNKNOWNs are worth nothing and the file says so
+  assert.match(r.boundary, /An UNKNOWN is\s+nothing/);
+  assert.match(r.boundary, /DIAGONAL\s+PSp\(4,3\) action only/);
+  assert.match(r.boundary, /transpose-type symmetry/);
+  assert.match(r.boundary, /\[111,115\]/);
+});

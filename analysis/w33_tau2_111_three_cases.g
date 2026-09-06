@@ -47,6 +47,20 @@ od;
 resid := SortedList(resid);;
 selfpaired := SortedList(selfpaired);;
 
+# Prime-order SUBGROUP classes of each residual group. The order-2 count is
+# load-bearing: the odd-order theorem needs every involution class tested, so
+# "exactly one class per case" must be certified, not assumed.
+primeclasses := [];;
+for o in orb do
+  r := o[1];
+  R := Stabilizer(S, r);;
+  cs := ConjugacyClassesSubgroups(R);;
+  Add(primeclasses, [Length(o), Size(R),
+      Length(Filtered(cs, c -> Size(Representative(c)) = 2)),
+      Length(Filtered(cs, c -> Size(Representative(c)) = 3))]);
+od;
+primeclasses := SortedList(primeclasses);;
+
 checks := rec(
   npoints        := Length(pts) = 40,
   spOrder        := Size(G) = 51840,
@@ -57,7 +71,9 @@ checks := rec(
   rankThree      := Length(sizes) = 3,
   residuals      := List(resid, x -> x[2]) = [648,54,24],
   productsCheck  := ForAll(resid, x -> x[1]*x[2] = 648),
-  allSelfPaired  := ForAll(selfpaired, x -> x[2] = true)
+  allSelfPaired  := ForAll(selfpaired, x -> x[2] = true),
+  oneTwoClassEach  := ForAll(primeclasses, x -> x[3] = 1),
+  threeClassCounts := List(primeclasses, x -> x[4]) = [5,9,1]
 );;
 allok := ForAll(RecNames(checks), n -> checks.(n) = true);;
 
@@ -72,6 +88,13 @@ for x in resid do
         "   (", x[1], " * ", x[2], " = ", x[1]*x[2], ")\n");
 od;
 Print("all orbitals self-paired  : ", ForAll(selfpaired, x -> x[2]), "\n");
+Print("prime-order subgroup classes per residual group:\n");
+for x in primeclasses do
+  Print("   orbit ", x[1], " |R|=", x[2], " : order-2 classes ", x[3],
+        " , order-3 classes ", x[4], "\n");
+od;
+Print("exactly ONE involution class in each: ",
+      ForAll(primeclasses, x -> x[3] = 1), "\n");
 Print("ALL CHECKS PASS           : ", allok, "\n");
 
 if allok then
@@ -92,6 +115,17 @@ if allok then
     "{\"equal\": 648, \"collinear\": 54, \"noncollinear\": 24},\n",
     "  \"orbitTimesResidualIs648\": true,\n",
     "  \"allOrbitalsSelfPaired\": true,\n",
+    "  \"primeOrderSubgroupClasses\": ",
+    "{\"equal\": {\"order2\": 1, \"order3\": 5}, ",
+    "\"collinear\": {\"order2\": 1, \"order3\": 9}, ",
+    "\"noncollinear\": {\"order2\": 1, \"order3\": 1}},\n",
+    "  \"exactlyOneInvolutionClassPerCase\": true,\n",
+    "  \"whyThatMatters\": \"the odd-order conclusion in ",
+    "the_111_symmetric_witnesses.py needs EVERY involution class tested. Each ",
+    "residual group has exactly ONE conjugacy class of order-2 subgroups, ",
+    "certified here by ConjugacyClassesSubgroups, so three instances cover all ",
+    "involutions and the completeness of that slice is certified rather than ",
+    "assumed.\",\n",
     "  \"whyItReduces\": \"tensor_111_pencil_excess.json proves any 111-leaf ",
     "blocker has, on each axis, 36 clean lines of load 11 and exactly four ",
     "dirty lines of load 12 forming one complete point-pencil. A pencil has a ",
