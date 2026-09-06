@@ -7735,3 +7735,57 @@ test("the Schlaefli 27-36-45 triangle is coordinates, monomials and sections of 
   assert.match(r.boundary, /QUOTED from/);
   assert.match(r.boundary, /tau_2/);
 });
+
+test("the Jordan/GQ series is published, and the earlier novelty hedge is withdrawn", () => {
+  const r = JSON.parse(fs.readFileSync("data/jordan_gq_series_is_published.json"));
+  assert.equal(r.valid, true);
+
+  // the three squarefree norms give exactly the three GQs with 3 points per line
+  assert.equal(r.rows.length, 3);
+  assert.deepEqual(r.rows.map((x) => [x.dim, x.s, x.t]),
+    [[9, 2, 1], [15, 2, 2], [27, 2, 4]]);
+  const mons = { 9: 6, 15: 15, 27: 45 };
+  const axpairs = { 9: 36, 15: 180, 27: 1080 };
+  for (const x of r.rows) {
+    assert.equal(x.isGQ, true);
+    assert.deepEqual(x.lineSizes, [3], "three points per line, s = 2");
+    assert.equal(x.lines, mons[x.dim]);
+    assert.equal(x.points, x.dim);
+    assert.equal(x.maxLinesPerPointPair, 1);
+    assert.equal(x.gqAxiomAllOne, true);
+    assert.equal(x.gqAxiomPairs, axpairs[x.dim]);
+    // the GQ counting formulas close on the actual numbers
+    assert.equal(x.pointsFormula, x.points);
+    assert.equal(x.linesFormula, x.lines);
+  }
+  // and the 6-dimensional member is excluded for a reason
+  assert.equal(r.h3rIsNotSquarefree, true);
+  assert.match(r.whyTheSeriesStartsAtNine, /appears squared/);
+  assert.match(r.whyTheSeriesStartsAtNine, /no GQ\(2,0\)/);
+  assert.match(r.theCompleteList, /only for t = 1, 2, 4/);
+
+  // PRIOR ART, quoted
+  assert.match(r.priorArt.levaySanigaVrana, /arXiv:0903\.0541/);
+  assert.match(r.priorArt.levaySanigaVrana, /45 terms in the entropy formula to the lines of GQ\(2,4\)/);
+  assert.match(r.priorArt.levaySanigaVrana, /doily GQ\(2,2\)/);
+  assert.match(r.priorArt.levaySanigaVrana, /grid GQ\(2,1\)/);
+  assert.match(r.priorArt.generalizedQuadranglesAndCubicForms, /Communications in Algebra 29\(10\)/);
+  assert.match(r.priorArt.generalizedQuadranglesAndCubicForms, /star or a generalized\s+quadrangle/);
+  assert.match(r.priorArt.generalizedQuadranglesAndCubicForms, /runs both ways/);
+
+  // the withdrawal is explicit, in BOTH files
+  assert.match(r.theHedgeIsWithdrawn, /ea2ff88/);
+  assert.match(r.theHedgeIsWithdrawn, /that reading is\s+WRONG/);
+  assert.match(r.theHedgeIsWithdrawn, /Nothing mathematical in ea2ff88 or here\s+is new/);
+  const tri = JSON.parse(fs.readFileSync("data/schlafli_triangle_one_polynomial.json"));
+  assert.match(tri.noveltyHedgeWithdrawn, /WITHDRAWN/);
+  assert.match(tri.noveltyHedgeWithdrawn, /arXiv:0903\.0541/);
+  assert.match(tri.noveltyHedgeWithdrawn, /that reading is\s+wrong/);
+  assert.match(tri.noveltyHedgeWithdrawn, /the_jordan_gq_series_is_published/);
+
+  // what survives is stated modestly
+  assert.match(r.whatIsWorthKeeping, /none a discovery/);
+  assert.match(r.whatIsWorthKeeping, /black-hole\/qubit correspondence/);
+  assert.match(r.boundary, /full texts were NOT read/);
+  assert.match(r.boundary, /understates them\s+rather than the reverse/);
+});

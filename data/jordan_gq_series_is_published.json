@@ -1,0 +1,79 @@
+{
+  "schema": "holotrade.jordan-gq-series-published.v1",
+  "valid": true,
+  "rows": [
+    {
+      "algebra": "H3(C)",
+      "dim": 9,
+      "norm": "det of a 3x3",
+      "points": 9,
+      "lines": 6,
+      "lineSizes": [
+        3
+      ],
+      "linesPerPoint": [
+        2
+      ],
+      "maxLinesPerPointPair": 1,
+      "gqAxiomPairs": 36,
+      "gqAxiomAllOne": true,
+      "isGQ": true,
+      "s": 2,
+      "t": 1,
+      "pointsFormula": 9,
+      "linesFormula": 6
+    },
+    {
+      "algebra": "H3(H)",
+      "dim": 15,
+      "norm": "Pf of a 6x6",
+      "points": 15,
+      "lines": 15,
+      "lineSizes": [
+        3
+      ],
+      "linesPerPoint": [
+        3
+      ],
+      "maxLinesPerPointPair": 1,
+      "gqAxiomPairs": 180,
+      "gqAxiomAllOne": true,
+      "isGQ": true,
+      "s": 2,
+      "t": 2,
+      "pointsFormula": 15,
+      "linesFormula": 15
+    },
+    {
+      "algebra": "H3(O)",
+      "dim": 27,
+      "norm": "E6 Cartan cubic",
+      "points": 27,
+      "lines": 45,
+      "lineSizes": [
+        3
+      ],
+      "linesPerPoint": [
+        5
+      ],
+      "maxLinesPerPointPair": 1,
+      "gqAxiomPairs": 1080,
+      "gqAxiomAllOne": true,
+      "isGQ": true,
+      "s": 2,
+      "t": 4,
+      "pointsFormula": 27,
+      "linesFormula": 45
+    }
+  ],
+  "h3rIsNotSquarefree": true,
+  "whyTheSeriesStartsAtNine": "the determinant of a SYMMETRIC 3x3 is not squarefree -- a coordinate appears squared -- so its terms are not 3-sets and there is no incidence structure at all. That is why there is no GQ(2,0) member to look for",
+  "theCompleteList": "generalized quadrangles of order (2,t) exist only for t = 1, 2, 4, so the three squarefree cubic Jordan norms realize ALL of them, one each: det3 -> GQ(2,1) the grid, Pf6 -> GQ(2,2) the doily, Cartan -> GQ(2,4)",
+  "priorArt": {
+    "levaySanigaVrana": "'Black Hole Entropy and Finite Geometry', arXiv:0903.0541, states it outright: 'The 27 charges correspond to the points and the 45 terms in the entropy formula to the lines of GQ(2,4).' The E6 Cartan cubic IS the D=5 entropy formula, so those 45 terms are its monomials. The same abstract names the 15 and 9 truncations as the doily GQ(2,2) and the grid GQ(2,1), so the whole three-member series is there",
+    "generalizedQuadranglesAndCubicForms": "Communications in Algebra 29(10) (2001) characterises when a pair of cubic forms satisfies the adjoint identities -- exactly the identity c6d1077 and 9a202a2 verified -- in terms of the associated incidence structure being a star or a generalized quadrangle with determined parameters. The connection is a theorem, and it runs both ways"
+  },
+  "theHedgeIsWithdrawn": "ea2ff88 recorded that a search of both repositories for '45 monomials' and for a monomial/GQ(2,4) identification found nothing, 'which is weak evidence and is treated as none'. The hedge was correctly worded and the corpus search was accurate, but the framing still invited a reading of novelty and that reading is WRONG. The identification is published, the whole series is published, and the general theorem behind it is published. Nothing mathematical in ea2ff88 or here is new",
+  "whatIsWorthKeeping": "three things, none a discovery. The COMPUTATION: all four GQ axioms checked exhaustively for all three algebras, which the cited papers have no need to supply and this corpus can now rely on. The CITATION: the corpus has been building on the E6 cubic, the doily and GQ(2,4) for a long time without pointing at Levay-Saniga-Vrana, and that literature -- the black-hole/qubit correspondence -- is squarely relevant to a quantum information corpus. And the NEGATIVE on H3(R), which explains why the series starts at dimension 9",
+  "boundary": "exact and exhaustive over the integers for all three algebras: every monomial from the closed form, every incidence, every point pair, every non-incident point-line pair. No field and no q -- this is about the shape of the polynomials. That GQs of order (2,t) exist only for t = 1,2,4 is quoted as classical (Payne-Thas). The prior-art statements are quoted from the ABSTRACT of arXiv:0903.0541 and from the title and summary of the Communications in Algebra paper; the full texts were NOT read, so the attribution is to what those sources state, and if either goes further this file understates them rather than the reverse. Nothing here touches tau_2, the rank ceiling, or the physical layer"
+}
