@@ -7255,6 +7255,20 @@ test("the rank-3 strata are not orbits, and at q=3 the form is degenerate", () =
 
   assert.match(r.boundary, /LOWER bound/);
   assert.match(r.boundary, /No claim is made about the exact orbit count/);
+
+  // the exact census settles both, and corrects one of this file's reasons
+  const c = r.supersededAndCorrected;
+  assert.match(c, /NINE projective Sp\(6,3\) orbits/);
+  assert.match(c, /correct but not tight/);
+  assert.match(c, /2160:14742/);
+  assert.match(c, /CORRECTS THE REASON/);
+  assert.match(c, /about 185 times/);
+  assert.match(c, /not a small-orbit\s+accident/);
+  assert.match(c, /QUOTIENT Lambda\^2\/<omega>, not on\s+ker\(omega\)/);
+  assert.match(c, /degeneracy finding stands/);
+  assert.match(c, /inference drawn from\s+it about the direct sample was\s+wrong/);
+  // this file's own lower bound is consistent with the exact answer
+  assert.ok(9 >= 8, "at least eight was a true lower bound for nine");
   assert.match(r.boundary, /tau_2/);
 });
 
