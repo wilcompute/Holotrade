@@ -7833,3 +7833,63 @@ test("the citation gap was cross-track, and the protocol amendment says so", () 
   assert.match(r.boundary, /citation PRESENCE,\s+not aptness/);
   assert.match(r.boundary, /never a proof of absence/);
 });
+
+test("the symmetric attack on 114: control passes, and the fix-free involution is ruled out", () => {
+  const r = JSON.parse(fs.readFileSync("data/symmetric_attack_on_114.json"));
+  assert.equal(r.valid, true);
+
+  // THE CONTROL: the method finds a known-to-exist 115 witness and verifies it
+  assert.ok(r.control, "a control must have been obtained");
+  assert.equal(r.control.size, 115);
+  assert.equal(r.control.status, "SAT");
+  const v = r.control.verification;
+  assert.equal(v.cells, 115);
+  assert.equal(v.distinct, 115);
+  assert.equal(v.unblockedPairs, 0, "the witness really blocks all 1600 tiles");
+  assert.equal(v.valid, true);
+  assert.equal(v.loadSum, 4 * 115);
+  assert.equal(v.loadSumOK, true);
+  assert.match(r.controlReading, /UNKNOWN at 114 is the instance/);
+
+  // the corpus's three prior attempts, still on record and still UNKNOWN
+  const c114 = JSON.parse(fs.readFileSync("data/tensor_close_at_114.json"));
+  const anneal = JSON.parse(fs.readFileSync("data/tensor_upper_anneal.json"));
+  assert.equal(c114.status, "UNKNOWN");
+  assert.equal(anneal.improved, false);
+  assert.ok(anneal.totalMoves > 6e7);
+  assert.match(r.whyThisWay, /none of the three imposed SYMMETRY/);
+
+  // five prime-order classes, exactly one of them decided
+  assert.equal(r.sweep.length, 5);
+  const dec = r.sweep.filter((x) => x.status !== "UNKNOWN");
+  assert.equal(dec.length, 1);
+  assert.equal(dec[0].status, "UNSAT");
+  assert.equal(dec[0].subgroupOrder, 2);
+  assert.equal(dec[0].fixedPoints, 0, "the fixed-point-free involution");
+  assert.equal(r.anySat, false);
+
+  // THE SIZE SWEEP, and the parity caveat that keeps it honest
+  const ff = r.fixedPointFreeSweep;
+  assert.ok(ff.length >= 10);
+  for (const x of ff) {
+    assert.equal(x.parityTrivial, x.size % 2 === 1);
+    if (x.parityTrivial) assert.equal(x.status, "UNSAT", "odd is parity-excluded");
+  }
+  const evens = ff.filter((x) => !x.parityTrivial);
+  const evenUnsat = evens.filter((x) => x.status === "UNSAT").map((x) => x.size);
+  assert.deepEqual(evenUnsat, [110, 112, 114]);
+  // 115 is UNSAT here yet a 115 witness exists -- parity, not contradiction
+  const at115 = ff.find((x) => x.size === 115);
+  assert.equal(at115.status, "UNSAT");
+  assert.equal(at115.parityTrivial, true);
+  assert.equal(r.control.status, "SAT", "and a 115 witness was found elsewhere");
+  assert.match(r.fixedPointFreeReading, /does\s+NOT contradict the known 115 witness/);
+  assert.match(r.fixedPointFreeReading, /because 115 is odd/);
+  assert.match(r.fixedPointFreeReading, /all 800 cell-orbits of size 2/);
+
+  // payoff asymmetry stated, UNSAT not over-read
+  assert.match(r.whatWouldAndWouldNotFollow, /SAT at 114 improves the upper\s+bound/);
+  assert.match(r.whatWouldAndWouldNotFollow, /asymmetric 114\s+witness could still exist/);
+  assert.match(r.boundary, /UNKNOWN rows are nothing/);
+  assert.match(r.boundary, /\[111,115\]/);
+});
