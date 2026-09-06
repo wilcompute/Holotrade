@@ -7900,3 +7900,57 @@ test("the symmetric attack on 114: control passes, and the fix-free involution i
   assert.match(r.boundary, /UNKNOWN rows are nothing/);
   assert.match(r.boundary, /\[111,115\]/);
 });
+
+test("running the control at every class turned six UNKNOWNs into one target", () => {
+  const r = JSON.parse(fs.readFileSync("data/calibration_killed_six_unknowns.json"));
+  assert.equal(r.valid, true);
+
+  // eight cyclic classes, each run at BOTH sizes
+  assert.equal(r.rows.length, 8);
+  for (const x of r.rows) {
+    assert.ok([4, 6, 9, 12].includes(x.order));
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(x.at115));
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(x.at114));
+    assert.equal(x.informative, x.at115 !== "UNKNOWN");
+  }
+
+  // exactly ONE class supports a 115 witness, and its order is 6
+  assert.equal(r.classesSupporting115, 1);
+  const sup = r.rows.find((x) => x.at115 === "SAT");
+  assert.equal(sup.order, 6);
+  assert.equal(sup.fixedPoints, 5);
+  assert.equal(sup.at114, "UNKNOWN", "the one informative open instance");
+  // which matches the stabiliser order the corpus already records
+  const w115 = JSON.parse(fs.readFileSync("data/tensor_115_resists_from_both_sides.json"));
+  assert.equal(w115.witnessStabiliser.order, sup.order);
+
+  // five are uninformative, and the file says their 114 verdicts mean nothing
+  assert.equal(r.classesUninformative, 5);
+  for (const x of r.rows.filter((y) => y.at115 === "UNKNOWN")) {
+    assert.equal(x.informative, false);
+  }
+  assert.match(r.theThreeStatements.uninformative, /say nothing whatever about 114/);
+
+  // two are UNSAT at both, and both are fixed-point-free
+  assert.equal(r.classesUnsatBoth, 2);
+  for (const x of r.rows.filter((y) => y.at115 === "UNSAT")) {
+    assert.equal(x.fixedPoints, 0);
+    assert.equal(x.at114, "UNSAT");
+  }
+
+  // the reading that was almost adopted, named as a mistake
+  assert.match(r.theMistakeAlmostMade, /eight independent attacks/);
+  assert.match(r.theMistakeAlmostMade, /eight times more confident than\s+the evidence allows/);
+
+  // smaller search space is NOT easier -- the counterexample is in the data
+  const smallest = r.rows.reduce((a, b) => (a.orbits < b.orbits ? a : b));
+  assert.equal(smallest.orbits, 174);
+  assert.equal(smallest.at115, "UNKNOWN");
+  assert.ok(sup.orbits > smallest.orbits, "the SAT class has MORE variables");
+  assert.match(r.sizeIsNotTheBottleneck, /density of the 1600 blocking constraints/);
+  assert.match(r.sizeIsNotTheBottleneck, /more symmetry must mean an easier instance/);
+
+  assert.match(r.boundary, /NON-cyclic subgroups of\s+those orders are not covered/);
+  assert.match(r.boundary, /UNKNOWN at 115 is a\s+statement about the solver/);
+  assert.match(r.boundary, /\[111,115\]/);
+});
