@@ -7789,3 +7789,47 @@ test("the Jordan/GQ series is published, and the earlier novelty hedge is withdr
   assert.match(r.boundary, /full texts were NOT read/);
   assert.match(r.boundary, /understates them\s+rather than the reverse/);
 });
+
+test("the citation gap was cross-track, and the protocol amendment says so", () => {
+  const r = JSON.parse(fs.readFileSync("data/other_track_had_the_citations.json"));
+  assert.equal(r.valid, true);
+
+  // the measured asymmetry: this track had none, the other had many
+  assert.deepEqual(r.terms, ["Saniga", "Planat", "Levay", "Veldkamp"]);
+  assert.equal(r.holotradeFilesExcludingToday, 0);
+  assert.ok(r.holotradeFilesToday >= 2, "only today's files cite it here");
+  assert.ok(r.theoryOfEverythingFiles >= 10);
+  assert.ok(
+    r.theoryOfEverythingFiles > r.holotradeFilesExcludingToday,
+    "the other track carried the literature all along"
+  );
+
+  // the diagnosis is about the protocol, not about effort
+  assert.match(r.whatHappened, /ea2ff88/);
+  assert.match(r.whatHappened, /arXiv:0903\.0541/);
+  assert.match(r.whatHappened, /where the\s+citation already was/);
+  assert.match(r.whyTheProtocolMissedIt, /internal RESULTS/);
+  assert.match(r.whyTheProtocolMissedIt, /EXTERNAL references/);
+  assert.match(r.whyTheProtocolMissedIt, /blind to a literature the other reads\s+daily/);
+  assert.match(r.theAmendment, /author names and arXiv identifiers/);
+  assert.match(r.theAmendment, /costs one command/);
+
+  // the published pile carries real identifiers, not vague gestures
+  const pub = r.publishedAndNowCited;
+  assert.match(pub.jordanSeveriSeriesAndGQMonomials, /arXiv:0903\.0541/);
+  assert.match(pub.lineSymplecticGrassmannCodes, /arXiv:1503\.05456/);
+  assert.match(pub.anisotropicAssociationScheme, /arXiv:2402\.05055/);
+  assert.match(pub.groupIsomorphismsAndGQClassification, /Payne-Thas/);
+
+  // the open pile is one item and is hedged as a search result
+  assert.deepEqual(Object.keys(r.noLiteratureFound), ["tau2ForTheW33TensorSquare"]);
+  assert.match(r.noLiteratureFound.tau2ForTheW33TensorSquare, /nothing on\s+products/);
+  // and it agrees with the corpus's own independent finding
+  const mult = JSON.parse(fs.readFileSync("data/tensor_multiplicativity_ovoid_defect.json"));
+  assert.match(mult.novelty, /no literature on blocking numbers of products/);
+
+  assert.match(r.theUncomfortableReading, /ornamental results/);
+  assert.match(r.theUncomfortableReading, /opposite of how it felt/);
+  assert.match(r.boundary, /citation PRESENCE,\s+not aptness/);
+  assert.match(r.boundary, /never a proof of absence/);
+});
