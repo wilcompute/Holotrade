@@ -7269,6 +7269,23 @@ test("the rank-3 strata are not orbits, and at q=3 the form is degenerate", () =
   assert.match(c, /inference drawn from\s+it about the direct sample was\s+wrong/);
   // this file's own lower bound is consistent with the exact answer
   assert.ok(9 >= 8, "at least eight was a true lower bound for nine");
+
+  // and the retraction is backed by a WORKING recomputation, not just words
+  const f = r.correctionValidatedConstructively;
+  assert.equal(f.spanDimension, 14, "= Cardinali-Giuzzi K");
+  assert.deepEqual(f.generatorShape, [14, 3640]);
+  assert.equal(f.found2160, true, "the corrected pass finds the published d");
+  assert.equal(f.minimumWeightSeen, 2160);
+  assert.deepEqual(f.weightsFound, [2160, 2187, 2376, 2403, 2430, 2457]);
+  assert.ok(f.countAt2160 > 100, "and at roughly the predicted rate");
+  assert.ok(Math.abs(f.countAt2160 - f.expectedAt2160) < 0.5 * f.expectedAt2160);
+  // every weight's observed frequency tracks the exact enumerator
+  for (const [w, c] of Object.entries(f.frequencyComparison)) {
+    assert.ok(
+      Math.abs(c.observedPct - c.predictedPct) < 0.5 + 0.1 * c.predictedPct,
+      `weight ${w}: observed ${c.observedPct} vs predicted ${c.predictedPct}`
+    );
+  }
   assert.match(r.boundary, /tau_2/);
 });
 

@@ -2,7 +2,9 @@
 """
 Two corrections to ae04deb, both of which STRENGTHEN its no-go: at q = 3 the
 rank-3 invariant form is degenerate, and the seven classes are not orbits --
-the code's weight function separates one of them.
+the code's weight function separates one of them. A third correction is to this
+file itself: its first explanation for missing the minimum weight was wrong, and
+the corrected computation is included.
 
 WHY LOOK.  fe3e8fd identified the rank-2 orbit census with the weight enumerator
 of the Cardinali-Giuzzi line Symplectic Grassmann code. The same code family is
@@ -59,17 +61,41 @@ line symplectic Grassmann code directly from the totally isotropic lines:
 and the rank-2 weight set is exactly {24, 27, 30} exhaustively, with minimum 24
 = q^3 - q as their theorem says.
 
-AND A NEGATIVE RESULT WORTH RECORDING.  At rank 3 neither an unbiased direct
-sample of 60,000 functionals nor a stratum-based sample of 150,000 found a
-codeword of Cardinali-Giuzzi's minimum weight d = q^7 - q^3 = 2160; the smallest
-weight seen was 2187 = q^7. Two separate reasons, and both matter. The direct
-sample is unbiased but 60,000 of 3^14 is 1.25% of the code, so a small
-minimum-weight orbit is easy to miss. The stratum-based sample is WORSE than
-that: it indexes functionals by points p through the invariant form, and at
-q = 3 that form is degenerate, so it reaches only a 13-dimensional image inside
-the 14-dimensional dual and CANNOT see two thirds of the codewords. The
-published minimum distance is not in doubt; what is recorded is that this
-harness does not reach it, and why.
+A NEGATIVE THAT TURNED OUT TO BE MY OWN BUG, AND THE FIX.  At rank 3 neither a
+60,000-functional pass nor a 150,000-sample stratum pass found a codeword of
+Cardinali-Giuzzi's minimum weight d = q^7 - q^3 = 2160; the smallest weight seen
+was 2187 = q^7. The reason first recorded here was that 60,000 of 3^14 is 1.25%
+of the code, so a small minimum-weight orbit is easy to miss. THAT REASON IS
+WRONG AND IS RETRACTED. The parallel track's exact census gives A_2160 = 14742
+of 4,782,968 -- 0.31% -- so a uniform 60,000-word sample should hit weight 2160
+about 185 times. Hitting it zero times is not an accident of sample size; the
+sampling was not uniform over the code.
+
+The real cause is the degeneracy found above, followed through. Both passes
+paired Plucker points against a basis of ker(omega) through the AMBIENT
+bilinear form, which at q = 3, n = 3 is exactly the degenerate one -- so neither
+pass was sampling the code's dual at all. Expressing each Plucker point in
+COORDINATES with respect to a basis of its span instead gives a true 14 x 3640
+generator matrix, and then:
+
+    span dimension                 14   (= Cardinali-Giuzzi's K)
+    weights found in 60,000     2160, 2187, 2376, 2403, 2430, 2457
+    minimum weight seen          2160   (= q^7 - q^3, their d)
+    hits at 2160                  202   against 185 expected
+
+    weight   predicted %   observed %
+     2160      0.3082        0.3367
+     2187      0.1522        0.1683
+     2376      4.6233        4.6083
+     2403     24.6575       24.3833
+     2430     44.2465       44.4300
+     2457     26.0123       26.0733
+
+So the corrected construction finds the published minimum distance and
+independently reproduces the parallel track's exact weight enumerator to
+sampling accuracy on all six weights. The degeneracy finding was the right
+clue; the inference first drawn from it was not, and the fix is recorded here
+rather than merely the retraction.
 
 SCOPE.  The degeneracy table is exact, computed as the rank over GF(q) of the
 induced form restricted to ker(omega). The rank-2 weight-by-stratum table is
@@ -169,6 +195,55 @@ def bivrank(b, d, PR, q):
     return r
 
 
+def corrected_q3_sampling(samples=60000, seed=0):
+    """The fix: express Plucker points in COORDINATES w.r.t. a basis of their
+    span, giving a true generator matrix, instead of pairing them through the
+    ambient form -- which at q = 3, n = 3 is the degenerate one."""
+    q, n = 3, 3
+    G, Kb, M, PR, J, N = build_code(n, q)
+    Mx = DomainMatrix.from_Matrix(Matrix(G.tolist())).convert_to(GF(q))
+    rank = Mx.rank()
+    cur, idx = [], []
+    for c in range(G.shape[1]):
+        trial = cur + [G[:, c].tolist()]
+        if DomainMatrix.from_Matrix(
+                Matrix(trial)).convert_to(GF(q)).rank() == len(trial):
+            cur = trial
+            idx.append(c)
+        if len(cur) == rank:
+            break
+    B = DomainMatrix.from_Matrix(
+        Matrix(np.array(cur, dtype=np.int64).T.tolist())).convert_to(GF(q))
+    coords = []
+    for c in range(G.shape[1]):
+        rhs = DomainMatrix.from_Matrix(
+            Matrix(G[:, c].reshape(-1, 1).tolist())).convert_to(GF(q))
+        coords.append([int(t) % q for t in B._solve(rhs)[0].to_Matrix()])
+    Gen = np.array(coords, dtype=np.int64).T
+
+    rnd = random.Random(seed)
+    wd = collections.Counter()
+    for _ in range(samples):
+        c = np.array([rnd.randrange(q) for _ in range(rank)], dtype=np.int64)
+        if not c.any():
+            continue
+        wd[int(np.count_nonzero((c @ Gen) % q))] += 1
+    exact = {2160: 14742, 2187: 7280, 2376: 221130,
+             2403: 1179360, 2430: 2116296, 2457: 1244160}
+    tot = sum(exact.values())
+    cmpf = {str(w): {"predictedPct": round(100.0 * exact[w] / tot, 4),
+                     "observedPct": round(100.0 * wd.get(w, 0) / samples, 4)}
+            for w in sorted(exact)}
+    return {"spanDimension": int(rank), "generatorShape": list(Gen.shape),
+            "samples": samples,
+            "weightsFound": sorted(wd),
+            "minimumWeightSeen": min(wd),
+            "countAt2160": wd.get(2160, 0),
+            "expectedAt2160": round(samples * exact[2160] / tot, 1),
+            "found2160": 2160 in wd,
+            "frequencyComparison": cmpf}
+
+
 def weights_by_stratum(n, q, samples, seed=3):
     G, Kb, M, PR, J, N = build_code(n, q)
     d = 2 * n
@@ -200,6 +275,7 @@ def main():
     deg = [degeneracy(n, q) for (n, q) in
            [(2, 3), (2, 5), (3, 3), (3, 5), (3, 7)]]
 
+    fixed = corrected_q3_sampling()
     strata = {}
     for (n, q) in [(2, 3), (3, 3)]:
         N, out, cnt, ex = weights_by_stratum(n, q, 150000)
@@ -261,7 +337,8 @@ def main():
 
     r2 = strata["2,3"]
     r3 = strata["3,3"]
-    ok = (r2["exhaustive"] and r2["weightIsFunctionOfStratum"]
+    ok = (fixed["found2160"] and fixed["spanDimension"] == 14
+          and r2["exhaustive"] and r2["weightIsFunctionOfStratum"]
           and r2["distinctWeights"] == [24, 27, 30]
           and r2["matchesCGlength"] and r3["matchesCGlength"]
           and not r3["weightIsFunctionOfStratum"]
@@ -349,6 +426,7 @@ def main():
                                            "right clue; the inference drawn from "
                                            "it about the direct sample was "
                                            "wrong"),
+                "correctionValidatedConstructively": fixed,
                 "theNegativeWorthRecording": ("at rank 3 neither an unbiased "
                                               "direct sample of 60,000 "
                                               "functionals nor a 150,000-sample "
