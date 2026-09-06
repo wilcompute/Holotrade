@@ -7094,6 +7094,15 @@ test("the rank-3 replacement is a cubic Jordan algebra, the A5 sibling of E6's",
   assert.match(r.boundary, /Characteristic 2 is untouched/);
   assert.match(r.boundary, /series being exactly\s+four long/);
 
+  // the dated search is flagged as superseded, not left as a standing claim
+  const sup = r.priorArtSearchedIsNowSuperseded;
+  assert.match(sup, /accurate when made/);
+  assert.match(sup, /fdc9f1d75/);
+  assert.match(sup, /all 36 Schlaefli double-sixes/);
+  assert.match(sup, /coefficient-by-coefficient/);
+  assert.match(sup, /more\s+sharply than this file does/);
+  assert.match(sup, /dated search result, not as a standing claim/);
+
   // the q=3 exclusion is closed by the parallel track's integral proof
   const n = r.nowProvedIntegrallyAndAtQ3;
   assert.match(n, /EXCLUDES q = 3/);
@@ -7350,6 +7359,24 @@ test("the E6 cubic closes the Jordan series, and one corpus realization is wrong
   assert.match(r.whatThisDoesNotSay, /ONE parenthetical realization in\s+ONE file/);
   assert.match(r.whatThisDoesNotSay, /fourth\s+failure mode/);
   assert.match(r.whatThisDoesNotSay, /coordinate change, not a retraction/);
+
+  // the 15-in-27 step is now realised concretely by the other track
+  const nre = r.nowRealisedExplicitlyByTheOtherTrack;
+  assert.match(nre, /fdc9f1d75/);
+  assert.match(nre, /EVERY one of the 36 Schlaefli double-sixes/);
+  assert.match(nre, /C_E6 restricted to S_D equal to Pf_6/);
+  assert.match(nre, /15 synthemes/);
+  assert.match(nre, /rank 10 with five gauge\s+bits/);
+  assert.match(nre, /Jordan\/Severi naming is classical/);
+  assert.match(nre, /literally CUTS 36 copies/);
+  assert.match(nre, /PSp\(4,3\)-equivariant/);
+  const own = r.timingAndOwnership;
+  assert.match(own, /POSTDATES this file/);
+  assert.match(own, /11:17:12/);
+  assert.match(own, /13:06:31/);
+  assert.match(own, /accurate WHEN MADE/);
+  assert.match(own, /SUPERSEDED rather than wrong/);
+  assert.match(own, /strictly stronger/);
 
   assert.match(r.boundary, /ZERO answer is/);
   assert.match(r.boundary, /overwhelming but not a proof/);
