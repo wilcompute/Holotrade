@@ -7565,6 +7565,13 @@ test("no 111-leaf blocker admits an involution, so its stabiliser has odd order"
   assert.match(r.theOddOrderTheorem, /order 6, which is EVEN/);
   assert.match(r.theOddOrderTheorem, /complete because every case has exactly\s+one class/);
 
+  // a tried-and-failed strengthening is recorded so it is not retried
+  assert.match(r.aStrengtheningThatDidNotHelp, /occ\[L\]\[M\] in \[1,16\]/);
+  assert.match(r.aStrengtheningThatDidNotHelp, /16 x 111 = 1776/);
+  assert.match(r.aStrengtheningThatDidNotHelp, /changed nothing/);
+  assert.match(r.aStrengtheningThatDidNotHelp, /all nine remained\s+UNKNOWN/);
+  assert.match(r.budgetDoesNotAffectTheTheorems, /establish NOTHING/);
+
   // UNKNOWNs are worth nothing and the file says so
   assert.match(r.boundary, /An UNKNOWN is\s+nothing/);
   assert.match(r.boundary, /DIAGONAL\s+PSp\(4,3\) action only/);
