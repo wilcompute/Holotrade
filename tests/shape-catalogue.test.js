@@ -8203,3 +8203,49 @@ test("a blocker recovers its own dropped transversal from its nearest neighbours
   assert.match(r.boundary, /none of this\s+generalises off q = 3/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("each point of W(3,3) determines a unique M12 on its twelve neighbours", () => {
+  const r = JSON.parse(fs.readFileSync("data/local_group_vs_m12_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.engine, "GAP");
+
+  // the local group, transitive on the twelve
+  assert.equal(r.localImageOrder, 216);
+  assert.equal(r.localImageStructure, "(C3 x C3) : SL(2,3)");
+  assert.equal(r.localImageIsTransitiveOnTwelve, true);
+
+  // order alone decides nothing
+  assert.equal(r.m12Order, 95040);
+  assert.equal(r.m12Degree, 12);
+  assert.equal(r.orderDividesSoNoOrderObstruction, true);
+  assert.equal(r.m12Order % r.localImageOrder, 0);
+  assert.match(r.whyOrderDoesNotDecideIt, /3\^2:2S4/);
+  assert.match(r.whyOrderDoesNotDecideIt, /cannot be settled by counting/);
+
+  // it embeds, and in EXACTLY ONE conjugate
+  assert.equal(r.localGroupEmbedsInM12AsPermutationGroup, true);
+  assert.equal(r.numberOfM12ConjugatesContainingIt, 1);
+  assert.equal(r.normalizerOfM12InS12, 95040, "M12 is self-normalising in S12");
+  assert.equal(r.normalizerOfLocalGroupInS12, 432, "AGL(2,3)");
+  assert.equal(r.subgroupsOfM12ConjugateToLocalGroup, 220);
+  // the counting identity that yields exactly one
+  assert.equal(r.subgroupsOfM12ConjugateToLocalGroup
+               * r.normalizerOfLocalGroupInS12 / r.normalizerOfM12InS12,
+               r.numberOfM12ConjugatesContainingIt);
+  assert.equal(220 * 432, 95040);
+  assert.match(r.howManyM12s, /GEOMETRY SELECTS/);
+
+  // and the Golay reading does NOT follow -- signs, not permutations
+  assert.equal(r.permutationModuleSubmodules, 4);
+  assert.match(r.permutationModuleSubmoduleDims, /0, 1, 11, 12/);
+  assert.equal(r.dimensionSixSubmodules, 0);
+  assert.equal(r.ternaryGolayCodesObtainedThisWay, 0);
+  assert.match(r.theGolayReadingDoesNotFollow, /the difference is signs/);
+  assert.match(r.theGolayReadingDoesNotFollow, /MONOMIALLY/);
+  assert.match(r.theGolayReadingDoesNotFollow, /NONE of dimension 6/);
+  assert.match(r.theGolayReadingDoesNotFollow, /corrects the framing/);
+
+  assert.match(r.boundary, /would NOT by itself exhibit such a code/);
+  assert.match(r.boundary, /InvariantBilinearForm/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
