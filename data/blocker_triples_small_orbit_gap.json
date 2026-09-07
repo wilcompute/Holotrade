@@ -1,0 +1,23 @@
+{
+  "schema": "holotrade.blocker-triples-small-orbit-gap.v1",
+  "valid": true,
+  "engine": "GAP",
+  "points": 40,
+  "lines": 40,
+  "imageOrder": 25920,
+  "centreStabiliserOrder": 648,
+  "farPoints": 27,
+  "sizeThreePartialOvoids": 945,
+  "everyTripleMeetsTwelveLines": true,
+  "orbitSizes": [9, 72, 216, 648],
+  "orbitCount": 4,
+  "orbitsSumTo945": true,
+  "selectorTripleCount": 9,
+  "selectorIsTheSmallestOrbit": true,
+  "smallOrbitPartitionsThe27": true,
+  "blockerTripleStabiliserOrder": 72,
+  "theSelector": "a size-3 partial ovoid T far from c extends to a minimum blocker with centre c if and only if the 12 lines through T meet c-perp in only FOUR points. T is a partial ovoid so its three points lie on 12 distinct lines, none through c, and each of those meets c-perp in exactly one point; the blocker covers a line off c either by keeping its foot or by meeting it in T, so dropping four feet leaves exactly 12 lines for T to cover and the covering must be EXACT. Hence the feet collapse 3-to-1 onto a transversal of the pencil at c, and the eight near points are forced.",
+  "whyItIsCanonical": "the stabiliser S of c has order 648 and exactly four orbits on the 945 far-triples, of sizes 648, 216, 72 and 9. The blocker triples are exactly the orbit of size 9. An S-invariant partition of the 27 far points into nine triples is a union of orbits of total size 9, and 9 is the only orbit size at most 9, so that partition is unique and is this one.",
+  "correction": "every_minimum_blocker_is_a_point_and_a_triple.py says the nine far-triples are singled out by the fact that they PARTITION the 27 far points. That reason is circular: the 27 far points admit more than two million partitions into size-3 partial ovoids, counted by exhaustive backtracking, so being a partition selects nothing. The classification itself -- 360 = 40 x 9, centre not in B, near/far split 8+3, (c,T) determines B -- is unaffected and is confirmed here.",
+  "boundary": "exact. The group, the point set, all 945 triples and all orbits are computed in GAP at ONE centre; transitivity of the 25920 on the 40 points carries it to every centre, and the Python side re-derives the selector independently at all 40. The foot-multiplicity census over the 945 is 648 + 216 + 72 + 9, matching the orbit sizes term by term. tau_2 is untouched and stays open in [111, 115]."
+}

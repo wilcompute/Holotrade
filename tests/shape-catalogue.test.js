@@ -7976,3 +7976,73 @@ test("running the control at every class turned six UNKNOWNs into one target", (
   assert.match(r.boundary, /UNKNOWN at 115 is a\s+statement about the solver/);
   assert.match(r.boundary, /\[111,115\]/);
 });
+
+test("the nine blocker triples are the small orbit, not just a partition", () => {
+  const r = JSON.parse(fs.readFileSync("data/blocker_triples_small_orbit.json"));
+  assert.equal(r.valid, true);
+
+  // the classification itself, re-confirmed
+  assert.equal(r.minimumBlockers, 360);
+  assert.equal(r.blockerTriplesPerCentre, 9);
+  assert.equal(r.centresAudited, 40);
+  assert.equal(r.farPointsPerCentre, 27);
+  assert.equal(r.sizeThreePartialOvoids, 945);
+
+  // the census and the orbit sizes are the SAME four numbers
+  assert.deepEqual(r.footCensusTotals, [648, 216, 72, 9]);
+  assert.deepEqual(r.orbitSizesOfTheCentreStabiliser, [9, 72, 216, 648]);
+  assert.deepEqual([...r.footCensusTotals].sort((a, b) => a - b),
+                   r.orbitSizesOfTheCentreStabiliser);
+  assert.equal(r.footCensusTotals.reduce((a, b) => a + b, 0), 945);
+
+  // the selector, exact against brute force everywhere
+  assert.equal(r.selectorExactAtAllCentres, true);
+  assert.equal(r.feetFormAPencilTransversal, true);
+  assert.match(r.theSelector, /only FOUR distinct feet/);
+  assert.match(r.theSelector, /covering is\s+therefore EXACT/);
+  assert.match(r.theSelector, /against brute force at all 40 centres/);
+
+  // the configuration is the truncated lines off c, not a new object
+  assert.equal(r.configurationIsTheTruncatedLinesOffC, true);
+  assert.match(r.theConfiguration, /36 lines of W\(3,3\) not through c/);
+  assert.match(r.theConfiguration, /standard affine\s+part of a GQ, not a new object/);
+
+  // the correction: partitioning selects nothing
+  assert.ok(r.partitionsOfThe27 > 1000000,
+            "the 27 far points admit millions of partial-ovoid partitions");
+  assert.match(r.correction, /more than two million/);
+  assert.match(r.correction, /partitioning selects nothing/);
+  assert.match(r.correction, /is confirmed here and is\s+unaffected/);
+
+  // and the reason that does work
+  assert.match(r.whyItIsCanonicalAfterAll, /orbit of size 9/);
+  assert.match(r.whyItIsCanonicalAfterAll, /only\s+orbit size at most 9/);
+  assert.match(r.whyItIsCanonicalAfterAll,
+               /Canonical was the right word; the partition argument was the\s+wrong reason/);
+
+  assert.match(r.boundary, /InvariantBilinearForm/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
+
+test("GAP certifies the four orbits of the centre stabiliser", () => {
+  const r = JSON.parse(fs.readFileSync("data/blocker_triples_small_orbit_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.engine, "GAP");
+  assert.equal(r.imageOrder, 25920);
+  assert.equal(r.centreStabiliserOrder, 648);
+  assert.equal(r.orbitCount, 4);
+  assert.deepEqual(r.orbitSizes, [9, 72, 216, 648]);
+  assert.equal(r.orbitsSumTo945, true);
+  assert.equal(r.selectorTripleCount, 9);
+  assert.equal(r.selectorIsTheSmallestOrbit, true);
+  assert.equal(r.smallOrbitPartitionsThe27, true);
+  assert.equal(r.everyTripleMeetsTwelveLines, true);
+
+  // orbit-stabiliser closes: 648 = 9 * 72
+  assert.equal(r.centreStabiliserOrder,
+               r.orbitSizes[0] * r.blockerTripleStabiliserOrder);
+
+  assert.match(r.correction, /circular/);
+  assert.match(r.boundary, /648 \+ 216 \+ 72 \+ 9/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
