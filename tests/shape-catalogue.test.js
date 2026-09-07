@@ -8249,3 +8249,42 @@ test("each point of W(3,3) determines a unique M12 on its twelve neighbours", ()
   assert.match(r.boundary, /InvariantBilinearForm/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the geometry's own sign lift still does not give a ternary Golay code", () => {
+  const r = JSON.parse(fs.readFileSync("data/local_sign_lift_vs_golay_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.engine, "GAP");
+
+  // the lift is real: F_3 scalars are {1,-1}, so each point has two reps
+  assert.equal(r.neighbours, 12);
+  assert.equal(r.vectorStabiliserOrder, 648);
+  assert.equal(51840 / 80, r.vectorStabiliserOrder, "Sp(4,3) transitive on vectors");
+  assert.equal(r.signsOccur, true, "genuinely monomial, not just permutations");
+  assert.equal(r.monomialGroupOrder, 216);
+  assert.equal(r.permutationImageOrder, 216);
+  assert.match(r.whereTheSignsComeFrom, /EXACTLY TWO vector representatives/);
+  assert.match(r.whyTheVectorStabiliser, /acts on\s+GF\(3\)\^12 as the scalar -1/);
+
+  // and the choice of representative provably does not matter
+  assert.equal(r.representativeChoiceIsIrrelevant, true);
+
+  // the verdict: no dimension-6 submodule at all
+  assert.equal(r.moduleIsIrreducible, false);
+  const dims = r.submoduleDimensions.replace(/[[\] ]/g, "").split(",").map(Number);
+  assert.deepEqual(dims, [0, 2, 3, 4, 5, 7, 8, 9, 10, 12]);
+  assert.ok(!dims.includes(6), "no submodule of dimension 6");
+  assert.equal(r.dimensionSixSubmodules, 0);
+  assert.equal(r.ternaryGolayCodes, 0);
+
+  // the gap is structural: the lattice is complement-closed around a hole at 6
+  assert.equal(r.dimensionSetIsComplementClosed, true);
+  for (const d of dims) {
+    assert.ok(dims.includes(12 - d), `complement of ${d} present`);
+  }
+  assert.match(r.theAnswerIsNo, /nothing of the right dimension to weigh/);
+  assert.match(r.andTheGapIsStructural, /self-complementary dimension, 6/);
+  assert.match(r.andTheGapIsStructural, /symmetric about a hole/);
+
+  assert.match(r.boundary, /does not rule\s+out every monomial lift/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

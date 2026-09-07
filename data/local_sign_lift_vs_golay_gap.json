@@ -1,0 +1,22 @@
+{
+  "schema": "holotrade.local-sign-lift-vs-golay-gap.v1",
+  "valid": true,
+  "engine": "GAP",
+  "neighbours": 12,
+  "vectorStabiliserOrder": 648,
+  "monomialGroupOrder": 216,
+  "permutationImageOrder": 216,
+  "signsOccur": true,
+  "moduleIsIrreducible": false,
+  "submoduleDimensions": "[ 0, 2, 3, 4, 5, 7, 8, 9, 10, 12 ]",
+  "dimensionSixSubmodules": 0,
+  "ternaryGolayCodes": 0,
+  "selfDualAmongThem": 0,
+  "representativeChoiceIsIrrelevant": true,
+  "dimensionSetIsComplementClosed": true,
+  "theAnswerIsNo": "the geometry's own sign lift does NOT produce a ternary Golay code. The monomial group has order 216, the signs genuinely occur, and the module is reducible with submodules of dimensions 0, 2, 3, 4, 5, 7, 8, 9, 10, 12 -- but NONE of dimension 6, so there is no candidate for a [12,6,6]_3 code at all. This is not a near miss on the weight: there is nothing of the right dimension to weigh.",
+  "andTheGapIsStructural": "the dimension set is closed under d -> 12-d, which is what a self-dual-friendly module looks like, and the ONE self-complementary dimension, 6 -- precisely where a self-dual code such as the ternary Golay has to live -- is exactly the one that does not occur. The submodule lattice is symmetric about a hole.",
+  "whereTheSignsComeFrom": "a point of PG(3,3) is a 1-dimensional subspace and the nonzero scalars of F_3 are exactly {1,-1}, so every point has EXACTLY TWO vector representatives v and -v. Choosing one per neighbour and letting the vector stabiliser of c act gives 12 x 12 MONOMIAL matrices over GF(3), not mere permutation matrices. The signs are the geometry's own and are not imported from anywhere. This is the lift that w33_local_group_vs_m12.g showed the permutation data was missing.",
+  "whyTheVectorStabiliser": "Sp(4,3) is transitive on the 80 nonzero vectors so the vector stabiliser has order 51840/80 = 648. The projective point stabiliser is twice that, the extra element being -I, which acts on GF(3)^12 as the scalar -1 and therefore preserves every subspace. It can add nothing, so the vector stabiliser is the right group to lift.",
+  "boundary": "exact at one centre, and PSp(4,3) is transitive on the 40 points so one centre carries the statement. The monomial matrices are built by tracking which of the two representatives each neighbour is sent to, and the build is checked to succeed for every generator rather than assumed. Submodules come from the MeatAxe and minimum weights from exhausting the 3^6 codewords of each 6-dimensional candidate, not from a bound. A NEGATIVE answer here means this particular sign lift -- the one the geometry hands over -- does not produce a Golay code; it does not rule out every monomial lift. tau_2 is untouched and stays open in [111, 115]."
+}
