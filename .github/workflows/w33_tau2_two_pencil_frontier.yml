@@ -8,8 +8,12 @@ on:
       - 'analysis/the_111_two_pencil_factorization.py'
       - 'analysis/the_10480_twelve_point_blockers.py'
       - 'analysis/the_111_aggregate_parity_is_octet_boundary.py'
+      - 'analysis/the_111_relative_h10_support_no_go.py'
       - 'analysis/the_111_double_six_section_invariant.py'
+      - 'analysis/the_111_double_six_support_fingerprint.py'
+      - 'analysis/the_111_factorization_leaf_lift.py'
       - 'analysis/the_minimum_blocker_labels_are_octets.py'
+      - 'data/the_111_two_pencil_factorization.json'
       - '.github/workflows/w33_tau2_two_pencil_frontier.yml'
   workflow_dispatch:
 
@@ -32,10 +36,16 @@ jobs:
         run: python analysis/the_10480_twelve_point_blockers.py --write
       - name: Recompute aggregate parity and H10 boundary result
         run: python analysis/the_111_aggregate_parity_is_octet_boundary.py --write
+      - name: Prove support-local relative H10 is boundary-trivial
+        run: python analysis/the_111_relative_h10_support_no_go.py --write
       - name: Recompute all 36 spread/double-six section invariants
         run: python analysis/the_111_double_six_section_invariant.py --write
+      - name: Refine 36 sections to exact blocker-support fingerprints
+        run: python analysis/the_111_double_six_support_fingerprint.py --write
       - name: Run exact 88-token factorization in all three centre cases
         run: python analysis/the_111_two_pencil_factorization.py --budget 180 --workers 8 --write
+      - name: Lift frozen SAT factorizations to exact 111-leaf CSPs
+        run: python analysis/the_111_factorization_leaf_lift.py --budget 180 --workers 8 --write
       - name: Validate frontier certificates
         run: |
           python - <<'PY'
@@ -45,17 +55,25 @@ jobs:
           mass=json.load(open(root/'mass_eight_excess_two_pencils.json'))
           b12=json.load(open(root/'the_10480_twelve_point_blockers.json'))
           par=json.load(open(root/'the_111_aggregate_parity_is_octet_boundary.json'))
+          rel=json.load(open(root/'the_111_relative_h10_support_no_go.json'))
           sec=json.load(open(root/'the_111_double_six_section_invariant.json'))
+          fp=json.load(open(root/'the_111_double_six_support_fingerprint.json'))
           fac=json.load(open(root/'the_111_two_pencil_factorization.json'))
+          leaf=json.load(open(root/'the_111_factorization_leaf_lift.json'))
           assert mass['status']=='PASS'
           assert b12['status']=='PASS' and b12['total']==10480
           assert par['status']=='PASS' and par['dimensions']['H10']==10
+          assert rel['status']=='PASS' and rel['dirty']['totalDecoratedStates']==14440
           assert sec['status']=='PASS' and all(v['orderedTypeAssignmentsSurviving']==95 for v in sec['cases'].values())
+          assert fp['status']=='PASS' and fp['uniqueFullFingerprints']==10480
           assert fac['status']=='PASS'
           assert set(fac['cases'])=={'equal','collinear','noncollinear'}
           assert all(v['status'] in {'SAT','UNSAT','UNKNOWN'} for v in fac['cases'].values())
+          assert leaf['status']=='PASS' and set(leaf['cases'])=={'equal','collinear','noncollinear'}
+          assert all(v['status'] in {'SAT','UNSAT','UNKNOWN'} for v in leaf['cases'].values())
           print('factorization statuses:', {k:v['status'] for k,v in fac['cases'].items()})
-          print('certified interval:', fac['certifiedTau2IntervalAfterThisPass'])
+          print('leaf-lift statuses:', {k:v['status'] for k,v in leaf['cases'].items()})
+          print('actual 111 witness:', leaf['actual111WitnessFound'])
           PY
       - uses: actions/upload-artifact@v4
         with:
@@ -64,6 +82,9 @@ jobs:
             data/mass_eight_excess_two_pencils.json
             data/the_10480_twelve_point_blockers.json
             data/the_111_aggregate_parity_is_octet_boundary.json
+            data/the_111_relative_h10_support_no_go.json
             data/the_111_double_six_section_invariant.json
+            data/the_111_double_six_support_fingerprint.json
             data/the_111_two_pencil_factorization.json
+            data/the_111_factorization_leaf_lift.json
           if-no-files-found: error
