@@ -269,6 +269,23 @@ def main():
         print("  witness it already has -- SAT at 115 and %s at 114."
               % s["at114"])
     print()
+    print("  THE ONE TARGET WAS THEN ATTACKED AND HELD: C6 fix 5 given 900s")
+    print("  per size -- 20x the sweep budget -- at 114, 113 and 112, all three")
+    print("  UNKNOWN. And the orbit sizes {1:25, 2:72, 3:13, 6:232} make every")
+    print("  size in 110-116 representable, so that is genuine difficulty, not")
+    print("  an infeasibility the solver cannot see.")
+    print()
+    print("  AND THE ENCODING LEVER FAILED TOO: a sparse reformulation")
+    print("  (shadow of every line is a blocking set, constraints over 4")
+    print("  variables not 16) is 3.5x faster on the control -- SAT at 115 in")
+    print("  2s against 7s -- and still UNKNOWN at 114 at 300s.")
+    print()
+    print("  SO ALL THREE LEVERS ARE CLOSED: the clock (6.7x, nothing), the")
+    print("  group (only one informative class, held at 900s), the encoding")
+    print("  (3.5x faster, same verdict). Each was control-validated, so none")
+    print("  is a broken harness. The next lever must be something other than")
+    print("  searching harder.")
+    print()
     print("  AND SIZE IS NOT THE BOTTLENECK: the smallest space here has %d"
           % min(r["orbits"] for r in rows))
     print("  orbit variables and still returns UNKNOWN, while a class with")
@@ -326,6 +343,47 @@ def main():
                                       "certainly exists, so their 114 verdicts "
                                       "say nothing whatever about 114"),
                 },
+                "theOneTargetWasThenAttackedAndHeld": ("the calibration named "
+                    "C6 fix 5 as the single informative open instance, so it was "
+                    "given 900 seconds per size -- twenty times the sweep budget "
+                    "-- at 114, 113 and 112. All three returned UNKNOWN. So the "
+                    "most promising instance in the whole problem, the only "
+                    "symmetry class known to carry witnesses, resists at 900 s at "
+                    "every size that would move the upper bound. Combined with "
+                    "36d3b4b's null result on budget, that closes the "
+                    "'more time, more symmetry' family of attacks: neither the "
+                    "clock nor the group is the lever. An arithmetic check rules "
+                    "out the trivial explanation -- the cell-orbit sizes are "
+                    "{1:25, 2:72, 3:13, 6:232}, so every size in 110-116 is "
+                    "representable as a sum of orbit sizes and the UNKNOWN is "
+                    "genuine difficulty rather than an infeasibility the solver "
+                    "cannot see"),
+                "andTheEncodingLeverFailedToo": ("since the calibration said "
+                    "constraint DENSITY was the obstruction, the encoding was "
+                    "rewritten to be sparse. The direct form puts each of the "
+                    "1600 blocking constraints over 16 cells; the shadow form "
+                    "introduces s[p][M] <=> OR over r in M of x[p][r] and then "
+                    "asks that the 4 points of each line L satisfy "
+                    "sum s[p][M] >= 1 -- constraints over 4 variables instead of "
+                    "16, and a direct statement of the corpus's own frame that "
+                    "every line's shadow is a blocking set. Head to head on the "
+                    "same instance and budget: at 115 the shadow encoding is "
+                    "genuinely better, SAT in 2 s against 7 s, so the "
+                    "reformulation works. At 114 BOTH return UNKNOWN at 300 s. So "
+                    "the encoding is a real 3.5x improvement that does not change "
+                    "the verdict"),
+                "allThreeLeversAreNowClosed": ("the three ways to make a search "
+                    "work were tried in order and all three are null. THE CLOCK: "
+                    "36d3b4b, a 6.7x budget, no class moved. THE GROUP: larger "
+                    "cyclic subgroups, and the calibration showed only one class "
+                    "is even informative, which then held at 900 s per size at "
+                    "114, 113 and 112. THE ENCODING: a sparse reformulation, 3.5x "
+                    "faster on the control, still UNKNOWN at 114. Each was "
+                    "validated by a control that resolves the known-satisfiable "
+                    "115 case, so none of these is a broken harness. The next "
+                    "lever has to be something other than searching harder -- a "
+                    "theorem in the style of the 110 self-duality argument, "
+                    "orderly generation, or different machinery entirely"),
                 "sizeIsNotTheBottleneck": ("C12 leaves 174 orbit variables and "
                                            "still returns UNKNOWN, while C6 fix 5 "
                                            "with 342 -- nearly twice as many -- "

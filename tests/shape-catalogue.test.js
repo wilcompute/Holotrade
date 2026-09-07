@@ -7950,6 +7950,28 @@ test("running the control at every class turned six UNKNOWNs into one target", (
   assert.match(r.sizeIsNotTheBottleneck, /density of the 1600 blocking constraints/);
   assert.match(r.sizeIsNotTheBottleneck, /more symmetry must mean an easier instance/);
 
+  // the one target was attacked at 20x budget and held
+  const t = r.theOneTargetWasThenAttackedAndHeld;
+  assert.match(t, /900 seconds per size/);
+  assert.match(t, /114, 113 and 112. All three returned UNKNOWN/);
+  assert.match(t, /\{1:25, 2:72, 3:13, 6:232\}/);
+  assert.match(t, /genuine difficulty rather than an infeasibility/);
+
+  // and the encoding lever, tried and null, with its control gain recorded
+  const e = r.andTheEncodingLeverFailedToo;
+  assert.match(e, /4 variables instead of\s+16/);
+  assert.match(e, /SAT in 2 s against 7 s/);
+  assert.match(e, /BOTH return UNKNOWN at 300 s/);
+  assert.match(e, /does not change\s+the verdict/);
+
+  // all three levers closed, each control-validated
+  const a = r.allThreeLeversAreNowClosed;
+  assert.match(a, /THE CLOCK/);
+  assert.match(a, /THE GROUP/);
+  assert.match(a, /THE ENCODING/);
+  assert.match(a, /none of these is a broken harness/);
+  assert.match(a, /other than searching harder/);
+
   assert.match(r.boundary, /NON-cyclic subgroups of\s+those orders are not covered/);
   assert.match(r.boundary, /UNKNOWN at 115 is a\s+statement about the solver/);
   assert.match(r.boundary, /\[111,115\]/);
