@@ -8288,3 +8288,14 @@ test("the geometry's own sign lift still does not give a ternary Golay code", ()
   assert.match(r.boundary, /does not rule\s+out every monomial lift/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the Golay negative is reconciled with the other track's ternary Golay", () => {
+  const r = JSON.parse(fs.readFileSync("data/local_sign_lift_vs_golay_gap.json"));
+  const x = r.crossTrackTernaryGolay;
+  assert.match(x, /w33_ternary_golay_m12_grunbaum\.py/);
+  assert.match(x, /S\(5,6,12\)/);
+  assert.match(x, /DIFFERENT twelve/);
+  assert.match(x, /K12 \/ Grunbaum vertex-figure gap/);
+  assert.match(x, /no\s+contradiction/);
+  assert.match(x, /which twelve\s+matters/);
+});
