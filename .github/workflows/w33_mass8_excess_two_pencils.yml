@@ -1,0 +1,36 @@
+name: W33 mass-eight excess two-pencil theorem
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/the_mass_eight_excess_is_two_pencils.py'
+      - 'data/mass_eight_excess_two_pencils.json'
+      - '.github/workflows/w33_mass8_excess_two_pencils.yml'
+  workflow_dispatch:
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Recompute the complete mass-eight classification
+        run: python analysis/the_mass_eight_excess_is_two_pencils.py --write
+      - name: Check committed certificate and 111 reduction
+        run: >-
+          python -c "import json; d=json.load(open('data/mass_eight_excess_two_pencils.json'));
+          assert d['status']=='PASS' and all(d['checks'].values());
+          c=d['counts']; assert c['mass4Solutions']==40 and c['mass8Solutions']==820;
+          assert (c['samePointPair'],c['collinearPointPair'],c['noncollinearPointPair'])==(40,240,540);
+          assert c['fixedBinaryCandidatesTested']==1447875 and c['fixedBinarySolutions']==108;
+          assert c['binarySolutionsGlobalByTransitivity']==540 and c['lineOrbitUnderTransvections']==40;
+          assert 'E=U N^T=N V' in d['tau2_111Corollary']"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-mass8-excess-two-pencils
+          path: data/mass_eight_excess_two_pencils.json
+          if-no-files-found: error
