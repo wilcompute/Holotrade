@@ -8046,3 +8046,14 @@ test("GAP certifies the four orbits of the centre stabiliser", () => {
   assert.match(r.boundary, /648 \+ 216 \+ 72 \+ 9/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the blocker-triple result cites the octet parametrization it builds on", () => {
+  const r = JSON.parse(fs.readFileSync("data/blocker_triples_small_orbit.json"));
+  const p = r.priorArtInThisTrack;
+  assert.match(p, /the_minimum_blocker_labels_are_octets\.py/);
+  assert.match(p, /aa42b38, 6f35762/);
+  assert.match(p, /octets through c/);
+  assert.match(p, /nine per centre is q\^2/);
+  assert.match(p, /360 = q\^2 \(q\+1\)\(q\^2\+1\)/);
+  assert.match(p, /cited, not re-derived/);
+});

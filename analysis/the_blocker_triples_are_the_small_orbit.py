@@ -53,6 +53,14 @@ two million partitions exactly ONE is invariant under the stabiliser of its own
 centre, and it is this one. "Canonical" was the right word; "the partition
 singles them out" was the wrong argument for it.
 
+WHAT IS ALREADY OURS, AND IS CITED NOT RE-DERIVED.  the_minimum_blocker_labels_
+are_octets.py (aa42b38, 6f35762) already explains the COUNT nine intrinsically:
+the labels O_c are the octets THROUGH c, so nine per centre is q^2 = the row
+weight of B in N D = J + q B, and 360 = q^2 (q+1)(q^2+1) is the point-octet
+incidence count. Nothing here re-derives that. What is added is a criterion on
+the far triple ALONE (the foot collapse), the orbit census that places the nine
+inside the 945, and the correction to the reason given for singling them out.
+
 SCOPE.  Exhaustive at every centre over all 945 candidates, so this is a
 property of all 360 blockers and not a sample. The orbit statement is GAP's.
 tau_2 is untouched and stays open in [111, 115].
@@ -319,6 +327,15 @@ def main():
                 "partitions is invariant under the stabiliser of its own centre. "
                 "Canonical was the right word; the partition argument was the "
                 "wrong reason for it."),
+            "priorArtInThisTrack": (
+                "the_minimum_blocker_labels_are_octets.py (aa42b38, 6f35762) "
+                "already explains the count NINE intrinsically: the labels O_c "
+                "are the octets through c, so nine per centre is q^2, the row "
+                "weight of B in N D = J + q B, and 360 = q^2 (q+1)(q^2+1) is the "
+                "point-octet incidence count. That is cited, not re-derived. "
+                "What is new here is a criterion on the far triple ALONE, the "
+                "orbit census placing the nine inside the 945, and the "
+                "correction to the reason given for singling them out."),
             "boundary": (
                 "exhaustive at every one of the 40 centres over all 945 "
                 "candidate triples, with the selector checked against brute-force "
