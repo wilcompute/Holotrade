@@ -8560,3 +8560,47 @@ test("the local plane is a corollary of octet = L u L^perp, and is reclassified"
   assert.match(r.boundary, /retracts no mathematics/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the octet blockers have a closed form, composing three of our own results", () => {
+  const r = JSON.parse(fs.readFileSync("data/blockers_in_closed_form.json"));
+  assert.equal(r.valid, true);
+  const byQ = Object.fromEntries(r.perQ.map((x) => [x.q, x]));
+
+  for (const q of [3, 5, 7]) {
+    const x = byQ[q];
+    assert.equal(x.centres, (q + 1) * (q * q + 1), "checked at every centre");
+    assert.equal(x.closedFormHoldsEverywhere, true);
+    assert.equal(x.containmentFactsHold, true,
+                 "L n c-perp = {c} and L-perp inside c-perp");
+    assert.equal(x.farPartIsOffCPerp, true);
+    assert.equal(x.farPartsPartitionTheFarPoints, true);
+    // the arithmetic of the closed form
+    assert.equal(x.nearSize, q * q - 1, "|Adj(c)| - |L-perp| = q(q+1) - (q+1)");
+    assert.equal(q * (q + 1) - (q + 1), x.nearSize);
+    assert.equal(x.farSize, q, "|L| - 1");
+    assert.equal(x.nearSize + x.farSize, x.blockerSize);
+    assert.equal(x.blockerSize, q * q + q - 1, "the known blocker size");
+    assert.equal(x.sizesCorrect, true);
+    // the partition arithmetic: q^2 lines through c, q far points each
+    assert.equal(x.octetsThroughC * x.farSize, x.farPointCount);
+    assert.equal(x.farPointCount, q ** 3);
+  }
+
+  assert.match(r.theClosedForm, /Adj\(c\) minus L\^perp\) union \(L minus \{c\}\)/);
+  assert.match(r.theDerivation, /L n c\^perp = \{c\} exactly/);
+
+  // the file must be explicit that it is a composition, not a discovery
+  assert.match(r.nothingHereIsNew, /discovers nothing/);
+  assert.match(r.nothingHereIsNew, /aa42b38, 6f35762/);
+  assert.match(r.nothingHereIsNew, /3f93821/);
+  assert.match(r.nothingHereIsNew, /tensor_111_pg34_label_reduction\.json/);
+
+  // and about what it demotes and what it does not touch
+  assert.match(r.whatItMakesTrivial, /4a45d15/);
+  assert.match(r.whatItMakesTrivial, /true\s+but roundabout/);
+  assert.match(r.whatItMakesTrivial, /corollary rather\s+than a criterion/);
+  assert.match(r.whatIsStillNotImplied, /aa8691a and unaffected/);
+  assert.match(r.whatIsStillNotImplied, /minimum only at q = 3/);
+  assert.match(r.boundary, /checked rather than assumed/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
