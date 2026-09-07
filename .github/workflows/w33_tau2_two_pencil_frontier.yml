@@ -12,6 +12,7 @@ on:
       - 'analysis/the_111_double_six_section_invariant.py'
       - 'analysis/the_111_double_six_support_fingerprint.py'
       - 'analysis/the_111_factorization_leaf_lift.py'
+      - 'analysis/the_111_factorization_leaf_lift_v2.py'
       - 'analysis/the_minimum_blocker_labels_are_octets.py'
       - 'data/the_111_two_pencil_factorization.json'
       - '.github/workflows/w33_tau2_two_pencil_frontier.yml'
@@ -45,7 +46,7 @@ jobs:
       - name: Run exact 88-token factorization in all three centre cases
         run: python analysis/the_111_two_pencil_factorization.py --budget 180 --workers 8 --write
       - name: Lift frozen SAT factorizations to exact 111-leaf CSPs
-        run: python analysis/the_111_factorization_leaf_lift.py --budget 180 --workers 8 --write
+        run: python analysis/the_111_factorization_leaf_lift_v2.py --budget 180 --workers 8 --write
       - name: Validate frontier certificates
         run: |
           python - <<'PY'
