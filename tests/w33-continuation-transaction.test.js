@@ -87,28 +87,30 @@ function executionFor(request, overrides = {}) {
 
 const policy = Object.freeze({ retainedByteSecondUSD: 1e-9, transferByteUSD: 1e-8 });
 
-test("selection -> hardware verdict -> W33 execution -> signed delivery is one replayable transaction", () => {
+test("selection -> challenge -> verifier -> W33 execution -> signed delivery is one ordered transaction", () => {
   const f = fixture();
-  const preview = S.chooseContinuationWorker([f.worker], f.request, policy);
-  assert.equal(preview.ok, true);
-  const verdict = signVerdict(preview.dispatch.challenge, f.verifierKeys.privateKey);
-  let calls = 0;
+  const sequence = [];
   const tx = T.executeContinuationTransaction({
     candidates: [f.worker],
     request: f.request,
     policy,
-    signedVerifierVerdict: verdict,
+    obtainSignedVerifierVerdict: ({ challenge, dispatch, request }) => {
+      sequence.push("verifier");
+      assert.equal(challenge.challengeDigest, dispatch.challenge.challengeDigest);
+      assert.equal(challenge.continuationRoot, request.continuationRoot);
+      return signVerdict(challenge, f.verifierKeys.privateKey);
+    },
     trustedVerifierPublicKey: f.verifierKeys.publicKey,
     executeWorker: ({ dispatch, binding }) => {
-      calls += 1;
-      assert.equal(dispatch.dispatchDigest, preview.dispatch.dispatchDigest);
+      sequence.push("worker");
       assert.equal(binding.continuationRoot, f.request.continuationRoot);
+      assert.equal(dispatch.workerId, f.worker.id);
       return executionFor(f.request);
     },
     deliveryPrivateKey: f.deliveryKeys.privateKey,
     deliveryKeyId: "fixture-delivery-key",
   });
-  assert.equal(calls, 1);
+  assert.deepEqual(sequence, ["verifier", "worker"]);
   assert.equal(tx.ok, true);
   assert.equal(tx.code, "CONTINUATION_TRANSACTION_COMMITTED");
   assert.equal(tx.execution.parentContinuationRoot, f.request.continuationRoot);
@@ -143,11 +145,9 @@ test("a W33 receipt cannot drift parent, process, or generation", () => {
 
 test("signed delivery fails verification after child-continuation tampering", () => {
   const f = fixture();
-  const preview = S.chooseContinuationWorker([f.worker], f.request, policy);
-  const verdict = signVerdict(preview.dispatch.challenge, f.verifierKeys.privateKey);
   const tx = T.executeContinuationTransaction({
     candidates: [f.worker], request: f.request, policy,
-    signedVerifierVerdict: verdict,
+    obtainSignedVerifierVerdict: ({ challenge }) => signVerdict(challenge, f.verifierKeys.privateKey),
     trustedVerifierPublicKey: f.verifierKeys.publicKey,
     executeWorker: () => executionFor(f.request),
     deliveryPrivateKey: f.deliveryKeys.privateKey,
@@ -161,21 +161,21 @@ test("signed delivery fails verification after child-continuation tampering", ()
 
 test("verifier verdict for a different continuation cannot reach worker execution", () => {
   const f = fixture();
-  const preview = S.chooseContinuationWorker([f.worker], f.request, policy);
-  const otherChallenge = C.buildContinuationChallenge({
-    passport: f.passport,
-    contract: f.contract,
-    runtimePublicKeyDigest: preview.dispatch.challenge.runtimePublicKeyDigest,
-    continuationRoot: d("other-continuation"),
-    processId: f.request.processId,
-    generation: f.request.generation,
-  });
-  assert.notEqual(otherChallenge.challengeDigest, preview.dispatch.challenge.challengeDigest);
-  const otherVerdict = signVerdict(otherChallenge, f.verifierKeys.privateKey);
   let executed = false;
   assert.throws(() => T.executeContinuationTransaction({
     candidates: [f.worker], request: f.request, policy,
-    signedVerifierVerdict: otherVerdict,
+    obtainSignedVerifierVerdict: ({ challenge }) => {
+      const otherChallenge = C.buildContinuationChallenge({
+        passport: f.passport,
+        contract: f.contract,
+        runtimePublicKeyDigest: challenge.runtimePublicKeyDigest,
+        continuationRoot: d("other-continuation"),
+        processId: f.request.processId,
+        generation: f.request.generation,
+      });
+      assert.notEqual(otherChallenge.challengeDigest, challenge.challengeDigest);
+      return signVerdict(otherChallenge, f.verifierKeys.privateKey);
+    },
     trustedVerifierPublicKey: f.verifierKeys.publicKey,
     executeWorker: () => { executed = true; return executionFor(f.request); },
     deliveryPrivateKey: f.deliveryKeys.privateKey,
