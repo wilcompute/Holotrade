@@ -8161,3 +8161,45 @@ test("the geometry supplies ASL(2,3) acting on the local tetracode", () => {
   assert.match(r.boundary, /InvariantBilinearForm/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("a blocker recovers its own dropped transversal from its nearest neighbours", () => {
+  const r = JSON.parse(fs.readFileSync("data/blocker_eight_graph.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.minimumBlockers, 360);
+  assert.equal(r.pairsExamined, 64620);
+
+  // the census is regular, and the degrees account for all 359 others
+  const d = r.degreeByIntersection;
+  assert.deepEqual(d, {"0": 24, "1": 48, "2": 103, "3": 48, "4": 72,
+                       "5": 8, "6": 48, "8": 8});
+  assert.equal(Object.values(d).reduce((a, b) => a + b, 0), 359);
+  assert.equal(d["7"], undefined, "intersection 7 does not occur");
+  assert.equal(r.everyGraphIsRegular, true);
+  assert.equal(r.degreesSumTo359, true);
+
+  // connectivity: all connected EXCEPT the same-centre class, 40 disjoint K9s
+  assert.equal(r.everyGraphConnectedExceptFive, true);
+  assert.equal(r.intersectionFiveIsFortyDisjointK9, true);
+  assert.equal(r.connectedByIntersection["5"], false);
+  assert.equal(r.componentCountByIntersection["5"], 40);
+  for (const k of ["0", "1", "2", "3", "4", "6", "8"]) {
+    assert.equal(r.connectedByIntersection[k], true, `graph ${k} connected`);
+    assert.equal(r.componentCountByIntersection[k], 1);
+  }
+
+  // the theorem
+  assert.equal(r.eightPartnersEach, true);
+  assert.equal(r.partnersSplitTwoPerCentre, true);
+  assert.equal(r.partnerCentresAreTheDroppedFeet, true);
+  assert.equal(r.relationIsSymmetric, true);
+  assert.equal(r.edgesJoinCollinearCentres, true);
+  assert.match(r.theTheorem, /exactly EIGHT/);
+  assert.match(r.theTheorem, /two partners per foot/);
+  assert.match(r.theTheorem, /without reference to the pencil at c/);
+  assert.match(r.theTheorem, /dropped your centre and you dropped mine/);
+  assert.match(r.theCensusIsRegular, /40 disjoint copies of K9/);
+  assert.match(r.priorArtCited, /aa42b38, 6f35762/);
+  assert.match(r.priorArtCited, /64004ce/);
+  assert.match(r.boundary, /none of this\s+generalises off q = 3/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
