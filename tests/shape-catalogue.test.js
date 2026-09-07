@@ -8604,3 +8604,67 @@ test("the octet blockers have a closed form, composing three of our own results"
   assert.match(r.boundary, /checked rather than assumed/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("tau_1(W(3,5)) = 29 was already decided: minimality is not the q=3 fence", () => {
+  const r = JSON.parse(fs.readFileSync("data/minimality_fence_was_wrong.json"));
+  assert.equal(r.valid, true);
+  const byQ = Object.fromEntries(r.tau1.map((t) => [t.q, t]));
+
+  // q=3 and q=5 are PROVED optimal
+  for (const q of [3, 5]) {
+    const t = byQ[q];
+    assert.equal(t.points, (q + 1) * (q * q + 1));
+    assert.equal(t.lines, (q + 1) * (q * q + 1));
+    assert.equal(t.lineSize, q + 1);
+    assert.equal(t.status, "OPTIMAL");
+    assert.equal(t.proved, true);
+    assert.equal(t.tau1, q * q + q - 1, "tau_1 = q^2+q-1");
+    assert.equal(t.matchesQSquaredPlusQMinus1, true);
+    assert.deepEqual(t.interval, [q * q + q - 1, q * q + q - 1]);
+  }
+  // q=3 meets the ovoid-defect bound; q=5 does NOT -- that is the real q=3 fact
+  assert.equal(byQ[3].meetsOvoidDefectBound, true);
+  assert.equal(byQ[5].meetsOvoidDefectBound, false);
+  assert.equal(byQ[3].ovoidDefectBound, 11);
+  assert.equal(byQ[5].ovoidDefectBound, 27);
+  assert.notEqual(byQ[5].tau1, byQ[5].ovoidDefectBound);
+
+  // q=7 is UNDECIDED and must not be counted as support
+  if (byQ[7]) {
+    assert.equal(byQ[7].status, "FEASIBLE");
+    assert.equal(byQ[7].proved, false);
+    assert.equal(byQ[7].decided, false);
+    assert.ok(byQ[7].interval[0] < byQ[7].interval[1], "a genuine interval");
+    assert.equal(byQ[7].interval[1], 55, "55 = q^2+q-1 reached as upper bound");
+    assert.match(r.qSevenIsUndecidedAndDoesNotSupportTheConjecture,
+                 /CONSISTENT with .* and is not evidence for\s+it/);
+  }
+
+  // uniqueness fails at q=5 -- existential, not proportional
+  const u = r.uniquenessAtQ5;
+  assert.equal(u.octetBlockers, 3900);
+  assert.equal(u.octetBlockers, 5 * 5 * 6 * 26, "q^2(q+1)(q^2+1)");
+  assert.equal(u.octetBlockerClosedForm, u.octetBlockers);
+  assert.deepEqual(u.octetBlockerSizes, [29], "all octet blockers are minimum");
+  assert.equal(u.nonOctetMinimumBlockersExist, true);
+  assert.ok(u.ofThoseAreNot > 0, "some minimum blocker is not an octet blocker");
+  assert.equal(u.ofThoseAreOctetBlockers + u.ofThoseAreNot,
+               u.minimumBlockersEnumerated);
+  assert.equal(u.enumerationIsCappedNotACensus, true);
+
+  // the corrections, named
+  assert.match(r.theContradiction, /972e5cd, 2026-08-29/);
+  assert.match(r.theContradiction, /aa42b38, 2026-09-04/);
+  assert.match(r.theContradiction, /without citing it/);
+  assert.match(r.verifiedIndependently, /rather than trusting either/);
+  assert.match(r.correctionOneMinimality, /NOT a q = 3 coincidence/);
+  assert.match(r.correctionOneMinimality, /bound as a statement about\s+minimality/);
+  assert.match(r.correctionTwoUniqueness, /UNIQUENESS/);
+  assert.match(r.correctionThreeThisSession, /e3ffec2\.\.cddbb6e/);
+  assert.match(r.correctionThreeThisSession, /Right fence, wrong reason/);
+  assert.match(r.whatDoesNotChange, /closed form/);
+  assert.match(r.whatDoesNotChange, /\[111, 115\]/);
+  assert.match(r.boundary, /EXISTENTIAL/);
+  assert.match(r.boundary, /PROVED, not sampled/);
+  assert.match(r.boundary, /is not a census/);
+});
