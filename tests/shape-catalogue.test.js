@@ -8057,3 +8057,62 @@ test("the blocker-triple result cites the octet parametrization it builds on", (
   assert.match(p, /360 = q\^2 \(q\+1\)\(q\^2\+1\)/);
   assert.match(p, /cited, not re-derived/);
 });
+
+test("the nine blocker transversals at a centre are the tetracode", () => {
+  const r = JSON.parse(fs.readFileSync("data/blocker_transversals_tetracode.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.minimumBlockers, 360);
+  assert.equal(r.centres, 40);
+  assert.equal(r.blockersPerCentre, 9);
+  assert.equal(r.pairsExamined, 64620);
+
+  // the census that produced the question
+  assert.equal(r.intersectionCensus["5"], 1440);
+  assert.equal(r.intersectionCensus["5"], 40 * 9 * 8 / 2, "= 40 x C(9,2)");
+  assert.deepEqual(Object.keys(r.sameCentreIntersections), ["5"]);
+  assert.equal(r.sameCentreIsAlwaysFive, true);
+  assert.equal(r.fiveNeverOccursAcrossCentres, true);
+  assert.equal(r.sevenNeverOccurs, true);
+  assert.equal(r.diffCentreIntersections["5"], undefined);
+  const tot = Object.values(r.intersectionCensus).reduce((a, b) => a + b, 0);
+  assert.equal(tot, 64620);
+
+  // the code
+  assert.equal(r.centreZeroWords.length, 9);
+  assert.equal(r.allDistancesThree, true);
+  assert.equal(r.strengthTwoOrthogonalArray, true);
+  assert.equal(r.linearAfterRelabel, true);
+  assert.equal(r.selfDual, true);
+  assert.equal(r.isTheTetracode, true);
+  // every pair of the nine words really is at Hamming distance 3
+  for (let i = 0; i < 9; i++) {
+    for (let j = i + 1; j < 9; j++) {
+      const a = r.centreZeroWords[i], b = r.centreZeroWords[j];
+      let d = 0;
+      for (let k = 0; k < 4; k++) if (a[k] !== b[k]) d++;
+      assert.equal(d, 3, `words ${a} and ${b} must be at distance 3`);
+    }
+  }
+  // and the recorded linear code is genuinely linear and self-dual over F_3
+  const C = new Set(r.centreZeroLinearCode);
+  assert.equal(C.size, 9);
+  for (const x of C) {
+    for (const y of C) {
+      let s = "", ip = 0;
+      for (let k = 0; k < 4; k++) {
+        s += String((Number(x[k]) + Number(y[k])) % 3);
+        ip += Number(x[k]) * Number(y[k]);
+      }
+      assert.ok(C.has(s), "closed under addition");
+      assert.equal(ip % 3, 0, "self-orthogonal");
+    }
+  }
+
+  assert.match(r.howItWasFound, /not by looking for it/);
+  assert.match(r.crossTrack, /102 files of the W33-Theory track/);
+  assert.match(r.crossTrack, /zero files of\s+this track/);
+  assert.match(r.priorArtCited, /aa42b38, 6f35762/);
+  assert.match(r.priorArtCited, /classical coding theory, not a claim of this\s+file/);
+  assert.match(r.boundary, /not proof of novelty/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

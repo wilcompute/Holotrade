@@ -1,0 +1,66 @@
+{
+  "schema": "holotrade.blocker-transversals-tetracode.v1",
+  "valid": true,
+  "minimumBlockers": 360,
+  "centres": 40,
+  "blockersPerCentre": 9,
+  "pairsExamined": 64620,
+  "intersectionCensus": {
+    "0": 4320,
+    "1": 8640,
+    "2": 18540,
+    "3": 8640,
+    "4": 12960,
+    "5": 1440,
+    "6": 8640,
+    "8": 1440
+  },
+  "sameCentreIntersections": {
+    "5": 1440
+  },
+  "diffCentreIntersections": {
+    "0": 4320,
+    "1": 8640,
+    "2": 18540,
+    "3": 8640,
+    "4": 12960,
+    "6": 8640,
+    "8": 1440
+  },
+  "sameCentreIsAlwaysFive": true,
+  "fiveNeverOccursAcrossCentres": true,
+  "sevenNeverOccurs": true,
+  "centreZeroWords": [
+    "0000",
+    "0111",
+    "0222",
+    "1012",
+    "1120",
+    "1201",
+    "2021",
+    "2102",
+    "2210"
+  ],
+  "centreZeroLinearCode": [
+    "0000",
+    "0111",
+    "0222",
+    "1012",
+    "1120",
+    "1201",
+    "2021",
+    "2102",
+    "2210"
+  ],
+  "allDistancesThree": true,
+  "strengthTwoOrthogonalArray": true,
+  "linearAfterRelabel": true,
+  "selfDual": true,
+  "isTheTetracode": true,
+  "theResult": "at every point c of W(3,3) the nine minimum blockers with centre c drop nine transversals of the pencil at c, and those nine words -- length four over F_3, one symbol per pencil line -- have pairwise Hamming distance exactly three. That makes them a (4,9,3) MDS code, equivalently an OA(9,4,3,2), and after relabelling symbols within each position the code is linear and SELF-DUAL. The self-dual [4,2,3]_3 code is the tetracode. So each of the 40 points of W(3,3) carries a canonical copy of the tetracode, canonical because the nine blockers at a centre are.",
+  "howItWasFound": "not by looking for it. The pairwise intersection census over all 64620 pairs of minimum blockers showed |B n B'| = 5 exactly 1440 times = 40 x C(9,2), and sorting by centre showed the same-centre pairs give 5 with no spread whatever. Since same-centre far triples are disjoint, |B n B'| = 4 + |drop n drop'|, so the constant 5 says any two transversals agree in exactly one position -- a distance-3 condition, i.e. a code.",
+  "sharedCentreIsDetectable": "|B n B'| = 5 holds for every same-centre pair and for no other pair; 7 does not occur at all. Across centres the values are 0, 1, 2, 3, 4, 6, 8. So the intersection size alone decides whether two minimum blockers share a centre.",
+  "crossTrack": "the tetracode appears in 102 files of the W33-Theory track -- bt1837_tetracode_quotient_hunt.py, the BT930 isometry matrix, the BT1836 E8 selector aperture table -- and in zero files of this track. None of those 102 mentions blockers, blocking sets or pencils. This is the join between the two tracks and the citation goes to them for the tetracode machinery.",
+  "priorArtCited": "the classification of the 360 as (c,T) and the forced 8+3 split come from every_minimum_blocker_is_a_point_and_a_triple.py; the count nine per centre and the 45 octets from the_minimum_blocker_labels_are_octets.py (aa42b38, 6f35762), where nine = q^2 is the row weight of B in N D = J + q B; the foot-collapse selector used to build the blockers here from the_blocker_triples_are_the_small_orbit.py (4a45d15). Uniqueness of a (4,9,3)_3 MDS code and its identification with the tetracode are classical coding theory, not a claim of this file.",
+  "boundary": "exhaustive: all 360 blockers, all 64620 pairs, all 40 centres, with the tetracode test run per centre rather than transported by the group -- though PSp(4,3) is transitive on the 40 points so one centre would have sufficed. The relabelling search is complete over the 6^4 symbol relabellings that fix 0, times all nine choices of origin. Searched the literature on codes and blocking sets in generalised quadrangles and found no statement of this identification; that is a negative search over a large space and is not proof of novelty. tau_2 is untouched and stays open in [111, 115]."
+}
