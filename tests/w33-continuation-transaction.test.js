@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 
 const A = require("../js/w33-measured-boot-attestation.js");
+const C = require("../js/w33-continuation-attestation.js");
 const D = require("../js/w33-passport-deployment.js");
 const S = require("../scheduler/w33-continuation-scheduler.js");
 const T = require("../scheduler/w33-continuation-transaction.js");
@@ -161,7 +162,15 @@ test("signed delivery fails verification after child-continuation tampering", ()
 test("verifier verdict for a different continuation cannot reach worker execution", () => {
   const f = fixture();
   const preview = S.chooseContinuationWorker([f.worker], f.request, policy);
-  const otherChallenge = { ...preview.dispatch.challenge, continuationRoot: d("other-continuation") };
+  const otherChallenge = C.buildContinuationChallenge({
+    passport: f.passport,
+    contract: f.contract,
+    runtimePublicKeyDigest: preview.dispatch.challenge.runtimePublicKeyDigest,
+    continuationRoot: d("other-continuation"),
+    processId: f.request.processId,
+    generation: f.request.generation,
+  });
+  assert.notEqual(otherChallenge.challengeDigest, preview.dispatch.challenge.challengeDigest);
   const otherVerdict = signVerdict(otherChallenge, f.verifierKeys.privateKey);
   let executed = false;
   assert.throws(() => T.executeContinuationTransaction({
