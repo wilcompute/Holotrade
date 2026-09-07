@@ -1,0 +1,44 @@
+{
+  "H10Reading": "Because aggregate parity lies in im(M), its class in H10 = ker(M^T)/im(M) is zero. The aggregate mod-2 route therefore cannot by itself exclude a 111 factorization. Any characteristic-two obstruction must use relative row/column matching data or another quotient, not only total point-token multiplicities.",
+  "aggregateEquation": "N a = 4*1 + 4*P_c on either axis (with the opposite dirty-pencil centre c)",
+  "binaryConsequence": "a mod 2 lies in ker_F2(N) = im_F2(M), where M is point/octet incidence",
+  "boundary": "Exact finite binary/integer incidence statement. H10 is a coding/homology quotient here; no physical error-correction implementation is inferred.",
+  "checks": {
+    "H10_quotient_dimension_is_10": true,
+    "N_times_octet_incidence_is_zero_mod2": true,
+    "dense_and_sparse_integer_aggregate_lifts_exist": true,
+    "ker_MT_dimension_is_25": true,
+    "kernel_N_dimension_is_15": true,
+    "kernel_N_equals_octet_span_by_inclusion_and_dimension": true,
+    "kernel_weight_enumerator_exact": true,
+    "minimum_words_are_exactly_the_45_octets": true,
+    "octet_span_is_self_orthogonal": true,
+    "octet_span_rank_is_15": true,
+    "rank_F2_N_is_25": true
+  },
+  "dimensions": {
+    "H10": 10,
+    "kerMT": 25,
+    "kerN": 15,
+    "rankN": 25,
+    "rankOctetSpan": 15
+  },
+  "integerLiftWitnesses": {
+    "denseParityWeight": 40,
+    "sparseParityWeight": 0,
+    "tokenMassEach": 44
+  },
+  "octetCodeWeightEnumerator": {
+    "0": 1,
+    "12": 720,
+    "16": 6930,
+    "20": 17376,
+    "24": 6930,
+    "28": 720,
+    "32": 45,
+    "40": 1,
+    "8": 45
+  },
+  "schema": "holotrade.tau2-111-aggregate-parity-octet-boundary.v1",
+  "status": "PASS"
+}
