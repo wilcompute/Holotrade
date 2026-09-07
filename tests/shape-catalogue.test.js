@@ -8340,3 +8340,49 @@ test("the local module's optimal codes are the tetracode and a punctured simplex
   assert.match(r.howOptimalityIsJudged, /Singleton\s+is far too weak/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the transversal code is q-general: an affine plane at every point", () => {
+  const r = JSON.parse(fs.readFileSync("data/transversal_code_q_general.json"));
+  assert.equal(r.valid, true);
+  assert.deepEqual(r.qs, [3, 5, 7]);
+  assert.equal(r.perQ.length, 3);
+
+  const byQ = Object.fromEntries(r.perQ.map((x) => [x.q, x]));
+  // the geometry sizes, per q
+  assert.equal(byQ[3].points, 40);
+  assert.equal(byQ[5].points, 156);
+  assert.equal(byQ[7].points, 400);
+  for (const q of [3, 5, 7]) {
+    const x = byQ[q];
+    assert.equal(x.points, (q + 1) * (q * q + 1), `|W(3,${q})| points`);
+    assert.equal(x.octetsPerCentre, q * q, "q^2 octets through each point");
+    assert.equal(x.wordLength, q + 1, "one symbol per pencil line");
+    assert.equal(x.alphabet, q, "q points per pencil line besides c");
+    assert.equal(x.minimumDistance, q, "any two agree in exactly one position");
+    // MDS: d = n - k + 1 with n = q+1, k = 2
+    assert.equal(x.singletonBound, q);
+    assert.equal(x.isMDS, true);
+    assert.equal(x.allCentresPass, true, `every centre passes at q=${q}`);
+    assert.equal(x.centres, x.points, "checked at EVERY centre, not sampled");
+  }
+
+  // self-duality is q=3 only -- 2+2 = q+1
+  assert.equal(byQ[3].selfDual, true);
+  assert.equal(byQ[5].selfDual, false);
+  assert.equal(byQ[7].selfDual, false);
+
+  assert.match(r.theLaw, /OA\(q\^2, q\+1, q, 2\)/);
+  assert.match(r.theLaw, /agree in exactly ONE position/);
+  assert.match(r.whatItIs, /AFFINE PLANE OF ORDER q/);
+  assert.match(r.whatItIs, /AG\(2,3\) found by hand in\s+e239484/);
+  assert.match(r.whatItIs, /tetracode of 64004ce/);
+  assert.match(r.howFarTheNameIsSafe, /is NOT claimed/);
+  assert.match(r.selfDualityIsQThreeOnly, /What generalises is MDS, not\s+self-duality/);
+  assert.match(r.whyTheCodeSurvivesMinimality, /not of minimality/);
+  assert.match(r.priorArtImportedNotRederived, /aa42b38, 6f35762/);
+  assert.match(r.priorArtImportedNotRederived, /calls that module's own\s+build\(\)/);
+  assert.match(r.crossTrackLatinSquares, /w33_pass5307_order4_latin_mols_pg32_spread\.py/);
+  assert.match(r.crossTrackLatinSquares, /none attaches a\s+plane to a POINT/);
+  assert.match(r.boundary, /EVERY centre/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
