@@ -8299,3 +8299,44 @@ test("the Golay negative is reconciled with the other track's ternary Golay", ()
   assert.match(x, /no\s+contradiction/);
   assert.match(x, /which twelve\s+matters/);
 });
+
+test("the local module's optimal codes are the tetracode and a punctured simplex", () => {
+  const r = JSON.parse(fs.readFileSync("data/local_module_constituents_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.engine, "GAP");
+  assert.equal(r.moduleDimension, 12);
+  assert.equal(r.vectorStabiliserOrder, 648);
+
+  // the constituents account for the whole module
+  assert.match(r.compositionFactorDimensions, /1, 2, 2, 2, 2, 3/);
+  assert.equal(r.constituentsSumToTwelve, true);
+  assert.equal(r.absolutelyIrreducible, false);
+  assert.equal(r.properNonzeroSubmodules, 8);
+  assert.equal(r.noDimensionSixSubmodule, true);
+
+  // exactly two meet Griesmer, at dimensions 2 and 3
+  assert.match(r.griesmerOptimalDimensions, /2, 3/);
+  assert.match(r.mdsDimensions, /^\[\s*\]$/, "none are MDS -- Singleton is too weak");
+
+  // [12,2,9]: all eight nonzero words of weight 9, constant on pencil triples
+  assert.match(r.smallestSubmoduleWeightDistribution, /\[ 0, 1 \], \[ 9, 8 \]/);
+  assert.equal(r.smallestIsConstantOnPencilTriples, true);
+  // Griesmer for [12,2,9] over F_3: 9 + ceil(9/3) = 12
+  assert.equal(9 + Math.ceil(9 / 3), 12);
+
+  // [12,3,8]: the punctured ternary simplex, checked by weight distribution
+  assert.match(r.threeDimWeightDistribution,
+               /\[ 0, 1 \], \[ 8, 18 \], \[ 9, 8 \]/);
+  assert.equal(18 + 8, 26, "the simplex [13,3,9] has 26 nonzero words");
+  // Griesmer for [12,3,8] over F_3: 8 + ceil(8/3) + ceil(8/9) = 8 + 3 + 1 = 12
+  assert.equal(8 + Math.ceil(8 / 3) + Math.ceil(8 / 9), 12);
+
+  assert.match(r.theTwoOptimalCodesAreNamed, /That is the\s+TETRACODE, tripled/);
+  assert.match(r.theTwoOptimalCodesAreNamed, /PUNCTURED\s+TERNARY SIMPLEX/);
+  assert.match(r.theTwoOptimalCodesAreNamed, /WEIGHT DISTRIBUTION rather\s+than by parameters/);
+  assert.match(r.whyThatClosesTheLoop, /64004ce/);
+  assert.match(r.whyThatClosesTheLoop, /SMALLEST invariant subspace/);
+  assert.match(r.howOptimalityIsJudged, /GRIESMER/);
+  assert.match(r.howOptimalityIsJudged, /Singleton\s+is far too weak/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
