@@ -8116,3 +8116,48 @@ test("the nine blocker transversals at a centre are the tetracode", () => {
   assert.match(r.boundary, /not proof of novelty/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the geometry supplies ASL(2,3) acting on the local tetracode", () => {
+  const r = JSON.parse(fs.readFileSync("data/local_tetracode_action_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.engine, "GAP");
+
+  // the stabiliser really acts on the code, so the copy is canonical
+  assert.equal(r.centreStabiliserOrder, 648);
+  assert.equal(r.neighbours, 12);
+  assert.equal(r.pencilLines, 4);
+  assert.equal(r.transversalsDropped, 9);
+  assert.equal(r.anyTwoTransversalsMeetInExactlyOnePoint, true);
+  assert.equal(r.stabiliserPreservesTheNine, true);
+  assert.equal(r.stabiliserPreservesThePencil, true);
+  assert.equal(r.transitiveOnTheNine, true);
+  assert.equal(r.transversalStabiliser, 72);
+  assert.equal(r.transversalsDropped * r.transversalStabiliser,
+               r.centreStabiliserOrder, "orbit-stabiliser closes: 9 x 72 = 648");
+
+  // the action is NOT faithful, and the image is ASL(2,3)
+  assert.equal(r.actionOnTwelveNeighboursImageOrder, 216);
+  assert.equal(r.actionOnTwelveNeighboursKernelOrder, 3);
+  assert.equal(r.actionOnTwelveNeighboursImageOrder
+               * r.actionOnTwelveNeighboursKernelOrder, 648);
+  assert.equal(r.imageStructure, "(C3 x C3) : SL(2,3)");
+  assert.equal(r.actionOnTwelveNeighboursImageOrder / r.transversalsDropped, 24,
+               "point stabiliser SL(2,3) on the nine, i.e. AG(2,3)");
+  assert.match(r.theLocalGroupIsASL23, /affine plane of order 3/);
+
+  // only the EVEN permutations of the pencil are realised
+  assert.equal(r.actionOnFourPencilLinesStructure, "A4");
+  assert.equal(r.actionOnFourPencilLinesOrder, 12);
+  assert.match(r.onlyEvenPermutationsOfThePencil, /NOT S4/);
+  assert.match(r.onlyEvenPermutationsOfThePencil, /fail-closed guard refused/);
+
+  // and the Golay question is left open, on the corrected number
+  assert.equal(r.m12Order, 95040);
+  assert.equal(r.imageOrderDividesM12, true);
+  assert.equal(r.m12Order % r.actionOnTwelveNeighboursImageOrder, 0);
+  assert.match(r.whatItIsNot, /a shape is not an embedding/);
+  assert.match(r.whatItIsNot, /obstructs nothing/);
+  assert.match(r.whatItIsNot, /left OPEN rather than answered/);
+  assert.match(r.boundary, /InvariantBilinearForm/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
