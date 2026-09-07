@@ -1,0 +1,43 @@
+{
+  "schema": "holotrade.hemisystem-structure-rare.v1",
+  "valid": true,
+  "whatWasSaid": "5aa4ff1 found a 2-balanced set, noticed its row counts split the forty points 20/20 with BOTH halves hemisystems, and wrote that this is 'where the size comes from'. True of that witness -- but the phrasing invites reading it as a property of 2-balanced sets, and it was ONE witness",
+  "varyingIt": {
+    "solutionsCollected": 60,
+    "distinctRowProfiles": 22,
+    "allRowClassesAreHemisystems": 1,
+    "notHemisystems": 59,
+    "reading": "the structure was a property of the witness that happened to be printed, not of the object; stopping at the first solution and generalising would have been CLAUDE.md's fifth failure mode exactly"
+  },
+  "uniformProfileExists": {
+    "count": 3,
+    "profile": "all forty points carry exactly five partners",
+    "reading": "if any single 2-balanced set deserves to be called canonical it is this one, not the hemisystem-split witness: 40 x 5 = 200 needs no explanation for where the size comes from"
+  },
+  "profiles": {
+    "((2, 5), (3, 5), (4, 5), (5, 10), (6, 10), (9, 5))": 1,
+    "((5, 40),)": 3,
+    "((3, 10), (4, 5), (5, 10), (6, 10), (8, 5))": 1,
+    "((1, 10), (3, 5), (5, 10), (7, 10), (11, 5))": 7,
+    "((2, 10), (4, 10), (5, 5), (7, 10), (9, 5))": 2,
+    "((1, 10), (2, 5), (5, 5), (6, 5), (7, 5), (8, 5), (10, 5))": 4,
+    "((4, 15), (5, 15), (6, 5), (7, 5))": 2,
+    "((2, 5), (3, 5), (4, 5), (5, 5), (6, 10), (7, 10))": 7,
+    "((3, 5), (4, 5), (5, 5), (6, 5), (7, 10), (8, 5))": 2,
+    "((1, 5), (2, 5), (3, 5), (4, 5), (6, 5), (7, 5), (8, 5), (9, 5))": 1,
+    "((2, 5), (3, 5), (4, 10), (5, 5), (7, 10), (8, 5))": 5,
+    "((3, 5), (4, 10), (5, 10), (6, 10), (7, 5))": 3,
+    "((1, 5), (3, 10), (5, 10), (7, 10), (9, 5))": 2,
+    "((1, 5), (4, 10), (5, 10), (6, 5), (7, 5), (8, 5))": 2,
+    "((2, 5), (4, 15), (6, 15), (8, 5))": 2,
+    "((3, 5), (4, 5), (5, 15), (6, 15))": 1,
+    "((1, 5), (2, 5), (4, 5), (5, 5), (6, 10), (7, 5), (9, 5))": 2,
+    "((1, 5), (3, 10), (4, 5), (6, 10), (7, 5), (10, 5))": 4,
+    "((2, 15), (6, 20), (10, 5))": 6,
+    "((2, 5), (3, 10), (4, 5), (5, 5), (6, 5), (7, 5), (10, 5))": 1,
+    "((2, 5), (4, 10), (5, 10), (6, 5), (7, 10))": 1,
+    "((4, 20), (6, 20))": 1
+  },
+  "whatSurvives": "m = 2 is feasible, the witness is verified, and the spectrum result c74fbb1 is untouched -- none of that depended on the row structure. The hemisystem observation stays true of its witness and stops being suggestive of anything more",
+  "boundary": "sixty solutions is a SAMPLE, not an enumeration: the search was capped and all sixty are C5-invariant, so nothing here describes 2-balanced sets without that symmetry. That makes the negative STRONGER, not weaker -- one hemisystem case in sixty already refutes universality -- but the true proportion is unmeasured and the profile count is a LOWER bound on the variety. tau_2 is untouched"
+}

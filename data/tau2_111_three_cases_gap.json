@@ -1,0 +1,22 @@
+{
+  "schema": "holotrade.tau2-111-three-cases-gap.v1",
+  "valid": true,
+  "engine": "GAP",
+  "points": 40,
+  "spOrder": 51840,
+  "imageOrder": 25920,
+  "kernelIsCentre": 2,
+  "pointStabiliser": 648,
+  "subdegrees": [1, 12, 27],
+  "rank": 3,
+  "diagonalOrbitsOnOrderedPairs": 3,
+  "residualStabilisers": {"equal": 648, "collinear": 54, "noncollinear": 24},
+  "orbitTimesResidualIs648": true,
+  "allOrbitalsSelfPaired": true,
+  "primeOrderSubgroupClasses": {"equal": {"order2": 1, "order3": 5}, "collinear": {"order2": 1, "order3": 9}, "noncollinear": {"order2": 1, "order3": 1}},
+  "exactlyOneInvolutionClassPerCase": true,
+  "whyThatMatters": "the odd-order conclusion in the_111_symmetric_witnesses.py needs EVERY involution class tested. Each residual group has exactly ONE conjugacy class of order-2 subgroups, certified here by ConjugacyClassesSubgroups, so three instances cover all involutions and the completeness of that slice is certified rather than assumed.",
+  "whyItReduces": "tensor_111_pencil_excess.json proves any 111-leaf blocker has, on each axis, 36 clean lines of load 11 and exactly four dirty lines of load 12 forming one complete point-pencil. A pencil has a centre, so a witness carries a distinguished point on each axis. PSp(4,3) on the 40 points is rank 3, so the ordered pair of centres has exactly three orbits -- equal, collinear, non-collinear -- and fixing one representative of each is a COMPLETE and lossless symmetry break.",
+  "whatItDoesNotDo": "it does not decide feasibility at 111. The reduction is structural; the search that consumes it is separate and is reported whatever it returns.",
+  "boundary": "exact: the full group, the full point set, all orbits and stabiliser orders computed in GAP, and each orbital checked self-paired by exhibiting a group element swapping an ordered pair (RepresentativeAction), not by an indirect argument. The forced pencil structure it rests on is QUOTED from tensor_111_pencil_excess.json and is not re-derived here. tau_2 remains open in [111,115]."
+}

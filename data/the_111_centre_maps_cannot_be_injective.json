@@ -1,0 +1,85 @@
+{
+  "schema": "holotrade.tau2-111-centre-injectivity.v1",
+  "valid": true,
+  "whyThisIsTheDecisiveStep": "tensor_tight_self_duality_obstruction.json excludes 110 by forcing every shadow to be a minimum blocker, establishing centre reciprocity, showing the exceptional set F is empty and hence THE CENTRE MAPS ARE BIJECTIVE, which makes them an incidence isomorphism W(3,3) -> W(3,3)^D and contradicts W(q) being self-dual only for q even. Bijectivity is the hinge of that argument",
+  "theCleanCoreIsExactly36": "tensor_111_pencil_excess.json forces the dirty lines on each axis to be one complete four-line pencil, so the clean set is all 40 lines minus the 4 through the pencil centre: 36 exactly",
+  "rows": [
+    {
+      "labelLevel": "SAT",
+      "labelLevelSeconds": 10.7,
+      "labelLevelWithMatchingSizes": "SAT",
+      "labelLevelSizesSeconds": 7.7,
+      "case": "equal",
+      "cRow": 0,
+      "cCol": 0,
+      "cleanRowLines": 36,
+      "cleanColLines": 36,
+      "reciprocityOnly": "SAT",
+      "reciprocitySeconds": 1.6,
+      "firstSolutionProfile": {
+        "36": 1
+      },
+      "reciprocityInjective": "UNSAT",
+      "injectiveSeconds": 2.7,
+      "maxDistinctFound": 12,
+      "maxDistinctStatus": "FEASIBLE",
+      "maxDistinctProfile": {
+        "3": 12
+      },
+      "maxDistinctSeconds": 120.1
+    },
+    {
+      "labelLevel": "SAT",
+      "labelLevelSeconds": 5.6,
+      "labelLevelWithMatchingSizes": "SAT",
+      "labelLevelSizesSeconds": 7.1,
+      "case": "collinear",
+      "cRow": 0,
+      "cCol": 1,
+      "cleanRowLines": 36,
+      "cleanColLines": 36,
+      "reciprocityOnly": "SAT",
+      "reciprocitySeconds": 1.2,
+      "firstSolutionProfile": {
+        "36": 1
+      },
+      "reciprocityInjective": "UNSAT",
+      "injectiveSeconds": 1.7,
+      "maxDistinctFound": 12,
+      "maxDistinctStatus": "FEASIBLE",
+      "maxDistinctProfile": {
+        "3": 12
+      },
+      "maxDistinctSeconds": 120.2
+    },
+    {
+      "labelLevel": "SAT",
+      "labelLevelSeconds": 5.9,
+      "labelLevelWithMatchingSizes": "SAT",
+      "labelLevelSizesSeconds": 6.9,
+      "case": "noncollinear",
+      "cRow": 0,
+      "cCol": 4,
+      "cleanRowLines": 36,
+      "cleanColLines": 36,
+      "reciprocityOnly": "SAT",
+      "reciprocitySeconds": 1.2,
+      "firstSolutionProfile": {
+        "36": 1
+      },
+      "reciprocityInjective": "UNSAT",
+      "injectiveSeconds": 1.8,
+      "maxDistinctFound": 12,
+      "maxDistinctStatus": "FEASIBLE",
+      "maxDistinctProfile": {
+        "3": 12
+      },
+      "maxDistinctSeconds": 120.1
+    }
+  ],
+  "theResult": "the clean-core centre maps of a 111-witness CANNOT be injective: reciprocity alone is satisfiable in all three cases, reciprocity plus injectivity is UNSAT in all three, each in about two seconds. So the 110 hinge is not merely unproved at 111, it is FALSE, and anyone extending the 110 argument must replace the hinge rather than sharpen it",
+  "bothEndsAreClosed": "all-equal centres die on tile occupancy -- tensor_111_near_duality_budget.json forces 1872 tile-incidences against 1776 available for the constant-centre configuration -- and all-distinct centres die on reciprocity, proved here. The two ends of the range are both closed and what survives is the middle",
+  "whatLivesInBetween": "maximising the number of distinct clean-row centres subject to reciprocity finds solutions with 12 distinct centres, each used exactly 3 times (12 x 3 = 36), uniform multiplicity 3 = q. That search returned FEASIBLE rather than OPTIMAL at its budget, so 12 is a LOWER bound on the maximum and not the maximum; what IS proved is that the maximum lies strictly below 36, since 36 is the injective case and that is UNSAT",
+  "theLabelLayerDoesNotCloseItEither": "adding the blocker-label layer does not help. Each clean line gets a full (c,m) label out of the 360 minimum blockers B(c,m) = (Adj(c) sym-diff C_m) minus {c}, with reciprocity on the centres; and then, additionally, the size condition that the corpus's cleanTileMatching implies IF that matching is a bijection, namely |B(c_L,m_L) cap M| = |B(d_M,n_M) cap L| for every clean pair. Both are SAT in all three cases. So the label layer plus reciprocity plus matching SIZES is still satisfiable, and any exclusion of 111 has to reach the LEAF level -- the actual matchings -- rather than stopping at labels and cardinalities. That is exactly where the corpus's own boundary put it, and this confirms it rather than moving it",
+  "boundary": "the UNSAT results are theorems about the CENTRE-LEVEL RELAXATION only: no assignment of centres satisfies reciprocity injectively. They do NOT by themselves exclude 111, because a witness must satisfy much more than reciprocity -- the shadows must be actual minimum blockers with matching leaves, which is the blocker-label layer this relaxation drops. An infeasible relaxation would exclude 111; a FEASIBLE one excludes nothing, and the SAT rows are exactly that. The 12-centre figure is a witness and so a lower bound only. The forced pencil structure and the 36 clean lines are QUOTED from tensor_111_pencil_excess.json and the constant-centre tile-count contradiction from tensor_111_near_duality_budget.json; neither is re-derived here. Diagonal action, q = 3, and tau_2 remains open in [111,115]"
+}

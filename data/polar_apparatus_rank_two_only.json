@@ -1,0 +1,398 @@
+{
+  "schema": "holotrade.polar-apparatus-rank-two-only.v1",
+  "valid": true,
+  "whyAsk": "64e6406, ba74506, c9e6be7 and aa42b38 all run on one mechanism -- the five-space ker(omega) in Lambda^2(F_q^4) carrying an Sp-invariant QUADRATIC form whose three orbits on P(W) are the 40 isotropic, 45 square and 36 nonsquare points -- and the architecture track works at Sp(6,2) and Sp(8,2), so whether the mechanism lifts in RANK is the load-bearing question",
+  "theFirstGuessWasWrong": "the natural conjecture, that rank 3 has no invariant form at all, is FALSE: the space of invariant symmetric bilinear forms on ker(omega) is one-dimensional at BOTH ranks. The rank-3 form is the one induced by the symplectic form, <a^b,c^d> = <a,c><b,d> - <a,d><b,c>, and it exists at every rank. The obstruction is not the absence of a quadratic form",
+  "invariantForms": [
+    {
+      "n": 2,
+      "q": 3,
+      "dimKerOmega": 5,
+      "invariantSymmetricForms": 1,
+      "pfaffianDegree": 2,
+      "lambdaTopIsOneDimensional": true
+    },
+    {
+      "n": 2,
+      "q": 5,
+      "dimKerOmega": 5,
+      "invariantSymmetricForms": 1,
+      "pfaffianDegree": 2,
+      "lambdaTopIsOneDimensional": true
+    },
+    {
+      "n": 2,
+      "q": 7,
+      "dimKerOmega": 5,
+      "invariantSymmetricForms": 1,
+      "pfaffianDegree": 2,
+      "lambdaTopIsOneDimensional": true
+    },
+    {
+      "n": 3,
+      "q": 3,
+      "dimKerOmega": 14,
+      "invariantSymmetricForms": 1,
+      "pfaffianDegree": 3,
+      "lambdaTopIsOneDimensional": true
+    },
+    {
+      "n": 3,
+      "q": 5,
+      "dimKerOmega": 14,
+      "invariantSymmetricForms": 1,
+      "pfaffianDegree": 3,
+      "lambdaTopIsOneDimensional": true
+    }
+  ],
+  "theObstruction": "Lambda^{2n}(V) is one-dimensional, so b^n is a scalar and the Pfaffian is a form of DEGREE n on Lambda^2(V). At n = 2 it is QUADRATIC, and a quadratic invariant is exactly an orthogonal geometry -- which is why Sp(4,q) lands on O(5,q) at all. At n = 3 it is CUBIC, and a cubic hypersurface in PG(13,q) is not a quadric. Degree 2 happens once",
+  "orbitsExhaustiveRank2": {
+    "3": {
+      "2,zero": 80,
+      "4,nonsquare": 90,
+      "4,square": 72
+    },
+    "5": {
+      "2,zero": 624,
+      "4,nonsquare": 1300,
+      "4,square": 1200
+    },
+    "7": {
+      "2,zero": 2400,
+      "4,nonsquare": 7056,
+      "4,square": 7350
+    }
+  },
+  "orbitsSampledRank3": {
+    "3": {
+      "2,zero": 209,
+      "4,nonsquare": 18372,
+      "4,square": 14923,
+      "4,zero": 14523,
+      "6,nonsquare": 26073,
+      "6,square": 29558,
+      "6,zero": 29792
+    },
+    "5": {
+      "2,zero": 6,
+      "4,nonsquare": 6999,
+      "4,square": 6335,
+      "4,zero": 3189,
+      "6,nonsquare": 25149,
+      "6,square": 25415,
+      "6,zero": 12579
+    }
+  },
+  "orbitSizesRank2Projective": {
+    "3": {
+      "isotropic": 40,
+      "big": 45,
+      "small": 36,
+      "closedForms": [
+        40,
+        45,
+        36
+      ]
+    },
+    "5": {
+      "isotropic": 156,
+      "big": 325,
+      "small": 300,
+      "closedForms": [
+        156,
+        325,
+        300
+      ]
+    },
+    "7": {
+      "isotropic": 400,
+      "big": 1225,
+      "small": 1176,
+      "closedForms": [
+        400,
+        1225,
+        1176
+      ]
+    }
+  },
+  "aLabelConventionWarning": "the square/nonsquare NAMES in orbitsExhaustiveRank2 follow the induced form <a^b,c^d> = <a,c><b,d> - <a,d><b,c> used here, which differs from the Pfaffian used in ba74506 and c9e6be7 by a scalar whose square class varies with q and with the sign convention in J. So the two NAMES swap between files -- at q = 3 and 5 the q^2(q^2+1)/2 orbit is labelled 'nonsquare' here and 'square' there, while at q = 7 they agree. The PARTITION is identical either way, and orbitSizesRank2Projective states it convention-free as (q+1)(q^2+1) / q^2(q^2+1)/2 / q^2(q^2-1)/2 = 40/45/36, 156/325/300, 400/1225/1176. Nothing in this file or the earlier ones depends on which orbit gets which name, but the flip is recorded because an unexplained swap between certificates is exactly the kind of convention artefact that cost this session a wrong correction table earlier",
+  "rankIsFunctionOfQclass": {
+    "n2": true,
+    "n3": false
+  },
+  "whatThatDoesToTheOrbits": "at n = 2 the rank stratification and the quadratic form carry the SAME information: rank 2 is exactly Q = 0, the decomposable bivectors, i.e. the lines of PG(3,q) and so the 40 W33 lines; rank 4 is exactly Q =/= 0, split 45/36 by square class. That coincidence IS the 40/45/36 partition. At n = 3 they are independent -- Q = 0 contains ranks 2, 4 AND 6, and each nonzero class contains ranks 4 and 6 -- so seven classes appear where rank 2 has three",
+  "decisiveWitnesses": {
+    "3": {
+      "zero": {
+        "rankA": 2,
+        "vectorA": [
+          2,
+          0,
+          2,
+          2,
+          0,
+          0,
+          2,
+          1,
+          2,
+          0,
+          0,
+          0,
+          2,
+          2,
+          2
+        ],
+        "rankB": 6,
+        "vectorB": [
+          2,
+          0,
+          1,
+          1,
+          1,
+          2,
+          2,
+          0,
+          2,
+          1,
+          1,
+          2,
+          1,
+          0,
+          2
+        ],
+        "recheckRankA": 2,
+        "recheckRankB": 6,
+        "recheckClassA": "zero",
+        "recheckClassB": "zero",
+        "sameQclass": true,
+        "differentRank": true
+      },
+      "nonsquare": {
+        "rankA": 4,
+        "vectorA": [
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          1,
+          0,
+          1,
+          2,
+          0
+        ],
+        "rankB": 6,
+        "vectorB": [
+          2,
+          1,
+          2,
+          0,
+          2,
+          1,
+          2,
+          0,
+          2,
+          2,
+          2,
+          1,
+          1,
+          0,
+          2
+        ],
+        "recheckRankA": 4,
+        "recheckRankB": 6,
+        "recheckClassA": "nonsquare",
+        "recheckClassB": "nonsquare",
+        "sameQclass": true,
+        "differentRank": true
+      },
+      "square": {
+        "rankA": 4,
+        "vectorA": [
+          0,
+          2,
+          2,
+          0,
+          2,
+          0,
+          0,
+          1,
+          2,
+          1,
+          1,
+          0,
+          0,
+          0,
+          2
+        ],
+        "rankB": 6,
+        "vectorB": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          2,
+          2,
+          0,
+          2,
+          1,
+          0,
+          2,
+          2
+        ],
+        "recheckRankA": 4,
+        "recheckRankB": 6,
+        "recheckClassA": "square",
+        "recheckClassB": "square",
+        "sameQclass": true,
+        "differentRank": true
+      }
+    },
+    "5": {
+      "nonsquare": {
+        "rankA": 4,
+        "vectorA": [
+          4,
+          0,
+          0,
+          0,
+          1,
+          4,
+          4,
+          0,
+          3,
+          0,
+          2,
+          0,
+          0,
+          4,
+          0
+        ],
+        "rankB": 6,
+        "vectorB": [
+          4,
+          3,
+          2,
+          1,
+          2,
+          0,
+          1,
+          4,
+          1,
+          1,
+          1,
+          4,
+          3,
+          0,
+          0
+        ],
+        "recheckRankA": 4,
+        "recheckRankB": 6,
+        "recheckClassA": "nonsquare",
+        "recheckClassB": "nonsquare",
+        "sameQclass": true,
+        "differentRank": true
+      },
+      "zero": {
+        "rankA": 2,
+        "vectorA": [
+          1,
+          2,
+          1,
+          1,
+          3,
+          4,
+          3,
+          1,
+          0,
+          2,
+          3,
+          3,
+          3,
+          1,
+          2
+        ],
+        "rankB": 6,
+        "vectorB": [
+          3,
+          4,
+          4,
+          2,
+          2,
+          3,
+          2,
+          1,
+          4,
+          0,
+          3,
+          0,
+          2,
+          0,
+          4
+        ],
+        "recheckRankA": 2,
+        "recheckRankB": 6,
+        "recheckClassA": "zero",
+        "recheckClassB": "zero",
+        "sameQclass": true,
+        "differentRank": true
+      },
+      "square": {
+        "rankA": 4,
+        "vectorA": [
+          0,
+          3,
+          3,
+          2,
+          1,
+          3,
+          2,
+          0,
+          0,
+          0,
+          3,
+          2,
+          0,
+          4,
+          4
+        ],
+        "rankB": 6,
+        "vectorB": [
+          0,
+          4,
+          4,
+          0,
+          1,
+          0,
+          4,
+          1,
+          2,
+          2,
+          1,
+          0,
+          3,
+          3,
+          0
+        ],
+        "recheckRankA": 4,
+        "recheckRankB": 6,
+        "recheckClassA": "square",
+        "recheckClassB": "square",
+        "sameQclass": true,
+        "differentRank": true
+      }
+    }
+  },
+  "groupOrdersSayTheSame": "at n = 2, |Sp(4,q)| = |SO(5,q)|, so the map onto the orthogonal group can be and is surjective and Witt's theorem makes the Sp-orbits equal to the orthogonal ones; at n = 3, Sp(6) has dimension 21 inside SO(14) of dimension 91, the image is a tiny subgroup, and its orbits are strictly finer than the quadric's",
+  "theCeilingIsB2equalsC2": "every q-general result this session established is general in q and RIGID IN RANK; the natural next move, pushing the polar machinery to Sp(6,q) for the architecture track, cannot work, and now fails for a reason rather than for lack of effort",
+  "flaggedNotClaimed": "the corpus's architecture layer already carries a degree-2 / degree-3 split -- 'gates = deg-2 symplectic + deg-3 E6 cubic' -- and here the same split appears as the degree of the Pfaffian, quadratic at rank 2 and cubic at rank 3. Whether those two degree-3 objects are the SAME cubic is NOT investigated and no identification is asserted; it is recorded as a question, because a coincidence of degree is the kind of thing this corpus has twice found substantive and twice found to be nothing",
+  "boundary": "invariant-form dimensions are computed at q = 3,5,7 for n = 2 and q = 3,5 for n = 3 against a GENERATED group (basis transvections plus random ones); the rank-2 value of 1 is the control that the generating set is adequate, and a deficient set would inflate, never deflate, the answer. The n = 2 orbit table is EXHAUSTIVE over ker(omega); the n = 3 table is SAMPLED, but the claim that rank is not a function of Q-class is carried by the explicit witness pairs, which are exhibited and re-verified, not by the sample. Group dimensions are quoted as classical. Nothing here concerns q even, n > 3, or tau_2, and nothing here retracts any earlier result: those are q-general, which is a different axis from rank"
+}

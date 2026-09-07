@@ -1,0 +1,58 @@
+{
+  "schema": "holotrade.why-depth-five-resists.v1",
+  "valid": true,
+  "isNegativeMethodResult": true,
+  "whatWasAsked": "either a better lower bound than the LP, which is loose at 12.67 against a best-known 22, or a cover below 22. Neither is attempted here",
+  "lpRouteClosedByDuality": {
+    "argument": "for set cover the LP dual IS the fractional packing, so the largest fractional packing is exactly the LP value and any INTEGER packing is at most floor(LP)",
+    "lp": 12.671477085143676,
+    "integerPackingCeiling": 12,
+    "lpCeiling": 13,
+    "conclusion": "the obvious combinatorial strengthening of the lower bound is not merely hard, it is provably worthless here",
+    "isAProof": true
+  },
+  "decisionReformulation": [
+    {
+      "k": 13,
+      "status": "UNKNOWN",
+      "budgetSeconds": 240
+    },
+    {
+      "k": 14,
+      "status": "UNKNOWN",
+      "budgetSeconds": 240
+    }
+  ],
+  "reductions": {
+    "tileConstraints": 6129,
+    "afterDeduplication": 6128,
+    "forcedLeavesFromSingletons": 0,
+    "afterRemovingDominated": 5943,
+    "leafVariablesRelevant": 5294,
+    "variableCountUnchanged": true
+  },
+  "measurements": {
+    "incidences": 3640843,
+    "density": 0.11220918123337785,
+    "leafOptionsPerTile": {
+      "min": 51,
+      "median": 509,
+      "mean": 594.0354054495024,
+      "max": 964
+    },
+    "tilesCoveredPerLeaf": {
+      "min": 58,
+      "median": 871,
+      "mean": 687.7300717793729,
+      "max": 978
+    },
+    "largestLeafCoversFraction": 0.1595692608908468,
+    "lp": 12.671477085143676,
+    "greedy": 24,
+    "bestKnown": 22,
+    "integralityGap": 1.7361827553469116
+  },
+  "diagnosis": "every tile has at least 51 ways to be covered, so there is no unit clause anywhere and nothing for propagation to start from -- every branch looks like every other. At the other end no leaf covers more than a sixth of the tiles, so greedy has no hook. Dense and uniform in BOTH directions is exactly the regime where the LP is weak, dominance reductions are empty, and search has no structure to exploit",
+  "implication": "Bell (15) and Catalan (14) both sit in [13,22] and neither is excluded. What this adds is that they will not be separated by more solver: the generic routes -- LP strengthening, packing, decision reformulation, dominance -- are each closed for a stated reason. Deciding the sequence needs an argument that uses the GEOMETRY of the depth-5 orbits, not their incidence matrix",
+  "boundary": "this MOVES NO BOUND: the interval stays [13, 22] and the sequence stays undecided. The corpus's LP 12.6715 and greedy 24 are reproduced here exactly, which is the only sense in which anything is confirmed. The two UNKNOWN results are solver outcomes at a 240-second budget and are NOT evidence that longer budgets would fail -- what is evidence is the structural measurement, which does not depend on any budget. The duality argument closing the packing route is a proof. tau_2 is untouched"
+}

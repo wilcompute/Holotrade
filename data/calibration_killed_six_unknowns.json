@@ -1,0 +1,98 @@
+{
+  "schema": "holotrade.tau2-114-calibration.v1",
+  "valid": true,
+  "theSetup": "49aa825 aimed prime-order symmetry at 114 and got four UNKNOWNs and one UNSAT; 36d3b4b showed a 6.7x budget changed none of it and concluded the next attempt should change the encoding or the GROUP rather than the clock. So: cyclic subgroups of order 4, 6, 9, 12, which collapse the 1600 cells much further -- C12 leaves 174 orbit variables against 544 for an order-3 element -- and the known 115 witness has stabiliser order 6, exactly this regime",
+  "theMistakeAlmostMade": "the natural way to run this is to sweep 114 and report the verdicts, which yields six UNKNOWNs and two UNSATs and invites the reading that 114 resisted eight independent attacks. It did not, and reporting it that way would have been eight times more confident than the evidence allows",
+  "rows": [
+    {
+      "order": 6,
+      "fixedPoints": 5,
+      "orbits": 342,
+      "at115": "SAT",
+      "sec115": 12.1,
+      "at114": "UNKNOWN",
+      "sec114": 30.1,
+      "informative": true
+    },
+    {
+      "order": 6,
+      "fixedPoints": 2,
+      "orbits": 284,
+      "at115": "UNKNOWN",
+      "sec115": 30.1,
+      "at114": "UNKNOWN",
+      "sec114": 30.1,
+      "informative": false
+    },
+    {
+      "order": 6,
+      "fixedPoints": 2,
+      "orbits": 284,
+      "at115": "UNKNOWN",
+      "sec115": 30.0,
+      "at114": "UNKNOWN",
+      "sec114": 30.0,
+      "informative": false
+    },
+    {
+      "order": 9,
+      "fixedPoints": 1,
+      "orbits": 216,
+      "at115": "UNKNOWN",
+      "sec115": 30.0,
+      "at114": "UNKNOWN",
+      "sec114": 30.0,
+      "informative": false
+    },
+    {
+      "order": 4,
+      "fixedPoints": 4,
+      "orbits": 424,
+      "at115": "UNKNOWN",
+      "sec115": 30.0,
+      "at114": "UNKNOWN",
+      "sec114": 30.0,
+      "informative": false
+    },
+    {
+      "order": 12,
+      "fixedPoints": 1,
+      "orbits": 174,
+      "at115": "UNKNOWN",
+      "sec115": 30.0,
+      "at114": "UNKNOWN",
+      "sec114": 30.0,
+      "informative": false
+    },
+    {
+      "order": 6,
+      "fixedPoints": 0,
+      "orbits": 272,
+      "at115": "UNSAT",
+      "sec115": 0.0,
+      "at114": "UNSAT",
+      "sec114": 0.5,
+      "informative": true
+    },
+    {
+      "order": 4,
+      "fixedPoints": 0,
+      "orbits": 400,
+      "at115": "UNSAT",
+      "sec115": 0.0,
+      "at114": "UNSAT",
+      "sec114": 0.0,
+      "informative": true
+    }
+  ],
+  "classesSupporting115": 1,
+  "classesUninformative": 5,
+  "classesUnsatBoth": 2,
+  "theThreeStatements": {
+    "informativeOpenInstance": "C6 with 5 fixed points supports 115 and is undecided at 114 -- the ONE informative open instance, and the only one worth more budget. Its stabiliser order 6 is the order the corpus records for the witness it already has",
+    "realTheorems": "the two fixed-point-free classes are UNSAT at BOTH sizes, consistent with the involution result of 49aa825",
+    "uninformative": "the remaining five cannot be decided by the solver even at 115, where a witness certainly exists, so their 114 verdicts say nothing whatever about 114"
+  },
+  "sizeIsNotTheBottleneck": "C12 leaves 174 orbit variables and still returns UNKNOWN, while C6 fix 5 with 342 -- nearly twice as many -- resolves 115 in six seconds. The difficulty is the density of the 1600 blocking constraints over few variables, not the variable count. That refutes the natural intuition that more symmetry must mean an easier instance, and is why the calibration earned its budget rather than being a detour",
+  "boundary": "eight conjugacy classes of CYCLIC subgroups of order 4, 6, 9, 12, deduplicated by conjugacy in the full 25,920-element group; NON-cyclic subgroups of those orders are not covered, so this is not a complete sweep over composite-order symmetry. A class UNSAT at 115 is a theorem about that symmetry and that size; a class UNKNOWN at 115 is a statement about the solver, not the mathematics. The UNSAT rows at 114 are theorems, the UNKNOWN rows are not evidence, and this file exists mainly to say which is which. tau_2 remains open in [111,115]"
+}

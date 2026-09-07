@@ -9061,5 +9061,1389 @@
       "source": "cli",
       "timestamp": "2026-09-02T21:33:21.592Z"
     }
+  },
+  {
+    "id": "15485f37-7e8e-4535-92a1-c8f88576f213",
+    "question": "Is the Sp(4,3) transvection length law ours, and what survives as new?",
+    "answer": "NO -- IT IS O'MEARA'S THEOREM. Retracted in Holotrade 3595bd1. ba7ac5a claimed as new that length exceeds residue in Sp(4,3) exactly for elements acting as -1 on a nondegenerate U and +1 on U-perp. That is the classical HYPERBOLIC-MAP theorem: F is hyperbolic when form(v,vF)=0 for all v; non-hyperbolic F costs res(F) transvections, hyperbolic F costs res(F)+1. Verified exhaustively: at q=3 the anomaly set EQUALS the hyperbolic-map set, 91=91, as SETS. Sources: O'Meara, Symplectic Groups (AMS Surveys 16, 1978); Callan, J.Algebra 42 (1976) 378-390; quoted by Pllaha-Volanto-Tirkkonen arXiv:2102.11380, the only one actually read. My '-1 on nondegenerate U' is a q-ODD coincidence: EMPTY at q=2 where 15 hyperbolic maps exist. TERMINOLOGY TRAP: 'hyperbolic MAP' (O'Meara) vs 'hyperbolic LINE' (PG(3,3)) are unrelated, counts 91 and 90 at q=3, one apart -- do not conflate. WHAT SURVIVES AS OURS (3f93821): the bijection g to im(g-1) from the 90 residue-2 anomalies onto the 90 hyperbolic LINES, whose polar pairs are BT810 tritangent planes = 45 octets = the sentinel code's 45 minimum-weight words; the ISA's extra instruction is charged to the code's minimum-weight objects -- about THIS substrate, not symplectic groups. NEW: THE DOILY BREAKS THE INDUCTION. At q=2 hyperbolicity is a strict SUBSET, 225 anomalies vs 15 hyperbolic maps, so 210 non-hyperbolic elements still cost res+1. The residue-dropping step succeeds on all; the INDUCTION fails because it must land non-hyperbolic to repeat. res2/len3: 15 hyperbolic; res3/len4: 90 where EVERY drop lands hyperbolic; res4/len5: 120 whose only exits are those 90. A CASCADE from 15 seeds, not 225 exceptions. At q=3 nothing propagates: 80 transvections leave escape routes that 15 do not. Complements 6bb8975's centre story -- the doily is exceptional twice. SEPARATE METRIC: Ellers 1994 lambda-length uses ONE conjugacy class; at q=3 that is 40 generators at diameter 6 vs 80 at diameter 5, differing on 38264 of 51840 elements, while at q=2 they coincide exactly. Prior art to cite, but it does not settle the all-transvection numbers.",
+    "timestamp": "2026-09-04T01:03:05.304Z",
+    "tags": [
+      "doily",
+      "omeara",
+      "prior-art",
+      "retraction",
+      "transvection",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T01:03:05.305Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T01:03:05.301Z"
+    }
+  },
+  {
+    "id": "2375986e-1132-4968-a876-21a9345a62b1",
+    "question": "Can the qutrit Clifford group be compiled to shortest transvection programs?",
+    "answer": "YES -- TOTAL, CORRECT AND POINTWISE MINIMAL. Holotrade e05515f, analysis/the_qutrit_transvection_compiler.py. THE GAP: Pllaha-Volanto-Tirkkonen arXiv:2102.11380 decompose any Clifford gate into a MINIMAL product of transvections, but build it over F_2 throughout (qubits) on characteristic-2 machinery -- residue matrix, triangularisation by congruence over GF(2), Botha's theorem. This substrate is q=3, and b363f7c showed the transvections ARE its natural instruction set (Cayley diameter 4, state diameter 2), so shortest-program codegen is the ISA's compiler problem and was open at q=3. THE STEP, derived not ported: pick x with form(x, g-inverse x) nonzero; set v = g-inverse x minus x and lam = inverse of form(x, g-inverse x); then g.T(v,lam) fixes x and has residue res(g)-1. One line: g.T(v,lam) fixes x iff T(v,lam)x = g-inverse x, and T(v,lam)x = x + lam*form(x,v)*v, so v is FORCED parallel to g-inverse x minus x and lam is FORCED to invert form(x, g-inverse x). At q=2 this collapses to v = x+xg, lam=1 -- the published step. At odd q the SCALAR is the new content and it is forced, not chosen. THE PORTING PITFALL (the real content): testing hyperbolicity ONCE on the input -- the obvious reading of the published algorithm -- strands 1679 of the 51840, every failure at residue 2 with the current element hyperbolic. A non-hyperbolic gate can peel onto a hyperbolic INTERMEDIATE, and the pivot exists only for non-hyperbolic elements, so the loop dies halfway. Fix: re-test every step and prefer a pivot that lands non-hyperbolic. Same failure mode as the Sp(4,2) induction break in 3595bd1; at q=3 a good pivot always exists but only if you look for it. EXHAUSTIVE VERIFICATION over all 51840 elements: decompositions 51840, every factor a genuine transvection 51840, product reconstructs g exactly 51840, length equals BFS ground truth 51840 (MINIMAL, pointwise, against full BFS not a bound), failed 0, longest program 5 = the group diameter. Never searches the group: at most 80 vectors per instruction, at most 5 instructions, so compiling any gate is bounded work independent of the 51840 -- the difference between a routing table and a compiler. The ONLY irregular branch fires on exactly the 91 hyperbolic maps: the 90 indexed by hyperbolic lines whose polar pairs are the sentinel code's minimum words, plus the centre. The compiler's one special case and the code's minimum-weight structure are the SAME OBJECTS -- co-location made operational. BOUNDARY: verified for Sp(4,3), not proved for Sp(2n,q); emits SYMPLECTIC transvections, and the phase bookkeeping to lift to a real qutrit circuit (Clifford is their central extension) is NOT done. 173 tests, 0 failures.",
+    "timestamp": "2026-09-04T01:03:21.853Z",
+    "tags": [
+      "clifford",
+      "compiler",
+      "holotrade",
+      "isa",
+      "qutrit",
+      "testing",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T01:03:21.854Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "angular",
+        "scala"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T01:03:21.850Z"
+    }
+  },
+  {
+    "id": "3e13ced2-827d-4bcf-97cd-5d971c394eb5",
+    "question": "What is the real structure of the ISA cost anomaly, in the group the architecture runs on?",
+    "answer": "IT IS GQ(4,2) -- 45 EXPENSIVE INSTRUCTIONS FORMING A GENERALIZED QUADRANGLE UNDER ANTICOMMUTATION. Holotrade 3a0a194 and 605f5e5. WRONG GROUP ALL ALONG: every cost result (b363f7c, 6bb8975, 3595bd1, e05515f) was computed in Sp(4,3), where the anomaly set is 91 decomposing awkwardly as 90+1. But machine states are PROJECTIVE points, so PSp(4,3) is the right group. Recomputing there collapses everything. THE CENTRE IS NOT A SECOND ANOMALY, IT IS THE POLARITY: -g is also an anomaly for all 90, and im(-g-1) is EXACTLY the polar line of im(g-1), 90 of 90; so -I acts on the anomaly set as the symplectic polarity, and 91 looked like 90+1 only because the operator doing the pairing was counted as one of the paired things. IN PSp THE ANSWER IS EXACTLY 45: 25920 elements, 80 opcodes, projective diameter 4, and the table has a single anomalous cell (2,3) with 45 entries -- the (4,5) cell is gone because that was -I. All 45 reflections are anomalous AND they are ALL the anomalies. Those 45 classes are the 45 polar pairs = BT810 tritangent planes = 45 octets = the sentinel code's 45 minimum-weight words (4952a3b). So the projective ISA has exactly ONE expensive instruction per minimum-weight codeword and no other. 3f93821's 'co-location' hedge was an artefact of the wrong group. THEN THE GEOMETRY: join two of the 45 when their reflections anticommute. ZERO of the 990 pairs commute strictly; 270 anticommute. Anticommutation is the PAULI INCOMPATIBILITY relation (cf. mutually incompatible Paulis = partial ovoids). In PSp the sign vanishes, so these are exactly the projectively commuting pairs. The graph is SRG(45,12,3,3): 27 maximal cliques ALL of size 5, 3 lines per point, 135 flags, GQ axiom verified = GQ(4,2)=H(3,4), with the 27 lines RECOVERED by Bron-Kerbosch not assumed. Geometric rule: adjacent iff L meets neither M nor M-perp (414 meet M only, 306 meet M-perp only, 270 meet neither = adjacent); the plausible alternative (M spanned by a point of L and one of L-perp) accounts for 0 of 270 -- tested not assumed. GQ(4,2) is the point-line DUAL of GQ(2,4), the carrier geometry. So instructions live on W(3,3), states on GQ(2,4), and the cost irregularity on GQ(2,4)'s dual: the anomaly is a SECOND GEOMETRY, the one belonging to the 27 lines of the cubic surface. CONVERGENCE: a149d0b built GQ(4,2) on these same 45 polar pairs from the depth-3 BLOCKING obstruction via all-isotropic reguli, with identical invariants (45/270/12-regular/27 K5/GQ axiom). The same quadrangle answers 'which triples fail to block' and 'which instructions cost extra'. BOUNDARY: residue is not projectively defined -- min over the two lifts is the convention used; the a149d0b match is by INVARIANTS only, the identity map being an isomorphism is NOT established. 175 tests, 0 failures.",
+    "timestamp": "2026-09-04T01:55:03.369Z",
+    "tags": [
+      "anticommutation",
+      "architecture",
+      "gq42",
+      "isa",
+      "psp",
+      "quadrangle",
+      "schlafli",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T01:55:03.369Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T01:55:03.366Z"
+    }
+  },
+  {
+    "id": "5f69cf8c-109e-4207-b700-029ab7590da7",
+    "question": "What do the 27 lines of the ISA cost quadrangle actually carry?",
+    "answer": "THE SCHLAFLI GRAPH, AND 27 EXTRASPECIAL PAULI GROUPS SHARING ONE CENTRE. Holotrade 34f2a84. SETUP: 605f5e5 gave the 45 expensive instructions as GQ(4,2) under anticommutation, 27 lines recovered as maximal cliques. A line is 5 pairwise ANTICOMMUTING involutions, and 2n+1=5 is the classical ceiling on an anticommuting set in a rank-n symplectic space, so the lines sit at the theoretical maximum. (1) CEILING ATTAINED AND NEVER EXCEEDED: maximal anticommuting sets by size = {5:27}. No 6 exists among the 45, no smaller set is maximal, uniform 27 times. (2) THE 27 CARRY THE SCHLAFLI GRAPH: meet graph on the 27 lines = SRG(27,10,1,5) = GQ(2,4) collinearity; its COMPLEMENT = SRG(27,16,10,8) = the SCHLAFLI GRAPH of the 27 lines of a cubic surface. So the dual quadrangle is not an analogy, it is present on the same data: 45 points give GQ(4,2), 27 lines give GQ(2,4), and the complement is Schlafli. Aut(Schlafli) = W(E6) of order 51840 = |Sp(4,3)| -- the corpus's one-group, CITED not recomputed. (3) EACH LINE GENERATES AN EXTRASPECIAL 2-GROUP: order 32, |Z|=2, G'=Z, |G/Z|=16 elementary abelian, 11 involutions, 20 elements of order 4, on ALL 27 lines. Order 32 with those invariants is extraspecial 2^{1+4}; plus type has 19 involutions/12 order-4, minus type 11/20, so all 27 are 2^{1+4}_- = D8 o Q8, the two-qubit Pauli shape. Five pairwise anticommuting involutions generating an extraspecial 2-group IS the Pauli relation -- inside Sp(4,3), over F_3. (4) ONE CENTRE: distinct centres across all 27 lines = 1, and it IS {I,-I} = Z(Sp(4,3)). So -I has THREE jobs: it implements the symplectic polarity on the 45 anomalies (3a0a194), it explains why Sp's anomaly count looked like 90+1, and it is the common centre of every one of the 27 groups. WHAT IS STRANGE AND WORTH CHASING: the substrate is q=3 with a qutrit Clifford instruction set, yet its cost anomalies generate 2-GROUPS. The characteristic-two structure is NOT imported -- it comes from anticommutation, a sign condition that knows nothing about the field. The qubit shape lives inside the qutrit machine and the cost model is where it shows. BOUNDARY: cited not derived are GQ(4,2)-GQ(2,4) duality, the Schlafli graph, Aut=W(E6), the 2n+1 ceiling, and the involution counts separating extraspecial types. NO claim that these are Pauli groups of an actual qubit register -- the isomorphism type is established, not a physical identification. OPEN LEAD: Out(2^{1+4}_-) = O^-(4,2) = S5 of order 120, and the fibre-product stabiliser found earlier was F20 = AGL(1,5) inside S5 -- untested connection. 176 tests, 0 failures.",
+    "timestamp": "2026-09-04T02:04:42.076Z",
+    "tags": [
+      "e6",
+      "extraspecial",
+      "gq24",
+      "isa",
+      "pauli",
+      "schlafli",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T02:04:42.077Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T02:04:42.073Z"
+    }
+  },
+  {
+    "id": "a30dc381-98b3-430e-875a-e7a77cd6109d",
+    "question": "Does the ISA cost model know about the cubic surface?",
+    "answer": "YES -- IT RECONSTRUCTS THE ENTIRE SCHLAFLI CONFIGURATION. Holotrade fe4fb77. The cost model mentions no geometry: it is ONE predicate, 'does g need more transvections than its residue', which is O'Meara's hyperbolic-map condition and refers only to a bilinear form and a word length. No cubic surface, no lines, no planes, no E6. Run it out and all three Schlafli numbers appear with their classical incidences: 45 = the anomaly set in PSp(4,3) (3a0a194); 27 = its maximal ANTICOMMUTING sets = lines of GQ(4,2) (605f5e5); 36 = double-sixes among those 27 (new). 36 IS THE TEST because it is rigid -- a double-six is NOT two disjoint sixers, it needs a bijection a_i to b_i with a_i SKEW to b_i and MEETING every other b_j. Results: each line meets 10 and is skew to 16 (classical); 72 sixers (classical 72); double-six partners per sixer = exactly 1 (classical); 36 double-sixes (classical 36); 12 lines covered each (classical 12). The LOOSE reading (any two disjoint sixers) gives 756, so 36 is not a count a wrong construction stumbles into -- I got 756 first with the wrong definition and had to fix it. WHY THIS IS MORE THAN A THIRD MATCHING NUMBER: the corpus already owns these objects from directions unrelated to instruction cost. BT810: the 36 W(3,3) spreads ARE the 36 double-sixes, and the 45 tritangent planes are named there. W33-Theory Passes 368-371 (analysis/THE_27_FOLD_WAY.md): E6/2E6 splits 1+27+36, the 36 nonsingular classes are the root pairs AND the 36 spreads, the 27 isotropic classes are 'the 27 of the cubic surface' carrying the order-27 exponent-3 Heisenberg group -- the single-qutrit Pauli group -- regularly. 0d8d33e: the 216 carrier is a principal 6-fibration over those 36. 4952a3b: the 45 are the sentinel code's minimum-weight words. So 27/36/45 were ALREADY the spreads, the E6 root pairs, the carrier's base and the code's minimum weight. WHAT IS NEW is that the COST FUNCTION produces them -- 'which instructions are expensive' is not a separate fact about the machine, it is the same configuration reached from a word-length predicate. TWO PAULI GROUPS ON THE SAME 27: their track's 27 carries an order-27 exponent-3 extraspecial group (QUTRIT Pauli) acting regularly; this 27 INDEXES order-32 extraspecial 2^{1+4}_- groups one per line (QUBIT-shaped, 34f2a84). A 3-group acting on the 27 and a 2-group indexed by it. Neither track could see that from its own side. BOUNDARY: the Schlafli configuration and the 27/36/45 counts are classical and cited; what is computed is that the ISA anomaly set carries it. The identification of THIS 27 with their 27, and of these 36 with BT810's spreads, is by INVARIANTS and the classical uniqueness of the configuration, NOT by an explicit equivariant bijection -- that is the obvious next thing to build. 177 tests, 0 failures.",
+    "timestamp": "2026-09-04T02:26:09.467Z",
+    "tags": [
+      "bt810",
+      "cross-track",
+      "cubic-surface",
+      "e6",
+      "isa",
+      "schlafli",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T02:26:09.467Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T02:26:09.462Z"
+    }
+  },
+  {
+    "id": "76e79e7a-7d4b-450d-9953-352d30ada8f8",
+    "question": "Can the 45 expensive PSp instructions be concretely bound to the abstract H(3,4) ROM slots?",
+    "answer": "YES -- EXPLICIT 45-ENTRY TABLE, BUILT AND VERIFIED. Holotrade 6b19220, data/the_45_slot_rom_bijection.json. THE GAP WAS NAMED TWICE, INDEPENDENTLY: my fe4fb77 closed with 'the identification is by INVARIANTS ... NOT by an explicit equivariant bijection, which is the obvious next thing to build'; the parallel track's slow-path GQ microcode ROM certificate closed with 'the concrete bijection from the 45 actual PSp anomaly target IDs to these 45 abstract slots is not yet constructed here; runtime use must fail closed until that mapping is generated and verified'. Same gap from opposite directions, and a HARD BLOCKER -- without it the ROM cannot decode a real instruction. TWO INDEPENDENT SIDES, NOTHING SHARED: (A) the 45 anomaly classes of PSp(4,3), transvection length exceeding residue, paired under g ~ -g, joined when they ANTICOMMUTE (605f5e5); (B) H(3,4), points of PG(3,4) on sum x_i^(q+1)=0 with q=2, which over GF(4) is exactly EVEN WEIGHT (18 of weight 2 + 27 of weight 4 = 45), joined when the line through them lies wholly in the variety. One is a word-length predicate on matrices over F_3, the other a Hermitian form over F_4. RESULT: both sides 45 points / 27 lines / degree 12; phi bijective, edge-preserving in BOTH directions, and carrying A's 27 lines ONTO B's 27. Found by backtracking on the collinearity graphs then INDEPENDENTLY re-verified, with the line-set image checked as SET EQUALITY not containment. The certificate carries the full 45-entry table: slot index, H(3,4) point in GF(4) coordinates, and the actual Sp(4,3) matrix. IT IS A CHOICE, NOT A CANONICAL MAP, and that is operationally correct: GQ(4,2) has a large automorphism group so many bijections work and none is distinguished; a ROM does not need a canonical map, it needs a FIXED verified one. Both sides are canonically ORDERED first (each anomaly class by its lexicographically smaller matrix; H(3,4) points as sorted GF(4) tuples) so the table reproduces from the certificate rather than from search order. Regenerating with a different search yields a different valid table -- THIS certificate is the contract. WHAT IT UNBLOCKS: the ROM is 27 banks of 5 with every slow target in exactly 3 banks, and its boot check verifies line size, target multiplicity, pair uniqueness, SRG parameters and the GQ axiom before admitting an anomaly catalogue. With this table the catalogue is admissible. BOUNDARY: uniqueness of GQ(4,2) is classical and cited -- it is why an isomorphism had to exist, but existence is not the deliverable, the table is. NO claim that this table is equivariant for any specific group action. 178 tests, 0 failures.",
+    "timestamp": "2026-09-04T02:34:06.730Z",
+    "tags": [
+      "bijection",
+      "cross-track",
+      "gq42",
+      "h34",
+      "isa",
+      "rom",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T02:34:06.730Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T02:34:06.725Z"
+    }
+  },
+  {
+    "id": "120aa8c2-aadf-4133-b2f1-16a3a0c50f48",
+    "question": "Does the expensive-instruction geometry have an ovoid, and what indexes its distinguished ones?",
+    "answer": "IT HAS 200 OVOIDS AND NO SPREAD -- EXACTLY DUAL TO W(3,3) -- AND THE 40 DISTINGUISHED ONES ARE THE CHEAP OPCODES, PROVED EQUIVARIANTLY. Holotrade 8982d36. THE QUESTION NOBODY ASKED: every major result here turns on ovoid-or-not (tau_1, tau_2, hemisystems, tower law). W(3,3) has 36 spreads and NO ovoid (Thas, odd q). 605f5e5 produced a SECOND quadrangle, GQ(4,2) on the 45 expensive instructions, and nobody asked it the same question. THE ANSWER INVERTS: W(3,3) = 36 spreads / 0 ovoids; GQ(4,2) = 200 ovoids / 0 spreads. EXACTLY DUAL DEFECTS -- the instruction geometry partitions but cannot be transversally covered; the cost geometry covers but cannot be partitioned. Both by exhaustive exact cover. The 200 in two orbits 40+160 with the 40 called PLANE ovoids is the classical H(3,4) count (cited, matched exactly). THE SUBSTRATE'S OWN GROUP REALISES THE SPLIT: PSp(4,3) acts on the 45 by CONJUGATION (valid since length and residue are class functions) and its orbits on the 200 ovoids are 40+160 -- the literature's split produced by the machine's own symmetry, not the abstract quadrangle's automorphism group. THE 40 IS PROVED, NOT MATCHED: 40 distinguished ovoids have suborbits 1+12+27; the 40 points of W(3,3) have suborbits 1+12+27 -- exactly THE_27_FOLD_WAY's split (Passes 368-371). fe4fb77 had been criticised in its own boundary for stopping at invariants, so this time the map is BUILT: an equivariant bijection psi from the 40 ovoids to the 40 points, bijective and intertwining ALL 80 generators. Both actions are transitive so psi is forced once one value is chosen; the content is that a consistent choice EXISTS, checked against every generator. The two 40-sets are the SAME PSp(4,3)-set. MACHINE READING: an ovoid is 9 expensive instructions meeting every one of the 27 ROM banks exactly once -- a minimal transversal cover of the whole slow path (9 points x 3 lines = 27). 40 of the 200 are distinguished and those 40 ARE the cheap opcode axes. So EVERY CHEAP OPCODE CANONICALLY NAMES A 9-ELEMENT MINIMAL COVER of the 45-instruction slow path: the fast path indexes the slow path's canonical covers, and nobody designed that. With no spread, the complementary move is impossible -- the 45 can be covered but never cleanly partitioned into 9 disjoint banks, which is a hard constraint on ROM layout. BOUNDARY: cited not derived are the 200=40+160 plane-ovoid split, Thas for W(3,3), and THE_27_FOLD_WAY for 1+12+27. Establishing psi does NOT establish that the 27 here is the same 27 as that file's -- still open, and the next thing to build. 179 tests, 0 failures.",
+    "timestamp": "2026-09-04T02:56:59.113Z",
+    "tags": [
+      "cross-track",
+      "equivariant",
+      "gq42",
+      "isa",
+      "ovoid",
+      "spread",
+      "thas",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T02:56:59.124Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T02:56:59.093Z"
+    }
+  },
+  {
+    "id": "4e78a2de-b8bb-44e6-af68-ead0988a3c5a",
+    "question": "Is the cost quadrangle's 27 the same 27 as THE_27_FOLD_WAY's?",
+    "answer": "YES -- ONE TORSOR UNDER THE QUTRIT PAULI GROUP. Holotrade f04eec3. This closes the item 8982d36 left open in its own boundary ('establishing psi does NOT establish that the 27 appearing here is the same 27 as THE_27_FOLD_WAY's -- that remains open and is the next thing to build'). THE TWO 27s: theirs = W33-Theory Passes 368-371 fix a point p0 of W(3,3), the 40 split 1+12+27, and the elation group (order 27, exponent 3, nonabelian, the Kantor-Sahoo-Sastry Heisenberg group = the single-qutrit Pauli group <X,Z,wI>) acts REGULARLY on the 27 opposite points. Mine = the 27 lines of GQ(4,2), the maximal anticommuting sets of the 45 expensive instructions (605f5e5). Only Stab(p0) preserves both, so that is where they must be compared. RESULT: Stab(p0) has order 648 = 25920/40 and is TRANSITIVE on both -- orbits [27] and [27]. Its Sylow 3-subgroup has order 81 and contains an order-27, exponent-3, NONabelian subgroup which is REGULAR on the 27 opposite points (their result, reproduced) AND REGULAR on my 27 GQ-lines (new). A group acting regularly on two sets makes them isomorphic as G-sets, and the bijection chi is explicit: bijective and intertwining the whole elation group. WHAT NOW SITS ON A SINGLE 27: their side an order-27 exponent-3 group acting REGULARLY on it (single-qutrit Pauli, a 3-GROUP); this side order-32 extraspecial 2^(1+4)_- groups INDEXED by it, one per line, sharing the centre -I (2-GROUPS, 34f2a84). One 27 carrying a qutrit Pauli torsor and indexing 27 qubit-shaped Pauli groups -- a coincidence of counts when first noticed, now a statement about one object. LIMIT ON THE SEARCH, DECLARED: THE_27_FOLD_WAY says the order-27 subgroups of a Sylow 3-subgroup are exactly four Frattini-hyperplane preimages; my enumeration looked ONLY at subgroups generated by two order-3 elements and found exactly one -- the exponent-3 extraspecial, which is the one the result needs. The others are presumably the exponent-9 cases that two order-3 elements cannot generate, but all four were NOT enumerated: this reproduces their regularity result for one subgroup, it does not re-derive their classification. BOUNDARY: closes the 27 question ONLY. Whether the 36 here are BT810's spreads remains by invariants. 180 tests, 0 failures.",
+    "timestamp": "2026-09-04T03:33:47.862Z",
+    "tags": [
+      "27",
+      "cross-track",
+      "elation",
+      "gq42",
+      "qutrit-pauli",
+      "torsor",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T03:33:47.868Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "indexing"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T03:33:47.849Z"
+    }
+  },
+  {
+    "id": "c3501ae8-6582-4b90-a8e8-26633a1ba484",
+    "question": "What are the other 160 minimal covers of the slow path?",
+    "answer": "THEY ARE ANCHORED TOO -- EVERY OPCODE AXIS ANCHORS EXACTLY FIVE COVERS, 1 CANONICAL + 4 SPARE. Holotrade 905c700. CONTEXT: 8982d36 found 200 covers in orbits 40+160 and showed the 40 are the cheap opcode axes; the parallel track then identified those 40 as the PAYNE covers (fix an axis, Payne-derive W(3,3), get 36 inherited lines + 9 new hyperbolic ones, and the 9 are exactly a cover -- data/slow_path_is_payne_derivative.json). BOTH use only the 40. Nobody had looked at the other 160, which is 80% of the covers. MY GUESS WAS WRONG, INFORMATIVELY: I expected the 160 to be unaddressable (no cheap opcode naming them). In fact stabiliser orders over the 200 are {648:40, 162:160} and the number of W(3,3) points fixed by the stabiliser is {1:200} -- EVERY one of the 200 is anchored at a unique point, the 160 just by a smaller group (162 vs 648, index 4 inside the point stabiliser). THE FIBRATION IS UNIFORM: covers per opcode axis = 5 at every one of the 40; composition 1 plane + 4 other everywhere; the 4 alternates form a SINGLE orbit under the axis stabiliser; 40x5 = 200. So the anchor map is a clean 5-to-1 fibration, one canonical (Payne) cover plus four alternates of equal standing. INTERSECTIONS: |plane n plane| = {1:540, 3:240} (canonicals never miss each other); |other n plane| = {0:1600, 2:4320, 6:480}; |other n other| = {0:1680, 1:6480, 3:2400, 4:2160}. An alternate CAN be disjoint from a canonical one (1600 pairs share nothing), so alternates reach parts of the slow path a given canonical cover does not -- genuine fallbacks, not near-duplicates. OPERATIONAL: a cover is 9 slow targets meeting each of the 27 ROM banks exactly once. The decoder uses the canonical one per axis; there are FOUR MORE per axis, i.e. 160 spare minimal covers the design does not use. Free redundancy: fall back if a bank is corrupt, or cross-check a decode against four independent covers, with symmetry guaranteeing no alternate is worse. CRITICAL NEGATIVE: THIS FIVE IS NOT THE F20 FIVE. The parallel track's F20 Payne five-state atlas has AGL(1,5) acting TRANSITIVELY on five things; here the axis stabiliser acts on its fibre with orbits 1+4, NOT transitively, so nothing permutes these five as AGL(1,5) permutes five points. Two distinct fives -- conflating them would be exactly the matching-integer error this repo keeps paying for. BOUNDARY: exhaustive (all 200 by exact cover, orbits/stabilisers over the full 25920, anchors by fixed-point computation on every one, intersections over ALL pairs). The Payne identification of the 40 is the parallel track's, cited not re-derived. NO claim that the four alternates have a Payne description. 181 tests, 0 failures.",
+    "timestamp": "2026-09-04T14:49:23.966Z",
+    "tags": [
+      "cross-track",
+      "gq42",
+      "ovoid",
+      "payne",
+      "redundancy",
+      "rom",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T14:49:23.967Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T14:49:23.960Z"
+    }
+  },
+  {
+    "id": "4f2d018b-e779-4c1c-af9c-a5611454c164",
+    "question": "Are the cost model's 36 double-sixes the 36 spreads of W(3,3)?",
+    "answer": "YES -- EQUIVARIANTLY, AND THAT CLOSES THE WHOLE SCHLAFLI TRIPLE. Holotrade f624d8f. THE LAST LEG: fe4fb77 derived all three Schlafli numbers from the cost model and closed by admitting the identifications were 'by INVARIANTS and the classical uniqueness of the configuration, NOT by an explicit equivariant bijection'. The 45 and the 27 were built since (6b19220, f04eec3). The 36 was still outstanding and was named as such by BOTH 8982d36 and f04eec3 ('whether the 36 here are BT810's spreads is still by invariants'). RESULT: spreads of W(3,3) = 36 (10 disjoint lines covering 40 points); double-sixes from the cost geometry = 36; PSp(4,3) transitive on each; equivariant bijection bijective and intertwining ALL 80 generators. BT810 had already identified the 36 spreads with the 36 double-sixes of the cubic surface -- what is ADDED is that the 36 double-sixes reconstructed FROM THE COST MODEL (skew graph on its 27 lines, 72 sixers, rigid partner condition) are those same spreads, equivariantly. THE COMPLETE LEDGER, every tie now an explicit map checked on every generator: 27 = the quadrangle's LINES = W(3,3)'s 27 opposite points, one torsor under the qutrit Pauli group (f04eec3); 36 = its DOUBLE-SIXES = W(3,3)'s 36 spreads (f624d8f); 45 = its POINTS = the H(3,4) ROM slots (6b19220); 40 = its distinguished COVERS = the cheap opcode axes (8982d36). NO INVARIANT-MATCHING LEFT IN THE CHAIN. The cost model is ONE predicate -- does an element need more transvections than its residue -- and it reconstructs, with the corpus's own group acting correctly throughout, the configuration the corpus had assembled from blocking sets, spreads, E6 classes and a weight enumerator. WHAT IT LICENSES: treating the cost geometry and the substrate geometry as ONE object rather than two that share counts -- which is exactly what the slow-path ROM needs in order to decode. WHAT IT DOES NOT SAY: that the cost model found anything the corpus lacked. 27, 36 and 45 were already the spreads, the E6 root pairs, the torsor and the code's minimum weight. The content is that instruction COST is not an extra fact layered on the geometry -- it IS the geometry, read through a word-length function. BOUNDARY: exhaustive; bijection verified against every one of the 80 generators, not sampled; BT810's spread/double-six identification and the classical Schlafli counts cited not derived. 182 tests, 0 failures.",
+    "timestamp": "2026-09-04T14:57:34.731Z",
+    "tags": [
+      "bt810",
+      "closure",
+      "double-six",
+      "equivariant",
+      "schlafli",
+      "spreads",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T14:57:34.732Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T14:57:34.727Z"
+    }
+  },
+  {
+    "id": "8273bcde-bad8-47ab-9302-1392cb4be7bb",
+    "question": "What is tau_1 of the cost quadrangle, and what does it say about tau_2?",
+    "answer": "tau_1(GQ(4,2)) = 9, DEFECT ZERO -- A NEW TOWER-LAW BASE, AND IT REFRAMES tau_2 AS A COMPRESSION MEASURE. Holotrade 48e1841. SETUP: 8982d36 proved GQ(4,2) has 200 ovoids while W(3,3) has none; d9a9c59's splitting theorem says an ovoid-bearing factor peels off exactly ('if Q1 has an ovoid then tau(Q1 x R) = tau_1 * tau(R) for arbitrary R'). The two had not been combined and nothing in the corpus computed tau_1 for GQ(4,2). RESULT: 45 points, 27 lines, 3 lines/point, 5 points/line, so the counting bound is 27/3 = 9, and a 9-point blocker exists -> tau_1 = 9 = st+1, DEFECT ZERO. The witnesses are forced to be ovoids: a 9-set covering 27 lines with each point on exactly 3 has no slack, so it meets every line exactly once. Enumeration: 200 minimum blocking sets, all 200 are ovoids -- the minimum blockers and the ovoids are the SAME 200 objects, which is what defect zero means concretely. THE FOUR-QUADRANGLE DICHOTOMY: W(3,3) (3,3) st+1=10 tau_1=11 defect 1 no ovoid; dual of W(3,3) (3,3) st+1=10 tau_1=10 defect 0 HAS ovoid (base 10); GQ(2,4) (2,4) st+1=9 tau_1=10 defect 1 no ovoid; GQ(4,2) the cost quadrangle (4,2) st+1=9 tau_1=9 defect 0 HAS ovoid (base 9). So defect 0 <=> ovoid <=> tau_1 = st+1 <=> tower law applies, and IN EACH DUAL PAIR EXACTLY ONE MEMBER BEARS AN OVOID (W's dual's ovoids are W's 36 spreads). That is 8982d36's dual defect restated as blocking numbers. NEW TOWER BASE, smaller than d9a9c59's 10: tau(GQ(4,2)^m x R) = 9^m tau(R) for arbitrary R; tau(GQ(4,2)^m) = 9^m exactly at every depth; and combined, tau(GQ(4,2)^m x Wdual^j x W^k) = 9^m * 10^j * tau(W^k) -- so an arbitrarily deep tower is EXACTLY SOLVED except its W-factors, and the whole open problem sits at k>=2. WHAT tau_2 MEASURES: an ovoid-bearing factor does NOT compress (9^2 = 81 exactly), while W(3,3) DOES -- tau_1^2 = 121 but tau_2 <= 115, strictly cheaper than the square. The OVOID is what prevents compression, and tau_2 measures what the missing ovoid buys: between 6 and 10 off the square (121-115=6, 121-111=10). ARCHITECTURAL: composing slow paths is free (the expensive-instruction geometry tiles to any depth at exactly 9 per level) while composing fast paths is the open problem -- the part of the machine that costs extra per instruction is the part that costs nothing to scale, and vice versa. BOUNDARY: tau_1=9 exact (counting lower bound, explicit witness, complete enumeration of all 200 minimum blockers); the splitting theorem is d9a9c59's, cited and applied not re-proved; tau_1 for W(3,3), its dual and GQ(2,4) are corpus values cited not recomputed. tau_2 REMAINS OPEN in [111,115]. Also corrects a loose reading: the tower law's existing ovoid-bearing base is the DUAL of W(3,3) with tau_1=10, not GQ(2,4). 183 tests, 0 failures.",
+    "timestamp": "2026-09-04T15:18:57.201Z",
+    "tags": [
+      "blocking",
+      "gq42",
+      "ovoid",
+      "tau1",
+      "tau2",
+      "tower-law",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T15:18:57.203Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T15:18:57.149Z"
+    }
+  },
+  {
+    "id": "aec56083-6745-411b-8764-a4385277afb9",
+    "question": "Does the cost quadrangle generalise beyond q=3?",
+    "answer": "NO -- IT IS A QUADRANGLE ONLY AT q=3, AND THE FAILURE IS TWO-STEP. Holotrade 424111b. This is a SCOPE CORRECTION to my own chain 605f5e5..48e1841, all of which was built at q=3 only. THE CONSTRUCTION IS q-GENERAL: the anomalies are the reflections -1 on a nondegenerate line L and +1 on L^perp, one per hyperbolic line of PG(3,q), paired by g ~ -g since -r_L = r_{L^perp}. Defined at every odd q, and every reflection so built is verified O'Meara-hyperbolic. COUNTS (exact closed forms across q=3,5,7): classes = q^2(q^2+1)/2 giving 45, 325, 1225; degree = q(q^2-1)/2 giving 12, 60, 168. The graph is REGULAR at every q tested. BUT REGULARITY IS ALL THAT SURVIVES: q=3 -> SRG(45,12,3,3) and it IS GQ(4,2); q=5 -> SRG(325,60,15,10), strongly regular but NOT a quadrangle; q=7 -> 168-regular but NOT strongly regular. TWO-STEP degradation, not one. At q=5 the object does not fall apart -- it stays strongly regular and satisfies the SRG feasibility identity k(k-lam-1)=(v-k-1)mu -- but fails the GQ identity: s=lam+1=16, t=mu-1=9 gives (s+1)(st+1)=17x145, nowhere near 325. At q=7 lambda is STILL constant (21); it is MU that splits, taking {21,28}. So the failure is precise and gradual. CONSEQUENCE: the Schlafli configuration (fe4fb77, f624d8f), the 27 extraspecial 2^(1+4)_- groups (34f2a84), the 200 ovoids and the dual defect vs W(3,3) (8982d36), and tau_1=9 with the new tower base (48e1841) ALL rest on the graph being GQ(4,2), which holds ONLY at q=3. None should be quoted with a 'for odd q' attached. SECOND INDEPENDENT ARRIVAL: the corpus already knows the quadrangle is a q=3 coincidence from the REGULUS side -- data/the_quadrangle_is_the_q_equals_three_coincidence.json shows each all-isotropic regulus names (q+1)/2 polar pairs, an EDGE only at q=3, recording isAGraph false from q=5 on. That is the combinatorial route; this is the ALGEBRAIC route through anticommutation and word length. Same verdict, and this adds the SHAPE of the failure the prior file does not record. BOUNDARY: exact at q=3,5,7 (hyperbolic lines enumerated completely, adjacency from matrices not a geometric shortcut, lambda/mu over ALL pairs); the closed forms are read off three data points and NOT proved; no q>7 tested, so 'not SRG for all q>=7' is NOT established. 184 tests, 0 failures.",
+    "timestamp": "2026-09-04T15:43:33.298Z",
+    "tags": [
+      "gq42",
+      "q3-coincidence",
+      "rest",
+      "scope-correction",
+      "srg",
+      "vary-the-sample",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T15:43:33.298Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T15:43:33.293Z"
+    }
+  },
+  {
+    "id": "65a7bb89-b77b-4e1a-88be-bd3282314e0a",
+    "question": "Why do the cost-geometry closed forms exist, and why does the quadrangle collapse for q>3?",
+    "answer": "BECAUSE THE WHOLE MACHINE IS ONE PROJECTIVE SPACE: 121 = 40 + 45 + 36. Holotrade eb6cfe8. 424111b measured that the cost graph is a quadrangle only at q=3, with exact closed forms q^2(q^2+1)/2 vertices and q(q^2-1)/2 degree, but explained NEITHER the forms NOR the collapse. Both come from one classical fact: Sp(4,q) = O(5,q) for odd q, under which the whole picture is a single projective space cut by a quadratic form. THE IDENTITY: (q^5-1)/(q-1) = (q+1)(q^2+1) + q^2(q^2+1)/2 + q^2(q^2-1)/2, verified exactly at q=3 (121 = 40+45+36), q=5 (781 = 156+325+300), q=7 (2801 = 400+1225+1176). AT q=3 THE THREE PARTS ARE THE THREE THINGS THIS THREAD HAS BEEN ABOUT: 40 isotropic = the points of W(3,3) = the CHEAP opcodes; 45 square-type nonisotropic = the EXPENSIVE instructions; 36 nonsquare-type = the spread / double-six count. THE MIDDLE ONE IS PROVED: building the square-type nonisotropic points of O(5,3) independently from x0^2+x1x2+x3x4 joined by PERPENDICULARITY, and searching against the cost anomalies joined by ANTICOMMUTATION, gives an explicit graph isomorphism, bijective and edge-preserving both ways, 45 vertices degree 12 on each side. So 'anticommutes in Sp' IS 'perpendicular in O(5,q)' -- correct, because anticommuting reflections in Sp become COMMUTING ones in PSp, and orthogonal reflections commute exactly when their axes are perpendicular. WHAT IT EXPLAINS: the closed forms are just orthogonal-group ORBIT SIZES on PG(4,q); and the collapse is that this graph is the NO family on nonisotropic points of a polar space, which is strongly regular only for small parameters. THE COST GEOMETRY WAS NEVER A QUADRANGLE IN GENERAL -- it is an orbit graph that happens to be one at q=3. THE STATEMENT: cheap opcode, expensive instruction and spread are not three constructions that happen to share a symmetry group; they are the three classes a quadratic form cuts PG(4,q) into (isotropic, square, nonsquare). The machine's fast path, slow path and scheduling objects are ONE POINT SET, sorted by the value of a single form. THREE EPISTEMIC STATUSES, LABELLED IN THE CERTIFICATE: the 40 being W(3,3)'s is the classical content of Sp(4,q)=O(5,q), CITED; the 45 is PROVED here by explicit isomorphism; the 36 matching the spread count is a COUNT MATCH ONLY, not shown to be the 36 spreads as a PSp-set -- that is the next thing to build. The identity is verified at q=3,5,7; the isomorphism is built at q=3 only, where 424111b's parameter and failure-mode match at q=5,7 (including lambda=[21], mu=[21,28] at q=7) is evidence but not proof. 185 tests, 0 failures.",
+    "timestamp": "2026-09-04T15:57:20.152Z",
+    "tags": [
+      "gq42",
+      "isa",
+      "no-graph",
+      "o5q",
+      "orthogonal",
+      "pg4",
+      "unification",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T15:57:20.153Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T15:57:20.149Z"
+    }
+  },
+  {
+    "id": "10175a27-5283-4a20-a8fa-0303a7281bcd",
+    "question": "Are the 40 isotropic points of the PG(4,3) partition W(3,3)'s points or its lines?",
+    "answer": "ITS LINES -- eb6cfe8 WAS WRONG, AND NO INVARIANT COULD HAVE CAUGHT IT. Holotrade 66fbc70. eb6cfe8 labelled the isotropic class of the partition 121 = 40+45+36 as 'the points of W(3,3) = the CHEAP opcodes'. Wrong: under the exterior-square isomorphism Sp(4,q) -> O(5,q), an ISOTROPIC point is a decomposable bivector, i.e. a LINE of PG(3,q), and restricted to the omega-hyperplane those are the LINES of W(3,q). Verified: equivariant isotropic -> W(3,3) POINTS is FALSE (exhaustive over all 40 base-point choices, not a failed lucky search); equivariant isotropic -> W(3,3) LINES is TRUE. THE METHODOLOGICAL POINT, which is the real value here: subdegrees on the 40 isotropic points, on W(3,3) POINTS, and on W(3,3) LINES are ALL [1,12,27] -- IDENTICAL. Every invariant this repo has been using as evidence (subdegrees, rank, degree, orbit size) agrees for BOTH candidates, and only the explicit equivariant map separates them. 8982d36 and f04eec3 cited subdegrees as evidence before building their maps; this is the case proving why that order matters, because here the evidence points at two answers and one is FALSE. THE LAST LEG NOW PROVED (was a COUNT MATCH ONLY in eb6cfe8): subdegrees on the 36 nonsquare points and on the 36 spreads are both [1,15,20], and an equivariant bijection exists intertwining all 80 generators. So the nonsquare class IS the spread set. CORRECTED PARTITION, all three legs equivariant: 40 isotropic = the LINES of W(3,3) (proved here); 45 square = the expensive instructions (eb6cfe8); 36 nonsquare = the 36 spreads (proved here). WHERE THE OPCODES ACTUALLY SIT: the fast-path opcode axes are the POINTS of W(3,3), which are NOT the isotropic class but its DUAL -- W(3,q) is not self-dual at odd q, so points and lines are different PSp-sets of the same size with the same subdegrees. The three-way picture stands; only the first label was wrong. WHAT SURVIVES UNCHANGED: the counting identity at q=3,5,7; the explicit isomorphism from the cost anomalies onto the square class; anticommutation in Sp being perpendicularity in O(5,q); and the explanation of the closed forms as orthogonal-group orbit sizes and the q-collapse as the NO family losing strong regularity. BOUNDARY: the Sp->O isomorphism is built explicitly as the exterior square (Lambda^2 restricted to ker of the symplectic functional, Pfaffian as the form, preserved since det=1). Both new bijections verified against every one of the 80 generators, not sampled. Only q=3 done. 186 tests, 0 failures.",
+    "timestamp": "2026-09-04T16:08:41.610Z",
+    "tags": [
+      "correction",
+      "equivariant",
+      "methodology",
+      "orthogonal",
+      "pg4",
+      "subdegrees",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T16:08:41.612Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T16:08:41.605Z"
+    }
+  },
+  {
+    "id": "938343d4-e6ec-4496-9603-76823dc7ac7f",
+    "question": "Does a 2-balanced set of size 200 exist in W(3,3)^2?",
+    "answer": "YES -- C5-INVARIANT, AND IT SITS OVER A COMPLEMENTARY PAIR OF HEMISYSTEMS. Holotrade 5aa4ff1. This closes the ONLY unresolved row of depth2_balance_spectrum.json, which recorded m=2 as 'returned UNKNOWN in ten minutes'. DEFINITION: an m-balanced set is X in the 40x40 grid with |X n (L x M)| = m for all 1600 pairs of W(3,3) lines, forced to size 100m by 16|X| = 1600m. Prior spectrum: m=1 INFEASIBLE (twice -- solver, and tau_2 >= 111 > 100), m=2 UNKNOWN, m=3 OPTIMAL 300, m=4 OPTIMAL 400. WHY m=2 WAS HARD: an m-ovoid squared is m^2-balanced, so m=4 comes free from the hemisystems and m=1 would need an ovoid W(3,3) lacks; m=2 is NOT a square so no product construction reaches it -- exactly the position m=3 was in, and m=3 also had to be found by search. THE FIX IS SYMMETRY, NOT PATIENCE: requiring invariance under a cyclic subgroup acting diagonally collapses 1600 binary variables to a few hundred orbit variables. Full sweep over every element order in the 40-point action: C2 (832 vars) INFEASIBLE, C3 (646) UNKNOWN, C4 (424) INFEASIBLE, C5 (320) OPTIMAL size 200, C6 (342) INFEASIBLE, C9 (216) INFEASIBLE, C12 (174) INFEASIBLE. Five of seven orders REFUTED -- solver proofs of infeasibility for those symmetry classes, not timeouts. RE-VERIFIED INDEPENDENTLY: |X|=200 and |X n (L x M)| = 2 for every one of the 1600 pairs, recomputed from scratch without reference to the model. STRUCTURE NOBODY IMPOSED: the witness's row counts split the 40 points 20/20 -- twenty carrying SIX partners, twenty carrying FOUR -- and BOTH halves are HEMISYSTEMS, each meeting every line in exactly 2. So it sits over a COMPLEMENTARY PAIR of hemisystems (the carrier object fed190d counted 216 of), and 20x6 + 20x4 = 200 is where the size comes from. The solver was given only the balance equations. CONSEQUENCE: the spectrum now reads INFEASIBLE / FEASIBLE / OPTIMAL / OPTIMAL at m=1,2,3,4 -- its only gap closed -- and the smallest balanced set is 200 not 300, halving depth2_balance_spectrum's balance-cost ratio from 2.61 to 1.74 against the 115-blocker. BOUNDARY: it does NOT move tau_2, still open in [111,115]; balance is strictly stronger than blocking. C5 being the unique working cyclic symmetry is a fact about THIS search and NOT a link to the F20=AGL(1,5) five-state atlas or the five covers per opcode axis (905c700) -- those were already shown to be two distinct fives, and this is a third context. The full unsymmetrised problem is not resolved; what is established is EXISTENCE by exhibiting a witness. ALSO: hit a module-shadowing bug -- a scratchpad file named six.py masked the six package pandas needs via ortools; renamed. 187 tests, 0 failures.",
+    "timestamp": "2026-09-04T16:32:29.897Z",
+    "tags": [
+      "balance",
+      "closure",
+      "cp-sat",
+      "depth2",
+      "hemisystem",
+      "symmetry",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T16:32:29.898Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T16:32:29.891Z"
+    }
+  },
+  {
+    "id": "5612ba5a-ac4b-466e-a73b-16a80fea71d8",
+    "question": "What is the FULL depth-2 balance spectrum of W(3,3)^2?",
+    "answer": "{0, 2, 3, ..., 14, 16} -- EVERY LEVEL EXCEPT 1 AND 15, AND BOTH HOLES ARE THE OVOID. Holotrade c74fbb1. depth2_balance_spectrum.json tabulated four levels (m=1..4) and stopped; 5aa4ff1 closed m=2. But the spectrum has a RANGE and a SYMMETRY nobody had used. THE RANGE: a tile is L x M with |L|=|M|=4, so |L x M| = 16 and 0 <= m <= 16 -- the corpus had examined four of SEVENTEEN levels. THE SYMMETRY, a proof not a search: |X n (L x M)| = m for every tile forces |X^c n (L x M)| = 16-m for every tile, so X is m-balanced iff X^c is (16-m)-balanced, and the spectrum is symmetric about 8. THE SWEEP under C5 invariance, every size exactly 100m as 16|X|=1600m requires, every witness re-verified from scratch against all 1600 tiles: m=0 trivial; m=1 INFEASIBLE; m=2 OPTIMAL 200; m=3 OPTIMAL 300; m=4 OPTIMAL 400; m=5 OPTIMAL 500; m=6 OPTIMAL 600; m=7 OPTIMAL 700; m=8 OPTIMAL 800. By complementation m=9..14 are feasible (constructively, by complementing the witnesses) and m=15 is infeasible. SPECTRUM = {0,2,3,...,14,16}; HOLES = {1,15}. AND THE TWO HOLES ARE THE OVOID LEVELS: m=1 asks for a set meeting every tile exactly once -- the product analogue of an ovoid -- and W(3,3) has none; the corpus proves that row infeasible twice, by solver and by tau_2 >= 111 > 100. m=15 is its complement and inherits the impossibility for free. Every other level is reachable, so THE SINGLE OBSTRUCTION IN THE ENTIRE SPECTRUM IS THE MISSING OVOID, appearing once at each end and nowhere in between. CROSS-CHECK: m=3 and m=4 were found by the corpus WITHOUT any symmetry restriction at sizes 300 and 400; the C5 search reproduces both at the same sizes -- independent evidence that this is the same notion of 'balanced'. BOUNDARY: feasibility at m=2..8 is by exhibited witnesses, each re-verified. The m=1 row's GLOBAL infeasibility is the corpus's, CITED -- what is computed here is only that no C5-invariant one exists -- and m=15 inherits exactly that strength, no more. No claim that every m-balanced set is C5-invariant, nor about counts at each level. tau_2 is untouched. 188 tests, 0 failures.",
+    "timestamp": "2026-09-04T16:39:07.074Z",
+    "tags": [
+      "balance",
+      "closure",
+      "complementation",
+      "depth2",
+      "ovoid",
+      "spectrum",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T16:39:07.075Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T16:39:07.071Z"
+    }
+  },
+  {
+    "id": "5a79c10c-1ce3-40e4-885b-a3442b1d3ef9",
+    "question": "Does the ovoid defect PROVE compression, and what does GQ(4,2) add to the multiplicativity table?",
+    "answer": "NO -- THE CONVERSE IS UNPROVED, MY 48e1841 OVERSTATED IT; BUT GQ(4,2) IS A GENUINE SECOND MULTIPLICATIVE INSTANCE. Holotrade 6679ef3. THE OVER-READ: 48e1841 closed with 'the OVOID is what prevents compression, and tau_2 measures what the missing ovoid buys'. Read generally that is the CONVERSE of the corpus's theorem, and data/tensor_multiplicativity_ovoid_defect.json explicitly marks it unproved -- theorem: 'an ovoid is SUFFICIENT for multiplicativity: delta=0 collapses the shadow lower bound (st+1)*tau_1 onto the product upper bound tau_1^2, so tau_2 = tau_1^2'; converseProved: FALSE; converseBoundary: 'delta > 0 opens a gap between the generic bounds but does not by itself imply tau_2 < tau_1^2'. CORRECT STATEMENT: having an ovoid FORCES multiplicativity; lacking one merely OPENS a gap of width tau_1*delta between the two generic bounds -- it does not compel the true value below the square. WHAT STANDS from 48e1841 is the INSTANCE: W(3,3) has delta=1 and tau_2 <= 115 < 121 = tau_1^2, so W(3,3) in particular compresses. A fact about W(3,3), NOT a law about defect. WHAT IS GENUINELY NEW: the certificate's table had exactly ONE confirmed multiplicative row, GQ(2,2)=W(3,2). 48e1841 established tau_1(GQ(4,2)) = 9 = st+1 with 200 ovoids, which is precisely the delta=0 hypothesis, so the theorem applies and the row completes: GQ(4,2), (s,t)=(4,2), 45 points, 27 lines, ovoid size 9, tau_1=9, delta=0, shadow 81, product 81, interval width 0, tau_2 = 81, MULTIPLICATIVE; and the width formula tau_1^2 - (st+1)tau_1 = 81-81 = 0 = tau_1*delta checks. WHY IT MATTERS: the single confirmed row was the small SELF-DUAL case at EVEN q where much is degenerate. GQ(4,2) has different parameters, is NOT self-dual, and its ovoids are no accident of smallness (200 in two orbits). The theorem now has a witness that is not W(3,2) -- the difference between a theorem with an example and a theorem with a pattern. IT SAYS NOTHING ABOUT W(3,3): delta=1 opens an interval of width 11 between 110 and 121 with the true value in [111,115] inside it; adding a delta=0 instance decides no delta=1 one. BOUNDARY: tau_1(GQ(4,2))=9 and the 200 ovoids are cited from 48e1841/8982d36; the theorem and width formula are the prior certificate's, cited and APPLIED -- the new row is a CONSEQUENCE of that theorem plus the delta=0 input, NOT an independent search verifying tau_2(GQ(4,2))=81. No claim about the converse. tau_2 remains open in [111,115]. 189 tests, 0 failures.",
+    "timestamp": "2026-09-04T16:55:51.662Z",
+    "tags": [
+      "correction",
+      "gq42",
+      "multiplicativity",
+      "ovoid-defect",
+      "tau2",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T16:55:51.662Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T16:55:51.658Z"
+    }
+  },
+  {
+    "id": "38e0867d-0ee5-4daf-ba5b-c0782b113f70",
+    "question": "Is the stale-110 frontier actually fixed in the corpus, and did the earlier audit cover it?",
+    "answer": "NO ON BOTH COUNTS -- 22 STALE FIELDS REMAIN, AND THE EARLIER AUDIT WAS PATTERN-LIMITED. Holotrade 76e8b46. BACKGROUND: 4b23ec0 established that W33-Theory 43049db (cert 1513d61) excludes 110 by the self-duality/centre argument, so the tau_2 interval is [111,115], and scanned for files carrying the old bound, finding 22. TWO PROBLEMS WITH THAT SCAN: (1) it matched the LITERAL string '[110, 115]', so files posing 110 as open in PROSE, or quoting a different stale interval like [110,121], were invisible to it; (2) it was a REPORT -- nothing applied the fix, and the stale statements are still in the corpus. So the hazard CLAUDE.md explicitly names -- a question sitting open while its answer is a committed theorem -- is LIVE in this repository right now, and one cause is that the audit meant to catch it was pattern-limited. SEMANTIC SWEEP over every field of every data/*.json: 30 fields flagged, 22 STALE, 8 DEFENSIBLE, and 11 data/ files the literal scan MISSED (including tensor_blocking_reformulation, tensor_blocking_structure, tensor_close_at_114, tensor_close_at_114_two_sided, tensor_multiplicativity_ovoid_defect, tensor_tight_centred/rows_and_columns/two_sided/obstructions/degree_sequences, the_tower_law_one_ovoid_splits_any_depth). CLASSIFICATION RULE, published in the certificate: STALE = states tau_2's frontier or openness with lower bound 110, or asks whether 110 is attained as though undecided; DEFENSIBLE = uses 110 as a shadow or counting bound, bounds a METHOD rather than tau_2, quotes a labelled historical interval, or acknowledges the exclusion. THE CLASSIFICATION IS WHY THIS COULD NOT BE A BULK SUBSTITUTION: tensor_blocking_structure's 'no COUNTING obstruction rules it out' stays TRUE after the theorem, because the theorem is NOT a counting argument -- it is the self-duality obstruction; and tensor_110_sat_encoding already records itself as 'SUPERSEDED BY THEOREM'. Calling either stale would be wrong. NOT REWRITTEN: these are frozen certificates with tests asserting their values; a bulk 110->111 sweep would break the suite and corrupt the defensible fields where 110 is correct. The corpus needs the field-by-field worklist, which is what this emits. BUG WORTH RECORDING: the first run flagged 53 fields because the audit read its OWN output, which quotes the stale text it finds -- self-excluded now. BOUNDARY: the exclusion of 110 is W33-Theory's theorem, cited not reproduced; the classification is a wording judgement by a stated rule; NO certificate is modified; tau_2 is still open in [111,115]. 190 tests, 0 failures.",
+    "timestamp": "2026-09-04T17:04:00.864Z",
+    "tags": [
+      "audit",
+      "corpus-integrity",
+      "methodology",
+      "stale",
+      "tau2",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T17:04:00.865Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "audit"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T17:04:00.861Z"
+    }
+  },
+  {
+    "id": "55cbfe85-e607-4ff2-a21f-8fefadc7b538",
+    "question": "Can the depth-5 seed interval [13,22] be narrowed by solver work?",
+    "answer": "NO -- AND THE REASON IS THE INSTANCE, NOT THE SOLVER. Holotrade 8725a8f, a NEGATIVE METHOD RESULT. depth_five_is_reachable_but_undecided.json asked for 'either a better lower bound than the LP, which is loose at 12.67 against a best-known 22, or a cover below 22. Neither is attempted here.' I attempted both. NEITHER WAS OBTAINED. (1) THE LP/PACKING ROUTE IS CLOSED BY A PROOF: for set cover the LP dual IS the fractional packing, so the largest fractional packing is exactly the LP value 12.6715 and any INTEGER packing is at most floor(12.67) = 12 -- WEAKER than the LP's own ceiling of 13. The obvious combinatorial strengthening of the lower bound is not merely hard here, it is provably worthless. (2) DECISION REFORMULATION (solvers are often better at 'is there a cover of size <= k' than at minimising): k<=13 UNKNOWN at 240s, k<=14 UNKNOWN at 240s. (3) STANDARD REDUCTIONS BARELY BITE: 6129 tile constraints -> 6128 after dedupe -> 5943 after removing dominated; forced leaves from singleton constraints = ZERO; leaf variables 5294, UNCHANGED. (4) THE MEASUREMENTS EXPLAIN IT: 3,640,843 incidences at 11.2% density; leaf options per tile min 51 / median 509 / mean 594 / max 964; tiles covered per leaf min 58 / median 871 / mean 688 / max 978; the largest leaf covers only 978 of 6129 = 16.0%; LP 12.6715 -> 13, greedy 24, best known 22, integrality gap 1.74x. DIAGNOSIS: every tile has at least FIFTY-ONE ways to be covered, so there is NO unit clause anywhere and nothing for propagation to start from -- every branch looks like every other; and no leaf covers more than a sixth of the tiles, so greedy has no hook. Dense and uniform in BOTH directions is exactly the regime where the LP is weak, dominance is empty, and search has no structure to exploit. IMPLICATION: Bell (15) and Catalan (14) both sit in [13,22] and neither is excluded; what this adds is that they will NOT be separated by more solver time -- LP strengthening, packing, decision reformulation and dominance are each closed for a stated reason. Deciding the sequence needs an argument using the GEOMETRY of the depth-5 orbits, not their incidence matrix. BOUNDARY: THIS MOVES NO BOUND; the interval stays [13,22]. The corpus's LP 12.6715 and greedy 24 are reproduced exactly (the only confirmation here). The two UNKNOWNs are 240s solver outcomes and are NOT evidence that longer budgets would fail -- the structural measurement is the evidence and it is budget-independent. The duality argument IS a proof. 191 tests, 0 failures.",
+    "timestamp": "2026-09-04T17:25:21.549Z",
+    "tags": [
+      "depth5",
+      "lp-duality",
+      "negative-result",
+      "seeds",
+      "set-cover",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T17:25:21.549Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [
+        "singleton"
+      ],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T17:25:21.544Z"
+    }
+  },
+  {
+    "id": "3022de63-1e7c-4203-b6cf-ceb5cb32a23e",
+    "question": "Was the balance spectrum's complement half actually constructed, and does C3 resolve?",
+    "answer": "THE COMPLEMENT IS NOW DEMONSTRATED (IT WAS ONLY ASSERTED); C3 STILL UNKNOWN AT 430s. Holotrade ab1bd8c. Two loose ends in my own recent work. (1) c74fbb1 determined the balance spectrum as {0,2,...,14,16} and justified the upper half by complementation, calling it CONSTRUCTIVE -- true, and the lemma is a one-liner, but the file never took a committed witness and exhibited its complement. Calling something constructive and constructing it are different, and here the gap was ONE FUNCTION CALL. Done now, on the witness 5aa4ff1 actually committed, READ FROM DISK rather than recomputed so it checks the artefact the corpus holds: X size 200 with tile counts {2:1600} -> 2-balanced; X-complement size 1400 with tile counts {14:1600} -> 14-balanced; and 100m at m=14 is 1400 = |X^c|. All 1600 tiles recounted from scratch for BOTH sets. So the upper half of the spectrum now rests on an EXHIBITED OBJECT at m=14, not only on the lemma, and the lemma's prediction is confirmed exactly. (2) 5aa4ff1's cyclic sweep left m=2 under C3 invariance UNKNOWN at 200s; re-run at 430s with 646 orbit variables -> still UNKNOWN. Nothing mathematical hangs on it: m=2 is feasible by the C5 witness and the C3 entry was never load-bearing. Recorded so the sweep table does not look abandoned at the first budget that failed, and so the next person knows 430 seconds was already spent. NEITHER ITEM MOVES A BOUND. The value of the first is converting an assertion into a demonstration in exactly the kind of place that later gets quoted as though it had been checked. BOUNDARY: the C3 result is a solver outcome at 430s and is NOT evidence that no C3-invariant 2-balanced set exists. tau_2 is untouched, still open in [111,115]. 192 tests, 0 failures.",
+    "timestamp": "2026-09-04T19:41:26.763Z",
+    "tags": [
+      "balance",
+      "complementation",
+      "loose-ends",
+      "verification",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T19:41:26.763Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T19:41:26.760Z"
+    }
+  },
+  {
+    "id": "0f5812c1-0006-4592-bb4f-5eb027b5449a",
+    "question": "Is the qutrit compiler's phase-lift boundary hard, easy, or impossible?",
+    "answer": "EASY -- THE EXTENSION SPLITS, SO THE WORD LIFTS TERMWISE WITH NO COCYCLE. Holotrade d6bcf30. THE BOUNDARY: e05515f closed with 'it emits SYMPLECTIC transvections: the Clifford group is their central extension, and the phase bookkeeping needed to lift a symplectic program to an actual qutrit circuit is NOT done here' -- honest but uninformative, since it never said whether the bookkeeping is hard, easy or impossible. W33-Theory is now lowering those transvections to a photonic F/CX micro-ISA (a02bd29, 16c8eb1, 8a25c5f, a629169), so which it is became the live question. VERIFIED: building the one-qutrit Clifford group explicitly as unitaries modulo GLOBAL PHASE from X, Z, Fourier and the phase gate gives Pauli 9, Clifford 216, quotient 24 = |SL(2,3)|; and a search finds a COMPLEMENT of order 24 meeting the Pauli part only in the identity. So 1 -> P -> C -> Sp -> 1 SPLITS: C is a semidirect product, there is a homomorphic section Sp -> C, and a product of symplectic transvections lifts to the product of their canonical Clifford lifts with NOTHING left over. No 2-cocycle, no phase table. LITERATURE: this is the known odd-p picture Z_p^(2n) : Sp(2n,p), and the literature states explicitly that QUBITS are the case where the Clifford group is NOT such a semidirect product. Verified here at n=1, cited for general n. SAME DICHOTOMY THE WHOLE SESSION FOUND: q=2 has been exceptional at every turn -- no centre to quotient (6bb8975), the classical length induction breaking (3595bd1), a 178x denser anomaly set. The Clifford extension failing to split at p=2 while splitting at odd p is another instance, reached from REPRESENTATION THEORY rather than geometry. Recorded as an OBSERVATION about where the boundary falls, NOT a claim that these are the same theorem. CONSEQUENCE FOR THE COMPILER: e05515f's word lifts TERMWISE -- choose the canonical Clifford for each of the eighty transvections once, and the product is the canonical Clifford of the target. What remains is TABULATION for n=2: engineering with a guaranteed answer, not an open problem. The boundary should now read 'not done' rather than 'not known how'. BOUNDARY: verified EXHAUSTIVELY at n=1 (complete closure mod global phase, orders checked against 216 and 9, complement exhibited with intersection computed). NOT verified at n=2 -- that group has order 4,199,040 and was not built -- so for the compiler's actual dimension this rests on the cited odd-p result. The eighty canonical lifts are NOT produced. Unitaries compared numerically at 1e-6, not exact cyclotomic arithmetic. 193 tests, 0 failures.",
+    "timestamp": "2026-09-04T19:51:11.662Z",
+    "tags": [
+      "clifford",
+      "compiler",
+      "cross-track",
+      "how",
+      "phase-lift",
+      "qutrit",
+      "splitting",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T19:51:11.663Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "rest"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T19:51:11.659Z"
+    }
+  },
+  {
+    "id": "72d1b170-3769-4332-9a2e-48b2bbbd5ee9",
+    "question": "What are the concrete Clifford lifts of the 80 qutrit transvections?",
+    "answer": "A ONE-LINE CLOSED FORM, VERIFIED 80/80: U(v,lam) = (1/sqrt3) sum_k w^{lam k^2} P_v^k. Holotrade 0fb6a0f. d6bcf30 showed the extension splits and said the remaining work was tabulation, 'eighty unitaries, chosen once'; leaving that as a to-do after calling it easy would have been the cheap move. DERIVATION: seek a lift of T(v,lam) INSIDE the algebra generated by P_v itself, U = (1/sqrt p) sum_k c_k P_v^k. With P_v^k P_x = w^{-k<v,x>} P_x P_v^k and the Gauss weight c_k = w^{a k^2}, the inner sum survives only at d = <v,x>/(2a); wanting d = lam<x,v> FORCES a = -(2 lam)^{-1} mod p. At p=3 that collapses to a = lam, so the entire table is one line. P_v = X^{v0} Z^{v2} tensor X^{v1} Z^{v3}. VERIFIED NOT ASSERTED: 80 lifts built, all 80 unitary, and each realises ITS OWN transvection checked against all 80 nonzero Pauli labels -- 6400 conjugations, not a sample. CONVENTION PINNED: with this repo's form <u,v> = u0v2-u2v0+u1v3-u3v1, the Pauli commutation is P_u P_v = w^{-<u,v>} P_v P_u -- 0 violations against 4320 for the + sign. The sign FLIPS the required a, so it is recorded rather than left implicit (my first pass had it backwards). NOT SETTLED, AND SAID SO: whether these particular eighty form a HOMOMORPHIC SECTION -- generating order exactly 51840 mod global phase with no Paulis -- is NOT established. The numeric group generation blew past 60,000 without plateauing, which is FLOATING-POINT DRIFT hashing one group element to many keys, not a mathematical fact; that number (205,571) is an ARTEFACT and is explicitly not quoted as a result. Settling it needs exact Z[w] arithmetic with 1/sqrt3 carried symbolically, or the (symplectic matrix, phase function) encoding. The splitting itself is not in doubt (d6bcf30 at n=1, odd-p cited), so a section exists; whether THIS choice is one is open. STILL USABLE MEANWHILE: each lift is individually verified, so a compiled word realises its target up to a Pauli and a global phase -- exactly what a stabilizer compiler tracks anyway; the section question decides only whether the Pauli correction vanishes too. BOUNDARY: formula exact, verification NUMERICAL at 1e-7 double precision, not exact cyclotomic. Indexed by projective v and lam in {1,2}, matching b363f7c and e05515f. 194 tests, 0 failures.",
+    "timestamp": "2026-09-04T20:05:13.946Z",
+    "tags": [
+      "clifford",
+      "closed-form",
+      "compiler",
+      "cross-track",
+      "hashing",
+      "lifts",
+      "qutrit",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T20:05:13.947Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "hashing"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T20:05:13.943Z"
+    }
+  },
+  {
+    "id": "e35c0cad-bcc2-4cc1-8e6e-d2f716837779",
+    "question": "Do the eighty Gauss-sum Clifford lifts form a homomorphic section?",
+    "answer": "NO -- SETTLED NEGATIVELY WITH EXACT ARITHMETIC. Holotrade bf6d67a. 0fb6a0f tabulated the eighty lifts and flagged one thing unsettled: whether they form a homomorphic section. The first attempt hashed floating-point matrices, blew up past 200k without plateauing, and its number was disclosed as an ARTEFACT rather than quoted. Now exact. THE ENCODING: a Clifford mod global phase is determined by its action on Paulis, U P_v U-dagger = w^{phi(v)} P_{Sv}, and composition is (S1,phi1)(S2,phi2) = (S1 S2, phi2 + phi1 composed with S2) -- pure F_3 arithmetic, no unitaries and no rounding. The phases are read off ONCE and are cube roots of unity to 2.6e-15, so that step is safe and everything after is integer. RESULT: the group generated exceeds 200,000 (capped) against |Sp(4,3)| = 51,840, and contains at least one element with S = identity and phi nonzero -- a Pauli. So the eighty are NOT a section: they generate Paulis. A CORRECTION TO MY OWN READING: I wrote earlier that phi vanishes on exactly 26 Paulis (= |v-perp| - 1, the ones a transvection fixes pointwise). That came from THREE PRINTED EXAMPLES and is wrong for most lifts. The real distribution is {26: 16 lifts, 44: 64 lifts}. 26 is a FLOOR and accounts for the 16 attaining it; the 64 with 44 zeros have EIGHTEEN more vanishing phases than that argument predicts and I have NO account of them -- recorded as measured, not explained. Also phi is not linear (0 of 80), which the cocycle identity phi(u+v) = phi(u)+phi(v)+c(Su,Sv)-c(u,v) explains: linearity would need S to preserve the Pauli cocycle, and a transvection does not (so an earlier linearity test was the wrong test). WHAT THIS DOES NOT OVERTURN: the splitting stands -- d6bcf30 verified it at n=1 and the odd-p result is cited, so a section EXISTS. What is now known is that the obvious Gauss-sum choice is not one: lifting each generator naturally and independently does not assemble into a section, which is exactly what a nontrivial cocycle looks like even when the extension splits. THE COMPILER IS UNAFFECTED: 0fb6a0f stated the usable claim correctly -- each lift is individually verified, so a compiled word realises its target up to a Pauli and a global phase, which a stabilizer compiler tracks anyway. What closes is only the stronger hope that the Pauli correction would vanish. BOUNDARY: exact F_3 arithmetic capped at 200,000; exceeding the cap suffices for 'not 51,840' and an exhibited Pauli gives 'contains Paulis'. The Pauli COUNT is PARTIAL (enumeration stopped at the cap) so only 'at least one' is claimed, NEVER a subgroup order. Constructing a corrected section is NOT attempted. 195 tests, 0 failures.",
+    "timestamp": "2026-09-04T20:34:17.446Z",
+    "tags": [
+      "clifford",
+      "cocycle",
+      "compiler",
+      "correction",
+      "exact-arithmetic",
+      "section",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T20:34:17.447Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T20:34:17.443Z"
+    }
+  },
+  {
+    "id": "3be80ad1-e221-42b7-8116-b21d39cef586",
+    "question": "Can a homomorphic section be constructed, and the eighty lifts corrected onto it?",
+    "answer": "YES -- THE METAPLECTIC GENERATORS ARE A SECTION, AND ALL 80 CORRECTIONS SOLVE. Holotrade 0c9ac42. This closes the item bf6d67a explicitly declined ('constructing a corrected section, by adjusting each lift by a Pauli so the family closes, is NOT attempted here'). THE SECTION IS THE METAPLECTIC ONE: my Gauss-sum lift was natural but AD HOC -- built inside the algebra of P_v itself. The classical choice is the Weil representation, generated by linear |x> -> |Mx> for M in GL(2,3), quadratic phase |x> -> w^{q(x)}|x>, and Fourier on either factor or both. Encoding each exactly as (S,phi) with U P_v U-dag = w^{phi(v)} P_{Sv} and composing by (S1,phi1)(S2,phi2) = (S1 S2, phi2 + phi1 o S2) -- integer F_3 arithmetic throughout -- gives: 77 generators, group order 51,840 EXACTLY, Paulis inside ZERO. So they DO form a section. And with no Paulis the map S -> phi is a BIJECTION: every symplectic element has exactly one canonical phase function. THE CORRECTION TABLE: each transvection now has a canonical phi from the section; the Gauss-sum lift has its own. Solving phi_gauss(v) - phi_canon(v) = -<a,v> for a in F_3^4 gives: difference is LINEAR 80/80, Pauli correction solved 80/80. Linearity is checked BEFORE a is extracted -- if the difference were not linear no Pauli could fix it and the splitting would be in trouble. WHY IT MATTERS: the compiler's word now lifts with NO RESIDUAL -- emit the transvections, take the CORRECTED lift of each, and the product is EXACTLY the canonical Clifford of the target, not merely the target up to a Pauli. That is the strong form d6bcf30 predicted from the splitting and 0fb6a0f could not yet deliver. This completes the arc: e05515f (symplectic compiler) -> d6bcf30 (extension splits, n=1) -> 0fb6a0f (80 lifts in closed form) -> bf6d67a (those lifts are NOT a section) -> 0c9ac42 (a section IS constructed, and the 80 corrections are tabulated). BOUNDARY: the section is constructed exactly, order and Pauli count computed not sampled, and that the classical Weil generators give a section is VERIFIED here rather than cited. Corrections solved per transvection, each checked to be a genuine Pauli phase. Phases entering the encoding read off numerically ONCE as cube roots of unity to ~1e-15; everything after is integer. Only n=2, q=3. 196 tests, 0 failures.",
+    "timestamp": "2026-09-04T21:11:37.909Z",
+    "tags": [
+      "clifford",
+      "compiler",
+      "correction-table",
+      "qutrit",
+      "section",
+      "w33",
+      "weil",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T21:11:37.909Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T21:11:37.906Z"
+    }
+  },
+  {
+    "id": "17fce419-73f6-44d8-8200-9ecb4fa982a2",
+    "question": "Was the 0c9ac42 correction table right?",
+    "answer": "NO -- IT SOLVED THE WRONG EQUATION. CORRECTED IN 43bbfa1. THE BUG: 0c9ac42 corrected each Gauss-sum lift onto the metaplectic section by solving phi_gauss(v) - phi_canon(v) = -<a, v>. But conjugating by a Pauli shifts the phase at the IMAGE, not the source: phi_{P_a U}(v) = phi_U(v) - <a, S v>. So the equation is phi_gauss(v) - phi_canon(v) = +<a, S v>. BOTH are solvable 80/80 because a ranges over all of F_3^4 -- the solve step 'succeeds' either way, which is exactly why the mistake survived review. What does not survive is the TEST: the lifts corrected by 0c9ac42's table do NOT form a section, running past 120,000 instead of 51,840. WHY IT WAS CAUGHT: the check was NON-CIRCULAR. Deriving a correction from the section and then verifying it against that same section proves nothing; generating the group the corrected lifts actually produce is a different question, and it failed. A SECOND SLIP went the same way -- I tried folding the Pauli into the Gauss sum as a shifted exponent w^{lam (j-c)^2}, which is wrong because Pauli powers do NOT compose phase-free (P_v^c P_v^j is not P_v^{c+j}); that form failed the same test and was never committed. CORRECTED RESULT, verified TWO independent ways: section regenerated 51,840 with no Paulis; corrected encoding EQUALS the section element 80/80 (per-lift, direct); group generated by the corrected eighty = 51,840 with 0 Paulis, IS A SECTION (global, would fail if any single correction were wrong). 0c9ac42's table fails both. CLOSED FORM SURVIVES WITH A SIGN: every correction is still a scalar multiple of v (so it stays a power of P_v), and c = -lam*Q(v) with Q(v) = v0v2 + v1v3 fits 80/80, against +lam*Q(v) at 32/80. The flip is exactly the propagated sign of the relation -- a small confirmation that the two errors are the same error. Thirty-two corrections are zero: precisely the v with Q(v)=0. FINAL FORMULA: U(v,lam) = P_{-lam Q(v) . v} . (1/sqrt3) sum_k w^{lam k^2} P_v^k, applied as a Pauli MULTIPLICATION. So an e05515f word lifts termwise and the product is exactly the canonical Clifford of the target -- no Pauli residual, no lookup table. BOUNDARY: section regenerated here, corrected table recomputed from scratch not patched, closed form checked against all eighty. Phases read numerically once as cube roots of unity; everything after is integer F_3. Only n=2, q=3. 197 tests, 0 failures.",
+    "timestamp": "2026-09-04T22:53:26.352Z",
+    "tags": [
+      "clifford",
+      "compiler",
+      "correction",
+      "methodology",
+      "section",
+      "sign-error",
+      "w33",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T22:53:26.352Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "scala"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T22:53:26.348Z"
+    }
+  },
+  {
+    "id": "95d78c91-0141-4c9f-96ad-b1aa0ab52ddc",
+    "question": "Is the Clifford lift correction an obstruction or a convention?",
+    "answer": "A CONVENTION -- OVER THE WEYL OPERATOR THERE IS NO CORRECTION AT ALL. Holotrade c003b33. THE QUESTION: 43bbfa1 ended with c = -lam*Q(v), Q(v) = v0v2 + v1v3, applied as a Pauli multiplication. Q is the X-dot-Z overlap -- exactly what separates the raw product X^a Z^b from the symmetrised Weyl operator. So is the correction a fact about the Clifford group, or an artefact of writing Paulis as raw products? ANSWER: AN ARTEFACT. Putting the phase into the operator, D_v = w^{t Q(v)} P_v, and running the SAME Gauss sum over D_v: U_t(v,lam) = (1/sqrt3) sum_k w^{lam k^2} D_v^k lands on the section for t=0: 32/80, t=1: 32/80, t=2: 80/80. At t=2 the correction is not small, it is ABSENT -- no Pauli multiplication, no table, no closed form to apply. AND t=2 IS THE WEYL OPERATOR, by its two defining properties: D_v^k = D_{kv} holds 160/160 at t=2 vs 112/160 at t=0,1; and D_v-dagger = D_{-v} holds 80/80 at t=2 vs 32/80 at t=0,1. Only t=2 is a genuine displacement operator -- powers are displacements along the same ray, adjoint is the opposite displacement. The raw product satisfies NEITHER. THIS EXPLAINS EVERY FAILURE IN THE THREAD WITH ONE CAUSE: (1) 0fb6a0f's lifts were not a section (bf6d67a) -- they were Gauss sums over the WRONG operator; (2) folding the correction in as w^{lam (j-c)^2} failed because it assumed P_v^c P_v^j = P_v^{c+j}, and P_v^k = P_{kv} holds only 112 of 160 times -- over D_v it would have been fine; (3) 0c9ac42 solved at the source rather than the image, a separate slip but one only NEEDED because the convention forced a correction at all. One convention choice removes all three. FINAL FORM: D_v = w^{2 Q(v)} X^{v0}Z^{v2} tensor X^{v1}Z^{v3}; U(v,lam) = (1/sqrt3) sum_k w^{lam k^2} D_v^k. The eighty generate the section exactly: order 51,840, no Paulis. An e05515f word lifts termwise by this and the product is the canonical Clifford of the target with NOTHING to correct. BOUNDARY: the three t values are compared on the same regenerated section; the t=2 family's group generated exactly in F_3 with order and Pauli count computed; the two Weyl properties checked on every vector and every power, not sampled. That t=2 matches a particular textbook's displacement convention is NOT claimed -- what is established is that this phase, not the raw product, satisfies the two properties and makes the lift canonical. Only n=2, q=3. 198 tests, 0 failures.",
+    "timestamp": "2026-09-04T23:52:03.173Z",
+    "tags": [
+      "clifford",
+      "compiler",
+      "convention",
+      "root-cause",
+      "section",
+      "w33",
+      "weyl"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-04T23:52:03.174Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-04T23:52:03.170Z"
+    }
+  },
+  {
+    "id": "908544b9-c945-4d9a-992a-a04242c9edac",
+    "question": "Is the Weyl Clifford lift a q=3 accident like the geometry?",
+    "answer": "NO -- IT IS A FAMILY: A SECTION AT p = 3, 5 AND 7, WITH PHASE 2^{-1}. Holotrade 8cdd21f. WHY ASK: this session found q=3 special at every turn (the cost graph is a generalized quadrangle ONLY at q=3, merely strongly regular at 5, not even that at 7 -- 424111b), and c003b33 explicitly declined to claim its normalising phase matched a standard convention. Both are generality questions and both are cheap at n=1. RESULT: p=3 -> t=2, Pauli 9, Clifford 216, quotient 24, 8 lifts generating 24, SECTION; p=5 -> t=3, Pauli 25, Clifford 3000, quotient 120, 24 lifts generating 120, SECTION; p=7 -> t=4, Pauli 49, Clifford 16464, quotient 336, 48 lifts generating 336, SECTION. At each prime EXACTLY ONE t makes D_v = w^{t Q(v)} P_v a displacement operator (powers along the ray, adjoint the opposite), every Gauss sum over it is verified to realise its transvection, and they generate a group of order exactly |SL(2,p)| = (p^2-1)p meeting the Paulis only in the identity. AND THE PHASE IS 2^{-1}: the t values 2, 3, 4 are (p+1)/2 = 2^{-1} mod p, so D_v = w^{2^{-1} Q(v)} P_v is the tau-normalised displacement operator. c003b33 declined this from a single prime; three primes with the same closed form is enough to state it -- as a PATTERN across the three tested, NOT a proof for all p. THE SESSION SPLITS CLEANLY: the GEOMETRY is a q=3 coincidence, while the COMPILER construction is a family. One is an accident of small parameters, the other generalises. THIRD FLOAT-HASHING BUG, RECORDED: the first run reported Pauli groups of 18, 50, 98 -- exactly TWICE 9, 25, 49 -- because unitaries were hashed by .tobytes() after rounding and numpy produces -0.0, whose BYTES differ from 0.0 though they compare equal, so half of every group was double-counted. Adding 0.0 fixes it. This is the third floating-point-hashing failure in the thread (after the 205,571 and 120,017 artefacts), each with a DIFFERENT mechanism, and each caught only because an expected integer was known in advance. That is the reusable lesson: when hashing floats, always have a predicted count. BOUNDARY: n=1 at p=3,5,7 exhaustively; n=2 verified only at p=3 (c003b33) since the two-ququint Clifford group was not built; no claim beyond p=7, for composite dimensions, or for characteristic 2 where the extension does not split at all. 199 tests, 0 failures.",
+    "timestamp": "2026-09-05T01:04:23.371Z",
+    "tags": [
+      "clifford",
+      "float-hashing",
+      "hashing",
+      "methodology",
+      "q-general",
+      "section",
+      "w33",
+      "weyl",
+      "why"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-05T01:04:23.372Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [],
+      "patterns": [],
+      "concepts": [
+        "hashing"
+      ]
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-05T01:04:23.368Z"
+    }
+  },
+  {
+    "id": "0bbc1fd0-7eb7-445f-ace2-c806c99c9806",
+    "question": "Is the hemisystem structure a property of 2-balanced sets or of one witness?",
+    "answer": "OF ONE WITNESS -- ONE SOLUTION IN SIXTY. Holotrade c1f4357. WHAT WAS SAID: 5aa4ff1 found a 2-balanced set, noticed its row counts split the forty points 20/20 with BOTH halves hemisystems, and wrote that this is 'where the size comes from ... not imposed; the solver was given only the balance equations.' Every word true OF THAT WITNESS -- but the phrase 'where the size comes from' invites reading it as a property of 2-balanced sets, and this repo's own rule (memory: vary_the_sample_before_believing) is that a structure with no exceptions on one sample is not a finding until the sample is varied. VARYING IT: enumerating C5-invariant 2-balanced sets gives 60 solutions with 22 DISTINCT row-count profiles, and exactly ONE has all row-classes hemisystems. So the structure was a property of the witness I happened to print, not of the object. Stopping at the first solution and generalising would have been CLAUDE.md's fifth failure mode exactly. AND A MORE CANONICAL PROFILE EXISTS: among the twenty-two is the perfectly UNIFORM one -- all forty points carrying exactly five partners -- occurring three times. If any single 2-balanced set deserves to be called canonical it is THAT one, not the hemisystem-split witness, since 40 x 5 = 200 needs no explanation for where the size comes from at all. WHAT SURVIVES: m=2 is feasible, the witness is verified, and the full spectrum result c74fbb1 ({0,2,...,14,16}, holes only at 1 and 15) is UNTOUCHED -- none of it depended on the row structure. The hemisystem observation stays true of its witness and stops being suggestive of anything more. BOUNDARY: sixty solutions is a SAMPLE not an enumeration; the search was capped and all sixty are C5-invariant, so nothing here describes 2-balanced sets without that symmetry. That makes the negative STRONGER not weaker -- one hemisystem case in sixty already refutes universality -- but the true proportion is unmeasured and 22 profiles is a LOWER bound on the variety. tau_2 is untouched. 200 tests, 0 failures.",
+    "timestamp": "2026-09-05T01:10:59.746Z",
+    "tags": [
+      "balance",
+      "correction",
+      "hemisystem",
+      "methodology",
+      "vary-the-sample",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-05T01:10:59.746Z",
+        "action": "created"
+      }
+    ],
+    "entities": {
+      "technologies": [
+        "vite"
+      ],
+      "patterns": [],
+      "concepts": []
+    },
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-05T01:10:59.742Z"
+    }
+  },
+  {
+    "id": "e54071fb-a3a7-4fcc-ad6f-9d63b0a33c8b",
+    "question": "Is the uniform 2-balanced set canonical?",
+    "answer": "NO -- IT CARRIES NO SYMMETRY BEYOND THE C5 IMPOSED ON IT. Holotrade 2cabf14. WHAT I SUGGESTED: c1f4357 refuted the hemisystem structure as a property of 2-balanced sets (one solution in sixty) and then offered a REPLACEMENT -- the perfectly uniform row profile, with 'if any single 2-balanced set deserves to be called canonical it is that one ... 40 x 5 = 200 needs no explanation'. That was an aesthetic judgement dressed as a structural one and it does NOT survive. MEASUREMENT: 12 row-uniform solutions, stabilisers ALL 5; 12 doubly-uniform (rows AND columns = 5) solutions, stabilisers ALL 5. Five is exactly the C5 imposed to make the search tractable, so nothing in these objects is fixed by anything else -- 'uniform' buys NO structure, the same stabiliser as the hemisystem witness and every other solution in the family. FURTHER: row-uniform does not even imply column-uniform (of six row-uniform solutions inspected, two had column profiles {4:15, 6:15, 8:5, 2:5}), so the uniformity I pointed at was one-sided unless both margins are constrained -- and constraining both changes nothing about the symmetry. Nor is any solution a SYMMETRIC relation (X closed under coordinate swap): none, in 24 solutions. THE PATTERN WORTH NAMING: two consecutive instincts about this object -- 'the hemisystem split explains the size', then 'the uniform profile is the canonical one' -- both LOOKED structural and both failed on inspection. The balance equations by themselves single nothing out: the solution space is large, heterogeneous and flat, and every apparent landmark in it so far has been an artefact of which solution the solver happened to print first. That is a reusable warning for this whole family of search-derived objects. BOUNDARY: all solutions are C5-invariant so the stabiliser can never come out BELOW 5 -- the measurement is really 'is it bigger than 5', and it is not, in 24 solutions across two constraint sets. Twelve of each is a CAPPED sample, so this shows no canonical object was FOUND, not that none exists. Stabilisers computed against the full 25,920-element PSp(4,3) acting diagonally, not sampled. tau_2 is untouched. 201 tests, 0 failures.",
+    "timestamp": "2026-09-05T01:27:51.282Z",
+    "tags": [
+      "balance",
+      "canonical",
+      "methodology",
+      "negative",
+      "stabiliser",
+      "w33"
+    ],
+    "files": [],
+    "status": "active",
+    "priority": "medium",
+    "relationships": {
+      "supersedes": [],
+      "supersededBy": [],
+      "relatedTo": [],
+      "causes": [],
+      "causedBy": []
+    },
+    "metadata": {
+      "source": "cli",
+      "status": "active"
+    },
+    "commitHashes": [],
+    "history": [
+      {
+        "timestamp": "2026-09-05T01:27:51.282Z",
+        "action": "created"
+      }
+    ],
+    "provenance": {
+      "author": {
+        "name": "wilcompute",
+        "email": "wiljd4@gmail.com"
+      },
+      "source": "cli",
+      "timestamp": "2026-09-05T01:27:51.273Z"
+    }
   }
 ]

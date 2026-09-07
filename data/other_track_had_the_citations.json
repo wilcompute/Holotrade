@@ -1,0 +1,27 @@
+{
+  "schema": "holotrade.cross-track-citation-gap.v1",
+  "valid": true,
+  "terms": [
+    "Saniga",
+    "Planat",
+    "Levay",
+    "Veldkamp"
+  ],
+  "holotradeFilesExcludingToday": 0,
+  "holotradeFilesToday": 3,
+  "theoryOfEverythingFiles": 31,
+  "whatHappened": "ea2ff88 identified the 45 monomials of the E6 Cartan cubic with the 45 lines of GQ(2,4), recorded a corpus search that found nothing, hedged the novelty correctly, and was still wrong to imply any: the result is Levay-Saniga-Vrana, arXiv:0903.0541, and the whole three-member Jordan/GQ series with it. 4b92d42 withdrew the hedge. The interesting part is not that it happened but where the citation already was",
+  "whyTheProtocolMissedIt": "CLAUDE.md's cross-track rule is about FILES and internal RESULTS -- regenerate the index, run the rediscovery hook, grep the other track's results before claiming novelty. None of that covers the other track's EXTERNAL references, and external references are exactly what settle novelty. Both tracks can be perfectly disciplined about internal prior art and one still be blind to a literature the other reads daily",
+  "theAmendment": "before claiming novelty, grep the OTHER track for the author names and arXiv identifiers near the object, not only for the object itself. A single grep for Saniga, Planat, Levay or Veldkamp on the other repository would have returned thirty-one files today and stopped ea2ff88's framing before it was written. It costs one command",
+  "publishedAndNowCited": {
+    "jordanSeveriSeriesAndGQMonomials": "arXiv:0903.0541; Comm. Algebra 29(10) (2001)",
+    "lineSymplecticGrassmannCodes": "Cardinali-Giuzzi, arXiv:1503.05456",
+    "anisotropicAssociationScheme": "Adriaensen-De Boeck, arXiv:2402.05055",
+    "groupIsomorphismsAndGQClassification": "classical (W(E6) = U4(2):2 = PSp(4,3).2; Payne-Thas)"
+  },
+  "noLiteratureFound": {
+    "tau2ForTheW33TensorSquare": "a search for blocking numbers of PRODUCTS of generalized quadrangles returns work on blocking sets in single quadrangles and nothing on products; the corpus reached the same conclusion independently in tensor_multiplicativity_ovoid_defect.json, which records 'no literature on blocking numbers of products of generalized quadrangles turned up'"
+  },
+  "theUncomfortableReading": "the ornamental results of this session -- E6, Jordan, the quadrangles -- are the classical ones, and the stubborn central problem is the one that appears genuinely open. That is the opposite of how it felt while working, which is the whole reason to write it down",
+  "boundary": "the counts are grep counts over analysis/ in each repository at the time of running, for four author/term strings; they measure citation PRESENCE, not aptness, and a file merely mentioning 'Veldkamp' counts the same as one building on it. 'No literature found' is a statement about searches performed and never a proof of absence -- the weakest kind of evidence, recorded as such. The published/open split is a reading of search results, not an audit of the fields"
+}

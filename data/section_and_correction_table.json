@@ -1,0 +1,1305 @@
+{
+  "schema": "holotrade.section-and-correction-table.v1",
+  "valid": true,
+  "whatWasLeft": "bf6d67a settled that the eighty Gauss-sum lifts are NOT a section and closed with 'constructing a corrected section ... is NOT attempted here'",
+  "theSection": {
+    "generators": "linear |x> -> |Mx> for M in GL(2,3), quadratic phase |x> -> w^{q(x)}|x>, and Fourier on either factor or both",
+    "generatorCount": 77,
+    "order": 51840,
+    "spOrder": 51840,
+    "pauliCount": 0,
+    "isASection": true,
+    "consequence": "with no Paulis the map S -> phi is a bijection, so every symplectic element has exactly one canonical phase function",
+    "verifiedNotCited": true
+  },
+  "correction": {
+    "differenceIsLinear": 80,
+    "pauliSolved": 80,
+    "outOf": 80,
+    "method": "phi_gauss(v) - phi_canon(v) = -<a,v> solved for a in F_3^4; linearity is checked BEFORE a is extracted, since if the difference were not linear no Pauli would fix it"
+  },
+  "whyItMatters": "the compiler's word now lifts with NO residual: emit the transvections, take the corrected lift of each, and the product is exactly the canonical Clifford of the target, not merely the target up to a Pauli -- the strong form d6bcf30 predicted from the splitting and 0fb6a0f could not yet deliver",
+  "table": [
+    {
+      "v": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        2,
+        0,
+        1
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        2,
+        2,
+        1
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        1,
+        2,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        0,
+        2,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        0,
+        2,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        2,
+        0,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        2,
+        0,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        2,
+        2,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        1,
+        2,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        1,
+        2,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        2,
+        1,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        2,
+        0,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        2,
+        0,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        1,
+        2,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        2,
+        2,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        1,
+        2,
+        2,
+        1
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        2,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "lam": 1,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "lam": 2,
+      "differenceIsLinear": true,
+      "pauliCorrection": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "boundary": "the section is constructed exactly and its order and Pauli count are computed, not sampled; that the classical Weil generators give a section is VERIFIED here rather than cited. Corrections are solved per transvection and each checked to be a genuine Pauli phase. The phases entering the encoding are read off numerically once, as cube roots of unity to about 1e-15; everything after is integer. Only n = 2, q = 3. tau_2 is untouched"
+}

@@ -4532,3 +4532,3425 @@ test("length equals residue, and the doily's exception is having no centre", () 
   assert.match(r.correctionToMyFraming, /on matrices\s+Sp\(4,3\) is also 5/);
   assert.match(r.boundary, /NOT established/);
 });
+
+test("the cost anomalies are the tritangent structure", () => {
+  const r = require(path.join(root, "data/the_cost_anomalies_are_the_tritangents.json"));
+  assert.equal(r.schema, "holotrade.cost-anomalies-are-tritangents.v1");
+  assert.equal(r.valid, true);
+
+  // PG(3,3) splits 40 + 90, and the 90 are the hyperbolic lines
+  assert.equal(r.pg33Split.lines, 130);
+  assert.equal(r.pg33Split.isotropic, 40);
+  assert.equal(r.pg33Split.hyperbolic, 90);
+  assert.equal(
+    r.pg33Split.isotropic + r.pg33Split.hyperbolic,
+    r.pg33Split.lines,
+    "the split is exhaustive"
+  );
+
+  // g -> im(g - 1) is a BIJECTION onto them, not merely a count match
+  const m = r.theMap;
+  assert.equal(m.definition, "g -> im(g - 1)");
+  assert.equal(m.anomalies, 90);
+  assert.equal(m.involutions, 90, "every anomaly is an involution");
+  assert.equal(m.actAsMinusOneOnTheirImage, 90);
+  assert.equal(m.imageIsHyperbolic, 90, "no anomaly lands on an isotropic line");
+  assert.equal(m.distinctImages, 90, "the map is injective");
+  assert.equal(m.bijectionOntoTheNinety, true, "and onto -- set equality");
+  assert.equal(m.distinctImages, r.pg33Split.hyperbolic);
+
+  // 91 = 90 + 1, agreeing with 6bb8975's anomaly count
+  const d = r.decomposition;
+  assert.equal(d.hyperbolicReflections, 90);
+  assert.equal(d.centre, 1);
+  assert.equal(d.total, 91);
+  assert.equal(d.hyperbolicReflections + d.centre, d.total);
+  const prior = require(path.join(root, "data/length_equals_residue.json"));
+  const sp43 = prior.cases.find((c) => c.q === 3);
+  assert.equal(
+    sp43.anomalies,
+    d.total,
+    "the decomposition accounts for exactly 6bb8975's 91 anomalies"
+  );
+
+  // the reading, and its boundary
+  assert.match(r.whyNinetyIsNotFree, /tritangent/);
+  assert.match(r.whyNinetyIsNotFree, /minimum-weight words/);
+  assert.match(r.architecturalReading, /CO-LOCATED with the code/);
+  assert.match(r.pg33Split.reading, /cheap generators and the expensive/);
+  assert.match(r.boundary, /set equality, not a count match/);
+  assert.match(r.boundary, /No claim\s+for other q/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("every cost anomaly is a nondegenerate reflection", () => {
+  const r = require(path.join(
+    root,
+    "data/every_cost_anomaly_is_a_nondegenerate_reflection.json"
+  ));
+  assert.equal(r.schema, "holotrade.anomaly-is-nondegenerate-reflection.v1");
+  assert.equal(r.valid, true);
+
+  const b = r.cases.q3;
+
+  // isotropic image is NEVER anomalous, and that is the mechanism
+  assert.equal(b.residue2Split["isotropic,2"], 720);
+  assert.equal(b.residue2Split["isotropic,3"], undefined, "none are anomalous");
+  assert.equal(b.residue2Split["hyperbolic,2"], 1260);
+  assert.equal(b.residue2Split["hyperbolic,3"], 90);
+  assert.equal(
+    Object.values(b.residue2Split).reduce((s, v) => s + v, 0),
+    2070,
+    "the split accounts for every residue-2 element"
+  );
+  assert.match(r.whyIsotropicIsAlwaysCheap, /self-contradictory/);
+
+  // one distinguished element per hyperbolic line, uniformly across all 90
+  const prof = b.perHyperbolicLineProfiles;
+  assert.equal(Object.keys(prof).length, 1, "the profile is uniform");
+  assert.equal(prof["{2: 14, 3: 1}"], 90);
+
+  // the law, as SET equality against an independently built set
+  assert.equal(b.nondegenerate2Spaces, 90);
+  assert.equal(b.predictedSetSize, 91);
+  assert.equal(b.anomalies, 91);
+  assert.equal(b.predictedEqualsAnomalySet, true);
+  assert.equal(b.allPredictedAreInGroup, true);
+  assert.match(r.theLaw, /if and only if/);
+  assert.match(r.whyTheCountIsOneFact, /no\s+odd-dimensional nondegenerate/);
+
+  // 91 agrees with 6bb8975 and decomposes as 3f93821 said
+  const prior = require(path.join(root, "data/length_equals_residue.json"));
+  assert.equal(prior.cases.find((c) => c.q === 3).anomalies, b.anomalies);
+  const tri = require(path.join(
+    root,
+    "data/the_cost_anomalies_are_the_tritangents.json"
+  ));
+  assert.equal(tri.decomposition.total, b.anomalies);
+  assert.equal(tri.theMap.bijectionOntoTheNinety, true, "the bijection stands");
+
+  // and the law is provably q-odd: at q=2 it predicts 0 against 225
+  const a = r.cases.q2;
+  assert.equal(a.predictedSetSize, 0, "-1 = +1, so no such element exists");
+  assert.equal(a.anomalies, 225);
+  assert.equal(a.predictedEqualsAnomalySet, false, "it FAILS, not degrades");
+  assert.match(r.qOddOnly, /fails completely rather than\s+degrading/);
+
+  // the over-read is retracted in the record
+  assert.match(r.correctionToMyPriorCommit, /over-read/);
+  assert.match(r.correctionToMyPriorCommit, /bijection.*stands/);
+  assert.match(r.boundary, /set equality against a set/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the length law is O'Meara's, and the doily breaks its induction", () => {
+  const r = require(path.join(root, "data/the_length_law_is_omeara.json"));
+  assert.equal(r.schema, "holotrade.length-law-is-omeara.v1");
+  assert.equal(r.valid, true);
+
+  // the retraction is on the record, with sources
+  assert.match(r.retraction, /novelty claim is withdrawn/);
+  assert.ok(r.sources.some((s) => /O'Meara/.test(s)));
+  assert.ok(r.sources.some((s) => /Callan/.test(s)));
+  assert.ok(r.sources.some((s) => /2102\.11380/.test(s)));
+  assert.ok(r.sources.some((s) => /Ellers/.test(s)));
+
+  // at q=3 the criterion is exact, as SETS
+  const b = r.cases.q3;
+  assert.equal(b.anomalies, 91);
+  assert.equal(b.hyperbolicMaps, 91);
+  assert.equal(b.anomaliesEqualHyperbolic, true);
+
+  // at q=2 it is a strict subset -- the doily again
+  const a = r.cases.q2;
+  assert.equal(a.anomalies, 225);
+  assert.equal(a.hyperbolicMaps, 15);
+  assert.equal(a.anomaliesEqualHyperbolic, false);
+  assert.equal(a.hyperbolicIsSubset, true);
+  assert.equal(a.anomalies - a.hyperbolicMaps, 210);
+
+  // and the cascade is the mechanism
+  assert.equal(a.induction["2,3,hyperbolic"], 15);
+  assert.equal(a.induction["3,4,every drop lands hyperbolic"], 90);
+  assert.equal(a.induction["4,5,clean step exists"], 120);
+  assert.equal(
+    a.induction["2,3,hyperbolic"] +
+      a.induction["3,4,every drop lands hyperbolic"] +
+      a.induction["4,5,clean step exists"],
+    a.anomalies,
+    "the three cells account for every q=2 anomaly"
+  );
+  assert.match(r.theDoilyBreaksTheInduction, /CASCADE from 15 seeds/);
+
+  // Ellers' one-class metric is genuinely different at odd q
+  assert.equal(b.allTransvections, 80);
+  assert.equal(b.oneClassTransvections, 40);
+  assert.equal(b.allDiameter, 5);
+  assert.equal(b.oneClassDiameter, 6, "one class is strictly worse at q=3");
+  assert.equal(b.lengthsDifferOn, 38264);
+  assert.ok(b.lengthsDifferOn / b.order > 0.7, "they differ on most elements");
+  assert.equal(a.lengthsDifferOn, 0, "at q=2 only one lambda exists");
+  assert.equal(a.allTransvections, a.oneClassTransvections);
+
+  // my characterisation is demoted to a q-odd coincidence
+  assert.match(r.myCharacterisationIsQOddOnly, /empty at q = 2/);
+  assert.match(r.terminologyTrap, /Do not conflate/);
+
+  // and the corpus-internal part is kept, correctly scoped
+  assert.match(r.whatSurvivesAsOurs, /minimum-weight/);
+  assert.match(r.whatSurvivesAsOurs, /not about symplectic groups/);
+  assert.match(r.boundary, /primary sources are NOT read/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the qutrit transvection compiler is total, correct and minimal", () => {
+  const r = require(path.join(
+    root,
+    "data/the_qutrit_transvection_compiler.json"
+  ));
+  assert.equal(r.schema, "holotrade.qutrit-transvection-compiler.v1");
+  assert.equal(r.valid, true);
+
+  // the gap it fills: the published algorithm is F_2 only
+  assert.match(r.theGap, /F_2/);
+  assert.match(r.theGap, /2102\.11380/);
+
+  // the step, and the fact that the scalar is what odd q adds
+  assert.equal(r.theStep.vector, "v = g^-1 x - x");
+  assert.equal(r.theStep.scalar, "lam = <x, g^-1 x>^-1");
+  assert.match(r.theStep.atQ2, /lam = 1/);
+  assert.match(r.theStep.hypothesis, /NON-hyperbolicity/);
+
+  // exhaustive verification -- every element, and MINIMAL not just correct
+  const v = r.verification;
+  assert.equal(v.elements, 51840, "the whole of Sp(4,3)");
+  assert.equal(v.everyFactorATransvection, v.elements);
+  assert.equal(v.productReconstructsG, v.elements);
+  assert.equal(
+    v.lengthEqualsBFSGroundTruth,
+    v.elements,
+    "optimal pointwise, against a full BFS"
+  );
+  assert.equal(v.failedToCompile, 0, "a total function");
+  assert.equal(v.longestProgram, 5);
+  assert.equal(
+    v.longestProgram,
+    v.groupDiameter,
+    "the longest program is exactly the group diameter"
+  );
+
+  // the porting pitfall is recorded, with its exact cost
+  assert.match(r.portingPitfall, /1,679/);
+  assert.match(r.portingPitfall, /hyperbolic INTERMEDIATE/);
+  assert.match(r.portingPitfall, /3595bd1/);
+
+  // the irregular branch is exactly the anomaly set of the prior commits
+  assert.equal(r.hyperbolicBranch.fires, 91);
+  const om = require(path.join(root, "data/the_length_law_is_omeara.json"));
+  assert.equal(
+    r.hyperbolicBranch.fires,
+    om.cases.q3.hyperbolicMaps,
+    "the compiler's only irregular branch IS the hyperbolic-map set"
+  );
+  const tri = require(path.join(
+    root,
+    "data/the_cost_anomalies_are_the_tritangents.json"
+  ));
+  assert.equal(r.hyperbolicBranch.fires, tri.decomposition.total);
+
+  // and the boundary is honest about what is NOT done
+  assert.match(r.runtimeCost, /never searches the group/);
+  assert.match(r.boundary, /not a proof for/);
+  assert.match(r.boundary, /phase bookkeeping/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the projective ISA has exactly 45 expensive instructions", () => {
+  const r = require(path.join(root, "data/the_projective_isa_45.json"));
+  assert.equal(r.schema, "holotrade.projective-isa-45-expensive.v1");
+  assert.equal(r.valid, true);
+
+  // the centre acts as the symplectic polarity on the anomaly set
+  const c = r.centreIsThePolarity;
+  assert.equal(c.anomalySetClosedUnderNegation, true);
+  assert.equal(c.outOf, 90);
+  assert.equal(c.imageOfNegatedIsPolarLine, 90, "polar on every one, not most");
+  assert.equal(c.classes, 45);
+  assert.equal(c.outOf / c.classes, 2, "a clean two-to-one collapse");
+  assert.match(c.reading, /ACTS AS THE SYMPLECTIC POLARITY/);
+
+  // the projective cost model
+  const p = r.projectiveCostModel;
+  assert.equal(p.order, 25920);
+  assert.equal(p.opcodes, 80);
+  assert.equal(p.diameter, 4, "2n, the projective latency law");
+  assert.equal(p.matrixDiameter, 5, "Sp is still 5");
+  assert.equal(p.table["2,3"], 45);
+  assert.equal(p.anomalies, 45);
+  assert.equal(
+    Object.values(p.table).reduce((s, v) => s + v, 0),
+    p.order,
+    "the table accounts for every projective element"
+  );
+  // no cell other than (2,3) exceeds its residue
+  for (const k of Object.keys(p.table)) {
+    const [res, len] = k.split(",").map(Number);
+    assert.ok(len >= res, "length is never below residue");
+    if (len > res) assert.equal(k, "2,3", "(2,3) is the only anomalous cell");
+  }
+  // the (4,5) cell of Sp is gone: that was -I
+  assert.equal(p.table["4,5"], undefined);
+  assert.match(p.residueConvention, /NOT projectively defined/);
+
+  // the bijection: 45 expensive instructions, 45 minimum-weight codewords
+  const b = r.theBijection;
+  assert.equal(b.expensiveInstructions, 45);
+  assert.equal(b.minimumWeightCodewords, 45);
+  assert.equal(
+    b.expensiveInstructions,
+    b.minimumWeightCodewords,
+    "one expensive instruction per minimum-weight codeword"
+  );
+  assert.equal(b.reflectionsAreAllAnomalies, true, "and nothing else");
+  assert.match(b.chain, /tritangent/);
+  assert.match(b.chain, /cited prior art/);
+
+  // it supersedes the Sp-level hedge, and agrees with the Sp counts
+  const om = require(path.join(root, "data/the_length_law_is_omeara.json"));
+  assert.equal(om.cases.q3.anomalies, 91);
+  assert.equal(
+    c.outOf + 1,
+    om.cases.q3.anomalies,
+    "Sp's 91 is these 90 plus the centre that pairs them"
+  );
+  assert.match(r.supersedesTheHedge, /wrong group/);
+  assert.match(r.readingForTheMachine, /same 45 objects/);
+  assert.match(r.boundary, /min over the two\s+lifts/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the expensive instructions form a quadrangle under anticommutation", () => {
+  const r = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(r.schema, "holotrade.expensive-instructions-quadrangle.v1");
+  assert.equal(r.valid, true);
+
+  // the relation is ENTIRELY anticommutation -- zero commuting pairs
+  const rel = r.theRelation;
+  assert.equal(rel.stricltyCommuting, 0, "not one pair commutes");
+  assert.equal(rel.antiCommuting, 270);
+  assert.equal(rel.totalPairs, 990, "C(45,2)");
+  assert.equal(
+    rel.stricltyCommuting + rel.antiCommuting + rel.remaining,
+    rel.totalPairs,
+    "the trichotomy is exhaustive"
+  );
+  assert.match(rel.reading, /Pauli incompatibility/);
+
+  // and the graph is GQ(4,2), with the 27 lines recovered not assumed
+  const q = r.quadrangle;
+  assert.equal(q.points, 45);
+  assert.equal(q.edges, 270);
+  assert.deepEqual(q.stronglyRegular, [45, 12, 3, 3]);
+  assert.deepEqual(q.maximalCliqueSizes, { 5: 27 }, "nothing but K5 survives");
+  assert.equal(q.lines, 27);
+  assert.deepEqual(q.linesPerPoint, { 3: 45 });
+  assert.equal(q.flags, 135);
+  assert.equal(q.flags, q.lines * 5);
+  assert.equal(q.flags, q.points * 3);
+  assert.equal(q.gqAxiom, true);
+  assert.equal(q.isomorphismType, "GQ(4,2) = H(3,4)");
+  assert.match(q.linesRecoveredNotAssumed, /Bron-Kerbosch/);
+  // the SRG parameters are exactly GQ(s,t) with s=4,t=2
+  const [n, k, lam, mu] = q.stronglyRegular;
+  const s = 4;
+  const t = 2;
+  assert.equal(n, (s + 1) * (s * t + 1));
+  assert.equal(k, s * (t + 1));
+  assert.equal(lam, s - 1);
+  assert.equal(mu, t + 1);
+
+  // the geometric rule, and the refuted alternative
+  const g = r.geometricForm;
+  assert.match(g.rule, /L n M = empty AND L n M\^perp = empty/);
+  assert.equal(g.meetsNeither, 270, "adjacency is exactly total skewness");
+  assert.equal(
+    g.meetsMOnly + g.meetsPolarOnly + g.meetsNeither,
+    rel.totalPairs
+  );
+  assert.match(g.refutedAlternative, /accounts for 0 of the 270/);
+
+  // it upgrades 3a0a194 from a count to a geometry
+  const p45 = require(path.join(root, "data/the_projective_isa_45.json"));
+  assert.equal(q.points, p45.theBijection.expensiveInstructions);
+  assert.equal(q.points, p45.theBijection.minimumWeightCodewords);
+
+  // duality with the carrier, and the honest limit on the convergence
+  assert.match(r.duality, /DUAL of GQ\(2,4\)/);
+  assert.match(r.convergence, /a149d0b/);
+  assert.match(r.boundary, /INVARIANTS only/);
+  assert.match(r.boundary, /NOT established here/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the 27 lines carry the Schlafli graph and are Pauli groups", () => {
+  const r = require(path.join(root, "data/the_27_lines_are_pauli_groups.json"));
+  assert.equal(r.schema, "holotrade.27-lines-are-pauli-groups.v1");
+  assert.equal(r.valid, true);
+
+  // (1) the 2n+1 ceiling is attained and never exceeded
+  const c = r.ceiling;
+  assert.deepEqual(c.maximalSetSizes, { 5: 27 }, "every maximal set has 5");
+  assert.equal(c.bound, "2n + 1 = 5");
+  assert.equal(c.attained, true);
+  assert.equal(c.nothingExceedsIt, true, "no 6 anticommuting reflections");
+
+  // (2) both halves of the configuration, on the same data
+  const s = r.theSchlafliGraph;
+  assert.equal(s.lines, 27);
+  assert.deepEqual(s.meetGraph, [27, 10, 1, 5]);
+  assert.equal(s.isGQ24Collinearity, true);
+  assert.deepEqual(s.complement, [27, 16, 10, 8]);
+  assert.equal(s.isSchlafli, true);
+  // the meet graph and its complement partition K27
+  assert.equal(s.meetGraph[1] + s.complement[1], 26, "degrees sum to n-1");
+  assert.match(s.automorphismGroup, /51,840/);
+  assert.match(s.automorphismGroup, /CITED not recomputed/);
+
+  // and it is the DUAL of the 45-point quadrangle from 605f5e5
+  const gq = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(gq.quadrangle.lines, s.lines, "27 lines there, 27 points here");
+  assert.deepEqual(gq.quadrangle.stronglyRegular, [45, 12, 3, 3]);
+
+  // (3) extraspecial 2^{1+4}_-, uniformly
+  const e = r.extraspecial;
+  assert.equal(e.order, 32);
+  assert.equal(e.centreOrder, 2);
+  assert.equal(e.derivedEqualsCentre, true);
+  assert.equal(e.quotientOrder, 16);
+  assert.equal(e.quotientElementaryAbelian, true);
+  assert.equal(e.order, e.centreOrder * e.quotientOrder, "|G| = |Z|.|G/Z|");
+  assert.equal(e.involutions, 11);
+  assert.equal(e.orderFourElements, 20);
+  assert.equal(
+    e.involutions + e.orderFourElements,
+    e.order - 1,
+    "every non-identity element has order 2 or 4"
+  );
+  assert.equal(e.type, "2^{1+4}_- = D8 o Q8");
+  assert.match(e.typeReasoning, /minus type 11 and 20/);
+  assert.equal(e.uniformAcrossAllLines, true);
+
+  // one centre, and it is the -I that does the polarity
+  assert.equal(r.oneCentre.distinctCentres, 1);
+  assert.equal(r.oneCentre.isCentreOfSp43, true);
+  assert.match(r.oneCentre.reading, /three jobs/);
+  const p45 = require(path.join(root, "data/the_projective_isa_45.json"));
+  assert.match(p45.centreIsThePolarity.reading, /SYMPLECTIC POLARITY/);
+
+  // the strangeness, and the honest limits
+  assert.match(r.whatIsStrange, /2-GROUPS/);
+  assert.match(r.whatIsStrange, /knows nothing about the field/);
+  assert.match(r.boundary, /NO claim is made that these 27 groups are Pauli/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the cost model reconstructs the cubic surface", () => {
+  const r = require(path.join(
+    root,
+    "data/the_cost_model_reconstructs_the_cubic_surface.json"
+  ));
+  assert.equal(r.schema, "holotrade.cost-model-is-the-cubic-surface.v1");
+  assert.equal(r.valid, true);
+
+  // all three Schlafli numbers, from a predicate with no geometry in it
+  const t = r.theThreeNumbers;
+  assert.equal(t.tritangentPlanes, 45);
+  assert.equal(t.lines, 27);
+  assert.equal(t.doubleSixes, 36);
+  assert.match(r.whatTheCostModelKnows, /nothing geometric/);
+  assert.match(r.whatTheCostModelKnows, /no cubic\s+surface/);
+
+  // the rigid test: 36 is not reachable by a wrong construction
+  const g = r.theRigidTest;
+  assert.deepEqual(g.meetDegree, [10], "each line meets 10");
+  assert.deepEqual(g.skewDegree, [16], "and is skew to 16");
+  assert.equal(g.meetDegree[0] + g.skewDegree[0], 26, "degrees sum to n-1");
+  assert.equal(g.sixers, 72);
+  assert.deepEqual(g.partnersPerSixer, { 1: 72 }, "exactly one partner each");
+  assert.equal(g.doubleSixes, 36);
+  assert.equal(g.sixers / 2, g.doubleSixes, "72 sixers pair into 36");
+  assert.deepEqual(g.linesCovered, { 12: 36 });
+  assert.equal(g.looseReadingGives, 756);
+  assert.notEqual(
+    g.looseReadingGives,
+    g.doubleSixes,
+    "the loose definition is off by 21x -- the count is not robust to error"
+  );
+
+  // it chains onto the earlier quadrangle results
+  const gq = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(gq.quadrangle.points, t.tritangentPlanes);
+  assert.equal(gq.quadrangle.lines, t.lines);
+  const pl = require(path.join(root, "data/the_27_lines_are_pauli_groups.json"));
+  assert.equal(pl.theSchlafliGraph.lines, t.lines);
+  assert.equal(pl.extraspecial.order, 32, "qubit-shaped, order 32");
+
+  // the cross-track citations are present and the limit is stated
+  assert.ok(r.alreadyInTheCorpus.some((s) => /BT810/.test(s)));
+  assert.ok(r.alreadyInTheCorpus.some((s) => /THE_27_FOLD_WAY/.test(s)));
+  assert.ok(r.alreadyInTheCorpus.some((s) => /0d8d33e/.test(s)));
+  assert.ok(r.alreadyInTheCorpus.some((s) => /4952a3b/.test(s)));
+  assert.match(r.whatIsNew, /COST FUNCTION produces them/);
+  assert.match(r.twoPauliGroupsOnOne27, /order-27 exponent-3/);
+  assert.match(r.twoPauliGroupsOnOne27, /2\^\{1\+4\}_-/);
+  assert.match(r.boundary, /by INVARIANTS/);
+  assert.match(r.boundary, /NOT by an explicit equivariant\s+bijection/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the 45-slot ROM bijection is explicit and verified", () => {
+  const r = require(path.join(root, "data/the_45_slot_rom_bijection.json"));
+  assert.equal(r.schema, "holotrade.45-slot-rom-bijection.v1");
+  assert.equal(r.valid, true);
+
+  // two independent constructions, same shape
+  assert.equal(r.sideA.points, 45);
+  assert.equal(r.sideB.points, 45);
+  assert.equal(r.sideA.lines, 27);
+  assert.equal(r.sideB.lines, 27);
+  assert.deepEqual(r.sideA.degrees, [12]);
+  assert.deepEqual(r.sideB.degrees, [12]);
+  assert.equal(r.sideB.weightSplit.weight2, 18);
+  assert.equal(r.sideB.weightSplit.weight4, 27);
+  assert.equal(
+    r.sideB.weightSplit.weight2 + r.sideB.weightSplit.weight4,
+    r.sideB.points
+  );
+  assert.match(r.independence, /nothing is shared/);
+
+  // the verification, all three parts
+  const v = r.verification;
+  assert.equal(v.bijective, true);
+  assert.equal(v.edgePreservingBothDirections, true);
+  assert.equal(v.linesMappedOntoLines, true);
+  assert.match(v.method, /SET EQUALITY, not containment/);
+
+  // the table itself is complete, well-formed and a genuine bijection
+  assert.equal(r.table.length, 45);
+  const slots = new Set(r.table.map((e) => e.slot));
+  assert.equal(slots.size, 45, "every slot used exactly once");
+  for (const e of r.table) {
+    assert.ok(e.slot >= 0 && e.slot < 45);
+    assert.equal(e.h34Point.length, 4);
+    assert.ok(
+      e.h34Point.every((x) => x >= 0 && x <= 3),
+      "GF(4) coordinates"
+    );
+    assert.equal(
+      e.h34Point.filter((x) => x !== 0).length % 2,
+      0,
+      "H(3,4) points have even weight"
+    );
+    assert.equal(e.spMatrix.length, 4);
+    for (const row of e.spMatrix) {
+      assert.equal(row.length, 4);
+      assert.ok(row.every((x) => x >= 0 && x <= 2), "F_3 entries");
+    }
+  }
+  // every Sp matrix is distinct too
+  const mats = new Set(r.table.map((e) => JSON.stringify(e.spMatrix)));
+  assert.equal(mats.size, 45, "45 distinct instructions");
+
+  // the line sets on both sides: 27 lines of 5, each point on 3
+  for (const key of ["linesA", "linesB"]) {
+    const L = r[key];
+    assert.equal(L.length, 27);
+    const per = new Map();
+    for (const line of L) {
+      assert.equal(line.length, 5, key + " lines have 5 points");
+      for (const p of line) per.set(p, (per.get(p) || 0) + 1);
+    }
+    assert.equal(per.size, 45);
+    for (const [, c] of per) assert.equal(c, 3, key + ": 3 lines per point");
+  }
+
+  // it closes the gap both tracks named
+  assert.match(r.theGapNamedTwice, /fe4fb77/);
+  assert.match(r.theGapNamedTwice, /fail closed/);
+  assert.match(r.whatThisUnblocks, /27 banks of 5/);
+  assert.match(r.aChoiceNotCanonical, /THIS certificate is the\s+contract/);
+  assert.match(r.boundary, /NO claim that this particular\s+table is equivariant/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the cheap opcodes are the expensive geometry's ovoids", () => {
+  const r = require(path.join(root, "data/cheap_opcodes_are_ovoids.json"));
+  assert.equal(r.schema, "holotrade.cheap-opcodes-are-ovoids.v1");
+  assert.equal(r.valid, true);
+
+  // exactly dual defects
+  const d = r.dualDefects;
+  assert.equal(d.cheapIndex.geometry, "W(3,3)");
+  assert.equal(d.cheapIndex.spreads, 36);
+  assert.equal(d.cheapIndex.ovoids, 0, "Thas: no ovoid at odd q");
+  assert.equal(d.expensiveSet.geometry, "GQ(4,2)");
+  assert.equal(d.expensiveSet.ovoids, 200);
+  assert.equal(d.expensiveSet.spreads, 0, "and no spread");
+  // the inversion is the point
+  assert.ok(d.cheapIndex.spreads > 0 && d.cheapIndex.ovoids === 0);
+  assert.ok(d.expensiveSet.ovoids > 0 && d.expensiveSet.spreads === 0);
+  assert.match(d.reading, /dual defects/);
+
+  // the orbit split matches the literature, via the machine's own group
+  assert.deepEqual(r.orbitSplit.sizes, [40, 160]);
+  assert.equal(
+    r.orbitSplit.sizes.reduce((a, b) => a + b, 0),
+    d.expensiveSet.ovoids,
+    "the orbits account for all 200"
+  );
+  assert.match(r.orbitSplit.byWhat, /CONJUGATION/);
+  assert.match(r.orbitSplit.byWhat, /class functions/);
+  assert.match(r.orbitSplit.literature, /CITED/);
+
+  // same PSp-set: subdegrees AND an equivariant bijection
+  const s = r.sameSet;
+  assert.deepEqual(s.subdegreesOvoids, [1, 12, 27]);
+  assert.deepEqual(s.subdegreesW33Points, [1, 12, 27]);
+  assert.deepEqual(s.subdegreesOvoids, s.subdegreesW33Points);
+  assert.equal(
+    s.subdegreesOvoids.reduce((a, b) => a + b, 0),
+    40,
+    "subdegrees sum to the degree"
+  );
+  assert.equal(s.equivariantBijection, true, "built, not just matched");
+  assert.equal(s.generatorsChecked, 80, "checked on every generator");
+  assert.match(s.reading, /Matching subdegrees is only\s+evidence/);
+
+  // an ovoid is a minimal cover of the 27 banks: 9 points x 3 lines = 27
+  const gq = require(path.join(
+    root,
+    "data/the_expensive_instructions_form_a_quadrangle.json"
+  ));
+  assert.equal(gq.quadrangle.points, 45);
+  assert.equal(gq.quadrangle.lines, 27);
+  assert.equal(9 * 3, gq.quadrangle.lines, "9 points x 3 lines each = 27 banks");
+  assert.match(r.machineReading, /every cheap opcode canonically names a/);
+  assert.match(r.machineReading, /cover but never cleanly split/);
+
+  // and the honest limit on the cross-track 27
+  assert.match(r.boundary, /verified\s+against EVERY generator, not sampled/);
+  assert.match(r.boundary, /does NOT establish that the 27/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("my 27 is their 27 -- one torsor under the qutrit Pauli group", () => {
+  const r = require(path.join(root, "data/my_27_is_their_27.json"));
+  assert.equal(r.schema, "holotrade.my-27-is-their-27.v1");
+  assert.equal(r.valid, true);
+
+  // it closes a named open item
+  assert.match(r.whatWasOpen, /8982d36/);
+  assert.match(r.whatWasOpen, /does NOT establish/);
+
+  // both 27s are transitive Stab(p0)-sets
+  const s = r.stabiliser;
+  assert.equal(s.order, 648, "25920/40");
+  assert.deepEqual(s.orbitsOnOppositePoints, [27]);
+  assert.deepEqual(s.orbitsOnMy27Lines, [27]);
+
+  // the elation group: order 27, exponent 3, NONabelian, regular on BOTH
+  const e = r.elationGroup;
+  assert.equal(e.sylow3Order, 81);
+  assert.equal(e.exponent, 3, "exponent 3, not 9");
+  assert.equal(e.nonabelian, true, "the abelian one fails to be regular");
+  assert.equal(e.regularOnOppositePoints, true, "their result, reproduced");
+  assert.equal(e.regularOnMy27Lines, true, "the new half");
+
+  // and the bijection is explicit
+  assert.equal(r.equivariantBijection.bijective, true);
+  assert.equal(r.equivariantBijection.intertwinesElationGroup, true);
+  assert.match(r.equivariantBijection.reading, /explicit rather than abstract/);
+
+  // a 3-group and 27 2-groups now provably on one object
+  const pl = require(path.join(root, "data/the_27_lines_are_pauli_groups.json"));
+  assert.equal(pl.theSchlafliGraph.lines, 27);
+  assert.equal(pl.extraspecial.order, 32, "2-groups");
+  assert.equal(pl.oneCentre.isCentreOfSp43, true);
+  assert.match(r.whatSitsOnOne27, /3-GROUP/);
+  assert.match(r.whatSitsOnOne27, /2-GROUPS/);
+  assert.match(r.whatSitsOnOne27, /now a\s+statement about one object/);
+
+  // the search limit is declared, not glossed
+  assert.equal(e.order27SubgroupsFound, 1);
+  assert.match(r.limitOnTheSearch, /TWO elements of order 3/);
+  assert.match(r.limitOnTheSearch, /NOT enumerated here/);
+  assert.match(r.limitOnTheSearch, /does not re-derive their\s+classification/);
+
+  // and the 36 is explicitly NOT claimed
+  assert.match(r.boundary, /closes the 27 question ONLY/);
+  assert.match(r.boundary, /36 here are BT810's\s+spreads is still by invariants/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("every opcode axis anchors five minimal covers", () => {
+  const r = require(path.join(
+    root,
+    "data/opcode_axis_anchors_five_covers.json"
+  ));
+  assert.equal(r.schema, "holotrade.opcode-axis-anchors-five-covers.v1");
+  assert.equal(r.valid, true);
+
+  // every one of the 200 is anchored -- including the 160
+  const a = r.everyCoverIsAnchored;
+  assert.deepEqual(a.stabiliserOrders, { 162: 160, 648: 40 });
+  assert.deepEqual(a.pointsFixedByStabiliser, { 1: 200 }, "all 200, exactly one");
+  assert.equal(648 / 162, 4, "the small stabiliser has index 4 in the point one");
+  assert.match(a.reading, /is false/);
+
+  // the fibration is uniform: 5 per axis, 1 + 4
+  const f = r.fibration;
+  assert.deepEqual(f.coversPerAxis, { 5: 40 });
+  assert.equal(f.composition, "1 plane + 4 other, at every one of the 40");
+  assert.equal(f.alternatesFormOneOrbit, true);
+  assert.equal(f.total, 200);
+  assert.equal(40 * 5, f.total, "40 axes x 5 covers = 200");
+  assert.deepEqual(f.stabOrbitsOnFibre, [1, 4]);
+
+  // intersections: the alternates are genuinely different, not near-duplicates
+  const i = r.intersections;
+  assert.deepEqual(i.planeWithPlane, { 1: 540, 3: 240 });
+  assert.equal(
+    Object.values(i.planeWithPlane).reduce((s, v) => s + v, 0),
+    780,
+    "C(40,2)"
+  );
+  assert.equal(i.planeWithPlane["0"], undefined, "canonicals never miss");
+  assert.deepEqual(i.otherWithPlane, { 0: 1600, 2: 4320, 6: 480 });
+  assert.equal(
+    Object.values(i.otherWithPlane).reduce((s, v) => s + v, 0),
+    160 * 40
+  );
+  assert.ok(i.otherWithPlane["0"] > 0, "an alternate CAN be disjoint");
+  assert.equal(
+    Object.values(i.otherWithOther).reduce((s, v) => s + v, 0),
+    (160 * 159) / 2,
+    "C(160,2)"
+  );
+
+  // it builds on, and cites, the parallel track's Payne identification
+  assert.match(r.whereThisStarts, /slow_path_is_payne_derivative/);
+  assert.match(r.whereThisStarts, /80% of\s+the covers, unexamined/);
+  assert.match(r.operationalReading, /160 spare minimal\s+covers/);
+
+  // and the five is explicitly NOT the F20 five
+  assert.match(r.thisFiveIsNotTheF20Five, /NOT\s+transitively/);
+  assert.match(r.thisFiveIsNotTheF20Five, /two distinct fives/);
+  assert.match(r.boundary, /NO\s+claim that the four alternates have a Payne/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the Schlafli triple is closed by equivariant maps", () => {
+  const r = require(path.join(root, "data/schlafli_triple_closed.json"));
+  assert.equal(r.schema, "holotrade.schlafli-triple-closed.v1");
+  assert.equal(r.valid, true);
+
+  // the last leg: 36 double-sixes = 36 spreads, equivariantly
+  const t = r.theThirtySix;
+  assert.equal(t.spreadsOfW33, 36);
+  assert.equal(t.doubleSixesFromCostGeometry, 36);
+  assert.equal(t.sixers, 72);
+  assert.equal(t.sixers / 2, t.doubleSixesFromCostGeometry);
+  assert.equal(t.transitiveOnDoubleSixes, true);
+  assert.equal(t.transitiveOnSpreads, true);
+  assert.equal(t.equivariantBijection, true, "built, not by invariants");
+  assert.equal(t.generatorsChecked, 80);
+  assert.match(t.whatIsAdded, /FROM THE COST\s+MODEL/);
+
+  // the whole ledger, and each leg cross-checked against its own certificate
+  const L = r.ledger;
+  assert.deepEqual(Object.keys(L).sort(), ["27", "36", "40", "45"]);
+  for (const k of Object.keys(L)) {
+    assert.ok(L[k].costObject && L[k].corpusObject && L[k].commit);
+  }
+  const t27 = require(path.join(root, "data/my_27_is_their_27.json"));
+  assert.equal(t27.equivariantBijection.intertwinesElationGroup, true);
+  const rom = require(path.join(root, "data/the_45_slot_rom_bijection.json"));
+  assert.equal(rom.verification.linesMappedOntoLines, true);
+  assert.equal(rom.table.length, 45);
+  const ov = require(path.join(root, "data/cheap_opcodes_are_ovoids.json"));
+  assert.equal(ov.sameSet.equivariantBijection, true);
+  assert.equal(ov.sameSet.generatorsChecked, 80);
+
+  // the three Schlafli numbers agree with the derivation that started it
+  const cs = require(path.join(
+    root,
+    "data/the_cost_model_reconstructs_the_cubic_surface.json"
+  ));
+  assert.equal(cs.theThreeNumbers.lines, 27);
+  assert.equal(cs.theThreeNumbers.doubleSixes, t.doubleSixesFromCostGeometry);
+  assert.equal(cs.theThreeNumbers.tritangentPlanes, rom.table.length);
+  // and that file's invariants-only hedge is the thing now discharged
+  assert.match(cs.boundary, /by INVARIANTS/);
+  assert.match(r.theLastLeg, /still outstanding/);
+
+  // the claim is bounded: nothing new was discovered, it was identified
+  assert.match(r.whatItLicenses, /ONE object/);
+  assert.match(r.whatItDoesNotSay, /discovered anything\s+the corpus lacked/);
+  assert.match(r.whatItDoesNotSay, /it IS the geometry/);
+  assert.match(r.boundary, /CITED not derived/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the cost quadrangle is a new tower-law base with tau_1 = 9", () => {
+  const r = require(path.join(root, "data/cost_quadrangle_tower_base.json"));
+  assert.equal(r.schema, "holotrade.cost-quadrangle-tower-base.v1");
+  assert.equal(r.valid, true);
+
+  // tau_1 = 9, and the lower bound is pure counting
+  const t = r.tau1;
+  assert.equal(t.points, 45);
+  assert.equal(t.lines, 27);
+  assert.deepEqual(t.linesPerPoint, [3]);
+  assert.deepEqual(t.pointsPerLine, [5]);
+  assert.equal(t.countingBound, 9, "27 lines / 3 lines per point");
+  assert.equal(t.value, 9);
+  assert.equal(t.value, t.countingBound, "the counting bound is attained");
+  assert.equal(t.defect, 0, "tau_1 = st+1 exactly");
+  assert.equal(t.witness.length, 9);
+
+  // minimum blockers ARE the ovoids -- that is what defect zero means
+  const m = r.minimumBlockersAreOvoids;
+  assert.equal(m.minimumBlockers, 200);
+  assert.equal(m.ovoids, 200);
+  assert.equal(m.identical, true);
+  const ov = require(path.join(root, "data/cheap_opcodes_are_ovoids.json"));
+  assert.equal(
+    ov.dualDefects.expensiveSet.ovoids,
+    m.ovoids,
+    "the same 200 ovoids as 8982d36"
+  );
+
+  // the four-quadrangle dichotomy holds row by row
+  assert.equal(r.fourQuadrangles.length, 4);
+  for (const g of r.fourQuadrangles) {
+    assert.equal(
+      g.defect,
+      g.tau1 - g.stPlus1,
+      g.geometry + ": defect is tau_1 - (st+1)"
+    );
+    assert.equal(
+      g.ovoid,
+      g.defect === 0,
+      g.geometry + ": ovoid iff defect zero"
+    );
+    assert.equal(
+      g.towerBase !== null,
+      g.ovoid,
+      g.geometry + ": tower law applies iff ovoid"
+    );
+    if (g.ovoid) assert.equal(g.towerBase, g.tau1);
+    assert.equal(g.stPlus1, g.st[0] * g.st[1] + 1);
+  }
+  // exactly one of each dual pair bears an ovoid
+  const byPair = [
+    ["W(3,3)", "dual of W(3,3)"],
+    ["GQ(2,4)", "GQ(4,2) the cost quadrangle"],
+  ];
+  for (const [a, b] of byPair) {
+    const ga = r.fourQuadrangles.find((x) => x.geometry === a);
+    const gb = r.fourQuadrangles.find((x) => x.geometry === b);
+    assert.notEqual(ga.ovoid, gb.ovoid, a + " / " + b + ": exactly one");
+  }
+
+  // the new base, and that it is smaller than the existing one
+  assert.match(r.newTowerBase.pure, /9\^m/);
+  assert.match(r.newTowerBase.combined, /EXCEPT its W-factors/);
+  assert.match(r.newTowerBase.smallestYet, /base 10/);
+  assert.ok(9 < 10, "the new base is smaller than d9a9c59's");
+
+  // what tau_2 measures -- and it stays open
+  assert.match(r.whatTau2Measures, /9\^2 = 81 exactly/);
+  assert.match(r.whatTau2Measures, /between 6 and 10 off the square/);
+  assert.equal(11 * 11 - 115, 6);
+  assert.equal(11 * 11 - 111, 10);
+  assert.match(r.boundary, /CITED and applied, not re-proved/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the cost quadrangle is q = 3 only", () => {
+  const r = require(path.join(root, "data/cost_quadrangle_is_q3_only.json"));
+  assert.equal(r.schema, "holotrade.cost-quadrangle-q3-only.v1");
+  assert.equal(r.valid, true);
+
+  const byQ = Object.fromEntries(r.rows.map((x) => [x.q, x]));
+  assert.deepEqual(Object.keys(byQ).map(Number).sort((a, b) => a - b), [3, 5, 7]);
+
+  // the construction is q-general and the counts follow closed forms
+  for (const q of [3, 5, 7]) {
+    const x = byQ[q];
+    assert.equal(x.everyReflectionIsHyperbolic, true, "q=" + q);
+    assert.equal(x.classes, x.classesClosedForm, "q^2(q^2+1)/2 at q=" + q);
+    assert.equal(x.degrees.length, 1, "regular at q=" + q);
+    assert.equal(x.degrees[0], x.degreeClosedForm, "q(q^2-1)/2 at q=" + q);
+    assert.equal(x.classes, (q * q * (q * q + 1)) / 2);
+    assert.equal(x.degrees[0], (q * (q * q - 1)) / 2);
+  }
+
+  // q=3: a quadrangle
+  assert.deepEqual(byQ[3].stronglyRegular, [45, 12, 3, 3]);
+  assert.equal(byQ[3].isGQ, true);
+
+  // q=5: strongly regular but NOT a quadrangle
+  assert.deepEqual(byQ[5].stronglyRegular, [325, 60, 15, 10]);
+  assert.equal(byQ[5].isGQ, false, "the GQ identity fails");
+  {
+    const [N, k, l, m] = byQ[5].stronglyRegular;
+    const s = l + 1;
+    const t = m - 1;
+    assert.notEqual((s + 1) * (s * t + 1), N, "17 x 145 is nowhere near 325");
+    // but the SRG feasibility identity does hold
+    assert.equal(k * (k - l - 1), (N - k - 1) * m);
+  }
+
+  // q=7: not strongly regular -- and precisely how it fails
+  assert.equal(byQ[7].stronglyRegular, null);
+  assert.equal(byQ[7].isGQ, false);
+  assert.equal(byQ[7].lambdaValues.length, 1, "lambda is still constant");
+  assert.ok(byQ[7].muValues.length > 1, "it is mu that splits");
+  assert.deepEqual(byQ[7].muValues, [21, 28]);
+
+  // the two-step degradation, and the scope correction it forces
+  assert.match(r.twoStepDegradation.reading, /two-step degradation, not one/);
+  assert.match(r.everythingDownstreamIsQ3Only, /holds only at q = 3/);
+  assert.match(r.everythingDownstreamIsQ3Only, /34f2a84/);
+  assert.match(r.everythingDownstreamIsQ3Only, /8982d36/);
+  assert.match(r.everythingDownstreamIsQ3Only, /48e1841/);
+
+  // and the convergence with the corpus's own q=3 coincidence result
+  assert.match(r.secondIndependentArrival, /REGULUS side/);
+  assert.match(r.secondIndependentArrival, /\(q\+1\)\/2/);
+  assert.match(r.boundary, /NOT proved/);
+  assert.match(r.boundary, /only that q = 7 is\s+not/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the whole machine is one projective space: 121 = 40 + 45 + 36", () => {
+  const r = require(path.join(
+    root,
+    "data/machine_is_one_projective_space.json"
+  ));
+  assert.equal(r.schema, "holotrade.machine-is-one-projective-space.v1");
+  assert.equal(r.valid, true);
+
+  // the counting identity, recomputed from the formulas
+  for (const row of r.theIdentity.rows) {
+    const q = row.q;
+    assert.equal(row.pointsOfPG4, (q ** 5 - 1) / (q - 1));
+    assert.equal(row.isotropic, (q + 1) * (q * q + 1));
+    assert.equal(row.square, (q * q * (q * q + 1)) / 2);
+    assert.equal(row.nonsquare, (q * q * (q * q - 1)) / 2);
+    assert.equal(
+      row.pointsOfPG4,
+      row.isotropic + row.square + row.nonsquare,
+      "identity at q=" + q
+    );
+    assert.equal(row.identityHolds, true);
+  }
+  assert.match(r.theIdentity.viaClassicalIsomorphism, /Sp\(4,q\) = O\(5,q\)/);
+
+  // q=3 is the machine
+  const a = r.atQ3;
+  assert.equal(a.total, 121);
+  assert.equal(a.isotropic.count, 40);
+  assert.equal(a.square.count, 45);
+  assert.equal(a.nonsquare.count, 36);
+  assert.equal(
+    a.isotropic.count + a.square.count + a.nonsquare.count,
+    a.total
+  );
+
+  // and the three claims carry DIFFERENT epistemic status, correctly labelled
+  assert.match(a.isotropic.status, /CITED/);
+  assert.match(a.square.status, /PROVED here by explicit isomorphism/);
+  assert.match(a.nonsquare.status, /COUNT MATCH ONLY/);
+
+  // the isomorphism itself
+  const i = r.isomorphism;
+  assert.deepEqual(i.vertices, [45, 45]);
+  assert.equal(i.found, true);
+  assert.equal(i.bijective, true);
+  assert.equal(i.edgePreservingBothWays, true);
+  assert.match(i.sideA, /ANTICOMMUTATION/);
+  assert.match(i.sideB, /PERPENDICULARITY/);
+  assert.match(i.whyTheRelationsCorrespond, /commuting ones in PSp/);
+
+  // it explains the q-dependence that 424111b only measured
+  const q3 = require(path.join(root, "data/cost_quadrangle_is_q3_only.json"));
+  const byQ = Object.fromEntries(q3.rows.map((x) => [x.q, x]));
+  for (const q of [3, 5, 7]) {
+    const row = r.theIdentity.rows.find((x) => x.q === q);
+    assert.equal(
+      byQ[q].classes,
+      row.square,
+      "the cost classes ARE the square class at q=" + q
+    );
+  }
+  assert.match(r.whatItExplains, /ORBIT\s+SIZES/);
+  assert.match(r.whatItExplains, /never a quadrangle in general/);
+  assert.match(r.theStatement, /ONE point set, sorted by the value of a\s+single form/);
+  assert.match(r.boundary, /NOT built at q = 5 or 7/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the partition's first leg is LINES, not points -- and the 36 is proved", () => {
+  const r = require(path.join(
+    root,
+    "data/partition_is_lines_not_points.json"
+  ));
+  assert.equal(r.schema, "holotrade.partition-is-lines-not-points.v1");
+  assert.equal(r.valid, true);
+
+  // the correction is explicit and directional
+  const c = r.correction;
+  assert.equal(c.of, "eb6cfe8");
+  assert.equal(c.equivariantToPoints, false, "NOT the points");
+  assert.equal(c.equivariantToLines, true, "it is the lines");
+  assert.match(c.whyItIsWrong, /decomposable bivector/);
+
+  // and the methodological point: invariants agreed for both candidates
+  const inv = r.invariantsCouldNotCatchIt;
+  assert.deepEqual(inv.subdegreesIsotropic, [1, 12, 27]);
+  assert.deepEqual(inv.subdegreesW33Points, [1, 12, 27]);
+  assert.deepEqual(inv.subdegreesW33Lines, [1, 12, 27]);
+  assert.equal(inv.allIdentical, true, "subdegrees cannot separate them");
+  assert.match(inv.lesson, /only\s+the explicit equivariant map separates them/);
+
+  // the last leg, upgraded from count-match to proof
+  const l = r.lastLegProved;
+  assert.deepEqual(l.subdegreesNonsquare, [1, 15, 20]);
+  assert.deepEqual(l.subdegreesSpreads, [1, 15, 20]);
+  assert.equal(l.equivariantBijection, true);
+  assert.equal(l.intertwinesAllGenerators, true);
+  assert.equal(l.generators, 80);
+  assert.match(l.wasPreviously, /COUNT MATCH ONLY/);
+  // and the prior certificate did label it that way
+  const prev = require(path.join(
+    root,
+    "data/machine_is_one_projective_space.json"
+  ));
+  assert.match(prev.atQ3.nonsquare.status, /COUNT MATCH ONLY/);
+
+  // the corrected partition, all three legs with a status
+  const p = r.correctedPartition;
+  assert.equal(p.total, 121);
+  assert.equal(p.isotropic.count, 40);
+  assert.equal(p.square.count, 45);
+  assert.equal(p.nonsquare.count, 36);
+  assert.equal(
+    p.isotropic.count + p.square.count + p.nonsquare.count,
+    p.total
+  );
+  assert.equal(p.isotropic.is, "the LINES of W(3,3)");
+  assert.equal(p.nonsquare.is, "the 36 spreads");
+  for (const k of ["isotropic", "square", "nonsquare"]) {
+    assert.match(p[k].status, /proved/, k + " is proved, not matched");
+  }
+  assert.match(p.whereTheOpcodesSit, /its DUAL/);
+  assert.match(p.whereTheOpcodesSit, /not self-dual at odd q/);
+
+  // the refutation was exhaustive, not a failed lucky search
+  assert.match(r.boundary, /failed EXHAUSTIVE search over all 40/);
+  assert.match(r.whatSurvivesUnchanged, /none of those touched\s+the mislabelled leg/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the m = 2 balanced set exists, over a hemisystem pair", () => {
+  const r = require(path.join(root, "data/m_equals_two_balanced_exists.json"));
+  assert.equal(r.schema, "holotrade.m2-balanced-exists.v1");
+  assert.equal(r.valid, true);
+
+  // it closes a row the corpus flagged UNKNOWN
+  assert.match(r.theOpenRow, /UNKNOWN/);
+  const prev = require(path.join(root, "data/depth2_balance_spectrum.json"));
+  const m2 = prev.rows.find((x) => x.m === 2);
+  assert.equal(m2.status, "UNKNOWN", "the prior certificate's open row");
+  assert.equal(m2.predictedSize, 200);
+
+  // the cyclic sweep: exactly one order works, the rest are proofs
+  const sweep = r.cyclicSweep;
+  const ok = sweep.filter((x) => x.status === "OPTIMAL");
+  assert.equal(ok.length, 1, "exactly one working cyclic order");
+  assert.equal(ok[0].order, 5);
+  assert.equal(ok[0].size, 200);
+  assert.deepEqual(r.result.infeasibleOrders, [2, 4, 6, 9, 12]);
+  assert.deepEqual(r.result.unknownOrders, [3]);
+  assert.equal(r.result.feasible, true);
+  assert.equal(r.result.size, 200);
+  assert.equal(r.result.size, 100 * 2, "forced size 100m");
+
+  // independent re-verification of the witness
+  const v = r.independentVerification;
+  assert.equal(v.linePairsChecked, 1600);
+  assert.equal(v.everyTileExactlyTwo, true);
+  assert.match(v.method, /without reference\s+to the model/);
+  assert.equal(r.witness.length, 200);
+  assert.equal(new Set(r.witness).size, 200, "distinct cells");
+  for (const c of r.witness) assert.ok(c >= 0 && c < 1600);
+
+  // the structure the solver was not told about
+  assert.deepEqual(v.rowCountProfile, { 6: 20, 4: 20 });
+  const h = v.rowSplitIsHemisystemPair;
+  assert.deepEqual(Object.keys(h).map(Number).sort(), [4, 6]);
+  for (const k of Object.keys(h)) {
+    assert.equal(h[k].size, 20);
+    assert.equal(h[k].isHemisystem, true, "both halves are hemisystems");
+    assert.deepEqual(h[k].meetsEveryLineIn, { 2: 40 });
+  }
+  assert.equal(20 * 6 + 20 * 4, r.result.size);
+  assert.match(v.structureFound, /complementary pair of hemisystems/);
+  assert.match(v.structureFound, /fed190d/);
+
+  // scope: it does not touch tau_2, and the five is not the other fives
+  assert.match(r.whatItDoesNotSettle, /does NOT move tau_2/);
+  assert.match(r.cautionAboutTheFive, /two\s+distinct fives/);
+  assert.match(r.boundary, /FULL problem without symmetry is not resolved/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the balance spectrum is complete: holes at 1 and 15 only", () => {
+  const r = require(path.join(root, "data/balance_spectrum_complete.json"));
+  assert.equal(r.schema, "holotrade.balance-spectrum-complete.v1");
+  assert.equal(r.valid, true);
+
+  // the complementation lemma is a proof, and it is stated as one
+  const c = r.complementationLemma;
+  assert.equal(c.isAProofNotASearch, true);
+  assert.match(c.statement, /16-m/);
+  assert.match(c.proof, /16 - m for every tile/);
+
+  // the sweep: m=2..8 all feasible, verified, and at size 100m
+  const byM = Object.fromEntries(r.sweep.map((x) => [x.m, x]));
+  assert.equal(byM[1].status, "INFEASIBLE");
+  for (let m = 2; m <= 8; m++) {
+    assert.equal(byM[m].status, "OPTIMAL", "m=" + m);
+    assert.equal(byM[m].size, 100 * m, "size is 100m at m=" + m);
+    assert.equal(byM[m].sizeIs100m, true);
+    assert.equal(byM[m].verified, true, "re-verified at m=" + m);
+    assert.equal(byM[m].complement, 16 - m);
+  }
+
+  // the spectrum and its holes
+  assert.deepEqual(r.holes, [1, 15]);
+  assert.equal(r.spectrum.length, 15, "15 of the 17 levels");
+  for (let m = 0; m <= 16; m++) {
+    assert.equal(
+      r.spectrum.includes(m),
+      !r.holes.includes(m),
+      "level " + m
+    );
+  }
+  // the spectrum is symmetric about 8, as the lemma forces
+  for (const m of r.spectrum) {
+    assert.ok(r.spectrum.includes(16 - m), "symmetric at " + m);
+  }
+  for (const m of r.holes) {
+    assert.ok(r.holes.includes(16 - m), "holes come in complementary pairs");
+  }
+
+  // it extends the prior certificate rather than contradicting it
+  const prev = require(path.join(root, "data/depth2_balance_spectrum.json"));
+  for (const row of prev.rows) {
+    if (row.status === "OPTIMAL") {
+      assert.equal(
+        byM[row.m].size,
+        row.actualSize,
+        "C5 search reproduces the corpus size at m=" + row.m
+      );
+    }
+  }
+  assert.match(r.crossCheck, /WITHOUT\s+symmetry/);
+
+  // the reading, and the honest sourcing of the m=1 row
+  assert.match(r.theHolesAreTheOvoidLevels, /product\s+analogue of an ovoid/);
+  assert.match(r.theHolesAreTheOvoidLevels, /once at\s+each end and nowhere in between/);
+  assert.match(r.boundary, /GLOBAL infeasibility is the corpus's, CITED/);
+  assert.match(r.boundary, /only that no C5-invariant\s+one exists/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the second multiplicative instance, and 48e1841's converse is retracted", () => {
+  const r = require(path.join(
+    root,
+    "data/second_multiplicative_instance.json"
+  ));
+  assert.equal(r.schema, "holotrade.second-multiplicative-instance.v1");
+  assert.equal(r.valid, true);
+
+  // the correction: the converse is NOT proved in the corpus
+  assert.equal(r.correction.of, "48e1841");
+  assert.equal(r.priorTheorem.converseProved, false);
+  assert.match(r.priorTheorem.converseBoundary, /does not by itself imply/);
+  assert.match(r.correction.whyItIsAnOverRead, /CONVERSE/);
+  assert.match(r.correction.whatStands, /fact about\s+W\(3,3\), not a law about defect/);
+  assert.match(r.correction.correctStatement, /FORCES/);
+  // and it really is the prior certificate's own wording
+  const prior = require(path.join(
+    root,
+    "data/tensor_multiplicativity_ovoid_defect.json"
+  ));
+  assert.equal(prior.converseProved, false);
+  assert.equal(r.priorTheorem.converseBoundary, prior.converseBoundary);
+
+  // every row satisfies the GQ arithmetic and the width formula
+  for (const x of r.table) {
+    assert.equal(x.points, (x.s + 1) * (x.s * x.t + 1), x.name);
+    assert.equal(x.lines, (x.t + 1) * (x.s * x.t + 1), x.name);
+    assert.equal(x.ovoidSize, x.s * x.t + 1, x.name);
+    assert.equal(x.ovoidDefect, x.tau1 - x.ovoidSize, x.name);
+    assert.equal(x.hasOvoid, x.ovoidDefect === 0, x.name);
+    assert.equal(x.shadowLower, x.ovoidSize * x.tau1, x.name);
+    assert.equal(x.productUpper, x.tau1 * x.tau1, x.name);
+    assert.equal(x.widthFormulaHolds, true, x.name);
+    assert.equal(
+      x.intervalWidth,
+      x.tau1 * x.ovoidDefect,
+      "width = tau_1 * delta at " + x.name
+    );
+    // multiplicativity is claimed exactly when delta = 0
+    assert.equal(x.multiplicative, x.ovoidDefect === 0 ? true : null, x.name);
+  }
+
+  // the new row
+  const n = r.newRow;
+  assert.equal(n.s, 4);
+  assert.equal(n.t, 2);
+  assert.equal(n.points, 45);
+  assert.equal(n.lines, 27);
+  assert.equal(n.tau1, 9);
+  assert.equal(n.ovoidDefect, 0);
+  assert.equal(n.tau2, 81);
+  assert.equal(n.intervalWidth, 0);
+  assert.equal(n.multiplicative, true);
+  // consistent with where tau_1 = 9 was established
+  const tb = require(path.join(root, "data/cost_quadrangle_tower_base.json"));
+  assert.equal(tb.tau1.value, n.tau1);
+  assert.equal(tb.tau1.defect, n.ovoidDefect);
+
+  // two confirmed rows now, not one
+  const mult = r.table.filter((x) => x.multiplicative === true);
+  assert.equal(mult.length, 2, "GQ(2,2) and GQ(4,2)");
+  assert.ok(mult.some((x) => x.s === 2 && x.t === 2));
+  assert.ok(mult.some((x) => x.s === 4 && x.t === 2));
+  assert.match(r.whyItMatters, /not W\(3,2\)/);
+
+  // and W(3,3) is untouched
+  const w = r.table.find((x) => x.s === 3 && x.t === 3);
+  assert.equal(w.tau2, null, "still undecided");
+  assert.equal(w.intervalWidth, 11);
+  assert.match(r.itDoesNotTouchW33, /decides no delta = 1/);
+  assert.match(r.boundary, /NOT an\s+independent verification/);
+  assert.match(r.boundary, /tau_2 for W\(3,3\) is untouched/);
+});
+
+test("the stale-frontier audit is semantic, not a string match", () => {
+  const r = require(path.join(
+    root,
+    "data/stale_frontier_audit_semantic.json"
+  ));
+  assert.equal(r.schema, "holotrade.stale-frontier-audit-semantic.v1");
+  assert.equal(r.valid, true);
+
+  // the exclusion is sourced, not asserted
+  assert.match(r.theExclusion, /43049db/);
+  assert.match(r.theExclusion, /CITED, not reproduced/);
+
+  // what the prior audit did and did not do
+  const p = r.whatThePriorAuditDidNotDo;
+  assert.equal(p.commit, "4b23ec0");
+  assert.match(p.matched, /literal interval string/);
+  assert.match(p.limitation2, /nothing applied the fix/);
+  const prior = require(path.join(
+    root,
+    "data/the_tau2_interval_is_111_not_110.json"
+  ));
+  assert.equal(p.filesFound, prior.scan.staleCount);
+  assert.deepEqual(prior.certifiedInterval, [111, 115]);
+  assert.equal(prior.excluded, 110);
+
+  // the classification is by a published rule
+  assert.ok(Array.isArray(r.classificationRule.staleMarks));
+  assert.ok(Array.isArray(r.classificationRule.defensibleMarks));
+  assert.match(r.classificationRule.STALE, /lower bound\s+110/);
+
+  // counts are consistent and every row carries a verdict
+  assert.equal(r.counts.stale + r.counts.defensible, r.counts.flagged);
+  assert.equal(r.stale.length, r.counts.stale);
+  assert.equal(r.defensible.length, r.counts.defensible);
+  assert.ok(r.counts.stale >= 15, "the backlog is substantial");
+  for (const x of r.stale.concat(r.defensible)) {
+    assert.ok(x.file && x.field && x.verdict);
+    assert.ok(["STALE", "DEFENSIBLE"].includes(x.verdict));
+  }
+
+  // the audit must not have read its own output
+  const self = "stale_frontier_audit_semantic.json";
+  for (const x of r.stale.concat(r.defensible)) {
+    assert.notEqual(x.file, self, "no self-contamination");
+  }
+
+  // the files the literal scan missed are genuinely absent from its list
+  const priorData = new Set(
+    prior.scan.staleOnly.filter((f) => f.startsWith("data/"))
+  );
+  assert.ok(r.dataFilesTheLiteralScanMissed.length >= 5);
+  for (const f of r.dataFilesTheLiteralScanMissed) {
+    assert.equal(priorData.has(f), false, f + " was not in the literal scan");
+  }
+
+  // the certificate that already acknowledges the exclusion is NOT called stale
+  const defFiles = r.defensible.map((x) => x.file);
+  assert.ok(defFiles.includes("tensor_110_sat_encoding.json"));
+  assert.ok(defFiles.includes("tensor_blocking_structure.json"));
+  assert.match(r.theOneMostWorthKeeping, /not a\s+counting argument/);
+
+  // nothing was rewritten, and no bound moved
+  assert.match(r.whyNotRewritten, /would break the suite/);
+  assert.match(r.boundary, /NO certificate is modified/);
+  assert.match(r.boundary, /still open\s+in \[111, 115\]/);
+});
+
+test("why depth five resists is a property of the instance", () => {
+  const r = require(path.join(root, "data/why_depth_five_resists.json"));
+  assert.equal(r.schema, "holotrade.why-depth-five-resists.v1");
+  assert.equal(r.valid, true);
+  assert.equal(r.isNegativeMethodResult, true, "labelled as such");
+
+  // the packing route is closed by a PROOF, not a timeout
+  const d = r.lpRouteClosedByDuality;
+  assert.equal(d.isAProof, true);
+  assert.equal(d.integerPackingCeiling, Math.floor(d.lp));
+  assert.equal(d.lpCeiling, Math.ceil(d.lp - 1e-9));
+  assert.ok(
+    d.integerPackingCeiling < d.lpCeiling,
+    "any integer packing is WEAKER than the LP's own ceiling"
+  );
+  assert.match(d.argument, /LP dual IS the fractional\s+packing/);
+
+  // the decision reformulation was tried and returned UNKNOWN
+  assert.equal(r.decisionReformulation.length, 2);
+  for (const x of r.decisionReformulation) {
+    assert.equal(x.status, "UNKNOWN");
+    assert.equal(x.budgetSeconds, 240);
+  }
+
+  // reductions genuinely do not bite
+  const red = r.reductions;
+  assert.equal(red.tileConstraints, 6129);
+  assert.equal(red.forcedLeavesFromSingletons, 0, "no unit clauses at all");
+  assert.equal(red.variableCountUnchanged, true);
+  assert.equal(red.leafVariablesRelevant, 5294);
+  assert.ok(
+    red.afterRemovingDominated > 0.95 * red.tileConstraints,
+    "dominance removes under 5%"
+  );
+
+  // the measurements that explain it
+  const m = r.measurements;
+  assert.ok(m.leafOptionsPerTile.min >= 50, "every tile has 50+ options");
+  assert.ok(m.largestLeafCoversFraction < 0.2, "no leaf covers a fifth");
+  assert.ok(m.density > 0.1 && m.density < 0.15);
+  assert.equal(m.incidences, 3640843);
+  // and they reproduce the corpus's numbers exactly
+  const prior = require(path.join(
+    root,
+    "data/depth_five_is_reachable_but_undecided.json"
+  ));
+  assert.ok(Math.abs(m.lp - prior.bounds.lpRelaxation) < 1e-6);
+  assert.equal(m.greedy, prior.bounds.greedyCover);
+  assert.equal(m.bestKnown, prior.bounds.cpsatBestFound);
+  assert.ok(m.integralityGap > 1.7 && m.integralityGap < 1.8);
+
+  // the interval is NOT moved, and the file says so
+  assert.deepEqual(prior.bounds.interval, [13, 22]);
+  assert.match(r.boundary, /MOVES NO BOUND/);
+  assert.match(r.boundary, /NOT\s+evidence that longer budgets would fail/);
+  assert.match(r.implication, /will not be separated by\s+more solver/);
+  assert.match(r.implication, /GEOMETRY/);
+  assert.match(r.diagnosis, /no unit clause anywhere/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the complement half is demonstrated, not just asserted", () => {
+  const r = require(path.join(root, "data/complement_half_demonstrated.json"));
+  assert.equal(r.schema, "holotrade.complement-half-demonstrated.v1");
+  assert.equal(r.valid, true);
+
+  // the prior file did claim it constructively
+  const prev = require(path.join(root, "data/balance_spectrum_complete.json"));
+  assert.match(prev.boundary, /constructive/);
+  assert.match(r.whatWasAsserted, /calling something constructive and\s+constructing it are different/);
+
+  // the check itself: both halves, all tiles, from the committed artefact
+  const c = r.complementCheck;
+  assert.equal(c.readFromDisk, true);
+  assert.equal(c.witnessSource, "data/m_equals_two_balanced_exists.json");
+  assert.equal(c.tilesRecounted, 1600);
+  assert.equal(c.X.size, 200);
+  assert.equal(c.X.m, 2);
+  assert.deepEqual(c.X.tileCounts, { 2: 1600 });
+  assert.equal(c.X.isBalanced, true);
+  assert.equal(c.complement.size, 1400);
+  assert.equal(c.complement.m, 14);
+  assert.deepEqual(c.complement.tileCounts, { 14: 1600 });
+  assert.equal(c.complement.isBalanced, true);
+  assert.equal(c.sizeIs100m, true);
+  // the two sizes partition the grid, and each is 100m
+  assert.equal(c.X.size + c.complement.size, 1600);
+  assert.equal(c.X.size, 100 * c.X.m);
+  assert.equal(c.complement.size, 100 * c.complement.m);
+  assert.equal(c.X.m + c.complement.m, 16, "m + (16-m)");
+  // and 14 really is in the spectrum the prior file claimed
+  assert.ok(prev.spectrum.includes(14));
+
+  // the C3 row, with its budget recorded
+  const c3 = r.c3Row;
+  assert.equal(c3.symmetry, "C3");
+  assert.equal(c3.budgetSeconds, 430);
+  assert.ok(c3.budgetSeconds > c3.priorBudgetSeconds);
+  assert.equal(c3.priorStatus, "UNKNOWN");
+  assert.equal(c3.loadBearing, false);
+  const bal = require(path.join(root, "data/m_equals_two_balanced_exists.json"));
+  assert.equal(bal.result.feasible, true, "m=2 settled by C5 regardless");
+
+  // honest about size and limits
+  assert.match(r.whyItIsWorthDoing, /neither item moves a bound/);
+  assert.match(r.boundary, /AS COMMITTED, read\s+from disk/);
+  assert.match(r.boundary, /NOT\s+evidence that no C3-invariant/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the phase lift has no obstruction: the qutrit Clifford group splits", () => {
+  const r = require(path.join(root, "data/phase_lift_has_no_obstruction.json"));
+  assert.equal(r.schema, "holotrade.phase-lift-no-obstruction.v1");
+  assert.equal(r.valid, true);
+
+  // it addresses a boundary the compiler actually stated
+  const comp = require(path.join(
+    root,
+    "data/the_qutrit_transvection_compiler.json"
+  ));
+  assert.match(comp.boundary, /phase bookkeeping/);
+  assert.match(r.theBoundaryLeft, /hard, easy or impossible/);
+
+  // the group orders are the expected ones
+  const g = r.oneQutritGroups;
+  assert.equal(g.pauliModGlobalPhase, 9);
+  assert.equal(g.cliffordModGlobalPhase, 216);
+  assert.equal(g.quotient, 24);
+  assert.equal(
+    g.cliffordModGlobalPhase,
+    g.pauliModGlobalPhase * g.quotient,
+    "|C| = |P| . |C/P|"
+  );
+
+  // the complement, which is what splitting means
+  const s = r.splitting;
+  assert.equal(s.splits, true);
+  assert.equal(s.complementOrder, 24);
+  assert.equal(s.complementOrder, g.quotient, "a complement has quotient order");
+  assert.equal(s.pauliIntersection, 1, "trivial intersection with the Paulis");
+  assert.match(s.consequence, /no 2-cocycle, no\s+phase table/);
+
+  // the qubit contrast is cited, not claimed as derived here
+  assert.match(r.literature, /odd prime p/);
+  assert.match(r.literature, /NOT such a\s+semidirect product/);
+  assert.match(r.literature, /cited for general n/);
+
+  // the q=2 pattern is flagged as an observation, not a theorem
+  assert.match(r.sameDichotomyAsTheSession, /6bb8975/);
+  assert.match(r.sameDichotomyAsTheSession, /3595bd1/);
+  assert.match(r.sameDichotomyAsTheSession, /OBSERVATION/);
+  assert.match(r.sameDichotomyAsTheSession, /not a claim that\s+these are the same theorem/);
+
+  // the compiler consequence, and its honest limits
+  assert.match(r.whatItChangesForTheCompiler, /lifts TERMWISE/);
+  assert.match(r.whatItChangesForTheCompiler, /rather than\s+'not known how'/);
+  assert.match(r.boundary, /NOT verified at n = 2/);
+  assert.match(r.boundary, /eighty canonical\s+lifts are NOT produced here/);
+  assert.match(r.boundary, /not in exact\s+cyclotomic arithmetic/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the eighty Clifford lifts are tabulated in closed form and verified", () => {
+  const r = require(path.join(root, "data/eighty_clifford_lifts.json"));
+  assert.equal(r.schema, "holotrade.eighty-clifford-lifts.v1");
+  assert.equal(r.valid, true);
+
+  // it delivers what the prior commit called engineering
+  const prev = require(path.join(
+    root,
+    "data/phase_lift_has_no_obstruction.json"
+  ));
+  assert.match(prev.whatItChangesForTheCompiler, /TABULATION/);
+  assert.match(r.whatWasPromised, /would be the cheap move/);
+
+  // the closed form, and its collapse at p=3
+  const f = r.closedForm;
+  assert.match(f.formula, /w\^\{lam k\^2\}/);
+  assert.equal(f.generalP, "a = -(2 lam)^{-1} mod p");
+  assert.equal(f.collapsesAtP3, true, "a = lam at p=3");
+
+  // verification is exhaustive, not sampled
+  const v = r.verification;
+  assert.equal(v.lifts, 80);
+  assert.equal(v.unitary, 80);
+  assert.equal(v.realisesItsTransvection, 80);
+  assert.equal(v.conjugationsChecked, 6400, "80 lifts x 80 Paulis");
+  assert.equal(v.conjugationsChecked, v.lifts * 80);
+  assert.equal(v.isASample, false);
+
+  // the commutation sign is pinned by evidence, both ways measured
+  const c = r.commutationConvention;
+  assert.equal(c.minusSignViolations, 0);
+  assert.ok(c.plusSignViolations > 0, "the other sign genuinely fails");
+  assert.match(c.correct, /w\^\{-<u,v>\}/);
+
+  // the table is complete and well formed
+  assert.equal(r.table.length, 80);
+  const seen = new Set();
+  for (const t of r.table) {
+    assert.equal(t.v.length, 4);
+    assert.ok(t.v.every((x) => x >= 0 && x <= 2), "F_3 coordinates");
+    assert.ok([1, 2].includes(t.lam));
+    assert.equal(t.a, t.lam, "a = lam at p = 3");
+    assert.equal(t.unitary, true);
+    assert.equal(t.realisesItsTransvection, true);
+    const k = t.v.join(",") + "|" + t.lam;
+    assert.equal(seen.has(k), false, "no duplicate (v, lam)");
+    seen.add(k);
+  }
+  assert.equal(seen.size, 80);
+  // 40 projective points x 2 values of lam
+  assert.equal(new Set(r.table.map((t) => t.v.join(","))).size, 40);
+
+  // and the failed attempt is disclosed as an artefact, not reported as data
+  assert.match(r.notSettled, /NOT established/);
+  assert.match(r.notSettled, /ARTEFACT/);
+  assert.match(r.notSettled, /whether THIS choice is one is open/);
+  assert.match(r.stillUsable, /up to a Pauli and a global phase/);
+  assert.match(r.boundary, /NUMERICAL at 1e-7/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the Gauss-sum lifts are NOT a homomorphic section", () => {
+  const r = require(path.join(
+    root,
+    "data/gauss_sum_lifts_not_a_section.json"
+  ));
+  assert.equal(r.schema, "holotrade.gauss-lifts-not-a-section.v1");
+  assert.equal(r.valid, true);
+
+  // it settles what the prior commit flagged open
+  const prev = require(path.join(root, "data/eighty_clifford_lifts.json"));
+  assert.match(prev.notSettled, /whether THIS choice is one is open/);
+  assert.match(r.whatWasOpen, /disclosed as an artefact/);
+
+  // the encoding is exact: no unitaries, no rounding, after one safe readout
+  const e = r.exactEncoding;
+  assert.match(e.arithmetic, /pure F_3/);
+  assert.ok(e.phaseReadoffError < 1e-12, "phases are cube roots to 1e-12");
+
+  // phi is not linear, and the zero-sets are NOT uniform
+  const q = r.phiIsNotLinear;
+  assert.equal(q.linearLifts, 0, "no lift has a linear phase function");
+  assert.deepEqual(q.zerosPerLift, { 26: 16, 44: 64 });
+  assert.equal(
+    Object.values(q.zerosPerLift).reduce((a, b) => a + b, 0),
+    80,
+    "all eighty accounted for"
+  );
+  assert.ok(Object.keys(q.zerosPerLift).length > 1, "not uniform");
+  // and the unexplained part is labelled as unexplained
+  assert.match(q.whatIsAccountedFor, /FLOOR/);
+  assert.match(q.whatIsAccountedFor, /NOT explained here/);
+  assert.match(q.whatIsAccountedFor, /came from three examples\s+and was wrong/);
+
+  // the negative result itself
+  const res = r.result;
+  assert.equal(res.isASection, false);
+  assert.equal(res.containsPaulis, true);
+  assert.equal(res.spOrder, 51840);
+  assert.equal(res.hitCap, true);
+  assert.ok(res.groupOrderExceeded > res.spOrder, "far past |Sp(4,3)|");
+
+  // it does not overturn the splitting, and says which claim survives
+  assert.match(r.doesNotOverturnTheSplitting, /section EXISTS/);
+  assert.match(r.doesNotOverturnTheSplitting, /nontrivial cocycle/);
+  const split = require(path.join(
+    root,
+    "data/phase_lift_has_no_obstruction.json"
+  ));
+  assert.equal(split.splitting.splits, true, "n=1 splitting still stands");
+  assert.match(r.compilerUnaffected, /up to a Pauli and a global\s+phase/);
+
+  // and the partial count is not dressed up as a subgroup order
+  assert.match(r.boundary, /PARTIAL because/);
+  assert.match(r.boundary, /never a subgroup order/);
+  assert.match(r.boundary, /NOT attempted here/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the section is constructed and the eighty lifts are corrected onto it", () => {
+  const r = require(path.join(
+    root,
+    "data/section_and_correction_table.json"
+  ));
+  assert.equal(r.schema, "holotrade.section-and-correction-table.v1");
+  assert.equal(r.valid, true);
+
+  // it delivers what the previous commit declined to attempt
+  const prev = require(path.join(
+    root,
+    "data/gauss_sum_lifts_not_a_section.json"
+  ));
+  assert.match(prev.boundary, /NOT attempted here/);
+  assert.equal(prev.result.isASection, false, "the Gauss-sum lifts were not");
+
+  // the section: exactly |Sp(4,3)|, no Paulis
+  const s = r.theSection;
+  assert.equal(s.order, 51840);
+  assert.equal(s.spOrder, 51840);
+  assert.equal(s.pauliCount, 0);
+  assert.equal(s.isASection, true);
+  assert.equal(s.order, s.spOrder, "no excess over the symplectic group");
+  assert.equal(s.generatorCount, 77);
+  assert.equal(s.verifiedNotCited, true);
+  assert.match(s.generators, /quadratic phase/);
+  assert.match(s.generators, /Fourier/);
+  assert.match(s.consequence, /bijection/);
+
+  // every correction is a genuine Pauli, and linearity was checked FIRST
+  const c = r.correction;
+  assert.equal(c.outOf, 80);
+  assert.equal(c.differenceIsLinear, 80, "all differences linear");
+  assert.equal(c.pauliSolved, 80, "all corrections solved");
+  assert.match(c.method, /BEFORE a is\s+extracted/);
+
+  // the table is complete and well-formed
+  assert.equal(r.table.length, 80);
+  const seenKeys = new Set();
+  for (const t of r.table) {
+    assert.equal(t.v.length, 4);
+    assert.ok(t.v.every((x) => x >= 0 && x <= 2));
+    assert.ok([1, 2].includes(t.lam));
+    assert.equal(t.differenceIsLinear, true);
+    assert.ok(Array.isArray(t.pauliCorrection), "a correction exists");
+    assert.equal(t.pauliCorrection.length, 4);
+    assert.ok(t.pauliCorrection.every((x) => x >= 0 && x <= 2), "F_3 vector");
+    const k = t.v.join(",") + "|" + t.lam;
+    assert.equal(seenKeys.has(k), false);
+    seenKeys.add(k);
+  }
+  assert.equal(seenKeys.size, 80);
+  assert.equal(new Set(r.table.map((t) => t.v.join(","))).size, 40);
+
+  // it matches the lift table it corrects
+  const lifts = require(path.join(root, "data/eighty_clifford_lifts.json"));
+  assert.equal(lifts.table.length, r.table.length);
+
+  // and the splitting it realises was verified earlier at n=1
+  const split = require(path.join(
+    root,
+    "data/phase_lift_has_no_obstruction.json"
+  ));
+  assert.equal(split.splitting.splits, true);
+  assert.match(r.whyItMatters, /NO\s+residual/);
+  assert.match(r.boundary, /VERIFIED here rather than cited/);
+  assert.match(r.boundary, /Only n = 2, q = 3/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the correction table is fixed: right relation, real section, closed form", () => {
+  const r = require(path.join(root, "data/correction_table_fixed.json"));
+  assert.equal(r.schema, "holotrade.correction-table-fixed.v1");
+  assert.equal(r.valid, true);
+  assert.match(r.supersedes, /0c9ac42/);
+
+  // the bug: solved at the source, but the shift happens at the image
+  const b = r.theBug;
+  assert.match(b.whatItSolved, /-<a, v>/);
+  assert.match(b.correctRelation, /\+<a, S v>/);
+  assert.match(b.why, /IMAGE/);
+  assert.match(b.whyItSurvived, /solvable 80\/80/);
+  assert.match(b.howItWasCaught, /non-circular/);
+  assert.match(b.secondSlipCaughtTheSameWay, /do not compose phase-free/);
+
+  // two independent verifications, both passing
+  const v = r.verification;
+  assert.equal(v.sectionOrder, 51840);
+  assert.equal(v.sectionHasNoPaulis, true);
+  assert.equal(v.correctedEncodingEqualsSection, 80, "per-lift, direct");
+  assert.equal(v.outOf, 80);
+  assert.equal(v.groupGeneratedByCorrected, 51840, "global");
+  assert.equal(v.pauliCount, 0);
+  assert.equal(v.isASection, true);
+  assert.equal(
+    v.groupGeneratedByCorrected,
+    v.sectionOrder,
+    "the corrected family lands exactly on the section"
+  );
+  assert.match(v.twoIndependentChecks, /would fail\s+if any single correction/);
+
+  // and the old table demonstrably failed -- it is superseded, not just amended
+  const old = require(path.join(
+    root,
+    "data/section_and_correction_table.json"
+  ));
+  assert.equal(old.correction.pauliSolved, 80, "it 'solved' 80/80 too");
+  assert.notEqual(
+    old.correction.method.includes("S v"),
+    true,
+    "the old method did not use the image"
+  );
+
+  // the closed form, with the sign that the bug flipped
+  const c = r.closedForm;
+  assert.equal(c.everyCorrectionIsAMultipleOfV, true);
+  assert.equal(c.formula, "c = -lam * Q(v)");
+  assert.equal(c.fitsNegative, 80);
+  assert.ok(c.fitsPositive < c.fitsNegative, "the positive sign does not fit");
+  assert.equal(c.fitsPositive, 32);
+  assert.match(c.signIsPropagated, /same error/);
+  assert.match(c.lift, /Pauli MULTIPLICATION/);
+
+  // the table is complete and every entry has a scalar
+  assert.equal(r.table.length, 80);
+  for (const t of r.table) {
+    assert.equal(t.v.length, 4);
+    assert.equal(t.pauliCorrection.length, 4);
+    assert.ok([0, 1, 2].includes(t.c), "the scalar exists");
+    // the correction really is c times v
+    for (let i = 0; i < 4; i++) {
+      assert.equal(t.pauliCorrection[i], (t.c * t.v[i]) % 3);
+    }
+    // and c matches the closed form
+    const Q = (t.v[0] * t.v[2] + t.v[1] * t.v[3]) % 3;
+    assert.equal(t.c, ((-t.lam * Q) % 3 + 3) % 3, "c = -lam Q(v)");
+  }
+  assert.equal(new Set(r.table.map((t) => t.v.join(","))).size, 40);
+
+  assert.match(r.boundary, /recomputed from scratch, not patched/);
+  assert.match(r.boundary, /Only n = 2/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the correction was a convention, not an obstruction", () => {
+  const r = require(path.join(root, "data/correction_was_a_convention.json"));
+  assert.equal(r.schema, "holotrade.correction-was-a-convention.v1");
+  assert.equal(r.valid, true);
+  assert.equal(r.answer, "an artefact");
+
+  // one convention lands on the section; the others do not
+  assert.deepEqual(r.landsOnSection, { 0: 32, 1: 32, 2: 80 });
+  assert.equal(r.landsOnSection["2"], 80, "no correction needed at t=2");
+  assert.ok(
+    r.landsOnSection["0"] < r.landsOnSection["2"],
+    "the raw Pauli genuinely fails"
+  );
+
+  // and t=2 is the Weyl operator by BOTH defining properties
+  const w = r.weylProperties;
+  assert.equal(w.powersAreDisplacements["2"], "160/160");
+  assert.equal(w.adjointIsOpposite["2"], "80/80");
+  for (const t of ["0", "1"]) {
+    assert.notEqual(w.powersAreDisplacements[t], "160/160", "t=" + t + " fails");
+    assert.notEqual(w.adjointIsOpposite[t], "80/80", "t=" + t + " fails");
+  }
+  assert.match(w.reading, /raw product X\^a Z\^b satisfies neither/);
+
+  // it accounts for all three earlier failures
+  assert.equal(r.explainsEveryFailure.length, 3);
+  assert.ok(r.explainsEveryFailure.some((s) => /0fb6a0f/.test(s)));
+  assert.ok(r.explainsEveryFailure.some((s) => /P_v\^c P_v\^j/.test(s)));
+  assert.ok(r.explainsEveryFailure.some((s) => /0c9ac42/.test(s)));
+  // and those failures are on the record
+  const notSec = require(path.join(
+    root,
+    "data/gauss_sum_lifts_not_a_section.json"
+  ));
+  assert.equal(notSec.result.isASection, false);
+  const fixed = require(path.join(root, "data/correction_table_fixed.json"));
+  assert.match(fixed.theBug.correctRelation, /S v/);
+
+  // the final form needs no correction at all
+  const f = r.finalForm;
+  assert.equal(f.noCorrection, true);
+  assert.equal(f.groupOrder, 51840);
+  assert.equal(f.pauliCount, 0);
+  assert.equal(f.isASection, true);
+  assert.match(f.operator, /w\^\{2 Q\(v\)\}/);
+  assert.match(f.lift, /sum_k w\^\{lam k\^2\} D_v\^k/);
+  // it is strictly simpler than the corrected-table route it replaces
+  assert.match(fixed.closedForm.lift, /Pauli MULTIPLICATION/);
+
+  // and the convention claim is scoped
+  assert.match(r.boundary, /is NOT claimed/);
+  assert.match(r.boundary, /Only n = 2, q = 3/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the Weyl lift is q-general: a section at p = 3, 5 and 7", () => {
+  const r = require(path.join(root, "data/weyl_lift_is_q_general.json"));
+  assert.equal(r.schema, "holotrade.weyl-lift-q-general.v1");
+  assert.equal(r.valid, true);
+
+  assert.deepEqual(r.rows.map((x) => x.p), [3, 5, 7]);
+  for (const x of r.rows) {
+    const p = x.p;
+    // the group orders are the arithmetic ones
+    assert.equal(x.pauli, p * p, "Pauli mod phase is p^2 at p=" + p);
+    assert.equal(x.quotient, (p * p - 1) * p, "|SL(2,p)| at p=" + p);
+    assert.equal(x.quotient, x.expectedQuotient);
+    assert.equal(x.clifford, x.pauli * x.quotient, "|C| = |P|.|C/P|");
+    // exactly one displacement normalisation
+    assert.equal(x.weylT.length, 1, "unique t at p=" + p);
+    assert.equal(x.t, x.weylT[0]);
+    assert.equal(x.tIsHalfInverse, true, "t = 2^{-1} at p=" + p);
+    assert.equal(x.t, (p + 1) / 2, "t = (p+1)/2 at p=" + p);
+    assert.equal((2 * x.t) % p, 1, "2t = 1 mod p");
+    // every lift verified, and the family is a section
+    assert.equal(x.lifts, (p + 1) * (p - 1), "one per projective v and lam");
+    assert.equal(x.verified, x.lifts, "all verified at p=" + p);
+    assert.equal(x.generated, x.quotient, "generates exactly |SL(2,p)|");
+    assert.equal(x.pauliIntersection, 1, "trivial Pauli intersection");
+    assert.equal(x.isASection, true, "section at p=" + p);
+  }
+
+  // the phase claim is upgraded from c003b33, and scoped as a pattern
+  const prev = require(path.join(
+    root,
+    "data/correction_was_a_convention.json"
+  ));
+  assert.match(prev.boundary, /is NOT claimed/, "c003b33 declined it");
+  assert.match(r.thePhaseIsHalfInverse, /PATTERN/);
+  assert.match(r.thePhaseIsHalfInverse, /not a proof\s+for all p/);
+
+  // the geometry/compiler split, against the q=3-only geometry result
+  const q3 = require(path.join(root, "data/cost_quadrangle_is_q3_only.json"));
+  const byQ = Object.fromEntries(q3.rows.map((x) => [x.q, x]));
+  assert.equal(byQ[3].isGQ, true, "geometry: quadrangle at 3");
+  assert.equal(byQ[5].isGQ, false, "geometry: not at 5");
+  assert.equal(byQ[7].stronglyRegular, null, "geometry: not even SRG at 7");
+  // ...while the compiler construction works at all three
+  for (const x of r.rows) assert.equal(x.isASection, true);
+  assert.match(r.theSessionSplitsCleanly, /accident of small parameters/);
+
+  // the third float-hashing bug is disclosed with its mechanism
+  assert.match(r.aBugWorthRecording, /-0\.0/);
+  assert.match(r.aBugWorthRecording, /Third floating-point-hashing/);
+  assert.match(r.aBugWorthRecording, /expected integer was known in advance/);
+
+  assert.match(r.boundary, /n = 2 is verified only at p = 3/);
+  assert.match(r.boundary, /characteristic 2 -- where the/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the hemisystem structure was rare, not typical", () => {
+  const r = require(path.join(
+    root,
+    "data/hemisystem_structure_was_rare.json"
+  ));
+  assert.equal(r.schema, "holotrade.hemisystem-structure-rare.v1");
+  assert.equal(r.valid, true);
+
+  // the earlier claim, and that it was one witness
+  const prev = require(path.join(
+    root,
+    "data/m_equals_two_balanced_exists.json"
+  ));
+  assert.match(
+    prev.independentVerification.structureFound,
+    /complementary pair of hemisystems/
+  );
+  assert.match(r.whatWasSaid, /it was\s+ONE witness/);
+
+  // the negative: one in sixty
+  const v = r.varyingIt;
+  assert.equal(v.solutionsCollected, 60);
+  assert.equal(v.allRowClassesAreHemisystems, 1, "exactly one, mine");
+  assert.equal(
+    v.allRowClassesAreHemisystems + v.notHemisystems,
+    v.solutionsCollected
+  );
+  assert.ok(
+    v.allRowClassesAreHemisystems / v.solutionsCollected < 0.05,
+    "under 5% -- rare, not typical"
+  );
+  assert.ok(v.distinctRowProfiles >= 10, "the space is heterogeneous");
+  assert.match(v.reading, /fifth failure mode/);
+
+  // profiles are consistent with the solution count
+  const total = Object.values(r.profiles).reduce((a, b) => a + b, 0);
+  assert.equal(total, v.solutionsCollected);
+  assert.equal(Object.keys(r.profiles).length, v.distinctRowProfiles);
+
+  // a uniform profile exists and is argued to be the more canonical one
+  assert.ok(r.uniformProfileExists.count >= 1);
+  assert.match(r.uniformProfileExists.profile, /exactly five partners/);
+  assert.match(r.uniformProfileExists.reading, /40 x 5 = 200/);
+
+  // what survives is stated, and the sample limit is stated as strengthening
+  assert.match(r.whatSurvives, /m = 2 is feasible/);
+  assert.match(r.whatSurvives, /c74fbb1 is untouched/);
+  const spec = require(path.join(root, "data/balance_spectrum_complete.json"));
+  assert.deepEqual(spec.holes, [1, 15], "the spectrum result stands");
+  assert.match(r.boundary, /SAMPLE, not an enumeration/);
+  assert.match(r.boundary, /STRONGER, not weaker/);
+  assert.match(r.boundary, /tau_2 is\s+untouched/);
+});
+
+test("there is no canonical 2-balanced set", () => {
+  const r = require(path.join(
+    root,
+    "data/no_canonical_two_balanced_set.json"
+  ));
+  assert.equal(r.schema, "holotrade.no-canonical-2-balanced.v1");
+  assert.equal(r.valid, true);
+
+  // it retracts a suggestion made one commit earlier
+  const prev = require(path.join(
+    root,
+    "data/hemisystem_structure_was_rare.json"
+  ));
+  assert.match(prev.uniformProfileExists.reading, /canonical/);
+  assert.match(r.whatISuggested, /aesthetic judgement dressed as a\s+structural one/);
+
+  // uniformity buys no symmetry at all
+  const s = r.stabilisers;
+  assert.deepEqual(s.rowUniform, [5]);
+  assert.deepEqual(s.doublyUniform, [5]);
+  assert.equal(s.imposedC5, 5);
+  assert.equal(
+    s.rowUniform[0],
+    s.imposedC5,
+    "the stabiliser is exactly the imposed symmetry"
+  );
+  assert.match(s.reading, /buys no\s+structure at all/);
+
+  // both families found, all with the same trivial stabiliser
+  assert.ok(r.rowUniform.length >= 6);
+  assert.ok(r.doublyUniform.length >= 6);
+  for (const x of r.rowUniform.concat(r.doublyUniform)) {
+    assert.equal(x.size, 200);
+    assert.equal(x.stabiliser, 5);
+    assert.equal(x.symmetric, false);
+  }
+  // and the doubly-uniform ones really do have uniform columns
+  for (const x of r.doublyUniform) {
+    assert.equal(x.columnUniform, true);
+  }
+  // while row-uniform alone does not guarantee it
+  assert.equal(r.rowUniformDoesNotImplyColumnUniform, true);
+  assert.equal(r.noneIsSymmetric, true);
+
+  // the methodological pattern is named
+  assert.match(r.thePattern, /both failed on\s+inspection/);
+  assert.match(r.thePattern, /which solution the solver happened to print/);
+
+  // and the sample limit is stated in the right direction
+  assert.match(r.boundary, /can never come out below 5/);
+  assert.match(r.boundary, /no canonical object was\s+FOUND, not that none/);
+  assert.match(r.boundary, /tau_2 is\s+untouched/);
+});
+
+test("the exterior-square theorem is q-general -- both halves, at 3, 5 and 7", () => {
+  const r = JSON.parse(fs.readFileSync("data/exterior_square_is_q_general.json"));
+  assert.equal(r.valid, true);
+
+  // the parallel track's own theorem and boundary, quoted verbatim
+  const c = r.citesVerbatim;
+  assert.match(c.source, /slow_o5_closed_form\.json/);
+  assert.match(c.boundary, /classical\/q-general/);
+  assert.match(c.boundary, /q=3-only and no q-general GQ claim is made/);
+  assert.match(c.theorem, /square nonisotropic\s+orbit of P\(W\)/);
+  assert.match(c.theorem, /O\(5,3\) perpendicularity/);
+  // their conventions, used unchanged -- so this reproduces before it extends
+  assert.equal(c.Q, "b_01 b_23 - b_02 b_13 + b_03 b_12");
+  assert.equal(c.omegaCoordinateLaw, "b_02+b_13=0");
+  assert.match(c.theirCheckThisReproduces, /all_990_pairs/);
+  assert.match(c.conventionsAreTheirs, /independent reproduction\s+before it is an extension/);
+  // if their certificate is checked out, the quotes must still match it
+  if (fs.existsSync("data/slow_o5_closed_form.json")) {
+    const src = JSON.parse(fs.readFileSync("data/slow_o5_closed_form.json"));
+    assert.equal(c.boundary, src.boundary);
+    assert.equal(c.theorem, src.theorem);
+    assert.equal(c.Q, src.quadraticModule.Q);
+    assert.equal(c.omegaCoordinateLaw, src.quadraticModule.omegaCoordinateLaw);
+    assert.equal(c.formula, src.formula);
+    assert.equal(src.checks[c.theirCheckThisReproduces], true);
+  }
+  assert.match(r.whatWasBounded, /verified at one\s+prime and described as general rather than\s+shown to be/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+
+  // HALF ONE: the formula lands on, and exhausts, the square orbit
+  const one = { 3: [90, 45], 5: [650, 325], 7: [2450, 1225] };
+  for (const x of r.rows) {
+    assert.deepEqual([x.hyperbolicLines, x.distinctImages], one[x.q]);
+    assert.equal(x.squareOrbit, x.distinctImages, "image count IS the orbit");
+    assert.equal(x.allInW, true);
+    assert.equal(x.exhaustsOrbit, true);
+    // the image count halves exactly -- a line and its polar share an image
+    assert.equal(x.hyperbolicLines, 2 * x.distinctImages);
+  }
+  assert.match(r.halfOne, /EXHAUST the square nonisotropic\s+orbit/);
+
+  // HALF TWO: anticommutation IS perpendicularity, pair by pair
+  const two = { 3: [45, 270, 990], 5: [325, 9750, 52650], 7: [1225, 102900, 749700] };
+  let pairs = 0;
+  for (const x of r.rows) {
+    assert.deepEqual([x.classes, x.anticommuting, x.pairs], two[x.q]);
+    assert.equal(x.perpendicular, x.anticommuting);
+    assert.equal(x.agreeOnAllPairs, true, "agreement is pairwise, not just in count");
+    assert.equal(x.pairs, (x.classes * (x.classes - 1)) / 2);
+    pairs += x.pairs;
+  }
+  assert.equal(pairs, 803340);
+  assert.match(r.halfTwo, /PAIR BY PAIR -- not merely in count/);
+
+  // the algebra generalises; the geometry does not
+  assert.match(r.theBoundaryMoves, /correspondence is a FAMILY/);
+  assert.match(r.theBoundaryMoves, /SRG\(325,60,15,10\) at q = 5/);
+  assert.match(r.theBoundaryMoves, /not even\s+strongly regular at q = 7/);
+  assert.match(r.theBoundaryMoves, /algebra generalises and the geometry does\s+not/);
+  assert.match(r.sameFaultLineAsTheCompiler, /Weil lift is q-general/);
+
+  // and what is NOT shown is stated
+  assert.match(r.boundary, /q = 3, 5, 7 only/);
+  assert.match(r.boundary, /NOT\s+re-verified here/);
+  assert.match(r.boundary, /theorem\s+about the reflection set/);
+  assert.match(r.boundary, /tau_2 is untouched/);
+});
+
+test("the polar-incidence 24/15 split is q-general, with closed forms", () => {
+  const r = JSON.parse(fs.readFileSync("data/polar_incidence_split_q_general.json"));
+  assert.equal(r.valid, true);
+  assert.match(r.extends, /o5_polar_incidence_splits_the_w33_24_15_modules/);
+  assert.match(r.extends, /entirely at q = 3/);
+
+  // WHY it should generalise: the orbits are hyperbolic/elliptic sections
+  assert.match(r.whyItShouldGeneralise, /16 = \(q\+1\)\^2 = \|Q\+\(3,q\)\|/);
+  assert.match(r.whyItShouldGeneralise, /10 = q\^2\+1 = \|Q-\(3,q\)\|/);
+  assert.match(r.whyItShouldGeneralise, /OVOID of Q\(4,q\), dually a SPREAD/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+
+  const exp = {
+    3: { v: 40, sq: 45, ns: 36, DD: [12, 6, 3], CC: [6, 3, -3], lam: 18, f: 24, g: 15 },
+    5: { v: 156, sq: 325, ns: 300, DD: [60, 15, 10], CC: [40, 10, -10], lam: 100, f: 90, g: 65 },
+    7: { v: 400, sq: 1225, ns: 1176, DD: [168, 28, 21], CC: [126, 21, -21], lam: 294, f: 224, g: 175 },
+  };
+
+  for (const x of r.rows) {
+    const e = exp[x.q];
+    const q = x.q;
+
+    // the geometry: sizes and column weights are the section sizes
+    assert.equal(x.v, e.v);
+    assert.equal(x.v, (q + 1) * (q * q + 1));
+    assert.equal(x.squares, e.sq);
+    assert.equal(x.nonsquares, e.ns);
+    assert.equal(x.squares + x.nonsquares, q ** 4, "nonsingular points = q^4");
+    assert.equal(x.wD, (q + 1) ** 2, "hyperbolic section |Q+(3,q)|");
+    assert.equal(x.wC, q * q + 1, "elliptic section |Q-(3,q)| -- an ovoid");
+    assert.deepEqual(x.srg, [e.v, q * (q + 1), q - 1, q + 1]);
+
+    // the decomposition is exact ENTRYWISE, and matches the closed form
+    assert.deepEqual(x.DD, e.DD);
+    assert.deepEqual(x.CC, e.CC);
+    assert.equal(x.DDexact, true);
+    assert.equal(x.CCexact, true);
+    assert.equal(x.closedFormsMatch, true);
+    assert.deepEqual(x.DDclosedForm, e.DD);
+    assert.deepEqual(x.CCclosedForm, e.CC);
+
+    // the A-terms cancel identically -- c_D = -c_C = q(q-1)/2
+    assert.equal(x.DD[2], (q * (q - 1)) / 2);
+    assert.equal(x.CC[2], -x.DD[2]);
+    assert.equal(x.aTermsCancel, true);
+    assert.deepEqual(x.sumIJ, [q * q * (q - 1), q * q]);
+    assert.deepEqual(x.sumIJ, x.sumClosedForm);
+
+    // one frame constant for BOTH orbits, and the ranks are the multiplicities
+    assert.equal(x.lambda, q * q * (q - 1));
+    assert.equal(x.lambda, e.lam);
+    assert.equal(x.frameD, true);
+    assert.equal(x.frameC, true);
+    assert.equal(x.rankD0, e.f);
+    assert.equal(x.rankC0, e.g);
+    assert.equal(x.f, (q * (q + 1) ** 2) / 2);
+    assert.equal(x.g, (q * (q * q + 1)) / 2);
+    assert.equal(1 + x.f + x.g, x.v, "trivial + f + g exhausts the module");
+    assert.equal(x.ranksAreMultiplicities, true);
+
+    // transmission: the spread sector is annihilated, the other transmitted
+    assert.equal(x.NCisAllOnes, true, "every nonsquare section is a spread");
+    assert.deepEqual(x.NDvalues, [1, q + 1]);
+    assert.equal(x.NDisJplusQB, true, "N D = J + q B");
+    assert.deepEqual(x.columnWeightsOfB, [2 * (q + 1)]);
+    assert.equal(x.forcedTwoQPlusTwo, true);
+  }
+
+  // q = 3 is exactly the parallel track's committed numbers
+  const three = r.rows[0];
+  assert.deepEqual(three.DD, [12, 6, 3]);
+  assert.deepEqual(three.CC, [6, 3, -3]);
+  assert.deepEqual(three.sumIJ, [18, 9]);
+  assert.equal(three.lambda, 18);
+
+  assert.match(r.theATermsCancel, /identity in q, not a coincidence of one\s+prime/);
+  assert.match(r.theFrameConstantIsShared, /equality of their two 18s was\s+not an accident/);
+  assert.match(r.theGeneralStatement, /tight-frame realizations of the two\s+nontrivial W\(3,q\) line-permutation\s+modules/);
+  assert.match(r.whyTwoQPlusTwoIsForced, /forces a = 2\(q\+1\) with\s+no freedom/);
+  assert.match(r.whyTwoQPlusTwoIsForced, /what\s+is CHECKED here/);
+
+  // fitted-not-proved is stated, and the GQ scope is left alone
+  assert.match(r.boundary, /FITTED to\s+three primes/);
+  assert.match(r.boundary, /consistency rather than proof/);
+  assert.match(r.boundary, /fourth prime\s+would be a real test/);
+  assert.match(r.boundary, /ENTRYWISE/);
+  assert.match(r.boundary, /q = 3 only \(424111b\)/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the SRG at q = 3 and 5 is a tangent-passant fusion, and nothing beyond", () => {
+  const r = JSON.parse(fs.readFileSync("data/srg_is_a_tangent_passant_fusion.json"));
+  assert.equal(r.valid, true);
+
+  // it explains something the corpus had only measured
+  assert.match(r.whatWasUnexplained, /two-step degradation, not one/);
+  assert.match(r.whatWasUnexplained, /three data points and no reason/);
+  assert.match(r.reproducedInASecondModel, /instead of\s+the Plucker model/);
+
+  // the invariant carries the orbit's normalisation target t, not just c^2-4
+  assert.match(r.theInvariantIsTheLineType, /c\^2 - 4t\^2/);
+  assert.match(r.theInvariantIsTheLineType, /\|<u,v> cap Q\| in \{2,1,0\}/);
+  // and the two-valuedness is FORCED by the conic, not fitted
+  assert.match(r.whyExactlyTwoValues, /nondegenerate conic/);
+  assert.match(r.whyExactlyTwoValues, /no third count is available/);
+  assert.match(r.whyExactlyTwoValues, /FORCED by the conic, not fitted/);
+  assert.match(r.theLaw, /values EXCHANGED/);
+
+  // EXACT rows: both orbits, all pairs, at q = 3, 5, 7
+  assert.deepEqual(
+    r.exactRows.map((x) => [x.q, x.orbit]),
+    [[3, "sq"], [3, "ns"], [5, "sq"], [5, "ns"], [7, "sq"], [7, "ns"]]
+  );
+  for (const x of r.exactRows) {
+    const q = x.q;
+    assert.equal(x.exhaustive, true);
+    assert.equal(x.isAssociationScheme, true);
+    assert.equal(x.degreesConstant, true);
+    assert.equal(x.lawHolds, true);
+    // (q+1)/2 folded classes, and the degrees partition the orbit
+    assert.equal(Object.keys(x.valuesByClass).length, (q + 1) / 2);
+    const dsum = Object.values(x.degrees).reduce((a, b) => a + b, 0);
+    assert.equal(dsum, x.n - 1, "the classes partition the other points");
+    // every value is one of the two conic counts, never a third
+    for (const v of Object.values(x.valuesByClass)) {
+      assert.equal(v.length, 1, "constant on the class");
+      assert.ok(v[0] === (q * (q + 1)) / 2 || v[0] === (q * (q - 1)) / 2);
+    }
+    // and the two orbits carry the SAME law with the values exchanged
+    const hi = (q * (q + 1)) / 2, lo = (q * (q - 1)) / 2;
+    for (const [c, v] of Object.entries(x.valuesByClass)) {
+      const secant = x.lineTypes[c] === 2;
+      assert.equal(v[0], secant === (x.orbit === "sq") ? hi : lo);
+    }
+  }
+  // the square orbit at q=3 is exactly 424111b's SRG(45,12,3,3)
+  const q3 = r.exactRows[0];
+  assert.equal(q3.n, 45);
+  assert.equal(q3.degrees["0"], 12);
+  assert.deepEqual(q3.valuesByClass, { 0: [3], 1: [3] });
+  // and q=5 is SRG(325,60,15,10)
+  const q5 = r.exactRows[2];
+  assert.equal(q5.n, 325);
+  assert.equal(q5.degrees["0"], 60);
+  assert.deepEqual(q5.valuesByClass, { 0: [15], 1: [10], 2: [10] });
+  // q=7 is where mu splits 28 vs 21 -- 424111b's observation, now explained
+  const q7 = r.exactRows[4];
+  assert.deepEqual(q7.valuesByClass, { 0: [21], 1: [28], 2: [21], 3: [21] });
+  assert.equal(q7.lineTypes["1"], 2, "c=1 is a SECANT at q=7 -- that is the break");
+
+  // SAMPLED rows reach q = 23 and are labelled non-exhaustive
+  assert.deepEqual(r.sampledRows.map((x) => x.q), [11, 13, 17, 19, 23]);
+  for (const x of r.sampledRows) {
+    assert.equal(x.exhaustive, false);
+    assert.equal(x.lawHolds, true);
+    assert.ok(x.pairsPerClass >= 40);
+  }
+  assert.equal(r.sampledRows[4].n, 140185);
+
+  // SRG holds at 3 and 5 and at no larger prime tested
+  const srg = r.exactRows.filter((x) => x.orbit === "sq").map((x) => x.stronglyRegular)
+    .concat(r.sampledRows.map((x) => x.stronglyRegular));
+  assert.deepEqual(srg, [true, true, false, false, false, false, false, false]);
+  assert.match(r.srgCharacterisation, /no c in\s+1\.\.\(q-1\)\/2 has c\^2-4 a nonzero square/);
+  assert.match(r.whyQ5IsNotASecondAccidentOfTheSameKind, /at q = 3 there is one/);
+  assert.match(r.whyQ5IsNotASecondAccidentOfTheSameKind, /collapse onto c = 0/);
+  assert.match(r.lambdaObeysTheSameLaw, /same statement/);
+
+  // prior art is cited and the novelty claim is explicitly narrowed
+  assert.match(r.priorArt, /arXiv:2402\.05055/);
+  assert.match(r.priorArt, /Adriaensen and De\s+Boeck/);
+  assert.match(r.priorArt, /parabolic only\s+in even characteristic/);
+  assert.match(r.priorArt, /arXiv:2608\.20064/);
+  assert.match(r.whatIsClaimed, /NOT the scheme/);
+  assert.match(r.whatIsClaimed, /NOT the spectrum/);
+
+  // an independent exhaustive run at q=11 confirms the sampled row, both orbits
+  const c11 = r.exhaustiveCorroborationAtQ11;
+  assert.match(c11.provenance, /SEPARATE longer run, not by\s+this file/);
+  assert.equal(c11.square.n, 7381);
+  assert.equal(c11.nonsquare.n, 7260);
+  assert.deepEqual(c11.square.lambda, [55]);
+  assert.deepEqual(c11.nonsquare.lambda, [66]);
+  assert.deepEqual(c11.square.mu, [55, 66]);
+  assert.deepEqual(c11.nonsquare.mu, [55, 66]);
+  assert.equal(c11.square.stronglyRegular, false);
+  assert.equal(c11.nonsquare.stronglyRegular, false);
+  // 55 and 66 are exactly the two conic counts at q=11
+  assert.equal(55, (11 * (11 - 1)) / 2);
+  assert.equal(66, (11 * (11 + 1)) / 2);
+  // lambda swaps between the orbits, as the law requires
+  assert.notDeepEqual(c11.square.lambda, c11.nonsquare.lambda);
+  // and it agrees with what this file sampled
+  const s11 = r.sampledRows.find((x) => x.q === 11);
+  assert.deepEqual(s11.valuesByClass["0"], c11.square.lambda);
+  const sampledMu = [
+    ...new Set(
+      Object.entries(s11.valuesByClass)
+        .filter(([k]) => k !== "0")
+        .map(([, v]) => v[0])
+    ),
+  ].sort((a, b) => a - b);
+  assert.deepEqual(sampledMu, c11.square.mu);
+  assert.match(c11.agreesWithTheLaw, /roles exchanged/);
+  assert.match(c11.upgradesTheSampledRow, /evidence to enumeration/);
+
+  assert.match(r.boundary, /SAMPLED at 40 pairs per class/);
+  assert.match(r.boundary, /NOT proved beyond them/);
+  assert.match(r.boundary, /no prime powers/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the octet matrix is q-general, and its kernel is forced", () => {
+  const r = JSON.parse(fs.readFileSync("data/octet_matrix_q_general.json"));
+  assert.equal(r.valid, true);
+  assert.match(r.whatWasAsked, /w33_bt768_o5_24_15_closure/);
+  assert.match(r.whatWasAsked, /missing 15-sector object killed by M/);
+  assert.equal(r.closedForm, "B B^T = (q^2 - 1) I + J + (q - 1) A_points");
+
+  const exp = {
+    3: { n: 40, oct: 45, top: 72, mid: 12, f: 24, g: 15 },
+    5: { n: 156, oct: 325, top: 300, mid: 40, f: 90, g: 65 },
+    7: { n: 400, oct: 1225, top: 784, mid: 84, f: 224, g: 175 },
+  };
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+
+  for (const x of r.rows) {
+    const q = x.q, e = exp[q];
+    assert.equal(x.points, e.n);
+    assert.equal(x.octets, e.oct);
+
+    // the octet is K(q+1,q+1) -- BT768's K4,4 at q=3
+    assert.deepEqual(x.octetSize, [2 * (q + 1)]);
+    assert.deepEqual(x.internalDegrees, [[q + 1]]);
+    assert.equal(x.isCompleteBipartite, true);
+
+    // the Gram matrix, entrywise, against the closed form
+    assert.deepEqual(x.BBT, [q * q - 1, 1, q - 1]);
+    assert.deepEqual(x.closedForm, [q * q - 1, 1, q - 1]);
+    assert.equal(x.BBTexact, true);
+    assert.equal(x.closedFormMatches, true);
+    assert.deepEqual(x.rowWeight, [q * q]);
+    assert.deepEqual(x.columnWeight, [2 * (q + 1)]);
+
+    // spectrum: top^1, 2q(q-1)^f, 0^g
+    const p = x.predictedSpectrum;
+    assert.equal(p.topValue, e.top);
+    assert.equal(p.middleValue, e.mid);
+    assert.equal(p.middleValue, 2 * q * (q - 1));
+    assert.equal(p.middle, e.f);
+    assert.equal(p.middle, (q * (q + 1) ** 2) / 2);
+    assert.equal(p.zero, e.g);
+    assert.equal(p.zero, (q * (q * q + 1)) / 2);
+    assert.equal(p.top, 1);
+    assert.equal(x.spectrumMatches, true);
+    assert.equal(1 + p.middle + p.zero, x.points);
+
+    // THE KERNEL IS AN IDENTITY, not an observation
+    assert.equal(x.kernelIsForced, true);
+    assert.equal(q * q - 1, (q - 1) * (q + 1));
+    assert.equal(x.BBT[0] - x.BBT[2] * (q + 1), 0, "eigenvalue on the g-sector");
+  }
+
+  // q=3 reproduces BT768 exactly
+  const q3 = r.rows[0];
+  assert.deepEqual(q3.BBT, [8, 1, 2]);
+  assert.equal(q3.predictedSpectrum.topValue, 72);
+  assert.equal(q3.predictedSpectrum.middleValue, 12);
+  assert.equal(q3.predictedSpectrum.middle, 24);
+  assert.equal(q3.predictedSpectrum.zero, 15);
+
+  assert.match(r.theAnnihilationIsForced, /identically\s+in q/);
+  assert.match(r.theAnnihilationIsForced, /NOT independent/);
+  assert.match(r.theAnnihilationIsForced, /15, 65, 175/);
+  assert.match(r.andWhatItKillsIsTheSpreadSector, /ba74506/);
+  assert.match(r.theOctetGeneralises, /K\(q\+1,q\+1\)/);
+
+  // the point graph is used, and the q-odd non-self-duality is flagged
+  assert.match(r.boundary, /POINT collinearity graph/);
+  assert.match(r.boundary, /self-dual only for q even/);
+  assert.match(r.boundary, /EXCEPT the kernel identity/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the Weyl-lift verification defers to the proof that superseded it", () => {
+  const r = JSON.parse(fs.readFileSync("data/weyl_lift_is_q_general.json"));
+  assert.equal(r.valid, true);
+  const n = r.nowProvedElsewhere;
+  assert.match(n, /it does not prove\s+it/);
+  assert.match(n, /40a798487/);
+  assert.match(n, /EVERY\s+odd prime p and EVERY n/);
+  assert.match(n, /a = -\(2 lambda\)\^\(-1\)/);
+  // their h is this file's measured phase
+  assert.match(n, /h = 2\^\(-1\)/);
+  assert.match(n, /t = \(p\+1\)\/2 = 2\^\(-1\)/);
+  // ownership is recorded but explicitly subordinated to the proof
+  assert.match(n, /ownership is not\s+the point/);
+  assert.match(n, /strictly stronger/);
+  assert.match(n, /should quote the\s+theorem instead/);
+});
+
+test("the (c,m) minimum-blocker labels are octets, and minimality is q=3 only", () => {
+  const r = JSON.parse(fs.readFileSync("data/minimum_blocker_labels_are_octets.json"));
+  assert.equal(r.valid, true);
+
+  // the corpus certificate this identifies against, quoted and still present
+  const src = JSON.parse(fs.readFileSync("data/tensor_111_pg34_label_reduction.json"));
+  assert.equal(src.minimumBlockers, 360);
+  assert.equal(src.labelsPerCenter, 9);
+  assert.equal(src.CmSize, 8);
+  assert.equal(src.CmGraph, "K4,4");
+  assert.match(src.minimumBlockerFormula, /Adj\(c\) symmetric_difference C_m/);
+  assert.match(r.whatTheCorpusHad, /left as a lookup/);
+
+  // each of its four constants is an octet constant
+  const t = r.theyAreTheOctets;
+  assert.match(t.CmSize, /2\(q\+1\)/);
+  assert.match(t.CmGraph, /K\(q\+1,q\+1\)/);
+  assert.match(t.labelsPerCentre, /q\^2/);
+  assert.match(t.minimumBlockers, /q\^2 \(q\+1\)\(q\^2\+1\)/);
+  assert.match(t.reading, /octets THROUGH c/);
+  assert.match(t.reading, /point-octet incidence/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [3, 5, 7]);
+  const inc = { 3: 360, 5: 3900, 7: 19600 };
+  for (const x of r.rows) {
+    const q = x.q;
+    // the octet constants, matching c9e6be7
+    assert.deepEqual(x.octetSize, [2 * (q + 1)]);
+    assert.deepEqual(x.internalDegree, [q + 1]);
+    assert.deepEqual(x.labelsPerCentre, [q * q]);
+    assert.equal(x.incidences, inc[q]);
+    assert.equal(x.incidences, x.incidencesClosedForm);
+    assert.equal(x.incidences, q * q * (q + 1) * (q * q + 1));
+
+    // every labelled set really is a blocking set, and they are all distinct
+    assert.equal(x.allAreBlockingSets, true);
+    assert.equal(x.allDistinct, true);
+    assert.equal(x.distinct, x.incidences);
+
+    // the size is q^2+q-1, forced by the internal degree
+    assert.deepEqual(x.blockerSize, [q * q + q - 1]);
+    assert.equal(x.blockerSizeClosedForm, q * q + q - 1);
+    assert.equal(x.blockerSize[0], q * (q + 1) + 2 * (q + 1) - 2 * (q + 1) - 1);
+
+    // and the excess over the ovoid-defect bound is exactly q-3
+    assert.equal(x.ovoidDefectBound, q * q + 2);
+    assert.equal(x.excessOverBound, q - 3);
+    assert.equal(x.meetsBound, q === 3);
+  }
+
+  // q=3 reproduces the corpus count exactly, and is the only prime that does
+  assert.equal(r.rows[0].incidences, src.minimumBlockers);
+  assert.equal(r.rows[0].blockerSize[0], 11);
+  assert.deepEqual(r.rows.map((x) => x.meetsBound), [true, false, false]);
+  assert.deepEqual(r.rows.map((x) => x.excessOverBound), [0, 2, 4]);
+
+  assert.match(r.theSizeIsForced, /INTERNAL DEGREE of the octet/);
+  assert.match(r.theSizeIsForced, /with nothing\s+fitted/);
+  assert.match(r.andThatIsWhyQ3, /coincidence\s+is q - 3 = 0/);
+
+  // tau_2 is explicitly not moved, and the honest form of the negative is kept
+  assert.match(r.effectOnTau2, /none on the interval/);
+  assert.match(r.boundary, /QUOTED\s+from tensor_111_pg34_label_reduction/);
+  assert.match(r.boundary, /not independently that no other minimum\s+blockers exist/);
+  assert.match(r.boundary, /is NOT decided here/);
+  assert.match(r.boundary, /if tau_1\(W\(3,5\)\) were itself 29/);
+  assert.match(r.boundary, /tau_2 remains open in \[111,115\]/);
+
+  // the same statement in the corpus's own invariant: delta = q-2 vs minimum 1
+  const mult = JSON.parse(fs.readFileSync("data/tensor_multiplicativity_ovoid_defect.json"));
+  assert.equal(mult.twoDeficits.blockingOvoidDefect, 1);
+  for (const x of r.rows) {
+    assert.equal(x.ovoidSize, x.q * x.q + 1);
+    assert.equal(x.blockingOvoidDefect, x.q - 2);
+    assert.equal(x.minimumPossibleDefect, 1);
+    assert.equal(x.defectIsMinimal, x.q === 3);
+  }
+  assert.equal(r.rows[0].blockingOvoidDefect, mult.twoDeficits.blockingOvoidDefect);
+  assert.deepEqual(r.rows.map((x) => x.blockingOvoidDefect), [1, 3, 5]);
+  assert.match(r.inTheCorpusOwnVocabulary, /\(q\^2\+q-1\) - \(q\^2\+1\) = q - 2/);
+  assert.match(r.inTheCorpusOwnVocabulary, /minimum iff q - 2 = 1/);
+
+  // tau_1(W(3,5)) is left explicitly undecided, with the measurement recorded
+  assert.match(r.tau1AtQ5IsOpen, /UNKNOWN at size 27 and at size\s+28/);
+  assert.match(r.tau1AtQ5IsOpen, /SAT\s+at 29/);
+  assert.match(r.tau1AtQ5IsOpen, /Controls\s+pass/);
+  assert.match(r.tau1AtQ5IsOpen, /UNSAT at 10 \(no ovoid\)/);
+  assert.match(r.tau1AtQ5IsOpen, /\[27,29\]/);
+  assert.match(r.tau1AtQ5IsOpen, /undecided here/);
+});
+
+test("the polar apparatus is rank-two only, and the obstruction is Pfaffian degree", () => {
+  const r = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  assert.equal(r.valid, true);
+
+  // the first guess is recorded as WRONG: an invariant form exists at both ranks
+  assert.match(r.theFirstGuessWasWrong, /is\s+FALSE/);
+  assert.match(r.theFirstGuessWasWrong, /exists at every rank/);
+  const byRank = {};
+  for (const f of r.invariantForms) {
+    assert.equal(f.invariantSymmetricForms, 1, "one invariant form at every rank");
+    assert.equal(f.pfaffianDegree, f.n, "Pfaffian degree IS n");
+    byRank[f.n] = f.dimKerOmega;
+  }
+  assert.equal(byRank[2], 5);
+  assert.equal(byRank[3], 14);
+
+  // the obstruction is the degree, not the absence
+  assert.match(r.theObstruction, /DEGREE\s+n/);
+  assert.match(r.theObstruction, /n = 2 it is QUADRATIC/);
+  assert.match(r.theObstruction, /n = 3 it is CUBIC/);
+  assert.match(r.theObstruction, /Degree 2 happens once/);
+
+  // rank 2: exactly three classes, exhaustively, and rank determined by Q
+  assert.deepEqual(Object.keys(r.orbitsExhaustiveRank2).sort(), ["3", "5", "7"]);
+  for (const q of ["3", "5", "7"]) {
+    assert.equal(Object.keys(r.orbitsExhaustiveRank2[q]).length, 3);
+  }
+  assert.equal(r.rankIsFunctionOfQclass.n2, true);
+
+  // and the partition is the convention-free one
+  const sizes = r.orbitSizesRank2Projective;
+  assert.deepEqual(
+    [sizes["3"].isotropic, sizes["3"].big, sizes["3"].small],
+    [40, 45, 36]
+  );
+  assert.deepEqual(
+    [sizes["5"].isotropic, sizes["5"].big, sizes["5"].small],
+    [156, 325, 300]
+  );
+  assert.deepEqual(
+    [sizes["7"].isotropic, sizes["7"].big, sizes["7"].small],
+    [400, 1225, 1176]
+  );
+  for (const q of ["3", "5", "7"]) {
+    const n = Number(q);
+    assert.deepEqual(
+      [sizes[q].isotropic, sizes[q].big, sizes[q].small].sort((a, b) => a - b),
+      sizes[q].closedForms.sort((a, b) => a - b)
+    );
+    assert.equal(sizes[q].isotropic, (n + 1) * (n * n + 1));
+    assert.equal(sizes[q].big, (n * n * (n * n + 1)) / 2);
+    assert.equal(sizes[q].small, (n * n * (n * n - 1)) / 2);
+  }
+  // the label swap between certificates is named, not smoothed over
+  assert.match(r.aLabelConventionWarning, /two NAMES swap between files/);
+  assert.match(r.aLabelConventionWarning, /PARTITION is\s+identical/);
+  assert.match(r.aLabelConventionWarning, /convention artefact/);
+
+  // rank 3: seven classes, and rank NOT determined by Q
+  for (const q of ["3", "5"]) {
+    assert.equal(Object.keys(r.orbitsSampledRank3[q]).length, 7);
+  }
+  assert.equal(r.rankIsFunctionOfQclass.n3, false);
+
+  // carried by explicit re-verified witnesses, not by the sample
+  for (const q of ["3", "5"]) {
+    const w = r.decisiveWitnesses[q];
+    assert.ok(Object.keys(w).length >= 2, "witnesses in at least two Q-classes");
+    for (const [cls, p] of Object.entries(w)) {
+      assert.equal(p.sameQclass, true);
+      assert.equal(p.differentRank, true);
+      assert.equal(p.recheckClassA, cls);
+      assert.equal(p.recheckClassB, cls);
+      assert.equal(p.recheckRankA, p.rankA);
+      assert.equal(p.recheckRankB, p.rankB);
+      assert.notEqual(p.rankA, p.rankB);
+      assert.ok([2, 4, 6].includes(p.rankA) && [2, 4, 6].includes(p.rankB));
+    }
+    // the zero class is the strongest witness: ranks 2 and 6 share it
+    assert.deepEqual([w.zero.rankA, w.zero.rankB], [2, 6]);
+  }
+
+  assert.match(r.theCeilingIsB2equalsC2, /RIGID\s+IN RANK/);
+  assert.match(r.theCeilingIsB2equalsC2, /cannot work/);
+  assert.match(r.groupOrdersSayTheSame, /dimension 21 inside SO\(14\) of\s+dimension 91/);
+
+  // the E6-cubic resonance is flagged as a question, explicitly not claimed
+  assert.match(r.flaggedNotClaimed, /NOT investigated/);
+  assert.match(r.flaggedNotClaimed, /no\s+identification is asserted/);
+  assert.match(r.flaggedNotClaimed, /twice found substantive and twice\s+found to be nothing/);
+
+  assert.match(r.boundary, /EXHAUSTIVE over ker\(omega\)/);
+  assert.match(r.boundary, /SAMPLED/);
+  assert.match(r.boundary, /nothing here retracts\s+any earlier result/);
+  assert.match(r.boundary, /different axis from rank/);
+});
+
+test("the rank-3 replacement is a cubic Jordan algebra, the A5 sibling of E6's", () => {
+  const r = JSON.parse(fs.readFileSync("data/rank_three_is_a_jordan_algebra.json"));
+  assert.equal(r.valid, true);
+
+  // it is the positive half of the ae04deb no-go
+  const nogo = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  assert.match(nogo.theObstruction, /DEGREE\s+n/);
+  assert.match(r.whereThisComesFrom, /ae04deb/);
+  assert.match(r.whereThisComesFrom, /positive half/);
+
+  // the one-line reason the whole W(3,3) apparatus exists
+  assert.match(r.theCleanestForm, /Gr\(2,4\) = \{Pf = 0\} is a QUADRIC/);
+  assert.match(r.theCleanestForm, /Klein quadric/);
+  assert.match(r.theCleanestForm, /Gr\(2,6\) is the rank-one locus of a CUBIC/);
+
+  assert.deepEqual(r.rows.map((x) => x.q), [5, 7, 11]);
+  for (const x of r.rows) {
+    // the defining cubic-norm identity holds with NO exceptions
+    assert.equal(x.adjointIdentityExact, true);
+    assert.equal(x.adjointIdentityHeld, x.adjointIdentityTested);
+    assert.ok(x.adjointIdentityTested >= 250);
+    // every decomposable bivector is Jordan rank 1
+    assert.equal(x.decomposableAllRankOne, true);
+    assert.equal(x.decomposableAreRankOne, x.decomposableTested);
+    assert.ok(x.decomposableTested >= 300);
+    assert.deepEqual(Object.keys(x.decomposableStrata), ["2,1"]);
+    // and no stratum ever falls outside the dictionary
+    assert.equal(x.dictionaryHolds, true);
+    for (const k of Object.keys(x.randomStrata)) {
+      assert.ok(["2,1", "4,2", "6,3"].includes(k));
+    }
+  }
+
+  // the dictionary itself
+  assert.match(r.theRankDictionary["2"], /Jordan rank 1/);
+  assert.match(r.theRankDictionary["2"], /Gr\(2,6\)/);
+  assert.match(r.theRankDictionary["4"], /Jordan rank 2/);
+  assert.match(r.theRankDictionary["6"], /Jordan rank 3/);
+  assert.match(r.theRankDictionary.reading, /not noise/);
+
+  // the series is cited as classical, with the right dimensions
+  assert.match(r.theSeriesIsClassical, /6, 9, 15, 27/);
+  assert.match(r.theSeriesIsClassical, /P\^5, P\^8, P\^14 and P\^26/);
+  assert.match(r.theSeriesIsClassical, /Gr\(2,6\) = G\(1,5\) in P\^14/);
+  assert.match(r.theSeriesIsClassical, /CITED, not claimed/);
+
+  // the corpus connection, and what was searched to support it
+  assert.match(r.whyItMattersHere, /deg-2 symplectic \+ deg-3 E6\s+cubic/);
+  assert.match(r.whyItMattersHere, /A5\s+member of the SAME series/);
+  assert.match(r.priorArtSearched, /OCTONION end/);
+  assert.match(r.priorArtSearched, /BT293/);
+  assert.match(r.priorArtSearched, /Cabello-Severini-Winter/);
+
+  // and the identification of the two ends is explicitly NOT claimed
+  assert.match(r.notClaimed, /NOT examined/);
+  assert.match(r.notClaimed, /left as the open half/);
+  assert.match(r.notClaimed, /No consequence is claimed/);
+
+  assert.match(r.boundary, /DEMONSTRATIONS at those primes rather than proofs/);
+  assert.match(r.boundary, /q = 3 is excluded/);
+  assert.match(r.boundary, /Characteristic 2 is untouched/);
+  assert.match(r.boundary, /series being exactly\s+four long/);
+
+  // the dated search is flagged as superseded, not left as a standing claim
+  const sup = r.priorArtSearchedIsNowSuperseded;
+  assert.match(sup, /accurate when made/);
+  assert.match(sup, /fdc9f1d75/);
+  assert.match(sup, /all 36 Schlaefli double-sixes/);
+  assert.match(sup, /coefficient-by-coefficient/);
+  assert.match(sup, /more\s+sharply than this file does/);
+  assert.match(sup, /dated search result, not as a standing claim/);
+
+  // the q=3 exclusion is closed by the parallel track's integral proof
+  const n = r.nowProvedIntegrallyAndAtQ3;
+  assert.match(n, /EXCLUDES q = 3/);
+  assert.match(n, /INTEGER POLYNOMIALS/);
+  assert.match(n, /exact\s+sparse coefficient arithmetic/);
+  assert.match(n, /co-Pfaffian gradient/);
+  assert.match(n, /every characteristic including three/);
+  assert.match(n, /should quote that theorem\s+instead/);
+  // and it supports, rather than undercuts, the 9a202a2 correction's scoping
+  assert.match(n, /Albert J3\(O\) determinant as its\s+E6 cubic/);
+  assert.match(n, /supports rather\s+than contradicts 9a202a2/);
+  assert.match(n, /one parenthetical realization in\s+one file/);
+});
+
+test("the orbit census is the weight enumerator of a PUBLISHED code", () => {
+  const r = JSON.parse(fs.readFileSync("data/orbit_census_is_a_published_code.json"));
+  assert.equal(r.valid, true);
+
+  // the census this session computed, and the code's weights, are one thing
+  const nogo = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  const census3 = nogo.orbitsExhaustiveRank2["3"];
+  const wd3 = r.rows.find((x) => x.q === 3).weightDistribution;
+  assert.deepEqual(
+    Object.values(census3).sort((a, b) => a - b),
+    Object.values(wd3).sort((a, b) => a - b),
+    "the orbit census IS the weight enumerator"
+  );
+  assert.deepEqual(wd3, { 24: 90, 27: 80, 30: 72 });
+
+  const cg = { 3: [40, 24], 5: [156, 120], 7: [400, 336] };
+  for (const x of r.rows) {
+    const q = x.q;
+    assert.equal(x.K, 5);
+    assert.equal(x.N, cg[q][0]);
+    assert.equal(x.minimumDistance, cg[q][1]);
+    assert.equal(x.isThreeWeight, true);
+    assert.equal(x.sumIsQ5, true);
+    assert.equal(x.matchesOrbitPrediction, true);
+    assert.deepEqual(x.weightDistribution, x.predictedFromOrbits);
+
+    // Cardinali-Giuzzi Main Theorem at n = k = 2, matched exactly
+    assert.equal(x.cgN, (q ** 4 - 1) / (q - 1));
+    assert.equal(x.cgK, 5);
+    assert.equal(x.cgD, q ** 3 - q);
+    assert.equal(x.matchesCardinaliGiuzzi, true);
+    assert.equal(x.N, x.cgN);
+    assert.equal(x.minimumDistance, x.cgD);
+
+    // the section sizes, and which one is largest
+    assert.deepEqual(x.sectionSizes, {
+      tangent: q * q + q + 1,
+      hyperbolic: (q + 1) ** 2,
+      elliptic: q * q + 1,
+    });
+    assert.equal(x.largestSectionIsHyperbolic, true);
+    // d = N - (q+1)^2 = q^3 - q, the one-line derivation
+    assert.equal(x.N - x.sectionSizes.hyperbolic, q ** 3 - q);
+    assert.equal(x.minWeightIsHyperbolicOrbit, true);
+  }
+
+  // attribution is explicit and novelty is explicitly disclaimed
+  assert.match(r.priorArt, /Cardinali and Luca Giuzzi/);
+  assert.match(r.priorArt, /arXiv:1503\.05456/);
+  assert.match(r.priorArt, /Linear Algebra and its Applications 488 \(2016\)/);
+  assert.match(r.priorArt, /FULL WEIGHT ENUMERATOR/);
+  assert.match(r.noNoveltyClaimed, /none for the code/);
+  assert.match(r.failureModeFive, /rediscovery/);
+  assert.match(r.failureModeFive, /none of it is new/);
+  assert.match(r.failureModeFive, /citation rather than\s+the coincidence/);
+
+  // what IS ours is stated modestly and tied to the octets
+  assert.match(r.whatIsOurs, /one-line geometric derivation/);
+  assert.match(r.whatIsOurs, /d = N - \(q\+1\)\^2 = q\^3 - q/);
+  assert.match(r.whatIsOurs, /MINIMUM-WEIGHT CODEWORDS\s+ARE THE OCTET SECTIONS/);
+
+  // Klein correspondence and the twistor dictionary, flagged as analogy
+  assert.match(r.theKleinCorrespondence, /Klein\s+quadric Q\+\(5,q\)/);
+  assert.match(r.theKleinCorrespondence, /Klein correspondence\s+with one bivector fixed/);
+  const t = r.theTwistorDictionary;
+  assert.equal(t["infinity twistor"], "omega");
+  assert.match(t["compactified complexified Minkowski space"], /Klein quadric/);
+  assert.match(t["conformal group broken to Poincare"], /Sp\(4,q\) = O\(5,q\)/);
+  assert.match(t.status, /STRUCTURAL ANALOGY, not a physical claim/);
+  assert.match(t.status, /nothing about\s+field equations/);
+
+  // and it ties back to the rank ceiling
+  assert.match(r.andItClosesTheRankStory, /degree 2/);
+  assert.match(r.andItClosesTheRankStory, /Gr\(2,4\)\s+is a quadric and Gr\(2,6\) is not/);
+
+  assert.match(r.boundary, /ENUMERATIONS not\s+samples/);
+  assert.match(r.boundary, /NOT a line-by-line comparison/);
+  assert.match(r.boundary, /q even is excluded/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the rank-3 strata are not orbits, and at q=3 the form is degenerate", () => {
+  const r = JSON.parse(fs.readFileSync("data/rank_three_strata_are_not_orbits.json"));
+  assert.equal(r.valid, true);
+  assert.match(r.whyLook, /fe3e8fd/);
+
+  // CORRECTION ONE: degeneracy exactly when q | n
+  const deg = r.degeneracyTable;
+  assert.deepEqual(
+    deg.map((x) => [x.n, x.q, x.rankOfInducedForm, x.degenerate]),
+    [[2, 3, 5, false], [2, 5, 5, false], [3, 3, 13, true],
+     [3, 5, 14, false], [3, 7, 14, false]]
+  );
+  for (const x of deg) {
+    assert.equal(x.degenerate, x.qDividesN, "degenerate exactly when q | n");
+    assert.equal(x.degenerate, x.rankOfInducedForm < x.dimKerOmega);
+  }
+  assert.match(r.correctionOne, /13 of 14 -- DEGENERATE/);
+  assert.match(r.correctionOne, /STRICTLY STRONGER than stated/);
+  assert.match(r.correctionOne, /conclusion is unaffected/);
+  // and the earlier certificate it corrects still stands on its q=5 witnesses
+  const nogo = JSON.parse(fs.readFileSync("data/polar_apparatus_rank_two_only.json"));
+  assert.equal(nogo.decisiveWitnesses["5"].zero.sameQclass, true);
+  assert.equal(nogo.decisiveWitnesses["5"].zero.differentRank, true);
+
+  // CORRECTION TWO: weight is a function of the stratum at rank 2, not rank 3
+  const r2 = r.strata["2,3"], r3 = r.strata["3,3"];
+  assert.equal(r2.exhaustive, true);
+  assert.equal(r2.weightIsFunctionOfStratum, true);
+  assert.deepEqual(r2.distinctWeights, [24, 27, 30]);
+  assert.equal(Object.keys(r2.byStratum).length, 3);
+  for (const w of Object.values(r2.byStratum)) assert.equal(w.length, 1);
+
+  assert.equal(r3.weightIsFunctionOfStratum, false);
+  assert.equal(Object.keys(r3.byStratum).length, 7);
+  assert.deepEqual(r3.byStratum["6,zero"], [2187, 2430], "the split stratum");
+  assert.ok(
+    Object.values(r3.byStratum).filter((w) => w.length > 1).length >= 1,
+    "at least one stratum carries two weights => more than 7 orbits"
+  );
+  assert.match(r.correctionTwo, /AT LEAST EIGHT/);
+  assert.match(r.correctionTwo, /strengthens the no-go/);
+
+  // code lengths match Cardinali-Giuzzi at both ranks
+  assert.equal(r2.N, 40);
+  assert.equal(r2.cgN, 40);
+  assert.equal(r2.cgK, 5);
+  assert.equal(r2.cgD, 24);
+  assert.equal(r2.matchesCGlength, true);
+  assert.equal(r3.N, 3640);
+  assert.equal(r3.cgN, 3640);
+  assert.equal(r3.cgK, 14);
+  assert.equal(r3.cgD, 2160);
+  assert.equal(r3.matchesCGlength, true);
+  assert.equal(r3.cgD, 3 ** 7 - 3 ** 3);
+
+  // the negative is recorded with BOTH reasons, including the biased harness
+  assert.match(r.theNegativeWorthRecording, /q\^7 - q\^3 = 2160/);
+  assert.match(r.theNegativeWorthRecording, /smallest\s+seen was 2187/);
+  assert.match(r.theNegativeWorthRecording, /unbiased but covers only/);
+  assert.match(r.theNegativeWorthRecording, /WORSE/);
+  assert.match(r.theNegativeWorthRecording, /CANNOT see two thirds/);
+  assert.match(r.theNegativeWorthRecording, /not in doubt/);
+  assert.ok(!r3.distinctWeights.includes(2160), "the harness genuinely misses it");
+
+  assert.match(r.boundary, /LOWER bound/);
+  assert.match(r.boundary, /No claim is made about the exact orbit count/);
+
+  // the exact census settles both, and corrects one of this file's reasons
+  const c = r.supersededAndCorrected;
+  assert.match(c, /NINE projective Sp\(6,3\) orbits/);
+  assert.match(c, /correct but not tight/);
+  assert.match(c, /2160:14742/);
+  assert.match(c, /CORRECTS THE REASON/);
+  assert.match(c, /about 185 times/);
+  assert.match(c, /not a small-orbit\s+accident/);
+  assert.match(c, /QUOTIENT Lambda\^2\/<omega>, not on\s+ker\(omega\)/);
+  assert.match(c, /degeneracy finding stands/);
+  assert.match(c, /inference drawn from\s+it about the direct sample was\s+wrong/);
+  // this file's own lower bound is consistent with the exact answer
+  assert.ok(9 >= 8, "at least eight was a true lower bound for nine");
+
+  // and the retraction is backed by a WORKING recomputation, not just words
+  const f = r.correctionValidatedConstructively;
+  assert.equal(f.spanDimension, 14, "= Cardinali-Giuzzi K");
+  assert.deepEqual(f.generatorShape, [14, 3640]);
+  assert.equal(f.found2160, true, "the corrected pass finds the published d");
+  assert.equal(f.minimumWeightSeen, 2160);
+  assert.deepEqual(f.weightsFound, [2160, 2187, 2376, 2403, 2430, 2457]);
+  assert.ok(f.countAt2160 > 100, "and at roughly the predicted rate");
+  assert.ok(Math.abs(f.countAt2160 - f.expectedAt2160) < 0.5 * f.expectedAt2160);
+  // every weight's observed frequency tracks the exact enumerator
+  for (const [w, c] of Object.entries(f.frequencyComparison)) {
+    assert.ok(
+      Math.abs(c.observedPct - c.predictedPct) < 0.5 + 0.1 * c.predictedPct,
+      `weight ${w}: observed ${c.observedPct} vs predicted ${c.predictedPct}`
+    );
+  }
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the E6 cubic closes the Jordan series, and one corpus realization is wrong", () => {
+  const r = JSON.parse(fs.readFileSync("data/e6_cubic_closes_the_series.json"));
+  assert.equal(r.valid, true);
+
+  // it closes the half c6d1077 explicitly declined to claim
+  const prev = JSON.parse(fs.readFileSync("data/rank_three_is_a_jordan_algebra.json"));
+  assert.match(prev.notClaimed, /NOT examined/);
+  assert.match(r.whatWasLeftOpen, /c6d1077/);
+  assert.match(r.whatWasLeftOpen, /did NOT\s+claim/);
+
+  // (1) the epsilon-cubic is identically zero, with the reason
+  assert.deepEqual(r.epsilonCubicVanishes.map((x) => x.q), [3, 5, 7, 11, 13]);
+  for (const e of r.epsilonCubicVanishes) {
+    assert.equal(e.nonzero, 0);
+    assert.equal(e.identicallyZero, true);
+  }
+  assert.match(r.whyItVanishes, /\(-1\)\^3 = -1/);
+
+  // (2) no invariant cubic on 3x3x3, with the control returning exactly 1
+  for (const i of r.invariantCubicDimensions) {
+    assert.equal(i.control_3x3.monomials, 6);
+    assert.equal(i.control_3x3.invariantCubics, 1, "the determinant");
+    assert.equal(i.controlIsOne, true);
+    assert.equal(i.test_3x3x3.monomials, 36);
+    assert.equal(i.test_3x3x3.invariantCubics, 0);
+    assert.equal(i.testIsZero, true);
+  }
+  assert.match(r.theControl, /9-dimensional member H_3\(C\)/);
+  assert.match(r.whichTwentySeven, /78 = 27 \+ 24 \+ 27/);
+  assert.match(r.whichTwentySeven, /degrees\s+6, 9 and 12/);
+
+  // (3) the correct model IS a cubic norm, and works at q = 3
+  assert.deepEqual(r.cartanChecks.map((x) => x.q), [3, 5, 7, 11]);
+  for (const c of r.cartanChecks) {
+    assert.equal(c.adjointExact, true);
+    assert.equal(c.adjointHeld, c.trials);
+    assert.equal(c.trials, 200);
+    assert.equal(c.normNotIdenticallyZero, true);
+    assert.ok(c.normNonzero > 100, "and N is genuinely non-vanishing");
+  }
+  const q3 = r.cartanChecks.find((x) => x.q === 3);
+  assert.equal(q3.adjointExact, true, "holds at the substrate's own prime");
+  assert.ok(q3.normNonzero > 0, "where the broken realization gives zero");
+  assert.match(r.theCorrectModel, /det A \+ det B \+ det C - tr\(ABC\)/);
+  assert.match(r.theCorrectModel, /INCLUDING at q = 3/);
+
+  // the series, all three members by one test
+  const S = r.theSeriesIsComplete;
+  assert.match(S["9"], /H_3\(C\)/);
+  assert.match(S["15"], /Pfaffian/);
+  assert.match(S["15"], /c6d1077/);
+  assert.match(S["27"], /H_3\(O\)/);
+  assert.match(S.reading, /ONE series/);
+  assert.match(S.reading, /now made/);
+
+  // and the correction is scoped: headline stands, one sentence fails
+  assert.match(r.whatTheCorpusSays, /is NOT challenged/);
+  assert.match(r.whatThisDoesNotSay, /does not touch the Lloyd-Braunstein/);
+  assert.match(r.whatThisDoesNotSay, /ONE parenthetical realization in\s+ONE file/);
+  assert.match(r.whatThisDoesNotSay, /fourth\s+failure mode/);
+  assert.match(r.whatThisDoesNotSay, /coordinate change, not a retraction/);
+
+  // the 15-in-27 step is now realised concretely by the other track
+  const nre = r.nowRealisedExplicitlyByTheOtherTrack;
+  assert.match(nre, /fdc9f1d75/);
+  assert.match(nre, /EVERY one of the 36 Schlaefli double-sixes/);
+  assert.match(nre, /C_E6 restricted to S_D equal to Pf_6/);
+  assert.match(nre, /15 synthemes/);
+  assert.match(nre, /rank 10 with five gauge\s+bits/);
+  assert.match(nre, /Jordan\/Severi naming is classical/);
+  assert.match(nre, /literally CUTS 36 copies/);
+  assert.match(nre, /PSp\(4,3\)-equivariant/);
+  const own = r.timingAndOwnership;
+  assert.match(own, /POSTDATES this file/);
+  assert.match(own, /11:17:12/);
+  assert.match(own, /13:06:31/);
+  assert.match(own, /accurate WHEN MADE/);
+  assert.match(own, /SUPERSEDED rather than wrong/);
+  assert.match(own, /strictly stronger/);
+
+  assert.match(r.boundary, /ZERO answer is/);
+  assert.match(r.boundary, /overwhelming but not a proof/);
+  assert.match(r.boundary, /quoted as\s+classical/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the 40 are E6's 3A2 subsystems -- graph in Python, group in GAP", () => {
+  const r = JSON.parse(fs.readFileSync("data/forty_are_e6_subsystems.json"));
+  const g = JSON.parse(fs.readFileSync("data/e6_3a2_forty_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(g.valid, true);
+  assert.equal(g.engine, "GAP");
+
+  // the counting bridge: 51840 / 1296 = 40
+  assert.equal(51840 / 1296, 40);
+  assert.equal(Math.pow(6, 3) * 6, 1296);
+
+  // the two engines agree on the construction
+  assert.equal(r.counts.roots, 72);
+  assert.equal(r.counts.A2subsystems, 120);
+  assert.equal(r.counts.threeA2subsystems, 40);
+  assert.equal(g.roots, r.counts.roots);
+  assert.equal(g.a2Subsystems, r.counts.A2subsystems);
+  assert.equal(g.threeA2Subsystems, r.counts.threeA2subsystems);
+  assert.equal(g.rootsPerThreeA2, 18);
+
+  // GRAPH side (Python): SRG(40,12,2,4), complement, 40 lines, alpha = 10
+  assert.equal(r.graph.adjacency, "share no root");
+  assert.deepEqual(r.graph.srg, [40, 12, 2, 4]);
+  assert.equal(r.graph.isSRG, true);
+  assert.deepEqual(r.graph.complementSrg, [40, 27, 18, 18]);
+  assert.equal(r.graph.complementIsSRG, true);
+  assert.equal(r.graph.srg[1] + r.graph.complementSrg[1], 39);
+  assert.equal(r.graph.maximalFourCliques, 40);
+  assert.deepEqual(Object.keys(r.counts.sharedRootProfile).sort(), ["0", "6"]);
+
+  // the ovoid discriminator picks Q(4,3), not W(3,3)
+  assert.equal(r.independenceNumber, 10);
+  assert.equal(r.identifiedAs, "Q(4,3)");
+  assert.match(r.whichGQ, /alpha\(W\(3,3\)\) = 7/);
+  assert.match(r.whyThatIsTheRightAnswer, /40 LINES of W\(3,3\)/);
+  // and it agrees with the corpus's own recorded deficit
+  const mult = JSON.parse(fs.readFileSync("data/tensor_multiplicativity_ovoid_defect.json"));
+  assert.equal(mult.w33CocliqueOvoidDeficit, 3);
+  assert.equal(10 - mult.w33CocliqueOvoidDeficit, 7);
+
+  // the identification is explicit, not parametric
+  assert.equal(r.explicitIsomorphism.constructed, true);
+  assert.equal(r.explicitIsomorphism.verified, true);
+  assert.equal(r.explicitIsomorphism.verifiedOnOrderedPairs, 1600);
+  assert.match(r.explicitIsomorphism.note, /does NOT rest on matching SRG/);
+
+  // GROUP side (GAP): faithful, transitive, rank 3, and NAMED
+  assert.equal(g.weylOrder, 51840);
+  assert.equal(g.actionDegree, 40);
+  assert.equal(g.actionOrder, 51840);
+  assert.equal(g.kernel, 1);
+  assert.equal(g.faithful, true);
+  assert.equal(g.transitive, true);
+  assert.equal(g.pointStabiliser, 1296);
+  assert.equal(g.actionOrder / g.pointStabiliser, 40);
+  assert.deepEqual(g.subdegrees, [1, 12, 27]);
+  assert.equal(g.rank, 3);
+  assert.equal(g.subdegrees.reduce((a, b) => a + b, 0), 40);
+  assert.equal(g.structureDescription, "O(5,3) : C2");
+  assert.equal(g.halfIsPSp43, true);
+  assert.equal(g.actionOrder / 2, 25920);
+  // the graph's valency IS the middle subdegree
+  assert.equal(g.subdegrees[1], r.graph.srg[1]);
+  assert.equal(g.subdegrees[2], r.graph.complementSrg[1]);
+  assert.match(g.reading, /as a G-SET, not merely as a graph/);
+  assert.match(r.gapCompanion, /O\(5,3\) : C2/);
+  assert.match(r.gapCompanion, /FAITHFUL/);
+
+  // what it joins, and the instinct it redeems
+  assert.match(r.whatThisJoins, /45 tritangents and 36 double-sixes/);
+  assert.match(r.itRedeemsTheInstinct, /9a202a2/);
+  assert.match(r.itRedeemsTheInstinct, /not the\s+wrong SUBGROUP/);
+  assert.match(r.itRedeemsTheInstinct, /instinct was right; the graded\s+piece was wrong/);
+
+  // novelty explicitly disclaimed on both sides
+  assert.match(r.noveltyNotClaimed, /classical/);
+  assert.match(r.noveltyNotClaimed, /Payne-Thas/);
+  assert.match(r.noveltyNotClaimed, /not the mathematics/);
+  assert.match(g.boundary, /No novelty is claimed/);
+  assert.match(r.boundary, /nothing generalises/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the tau_2 = 111 question reduces to exactly three cases", () => {
+  const r = JSON.parse(fs.readFileSync("data/the_111_question_has_three_cases.json"));
+  const g = JSON.parse(fs.readFileSync("data/tau2_111_three_cases_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(g.valid, true);
+  assert.equal(g.engine, "GAP");
+
+  // the reduction rests on a QUOTED forced structure, still present
+  const pencil = JSON.parse(fs.readFileSync("data/tensor_111_pencil_excess.json"));
+  assert.equal(pencil.candidateLeaves, 111);
+  assert.equal(pencil.perAxisConsequence.cleanLines, 36);
+  assert.equal(pencil.perAxisConsequence.dirtyLines, 4);
+  assert.match(pencil.perAxisConsequence.dirtyShape, /point-pencil/);
+  assert.match(r.theReduction, /COMPLETE and LOSSLESS symmetry\s+break/);
+
+  // GAP: rank 3 => exactly three diagonal orbits, with the residual groups
+  assert.equal(g.points, 40);
+  assert.equal(g.imageOrder, 25920);
+  assert.equal(g.pointStabiliser, 648);
+  assert.deepEqual(g.subdegrees, [1, 12, 27]);
+  assert.equal(g.rank, 3);
+  assert.equal(g.diagonalOrbitsOnOrderedPairs, 3);
+  assert.deepEqual(g.residualStabilisers, { equal: 648, collinear: 54, noncollinear: 24 });
+  assert.equal(1 * g.residualStabilisers.equal, 648);
+  assert.equal(12 * g.residualStabilisers.collinear, 648);
+  assert.equal(27 * g.residualStabilisers.noncollinear, 648);
+  assert.equal(g.orbitTimesResidualIs648, true);
+  assert.equal(g.allOrbitalsSelfPaired, true);
+  assert.match(g.boundary, /RepresentativeAction/);
+
+  // exactly three cases were run, one per orbit
+  assert.equal(r.cases.length, 3);
+  assert.deepEqual(r.cases.map((c) => c.case), ["equal", "collinear", "noncollinear"]);
+  for (const c of r.cases) {
+    assert.equal(c.cRow, 0);
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(c.status));
+    assert.ok(c.budget >= 60, "a budget the file completes at");
+  }
+
+  // CONTROLS: the model is sound, so UNKNOWN is the instance not the encoding
+  const ctl = r.controls;
+  assert.equal(ctl.tau1BlockerSize, 11);
+  assert.equal(ctl.tau1IsEleven, true);
+  assert.equal(ctl.explicitBlockerSize, 440);
+  assert.equal(ctl.explicitBlockerMissedPairs, 0);
+  assert.equal(ctl.explicitBlockerAccepted, true);
+  assert.equal(ctl.loadSum, ctl.loadExpected);
+  assert.equal(ctl.loadSum, 4 * ctl.explicitBlockerSize);
+  assert.match(ctl.reading, /instance being hard rather than the encoding being\s+wrong/);
+
+  // the negative is recorded as a negative, at one budget
+  assert.equal(r.allUnknown, true);
+  assert.match(r.whatThisIsWorth, /does NOT move tau_2/);
+  assert.match(r.whatThisIsWorth, /\[111,115\]/);
+  assert.match(r.whatThisIsWorth, /residual group\s+of order 648/);
+  assert.match(r.boundary, /NEGATIVE at the budgets run/);
+  // the longer run is reported as a separate run, and the crash is disclosed
+  assert.match(r.aLongerIndependentRun, /240 seconds/);
+  assert.match(r.aLongerIndependentRun, /ALSO returned UNKNOWN/);
+  assert.match(r.aLongerIndependentRun, /exit code\s+4/);
+  assert.match(r.aLongerIndependentRun, /not a\s+solver verdict/);
+  assert.match(r.boundary, /UNKNOWN\s+is not evidence of feasibility OR of\s+infeasibility/);
+
+  // and the control that could not be run is recorded as not run
+  assert.match(r.aControlThatCouldNotBeRun, /no point ordering/);
+  assert.match(r.aControlThatCouldNotBeRun, /NO conclusion whatever is\s+drawn/);
+});
+
+test("no 111-leaf blocker admits an involution, so its stabiliser has odd order", () => {
+  const r = JSON.parse(fs.readFileSync("data/the_111_symmetric_witnesses.json"));
+  const g = JSON.parse(fs.readFileSync("data/tau2_111_three_cases_gap.json"));
+  assert.equal(r.valid, true);
+  assert.equal(g.valid, true);
+
+  // the logic is stated, both halves of it
+  assert.match(r.whyPrimeOrderSuffices, /must fix both pencil\s+centres/);
+  assert.match(r.whyPrimeOrderSuffices, /Cauchy/);
+  assert.match(r.whyPrimeOrderSuffices, /SUFFICIENT, not merely\s+indicative/);
+  assert.match(r.whyThisIsTheRightQuestion, /stabiliser of order\s+6/);
+  // and the 115 stabiliser it contrasts against is the corpus's own
+  const w115 = JSON.parse(fs.readFileSync("data/tensor_115_resists_from_both_sides.json"));
+  assert.equal(w115.witnessStabiliser.order, 6);
+  assert.equal(w115.witnessStabiliser.total, 115);
+
+  // 18 instances, none satisfiable
+  assert.ok(r.instances.length >= 18);
+  assert.equal(r.anySat, false);
+  for (const x of r.instances) {
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(x.status));
+    assert.ok([2, 3].includes(x.subgroupOrder));
+    assert.ok([648, 54, 24].includes(x.residualOrder));
+    assert.ok(x.orbitVariables < 1600, "invariance collapses the cells");
+  }
+
+  // THE DECISIVE SLICE: order 2, one class per case, all UNSAT
+  const two = r.instances.filter((x) => x.subgroupOrder === 2);
+  assert.equal(two.length, 3);
+  assert.deepEqual(two.map((x) => x.case).sort(),
+    ["collinear", "equal", "noncollinear"]);
+  for (const x of two) assert.equal(x.status, "UNSAT");
+  assert.equal(r.orderTwoSlice.allUnsat, true);
+  assert.equal(r.orderTwoSlice.oneClassPerCase, true);
+  assert.equal(r.orderTwoSlice.complete, true);
+
+  // completeness is GAP-certified, not assumed -- this is load-bearing
+  assert.equal(g.exactlyOneInvolutionClassPerCase, true);
+  for (const c of ["equal", "collinear", "noncollinear"]) {
+    assert.equal(g.primeOrderSubgroupClasses[c].order2, 1);
+  }
+  assert.deepEqual(
+    ["equal", "collinear", "noncollinear"].map((c) => g.primeOrderSubgroupClasses[c].order3),
+    [5, 9, 1]
+  );
+  assert.match(g.whyThatMatters, /EVERY involution class tested/);
+  assert.match(g.whyThatMatters, /certified rather than\s+assumed/);
+  // the number of order-3 instances run matches the certified class counts
+  const three = r.instances.filter((x) => x.subgroupOrder === 3);
+  assert.equal(three.length, 5 + 9 + 1);
+
+  // the theorem, and the contrast that gives it teeth
+  assert.match(r.theOddOrderTheorem, /ODD ORDER/);
+  assert.match(r.theOddOrderTheorem, /3-group/);
+  assert.match(r.theOddOrderTheorem, /order 6, which is EVEN/);
+  assert.match(r.theOddOrderTheorem, /complete because every case has exactly\s+one class/);
+
+  // a tried-and-failed strengthening is recorded so it is not retried
+  assert.match(r.aStrengtheningThatDidNotHelp, /occ\[L\]\[M\] in \[1,16\]/);
+  assert.match(r.aStrengtheningThatDidNotHelp, /16 x 111 = 1776/);
+  assert.match(r.aStrengtheningThatDidNotHelp, /changed nothing/);
+  assert.match(r.aStrengtheningThatDidNotHelp, /all nine remained\s+UNKNOWN/);
+  assert.match(r.budgetDoesNotAffectTheTheorems, /establish NOTHING/);
+
+  // UNKNOWNs are worth nothing and the file says so
+  assert.match(r.boundary, /An UNKNOWN is\s+nothing/);
+  assert.match(r.boundary, /DIAGONAL\s+PSp\(4,3\) action only/);
+  assert.match(r.boundary, /transpose-type symmetry/);
+  assert.match(r.boundary, /\[111,115\]/);
+});
+
+test("the 111 clean-core centre maps cannot be injective, so the 110 hinge is false", () => {
+  const r = JSON.parse(fs.readFileSync("data/the_111_centre_maps_cannot_be_injective.json"));
+  assert.equal(r.valid, true);
+
+  // the 110 argument it is testing against, still present and still bijective
+  const dual = JSON.parse(fs.readFileSync("data/tensor_tight_self_duality_obstruction.json"));
+  assert.equal(dual.tightCandidate, 110);
+  assert.equal(dual.centreMultiplicity.centreMapsBijective, true);
+  assert.equal(dual.centreMultiplicity.thereforeFEmpty, true);
+  assert.match(dual.classicalInput, /self-dual iff q is even/);
+  assert.match(r.whyThisIsTheDecisiveStep, /Bijectivity is the hinge/);
+
+  // the clean core is exactly 36 because the dirty lines are a pencil
+  const pencil = JSON.parse(fs.readFileSync("data/tensor_111_pencil_excess.json"));
+  assert.equal(pencil.perAxisConsequence.cleanLines, 36);
+  assert.equal(pencil.perAxisConsequence.dirtyLines, 4);
+  assert.equal(36 + 4, 40);
+
+  assert.equal(r.rows.length, 3);
+  assert.deepEqual(r.rows.map((x) => x.case), ["equal", "collinear", "noncollinear"]);
+  for (const x of r.rows) {
+    assert.equal(x.cleanRowLines, 36);
+    assert.equal(x.cleanColLines, 36);
+    assert.equal(x.cRow, 0);
+    // THE RESULT: reciprocity alone is satisfiable, injectively it is not
+    assert.equal(x.reciprocityOnly, "SAT");
+    assert.equal(x.reciprocityInjective, "UNSAT");
+    assert.ok(x.injectiveSeconds < 30, "and the UNSAT is fast, not a timeout");
+    // the maximum lies strictly below the injective case
+    assert.ok(x.maxDistinctFound !== null);
+    assert.ok(x.maxDistinctFound < 36, "strictly below injective");
+    assert.equal(x.maxDistinctFound, 12);
+    assert.deepEqual(x.maxDistinctProfile, { 3: 12 });
+    assert.equal(12 * 3, 36, "the profile accounts for every clean line");
+  }
+
+  assert.match(r.theResult, /CANNOT\s+be injective/);
+  assert.match(r.theResult, /it is\s+FALSE/);
+  assert.match(r.theResult, /replace the hinge rather than sharpen it/);
+  assert.match(r.bothEndsAreClosed, /1872 tile-incidences against 1776/);
+  assert.match(r.bothEndsAreClosed, /all-distinct centres\s+die on reciprocity/);
+
+  // the 12 is a witness, so a lower bound, and the file says so
+  assert.match(r.whatLivesInBetween, /FEASIBLE rather than OPTIMAL/);
+  assert.match(r.whatLivesInBetween, /LOWER bound on the\s+maximum/);
+  assert.match(r.whatLivesInBetween, /strictly\s+below 36/);
+
+  // the label layer does not close it either -- both variants SAT
+  for (const x of r.rows) {
+    assert.equal(x.labelLevel, "SAT");
+    assert.equal(x.labelLevelWithMatchingSizes, "SAT");
+  }
+  const lab = r.theLabelLayerDoesNotCloseItEither;
+  assert.match(lab, /360\s+minimum blockers/);
+  assert.match(lab, /IF that matching is a\s+bijection/);
+  assert.match(lab, /Both are\s+SAT in all three cases/);
+  assert.match(lab, /reach the LEAF\s+level/);
+  assert.match(lab, /confirms it rather\s+than moving it/);
+  // the corpus's own boundary, which this agrees with
+  const red = JSON.parse(fs.readFileSync("data/tensor_111_pg34_label_reduction.json"));
+  assert.match(red.boundary, /does not decide feasibility at 111/);
+  assert.equal(red.minimumBlockers, 360);
+  assert.match(red.tau111.cleanTileMatching, /matched by actual leaves/);
+
+  // and the relaxation asymmetry is stated: SAT excludes nothing
+  assert.match(r.boundary, /CENTRE-LEVEL RELAXATION only/);
+  assert.match(r.boundary, /do\s+NOT by themselves exclude 111/);
+  assert.match(r.boundary, /a FEASIBLE one excludes nothing/);
+  assert.match(r.boundary, /\[111,115\]/);
+});
+
+test("the Schlaefli 27-36-45 triangle is coordinates, monomials and sections of one cubic", () => {
+  const r = JSON.parse(fs.readFileSync("data/schlafli_triangle_one_polynomial.json"));
+  assert.equal(r.valid, true);
+  const c = r.checks;
+
+  // the polynomial's shape: 18 determinant terms + 27 trace terms = 45
+  assert.equal(c.coordinates, 27);
+  assert.equal(c.determinantTerms, 18);
+  assert.equal(c.traceTerms, 27);
+  assert.equal(c.monomials, 45);
+  assert.equal(c.determinantTerms + c.traceTerms, c.monomials);
+  assert.equal(c.allLinesSizeThree, true);
+  assert.equal(c.allSupportsDistinct, true);
+
+  // the four GQ(2,4) axioms, all verified rather than asserted
+  assert.deepEqual(c.linesPerPoint, [5]);
+  assert.equal(c.incidences, 135);
+  assert.equal(c.incidences, 45 * 3);
+  assert.equal(c.incidences, 27 * 5);
+  assert.equal(c.maxLinesThroughAPointPair, 1);
+  assert.equal(c.gqAxiomHolds, true);
+  assert.deepEqual(c.gqAxiomCounts, { 1: 1080 });
+  // GQ(2,4) parameter identities
+  assert.equal((2 + 1) * (2 * 4 + 1), 27);
+  assert.equal((4 + 1) * (2 * 4 + 1), 45);
+
+  // collinearity graph is the COMPLEMENT of the Schlaefli graph
+  assert.equal(c.isSRG, true);
+  assert.deepEqual(c.collinearitySRG, [27, 10, 1, 5]);
+  assert.deepEqual(r.schlafliGraph, [27, 16, 10, 8]);
+  assert.deepEqual(r.complementOfSchlafli, c.collinearitySRG);
+  assert.equal(10 + 16, 26, "degrees sum to n-1");
+
+  // and it agrees with the GQ(2,4) the corpus already carries
+  const gq = JSON.parse(fs.readFileSync("data/gq24_schlaefli_quadrangle.json"));
+  assert.equal(gq.geometry.points, 27);
+  assert.equal(gq.geometry.lines, 45);
+  assert.deepEqual(gq.geometry.order, [2, 4]);
+  assert.equal(gq.geometry.hasOvoid, false);
+
+  // the three legs
+  const t = r.theTriangleIsOneObject;
+  assert.match(t["27"], /coordinates/);
+  assert.match(t["45"], /monomials/);
+  assert.match(t["36"], /Pfaffian sections/);
+  assert.match(t["36"], /fdc9f1d75/);
+  assert.match(t.reading, /nothing imported/);
+
+  // novelty is bounded to the realization, not the geometry
+  assert.match(r.noveltyNotClaimed, /classical and already in\s+this corpus/);
+  assert.match(r.noveltyNotClaimed, /gq24_schlaefli_quadrangle/);
+  assert.match(r.noveltyNotClaimed, /Pass 84/);
+  assert.match(r.noveltyNotClaimed, /What is offered is the REALIZATION/);
+  assert.match(r.noveltyNotClaimed, /weak evidence and\s+is treated as none/);
+  assert.match(r.boundary, /no field here and no q/);
+  assert.match(r.boundary, /QUOTED from/);
+  assert.match(r.boundary, /tau_2/);
+});
+
+test("the Jordan/GQ series is published, and the earlier novelty hedge is withdrawn", () => {
+  const r = JSON.parse(fs.readFileSync("data/jordan_gq_series_is_published.json"));
+  assert.equal(r.valid, true);
+
+  // the three squarefree norms give exactly the three GQs with 3 points per line
+  assert.equal(r.rows.length, 3);
+  assert.deepEqual(r.rows.map((x) => [x.dim, x.s, x.t]),
+    [[9, 2, 1], [15, 2, 2], [27, 2, 4]]);
+  const mons = { 9: 6, 15: 15, 27: 45 };
+  const axpairs = { 9: 36, 15: 180, 27: 1080 };
+  for (const x of r.rows) {
+    assert.equal(x.isGQ, true);
+    assert.deepEqual(x.lineSizes, [3], "three points per line, s = 2");
+    assert.equal(x.lines, mons[x.dim]);
+    assert.equal(x.points, x.dim);
+    assert.equal(x.maxLinesPerPointPair, 1);
+    assert.equal(x.gqAxiomAllOne, true);
+    assert.equal(x.gqAxiomPairs, axpairs[x.dim]);
+    // the GQ counting formulas close on the actual numbers
+    assert.equal(x.pointsFormula, x.points);
+    assert.equal(x.linesFormula, x.lines);
+  }
+  // and the 6-dimensional member is excluded for a reason
+  assert.equal(r.h3rIsNotSquarefree, true);
+  assert.match(r.whyTheSeriesStartsAtNine, /appears squared/);
+  assert.match(r.whyTheSeriesStartsAtNine, /no GQ\(2,0\)/);
+  assert.match(r.theCompleteList, /only for t = 1, 2, 4/);
+
+  // PRIOR ART, quoted
+  assert.match(r.priorArt.levaySanigaVrana, /arXiv:0903\.0541/);
+  assert.match(r.priorArt.levaySanigaVrana, /45 terms in the entropy formula to the lines of GQ\(2,4\)/);
+  assert.match(r.priorArt.levaySanigaVrana, /doily GQ\(2,2\)/);
+  assert.match(r.priorArt.levaySanigaVrana, /grid GQ\(2,1\)/);
+  assert.match(r.priorArt.generalizedQuadranglesAndCubicForms, /Communications in Algebra 29\(10\)/);
+  assert.match(r.priorArt.generalizedQuadranglesAndCubicForms, /star or a generalized\s+quadrangle/);
+  assert.match(r.priorArt.generalizedQuadranglesAndCubicForms, /runs both ways/);
+
+  // the withdrawal is explicit, in BOTH files
+  assert.match(r.theHedgeIsWithdrawn, /ea2ff88/);
+  assert.match(r.theHedgeIsWithdrawn, /that reading is\s+WRONG/);
+  assert.match(r.theHedgeIsWithdrawn, /Nothing mathematical in ea2ff88 or here\s+is new/);
+  const tri = JSON.parse(fs.readFileSync("data/schlafli_triangle_one_polynomial.json"));
+  assert.match(tri.noveltyHedgeWithdrawn, /WITHDRAWN/);
+  assert.match(tri.noveltyHedgeWithdrawn, /arXiv:0903\.0541/);
+  assert.match(tri.noveltyHedgeWithdrawn, /that reading is\s+wrong/);
+  assert.match(tri.noveltyHedgeWithdrawn, /the_jordan_gq_series_is_published/);
+
+  // what survives is stated modestly
+  assert.match(r.whatIsWorthKeeping, /none a discovery/);
+  assert.match(r.whatIsWorthKeeping, /black-hole\/qubit correspondence/);
+  assert.match(r.boundary, /full texts were NOT read/);
+  assert.match(r.boundary, /understates them\s+rather than the reverse/);
+});
+
+test("the citation gap was cross-track, and the protocol amendment says so", () => {
+  const r = JSON.parse(fs.readFileSync("data/other_track_had_the_citations.json"));
+  assert.equal(r.valid, true);
+
+  // the measured asymmetry: this track had none, the other had many
+  assert.deepEqual(r.terms, ["Saniga", "Planat", "Levay", "Veldkamp"]);
+  assert.equal(r.holotradeFilesExcludingToday, 0);
+  assert.ok(r.holotradeFilesToday >= 2, "only today's files cite it here");
+  assert.ok(r.theoryOfEverythingFiles >= 10);
+  assert.ok(
+    r.theoryOfEverythingFiles > r.holotradeFilesExcludingToday,
+    "the other track carried the literature all along"
+  );
+
+  // the diagnosis is about the protocol, not about effort
+  assert.match(r.whatHappened, /ea2ff88/);
+  assert.match(r.whatHappened, /arXiv:0903\.0541/);
+  assert.match(r.whatHappened, /where the\s+citation already was/);
+  assert.match(r.whyTheProtocolMissedIt, /internal RESULTS/);
+  assert.match(r.whyTheProtocolMissedIt, /EXTERNAL references/);
+  assert.match(r.whyTheProtocolMissedIt, /blind to a literature the other reads\s+daily/);
+  assert.match(r.theAmendment, /author names and arXiv identifiers/);
+  assert.match(r.theAmendment, /costs one command/);
+
+  // the published pile carries real identifiers, not vague gestures
+  const pub = r.publishedAndNowCited;
+  assert.match(pub.jordanSeveriSeriesAndGQMonomials, /arXiv:0903\.0541/);
+  assert.match(pub.lineSymplecticGrassmannCodes, /arXiv:1503\.05456/);
+  assert.match(pub.anisotropicAssociationScheme, /arXiv:2402\.05055/);
+  assert.match(pub.groupIsomorphismsAndGQClassification, /Payne-Thas/);
+
+  // the open pile is one item and is hedged as a search result
+  assert.deepEqual(Object.keys(r.noLiteratureFound), ["tau2ForTheW33TensorSquare"]);
+  assert.match(r.noLiteratureFound.tau2ForTheW33TensorSquare, /nothing on\s+products/);
+  // and it agrees with the corpus's own independent finding
+  const mult = JSON.parse(fs.readFileSync("data/tensor_multiplicativity_ovoid_defect.json"));
+  assert.match(mult.novelty, /no literature on blocking numbers of products/);
+
+  assert.match(r.theUncomfortableReading, /ornamental results/);
+  assert.match(r.theUncomfortableReading, /opposite of how it felt/);
+  assert.match(r.boundary, /citation PRESENCE,\s+not aptness/);
+  assert.match(r.boundary, /never a proof of absence/);
+});
+
+test("the symmetric attack on 114: control passes, and the fix-free involution is ruled out", () => {
+  const r = JSON.parse(fs.readFileSync("data/symmetric_attack_on_114.json"));
+  assert.equal(r.valid, true);
+
+  // THE CONTROL: the method finds a known-to-exist 115 witness and verifies it
+  assert.ok(r.control, "a control must have been obtained");
+  assert.equal(r.control.size, 115);
+  assert.equal(r.control.status, "SAT");
+  const v = r.control.verification;
+  assert.equal(v.cells, 115);
+  assert.equal(v.distinct, 115);
+  assert.equal(v.unblockedPairs, 0, "the witness really blocks all 1600 tiles");
+  assert.equal(v.valid, true);
+  assert.equal(v.loadSum, 4 * 115);
+  assert.equal(v.loadSumOK, true);
+  assert.match(r.controlReading, /UNKNOWN at 114 is the instance/);
+
+  // the corpus's three prior attempts, still on record and still UNKNOWN
+  const c114 = JSON.parse(fs.readFileSync("data/tensor_close_at_114.json"));
+  const anneal = JSON.parse(fs.readFileSync("data/tensor_upper_anneal.json"));
+  assert.equal(c114.status, "UNKNOWN");
+  assert.equal(anneal.improved, false);
+  assert.ok(anneal.totalMoves > 6e7);
+  assert.match(r.whyThisWay, /none of the three imposed SYMMETRY/);
+
+  // five prime-order classes, exactly one of them decided
+  assert.equal(r.sweep.length, 5);
+  const dec = r.sweep.filter((x) => x.status !== "UNKNOWN");
+  assert.equal(dec.length, 1);
+  assert.equal(dec[0].status, "UNSAT");
+  assert.equal(dec[0].subgroupOrder, 2);
+  assert.equal(dec[0].fixedPoints, 0, "the fixed-point-free involution");
+  assert.equal(r.anySat, false);
+
+  // THE SIZE SWEEP, and the parity caveat that keeps it honest
+  const ff = r.fixedPointFreeSweep;
+  assert.ok(ff.length >= 10);
+  for (const x of ff) {
+    assert.equal(x.parityTrivial, x.size % 2 === 1);
+    if (x.parityTrivial) assert.equal(x.status, "UNSAT", "odd is parity-excluded");
+  }
+  const evens = ff.filter((x) => !x.parityTrivial);
+  const evenUnsat = evens.filter((x) => x.status === "UNSAT").map((x) => x.size);
+  assert.deepEqual(evenUnsat, [110, 112, 114]);
+  // 115 is UNSAT here yet a 115 witness exists -- parity, not contradiction
+  const at115 = ff.find((x) => x.size === 115);
+  assert.equal(at115.status, "UNSAT");
+  assert.equal(at115.parityTrivial, true);
+  assert.equal(r.control.status, "SAT", "and a 115 witness was found elsewhere");
+  assert.match(r.fixedPointFreeReading, /does\s+NOT contradict the known 115 witness/);
+  assert.match(r.fixedPointFreeReading, /because 115 is odd/);
+  assert.match(r.fixedPointFreeReading, /all 800 cell-orbits of size 2/);
+
+  // payoff asymmetry stated, UNSAT not over-read
+  assert.match(r.whatWouldAndWouldNotFollow, /SAT at 114 improves the upper\s+bound/);
+  assert.match(r.whatWouldAndWouldNotFollow, /asymmetric 114\s+witness could still exist/);
+  // a 6.7x budget increase changed nothing, and that is on record
+  const lb = r.aLongerBudgetChangedNothing;
+  assert.match(lb, /300 seconds per class instead of 45/);
+  assert.match(lb, /exactly the same verdicts/);
+  assert.match(lb, /No class moved/);
+  assert.match(lb, /change the ENCODING or\s+the symmetry group rather than the clock/);
+
+  assert.match(r.boundary, /UNKNOWN rows are nothing/);
+  assert.match(r.boundary, /\[111,115\]/);
+});
+
+test("running the control at every class turned six UNKNOWNs into one target", () => {
+  const r = JSON.parse(fs.readFileSync("data/calibration_killed_six_unknowns.json"));
+  assert.equal(r.valid, true);
+
+  // eight cyclic classes, each run at BOTH sizes
+  assert.equal(r.rows.length, 8);
+  for (const x of r.rows) {
+    assert.ok([4, 6, 9, 12].includes(x.order));
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(x.at115));
+    assert.ok(["SAT", "UNSAT", "UNKNOWN"].includes(x.at114));
+    assert.equal(x.informative, x.at115 !== "UNKNOWN");
+  }
+
+  // exactly ONE class supports a 115 witness, and its order is 6
+  assert.equal(r.classesSupporting115, 1);
+  const sup = r.rows.find((x) => x.at115 === "SAT");
+  assert.equal(sup.order, 6);
+  assert.equal(sup.fixedPoints, 5);
+  assert.equal(sup.at114, "UNKNOWN", "the one informative open instance");
+  // which matches the stabiliser order the corpus already records
+  const w115 = JSON.parse(fs.readFileSync("data/tensor_115_resists_from_both_sides.json"));
+  assert.equal(w115.witnessStabiliser.order, sup.order);
+
+  // five are uninformative, and the file says their 114 verdicts mean nothing
+  assert.equal(r.classesUninformative, 5);
+  for (const x of r.rows.filter((y) => y.at115 === "UNKNOWN")) {
+    assert.equal(x.informative, false);
+  }
+  assert.match(r.theThreeStatements.uninformative, /say nothing whatever about 114/);
+
+  // two are UNSAT at both, and both are fixed-point-free
+  assert.equal(r.classesUnsatBoth, 2);
+  for (const x of r.rows.filter((y) => y.at115 === "UNSAT")) {
+    assert.equal(x.fixedPoints, 0);
+    assert.equal(x.at114, "UNSAT");
+  }
+
+  // the reading that was almost adopted, named as a mistake
+  assert.match(r.theMistakeAlmostMade, /eight independent attacks/);
+  assert.match(r.theMistakeAlmostMade, /eight times more confident than\s+the evidence allows/);
+
+  // smaller search space is NOT easier -- the counterexample is in the data
+  const smallest = r.rows.reduce((a, b) => (a.orbits < b.orbits ? a : b));
+  assert.equal(smallest.orbits, 174);
+  assert.equal(smallest.at115, "UNKNOWN");
+  assert.ok(sup.orbits > smallest.orbits, "the SAT class has MORE variables");
+  assert.match(r.sizeIsNotTheBottleneck, /density of the 1600 blocking constraints/);
+  assert.match(r.sizeIsNotTheBottleneck, /more symmetry must mean an easier instance/);
+
+  assert.match(r.boundary, /NON-cyclic subgroups of\s+those orders are not covered/);
+  assert.match(r.boundary, /UNKNOWN at 115 is a\s+statement about the solver/);
+  assert.match(r.boundary, /\[111,115\]/);
+});

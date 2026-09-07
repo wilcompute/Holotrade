@@ -1,0 +1,991 @@
+{
+  "schema": "holotrade.eighty-clifford-lifts.v1",
+  "valid": true,
+  "whatWasPromised": "d6bcf30 showed the extension splits and said the remaining work was to tabulate the section, 'eighty unitaries, chosen once'; leaving that as a to-do after calling it easy would be the cheap move",
+  "closedForm": {
+    "formula": "U(v, lam) = (1/sqrt 3) * sum_{k=0}^{2} w^{lam k^2} P_v^k",
+    "pauli": "P_v = X^{v0} Z^{v2} tensor X^{v1} Z^{v3}",
+    "generalP": "a = -(2 lam)^{-1} mod p",
+    "collapsesAtP3": true,
+    "derivation": "with P_v^k P_x = w^{-k<v,x>} P_x P_v^k and Gauss weight c_k = w^{a k^2}, the inner sum survives only at d = <v,x>/(2a); wanting d = lam<x,v> forces a"
+  },
+  "verification": {
+    "lifts": 80,
+    "unitary": 80,
+    "realisesItsTransvection": 80,
+    "conjugationsChecked": 6400,
+    "isASample": false
+  },
+  "commutationConvention": {
+    "form": "<u,v> = u0 v2 - u2 v0 + u1 v3 - u3 v1",
+    "plusSignViolations": 4320,
+    "minusSignViolations": 0,
+    "correct": "P_u P_v = w^{-<u,v>} P_v P_u",
+    "why": "the sign flips the required a, so it is recorded rather than left implicit"
+  },
+  "notSettled": "whether these particular eighty form a HOMOMORPHIC section -- a complement generating order exactly 51,840 modulo global phase with no Paulis -- is NOT established. The numeric attempt blew past 60,000 without plateauing, which is floating-point drift making one group element hash to many keys, not a mathematical fact; that number is an ARTEFACT and is not quoted as a result. Settling it needs exact Z[w] arithmetic with 1/sqrt 3 carried symbolically, or the (symplectic matrix, phase function) encoding. The splitting itself is not in doubt -- d6bcf30 verified it at n = 1 and the odd-p result is cited -- so a section exists; whether THIS choice is one is open",
+  "stillUsable": "each lift is individually verified to implement its transvection, so a compiled word built from them realises the target symplectic element up to a Pauli and a global phase, which is what a stabilizer compiler tracks anyway; the section question decides only whether the Pauli correction vanishes too",
+  "table": [
+    {
+      "v": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        0,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        1,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        0,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        0,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        0
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "lam": 1,
+      "a": 1,
+      "unitary": true,
+      "realisesItsTransvection": true
+    },
+    {
+      "v": [
+        1,
+        2,
+        2,
+        2
+      ],
+      "lam": 2,
+      "a": 2,
+      "unitary": true,
+      "realisesItsTransvection": true
+    }
+  ],
+  "boundary": "the formula is exact; the verification is NUMERICAL at 1e-7 in double precision, not exact cyclotomic arithmetic. The eighty are indexed by projective v and lam in {1,2}, matching the transvection set of b363f7c and e05515f. tau_2 is untouched"
+}

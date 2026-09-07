@@ -1,0 +1,39 @@
+{
+  "schema": "holotrade.projective-isa-45-expensive.v1",
+  "valid": true,
+  "whyTheGroupWasWrong": "every cost result so far -- b363f7c, 6bb8975, 3595bd1, e05515f -- was computed in Sp(4,3), where the picture is 91 anomalies decomposing awkwardly as 90 + 1; but 6bb8975 already established that PSp(4,3) is the architecturally right group, since machine states are projective points and -I acts trivially on them, and nobody recomputed the cost model there",
+  "centreIsThePolarity": {
+    "anomalySetClosedUnderNegation": true,
+    "imageOfNegatedIsPolarLine": 90,
+    "outOf": 90,
+    "classes": 45,
+    "reading": "multiplying by the centre carries the reflection of L to the reflection of L^perp, so on the anomaly set -I ACTS AS THE SYMPLECTIC POLARITY; 91 looked like 90 + 1 only because the operator doing the pairing was counted as one of the paired things"
+  },
+  "projectiveCostModel": {
+    "order": 25920,
+    "opcodes": 80,
+    "diameter": 4,
+    "matrixDiameter": 5,
+    "table": {
+      "0,0": 1,
+      "1,1": 80,
+      "2,2": 1980,
+      "2,3": 45,
+      "3,3": 12960,
+      "4,4": 10854
+    },
+    "anomalies": 45,
+    "anomalyPercent": 0.174,
+    "residueConvention": "residue is NOT projectively defined; min(res(g), res(-g)) over the two lifts is the choice made here, and a different convention would move the table"
+  },
+  "theBijection": {
+    "expensiveInstructions": 45,
+    "minimumWeightCodewords": 45,
+    "reflectionsAreAllAnomalies": true,
+    "statement": "the projective ISA has exactly one expensive instruction per minimum-weight codeword, and no other expensive instruction",
+    "chain": "45 polar pairs of hyperbolic lines = BT810's 45 tritangent planes = the 45 octets L u L^perp = the sentinel code's 45 minimum-weight words (4952a3b) -- cited prior art, not re-derived"
+  },
+  "supersedesTheHedge": "3f93821 called this 'co-location' and had to hedge because in Sp the count was 90 against 45 objects, two-to-one, plus an unexplained centre; in PSp it is one-to-one with nothing left over, so the hedge was an artefact of computing in the wrong group",
+  "readingForTheMachine": "compiling a gate costs its residue in transvections except for 45 instructions out of 25,920, each costing one extra, and each being the reflection in one minimum-weight codeword of the code the machine uses to protect itself; the error-correcting structure and the instruction-cost irregularity are the same 45 objects, indexed the same way",
+  "boundary": "exhaustive: all 51,840 matrices reduced onto the 25,920 projective elements via the action on the 40 points, projective length by full BFS over that action, projective residue as min over the two lifts. The chain from polar pairs to tritangent planes to minimum words is cited prior art (BT810, 4952a3b). The underlying length law is O'Meara's per 3595bd1. tau_2 is untouched"
+}

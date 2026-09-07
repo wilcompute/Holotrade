@@ -1,0 +1,22 @@
+{
+  "schema": "holotrade.phase-lift-no-obstruction.v1",
+  "valid": true,
+  "theBoundaryLeft": "e05515f closed with 'the phase bookkeeping needed to lift a symplectic program to an actual qutrit circuit is NOT done here' -- honest but uninformative, since it did not say whether the bookkeeping is hard, easy or impossible; the W33-Theory track is now lowering those transvections to a photonic F/CX micro-ISA, so which it is has become the live question",
+  "oneQutritGroups": {
+    "pauliModGlobalPhase": 9,
+    "cliffordModGlobalPhase": 216,
+    "quotient": 24,
+    "quotientIs": "|SL(2,3)| = 24"
+  },
+  "splitting": {
+    "subgroupsSearched": 10,
+    "complementOrder": 24,
+    "pauliIntersection": 1,
+    "splits": true,
+    "consequence": "1 -> P -> C -> Sp -> 1 splits, C is a semidirect product, and a product of symplectic transvections lifts to the product of their canonical Clifford lifts with nothing left over -- no 2-cocycle, no phase table"
+  },
+  "literature": "the semidirect product Z_p^{2n} : Sp(2n,p) for odd prime p is the known picture, and the literature states explicitly that QUBITS are the case where the Clifford group is NOT such a semidirect product; verified here at n = 1, cited for general n",
+  "sameDichotomyAsTheSession": "q = 2 has been the exceptional case throughout: no centre to quotient (6bb8975), the classical length induction breaking (3595bd1), a 178x denser anomaly set. The Clifford extension failing to split at p = 2 while splitting at odd p is another instance, reached from representation theory rather than geometry. Recorded as an OBSERVATION about where the boundary falls, not a claim that these are the same theorem",
+  "whatItChangesForTheCompiler": "e05515f's word lifts TERMWISE: choose the canonical Clifford for each of the eighty transvections once, and the product is the canonical Clifford of the target. The remaining work is TABULATION for n = 2 -- engineering with a guaranteed answer, not an open problem -- so the boundary reads 'not done' rather than 'not known how'",
+  "boundary": "the splitting is verified EXHAUSTIVELY at n = 1: the Clifford group is a complete closure modulo global phase, its order and the Pauli subgroup's order are checked against 216 and 9, and the complement is exhibited with its intersection computed. It is NOT verified at n = 2 -- the two-qutrit Clifford group modulo phase has order 4,199,040 and was not built -- so for the compiler's actual dimension this rests on the cited general odd-p result. The eighty canonical lifts are NOT produced here. Unitaries are compared numerically at 1e-6, not in exact cyclotomic arithmetic. tau_2 is untouched"
+}

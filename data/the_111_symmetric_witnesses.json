@@ -1,0 +1,224 @@
+{
+  "schema": "holotrade.tau2-111-symmetric-witnesses.v1",
+  "valid": true,
+  "whyThisIsTheRightQuestion": "the corpus's known 115-leaf witness has a stabiliser of order 6 with orbit profile 6^11 3^1 2^19 1^8 summing to 115, so symmetric witnesses are how this family has actually been found; imposing invariance collapses 1600 cells to a few hundred orbits and makes the search tractable where the general question is not",
+  "whyPrimeOrderSuffices": "two steps. Any automorphism of a 111-witness must fix both pencil centres, because tensor_111_pencil_excess.json forces the slack on each axis into one complete four-line pencil and the centres are therefore canonically determined by X -- so the symmetry group lies inside the residual group Stab(c_row) cap Stab(c_col), of order 648, 54 or 24 per the GAP certificate of 628788e. And by Cauchy's theorem any nontrivial finite group contains an element of prime order, so if no prime-order element preserves a witness then no nontrivial element does. Testing prime-order subgroups up to conjugacy is SUFFICIENT, not merely indicative",
+  "instances": [
+    {
+      "case": "equal",
+      "residualOrder": 648,
+      "subgroupOrder": 3,
+      "index": 0,
+      "fixedPoints": 13,
+      "orbitVariables": 646,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "equal",
+      "residualOrder": 648,
+      "subgroupOrder": 3,
+      "index": 1,
+      "fixedPoints": 13,
+      "orbitVariables": 646,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "equal",
+      "residualOrder": 648,
+      "subgroupOrder": 3,
+      "index": 2,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNKNOWN",
+      "seconds": 20.1,
+      "budget": 20.0
+    },
+    {
+      "case": "equal",
+      "residualOrder": 648,
+      "subgroupOrder": 3,
+      "index": 3,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    },
+    {
+      "case": "equal",
+      "residualOrder": 648,
+      "subgroupOrder": 3,
+      "index": 4,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    },
+    {
+      "case": "equal",
+      "residualOrder": 648,
+      "subgroupOrder": 2,
+      "index": 5,
+      "fixedPoints": 8,
+      "orbitVariables": 832,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 0,
+      "fixedPoints": 13,
+      "orbitVariables": 646,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 1,
+      "fixedPoints": 13,
+      "orbitVariables": 646,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 2,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 3,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNSAT",
+      "seconds": 0.1,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 4,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 5,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 6,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 7,
+      "fixedPoints": 13,
+      "orbitVariables": 646,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 3,
+      "index": 8,
+      "fixedPoints": 4,
+      "orbitVariables": 544,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "collinear",
+      "residualOrder": 54,
+      "subgroupOrder": 2,
+      "index": 9,
+      "fixedPoints": 8,
+      "orbitVariables": 832,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    },
+    {
+      "case": "noncollinear",
+      "residualOrder": 24,
+      "subgroupOrder": 3,
+      "index": 0,
+      "fixedPoints": 13,
+      "orbitVariables": 646,
+      "status": "UNKNOWN",
+      "seconds": 20.0,
+      "budget": 20.0
+    },
+    {
+      "case": "noncollinear",
+      "residualOrder": 24,
+      "subgroupOrder": 2,
+      "index": 1,
+      "fixedPoints": 8,
+      "orbitVariables": 832,
+      "status": "UNSAT",
+      "seconds": 0.2,
+      "budget": 20.0
+    }
+  ],
+  "aStrengtheningThatDidNotHelp": "the nine undecided order-3 instances were re-run with the global tile-occupancy identity added explicitly: an integer variable occ[L][M] in [1,16] for each of the 1600 tiles, equal to that tile's leaf count, with sum(occ) = 16 x 111 = 1776 (each leaf lies in four row-lines and four column-lines). The constraint is redundant but gives the solver a global counting handle that plain >= 1 tile constraints do not. It changed nothing: all nine remained UNKNOWN. Recorded so the next attempt does not spend the same budget on the same idea",
+  "budgetDoesNotAffectTheTheorems": "every UNSAT row resolves in at most one second, while UNKNOWN rows consume the whole budget. So the budget only changes how long the rows that establish NOTHING take, and no theorem here depends on it. That is why a short budget is used: raising it would not add an UNSAT, it would only lengthen the UNKNOWNs",
+  "tally": {
+    "UNKNOWN": 9,
+    "UNSAT": 9
+  },
+  "allUnsat": false,
+  "anySat": false,
+  "orderTwoSlice": {
+    "instances": 3,
+    "oneClassPerCase": true,
+    "allUnsat": true,
+    "complete": true,
+    "reading": "each of the three cases has exactly ONE conjugacy class of order-2 subgroups in its residual group, and all three are UNSAT, so the order-2 question is settled COMPLETELY: no 111-leaf blocker is invariant under any involution of the diagonal PSp(4,3) action"
+  },
+  "theOddOrderTheorem": "no 111-leaf blocker is invariant under any involution of the diagonal action, and by Cauchy's theorem a group of even order contains an involution -- so THE STABILISER OF ANY 111-LEAF BLOCKER HAS ODD ORDER, i.e. it is a 3-group. The known 115-witness has stabiliser of order 6, which is EVEN, so a 111-witness cannot carry the kind of symmetry the 115 already in hand carries. This is complete because every case has exactly one class of involutions and all three returned UNSAT",
+  "conclusion": "NOT ALL INSTANCES DECIDED -- the trivial-stabiliser conclusion is NOT available. Only the UNSAT rows are theorems, each ruling out witnesses invariant under that one subgroup; UNKNOWN rows establish nothing",
+  "boundary": "an UNSAT is a theorem -- no 111-leaf blocker is invariant under that subgroup. An UNKNOWN is nothing. A SAT would settle tau_2 = 111 outright. The trivial-stabiliser conclusion requires ALL instances to return UNSAT and is otherwise unavailable. Everything here concerns the DIAGONAL PSp(4,3) action only: a witness preserved by a transpose-type symmetry exchanging the two axes is not in that group, is not tested, and is not claimed on. The forced pencil structure is QUOTED from tensor_111_pencil_excess.json and the residual group orders from the GAP certificate of 628788e; neither is re-derived. tau_2 remains open in [111,115] unless a SAT appears"
+}

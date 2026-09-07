@@ -1,0 +1,40 @@
+{
+  "schema": "holotrade.schlafli-triple-closed.v1",
+  "valid": true,
+  "theLastLeg": "fe4fb77 derived all three Schlafli numbers from the cost model and admitted the identifications were by INVARIANTS, not explicit equivariant bijections. The 45 and 27 were built since; the 36 was still outstanding, named as such by both 8982d36 and f04eec3",
+  "theThirtySix": {
+    "spreadsOfW33": 36,
+    "doubleSixesFromCostGeometry": 36,
+    "sixers": 72,
+    "transitiveOnDoubleSixes": true,
+    "transitiveOnSpreads": true,
+    "equivariantBijection": true,
+    "generatorsChecked": 80,
+    "whatIsAdded": "BT810 already identified the 36 spreads with the 36 double-sixes of the cubic surface; what is added is that the 36 double-sixes reconstructed FROM THE COST MODEL -- skew graph on its 27 lines, sixers, rigid partner condition -- are those same spreads, equivariantly"
+  },
+  "ledger": {
+    "27": {
+      "costObject": "the quadrangle's LINES",
+      "corpusObject": "the 27 points of W(3,3) opposite a fixed point, one torsor under the order-27 exponent-3 qutrit Pauli group",
+      "commit": "f04eec3"
+    },
+    "36": {
+      "costObject": "its DOUBLE-SIXES",
+      "corpusObject": "the 36 spreads of W(3,3)",
+      "commit": "this file"
+    },
+    "45": {
+      "costObject": "its POINTS, the expensive instructions",
+      "corpusObject": "the 45 abstract H(3,4) ROM slots",
+      "commit": "6b19220"
+    },
+    "40": {
+      "costObject": "the distinguished COVERS among its 200 ovoids",
+      "corpusObject": "the 40 cheap opcode axes",
+      "commit": "8982d36"
+    }
+  },
+  "whatItLicenses": "treating the cost geometry and the substrate geometry as ONE object rather than two that happen to share counts, which is what the slow-path ROM needs in order to decode",
+  "whatItDoesNotSay": "that the cost model discovered anything the corpus lacked: 27, 36 and 45 were already the spreads, the E6 root pairs, the torsor and the code's minimum weight. The content is that instruction COST is not an extra fact layered on the geometry -- it IS the geometry, read through a word-length function",
+  "boundary": "exhaustive: the 36 spreads by complete search over the 40 totally isotropic lines, the 36 double-sixes by the rigid partner condition on sixers, transitivity by orbit computation, and the bijection verified against every one of the 80 generators rather than sampled. CITED not derived: BT810's identification of the spreads with the double-sixes, and the classical Schlafli counts. The ledger refers to certificates committed earlier; this file recomputes only its own leg. tau_2 is untouched"
+}

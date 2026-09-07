@@ -1,0 +1,47 @@
+{
+  "schema": "holotrade.tau2-111-three-cases.v1",
+  "valid": true,
+  "theReduction": "tensor_111_pencil_excess.json proves any 111-leaf blocker carries, on each axis, 36 clean lines of load 11 and exactly four dirty lines of load 12 forming one complete point-pencil; a pencil has a centre, so a witness carries a distinguished POINT on each axis, and those two points are the only free structural data the forced shape leaves. PSp(4,3) on the 40 points is rank 3, so the ordered pair has exactly THREE orbits under the diagonal action -- equal, collinear, non-collinear -- and fixing one representative of each is a COMPLETE and LOSSLESS symmetry break",
+  "gapCertificate": "analysis/w33_tau2_111_three_cases.g, emitting data/tau2_111_three_cases_gap.json: rank 3, subdegrees 1+12+27, three diagonal orbits, residual groups of order 648 / 54 / 24 with orbit size x residual = 648 in each case, and both nontrivial orbitals self-paired by exhibiting a swapping element",
+  "cases": [
+    {
+      "case": "equal",
+      "cRow": 0,
+      "cCol": 0,
+      "status": "UNKNOWN",
+      "seconds": 60.0,
+      "budget": 60.0
+    },
+    {
+      "case": "collinear",
+      "cRow": 0,
+      "cCol": 1,
+      "status": "UNKNOWN",
+      "seconds": 60.0,
+      "budget": 60.0
+    },
+    {
+      "case": "noncollinear",
+      "cRow": 0,
+      "cCol": 4,
+      "status": "UNKNOWN",
+      "seconds": 60.1,
+      "budget": 60.0
+    }
+  ],
+  "aLongerIndependentRun": "this file's own run uses the budget recorded in each case row. A separate standalone run of the same three instances at 240 seconds and eight workers per case ALSO returned UNKNOWN on all three (equal, collinear, non-collinear). A first attempt to reproduce that inside this file died with no output at exit code 4 -- resource exhaustion from three consecutive eight-worker solves, not a solver verdict -- so the longer figure is reported as a separate run rather than as this file's output, and the file itself runs at a budget it completes reliably at",
+  "allUnknown": true,
+  "controls": {
+    "tau1BlockerSize": 11,
+    "tau1IsEleven": true,
+    "explicitBlockerSize": 440,
+    "explicitBlockerMissedPairs": 0,
+    "explicitBlockerAccepted": true,
+    "loadSum": 1760,
+    "loadExpected": 1760,
+    "reading": "the minimum-blocker sub-model reproduces tau_1 = 11, and the explicit blocker X = P x B for an 11-point blocking set B is accepted by the full constraint set with ZERO of the 1600 line-pairs missed and consistent load bookkeeping, so the UNKNOWNs are the instance being hard rather than the encoding being wrong"
+  },
+  "aControlThatCouldNotBeRun": ".scratch/best115.json holds 115 integers with max 1585, so a cell encoding into 40 x 40 is plausible and it is very likely the known 115-witness. It could NOT be used as a control: the file carries no point ordering and this file's ordering of PG(3,3) is its own, so decoding it against the wrong ordering produces meaningless misses. NO conclusion whatever is drawn about that witness",
+  "whatThisIsWorth": "it does NOT move tau_2, which stays open in [111,115]. It converts 'is 111 feasible' from a search over an unbroken 1600-variable space into three fully symmetry-reduced instances, and says which three. Anyone attacking 111 next -- by SAT, by orderly generation, or by a theorem in the style of the 110 self-duality argument -- can work one case at a time, and the equal-centres case carries a residual group of order 648 to exploit",
+  "boundary": "the reduction is exact and complete but rests on the forced pencil structure, which is QUOTED from tensor_111_pencil_excess.json and not re-derived, plus the rank-3 orbit count certified in GAP. The search result is a NEGATIVE at the budgets run -- 60 seconds in this file and 240 in a separate run, eight workers per case -- and says nothing about what a larger budget, a better encoding or a different solver would find. UNKNOWN is not evidence of feasibility OR of infeasibility. Nothing here touches the 110 exclusion, the 115 upper bound, or any q other than 3"
+}

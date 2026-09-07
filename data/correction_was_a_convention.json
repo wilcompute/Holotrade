@@ -1,0 +1,38 @@
+{
+  "schema": "holotrade.correction-was-a-convention.v1",
+  "valid": true,
+  "theQuestion": "43bbfa1 ended with c = -lam Q(v) applied as a Pauli multiplication; Q is the X-dot-Z overlap, exactly what separates the raw product X^a Z^b from the symmetrised Weyl operator. Is the correction a fact about the Clifford group or an artefact of the Pauli convention?",
+  "answer": "an artefact",
+  "landsOnSection": {
+    "0": 32,
+    "1": 32,
+    "2": 80
+  },
+  "weylProperties": {
+    "powersAreDisplacements": {
+      "0": "112/160",
+      "1": "112/160",
+      "2": "160/160"
+    },
+    "adjointIsOpposite": {
+      "0": "32/80",
+      "1": "32/80",
+      "2": "80/80"
+    },
+    "reading": "only t = 2 is a genuine displacement operator: powers are displacements along the same ray and the adjoint is the opposite displacement; the raw product X^a Z^b satisfies neither"
+  },
+  "explainsEveryFailure": [
+    "0fb6a0f's lifts were not a section (bf6d67a): Gauss sums over the WRONG operator",
+    "folding the correction in as w^{lam (j-c)^2} failed: it assumed P_v^c P_v^j = P_v^{c+j}, and P_v^k = P_{kv} holds only 112 of 160 times; over D_v it would have been fine",
+    "0c9ac42 solved at the source not the image: a separate slip, but only needed because the convention forced a correction at all"
+  ],
+  "finalForm": {
+    "operator": "D_v = w^{2 Q(v)} X^{v0} Z^{v2} tensor X^{v1} Z^{v3},  Q(v) = v0 v2 + v1 v3",
+    "lift": "U(v,lam) = (1/sqrt 3) sum_k w^{lam k^2} D_v^k",
+    "noCorrection": true,
+    "groupOrder": 51840,
+    "pauliCount": 0,
+    "isASection": true
+  },
+  "boundary": "the three t values are compared on the same regenerated section; the t = 2 family's group is generated exactly in F_3 with order and Pauli count computed. The two Weyl properties are checked on every vector and every power, not sampled. That t = 2 matches a particular textbook's displacement convention is NOT claimed -- what is established is that this phase, not the raw product, satisfies the two properties and makes the lift canonical. Only n = 2, q = 3. tau_2 is untouched"
+}

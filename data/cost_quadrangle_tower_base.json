@@ -1,0 +1,100 @@
+{
+  "schema": "holotrade.cost-quadrangle-tower-base.v1",
+  "valid": true,
+  "whyAsk": "8982d36 proved GQ(4,2) has 200 ovoids while W(3,3) has none; d9a9c59's splitting theorem says an ovoid-bearing factor peels off exactly. The two have not been put together, and nothing in the corpus computes tau_1 for GQ(4,2)",
+  "tau1": {
+    "value": 9,
+    "points": 45,
+    "lines": 27,
+    "linesPerPoint": [
+      3
+    ],
+    "pointsPerLine": [
+      5
+    ],
+    "countingBound": 9,
+    "witness": [
+      0,
+      1,
+      2,
+      13,
+      14,
+      16,
+      17,
+      19,
+      20
+    ],
+    "defect": 0,
+    "reading": "the lower bound is pure counting -- 27 lines, 3 lines per point, so at least 9 points -- and a 9-point blocker exists, so tau_1 = 9 = st+1 with DEFECT ZERO"
+  },
+  "minimumBlockersAreOvoids": {
+    "minimumBlockers": 200,
+    "ovoids": 200,
+    "identical": true,
+    "why": "a 9-set covering 27 lines with each point on exactly 3 has no slack anywhere, so it meets every line exactly once; the 200 minimum blockers and the 200 ovoids are the same 200 objects, which is what defect zero means concretely"
+  },
+  "fourQuadrangles": [
+    {
+      "geometry": "W(3,3)",
+      "st": [
+        3,
+        3
+      ],
+      "stPlus1": 10,
+      "tau1": 11,
+      "defect": 1,
+      "ovoid": false,
+      "towerBase": null,
+      "source": "corpus"
+    },
+    {
+      "geometry": "dual of W(3,3)",
+      "st": [
+        3,
+        3
+      ],
+      "stPlus1": 10,
+      "tau1": 10,
+      "defect": 0,
+      "ovoid": true,
+      "towerBase": 10,
+      "source": "corpus (d9a9c59)"
+    },
+    {
+      "geometry": "GQ(2,4)",
+      "st": [
+        2,
+        4
+      ],
+      "stPlus1": 9,
+      "tau1": 10,
+      "defect": 1,
+      "ovoid": false,
+      "towerBase": null,
+      "source": "corpus"
+    },
+    {
+      "geometry": "GQ(4,2) the cost quadrangle",
+      "st": [
+        4,
+        2
+      ],
+      "stPlus1": 9,
+      "tau1": 9,
+      "defect": 0,
+      "ovoid": true,
+      "towerBase": 9,
+      "source": "here"
+    }
+  ],
+  "dichotomy": "defect 0 <=> has an ovoid <=> tau_1 = st+1 <=> the tower law applies; and in EACH dual pair exactly one member bears an ovoid -- W(3,3) does not but its dual does (its ovoids are W's 36 spreads), GQ(2,4) does not but GQ(4,2) does. The dual defect of 8982d36 restated as blocking numbers",
+  "newTowerBase": {
+    "law": "tau(GQ(4,2)^m x R) = 9^m * tau(R), arbitrary R",
+    "pure": "tau(GQ(4,2)^m) = 9^m exactly, at every depth",
+    "combined": "tau(GQ(4,2)^m x Wdual^j x W^k) = 9^m * 10^j * tau(W^k), with tau(W^1) = 11 exact and tau(W^2) open in [111,115]: an arbitrarily deep tower is solved EXCEPT its W-factors",
+    "smallestYet": "d9a9c59 applied the law with base 10, the dual of W(3,3); this is a second base and a smaller one"
+  },
+  "whatTau2Measures": "an ovoid-bearing factor does not compress -- 9^2 = 81 exactly -- while W(3,3) does: tau_1^2 = 121 but tau_2 <= 115, so the product is strictly cheaper than the square. The ovoid is what PREVENTS compression, and tau_2 measures what the missing ovoid buys: between 6 and 10 off the square",
+  "architecturally": "composing slow paths is free -- the expensive-instruction geometry tiles to any depth at exactly 9 per level -- while composing fast paths is the open problem. The part of the machine that costs extra per instruction is the part that costs nothing to scale, and vice versa",
+  "boundary": "tau_1 = 9 is exact: lower bound by counting, upper by explicit witness, and the enumeration of all 200 minimum blockers is complete. The splitting theorem is d9a9c59's, CITED and applied, not re-proved, and its own note that tau(W^k) for k >= 2 is untouched applies unchanged. tau_1 for W(3,3), its dual and GQ(2,4) are corpus values, cited not recomputed. tau_2 is untouched"
+}

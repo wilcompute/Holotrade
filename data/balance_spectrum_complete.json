@@ -1,0 +1,109 @@
+{
+  "schema": "holotrade.balance-spectrum-complete.v1",
+  "valid": true,
+  "whereThisStands": "depth2_balance_spectrum.json tabulated four levels and stopped; 5aa4ff1 closed m = 2. The spectrum has a natural range and a natural symmetry nobody had used, and together they finish it",
+  "theRange": "a tile is L x M with |L| = |M| = 4, so |L x M| = 16 and 0 <= m <= 16; the corpus had examined four of seventeen levels",
+  "complementationLemma": {
+    "statement": "X is m-balanced <=> X^c is (16-m)-balanced",
+    "proof": "|X n (L x M)| = m for every tile forces |X^c n (L x M)| = 16 - m for every tile",
+    "consequence": "the spectrum is symmetric about 8",
+    "isAProofNotASearch": true
+  },
+  "sweep": [
+    {
+      "m": 0,
+      "status": "TRIVIAL",
+      "size": 0,
+      "verified": true,
+      "complement": 16
+    },
+    {
+      "m": 1,
+      "status": "INFEASIBLE",
+      "size": null,
+      "sizeIs100m": null,
+      "verified": null,
+      "complement": 15
+    },
+    {
+      "m": 2,
+      "status": "OPTIMAL",
+      "size": 200,
+      "sizeIs100m": true,
+      "verified": true,
+      "complement": 14
+    },
+    {
+      "m": 3,
+      "status": "OPTIMAL",
+      "size": 300,
+      "sizeIs100m": true,
+      "verified": true,
+      "complement": 13
+    },
+    {
+      "m": 4,
+      "status": "OPTIMAL",
+      "size": 400,
+      "sizeIs100m": true,
+      "verified": true,
+      "complement": 12
+    },
+    {
+      "m": 5,
+      "status": "OPTIMAL",
+      "size": 500,
+      "sizeIs100m": true,
+      "verified": true,
+      "complement": 11
+    },
+    {
+      "m": 6,
+      "status": "OPTIMAL",
+      "size": 600,
+      "sizeIs100m": true,
+      "verified": true,
+      "complement": 10
+    },
+    {
+      "m": 7,
+      "status": "OPTIMAL",
+      "size": 700,
+      "sizeIs100m": true,
+      "verified": true,
+      "complement": 9
+    },
+    {
+      "m": 8,
+      "status": "OPTIMAL",
+      "size": 800,
+      "sizeIs100m": true,
+      "verified": true,
+      "complement": 8
+    }
+  ],
+  "spectrum": [
+    0,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    16
+  ],
+  "holes": [
+    1,
+    15
+  ],
+  "theHolesAreTheOvoidLevels": "m = 1 asks for a set meeting every tile exactly once, the product analogue of an ovoid, and W(3,3) has none -- the corpus proves that row infeasible twice, by solver and by tau_2 >= 111 > 100. m = 15 is its complement and inherits the impossibility. Every other level is reachable, so the single obstruction in the whole spectrum is the missing ovoid, once at each end and nowhere in between",
+  "crossCheck": "m = 3 and 4 were found by the corpus WITHOUT symmetry at sizes 300 and 400; the C5 search reproduces both at the same sizes, independent evidence that this is the same notion of balanced",
+  "boundary": "feasibility at m = 2..8 is established by exhibiting witnesses, each re-verified from scratch against all 1600 tiles. The m = 1 row's GLOBAL infeasibility is the corpus's, CITED -- what is computed here is only that no C5-invariant one exists -- and m = 15's infeasibility follows from it by complementation, so it is exactly as strong as that citation. m = 9..14 are feasible by complementing the witnesses found here, which is constructive. No claim that every m-balanced set is C5-invariant, nor about how many exist at each level. tau_2 is untouched"
+}

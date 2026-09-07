@@ -1,0 +1,67 @@
+{
+  "schema": "holotrade.partition-is-lines-not-points.v1",
+  "valid": true,
+  "correction": {
+    "of": "eb6cfe8",
+    "whatItSaid": "labelled the isotropic class 'the points of W(3,3) = the CHEAP opcodes'",
+    "whyItIsWrong": "under the exterior-square isomorphism an ISOTROPIC point of the O(5,q) space is a decomposable bivector, i.e. a LINE of PG(3,q); restricted to the omega-hyperplane those are the LINES of W(3,q)",
+    "equivariantToPoints": false,
+    "equivariantToLines": true
+  },
+  "invariantsCouldNotCatchIt": {
+    "subdegreesIsotropic": [
+      1,
+      12,
+      27
+    ],
+    "subdegreesW33Points": [
+      1,
+      12,
+      27
+    ],
+    "subdegreesW33Lines": [
+      1,
+      12,
+      27
+    ],
+    "allIdentical": true,
+    "lesson": "subdegrees, rank, degree and orbit size -- every invariant this repository has been using as evidence -- agree for BOTH candidates, and only the explicit equivariant map separates them. Here the evidence points at two answers and one is false"
+  },
+  "lastLegProved": {
+    "subdegreesNonsquare": [
+      1,
+      15,
+      20
+    ],
+    "subdegreesSpreads": [
+      1,
+      15,
+      20
+    ],
+    "equivariantBijection": true,
+    "intertwinesAllGenerators": true,
+    "generators": 80,
+    "wasPreviously": "a COUNT MATCH ONLY in eb6cfe8"
+  },
+  "correctedPartition": {
+    "total": 121,
+    "isotropic": {
+      "count": 40,
+      "is": "the LINES of W(3,3)",
+      "status": "proved here"
+    },
+    "square": {
+      "count": 45,
+      "is": "the expensive instructions",
+      "status": "proved in eb6cfe8"
+    },
+    "nonsquare": {
+      "count": 36,
+      "is": "the 36 spreads",
+      "status": "proved here"
+    },
+    "whereTheOpcodesSit": "the fast-path opcode axes are the POINTS of W(3,3), which are NOT the isotropic class but its DUAL; W(3,q) is not self-dual at odd q, so points and lines are different PSp-sets of the same size with the same subdegrees"
+  },
+  "whatSurvivesUnchanged": "the counting identity at q = 3, 5, 7; the explicit isomorphism from the cost anomalies onto the square class; the reading that anticommutation in Sp is perpendicularity in O(5,q); and the explanation of the closed forms as orbit sizes and of the q-collapse as the NO family losing strong regularity -- none of those touched the mislabelled leg",
+  "boundary": "the isomorphism Sp(4,q) -> O(5,q) is built explicitly as the exterior square: Lambda^2 of the 4-space restricted to the kernel of the symplectic functional, with the Pfaffian as quadratic form, preserved because a symplectic matrix has determinant 1. Both new bijections are verified against every one of the 80 generators, not sampled. The refutation of 'isotropic = points' is a failed EXHAUSTIVE search over all 40 base-point choices, not a failure to find one by luck. Only q = 3 is done here. tau_2 is untouched"
+}

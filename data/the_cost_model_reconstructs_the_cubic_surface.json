@@ -1,0 +1,42 @@
+{
+  "schema": "holotrade.cost-model-is-the-cubic-surface.v1",
+  "valid": true,
+  "whatTheCostModelKnows": "nothing geometric: one predicate, 'does g need more transvections than its residue', which is O'Meara's hyperbolic-map condition (3595bd1) and refers only to a bilinear form and a word length -- no cubic surface, no lines, no planes, no E6",
+  "theThreeNumbers": {
+    "tritangentPlanes": 45,
+    "lines": 27,
+    "doubleSixes": 36,
+    "provenance": {
+      "45": "the anomaly set in PSp(4,3) (3a0a194)",
+      "27": "its maximal ANTICOMMUTING sets = lines of GQ(4,2) (605f5e5)",
+      "36": "double-sixes among those 27 (here)"
+    }
+  },
+  "theRigidTest": {
+    "meetDegree": [
+      10
+    ],
+    "skewDegree": [
+      16
+    ],
+    "sixers": 72,
+    "partnersPerSixer": {
+      "1": 72
+    },
+    "doubleSixes": 36,
+    "linesCovered": {
+      "12": 36
+    },
+    "looseReadingGives": 756,
+    "reading": "a double-six needs a bijection a_i <-> b_i with a_i SKEW to b_i and MEETING every other b_j; the loose reading (any two disjoint sixers) gives 756, so 36 is not a count a wrong construction stumbles into, and every sixer having exactly one partner is the classical statement"
+  },
+  "alreadyInTheCorpus": [
+    "BT810: the 36 W(3,3) spreads ARE the 36 double-sixes, and the 45 tritangent planes are named there",
+    "W33-Theory Passes 368-371, analysis/THE_27_FOLD_WAY.md: E6/2E6 splits 1+27+36, the 36 nonsingular classes are the root pairs AND the 36 spreads, the 27 isotropic classes are 'the 27 of the cubic surface', on which the order-27 exponent-3 Heisenberg group -- the single-qutrit Pauli group -- acts regularly",
+    "0d8d33e: the 216 carrier states are a principal 6-fibration over those 36 double-sixes, fibre = Schlafli's six letters",
+    "4952a3b: the 45 are the sentinel code's minimum-weight words"
+  ],
+  "whatIsNew": "27, 36 and 45 were already the spreads, the E6 root pairs, the carrier's base and the code's minimum weight. What is new is that the COST FUNCTION produces them -- 'which instructions are expensive' is not a separate fact about the machine but the same configuration, reached from a word-length predicate",
+  "twoPauliGroupsOnOne27": "the other track's 27 carries an order-27 exponent-3 extraspecial group (qutrit Pauli) acting regularly; this 27 INDEXES order-32 extraspecial 2^{1+4}_- groups, one per line, qubit-shaped (34f2a84). A 3-group acting on the 27 and a 2-group indexed by it, on what the counts say is the same 27 -- neither track could see that from its own side",
+  "boundary": "the Schlafli configuration is classical, as is GQ(4,2) as the (lines, tritangent planes) incidence of a cubic surface and the 27/36/45 counts; all CITED. What is computed is that the ISA anomaly set carries it: the meet/skew split, the 72 sixers, the unique-partner property and the 36. The identification of THIS 27 with the other track's 27, and of these 36 with BT810's spreads, is by INVARIANTS and the classical uniqueness of the configuration, NOT by an explicit equivariant bijection -- that is not built here and is the obvious next thing to build. tau_2 is untouched"
+}

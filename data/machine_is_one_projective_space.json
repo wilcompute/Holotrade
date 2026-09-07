@@ -1,0 +1,68 @@
+{
+  "schema": "holotrade.machine-is-one-projective-space.v1",
+  "valid": true,
+  "whatWasUnexplained": "424111b showed the cost graph is a quadrangle only at q = 3 with exact closed forms for size and degree, but gave no reason for either the closed forms or the collapse",
+  "theIdentity": {
+    "formula": "(q^5-1)/(q-1) = (q+1)(q^2+1) + q^2(q^2+1)/2 + q^2(q^2-1)/2",
+    "rows": [
+      {
+        "q": 3,
+        "pointsOfPG4": 121,
+        "isotropic": 40,
+        "square": 45,
+        "nonsquare": 36,
+        "identityHolds": true
+      },
+      {
+        "q": 5,
+        "pointsOfPG4": 781,
+        "isotropic": 156,
+        "square": 325,
+        "nonsquare": 300,
+        "identityHolds": true
+      },
+      {
+        "q": 7,
+        "pointsOfPG4": 2801,
+        "isotropic": 400,
+        "square": 1225,
+        "nonsquare": 1176,
+        "identityHolds": true
+      }
+    ],
+    "viaClassicalIsomorphism": "Sp(4,q) = O(5,q) for odd q"
+  },
+  "atQ3": {
+    "total": 121,
+    "isotropic": {
+      "count": 40,
+      "is": "the points of W(3,3), the CHEAP opcodes",
+      "status": "classical content of Sp(4,q) = O(5,q), CITED"
+    },
+    "square": {
+      "count": 45,
+      "is": "the EXPENSIVE instructions",
+      "status": "PROVED here by explicit isomorphism"
+    },
+    "nonsquare": {
+      "count": 36,
+      "is": "the spread / double-six count",
+      "status": "COUNT MATCH ONLY -- not shown to be the 36 spreads as a PSp-set"
+    }
+  },
+  "isomorphism": {
+    "sideA": "cost anomalies joined by ANTICOMMUTATION",
+    "sideB": "square-type nonisotropic points of O(5,3) from x0^2 + x1x2 + x3x4, joined by PERPENDICULARITY",
+    "vertices": [
+      45,
+      45
+    ],
+    "found": true,
+    "bijective": true,
+    "edgePreservingBothWays": true,
+    "whyTheRelationsCorrespond": "anticommuting reflections in Sp become commuting ones in PSp, and orthogonal reflections commute exactly when their axes are perpendicular"
+  },
+  "whatItExplains": "the closed forms are orthogonal-group ORBIT SIZES on PG(4,q); and the collapse is that this is the NO family on nonisotropic points of a polar space, which is strongly regular only for small parameters. The cost geometry was never a quadrangle in general -- it is an orbit graph that happens to be one at q = 3",
+  "theStatement": "cheap opcode, expensive instruction and spread are not three constructions that happen to share a symmetry group; they are the three classes a quadratic form cuts PG(4,q) into -- isotropic, square, nonsquare. The machine's fast path, slow path and scheduling objects are ONE point set, sorted by the value of a single form",
+  "boundary": "the counting identity is verified exactly at q = 3, 5, 7 and is a classical orbit count, cited not proved in general. The isomorphism is EXPLICIT and verified at q = 3 in both directions; it is NOT built at q = 5 or 7, where 424111b's parameter and failure-mode match is evidence but not proof. The 40 isotropic points being W(3,3)'s is the classical content of Sp(4,q) = O(5,q), cited. The 36 nonsquare points matching the spread count is a COUNT MATCH ONLY and is the obvious next thing to build. tau_2 is untouched"
+}

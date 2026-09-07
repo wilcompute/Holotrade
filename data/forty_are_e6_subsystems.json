@@ -1,0 +1,47 @@
+{
+  "schema": "holotrade.forty-are-e6-subsystems.v1",
+  "valid": true,
+  "whyLook": "two corpus threads ran side by side all session without touching: the 40 points of Q(4,3) -- the 40 lines of W(3,3), the 40 isotropic points of ker(omega), the 40 coordinates of the Cardinali-Giuzzi code (fe3e8fd) -- and the E6 thread, with its 27-36-45 triangle, |Sp(4,3)| = |W(E6)| = 51840, and the sl(3)^3 that 9a202a2 found mis-attached. The bridge is a count: the stabiliser of a 3A2 subsystem in W(E6) is W(A2)^3 : S3 of order 6^3 x 6 = 1296, and 51840/1296 = 40",
+  "counts": {
+    "roots": 72,
+    "A2subsystems": 120,
+    "threeA2subsystems": 40,
+    "sharedRootProfile": {
+      "0": 480,
+      "6": 1080
+    }
+  },
+  "graph": {
+    "adjacency": "share no root",
+    "srg": [
+      40,
+      12,
+      2,
+      4
+    ],
+    "isSRG": true,
+    "complementSrg": [
+      40,
+      27,
+      18,
+      18
+    ],
+    "complementIsSRG": true,
+    "maximalFourCliques": 40
+  },
+  "whichGQ": "there are exactly two generalized quadrangles of order 3, W(3,3) and its dual Q(4,3), and both point graphs are SRG(40,12,2,4); ovoids tell them apart, alpha(W(3,3)) = 7 because W(3,q) has no ovoid for odd q (the corpus's own coclique ovoid deficit of 3) against alpha(Q(4,3)) = q^2+1 = 10",
+  "independenceNumber": 10,
+  "identifiedAs": "Q(4,3)",
+  "whyThatIsTheRightAnswer": "the 40 points of Q(4,3) are the 40 LINES of W(3,3), and those are exactly the coordinates of the code whose weight enumerator is the O(5,q) orbit census",
+  "explicitIsomorphism": {
+    "constructed": true,
+    "verifiedOnOrderedPairs": 1600,
+    "verified": true,
+    "note": "the identification does NOT rest on matching SRG parameters: a bijection to the point graph of x0x1 + x2x3 + x4^2 was exhibited and checked on every ordered pair"
+  },
+  "whatThisJoins": "the session's coding and geometry thread and the corpus's E6 thread now meet at the 40: the 45 and 36 of the orbit partition already matched the 45 tritangents and 36 double-sixes of the Schlafli configuration, and the 40 was the piece with no E6 meaning. It has one",
+  "itRedeemsTheInstinct": "9a202a2 showed the corpus attached its cubic to the wrong object -- 3 (x) 3 (x) 3 is the graded piece of the E6 ADJOINT under the Z/3-grading whose zero part is sl(3)^3, and carries no invariant cubic. But sl(3)^3 was not the wrong SUBGROUP: a 3A2 subsystem is precisely a choice of that grading, and the number of ways to install one is the 40. The instinct was right; the graded piece was wrong. The cubic lives on the minuscule 27; the 40 is what sl(3)^3 itself counts",
+  "gapCompanion": "analysis/w33_e6_3a2_forty.g verifies the GROUP side, which this file cannot reach: the action of W(E6) on the 40 is FAITHFUL (kernel 1), transitive, of rank 3 with subdegrees 1 + 12 + 27, its point stabiliser is exactly 1296 = 6^3 * 6 = |W(A2)^3 : S3|, and GAP's StructureDescription names the image 'O(5,3) : C2' -- the automorphism group of the parabolic quadric itself, with |P|/2 = |PSp(4,3)| = 25920. So the 40 are the points of Q(4,3) as a G-SET and not merely as a graph. It emits data/e6_3a2_forty_gap.json and fails closed on all fourteen checks",
+  "noveltyNotClaimed": "W(E6) = U4(2):2 = PSp(4,3).2 is a classical isomorphism, 3A2 is a standard subsystem of E6, and the classification of generalized quadrangles of order 3 into W(3,3) and Q(4,3) is Payne-Thas. Given those, a rank-3 action of W(E6) on 40 objects matching Q(4,3) is very likely known to specialists; a search turned up the ingredients but not this statement in this form, which is weak evidence and is not treated as any. What is offered is the VERIFICATION and the corpus-local bridge, not the mathematics",
+  "boundary": "everything is exact and exhaustive at the single object E6 over the integers: all 72 roots, all 120 A2 subsystems, all 40 triples, all 780 vertex pairs, all 1600 ordered pairs under the exhibited isomorphism, and an exact branch-and-bound independence number. There is no q parameter and nothing generalises -- this is a statement about E6 and Q(4,3), full stop. The discriminator alpha = 7 for W(3,3) is QUOTED from the corpus, not re-derived. Nothing about tau_2, the Jordan series, or the rank ceiling changes"
+}
