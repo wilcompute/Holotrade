@@ -8,11 +8,11 @@ factorization
 
     E = U N^T = N V,
 
-where N is W(3,3) line/point incidence.  On each axis the committed
+where N is W(3,3) line/point incidence. On each axis the committed
 pencil-excess theorem fixes 36 clean lines and four dirty lines forming one
-point-pencil.  A clean row of U has token mass one; a dirty row has token mass
-two.  Dually each clean column of V has mass one and each dirty column mass
-two.  Hence there are 44 point tokens on either side, not 1600 leaf variables.
+point-pencil. A clean row of U has token mass one; a dirty row has token mass
+two. Dually each clean column of V has mass one and each dirty column mass two.
+Hence there are 44 point tokens on either side, not 1600 leaf variables.
 
 This file asks the exact feasibility question for that necessary condition in
 the three lossless centre cases already certified by w33_tau2_111_three_cases.g:
@@ -20,9 +20,9 @@ row/column dirty-pencil centres equal, collinear, or noncollinear.
 
 A SAT result does NOT produce a 111 blocker: it only survives this relaxation.
 An UNSAT result excludes that complete centre case, because every true witness
-must induce such a factorization.  UNKNOWN is no evidence.  The positive
-control U=N, V=N^T verifies the same equality machinery at uniform token mass
-four before any solve is attempted.
+must induce such a factorization. UNKNOWN is no evidence. The positive control
+U=N, V=N^T verifies the same equality machinery at uniform token mass four
+before any solve is attempted.
 """
 from __future__ import annotations
 
@@ -94,6 +94,12 @@ def explicit_control(N):
 
 def dirty_lines(lines, centre):
     return frozenset(i for i, line in enumerate(lines) if centre in line)
+
+
+def multiplicity_histogram(tokens):
+    """Histogram of point multiplicities: {multiplicity: number of used points}."""
+    point_counts = Counter(p for row in tokens for p in row)
+    return dict(sorted(Counter(point_counts.values()).items()))
 
 
 def solve_case(lines, N, c_row, c_col, budget, workers):
@@ -177,8 +183,8 @@ def solve_case(lines, N, c_row, c_col, budget, workers):
             "rowTokens": rt,
             "columnTokens": ct,
             "excessEntryHistogram": dict(sorted(Counter(x for row in E1 for x in row).items())),
-            "rowTokenMultiplicityHistogram": dict(sorted(Counter(p for row in rt for p in row).values()).items()),
-            "columnTokenMultiplicityHistogram": dict(sorted(Counter(p for col in ct for p in col).values()).items()),
+            "rowTokenMultiplicityHistogram": multiplicity_histogram(rt),
+            "columnTokenMultiplicityHistogram": multiplicity_histogram(ct),
             "independentEqualityCheck": True,
             "totalExcess": 176,
         })
@@ -227,7 +233,7 @@ def main():
                                   for x in cases.values()),
     }
     out = {
-        "schema": "holotrade.tau2-111-two-pencil-factorization.v1",
+        "schema": "holotrade.tau2-111-two-pencil-factorization.v2",
         "status": "PASS" if all(checks.values()) else "FAIL",
         "checks": checks,
         "control": control,
