@@ -1,0 +1,237 @@
+#!/usr/bin/env python3
+"""
+Globally: two non-collinear points of W(3,q) lie on exactly ONE octet, two
+collinear points on exactly q, and two octets meet in 0 or 2 points -- never 1,
+never more.
+
+WHERE THIS FITS.  aa8691a proved the LOCAL statement: at each point c the q^2
+octets through c and the q(q+1) neighbours of c form an affine plane of order q,
+with the pencil as its parallelism. That describes one point's neighbourhood. It
+says nothing about how two points see each other, and the point-octet geometry
+as a whole was never measured. This measures it.
+
+THE PARAMETERS, with the octet count quoted not re-derived.  The point-octet
+incidence structure has
+
+    v = (q+1)(q^2+1)   points        b = q^2(q^2+1)/2   octets
+    k = 2(q+1)         per octet     r = q^2            per point
+
+and v r = b k. The octet count is the middle orbit of the O(5,q) census
+(q+1)(q^2+1) / q^2(q^2+1)/2 / q^2(q^2-1)/2 already in this track -- the 40/45/36
+split at q = 3 -- and |C_m| = 2(q+1) and r = q^2 are from
+the_minimum_blocker_labels_are_octets.py. None of that is re-derived here.
+
+IT IS NOT A 2-DESIGN, and that is the interesting part.  A 2-design would need
+lambda = r(k-1)/(v-1) = q(2q+1)/(q^2+q+1), which is not an integer at q = 3.
+The pair degree is not constant -- it splits exactly on collinearity, and both
+values are as clean as they could be:
+
+    two NON-COLLINEAR points lie on exactly  1  octet
+    two COLLINEAR     points lie on exactly  q  octets
+
+verified over ALL pairs at q = 3, 5, 7. The counts close against r(k-1):
+q(q+1) collinear neighbours contributing q each, plus q^3 non-collinear
+contributing 1 each, is q^2(q+1) + q^3 = 2q^3 + q^2 = q^2(2q+1) = r(k-1).
+
+HALF OF THAT IS THE LOCAL THEOREM IN DISGUISE.  In the affine plane at x, the
+neighbour y is a LINE and the octets through x containing y are exactly the
+plane points lying on it. So "two collinear points lie on q octets" is precisely
+the axiom that every line of AG(2,q) carries q points, and aa8691a already
+proved it. The non-collinear law is the genuinely new content: it is invisible
+from inside any single point's plane, and it says the octets form a LINEAR SPACE
+on the non-collinearity graph -- every non-collinear pair determined by a unique
+octet.
+
+AND THE BLOCKS MEET IN 0 OR 2.  Two distinct octets share 0 or 2 points at every
+q tested, never 1 and never more, and when they share 2 those two are COLLINEAR.
+The collinearity half is forced rather than observed: a shared non-collinear
+pair would lie on two octets, contradicting the law that it lies on one. What is
+measured, and not derived here, is that the intersection never exceeds 2.
+
+SCOPE.  Exhaustive over all C(v,2) point pairs and all C(b,2) octet pairs at
+q = 3, 5, 7 -- 780, 12090 and 79800 point pairs, 990, 52650 and 749700 octet
+pairs. Nothing sampled. q = 9 and beyond are not run and even q is untouched.
+tau_2 is untouched and stays open in [111, 115].
+"""
+
+import argparse
+import collections
+import importlib.util
+import itertools
+import json
+import os
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def octet_module():
+    p = os.path.join(ROOT, "analysis",
+                     "the_minimum_blocker_labels_are_octets.py")
+    spec = importlib.util.spec_from_file_location("octmod", p)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def study(q, mod):
+    n, LSET, adj, B = mod.build(q)
+    octs = [frozenset(i for i in range(n) if B[i, c])
+            for c in range(B.shape[1])]
+    v, b = n, len(octs)
+    k = {len(C) for C in octs}
+    r = {sum(1 for C in octs if p in C) for p in range(n)}
+
+    through = [[] for _ in range(n)]
+    for j, C in enumerate(octs):
+        for p in C:
+            through[p].append(j)
+
+    coll, noncoll = collections.Counter(), collections.Counter()
+    for x in range(n):
+        sx = set(through[x])
+        for y in range(x + 1, n):
+            c = len(sx & set(through[y]))
+            (coll if y in adj[x] else noncoll)[c] += 1
+
+    inter = collections.Counter()
+    two_are_collinear = True
+    for i, j in itertools.combinations(range(b), 2):
+        s = octs[i] & octs[j]
+        inter[len(s)] += 1
+        if len(s) == 2:
+            a, bb = sorted(s)
+            if bb not in adj[a]:
+                two_are_collinear = False
+
+    return {
+        "q": q,
+        "v": v, "b": b,
+        "k": sorted(k), "r": sorted(r),
+        "vrEqualsBk": v * max(r) == b * max(k),
+        "bClosedForm": q * q * (q * q + 1) // 2,
+        "bMatchesClosedForm": b == q * q * (q * q + 1) // 2,
+        "collinearPairDegrees": dict(coll),
+        "nonCollinearPairDegrees": dict(noncoll),
+        "collinearLambda": (sorted(coll)[0] if len(coll) == 1 else None),
+        "nonCollinearLambda": (sorted(noncoll)[0] if len(noncoll) == 1
+                               else None),
+        "collinearPairs": sum(coll.values()),
+        "nonCollinearPairs": sum(noncoll.values()),
+        "blockIntersections": dict(sorted(inter.items())),
+        "intersectionsAreZeroOrTwo": set(inter) <= {0, 2},
+        "sharedPairsAreCollinear": two_are_collinear,
+        # r(k-1) split: q(q+1) neighbours at q each, q^3 non-neighbours at 1
+        "countingIdentity": (q * (q + 1) * q + q ** 3
+                             == q * q * (2 * q + 1)),
+        "notATwoDesign": (q * q * (2 * q + 1)) % (v - 1) != 0,
+    }
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--write", action="store_true")
+    ap.add_argument("--qs", type=int, nargs="+", default=[3, 5, 7])
+    args = ap.parse_args()
+
+    mod = octet_module()
+    rows = [study(q, mod) for q in args.qs]
+
+    print("THE OCTET PAIR LAWS ARE q-GENERAL")
+    print("=" * 74)
+    print("   q      v      b   k   r   vr=bk   lambda(non-coll)  lambda(coll)"
+          "   blocks meet in")
+    for x in rows:
+        print("  %2d  %5d  %5d  %2d  %3d   %5s   %14s  %11s   %s"
+              % (x["q"], x["v"], x["b"], x["k"][0], x["r"][0],
+                 x["vrEqualsBk"], x["nonCollinearLambda"],
+                 x["collinearLambda"],
+                 sorted(x["blockIntersections"])))
+    print()
+    print("  two NON-COLLINEAR points lie on exactly 1 octet;")
+    print("  two COLLINEAR points lie on exactly q; blocks meet in 0 or 2.")
+    print()
+    print("  the collinear law is the LOCAL theorem in disguise: in the affine")
+    print("  plane at x the neighbour y is a LINE, and the octets through x")
+    print("  containing y are the plane points on it -- so 'q octets' is just")
+    print("  'every line of AG(2,q) has q points', already proved in aa8691a.")
+    print("  The NON-COLLINEAR law is the new content: the octets form a linear")
+    print("  space on the non-collinearity graph.")
+    print()
+    print("  counting closes: q(q+1) neighbours at q each plus q^3")
+    print("  non-neighbours at 1 each = 2q^3+q^2 = q^2(2q+1) = r(k-1).")
+
+    ok = all(x["nonCollinearLambda"] == 1 and x["collinearLambda"] == x["q"]
+             and x["intersectionsAreZeroOrTwo"] and x["sharedPairsAreCollinear"]
+             and x["vrEqualsBk"] and x["bMatchesClosedForm"]
+             and x["countingIdentity"] and x["k"] == [2 * (x["q"] + 1)]
+             and x["r"] == [x["q"] ** 2]
+             for x in rows)
+    print()
+    print("VALID: %s" % ok)
+
+    if args.write:
+        assert ok, "checks failed -- refusing to write"
+        rec = {
+            "schema": "holotrade.octet-pair-laws-q-general.v1",
+            "valid": True,
+            "qs": args.qs,
+            "perQ": rows,
+            "theLaws": (
+                "in the point-octet geometry of W(3,q): two NON-COLLINEAR points "
+                "lie on exactly ONE common octet; two COLLINEAR points lie on "
+                "exactly q; and two distinct octets meet in 0 or 2 points, never "
+                "1 and never more. Verified over all point pairs and all octet "
+                "pairs at q = 3, 5, 7."),
+            "notATwoDesign": (
+                "the structure is NOT a 2-design and that is the point. A 2-design "
+                "would need lambda = r(k-1)/(v-1) = q(2q+1)/(q^2+q+1), not an "
+                "integer at q = 3. The pair degree instead splits exactly on "
+                "collinearity, and both values are as clean as possible."),
+            "halfOfItIsTheLocalTheorem": (
+                "in the affine plane at x proved in aa8691a, the neighbour y is a "
+                "LINE and the octets through x that contain y are exactly the "
+                "plane points lying on it. So 'two collinear points lie on q "
+                "octets' is precisely the axiom that every line of AG(2,q) carries "
+                "q points, and is already proved. The non-collinear law is the "
+                "genuinely new content: it is invisible from inside any single "
+                "point's plane, and says the octets form a LINEAR SPACE on the "
+                "non-collinearity graph, every non-collinear pair lying on a "
+                "unique octet."),
+            "theCollinearityOfSharedPairsIsForced": (
+                "when two octets share 2 points those points are collinear, but "
+                "that half is FORCED, not observed: a shared non-collinear pair "
+                "would lie on two octets, contradicting the law that it lies on "
+                "exactly one. What is measured and not derived here is that the "
+                "intersection never exceeds 2."),
+            "countingCloses": (
+                "r(k-1) = q^2(2q+1) splits as q(q+1) collinear neighbours "
+                "contributing q each plus q^3 non-collinear contributing 1 each: "
+                "q^2(q+1) + q^3 = 2q^3 + q^2. The two laws are therefore "
+                "consistent with the incidence count, which they would not be if "
+                "either constant were wrong."),
+            "priorArtQuotedNotRederived": (
+                "the octet count b = q^2(q^2+1)/2 is the middle orbit of the "
+                "O(5,q) census (q+1)(q^2+1) / q^2(q^2+1)/2 / q^2(q^2-1)/2 already "
+                "in this track -- the 40/45/36 split at q = 3, recorded in "
+                "the_polar_apparatus_is_rank_two_only.py -- and |C_m| = 2(q+1) "
+                "with q^2 octets through each point are from "
+                "the_minimum_blocker_labels_are_octets.py (aa42b38, 6f35762). The "
+                "local affine plane is aa8691a. This file calls that module's own "
+                "build() and adds only the pair laws."),
+            "boundary": (
+                "exhaustive over ALL point pairs and ALL octet pairs at q = 3, 5, "
+                "7 -- 780, 12090 and 79800 point pairs and 990, 52650 and 749700 "
+                "octet pairs -- with nothing sampled and nothing transported by "
+                "the group. q = 9 and beyond are not run; even q is untouched. The "
+                "bound that two octets meet in at most 2 points is measured at "
+                "these three q and is not proved in general. tau_2 is untouched "
+                "and stays open in [111, 115]."),
+        }
+        p = os.path.join(ROOT, "data", "octet_pair_laws_q_general.json")
+        with open(p, "w", encoding="utf-8") as fh:
+            json.dump(rec, fh, indent=2)
+        print("written: %s" % p)
+
+
+if __name__ == "__main__":
+    main()

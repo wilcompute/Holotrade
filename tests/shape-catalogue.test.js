@@ -8437,3 +8437,59 @@ test("the neighbourhood of a point of W(3,q) is an affine plane of order q", () 
   assert.match(r.priorArtImportedNotRederived, /aa42b38, 6f35762/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the octet pair laws are q-general", () => {
+  const r = JSON.parse(fs.readFileSync("data/octet_pair_laws_q_general.json"));
+  assert.equal(r.valid, true);
+  assert.deepEqual(r.qs, [3, 5, 7]);
+  const byQ = Object.fromEntries(r.perQ.map((x) => [x.q, x]));
+
+  for (const q of [3, 5, 7]) {
+    const x = byQ[q];
+    // parameters
+    assert.equal(x.v, (q + 1) * (q * q + 1));
+    assert.equal(x.b, (q * q * (q * q + 1)) / 2);
+    assert.equal(x.bMatchesClosedForm, true);
+    assert.deepEqual(x.k, [2 * (q + 1)]);
+    assert.deepEqual(x.r, [q * q]);
+    assert.equal(x.vrEqualsBk, true);
+    assert.equal(x.v * q * q, x.b * 2 * (q + 1), "vr = bk");
+
+    // the two laws
+    assert.equal(x.nonCollinearLambda, 1, "non-collinear pairs: exactly one");
+    assert.equal(x.collinearLambda, q, "collinear pairs: exactly q");
+    assert.deepEqual(Object.keys(x.nonCollinearPairDegrees), ["1"]);
+    assert.deepEqual(Object.keys(x.collinearPairDegrees), [String(q)]);
+
+    // the pair counts are the whole of C(v,2)
+    assert.equal(x.collinearPairs, (x.v * q * (q + 1)) / 2);
+    assert.equal(x.nonCollinearPairs, (x.v * q ** 3) / 2);
+    assert.equal(x.collinearPairs + x.nonCollinearPairs,
+                 (x.v * (x.v - 1)) / 2, "every pair classified");
+
+    // blocks meet in 0 or 2, and the 2 are collinear
+    assert.deepEqual(Object.keys(x.blockIntersections).map(Number).sort((a, b) => a - b),
+                     [0, 2]);
+    assert.equal(x.intersectionsAreZeroOrTwo, true);
+    assert.equal(x.sharedPairsAreCollinear, true);
+    assert.equal(Object.values(x.blockIntersections).reduce((a, b) => a + b, 0),
+                 (x.b * (x.b - 1)) / 2, "every octet pair classified");
+    // pairs meeting in 2 = collinear point pairs x C(q,2)
+    assert.equal(x.blockIntersections["2"],
+                 x.collinearPairs * ((q * (q - 1)) / 2));
+
+    // counting closes against r(k-1)
+    assert.equal(q * (q + 1) * q + q ** 3, q * q * (2 * q + 1));
+    assert.equal(x.countingIdentity, true);
+    assert.equal(x.notATwoDesign, true);
+  }
+
+  assert.match(r.theLaws, /never\s+1 and never more/);
+  assert.match(r.halfOfItIsTheLocalTheorem, /aa8691a/);
+  assert.match(r.halfOfItIsTheLocalTheorem, /LINEAR SPACE on the\s+non-collinearity graph/);
+  assert.match(r.theCollinearityOfSharedPairsIsForced, /FORCED, not observed/);
+  assert.match(r.priorArtQuotedNotRederived, /40\/45\/36/);
+  assert.match(r.priorArtQuotedNotRederived, /aa42b38, 6f35762/);
+  assert.match(r.boundary, /is not proved in general/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

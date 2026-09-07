@@ -1,0 +1,114 @@
+{
+  "schema": "holotrade.octet-pair-laws-q-general.v1",
+  "valid": true,
+  "qs": [
+    3,
+    5,
+    7
+  ],
+  "perQ": [
+    {
+      "q": 3,
+      "v": 40,
+      "b": 45,
+      "k": [
+        8
+      ],
+      "r": [
+        9
+      ],
+      "vrEqualsBk": true,
+      "bClosedForm": 45,
+      "bMatchesClosedForm": true,
+      "collinearPairDegrees": {
+        "3": 240
+      },
+      "nonCollinearPairDegrees": {
+        "1": 540
+      },
+      "collinearLambda": 3,
+      "nonCollinearLambda": 1,
+      "collinearPairs": 240,
+      "nonCollinearPairs": 540,
+      "blockIntersections": {
+        "0": 270,
+        "2": 720
+      },
+      "intersectionsAreZeroOrTwo": true,
+      "sharedPairsAreCollinear": true,
+      "countingIdentity": true,
+      "notATwoDesign": true
+    },
+    {
+      "q": 5,
+      "v": 156,
+      "b": 325,
+      "k": [
+        12
+      ],
+      "r": [
+        25
+      ],
+      "vrEqualsBk": true,
+      "bClosedForm": 325,
+      "bMatchesClosedForm": true,
+      "collinearPairDegrees": {
+        "5": 2340
+      },
+      "nonCollinearPairDegrees": {
+        "1": 9750
+      },
+      "collinearLambda": 5,
+      "nonCollinearLambda": 1,
+      "collinearPairs": 2340,
+      "nonCollinearPairs": 9750,
+      "blockIntersections": {
+        "0": 29250,
+        "2": 23400
+      },
+      "intersectionsAreZeroOrTwo": true,
+      "sharedPairsAreCollinear": true,
+      "countingIdentity": true,
+      "notATwoDesign": true
+    },
+    {
+      "q": 7,
+      "v": 400,
+      "b": 1225,
+      "k": [
+        16
+      ],
+      "r": [
+        49
+      ],
+      "vrEqualsBk": true,
+      "bClosedForm": 1225,
+      "bMatchesClosedForm": true,
+      "collinearPairDegrees": {
+        "7": 11200
+      },
+      "nonCollinearPairDegrees": {
+        "1": 68600
+      },
+      "collinearLambda": 7,
+      "nonCollinearLambda": 1,
+      "collinearPairs": 11200,
+      "nonCollinearPairs": 68600,
+      "blockIntersections": {
+        "0": 514500,
+        "2": 235200
+      },
+      "intersectionsAreZeroOrTwo": true,
+      "sharedPairsAreCollinear": true,
+      "countingIdentity": true,
+      "notATwoDesign": true
+    }
+  ],
+  "theLaws": "in the point-octet geometry of W(3,q): two NON-COLLINEAR points lie on exactly ONE common octet; two COLLINEAR points lie on exactly q; and two distinct octets meet in 0 or 2 points, never 1 and never more. Verified over all point pairs and all octet pairs at q = 3, 5, 7.",
+  "notATwoDesign": "the structure is NOT a 2-design and that is the point. A 2-design would need lambda = r(k-1)/(v-1) = q(2q+1)/(q^2+q+1), not an integer at q = 3. The pair degree instead splits exactly on collinearity, and both values are as clean as possible.",
+  "halfOfItIsTheLocalTheorem": "in the affine plane at x proved in aa8691a, the neighbour y is a LINE and the octets through x that contain y are exactly the plane points lying on it. So 'two collinear points lie on q octets' is precisely the axiom that every line of AG(2,q) carries q points, and is already proved. The non-collinear law is the genuinely new content: it is invisible from inside any single point's plane, and says the octets form a LINEAR SPACE on the non-collinearity graph, every non-collinear pair lying on a unique octet.",
+  "theCollinearityOfSharedPairsIsForced": "when two octets share 2 points those points are collinear, but that half is FORCED, not observed: a shared non-collinear pair would lie on two octets, contradicting the law that it lies on exactly one. What is measured and not derived here is that the intersection never exceeds 2.",
+  "countingCloses": "r(k-1) = q^2(2q+1) splits as q(q+1) collinear neighbours contributing q each plus q^3 non-collinear contributing 1 each: q^2(q+1) + q^3 = 2q^3 + q^2. The two laws are therefore consistent with the incidence count, which they would not be if either constant were wrong.",
+  "priorArtQuotedNotRederived": "the octet count b = q^2(q^2+1)/2 is the middle orbit of the O(5,q) census (q+1)(q^2+1) / q^2(q^2+1)/2 / q^2(q^2-1)/2 already in this track -- the 40/45/36 split at q = 3, recorded in the_polar_apparatus_is_rank_two_only.py -- and |C_m| = 2(q+1) with q^2 octets through each point are from the_minimum_blocker_labels_are_octets.py (aa42b38, 6f35762). The local affine plane is aa8691a. This file calls that module's own build() and adds only the pair laws.",
+  "boundary": "exhaustive over ALL point pairs and ALL octet pairs at q = 3, 5, 7 -- 780, 12090 and 79800 point pairs and 990, 52650 and 749700 octet pairs -- with nothing sampled and nothing transported by the group. q = 9 and beyond are not run; even q is untouched. The bound that two octets meet in at most 2 points is measured at these three q and is not proved in general. tau_2 is untouched and stays open in [111, 115]."
+}
