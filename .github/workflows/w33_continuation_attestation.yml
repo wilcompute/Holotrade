@@ -1,0 +1,26 @@
+name: W33 continuation-bound attestation
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-continuation-attestation.js'
+      - 'js/w33-measured-boot-attestation.js'
+      - 'js/w33-passport-deployment.js'
+      - 'tests/w33-continuation-attestation.test.js'
+      - 'tests/w33-measured-boot-attestation.test.js'
+      - '.github/workflows/w33_continuation_attestation.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  continuation-attestation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Exact continuation-bound challenge and receipt tests
+        run: node --test tests/w33-continuation-attestation.test.js
+      - name: Existing measured-boot binding regression
+        run: node --test tests/w33-measured-boot-attestation.test.js
