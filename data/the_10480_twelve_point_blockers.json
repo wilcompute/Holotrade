@@ -1,0 +1,26 @@
+{
+  "boundary": "Exact finite q=3 blocker census. It classifies size-12 shadows but does not itself decide the tensor blocker number tau_2.",
+  "checks": {
+    "all_10480_are_blockers": true,
+    "all_extensions_contain_exactly_one_minimum_blocker": true,
+    "extensions_are_all_distinct": true,
+    "forty_neighbourhood_exceptions": true,
+    "minimum_blockers_360": true,
+    "neighbourhood_excess_is_double_centre_pencil": true,
+    "one_point_extension_instances_10440": true,
+    "only_neighbourhoods_contain_none": true,
+    "pair_support_multiplicities_10_6_16": true,
+    "two_pencil_pair_is_unique": true,
+    "type_totals_400_1440_8640": true
+  },
+  "construction": "Every one-point extension B(c,m) union {x}, x outside B, is a 12-point blocker with line excess P_c+P_x. The 360 minimum blockers have 29 outside points each and all 10,440 extensions are distinct. The only remaining supports are the 40 neighbourhoods Adj(c), with excess 2P_c.",
+  "fixedPairReading": "For {c,c}: nine B(c,m) union {c} plus Adj(c). For a collinear pair {a,b}: three unique-minimum-blocker extensions centred at a and three centred at b. For a noncollinear pair: eight centred at either endpoint.",
+  "minimumSubblockerHistogram": {"0": 40, "1": 10440},
+  "neighbourhoodExceptions": 40,
+  "onePointExtensions": 10440,
+  "schema": "holotrade.w33-twelve-point-blocker-census.v1",
+  "status": "PASS",
+  "supportsPerFixedPair": {"collinear": 6, "equal": 10, "noncollinear": 16},
+  "total": 10480,
+  "twoPencilPairTypes": {"collinear": 1440, "equal": 400, "noncollinear": 8640}
+}
