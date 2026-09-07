@@ -8386,3 +8386,54 @@ test("the transversal code is q-general: an affine plane at every point", () => 
   assert.match(r.boundary, /EVERY centre/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the neighbourhood of a point of W(3,q) is an affine plane of order q", () => {
+  const r = JSON.parse(fs.readFileSync("data/neighbourhood_is_an_affine_plane.json"));
+  assert.equal(r.valid, true);
+  assert.deepEqual(r.planeVerifiedAtQ, [3, 5, 7]);
+
+  // the design, at EVERY centre
+  const byQ = Object.fromEntries(r.planes.map((p) => [p.q, p]));
+  for (const q of [3, 5, 7]) {
+    const p = byQ[q];
+    assert.equal(p.points, (q + 1) * (q * q + 1), "|W(3,q)| points");
+    assert.equal(p.planePoints, q * q, "octets through c = plane points");
+    assert.equal(p.planeLines, q * (q + 1), "neighbours of c = plane lines");
+    assert.equal(p.parallelClasses, q + 1, "the pencil is the parallelism");
+    assert.equal(p.allCentres, true, `every centre passes at q=${q}`);
+    assert.deepEqual(p.failures, []);
+    // an affine plane of order q has q^2 points and q^2+q lines
+    assert.equal(p.planeLines, p.planePoints + q);
+  }
+
+  // the group: |AGL(2,q)|/2 every time, ASL only at q=3
+  const gByQ = Object.fromEntries(r.groups.map((g) => [g.q, g]));
+  assert.deepEqual(r.groupVerifiedAtQ, [3, 5, 7]);
+  const expectImage = { 3: 216, 5: 6000, 7: 49392 };
+  const expectASL = { 3: 216, 5: 3000, 7: 16464 };
+  const expectPtStab = { 3: 24, 5: 240, 7: 1008 };
+  for (const q of [3, 5, 7]) {
+    const g = gByQ[q];
+    const agl = q * q * (q * q - 1) * (q * q - q);
+    assert.equal(g.imageOrder, expectImage[q]);
+    assert.equal(g.imageOrder, agl / 2, "index 2 in AGL(2,q)");
+    assert.equal(g.isIndexTwoInAGL, true);
+    assert.equal(g.aslOrder, expectASL[q]);
+    assert.equal(g.isASL, q === 3, "ASL matches ONLY at q=3");
+    assert.equal(g.pointStabiliser, expectPtStab[q]);
+    assert.equal(g.pointStabIsGLHalf, true);
+    assert.equal(g.transitive, true);
+    // the stabiliser really does surject with the right index
+    assert.equal(g.pspOrder / g.stabiliserOrder, (q + 1) * (q * q + 1));
+  }
+
+  assert.match(r.theTheorem, /2-\(q\^2,q,1\)\s*\n?\s*design/);
+  assert.match(r.theTheorem, /EVERY centre/);
+  assert.match(r.whyThisIsStrongerThanTheCode, /DUAL COORDINATES/);
+  assert.match(r.theGroupLaw, /exactly ONE for odd q, the squares/);
+  assert.match(r.theGroupLaw, /linear part has square\s+determinant/);
+  assert.match(r.correctionToOurOwnQ3Reading, /e239484/);
+  assert.match(r.correctionToOurOwnQ3Reading, /That collapse happens only at q = 3/);
+  assert.match(r.priorArtImportedNotRederived, /aa42b38, 6f35762/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

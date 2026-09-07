@@ -1,0 +1,105 @@
+{
+  "schema": "holotrade.neighbourhood-is-an-affine-plane.v1",
+  "valid": true,
+  "planeVerifiedAtQ": [
+    3,
+    5,
+    7
+  ],
+  "planes": [
+    {
+      "q": 3,
+      "points": 40,
+      "planePoints": 9,
+      "planeLines": 12,
+      "parallelClasses": 4,
+      "allCentres": true,
+      "failures": []
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "planePoints": 25,
+      "planeLines": 30,
+      "parallelClasses": 6,
+      "allCentres": true,
+      "failures": []
+    },
+    {
+      "q": 7,
+      "points": 400,
+      "planePoints": 49,
+      "planeLines": 56,
+      "parallelClasses": 8,
+      "allCentres": true,
+      "failures": []
+    }
+  ],
+  "groupVerifiedAtQ": [
+    3,
+    5,
+    7
+  ],
+  "groups": [
+    {
+      "q": 3,
+      "generatorsUsed": 8,
+      "pspOrder": 25920,
+      "stabiliserOrder": 648,
+      "planePoints": 9,
+      "imageOrder": 216,
+      "transitive": true,
+      "pointStabiliser": 24,
+      "aglOrder": 432,
+      "aglHalf": 216,
+      "aslOrder": 216,
+      "glHalf": 24,
+      "slOrder": 24,
+      "isIndexTwoInAGL": true,
+      "isASL": true,
+      "pointStabIsGLHalf": true
+    },
+    {
+      "q": 5,
+      "generatorsUsed": 8,
+      "pspOrder": 4680000,
+      "stabiliserOrder": 30000,
+      "planePoints": 25,
+      "imageOrder": 6000,
+      "transitive": true,
+      "pointStabiliser": 240,
+      "aglOrder": 12000,
+      "aglHalf": 6000,
+      "aslOrder": 3000,
+      "glHalf": 240,
+      "slOrder": 120,
+      "isIndexTwoInAGL": true,
+      "isASL": false,
+      "pointStabIsGLHalf": true
+    },
+    {
+      "q": 7,
+      "generatorsUsed": 8,
+      "pspOrder": 138297600,
+      "stabiliserOrder": 345744,
+      "planePoints": 49,
+      "imageOrder": 49392,
+      "transitive": true,
+      "pointStabiliser": 1008,
+      "aglOrder": 98784,
+      "aglHalf": 49392,
+      "aslOrder": 16464,
+      "glHalf": 1008,
+      "slOrder": 336,
+      "isIndexTwoInAGL": true,
+      "isASL": false,
+      "pointStabIsGLHalf": true
+    }
+  ],
+  "theTheorem": "for a point c of W(3,q), take as POINTS the q^2 octets through c, as LINES the q(q+1) neighbours of c, and let the neighbour x lie on the point m exactly when x is in C_m. That is an affine plane of order q, and the pencil at c -- the q+1 lines of W(3,q) through c -- is exactly its parallelism. Checked at EVERY centre for q = 3, 5, 7 by the design axioms directly: every line carries q points, every point lies on q+1 lines, and every pair of points lies on exactly ONE common line, i.e. a 2-(q^2,q,1) design.",
+  "whyThisIsStrongerThanTheCode": "d3c30d6 proved the q^2 dropped transversals form an MDS [q+1,2,q]_q code and noted that an OA(q^2,q+1,q,2) is equivalent to an affine plane. That is the plane in DUAL COORDINATES. The plane is present directly and the counts announce it before any coding: |Adj(c)| = q(q+1) is the number of lines of AG(2,q), the q^2 octets through c are its points, and the pencil is the parallelism. The code is what you get by coordinatising a plane point by which line of each parallel class contains it.",
+  "theGroupLaw": "the stabiliser of c induces on the q^2 plane points a group of order |AGL(2,q)|/2 -- 216, 6000, 49392 at q = 3, 5, 7 -- with point stabiliser |GL(2,q)|/2. Since AGL(2,q) abelianises to F_q^* via the determinant, its index-2 subgroups correspond to those of F_q^*, of which there is exactly ONE for odd q, the squares. So matching the order PROVES the identity: the geometry induces exactly the affine maps whose linear part has square determinant.",
+  "correctionToOurOwnQ3Reading": "e239484 named the q = 3 image ASL(2,3) = (C3 x C3):SL(2,3) of order 216. That is correct at q = 3 and misleading as a law, because ASL is not what generalises: |ASL(2,q)| = q^3(q^2-1) is 216, 3000, 16464 while the measured images are 216, 6000, 49392. At q = 3 the squares in F_3^* are just {1}, so square determinant means determinant 1 and the square-determinant group collapses onto ASL(2,3). That collapse happens only at q = 3, and it is why the right number was read as the wrong law.",
+  "priorArtImportedNotRederived": "the octets, |C_m| = 2(q+1), the K(q+1,q+1) structure giving internal degree q+1, and the count of q^2 octets through each point come from the_minimum_blocker_labels_are_octets.py (aa42b38, 6f35762) and c9e6be7; this file calls that module's own build(). The code formulation is d3c30d6 and the q = 3 group computation is e239484.",
+  "boundary": "the plane is verified at EVERY centre for q = 3, 5, 7 -- 40, 156 and 400 centres -- by the design axioms, not by transporting one case with the group. The induced group is computed at ONE centre per q, which suffices because Sp(4,q) is transitive on points, and the group is built from symplectic transvections, whose generation of Sp(4,q) is classical and is used, not proved here. The identification of the image as the square-determinant subgroup rests on uniqueness of the index-2 subgroup of AGL(2,q), which is proved from the abelianisation, so it is an identity and not an order coincidence. q = 9 and beyond are not run; even q is untouched. tau_2 is untouched and stays open in [111, 115]."
+}
