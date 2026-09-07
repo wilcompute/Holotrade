@@ -28,7 +28,7 @@ function signedVerdict(challenge, privateKey) {
   }, privateKey);
 }
 
-test("Holotrade commits a signed transaction around a receipt emitted by the W33 process kernel", () => {
+test("Holotrade owns select -> verifier -> real W33 execution -> signed delivery in one transaction", () => {
   const path = process.env.W33_EXECUTION_FIXTURE;
   assert.ok(path, "W33_EXECUTION_FIXTURE must point to generated W33 JSON");
   const execution = JSON.parse(fs.readFileSync(path, "utf8"));
@@ -65,20 +65,29 @@ test("Holotrade commits a signed transaction around a receipt emitted by the W33
     computePerSecondUSD: 0,
     startupUSD: 0,
   });
-  const preview = S.chooseContinuationWorker([worker], request, {});
-  assert.equal(preview.ok, true);
-  const verdict = signedVerdict(preview.dispatch.challenge, verifierKeys.privateKey);
+  const sequence = [];
   const tx = T.executeContinuationTransaction({
     candidates: [worker], request,
-    signedVerifierVerdict: verdict,
+    obtainSignedVerifierVerdict: ({ challenge, dispatch, request: selectedRequest }) => {
+      sequence.push("verifier");
+      assert.equal(challenge.challengeDigest, dispatch.challenge.challengeDigest);
+      assert.equal(challenge.continuationRoot, selectedRequest.continuationRoot);
+      return signedVerdict(challenge, verifierKeys.privateKey);
+    },
     trustedVerifierPublicKey: verifierKeys.publicKey,
-    executeWorker: () => execution,
+    executeWorker: ({ binding }) => {
+      sequence.push("worker");
+      assert.equal(binding.continuationRoot, execution.parentContinuationRoot);
+      return execution;
+    },
     deliveryPrivateKey: deliveryKeys.privateKey,
     deliveryKeyId: "crossrepo-delivery",
   });
+  assert.deepEqual(sequence, ["verifier", "worker"]);
   assert.equal(tx.execution.executionDigest.startsWith("sha256:"), true);
   assert.equal(tx.delivery.body.emissionId, execution.emissionId);
   assert.deepEqual(tx.delivery.body.guestReceiptIds, execution.guestReceiptIds);
   assert.equal(tx.delivery.body.childContinuationRoot, execution.childContinuationRoot);
+  assert.equal(tx.delivery.body.attestationBindingDigest, tx.attestation.bindingDigest);
   assert.equal(T.verifyDelivery(tx.delivery, deliveryKeys.publicKey).ok, true);
 });
