@@ -2,14 +2,14 @@
 
 // Replayable end-to-end HoloVM continuation transaction.
 //
-// This module composes boundaries that were previously verified separately:
-//   scheduler selection -> continuation-bound hardware challenge/verdict ->
-//   worker execution receipt -> exact child continuation -> signed Holotrade
-//   delivery receipt.
+// One invocation now owns the exact sequence:
+//   scheduler selection -> continuation-bound hardware challenge -> verifier
+//   verdict -> verified binding -> worker execution receipt -> exact child
+//   continuation -> signed Holotrade delivery receipt.
 //
-// The worker callback is an explicit cross-repository ABI.  It must return the
+// The worker callback is an explicit cross-repository ABI. It must return the
 // W33 HoloVM emission identity produced by the W33 process kernel; Holotrade
-// does not reimplement guest semantics.  Every identity is rebound into the
+// does not reimplement guest semantics. Every identity is rebound into the
 // final signed receipt and verification fails closed on parent/process/
 // generation drift.
 
@@ -110,8 +110,6 @@ function verifyDelivery(signed, publicKey) {
   if (!signed || signed.schema !== SIGNED_SCHEMA || !signed.body || signed.body.schema !== DELIVERY_SCHEMA) {
     return Object.freeze({ ok: false, code: "DELIVERY_SCHEMA_INVALID" });
   }
-  const expected = sha256({ ...signed.body, deliveryDigest: undefined });
-  // Recompute without relying on object insertion order or a transmitted digest.
   const bare = { ...signed.body };
   delete bare.deliveryDigest;
   if (sha256(bare) !== signed.body.deliveryDigest) return Object.freeze({ ok: false, code: "DELIVERY_DIGEST_MISMATCH" });
@@ -124,6 +122,7 @@ function executeContinuationTransaction({
   candidates,
   request,
   policy = {},
+  obtainSignedVerifierVerdict,
   signedVerifierVerdict,
   trustedVerifierPublicKey,
   executeWorker,
@@ -131,14 +130,21 @@ function executeContinuationTransaction({
   deliveryKeyId = "holotrade-delivery",
 }) {
   if (typeof executeWorker !== "function") throw new TypeError("executeWorker callback required");
+  if (typeof obtainSignedVerifierVerdict !== "function" && !signedVerifierVerdict) {
+    throw new TypeError("obtainSignedVerifierVerdict callback or signedVerifierVerdict required");
+  }
   const selected = S.chooseContinuationWorker(candidates, request, policy);
   if (!selected.ok) throw new Error(selected.code);
   const dispatch = selected.dispatch;
+  const verdict = typeof obtainSignedVerifierVerdict === "function"
+    ? obtainSignedVerifierVerdict(Object.freeze({ challenge: dispatch.challenge, dispatch, request }))
+    : signedVerifierVerdict;
+  if (!verdict) throw new TypeError("verifier callback returned no signed verdict");
   const binding = C.verifiedContinuationBinding(
     request.passport,
     request.contract,
     dispatch.challenge,
-    signedVerifierVerdict,
+    verdict,
     trustedVerifierPublicKey
   );
   const rawExecution = executeWorker(Object.freeze({ dispatch, binding, request }));
