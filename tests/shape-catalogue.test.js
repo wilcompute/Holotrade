@@ -8517,3 +8517,46 @@ test("the octet pair laws are q-general", () => {
   assert.match(r.boundary, /is not proved in general/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the local plane is a corollary of octet = L u L^perp, and is reclassified", () => {
+  const r = JSON.parse(fs.readFileSync("data/local_plane_is_a_corollary.json"));
+  assert.equal(r.valid, true);
+  const byQ = Object.fromEntries(r.perQ.map((x) => [x.q, x]));
+
+  for (const q of [3, 5]) {
+    const x = byQ[q];
+    // the counting that makes the derivation work
+    assert.equal(x.linesThroughAPoint, q * q + q + 1);
+    assert.equal(x.isotropicThroughC, q + 1);
+    assert.equal(x.hyperbolicThroughC, q * q);
+    assert.equal(x.linesThroughAPoint - x.isotropicThroughC,
+                 x.hyperbolicThroughC, "q^2+q+1 - (q+1) = q^2");
+    // set-level, not merely count-level
+    assert.equal(x.octetsMatchHyperbolicLines, true);
+    assert.equal(x.neighbourPartsAreExactlyThoseLines, true,
+                 "Adj(c) n C_m ARE the lines of c-perp missing c");
+    assert.equal(x.linesOfCPerpMissingC, q * q);
+    assert.equal(x.planeLines, q * (q + 1));
+    assert.equal(x.planeLinesIsQTimesQPlusOne, true);
+  }
+
+  // the reclassification is explicit about which of OUR results it demotes
+  assert.match(r.whatIsReclassified, /aa8691a/);
+  assert.match(r.whatIsReclassified, /d3c30d6/);
+  assert.match(r.whatIsReclassified, /64004ce/);
+  assert.match(r.whatIsReclassified, /3f93821, 2026-09-02/);
+  assert.match(r.whatIsReclassified, /all TRUE/);
+  assert.match(r.whatIsReclassified, /does not\s+make a fact new/);
+
+  // and about what still stands
+  assert.match(r.whatSurvivesAsNew, /index-2 subgroup of AGL\(2,q\)/);
+  assert.match(r.whatSurvivesAsNew, /216,\s*\n?\s*6000, 49392/);
+  assert.match(r.whatSurvivesAsNew, /proved rather than matched/);
+  assert.match(r.whatSurvivesAsNew, /q-GENERALITY of L u L\^perp/);
+
+  assert.match(r.theDerivation, /DUAL of PG\(2,q\) punctured at a\s+point/);
+  assert.match(r.theLesson, /novelty is a property of the corpus/);
+  assert.match(r.theLesson, /grepping the RESULT/);
+  assert.match(r.boundary, /retracts no mathematics/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

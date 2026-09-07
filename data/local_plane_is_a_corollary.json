@@ -1,0 +1,41 @@
+{
+  "schema": "holotrade.local-plane-is-a-corollary.v1",
+  "valid": true,
+  "qs": [
+    3,
+    5
+  ],
+  "perQ": [
+    {
+      "q": 3,
+      "linesThroughAPoint": 13,
+      "isotropicThroughC": 4,
+      "hyperbolicThroughC": 9,
+      "hyperbolicThroughCIsQSquared": true,
+      "octetsThroughC": 9,
+      "octetsMatchHyperbolicLines": true,
+      "linesOfCPerpMissingC": 9,
+      "neighbourPartsAreExactlyThoseLines": true,
+      "planeLines": 12,
+      "planeLinesIsQTimesQPlusOne": true
+    },
+    {
+      "q": 5,
+      "linesThroughAPoint": 31,
+      "isotropicThroughC": 6,
+      "hyperbolicThroughC": 25,
+      "hyperbolicThroughCIsQSquared": true,
+      "octetsThroughC": 25,
+      "octetsMatchHyperbolicLines": true,
+      "linesOfCPerpMissingC": 25,
+      "neighbourPartsAreExactlyThoseLines": true,
+      "planeLines": 30,
+      "planeLinesIsQTimesQPlusOne": true
+    }
+  ],
+  "theDerivation": "a line through c is totally isotropic iff it lies in c^perp, so of the q^2+q+1 lines through c exactly q+1 are isotropic and q^2 are HYPERBOLIC. An octet is L u L^perp with L hyperbolic, and c lies in it iff c is on L, so the octets through c correspond one-to-one with the q^2 hyperbolic lines through c. For a neighbour x of c, <c,x> is totally isotropic so x is not on L, hence x is in the octet iff x is in L^perp; and L^perp is a line lying inside c^perp and missing c. So the neighbour-parts are exactly the q^2 lines of the projective plane c^perp that miss c. With points the octets through c and lines the neighbours of c, the structure is therefore the DUAL of PG(2,q) punctured at a point, which is AG(2,q), and the pencil is its parallelism.",
+  "whatIsReclassified": "aa8691a ('the neighbourhood IS an affine plane of order q'), d3c30d6 ('the q^2 transversals form an MDS [q+1,2,q]_q code') and the code content of 64004ce (the q=3 tetracode) are all TRUE and all COROLLARIES of octet = L u L^perp, which this track already owned via the_cost_anomalies_are_the_tritangent_structure.py (3f93821, 2026-09-02). They were presented as discoveries. The tetracode was reached by an independent route, the |B n B'| = 5 census, but being found independently does not make a fact new.",
+  "whatSurvivesAsNew": "first, THE GROUP: the stabiliser of c induces on the plane exactly the index-2 subgroup of AGL(2,q), the affine maps whose linear part has square determinant, of order |AGL(2,q)|/2 = 216, 6000, 49392 at q = 3, 5, 7 with point stabiliser |GL(2,q)|/2. The plane's existence does not determine which subgroup of its automorphism group the geometry realises, and the identification is proved rather than matched, since AGL(2,q) abelianises to F_q^* by the determinant so its index-2 subgroup is unique. That carries the correction that ASL(2,q) is the wrong law and coincides only at q = 3. Second, the q-GENERALITY of L u L^perp, stated in the corpus at q = 3 and verified at 3, 5, 7 in 9fda6bf. Third, the measured bound that two octets meet in at most 2 points.",
+  "theLesson": "nothing in aa8691a or d3c30d6 is wrong: every witness passes, every count is exact, every scope statement is accurate. Only the NOVELTY was false, and novelty is a property of the corpus rather than of the claim, so no check inside a pass can catch it. What would have caught it is grepping the RESULT -- the string 'L u L^perp', or the integer 90 -- before writing the framing instead of after. The tetracode census took a route that never touched those tokens, which is exactly how a rediscovery survives an otherwise honest process.",
+  "boundary": "the derivation is exact and holds for all odd q; the set-level verification -- that the octets through c really are the hyperbolic lines through c, and that the neighbour-parts really are the lines of c^perp missing c -- is run at q = 3 and 5 as SETS, not merely as counts. This file reclassifies framings and retracts no mathematics: aa8691a, d3c30d6 and 64004ce stay true and their certificates stay valid. tau_2 is untouched and stays open in [111, 115]."
+}
