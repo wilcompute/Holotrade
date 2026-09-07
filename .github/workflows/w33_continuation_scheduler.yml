@@ -10,21 +10,39 @@ on:
       - 'tests/w33-continuation-scheduler.test.js'
       - 'tests/w33-continuation-attestation.test.js'
       - 'tests/w33-continuation-transaction.test.js'
+      - 'tests/w33-continuation-transaction-crossrepo.test.js'
       - '.github/workflows/w33_continuation_scheduler.yml'
   pull_request:
   workflow_dispatch:
 jobs:
   scheduler:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Continuation worker scheduler tests
         run: node --test tests/w33-continuation-scheduler.test.js
       - name: Continuation-bound attestation regression
         run: node --test tests/w33-continuation-attestation.test.js
       - name: End-to-end continuation transaction
         run: node --test tests/w33-continuation-transaction.test.js
+      - name: Checkout W33 execution producer
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33-crossrepo
+      - name: Generate real W33 HoloVM execution receipt
+        run: |
+          PYTHONPATH=w33-crossrepo/analysis python w33-crossrepo/analysis/w33_holotrade_transaction_fixture.py > /tmp/w33-execution.json
+          python -m json.tool /tmp/w33-execution.json >/dev/null
+      - name: Cross-repo signed continuation transaction
+        env:
+          W33_EXECUTION_FIXTURE: /tmp/w33-execution.json
+        run: node --test tests/w33-continuation-transaction-crossrepo.test.js
