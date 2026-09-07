@@ -1,0 +1,26 @@
+name: W33 continuation-native scheduler
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scheduler/w33-continuation-scheduler.js'
+      - 'js/w33-continuation-attestation.js'
+      - 'js/w33-measured-boot-attestation.js'
+      - 'tests/w33-continuation-scheduler.test.js'
+      - 'tests/w33-continuation-attestation.test.js'
+      - '.github/workflows/w33_continuation_scheduler.yml'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  scheduler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Continuation worker scheduler tests
+        run: node --test tests/w33-continuation-scheduler.test.js
+      - name: Continuation-bound attestation regression
+        run: node --test tests/w33-continuation-attestation.test.js
