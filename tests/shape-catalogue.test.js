@@ -8486,8 +8486,32 @@ test("the octet pair laws are q-general", () => {
 
   assert.match(r.theLaws, /never\s+1 and never more/);
   assert.match(r.halfOfItIsTheLocalTheorem, /aa8691a/);
-  assert.match(r.halfOfItIsTheLocalTheorem, /LINEAR SPACE on the\s+non-collinearity graph/);
   assert.match(r.theCollinearityOfSharedPairsIsForced, /FORCED, not observed/);
+
+  // the non-collinear law's framing was WITHDRAWN as an over-read
+  const w = r.theNonCollinearLawIsAnOverReadWithdrawn;
+  assert.match(w, /over-read/);
+  assert.match(w, /3f93821, 2026-09-02/);
+  assert.match(w, /L u L\^perp/);
+  assert.match(w, /WITHDRAWN/);
+  assert.match(w, /a consequence, not a discovery/);
+
+  // what survives: the halves ARE the hyperbolic lines, at every q tested
+  const sv = r.whatSurvivesIsTheQGeneralisation;
+  assert.match(sv, /HYPERBOLIC LINES of PG\(3,q\)/);
+  assert.match(sv, /90, 650, 2450/);
+  for (const q of [3, 5, 7]) {
+    const h = byQ[q].hyperbolic;
+    assert.equal(h.halvesAreExactlyTheHyperbolicLines, true);
+    assert.equal(h.hyperbolic, q * q * (q * q + 1));
+    assert.equal(h.hyperbolic, h.hyperbolicClosedForm);
+    assert.equal(h.octetHalves, q * q * (q * q + 1));
+    assert.equal(h.octetHalves, 2 * byQ[q].b, "two halves per octet");
+    assert.equal(h.totallyIsotropic, (q + 1) * (q * q + 1));
+    // PG(3,q) line count = isotropic + hyperbolic
+    assert.equal(h.allLines, h.totallyIsotropic + h.hyperbolic);
+    assert.equal(h.allLines, (q * q + 1) * (q * q + q + 1));
+  }
   assert.match(r.priorArtQuotedNotRederived, /40\/45\/36/);
   assert.match(r.priorArtQuotedNotRederived, /aa42b38, 6f35762/);
   assert.match(r.boundary, /is not proved in general/);

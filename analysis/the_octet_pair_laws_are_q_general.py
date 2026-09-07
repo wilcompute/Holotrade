@@ -33,14 +33,30 @@ verified over ALL pairs at q = 3, 5, 7. The counts close against r(k-1):
 q(q+1) collinear neighbours contributing q each, plus q^3 non-collinear
 contributing 1 each, is q^2(q+1) + q^3 = 2q^3 + q^2 = q^2(2q+1) = r(k-1).
 
-HALF OF THAT IS THE LOCAL THEOREM IN DISGUISE.  In the affine plane at x, the
-neighbour y is a LINE and the octets through x containing y are exactly the
+WHERE EACH LAW ACTUALLY COMES FROM -- and one of them is much cheaper than it
+first looked.
+
+The COLLINEAR law is the local theorem in disguise. In the affine plane at x the
+neighbour y is a LINE, and the octets through x containing y are exactly the
 plane points lying on it. So "two collinear points lie on q octets" is precisely
-the axiom that every line of AG(2,q) carries q points, and aa8691a already
-proved it. The non-collinear law is the genuinely new content: it is invisible
-from inside any single point's plane, and it says the octets form a LINEAR SPACE
-on the non-collinearity graph -- every non-collinear pair determined by a unique
-octet.
+the axiom that every line of AG(2,q) carries q points, and aa8691a proved it.
+
+The NON-COLLINEAR law was first written up here as new -- "the octets form a
+linear space on the non-collinearity graph" -- and that was an OVER-READ of a
+fact this track already owned. the_cost_anomalies_are_the_tritangent_structure.py
+(3f93821, 2026-09-02) records that PG(3,3)'s 130 lines split into 40 isotropic
+and 90 hyperbolic and that the 45 octets are exactly L u L^perp for L
+hyperbolic. Given that, the law is one line: two non-collinear points are
+non-perpendicular, so the line they span is hyperbolic, and a hyperbolic line L
+determines the single octet L u L^perp. Nothing about linear spaces is needed
+and no new content is involved. The framing is withdrawn.
+
+WHAT DOES SURVIVE from that direction is the q-GENERALISATION. The corpus states
+L u L^perp at q = 3, with the count 90. Verified here at q = 3, 5 and 7: the two
+sides of every octet's K(q+1,q+1) are exactly the HYPERBOLIC LINES of PG(3,q),
+all q^2(q^2+1) of them -- 90, 650, 2450 -- matching
+(q^2+1)(q^2+q+1) - (q+1)(q^2+1) = q^2(q^2+1) exactly. So an octet is a polarity
+pair of hyperbolic lines at every odd q tested, not only at q = 3.
 
 AND THE BLOCKS MEET IN 0 OR 2.  Two distinct octets share 0 or 2 points at every
 q tested, never 1 and never more, and when they share 2 those two are COLLINEAR.
@@ -71,6 +87,59 @@ def octet_module():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
+
+def halves_are_hyperbolic_lines(q, octs, adj):
+    """The two sides of each octet's K(q+1,q+1), against the hyperbolic lines
+    of PG(3,q) built independently from the form."""
+    def nm(v):
+        i = next(k for k, x in enumerate(v) if x % q)
+        z = pow(v[i] % q, -1, q)
+        return tuple((z * x) % q for x in v)
+
+    P3 = sorted({nm(v) for v in itertools.product(range(q), repeat=4)
+                 if any(v)})
+    i3 = {p: i for i, p in enumerate(P3)}
+
+    def sf(u, v):
+        return (u[0] * v[2] - u[2] * v[0] + u[1] * v[3] - u[3] * v[1]) % q
+
+    alllines = set()
+    for a, b in itertools.combinations(P3, 2):
+        S = set()
+        for x in range(q):
+            for y in range(q):
+                if x or y:
+                    w = tuple((x * a[k] + y * b[k]) % q for k in range(4))
+                    if any(w):
+                        S.add(i3[nm(w)])
+        alllines.add(frozenset(S))
+    hyp = {L for L in alllines
+           if all(sf(P3[x], P3[y]) % q
+                  for x, y in itertools.combinations(sorted(L), 2))}
+
+    halves = set()
+    for C in octs:
+        cs = sorted(C)
+        seen, comp = set(), []
+        for p in cs:
+            if p in seen:
+                continue
+            side = frozenset([p] + [y for y in cs
+                                    if y != p and y not in adj[p]])
+            comp.append(side)
+            seen |= side
+        if len(comp) != 2 or {len(x) for x in comp} != {q + 1}:
+            return None
+        halves |= set(comp)
+    return {
+        "allLines": len(alllines),
+        "totallyIsotropic": (q + 1) * (q * q + 1),
+        "hyperbolic": len(hyp),
+        "hyperbolicClosedForm": q * q * (q * q + 1),
+        "octetHalves": len(halves),
+        "halvesAreExactlyTheHyperbolicLines": halves == hyp,
+    }
 
 
 def study(q, mod):
@@ -124,6 +193,7 @@ def study(q, mod):
         "countingIdentity": (q * (q + 1) * q + q ** 3
                              == q * q * (2 * q + 1)),
         "notATwoDesign": (q * q * (2 * q + 1)) % (v - 1) != 0,
+        "hyperbolic": halves_are_hyperbolic_lines(q, octs, adj),
     }
 
 
@@ -154,13 +224,29 @@ def main():
     print("  plane at x the neighbour y is a LINE, and the octets through x")
     print("  containing y are the plane points on it -- so 'q octets' is just")
     print("  'every line of AG(2,q) has q points', already proved in aa8691a.")
-    print("  The NON-COLLINEAR law is the new content: the octets form a linear")
-    print("  space on the non-collinearity graph.")
+    print("  The NON-COLLINEAR law is NOT new: octet = L u L^perp is already")
+    print("  ours (3f93821), and two non-collinear points span a unique")
+    print("  hyperbolic line, which names the octet. Framing withdrawn.")
+    print("  What survives is that the octet HALVES are exactly the hyperbolic")
+    print("  lines of PG(3,q) at q = 3, 5, 7 -- 90, 650, 2450 = q^2(q^2+1) --")
+    print("  so the L u L^perp reading is q-general, not q = 3 only.")
     print()
     print("  counting closes: q(q+1) neighbours at q each plus q^3")
     print("  non-neighbours at 1 each = 2q^3+q^2 = q^2(2q+1) = r(k-1).")
 
-    ok = all(x["nonCollinearLambda"] == 1 and x["collinearLambda"] == x["q"]
+    print()
+    for x in rows:
+        h = x["hyperbolic"]
+        print("  q=%d: PG(3,q) has %d lines = %d isotropic + %d hyperbolic"
+              "  (q^2(q^2+1)=%d);  octet halves = %d;  HALVES ARE THE"
+              " HYPERBOLIC LINES: %s"
+              % (x["q"], h["allLines"], h["totallyIsotropic"], h["hyperbolic"],
+                 h["hyperbolicClosedForm"], h["octetHalves"],
+                 h["halvesAreExactlyTheHyperbolicLines"]))
+
+    ok = all(x["hyperbolic"]["halvesAreExactlyTheHyperbolicLines"]
+             and x["hyperbolic"]["hyperbolic"] == x["hyperbolic"]["hyperbolicClosedForm"]
+             and x["nonCollinearLambda"] == 1 and x["collinearLambda"] == x["q"]
              and x["intersectionsAreZeroOrTwo"] and x["sharedPairsAreCollinear"]
              and x["vrEqualsBk"] and x["bMatchesClosedForm"]
              and x["countingIdentity"] and x["k"] == [2 * (x["q"] + 1)]
@@ -187,16 +273,36 @@ def main():
                 "would need lambda = r(k-1)/(v-1) = q(2q+1)/(q^2+q+1), not an "
                 "integer at q = 3. The pair degree instead splits exactly on "
                 "collinearity, and both values are as clean as possible."),
+            "theNonCollinearLawIsAnOverReadWithdrawn": (
+                "this file first presented the non-collinear law as new content, "
+                "saying the octets form a LINEAR SPACE on the non-collinearity "
+                "graph. That is an over-read of a fact this track already owned. "
+                "the_cost_anomalies_are_the_tritangent_structure.py (3f93821, "
+                "2026-09-02) records that PG(3,3)'s 130 lines split 40 isotropic "
+                "and 90 hyperbolic and that the 45 octets are exactly L u L^perp "
+                "for L hyperbolic. Given that, the law is one line: two "
+                "non-collinear points are non-perpendicular, so the line they "
+                "span is hyperbolic, and a hyperbolic line L determines the "
+                "single octet L u L^perp. The linear-space framing is WITHDRAWN "
+                "and the law is retained as a consequence, not a discovery."),
+            "whatSurvivesIsTheQGeneralisation": (
+                "the corpus states octet = L u L^perp at q = 3, with the count 90. "
+                "Verified here at q = 3, 5, 7: the two sides of every octet's "
+                "K(q+1,q+1) are exactly the HYPERBOLIC LINES of PG(3,q), all "
+                "q^2(q^2+1) of them -- 90, 650, 2450 -- matching "
+                "(q^2+1)(q^2+q+1) - (q+1)(q^2+1) = q^2(q^2+1). So an octet is a "
+                "polarity pair of hyperbolic lines at every odd q tested, not only "
+                "at q = 3. That generalisation, the collinear law's derivation "
+                "from the local plane, and the measured bound that two octets meet "
+                "in at most 2 points are what this file actually contributes."),
             "halfOfItIsTheLocalTheorem": (
                 "in the affine plane at x proved in aa8691a, the neighbour y is a "
                 "LINE and the octets through x that contain y are exactly the "
                 "plane points lying on it. So 'two collinear points lie on q "
                 "octets' is precisely the axiom that every line of AG(2,q) carries "
                 "q points, and is already proved. The non-collinear law is the "
-                "genuinely new content: it is invisible from inside any single "
-                "point's plane, and says the octets form a LINEAR SPACE on the "
-                "non-collinearity graph, every non-collinear pair lying on a "
-                "unique octet."),
+                "consequence of octet = L u L^perp, which this track already "
+                "owned -- see theNonCollinearLawIsAnOverReadWithdrawn."),
             "theCollinearityOfSharedPairsIsForced": (
                 "when two octets share 2 points those points are collinear, but "
                 "that half is FORCED, not observed: a shared non-collinear pair "
