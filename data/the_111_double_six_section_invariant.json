@@ -1,0 +1,35 @@
+{
+  "boundary": "This is an exact necessary condition on the two-pencil factorization. It cuts dirty-pair type assignments sharply but leaves the same nine histogram families in all three dirty-centre relations, so it does not by itself improve tau_2 beyond [111,115].",
+  "cases": {
+    "collinear": {
+      "histogramPairFamilies": [["S0-C0-N4","S0-C0-N4"],["S0-C1-N3","S0-C1-N3"],["S0-C2-N2","S0-C2-N2"],["S0-C3-N1","S0-C3-N1"],["S0-C4-N0","S0-C4-N0"],["S0-C4-N0","S1-C0-N3"],["S1-C0-N3","S0-C4-N0"],["S1-C3-N0","S1-C3-N0"],["S4-C0-N0","S4-C0-N0"]],
+      "naiveOrderedTypeAssignments": 6561,
+      "orderedTypeAssignmentsSurviving": 95
+    },
+    "equal": {
+      "histogramPairFamilies": [["S0-C0-N4","S0-C0-N4"],["S0-C1-N3","S0-C1-N3"],["S0-C2-N2","S0-C2-N2"],["S0-C3-N1","S0-C3-N1"],["S0-C4-N0","S0-C4-N0"],["S0-C4-N0","S1-C0-N3"],["S1-C0-N3","S0-C4-N0"],["S1-C3-N0","S1-C3-N0"],["S4-C0-N0","S4-C0-N0"]],
+      "naiveOrderedTypeAssignments": 6561,
+      "orderedTypeAssignmentsSurviving": 95
+    },
+    "noncollinear": {
+      "histogramPairFamilies": [["S0-C0-N4","S0-C0-N4"],["S0-C1-N3","S0-C1-N3"],["S0-C2-N2","S0-C2-N2"],["S0-C3-N1","S0-C3-N1"],["S0-C4-N0","S0-C4-N0"],["S0-C4-N0","S1-C0-N3"],["S1-C0-N3","S0-C4-N0"],["S1-C3-N0","S1-C3-N0"],["S4-C0-N0","S4-C0-N0"]],
+      "naiveOrderedTypeAssignments": 6561,
+      "orderedTypeAssignmentsSurviving": 95
+    }
+  },
+  "checks": {
+    "95_ordered_type_pairs_survive_each_centre_case": true,
+    "centre_relation_not_distinguished_at_this_layer": true,
+    "every_line_occurs_in_9_spreads": true,
+    "exactly_36_spreads": true,
+    "nine_histogram_pair_families": true,
+    "pair_section_collisions_are_36_9_0": true,
+    "signature_sum_census_complete": true
+  },
+  "crossTrackE6Anchor": "W33-Theory w33_pass7305_7306_cspread_intrinsic_double_six.py and w33_pass7307_7309_double_six_naimark_isometry.py identify these same 36 spreads equivariantly with the 36 Schlaefli double-sixes/Pfaffian sections. That identification is imported, not re-proved here.",
+  "pairSectionCollisionCounts": {"collinear": 9, "equal": 36, "noncollinear": 0},
+  "schema": "holotrade.tau2-111-double-six-section-invariant.v1",
+  "sectionIdentity": "For each spread D, the number R_D of dirty row token-pairs whose two points lie on one line of D equals s(a,b) for the unique dirty column in D, where s=4/1/0 for equal/collinear/noncollinear tokens. The row/column-dual identity holds simultaneously.",
+  "status": "PASS",
+  "survivingHistogramFamilies": [["S0-C0-N4","S0-C0-N4"],["S0-C1-N3","S0-C1-N3"],["S0-C2-N2","S0-C2-N2"],["S0-C3-N1","S0-C3-N1"],["S0-C4-N0","S0-C4-N0"],["S0-C4-N0","S1-C0-N3"],["S1-C0-N3","S0-C4-N0"],["S1-C3-N0","S1-C3-N0"],["S4-C0-N0","S4-C0-N0"]]
+}
