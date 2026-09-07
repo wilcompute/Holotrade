@@ -1,0 +1,49 @@
+{
+  "boundary": "This is a necessary-condition theorem and does not prove or disprove existence of a 111-leaf tensor blocker. It concerns integer incidence/tile counts only; no physical or scheduler claim.",
+  "checks": {
+    "all_four_cliques_are_pencils": true,
+    "binary_case_exhaustive": true,
+    "mass_eight_is_exactly_two_pencils": true,
+    "mass_four_is_exactly_one_pencil": true,
+    "neighborhoods_are_four_triangles": true,
+    "pair_relation_split_40_240_540": true,
+    "srg_parameters_exact": true,
+    "symplectic_generators_transitive_on_lines": true,
+    "w33_geometry_40_by_40": true
+  },
+  "counts": {
+    "binarySolutionsGlobalByTransitivity": 540,
+    "collinearPointPair": 240,
+    "fixedBinaryCandidatesTested": 1447875,
+    "fixedBinarySolutions": 108,
+    "lineOrbitUnderTransvections": 40,
+    "mass4Solutions": 40,
+    "mass8Solutions": 820,
+    "noncollinearPointPair": 540,
+    "samePointPair": 40,
+    "symplecticTransvectionGeneratorsDistinct": 80
+  },
+  "graph": {
+    "every_neighborhood_is_4K3": true,
+    "four_cliques": 40,
+    "four_cliques_are_exactly_point_pencils": true,
+    "srg_40_12_2_4": true
+  },
+  "profiles": {
+    "collinear": {"0": 33, "1": 6, "2": 1},
+    "noncollinear": {"0": 32, "1": 8},
+    "same": {"0": 36, "2": 4}
+  },
+  "proofSkeleton": "For incidence-image excess e of mass s, the SRG identity A^2=8I-2A+4J and ker(N^T)=E_{-4} give Ae=2e+(s/4)1. At s=8, a maximum entry m obeys 2m+2<=8-m, so m<=2. With t double entries: t=2,3 are impossible by lambda=2; t=4 is a four-clique and hence a pencil; t=1 reduces inside the 4K3 neighborhood to two whole triangles, hence two collinear point pencils. The t=0 binary case is exhaustively counted through one line (108 hits among 1,447,875 forced candidates); certified symplectic line transitivity gives 540 globally, exactly the 540 noncollinear point-pair sums.",
+  "schema": "holotrade.w33-mass8-excess-two-pencils.v1",
+  "sourcesInRepo": [
+    "analysis/tensor_111_pencil_excess.py",
+    "analysis/tensor_111_near_duality_budget.py",
+    "analysis/the_blockers_in_closed_form.py",
+    "analysis/the_minimality_fence_was_wrong.py"
+  ],
+  "status": "PASS",
+  "tau2_111Corollary": "In a hypothetical 111-leaf tensor blocker, tensor_111_pencil_excess forces 36 row lines of load 11 and four dirty lines of load 12 forming one point pencil, independently on columns. Every clean tile-excess row is one point pencil. A dirty row is two pencils: if its shadow has 12 points use the 12-point blocker corollary; if its shadow has 11 points, its 12 leaves contain exactly one duplicate, adding that point's pencil to the minimum-blocker pencil. Thus for E=tile_occupancy-J there are nonnegative integer token matrices U,V with E=U N^T=N V; U row sums are 1 on the 36 clean rows and 2 on the four dirty rows, V column sums analogously. Each side has 44 tokens and total excess is 176.",
+  "theorem": "For W(3,3), every nonnegative integer mass-8 vector in the real point-line incidence image is uniquely P_a+P_b for an unordered pair of points with repetition. There are 820=C(41,2): 40 same-point, 240 collinear-pair, and 540 noncollinear-pair solutions. At mass 4 the only solutions are the 40 point pencils.",
+  "twelvePointBlockerCorollary": "If S is any 12-point blocking set, x=N 1_S has x>=1 and sum x=48, so e=x-1 is a nonnegative incidence-image mass-8 vector and is therefore exactly the sum of two point pencils. This classifies the line-intersection excess of every 12-point blocker without classifying the blocker supports themselves."
+}
