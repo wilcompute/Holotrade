@@ -8806,3 +8806,51 @@ test("the octet differences generate the integer kernel lattice, index 1", () =>
   assert.match(t, /integer program over\s+the octet-difference lattice/);
   assert.match(t, /cokernel being torsion-free/);
 });
+
+test("the mass-12 excess census is complete and has exactly one exceptional orbit", () => {
+  const r = JSON.parse(fs.readFileSync("data/mass12_census_complete.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.lineActionGroupOrder, 25920);
+  const byMass = Object.fromEntries(r.rows.map((x) => [x.mass, x]));
+
+  // every census is exhaustive, or the certificate would not exist
+  for (const m of [4, 8, 12]) {
+    assert.equal(byMass[m].solverStatus, "OPTIMAL");
+    assert.equal(byMass[m].complete, true);
+    assert.equal(byMass[m].mass, 4 * byMass[m].k);
+  }
+
+  // masses 4 and 8 confirm their theorems: no exceptions
+  assert.equal(byMass[4].admissible, 40);
+  assert.equal(byMass[4].exceptional, 0);
+  assert.equal(byMass[4].allPencilGenerated, true);
+  assert.equal(byMass[8].admissible, 820);
+  assert.equal(byMass[8].exceptional, 0);
+  assert.equal(byMass[8].allPencilGenerated, true);
+  // and the mass-8 orbits ARE their 40/240/540 pair split
+  assert.deepEqual(byMass[8].pencilOrbitSizes, [40, 240, 540]);
+  assert.equal(40 + 240 + 540, 820);
+  assert.match(r.massEightOrbitsAreTheirPairSplit, /pair_relation_split_40_240_540/);
+  assert.match(r.massEightOrbitsAreTheirPairSplit, /down to the orbit decomposition/);
+
+  // mass 12: the completion, 8 pencil orbits + exactly one exceptional
+  const m12 = byMass[12];
+  assert.equal(m12.admissible, 12920);
+  assert.equal(m12.pencilGenerated, 11480);
+  assert.equal(m12.exceptional, 1440);
+  assert.equal(m12.pencilGenerated + m12.exceptional, m12.admissible);
+  assert.deepEqual(m12.pencilOrbitSizes, [40, 160, 360, 480, 1080, 2160, 2880, 4320]);
+  assert.equal(m12.pencilOrbitSizes.reduce((a, b) => a + b, 0), 11480);
+  assert.equal(m12.pencilOrbitSizes.length, 8);
+  assert.deepEqual(m12.exceptionalOrbitSizes, [1440]);
+  assert.equal(m12.exceptionalOrbitCount, 1, "exactly ONE exceptional class");
+  assert.deepEqual(m12.exceptionalStabiliserOrders, [18]);
+  assert.equal(25920 / 1440, 18, "orbit-stabiliser closes");
+
+  // the enumeration gotcha is recorded
+  assert.match(r.theEnumerationGotcha, /COMPLETE ONLY WITH\s+num_workers = 1/);
+  assert.match(r.theEnumerationGotcha, /38, 202 and 12756/);
+  assert.match(r.theEnumerationGotcha, /my error alone/);
+  assert.match(r.whatItDoesNotDo, /does not touch mass 16/);
+  assert.match(r.whatItDoesNotDo, /\[111, 115\]/);
+});

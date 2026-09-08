@@ -1,0 +1,76 @@
+{
+  "schema": "holotrade.mass12-census-complete.v1",
+  "valid": true,
+  "lineActionGroupOrder": 25920,
+  "rows": [
+    {
+      "k": 1,
+      "mass": 4,
+      "admissible": 40,
+      "solverStatus": "OPTIMAL",
+      "complete": true,
+      "pencilGenerated": 40,
+      "pencilFamilySize": 40,
+      "exceptional": 0,
+      "allPencilGenerated": true,
+      "pencilOrbitSizes": [
+        40
+      ],
+      "exceptionalOrbitSizes": [],
+      "exceptionalOrbitCount": 0
+    },
+    {
+      "k": 2,
+      "mass": 8,
+      "admissible": 820,
+      "solverStatus": "OPTIMAL",
+      "complete": true,
+      "pencilGenerated": 820,
+      "pencilFamilySize": 820,
+      "exceptional": 0,
+      "allPencilGenerated": true,
+      "pencilOrbitSizes": [
+        40,
+        240,
+        540
+      ],
+      "exceptionalOrbitSizes": [],
+      "exceptionalOrbitCount": 0
+    },
+    {
+      "k": 3,
+      "mass": 12,
+      "admissible": 12920,
+      "solverStatus": "OPTIMAL",
+      "complete": true,
+      "pencilGenerated": 11480,
+      "pencilFamilySize": 11480,
+      "exceptional": 1440,
+      "allPencilGenerated": false,
+      "pencilOrbitSizes": [
+        40,
+        160,
+        360,
+        480,
+        1080,
+        2160,
+        2880,
+        4320
+      ],
+      "exceptionalOrbitSizes": [
+        1440
+      ],
+      "exceptionalOrbitCount": 1,
+      "exceptionalStabiliserOrders": [
+        18
+      ]
+    }
+  ],
+  "whatWasOpen": "the other track proves mass 4 is one point-pencil and mass 8 exactly two, then reports the induction FAILING at mass 12 and 16 and builds the_mass12_mass16_exact_orbit_census.py to classify what is really there. That script self-labels PARTIAL unless enumeration finishes OPTIMAL, and its committed run does not reach OPTIMAL at either mass -- it crashed before writing anything until ebd9a84 fixed a dict-sort TypeError in it. This completes MASS 12 exactly; mass 16 is NOT completed here and no claim is made about it.",
+  "theResult": "mass 12 has exactly 12920 admissible excesses, of which 11480 are pencil-generated and 1440 are not, with solver status OPTIMAL so the census is exhaustive. Under the line-action of PSp(4,3) the pencil-generated ones fall into EIGHT orbits of sizes 40, 160, 360, 480, 1080, 2160, 2880, 4320 -- summing to 11480 -- and the exceptional ones form EXACTLY ONE orbit of size 1440, stabiliser order 25920/1440 = 18. So the failure of the pencil induction at mass 12 is not a spray of sporadic counterexamples: it is a single class.",
+  "massEightOrbitsAreTheirPairSplit": "the mass-8 pencil orbits come out 40, 240, 540 -- which is exactly the pair_relation_split_40_240_540 recorded in the other track's mass_eight_excess_two_pencils.json: the same, collinear and non-collinear point pairs. Their theorem says mass 8 is two pencils, so the orbits of mass-8 excesses must be the orbits of unordered point pairs with repetition, and they are, computed here from an independently built line-action. That is a confirmation of their theorem down to the orbit decomposition, not merely the count.",
+  "massesFourAndEightConfirmTheirTheorems": "mass 4 gives 40 admissible against 40 pencil-generated and mass 8 gives 820 against 820, both OPTIMAL and both with zero exceptions, from a geometry and adjacency built independently here. That is exactly what the mass-4 and mass-8 theorems assert, so those theorems are independently reproduced rather than assumed.",
+  "theEnumerationGotcha": "CP-SAT's enumerate_all_solutions is COMPLETE ONLY WITH num_workers = 1. Run with four workers the identical models return 38, 202 and 12756 -- under-counts -- and still report OPTIMAL, silently. It was caught only because mass 4 has a known answer of 40 and the control failed. The other track's census sets num_search_workers = 1 correctly; this was my error alone and their enumeration is sound.",
+  "whatItDoesNotDo": "it does not decide tau_2 and does not touch mass 16, where the pencil-generated family alone has 123365 vectors -- reproduced independently here and agreeing with the other track's census. A mass-12 classification is a necessary condition on a 113-leaf blocker's load profile, not a statement about blockers themselves. tau_2 stays open in [111, 115].",
+  "boundary": "exhaustive at masses 4, 8 and 12: every census reached OPTIMAL with a single worker, and the certificate is refused if any did not. Orbits are computed by closure under generators of the line-action, whose order is ASSERTED to be 25920 before use, and each orbit is checked not to leave the enumerated set. Mass 16 is out of scope."
+}
