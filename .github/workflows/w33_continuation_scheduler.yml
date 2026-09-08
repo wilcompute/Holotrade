@@ -9,12 +9,14 @@ on:
       - 'js/w33-continuation-attestation.js'
       - 'js/w33-measured-boot-attestation.js'
       - 'js/w33-joint-admission-policy.js'
+      - 'js/w33-strict-admission-binding.js'
       - 'tests/w33-continuation-scheduler.test.js'
       - 'tests/w33-continuation-attestation.test.js'
       - 'tests/w33-continuation-transaction.test.js'
       - 'tests/w33-continuation-transaction-crossrepo.test.js'
       - 'tests/w33-joint-policy-resilience.test.js'
       - 'tests/w33-joint-policy-crossrepo.test.js'
+      - 'tests/w33-strict-admission-crossrepo.test.js'
       - '.github/workflows/w33_continuation_scheduler.yml'
   pull_request:
   workflow_dispatch:
@@ -60,3 +62,11 @@ jobs:
         env:
           W33_POLICY_EXECUTION_BUNDLE: /tmp/w33-policy-execution.json
         run: node --test tests/w33-joint-policy-crossrepo.test.js
+      - name: Generate strict baseline-aware W33 admission bundle
+        run: |
+          PYTHONPATH=w33-crossrepo/analysis python w33-crossrepo/analysis/w33_holotrade_strict_policy_execution_bundle.py > /tmp/w33-strict-policy-execution.json
+          python -m json.tool /tmp/w33-strict-policy-execution.json >/dev/null
+      - name: Cross-repo strict admission pricing attestation migration and delivery
+        env:
+          W33_STRICT_POLICY_EXECUTION_BUNDLE: /tmp/w33-strict-policy-execution.json
+        run: node --test tests/w33-strict-admission-crossrepo.test.js
