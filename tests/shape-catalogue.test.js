@@ -9020,3 +9020,42 @@ test("negativity depth grades the exceptions and proves the new orbit is new", (
   assert.match(r.boundary, /control that must return 0/);
   assert.match(r.boundary, /num_workers = 1/);
 });
+
+test("the new mass-16 orbit is indecomposable, with a working control", () => {
+  const r = JSON.parse(fs.readFileSync("data/new_mass16_orbit_indecomposable.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.newOrbitSize, 1080);
+  assert.equal(r.newOrbitStabiliser, 24);
+  assert.equal(r.newOrbitSize * r.newOrbitStabiliser, 25920);
+
+  // the concrete object
+  assert.deepEqual(r.representativeHistogram, { "0": 26, "1": 12, "2": 2 });
+  assert.equal(r.representativeSupport, 14);
+  // histogram accounts for all 40 lines and mass 16
+  const h = r.representativeHistogram;
+  assert.equal(Number(h["0"]) + Number(h["1"]) + Number(h["2"]), 40);
+  assert.equal(1 * Number(h["1"]) + 2 * Number(h["2"]), 16, "mass 16");
+  assert.equal(Number(h["1"]) + Number(h["2"]), r.representativeSupport);
+
+  // indecomposable at BOTH splittings -- 4+12 and 8+8 are the only ones
+  assert.equal(r.splits4plus12, 0);
+  assert.equal(r.splits8plus8, 0);
+  assert.equal(r.mass4AdmissibleCount, 40, "mass-4 admissible = the 40 pencils");
+  assert.equal(r.mass8AdmissibleCount, 820);
+  // the control must decompose, or two zeros prove nothing
+  assert.ok(r.controlInheritedSplits > 0,
+            "an inherited rep MUST decompose or the test is broken");
+
+  // the mass-12 exception is indecomposable too
+  assert.equal(r.mass12ExceptionSplits4plus8, 0);
+  assert.match(r.theMass12ExceptionIsIndecomposableToo, /three pencils/);
+  assert.match(r.theMass12ExceptionIsIndecomposableToo, /That is a proof/);
+
+  // the two invariants separate different things
+  assert.match(r.twoInvariantsTwoSeparations, /indecomposable AND deep/);
+  assert.match(r.twoInvariantsTwoSeparations, /Neither invariant is redundant/);
+  assert.match(r.itIsIndecomposable, /as consistent with a broken test/);
+  assert.match(r.whatItIsNot, /not a blocker/);
+  assert.match(r.whatItIsNot, /\[111, 115\]/);
+  assert.match(r.boundary, /num_workers = 1/);
+});

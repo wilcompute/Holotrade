@@ -1,0 +1,24 @@
+{
+  "schema": "holotrade.new-mass16-orbit-indecomposable.v1",
+  "valid": true,
+  "newOrbitSize": 1080,
+  "newOrbitStabiliser": 24,
+  "representativeHistogram": {
+    "0": 26,
+    "1": 12,
+    "2": 2
+  },
+  "representativeSupport": 14,
+  "splits4plus12": 0,
+  "splits8plus8": 0,
+  "controlInheritedSplits": 1,
+  "mass12ExceptionSplits4plus8": 0,
+  "mass4AdmissibleCount": 40,
+  "mass8AdmissibleCount": 820,
+  "theObject": "a representative of the new orbit has entry histogram 0 on 26 lines, 1 on 12 and 2 on 2 -- supported on 14 of the 40 lines with mass 12*1 + 2*2 = 16. A 114-leaf blocker realising it would carry load 12 on twelve lines, 13 on two, and the bare 11 on the remaining twenty-six.",
+  "itIsIndecomposable": "masses are multiples of four, so an excess of mass 16 splits into two admissible parts only as 4 + 12 or 8 + 8, and neither happens: rep minus a pencil is admissible at mass 12 for none of the 40 pencils, and rep minus a mass-8 admissible lands in the mass-8 admissible set for none of the 820. The mass-4 admissible set is exactly the 40 pencils, so the first line covers 4 + 12 completely. A CONTROL is carried -- an INHERITED representative does decompose, with exactly one pencil working -- because without it two zeros would be as consistent with a broken test as with a theorem.",
+  "theMass12ExceptionIsIndecomposableToo": "its only splitting is 4 + 8, and every mass-8 admissible excess is a sum of two pencils (the other track's mass-eight theorem, and this census finds zero exceptions at mass 8), so pencil + mass-8 is a sum of three pencils and hence pencil-generated. The mass-12 exception is not pencil-generated, so no such splitting exists. That is a proof; it is also checked.",
+  "twoInvariantsTwoSeparations": "indecomposability separates {the mass-12 exception, the new mass-16 orbit} from the six INHERITED mass-16 orbits, which do decompose. Negativity depth separates the new mass-16 orbit (depth 2) from everything else (depth 0 or 1). So the inherited orbits are decomposable and shallow, the mass-12 exception is indecomposable but shallow, and the new orbit is indecomposable AND deep -- the only object in the programme with both properties. Neither invariant is redundant.",
+  "whatItIsNot": "this describes an admissible load PROFILE, not a blocker. No claim is made that any 114-leaf blocker realises this profile; that is exactly what a decision model would have to settle and it is not settled here. tau_2 stays open in [111, 115].",
+  "boundary": "the decomposition tests are exhaustive over the FULL mass-4 and mass-8 admissible sets, not sampled, and every census reaches OPTIMAL with a SINGLE worker since CP-SAT's enumerate_all_solutions is complete only with num_workers = 1. The indecomposability of the mass-12 exception is argued from the mass-eight theorem and also checked directly. Orbit representatives come from closure under generators of the line-action of PSp(4,3), order asserted to be 25920 before use."
+}
