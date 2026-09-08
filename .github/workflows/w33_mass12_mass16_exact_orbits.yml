@@ -1,0 +1,42 @@
+name: W33 mass12 mass16 exact orbit census
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/the_mass12_mass16_exact_orbit_census.py'
+      - 'analysis/the_mass12_mass16_excess_pencil_induction.py'
+      - 'analysis/the_mass_eight_excess_is_two_pencils.py'
+      - '.github/workflows/w33_mass12_mass16_exact_orbits.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-orbits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install exact solver
+        run: python -m pip install ortools
+      - name: Enumerate mass12 and mass16 excesses
+        run: python analysis/the_mass12_mass16_exact_orbit_census.py --mass12-budget 180 --mass16-budget 240 --cap 2000000 --write
+      - name: Validate census semantics
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('data/mass12_mass16_exact_orbit_census.json'))
+          assert x['status'] in {'PASS','PARTIAL'}
+          for key in ('mass12','mass16'):
+              r=x[key]
+              assert r['solutionsFound'] >= r['pencilGeneratedSolutionsInCensus']
+              assert r['orbitCountWithinCensus'] == r['pencilGeneratedOrbitCountWithinCensus'] + r['exceptionalOrbitCountWithinCensus']
+          print('status',x['status'])
+          print('mass12',x['mass12']['solverStatus'],x['mass12']['solutionsFound'],'orbits',x['mass12']['orbitCountWithinCensus'],'exceptional',x['mass12']['exceptionalOrbitCountWithinCensus'])
+          print('mass16',x['mass16']['solverStatus'],x['mass16']['solutionsFound'],'orbits',x['mass16']['orbitCountWithinCensus'],'exceptional',x['mass16']['exceptionalOrbitCountWithinCensus'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-mass12-mass16-exact-orbits
+          path: data/mass12_mass16_exact_orbit_census.json
