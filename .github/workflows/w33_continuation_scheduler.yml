@@ -5,19 +5,23 @@ on:
     paths:
       - 'scheduler/w33-continuation-scheduler.js'
       - 'scheduler/w33-continuation-transaction.js'
+      - 'scheduler/w33-topology-resilience.js'
       - 'js/w33-continuation-attestation.js'
       - 'js/w33-measured-boot-attestation.js'
+      - 'js/w33-joint-admission-policy.js'
       - 'tests/w33-continuation-scheduler.test.js'
       - 'tests/w33-continuation-attestation.test.js'
       - 'tests/w33-continuation-transaction.test.js'
       - 'tests/w33-continuation-transaction-crossrepo.test.js'
+      - 'tests/w33-joint-policy-resilience.test.js'
+      - 'tests/w33-joint-policy-crossrepo.test.js'
       - '.github/workflows/w33_continuation_scheduler.yml'
   pull_request:
   workflow_dispatch:
 jobs:
   scheduler:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,6 +36,8 @@ jobs:
         run: node --test tests/w33-continuation-attestation.test.js
       - name: End-to-end continuation transaction
         run: node --test tests/w33-continuation-transaction.test.js
+      - name: Policy-specific pricing and exact W33 resilience
+        run: node --test tests/w33-joint-policy-resilience.test.js
       - name: Checkout W33 execution producer
         uses: actions/checkout@v4
         with:
@@ -46,3 +52,11 @@ jobs:
         env:
           W33_EXECUTION_FIXTURE: /tmp/w33-execution.json
         run: node --test tests/w33-continuation-transaction-crossrepo.test.js
+      - name: Generate coherent W33 policy and execution bundle
+        run: |
+          PYTHONPATH=w33-crossrepo/analysis python w33-crossrepo/analysis/w33_holotrade_policy_execution_bundle.py > /tmp/w33-policy-execution.json
+          python -m json.tool /tmp/w33-policy-execution.json >/dev/null
+      - name: Cross-repo policy-bound attested delivery
+        env:
+          W33_POLICY_EXECUTION_BUNDLE: /tmp/w33-policy-execution.json
+        run: node --test tests/w33-joint-policy-crossrepo.test.js
