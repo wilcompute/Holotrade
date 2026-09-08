@@ -3,21 +3,22 @@
 // Continuation-native distributed scheduler for HoloVM work.
 //
 // Scheduling identity is the immutable continuation tuple, optionally refined
-// by an independently content-addressed W33 execution policy and its stricter
-// baseline-aware joint-admission binding. A replay worker is eligible only when
-// evidence, topology, exact retained-union accounting and (when requested) W33
-// line-resilience checks all pass. The selected execution context is included
-// in the measured-boot challenge, not appended after hardware verification.
+// by independently content-addressed execution policy, strict joint-admission
+// binding, and finite-control accelerator certificate. A replay worker is
+// eligible only when evidence, topology, exact retained-union accounting and
+// requested W33 line-resilience checks all pass. The selected execution context
+// is included in the measured-boot challenge, not appended after verification.
 //
 // Resilience has two deterministic layers: all-lines-hit remains a hard veto;
-// otherwise exactAdditionalFailuresToBlockAllLines is the minimum number of
-// extra W33 point failures needed to reach that veto. It is an exact
-// combinatorial distance, not a probability estimate.
+// otherwise additionalFailuresToBlockAllLines is the exact minimum number of
+// additional W33 point failures needed to reach that veto. It is not a
+// probability estimate.
 
 const crypto = require("node:crypto");
 const C = require("../js/w33-continuation-attestation.js");
 const J = require("../js/w33-joint-admission-policy.js");
 const H = require("../js/w33-strict-admission-binding.js");
+const X = require("../js/w33-accelerator-certificate.js");
 const R = require("./w33-topology-resilience.js");
 const D = require("./w33-failure-distance.js");
 
@@ -76,6 +77,21 @@ function normalizeRequest(request) {
   }
   if (request.strictAdmissionBindingDigest != null && request.strictAdmissionBindingDigest !== strictAdmissionBindingDigest) throw new Error("request strictAdmissionBindingDigest disagrees with verified W33 strict binding");
 
+  let acceleratorCertificate = null;
+  let acceleratorCertificateDigest = null;
+  if (request.acceleratorCertificate != null) {
+    acceleratorCertificate = X.verifyAcceleratorCertificate(request.acceleratorCertificate, {
+      continuationRoot: request.continuationRoot,
+      processId: request.processId,
+      generation: request.generation,
+      machineType: request.passport.machineType,
+    });
+    acceleratorCertificateDigest = acceleratorCertificate.acceleratorCertificateDigest;
+    if (request.acceleratorCertificateDigest != null && request.acceleratorCertificateDigest !== acceleratorCertificateDigest) throw new Error("request acceleratorCertificateDigest disagrees with verified W33 accelerator certificate");
+  } else if (request.acceleratorCertificateDigest != null) {
+    throw new TypeError("acceleratorCertificateDigest requires the full verifiable accelerator certificate");
+  }
+
   return Object.freeze({
     ...request,
     evidenceFloor,
@@ -84,6 +100,8 @@ function normalizeRequest(request) {
     executionPolicyDigest,
     strictAdmissionBinding,
     strictAdmissionBindingDigest,
+    acceleratorCertificate,
+    acceleratorCertificateDigest,
     requireLineResilience,
     minimumAdditionalFailuresToBlockAllLines,
   });
@@ -102,9 +120,7 @@ function exactDelta(candidate, request) {
     if (!table || typeof table !== "object" || !(request.continuationRoot in table)) throw new TypeError(`candidate ${candidate.id} lacks exact retained-union delta for continuation`);
     delta = finiteNonnegative(table[request.continuationRoot], "retained union delta bytes");
   }
-  if (request.strictAdmissionBinding && delta !== request.strictAdmissionBinding.retainedUnionDeltaBytes) {
-    throw new Error("worker retained-union delta disagrees with strict W33 admission binding");
-  }
+  if (request.strictAdmissionBinding && delta !== request.strictAdmissionBinding.retainedUnionDeltaBytes) throw new Error("worker retained-union delta disagrees with strict W33 admission binding");
   return delta;
 }
 
@@ -136,9 +152,7 @@ function eligibility(candidate, request) {
   try { resilience = resilienceAssessment(candidate, request); }
   catch (_) { return Object.freeze({ ok: false, code: "FAILURE_SET_ATTESTATION_REQUIRED" }); }
   if (resilience && resilience.allLinesHit) return Object.freeze({ ok: false, code: "W33_CORRELATED_FAILURE_BLOCKS_ALL_LINES", resilience });
-  if (resilience && resilience.additionalFailuresToBlockAllLines < request.minimumAdditionalFailuresToBlockAllLines) {
-    return Object.freeze({ ok: false, code: "W33_FAILURE_DISTANCE_FLOOR_UNMET", resilience });
-  }
+  if (resilience && resilience.additionalFailuresToBlockAllLines < request.minimumAdditionalFailuresToBlockAllLines) return Object.freeze({ ok: false, code: "W33_FAILURE_DISTANCE_FLOOR_UNMET", resilience });
   try { exactDelta(candidate, request); }
   catch (_) {
     const code = request.strictAdmissionBinding ? "EXACT_STRICT_RETAINED_DELTA_REQUIRED" : request.executionPolicyDigest ? "EXACT_POLICY_RETAINED_DELTA_REQUIRED" : "EXACT_RETAINED_DELTA_REQUIRED";
@@ -167,6 +181,7 @@ function dispatchFor(candidate, request, policy = {}) {
   const resilience = gate.resilience;
   const failureAssessmentDigest = resilience == null ? null : sha256(resilience);
   const strictBinding = request.strictAdmissionBinding;
+  const accelerator = request.acceleratorCertificate;
   const challenge = C.buildContinuationChallenge({
     passport: request.passport,
     contract: request.contract,
@@ -176,6 +191,7 @@ function dispatchFor(candidate, request, policy = {}) {
     generation: request.generation,
     executionPolicyDigest: request.executionPolicyDigest,
     strictAdmissionBindingDigest: request.strictAdmissionBindingDigest,
+    acceleratorCertificateDigest: request.acceleratorCertificateDigest,
     topologyAttestationDigest: candidate.topology.attestationDigest,
     failureAssessmentDigest,
   });
@@ -195,6 +211,18 @@ function dispatchFor(candidate, request, policy = {}) {
       strictSnapshotProblemRoot: strictBinding.snapshotProblemRoot,
       baselineRetainedUnionBytes: strictBinding.baselineRetainedUnionBytes,
       postAdmissionRetainedUnionBytes: strictBinding.postAdmissionRetainedUnionBytes,
+    }),
+    ...(accelerator == null ? {} : {
+      acceleratorCertificateDigest: accelerator.acceleratorCertificateDigest,
+      acceleratorChildContinuationRoot: accelerator.childContinuationRoot,
+      acceleratorGenerationAfter: accelerator.generationAfter,
+      acceleratorReceiptChainDigest: accelerator.receiptChainDigest,
+      acceleratorContinuationChainDigest: accelerator.continuationChainDigest,
+      acceleratorSymplecticFrameDigest: accelerator.symplecticFrameDigest,
+      acceleratorSteinbergActionDigest: accelerator.steinbergActionDigest,
+      acceleratorExecutableTransvections: accelerator.executableTransvections,
+      acceleratorCalibrationEpoch: accelerator.calibrationEpoch,
+      acceleratorPhysicalCalibrationEvidenceDigest: accelerator.physicalCalibrationEvidenceDigest,
     }),
     evidenceFloor: request.evidenceFloor,
     workerEvidenceLevel: candidate.evidenceLevel,
@@ -243,6 +271,7 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
   if (existingDispatch.continuationRoot !== request.continuationRoot || existingDispatch.processId !== request.processId || existingDispatch.generation !== request.generation) throw new Error("worker migration may not mutate process continuation identity");
   if ((existingDispatch.executionPolicyDigest || null) !== (request.executionPolicyDigest || null)) throw new Error("worker migration may not mutate execution policy identity");
   if ((existingDispatch.strictAdmissionBindingDigest || null) !== (request.strictAdmissionBindingDigest || null)) throw new Error("worker migration may not mutate strict W33 admission binding identity");
+  if ((existingDispatch.acceleratorCertificateDigest || null) !== (request.acceleratorCertificateDigest || null)) throw new Error("worker migration may not mutate accelerator certificate identity");
   const next = dispatchFor(targetCandidate, request, policy);
   const body = {
     schema: MIGRATION_SCHEMA,
@@ -253,6 +282,7 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
     generation: request.generation,
     ...(request.executionPolicyDigest == null ? {} : { executionPolicyDigest: request.executionPolicyDigest }),
     ...(request.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: request.strictAdmissionBindingDigest, jointPlanDigest: request.strictAdmissionBinding.jointPlanDigest, strategyDigest: request.strictAdmissionBinding.strategyDigest, strictPlacementDigest: request.strictAdmissionBinding.placementDigest }),
+    ...(request.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: request.acceleratorCertificateDigest }),
     oldChallengeDigest: existingDispatch.attestationChallengeDigest,
     newChallengeDigest: next.attestationChallengeDigest,
     oldRuntimePublicKeyDigest: existingDispatch.runtimePublicKeyDigest,
