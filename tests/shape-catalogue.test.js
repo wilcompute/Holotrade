@@ -8668,3 +8668,53 @@ test("tau_1(W(3,5)) = 29 was already decided: minimality is not the q=3 fence", 
   assert.match(r.boundary, /PROVED, not sampled/);
   assert.match(r.boundary, /is not a census/);
 });
+
+test("the transpose class hosts a 115 but does not decide 114", () => {
+  const r = JSON.parse(fs.readFileSync("data/transpose_class_115_not_114.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.autOrderOnPoints, 25920);
+  assert.equal(r.cycleTypes, 13);
+
+  // every row is either skipped, void, or informative -- none is silent
+  for (const row of r.rows) {
+    assert.ok(Array.isArray(row.cycleType));
+    assert.equal(row.cycleType.reduce((a, b) => a + b, 0), 40,
+                 "a cycle type of a permutation of the 40 points");
+    assert.ok(row.orbits > 0 && row.orbits <= 1600);
+    if (!row.skipped) {
+      assert.ok(["OPTIMAL", "FEASIBLE", "INFEASIBLE", "UNKNOWN"]
+                .includes(row.at115));
+    }
+  }
+
+  // the two positive facts
+  assert.equal(r.classesHosting115, 2);
+  assert.ok(r.classesProvablyExcluding115 >= 1);
+  const hosts = r.rows.filter((x) => ["OPTIMAL", "FEASIBLE"].includes(x.at115));
+  assert.equal(hosts.length, 2);
+  for (const h of hosts) {
+    assert.equal(h.informative, true);
+    assert.equal(h.at114, "UNKNOWN", "114 undecided where the control passes");
+  }
+
+  // a class that cannot host 115 is VOID, not evidence
+  const excl = r.rows.filter((x) => x.at115 === "INFEASIBLE");
+  for (const e of excl) {
+    assert.equal(e.informative, false, "no 115 in class => 114 verdict is void");
+  }
+
+  // the headline: fourth lever, null
+  assert.equal(r.found114, false);
+  assert.match(r.theNullAt114, /FOURTH lever/);
+  assert.match(r.theNullAt114, /36d3b4b/);
+  assert.match(r.theNullAt114, /e3ffec2/);
+
+  assert.match(r.whySymmetry, /Aut\(W33\) wr C2/);
+  assert.match(r.whySymmetry, /named it and never used it/);
+  assert.match(r.whatItEstablishes, /TRANSPOSE-SYMMETRIC BLOCKER OF SIZE 115 EXISTS/);
+  assert.match(r.whatItEstablishes, /CANNOT HOST A 115/);
+  assert.match(r.howToReadAVoidRow, /has shown nothing\s+about tau_2/);
+  assert.match(r.pureTransposeIsVoidToo, /UNKNOWN at\s+every size/);
+  assert.match(r.boundary, /UNKNOWN is a statement about the\s+solver/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
