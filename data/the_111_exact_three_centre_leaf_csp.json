@@ -1,0 +1,90 @@
+{
+  "actual111WitnessCases": [],
+  "actual111WitnessFound": false,
+  "allThreeCentreCasesUnsat": false,
+  "cases": {
+    "collinear": {
+      "branches": 126189111,
+      "budgetSeconds": 5400.0,
+      "case": "collinear",
+      "centres": [
+        0,
+        1
+      ],
+      "conflicts": 353882,
+      "dirtyColumns": [
+        0,
+        4,
+        5,
+        6
+      ],
+      "dirtyRows": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "seconds": 5400.042,
+      "status": "UNKNOWN",
+      "workers": 8
+    },
+    "equal": {
+      "branches": 120098641,
+      "budgetSeconds": 5400.0,
+      "case": "equal",
+      "centres": [
+        0,
+        0
+      ],
+      "conflicts": 378292,
+      "dirtyColumns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "dirtyRows": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "seconds": 5400.077,
+      "status": "UNKNOWN",
+      "workers": 8
+    },
+    "noncollinear": {
+      "branches": 104074035,
+      "budgetSeconds": 5400.0,
+      "case": "noncollinear",
+      "centres": [
+        0,
+        4
+      ],
+      "conflicts": 421083,
+      "dirtyColumns": [
+        4,
+        13,
+        14,
+        15
+      ],
+      "dirtyRows": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "seconds": 5400.052,
+      "status": "UNKNOWN",
+      "workers": 8
+    }
+  },
+  "certifiedTau2Interval": [
+    111,
+    115
+  ],
+  "reading": "SAT returns and independently verifies an actual 111-leaf blocker, proving tau_2=111 with the existing lower bound. Three exact UNSAT results prove tau_2>=112. UNKNOWN is no mathematical evidence.",
+  "schema": "holotrade.tau2-111-exact-three-centre-leaf-csp.v1",
+  "status": "PASS",
+  "theoremScope": "The pencil-excess theorem makes the three fixed centre relations exhaustive under diagonal PSp(4,3). This model otherwise uses the actual 1,600 leaf variables and exact product-line blocking constraints, so three UNSAT results exclude every 111-leaf tensor blocker."
+}

@@ -8854,3 +8854,37 @@ test("the mass-12 excess census is complete and has exactly one exceptional orbi
   assert.match(r.whatItDoesNotDo, /does not touch mass 16/);
   assert.match(r.whatItDoesNotDo, /\[111, 115\]/);
 });
+
+test("the exact 111 model was run and returned three UNKNOWNs", () => {
+  const r = JSON.parse(fs.readFileSync("data/exact_111_model_run_record.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.run.budgetSecondsPerCase, 5400);
+  assert.equal(r.run.workers, 8);
+  assert.equal(r.run.script, "analysis/the_111_exact_three_centre_leaf_csp.py");
+
+  // all three cases, all UNKNOWN
+  const cases = r.run.cases;
+  assert.deepEqual(Object.keys(cases).sort(),
+                   ["collinear", "equal", "noncollinear"]);
+  for (const k of Object.keys(cases)) {
+    assert.equal(cases[k].status, "UNKNOWN");
+    assert.ok(cases[k].seconds >= 5400, "each case burned its full budget");
+  }
+  assert.equal(r.allThreeUnknown, true);
+  assert.equal(r.anyWitnessFound, false);
+  assert.equal(r.allThreeUnsat, false, "no proof of tau_2 >= 112");
+  assert.deepEqual(r.tau2Interval, [111, 115]);
+
+  // the search profile that makes it a useful negative
+  assert.equal(cases.noncollinear.branches, 104074035);
+  assert.equal(cases.noncollinear.conflicts, 421083);
+  assert.match(r.whatTheMeasurementIsWorth, /not near closing/);
+  assert.match(r.whatTheMeasurementIsWorth, /will not be decided by turning up the clock/);
+
+  // and it must not be read as evidence
+  assert.match(r.theVerdict, /UNKNOWN is no\s+mathematical evidence/);
+  assert.match(r.theVerdict, /Nothing is proved about 111 in either\s+direction/);
+  assert.match(r.boundary, /asserts nothing mathematical/);
+  assert.match(r.boundary, /unmodified and uncriticised/);
+  assert.match(r.itMatchesThePatternOnTheOtherSide, /b43588c/);
+});
