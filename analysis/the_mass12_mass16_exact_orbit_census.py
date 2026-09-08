@@ -138,7 +138,12 @@ def orbit_rows(solutions, pencil_vectors, lgens, complete):
             "histogram":{str(a):b for a,b in sorted(h.items())},
             "supportSize":40-h.get(0,0),
         })
-    rows.sort(key=lambda r:(not r['pencilGenerated'], r['histogram'], r['representative']))
+    # histogram is a dict and dicts are not orderable, so sorting on it
+    # raises TypeError before any census can be written. Sort on its
+    # items instead; the intended grouping is unchanged.
+    rows.sort(key=lambda r:(not r['pencilGenerated'],
+                            sorted(r['histogram'].items()),
+                            r['representative']))
     return rows
 
 
