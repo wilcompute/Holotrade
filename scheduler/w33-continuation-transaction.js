@@ -2,14 +2,15 @@
 
 // Replayable end-to-end HoloVM continuation transaction.
 //
-// One invocation owns:
-//   scheduler selection -> continuation/execution-context-bound hardware
-//   challenge -> verifier verdict -> verified binding -> worker execution ->
-//   exact child continuation -> signed Holotrade delivery receipt.
+// One invocation owns scheduler selection -> continuation/execution-context-
+// bound hardware challenge -> verifier verdict -> verified binding -> worker
+// execution -> exact child continuation -> signed Holotrade delivery receipt.
 //
-// When a strict W33 admission binding is supplied, the signed delivery carries
-// its binding digest plus the joint-plan/strategy/placement identities and the
-// exact baseline-aware retained-union delta already committed by dispatch.
+// A strict W33 admission binding, exact topology/failure context and optional
+// finite-control accelerator certificate are all first-class execution context.
+// When an accelerator is requested, the worker must return the *same full
+// authenticated receipt and continuation interval* committed by that
+// certificate; digest agreement alone is not enough.
 
 const crypto = require("node:crypto");
 const S = require("./w33-continuation-scheduler.js");
@@ -27,6 +28,7 @@ function stable(value) {
 function sha256(value) { return `sha256:${crypto.createHash("sha256").update(stable(value)).digest("hex")}`; }
 function isDigest(value) { return typeof value === "string" && /^sha256:[0-9a-f]{64}$/.test(value); }
 function natural(value, name) { if (!Number.isSafeInteger(value) || value < 0) throw new RangeError(`${name} must be a natural number`); return value; }
+function equalArray(a, b) { return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((x, i) => x === b[i]); }
 
 function normalizeExecution(execution, request) {
   if (!execution || typeof execution !== "object") throw new TypeError("worker execution receipt required");
@@ -34,6 +36,7 @@ function normalizeExecution(execution, request) {
   for (const name of ["parentContinuationRoot", "childContinuationRoot", "processId", "emissionId"]) if (!isDigest(execution[name])) throw new TypeError(`${name} must be a sha256 identity`);
   natural(execution.generationBefore, "generationBefore"); natural(execution.generationAfter, "generationAfter");
   if (!Array.isArray(execution.guestReceiptIds) || !execution.guestReceiptIds.length || !execution.guestReceiptIds.every(isDigest)) throw new TypeError("guestReceiptIds must be a nonempty digest array");
+  if (execution.intermediateContinuationRoots != null && (!Array.isArray(execution.intermediateContinuationRoots) || !execution.intermediateContinuationRoots.length || !execution.intermediateContinuationRoots.every(isDigest))) throw new TypeError("intermediateContinuationRoots must be a nonempty digest array when supplied");
   if (execution.parentContinuationRoot !== request.continuationRoot) throw new Error("worker execution parent continuation drift");
   if (execution.processId !== request.processId) throw new Error("worker execution process identity drift");
   if (execution.generationBefore !== request.generation) throw new Error("worker execution generation-before drift");
@@ -47,6 +50,7 @@ function normalizeExecution(execution, request) {
     generationAfter: execution.generationAfter,
     emissionId: execution.emissionId,
     guestReceiptIds: [...execution.guestReceiptIds],
+    ...(execution.intermediateContinuationRoots == null ? {} : { intermediateContinuationRoots: [...execution.intermediateContinuationRoots] }),
     stopReason: String(execution.stopReason || "unknown"),
   };
   return Object.freeze({ ...body, executionDigest: sha256(body) });
@@ -55,8 +59,23 @@ function normalizeExecution(execution, request) {
 function executionContextAgreement(dispatch, binding) {
   if ((dispatch.executionPolicyDigest || null) !== (binding.executionPolicyDigest || null)) throw new Error("dispatch and hardware binding disagree on execution policy");
   if ((dispatch.strictAdmissionBindingDigest || null) !== (binding.strictAdmissionBindingDigest || null)) throw new Error("dispatch and hardware binding disagree on strict admission identity");
+  if ((dispatch.acceleratorCertificateDigest || null) !== (binding.acceleratorCertificateDigest || null)) throw new Error("dispatch and hardware binding disagree on accelerator certificate");
   if (dispatch.topologyAttestationDigest !== binding.topologyAttestationDigest) throw new Error("dispatch and hardware binding disagree on topology attestation");
   if ((dispatch.failureAssessmentDigest || null) !== (binding.failureAssessmentDigest || null)) throw new Error("dispatch and hardware binding disagree on failure assessment");
+  return true;
+}
+
+function acceleratorExecutionAgreement(request, execution) {
+  const cert = request.acceleratorCertificate;
+  if (!cert) return true;
+  if (execution.parentContinuationRoot !== cert.parentContinuationRoot) throw new Error("accelerated execution parent disagrees with certificate");
+  if (execution.childContinuationRoot !== cert.childContinuationRoot) throw new Error("accelerated execution child disagrees with certificate");
+  if (execution.processId !== cert.processId) throw new Error("accelerated execution process disagrees with certificate");
+  if (execution.generationBefore !== cert.generationBefore || execution.generationAfter !== cert.generationAfter) throw new Error("accelerated execution generation span disagrees with certificate");
+  if (!equalArray(execution.guestReceiptIds, cert.subreceiptIds)) throw new Error("accelerated execution receipt interval disagrees with certificate");
+  if (!equalArray(execution.intermediateContinuationRoots, cert.intermediateContinuationRoots)) throw new Error("accelerated execution continuation interval disagrees with certificate");
+  if (sha256(execution.guestReceiptIds) !== cert.receiptChainDigest) throw new Error("accelerated execution receipt-chain digest mismatch");
+  if (sha256(execution.intermediateContinuationRoots) !== cert.continuationChainDigest) throw new Error("accelerated execution continuation-chain digest mismatch");
   return true;
 }
 
@@ -70,7 +89,11 @@ function deliveryBody(dispatch, binding, execution) {
     verifierVerdictDigest: binding.verifierVerdictDigest,
     runtimePublicKeyDigest: binding.runtimePublicKeyDigest,
     topologyAttestationDigest: dispatch.topologyAttestationDigest,
-    ...(dispatch.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: dispatch.failureAssessmentDigest }),
+    ...(dispatch.failureAssessmentDigest == null ? {} : {
+      failureAssessmentDigest: dispatch.failureAssessmentDigest,
+      additionalFailuresToBlockAllLines: dispatch.additionalFailuresToBlockAllLines,
+      failureDistanceExact: dispatch.failureDistanceExact === true,
+    }),
     ...(dispatch.executionPolicyDigest == null ? {} : { executionPolicyDigest: dispatch.executionPolicyDigest }),
     ...(dispatch.strictAdmissionBindingDigest == null ? {} : {
       strictAdmissionBindingDigest: dispatch.strictAdmissionBindingDigest,
@@ -83,6 +106,16 @@ function deliveryBody(dispatch, binding, execution) {
       postAdmissionRetainedUnionBytes: dispatch.postAdmissionRetainedUnionBytes,
       retainedUnionDeltaBytes: dispatch.retainedUnionDeltaBytes,
     }),
+    ...(dispatch.acceleratorCertificateDigest == null ? {} : {
+      acceleratorCertificateDigest: dispatch.acceleratorCertificateDigest,
+      acceleratorReceiptChainDigest: dispatch.acceleratorReceiptChainDigest,
+      acceleratorContinuationChainDigest: dispatch.acceleratorContinuationChainDigest,
+      acceleratorSymplecticFrameDigest: dispatch.acceleratorSymplecticFrameDigest,
+      acceleratorSteinbergActionDigest: dispatch.acceleratorSteinbergActionDigest,
+      acceleratorExecutableTransvections: dispatch.acceleratorExecutableTransvections,
+      acceleratorCalibrationEpoch: dispatch.acceleratorCalibrationEpoch,
+      acceleratorPhysicalCalibrationEvidenceDigest: dispatch.acceleratorPhysicalCalibrationEvidenceDigest,
+    }),
     parentContinuationRoot: execution.parentContinuationRoot,
     childContinuationRoot: execution.childContinuationRoot,
     processId: execution.processId,
@@ -90,6 +123,7 @@ function deliveryBody(dispatch, binding, execution) {
     generationAfter: execution.generationAfter,
     emissionId: execution.emissionId,
     guestReceiptIds: execution.guestReceiptIds,
+    ...(execution.intermediateContinuationRoots == null ? {} : { intermediateContinuationRoots: execution.intermediateContinuationRoots }),
     executionDigest: execution.executionDigest,
   };
   return Object.freeze({ ...body, deliveryDigest: sha256(body) });
@@ -124,6 +158,7 @@ function executeContinuationTransaction({ candidates, request, policy = {}, obta
   executionContextAgreement(dispatch, binding);
   const rawExecution = executeWorker(Object.freeze({ dispatch, binding, request: normalizedRequest }));
   const execution = normalizeExecution(rawExecution, normalizedRequest);
+  acceleratorExecutionAgreement(normalizedRequest, execution);
   const delivery = deliveryBody(dispatch, binding, execution);
   const signedDelivery = signDelivery(delivery, deliveryPrivateKey, deliveryKeyId);
   return Object.freeze({
@@ -137,4 +172,4 @@ function executeContinuationTransaction({ candidates, request, policy = {}, obta
   });
 }
 
-module.exports = { EXECUTION_SCHEMA, DELIVERY_SCHEMA, SIGNED_SCHEMA, sha256, normalizeExecution, executionContextAgreement, deliveryBody, signDelivery, verifyDelivery, executeContinuationTransaction };
+module.exports = { EXECUTION_SCHEMA, DELIVERY_SCHEMA, SIGNED_SCHEMA, sha256, normalizeExecution, executionContextAgreement, acceleratorExecutionAgreement, deliveryBody, signDelivery, verifyDelivery, executeContinuationTransaction };
