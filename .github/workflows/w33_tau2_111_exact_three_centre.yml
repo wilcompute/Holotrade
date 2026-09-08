@@ -1,0 +1,46 @@
+name: W33 tau2 111 exact three-centre decision
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/the_111_exact_three_centre_leaf_csp.py'
+      - 'analysis/the_10480_twelve_point_blockers.py'
+      - 'analysis/tensor_111_pencil_excess.py'
+      - '.github/workflows/w33_tau2_111_exact_three_centre.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-111:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install exact solver
+        run: python -m pip install ortools numpy
+      - name: Recompute pencil-excess prerequisite
+        run: python analysis/tensor_111_pencil_excess.py
+      - name: Decide all three exact centre cases
+        run: python analysis/the_111_exact_three_centre_leaf_csp.py --budget 300 --workers 8 --write
+      - name: Validate decision scope
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('data/the_111_exact_three_centre_leaf_csp.json'))
+          assert p['status']=='PASS'
+          assert set(p['cases'])=={'equal','collinear','noncollinear'}
+          assert all(v['status'] in {'SAT','UNSAT','UNKNOWN'} for v in p['cases'].values())
+          if p['allThreeCentreCasesUnsat']:
+              assert p['certifiedTau2Interval']==[112,115]
+          if p['actual111WitnessFound']:
+              assert p['certifiedTau2Interval']==[111,111]
+          print({k:v['status'] for k,v in p['cases'].items()}, p['certifiedTau2Interval'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-tau2-111-exact-three-centre
+          path: data/the_111_exact_three_centre_leaf_csp.json
+          if-no-files-found: error
