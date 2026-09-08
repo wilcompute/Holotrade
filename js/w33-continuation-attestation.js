@@ -2,13 +2,15 @@
 
 // Continuation-bound measured-boot challenge for HoloVM process execution.
 //
-// The challenge commits the exact immutable continuation tuple and, when one is
-// selected, the exact W33 checkpoint/snapshot execution-policy digest. This
-// prevents a signed hardware verdict for one retention/recovery policy from
-// being replayed for a different policy on the same continuation.
+// The challenge commits the exact immutable continuation tuple and can also
+// commit the exact W33 checkpoint/snapshot policy, topology attestation, and
+// correlated-failure assessment selected for this dispatch. A hardware verdict
+// therefore cannot be replayed across a different retention policy or a
+// different topology/failure-evidence snapshot on the same continuation.
 //
-// No vendor evidence is parsed here; TPM2/SEV-SNP verification remains owned by
-// w33-native-attestation.js and w33-measured-boot-attestation.js.
+// These digests identify external evidence; this module does not itself prove a
+// physical topology. Vendor TPM2/SEV-SNP verification remains owned by the
+// native/measured-boot verifier stack.
 
 const A = require("./w33-measured-boot-attestation.js");
 
@@ -25,6 +27,11 @@ function natural(value, name) {
   return value;
 }
 
+function optionalDigest(value, name) {
+  if (value != null && !isDigest(value)) throw new TypeError(`${name} must be a sha256 content identity`);
+  return value;
+}
+
 function buildContinuationChallenge({
   passport,
   contract,
@@ -33,12 +40,17 @@ function buildContinuationChallenge({
   processId,
   generation,
   executionPolicyDigest = null,
+  topologyAttestationDigest = null,
+  failureAssessmentDigest = null,
 }) {
   if (!isDigest(continuationRoot)) throw new TypeError("continuationRoot must be a sha256 content identity");
   if (!isDigest(processId)) throw new TypeError("processId must be a sha256 content identity");
   natural(generation, "generation");
-  if (executionPolicyDigest != null && !isDigest(executionPolicyDigest)) {
-    throw new TypeError("executionPolicyDigest must be a sha256 content identity");
+  optionalDigest(executionPolicyDigest, "executionPolicyDigest");
+  optionalDigest(topologyAttestationDigest, "topologyAttestationDigest");
+  optionalDigest(failureAssessmentDigest, "failureAssessmentDigest");
+  if (failureAssessmentDigest != null && topologyAttestationDigest == null) {
+    throw new TypeError("failureAssessmentDigest requires topologyAttestationDigest");
   }
 
   const base = A.buildChallenge({ passport, contract, runtimePublicKeyDigest });
@@ -56,6 +68,8 @@ function buildContinuationChallenge({
     processId,
     generation,
     ...(executionPolicyDigest == null ? {} : { executionPolicyDigest }),
+    ...(topologyAttestationDigest == null ? {} : { topologyAttestationDigest }),
+    ...(failureAssessmentDigest == null ? {} : { failureAssessmentDigest }),
   };
   return Object.freeze({ ...body, challengeDigest: A.sha256(body) });
 }
@@ -69,8 +83,11 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
   }
   if (!isDigest(challenge.continuationRoot) || !isDigest(challenge.processId)) throw new Error("continuation challenge lost process identity");
   natural(challenge.generation, "generation");
-  if (challenge.executionPolicyDigest != null && !isDigest(challenge.executionPolicyDigest)) {
-    throw new Error("continuation challenge lost execution policy identity");
+  optionalDigest(challenge.executionPolicyDigest, "executionPolicyDigest");
+  optionalDigest(challenge.topologyAttestationDigest, "topologyAttestationDigest");
+  optionalDigest(challenge.failureAssessmentDigest, "failureAssessmentDigest");
+  if (challenge.failureAssessmentDigest != null && challenge.topologyAttestationDigest == null) {
+    throw new Error("continuation challenge lost topology parent for failure assessment");
   }
 
   const body = {
@@ -84,6 +101,8 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
     processId: challenge.processId,
     generation: challenge.generation,
     ...(challenge.executionPolicyDigest == null ? {} : { executionPolicyDigest: challenge.executionPolicyDigest }),
+    ...(challenge.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: challenge.topologyAttestationDigest }),
+    ...(challenge.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: challenge.failureAssessmentDigest }),
     provider: signedVerdict.body.provider,
     launchMeasurement: signedVerdict.body.launchMeasurement,
     reportedTcbDigest: signedVerdict.body.reportedTcbDigest,
@@ -103,6 +122,7 @@ function attachContinuationReceiptMetadata(metadata, passport, contract, challen
 function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
   const binding = verifiedContinuationBinding(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey);
   const kind = binding.provider === A.PROVIDER.TPM2 ? "TPM_QUOTE" : "SEV_SNP_REPORT";
+  const fullyScoped = binding.executionPolicyDigest || binding.topologyAttestationDigest || binding.failureAssessmentDigest;
   return Object.freeze({
     schema: HARDWARE_EVIDENCE_SCHEMA,
     hardwareAttested: true,
@@ -110,7 +130,7 @@ function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict,
       Object.freeze({
         kind,
         status: "VERIFIED",
-        reasonCode: binding.executionPolicyDigest ? "CONTINUATION_AND_POLICY_BOUND_SIGNED_VERIFIER_VERDICT" : "CONTINUATION_BOUND_SIGNED_VERIFIER_VERDICT",
+        reasonCode: fullyScoped ? "CONTINUATION_EXECUTION_CONTEXT_BOUND_SIGNED_VERIFIER_VERDICT" : "CONTINUATION_BOUND_SIGNED_VERIFIER_VERDICT",
         verifier: binding.verifierKeyId,
         digest: binding.verifierVerdictDigest,
         launchMeasurement: binding.launchMeasurement,
@@ -125,6 +145,8 @@ function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict,
         processId: binding.processId,
         generation: binding.generation,
         ...(binding.executionPolicyDigest == null ? {} : { executionPolicyDigest: binding.executionPolicyDigest }),
+        ...(binding.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: binding.topologyAttestationDigest }),
+        ...(binding.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: binding.failureAssessmentDigest }),
       }),
     ]),
   });
