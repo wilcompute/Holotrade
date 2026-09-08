@@ -1,0 +1,30 @@
+{
+  "schema": "holotrade.mass16-exceptions-are-inherited.v1",
+  "valid": true,
+  "lineActionGroupOrder": 25920,
+  "mass12Exceptional": 1440,
+  "mass16Exceptional": 46440,
+  "shiftedVectors": 48240,
+  "inherited": 45360,
+  "newAtMass16": 1080,
+  "repairedToPencilGenerated": 2880,
+  "inheritedOrbits": [
+    720,
+    1440,
+    8640,
+    8640,
+    12960,
+    12960
+  ],
+  "newOrbits": [
+    1080
+  ],
+  "newOrbitStabilisers": [
+    24
+  ],
+  "theResult": "adding a single point-pencil to each of the 1440 mass-12 exceptional excesses gives 48240 distinct vectors, and 45360 of the 46440 mass-16 exceptions -- 97.7 per cent -- are among them. The split is exactly along orbits: the inherited part is six orbits of sizes 720, 1440, 8640, 8640, 12960, 12960, and the residue is ONE orbit of size 1080 with stabiliser 24. So the seven exceptional orbits at mass 16 are one inherited class propagating from mass 12 into six orbits, plus one genuinely new object.",
+  "addingAPencilCanRepairPencilGeneration": "of the 48240 vectors of the form (mass-12 exceptional) + pencil, 2880 are PENCIL-GENERATED at mass 16: an excess with no nonnegative pencil preimage acquires one when a pencil is added. That is the octet collision doing visible work -- mass 16 is the first mass at which the pencil-sum map stops being injective and it fails exactly on the 45 octet polarity pairs {L, L^perp} (the_kernel_is_spanned_by_octet_differences.py). The same degeneracy that makes the encoding ambiguous at mass 16 is what lets an exception become pencil-generated one pencil later.",
+  "whyItMattersForTheProgramme": "an argument that dispatches the mass-12 exception does most of the mass-16 work for free: six orbits of seven, 45360 profiles of 46440. The residue is a single orbit of 1080 with stabiliser 24, small enough to attack directly. That is a very different situation from seven unrelated sporadic classes, which is what the census alone suggested and what 3aa3ad6 explicitly warned might be the case.",
+  "whatItDoesNotDo": "it says nothing about tau_2 and nothing about blockers. These are admissible load PROFILES -- a necessary condition on the row and column loads of a 114-leaf blocker, not a claim that any profile is realised by one. tau_2 stays open in [111, 115].",
+  "boundary": "both censuses reach OPTIMAL with a SINGLE worker, since CP-SAT's enumerate_all_solutions is complete only with num_workers = 1, and the certificate is refused if either does not. The inherited/new split is a set computation over the full 46440 and not a sample; the orbit decomposition is a closure under generators of the line-action whose order is asserted to be 25920. The mass-12 census is 139dd83's and the mass-16 census is 3aa3ad6's, both re-run here rather than read from their certificates so that the split is computed from the same objects it describes."
+}

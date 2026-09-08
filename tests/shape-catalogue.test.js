@@ -8934,3 +8934,43 @@ test("the mass-16 census is complete and has seven exceptional orbits", () => {
   assert.match(r.priorArt, /ebd9a84/);
   assert.match(r.priorArt, /139dd83/);
 });
+
+test("six of the seven mass-16 exceptional orbits are inherited from mass 12", () => {
+  const r = JSON.parse(fs.readFileSync("data/mass16_exceptions_are_inherited.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.lineActionGroupOrder, 25920);
+
+  // the split
+  assert.equal(r.mass12Exceptional, 1440);
+  assert.equal(r.mass16Exceptional, 46440);
+  assert.equal(r.inherited, 45360);
+  assert.equal(r.newAtMass16, 1080);
+  assert.equal(r.inherited + r.newAtMass16, r.mass16Exceptional);
+  assert.ok(r.inherited / r.mass16Exceptional > 0.97, "97.7% inherited");
+
+  // six orbits inherited, exactly ONE new
+  assert.deepEqual(r.inheritedOrbits, [720, 1440, 8640, 8640, 12960, 12960]);
+  assert.equal(r.inheritedOrbits.length, 6);
+  assert.equal(r.inheritedOrbits.reduce((a, b) => a + b, 0), 45360);
+  assert.deepEqual(r.newOrbits, [1080]);
+  assert.equal(r.newOrbits.length, 1, "exactly one genuinely new orbit");
+  assert.deepEqual(r.newOrbitStabilisers, [24]);
+  assert.equal(r.newOrbits[0] * r.newOrbitStabilisers[0], 25920);
+  // and together they are the seven orbits of the mass-16 census
+  assert.equal(r.inheritedOrbits.length + r.newOrbits.length, 7);
+
+  // adding a pencil can REPAIR pencil-generation -- the octet collision
+  assert.equal(r.repairedToPencilGenerated, 2880);
+  assert.match(r.addingAPencilCanRepairPencilGeneration, /octet collision/);
+  assert.match(r.addingAPencilCanRepairPencilGeneration, /45 octet polarity pairs/);
+  assert.match(r.addingAPencilCanRepairPencilGeneration, /one pencil later/);
+
+  assert.match(r.theResult, /97\.7 per cent/);
+  assert.match(r.theResult, /one genuinely new\s+object/);
+  assert.match(r.whyItMattersForTheProgramme, /does most of\s+the mass-16 work for free/);
+  assert.match(r.whyItMattersForTheProgramme, /3aa3ad6/);
+  assert.match(r.whatItDoesNotDo, /not a claim that any\s+profile is realised/);
+  assert.match(r.whatItDoesNotDo, /\[111, 115\]/);
+  assert.match(r.boundary, /num_workers = 1/);
+  assert.match(r.boundary, /139dd83/);
+});
