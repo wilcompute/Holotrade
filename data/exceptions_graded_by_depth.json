@@ -1,0 +1,76 @@
+{
+  "schema": "holotrade.exceptions-graded-by-negativity-depth.v1",
+  "valid": true,
+  "controlDepth": 0,
+  "mass12Orbits": [
+    {
+      "mass": 12,
+      "orbit": 1440,
+      "stabiliser": 18,
+      "inherited": null,
+      "depth": 1
+    }
+  ],
+  "mass16Orbits": [
+    {
+      "mass": 16,
+      "orbit": 8640,
+      "stabiliser": 3,
+      "inherited": true,
+      "depth": 1
+    },
+    {
+      "mass": 16,
+      "orbit": 12960,
+      "stabiliser": 2,
+      "inherited": true,
+      "depth": 1
+    },
+    {
+      "mass": 16,
+      "orbit": 1080,
+      "stabiliser": 24,
+      "inherited": false,
+      "depth": 2
+    },
+    {
+      "mass": 16,
+      "orbit": 12960,
+      "stabiliser": 2,
+      "inherited": true,
+      "depth": 1
+    },
+    {
+      "mass": 16,
+      "orbit": 8640,
+      "stabiliser": 3,
+      "inherited": true,
+      "depth": 1
+    },
+    {
+      "mass": 16,
+      "orbit": 1440,
+      "stabiliser": 18,
+      "inherited": true,
+      "depth": 1
+    },
+    {
+      "mass": 16,
+      "orbit": 720,
+      "stabiliser": 36,
+      "inherited": true,
+      "depth": 1
+    }
+  ],
+  "inheritedDepths": [
+    1
+  ],
+  "newOrbitDepth": 2,
+  "theInvariant": "an admissible excess always has an INTEGER preimage under N^T, because Z^40/im(N^T) is torsion-free, and 'e is k point-pencils' means that preimage can be taken nonnegative. So define depth(e) as the minimum, over integer x with N^T x = e, of the total negativity sum_p max(0, -x_p). Then depth 0 is exactly pencil-generated. It is an integer program in 40 variables with 40 equality constraints, solved to OPTIMAL.",
+  "theGrading": "pencil-generated control has depth 0; the single mass-12 exceptional orbit of 1440 has depth 1; all SIX inherited mass-16 orbits -- 720, 1440, 8640, 8640, 12960, 12960 -- have depth 1; and the ONE new mass-16 orbit, 1080 with stabiliser 24, has depth 2. Every exception known before mass 16 has depth 1, and the new object is the first depth-2 excess in the programme.",
+  "depthIsMonotoneUnderAddingAPencil": "if N^T x = e then N^T (x + 1_c) = e + pencil(c), and adding 1 to a single coordinate cannot make any coordinate more negative, so depth(e + pencil(c)) <= depth(e). Depth can never increase.",
+  "whichUpgradesTheSplitToAProof": "every mass-12 exception has depth 1, so by monotonicity nothing of depth 2 can be written as (mass-12 exception) + pencil. The new mass-16 orbit has depth 2 and is therefore PROVABLY not inherited. e62261f established that split by intersecting sets of 46440 vectors; this establishes it by a one-line monotonicity argument, and the two agree.",
+  "andItExplainsTheRepairs": "e62261f found that 2880 of the 48240 vectors (mass-12 exception) + pencil are PENCIL-GENERATED at mass 16. Those are exactly the cases where the monotonicity is strict and depth drops 1 -> 0. A pencil can repair an exception; it can never create a deeper one.",
+  "whatItIsNot": "depth is an invariant of a load-excess PROFILE, not of a blocker, and says nothing about tau_2, which stays open in [111, 115]. It is also not claimed to be a COMPLETE invariant: two orbits of equal depth are not thereby equivalent, and the six inherited orbits all have depth 1 while being six distinct orbits.",
+  "boundary": "depths are exact integer minimisations returning OPTIMAL, with a pencil-generated vector carried as a control that must return 0 -- if the control were nonzero the invariant would be miscalibrated and nothing below it would mean anything. The censuses behind the orbit lists reach OPTIMAL with a SINGLE worker, since CP-SAT's enumerate_all_solutions is complete only with num_workers = 1. Orbit representatives come from closure under generators of the line-action of PSp(4,3), order asserted to be 25920 before use."
+}

@@ -8974,3 +8974,49 @@ test("six of the seven mass-16 exceptional orbits are inherited from mass 12", (
   assert.match(r.boundary, /num_workers = 1/);
   assert.match(r.boundary, /139dd83/);
 });
+
+test("negativity depth grades the exceptions and proves the new orbit is new", () => {
+  const r = JSON.parse(fs.readFileSync("data/exceptions_graded_by_depth.json"));
+  assert.equal(r.valid, true);
+
+  // the invariant is calibrated: pencil-generated must be depth 0
+  assert.equal(r.controlDepth, 0);
+
+  // mass 12: one orbit, depth 1
+  assert.equal(r.mass12Orbits.length, 1);
+  assert.equal(r.mass12Orbits[0].orbit, 1440);
+  assert.equal(r.mass12Orbits[0].stabiliser, 18);
+  assert.equal(r.mass12Orbits[0].depth, 1);
+
+  // mass 16: seven orbits, six inherited at depth 1, one new at depth 2
+  assert.equal(r.mass16Orbits.length, 7);
+  const inh = r.mass16Orbits.filter((x) => x.inherited);
+  const nw = r.mass16Orbits.filter((x) => !x.inherited);
+  assert.equal(inh.length, 6);
+  assert.equal(nw.length, 1);
+  for (const o of inh) assert.equal(o.depth, 1, "every inherited orbit is depth 1");
+  assert.deepEqual(r.inheritedDepths, [1]);
+  assert.equal(nw[0].depth, 2);
+  assert.equal(r.newOrbitDepth, 2);
+  assert.equal(nw[0].orbit, 1080);
+  assert.equal(nw[0].stabiliser, 24);
+  assert.equal(nw[0].orbit * nw[0].stabiliser, 25920);
+
+  // depth strictly separates new from inherited
+  assert.ok(nw[0].depth > Math.max(...inh.map((x) => x.depth)),
+            "the new orbit is strictly deeper than every inherited one");
+
+  // and the monotonicity argument that turns the split into a proof
+  assert.match(r.depthIsMonotoneUnderAddingAPencil, /can never increase/);
+  assert.match(r.whichUpgradesTheSplitToAProof, /PROVABLY not\s+inherited/);
+  assert.match(r.whichUpgradesTheSplitToAProof, /e62261f/);
+  assert.match(r.andItExplainsTheRepairs, /2880/);
+  assert.match(r.andItExplainsTheRepairs, /depth\s+drops 1 -> 0/);
+  assert.match(r.andItExplainsTheRepairs, /never\s+create a deeper one/);
+
+  // scoped
+  assert.match(r.whatItIsNot, /not claimed to be a COMPLETE invariant/);
+  assert.match(r.whatItIsNot, /\[111, 115\]/);
+  assert.match(r.boundary, /control that must return 0/);
+  assert.match(r.boundary, /num_workers = 1/);
+});
