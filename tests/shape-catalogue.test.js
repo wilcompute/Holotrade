@@ -8888,3 +8888,49 @@ test("the exact 111 model was run and returned three UNKNOWNs", () => {
   assert.match(r.boundary, /unmodified and uncriticised/);
   assert.match(r.itMatchesThePatternOnTheOtherSide, /b43588c/);
 });
+
+test("the mass-16 census is complete and has seven exceptional orbits", () => {
+  const r = JSON.parse(fs.readFileSync("data/mass16_census_complete.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.lineActionGroupOrder, 25920);
+
+  // the control must have passed, or the census is not evidence
+  assert.equal(r.controlMass4.admissible, 40);
+  assert.equal(r.controlMass4.exceptional, 0);
+  assert.equal(r.controlMass4.status, "OPTIMAL");
+
+  // mass 16 = 4(114-110): the 114 case
+  assert.equal(r.mass16Admissible, 169805);
+  assert.equal(r.mass16PencilGenerated, 123365);
+  assert.equal(r.mass16Exceptional, 46440);
+  assert.equal(r.mass16PencilGenerated + r.mass16Exceptional, r.mass16Admissible);
+
+  // seven exceptional orbits, summing exactly
+  assert.deepEqual(r.mass16ExceptionalOrbits,
+                   [720, 1080, 1440, 8640, 8640, 12960, 12960]);
+  assert.equal(r.mass16ExceptionalOrbits.length, 7);
+  assert.equal(r.mass16ExceptionalOrbits.reduce((a, b) => a + b, 0), 46440);
+  // orbit-stabiliser closes on every orbit
+  assert.deepEqual(r.mass16ExceptionalStabilisers, [36, 24, 18, 3, 3, 2, 2]);
+  for (let i = 0; i < 7; i++) {
+    assert.equal(r.mass16ExceptionalOrbits[i] * r.mass16ExceptionalStabilisers[i],
+                 25920, "orbit x stabiliser = |PSp(4,3)|");
+  }
+  assert.equal(r.mass16PencilOrbitCount, 28);
+  // the case list a 114 decision would need
+  assert.equal(r.mass16PencilOrbitCount + r.mass16ExceptionalOrbits.length, 35);
+
+  // the independent cross-check on 123365
+  assert.match(r.independentCrossCheck, /123410 multisets of four points minus 45/);
+  assert.match(r.independentCrossCheck, /Two routes, one\s+number/);
+  // the failure shape changes between masses
+  assert.match(r.theFailureShapeChangesWithMass, /ONE class of\s+1440/);
+  assert.match(r.theFailureShapeChangesWithMass, /will not transfer/);
+  // scoped: profiles, not blockers
+  assert.match(r.whatItDoesNotDo, /not a statement about blockers/);
+  assert.match(r.whatItDoesNotDo, /1225 exact cases/);
+  assert.match(r.whatItDoesNotDo, /\[111, 115\]/);
+  assert.match(r.boundary, /num_workers = 1/);
+  assert.match(r.priorArt, /ebd9a84/);
+  assert.match(r.priorArt, /139dd83/);
+});

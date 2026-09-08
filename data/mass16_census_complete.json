@@ -1,0 +1,103 @@
+{
+  "schema": "holotrade.mass16-census-complete.v1",
+  "valid": true,
+  "lineActionGroupOrder": 25920,
+  "rows": [
+    {
+      "k": 1,
+      "mass": 4,
+      "admissible": 40,
+      "solverStatus": "OPTIMAL",
+      "complete": true,
+      "pencilGenerated": 40,
+      "pencilFamilySize": 40,
+      "exceptional": 0,
+      "pencilOrbitSizes": [
+        40
+      ],
+      "exceptionalOrbitSizes": []
+    },
+    {
+      "k": 4,
+      "mass": 16,
+      "admissible": 169805,
+      "solverStatus": "OPTIMAL",
+      "complete": true,
+      "pencilGenerated": 123365,
+      "pencilFamilySize": 123365,
+      "exceptional": 46440,
+      "pencilOrbitSizes": [
+        40,
+        40,
+        45,
+        240,
+        480,
+        480,
+        540,
+        1080,
+        1080,
+        1440,
+        1440,
+        1620,
+        2160,
+        2160,
+        2880,
+        2880,
+        3240,
+        4320,
+        4320,
+        4320,
+        4320,
+        6480,
+        8640,
+        8640,
+        8640,
+        12960,
+        12960,
+        25920
+      ],
+      "exceptionalOrbitSizes": [
+        720,
+        1080,
+        1440,
+        8640,
+        8640,
+        12960,
+        12960
+      ]
+    }
+  ],
+  "controlMass4": {
+    "admissible": 40,
+    "exceptional": 0,
+    "status": "OPTIMAL"
+  },
+  "mass16Admissible": 169805,
+  "mass16PencilGenerated": 123365,
+  "mass16Exceptional": 46440,
+  "mass16ExceptionalOrbits": [
+    720,
+    1080,
+    1440,
+    8640,
+    8640,
+    12960,
+    12960
+  ],
+  "mass16ExceptionalStabilisers": [
+    36,
+    24,
+    18,
+    3,
+    3,
+    2,
+    2
+  ],
+  "mass16PencilOrbitCount": 28,
+  "theResult": "mass 16 has exactly 169805 admissible excesses, of which 123365 are pencil-generated and 46440 are not, with solver status OPTIMAL so the census is exhaustive. Under the line-action of PSp(4,3) the exceptional ones split into SEVEN orbits -- 720, 1080, 1440, 8640, 8640, 12960, 12960, with stabilisers 36, 24, 18, 3, 3, 2, 2 -- and the pencil-generated ones into 28. Mass 16 is 4(114-110), so this is the load-profile classification for the size that has defeated five search levers.",
+  "theFailureShapeChangesWithMass": "at mass 12 the pencil induction fails on exactly ONE class of 1440 (139dd83); at mass 16 it fails on seven, three of them large and with stabilisers as small as 2. Whatever governs the exceptions is not a single sporadic object, and an argument that handled the mass-12 exception by naming it will not transfer.",
+  "independentCrossCheck": "the pencil-generated count 123365 is reproduced here from the enumeration and agrees exactly with the count obtained a different way in the_kernel_is_spanned_by_octet_differences.py: 123410 multisets of four points minus 45 collisions, which are exactly the octet polarity pairs {L, L^perp}. Two routes, one number -- and it explains the 45, since mass 16 is the first mass at which the pencil-sum map stops being injective, and it stops on the octets.",
+  "whatItDoesNotDo": "it does not decide tau_2 and is not a statement about blockers. A load-excess census classifies admissible PROFILES, a necessary condition on a 114-leaf blocker's row and column loads and nothing more. What it buys is that a 114 decision in the style of the other track's 112 model -- fix an exact row/column profile pair, run a leaf CSP -- now has a finite enumerated case list: 35 orbits per axis, so 1225 exact cases. A large programme but a defined one, which it was not before. tau_2 stays open in [111, 115].",
+  "priorArt": "the excess equation, the mass-4 and mass-8 theorems and the census script are the other track's; ebd9a84 fixed the TypeError that stopped that script running at all, and 139dd83 completed mass 12. This file reuses 139dd83's geometry, line-action and census machinery by import rather than re-deriving it.",
+  "boundary": "exhaustive at masses 4 and 16: both reached OPTIMAL with a SINGLE worker -- CP-SAT's enumerate_all_solutions is complete only with num_workers = 1, and with more it under-counts while still reporting OPTIMAL -- and the certificate is refused if either did not. Mass 4 is carried as a known-answer control for exactly that reason. Orbits are closures under generators of the line-action whose order is asserted to be 25920 before use. Masses 8 and 12 are not recomputed here; they are 139dd83's."
+}
