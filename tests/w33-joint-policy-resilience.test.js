@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 
 const A = require("../js/w33-measured-boot-attestation.js");
+const C = require("../js/w33-continuation-attestation.js");
 const D = require("../js/w33-passport-deployment.js");
 const J = require("../js/w33-joint-admission-policy.js");
 const R = require("../scheduler/w33-topology-resilience.js");
@@ -63,10 +64,10 @@ function worker(id, f, opts = {}) {
   return Object.freeze({
     id,
     evidenceLevel: S.EVIDENCE.HARDWARE_ATTESTED,
-    runtimePublicKeyDigest: d(`runtime-${id}`),
+    runtimePublicKeyDigest: opts.runtimePublicKeyDigest || d(`runtime-${id}`),
     topology: Object.freeze({
       attested: true,
-      attestationDigest: d(`topology-${id}`),
+      attestationDigest: opts.topologyAttestationDigest || d(`topology-${id}`),
       points: [0, 1, 2, 3, 4, 5],
       failurePoints: opts.failurePoints || [],
     }),
@@ -120,11 +121,7 @@ test("correlated all-lines-hit worker is rejected before a cheaper price can win
 
 test("policy-specific delta is mandatory and stale continuation-only delta cannot price replay", () => {
   const f = fixture();
-  const stale = Object.freeze({
-    ...worker("stale", f),
-    retainedUnionDeltaBytesByPolicy: undefined,
-    retainedUnionDeltaBytes: { [f.continuationRoot]: 1 },
-  });
+  const stale = Object.freeze({ ...worker("stale", f), retainedUnionDeltaBytesByPolicy: undefined, retainedUnionDeltaBytes: { [f.continuationRoot]: 1 } });
   const ranked = S.rankContinuations([stale], f.request);
   assert.equal(ranked.eligible.length, 0);
   assert.equal(ranked.rejected[0].code, "EXACT_POLICY_RETAINED_DELTA_REQUIRED");
@@ -146,7 +143,36 @@ test("changing only checkpoint/snapshot policy changes challenge and requires a 
   assert.notEqual(a.dispatch.challenge.challengeDigest, b2.dispatch.challenge.challengeDigest);
 });
 
-test("signed end-to-end delivery carries the same execution policy attested by hardware", () => {
+test("topology-attestation substitution changes challenge and rejects verdict replay", () => {
+  const f = fixture();
+  const runtime = d("shared-runtime-topology-replay");
+  const aWorker = worker("topo-A", f, { runtimePublicKeyDigest: runtime, topologyAttestationDigest: d("topology-version-A") });
+  const bWorker = worker("topo-B", f, { runtimePublicKeyDigest: runtime, topologyAttestationDigest: d("topology-version-B") });
+  const a = S.chooseContinuationWorker([aWorker], f.request);
+  const b = S.chooseContinuationWorker([bWorker], f.request);
+  assert.equal(a.ok, true); assert.equal(b.ok, true);
+  assert.notEqual(a.dispatch.challenge.challengeDigest, b.dispatch.challenge.challengeDigest);
+  const verdictA = signVerdict(a.dispatch.challenge, f.verifierKeys.privateKey);
+  assert.throws(() => C.verifiedContinuationBinding(f.passport, f.contract, b.dispatch.challenge, verdictA, f.verifierKeys.publicKey), /ATTESTATION_CHALLENGE_MISMATCH/);
+});
+
+test("failure-assessment substitution changes challenge even under one topology attestation", () => {
+  const f = fixture();
+  const runtime = d("shared-runtime-failure-replay");
+  const topologyDigest = d("one-topology-attestation");
+  const clean = worker("failure-clean", f, { runtimePublicKeyDigest: runtime, topologyAttestationDigest: topologyDigest, failurePoints: [] });
+  const degraded = worker("failure-degraded", f, { runtimePublicKeyDigest: runtime, topologyAttestationDigest: topologyDigest, failurePoints: [7] });
+  const a = S.chooseContinuationWorker([clean], f.request);
+  const b = S.chooseContinuationWorker([degraded], f.request);
+  assert.equal(a.ok, true); assert.equal(b.ok, true);
+  assert.equal(a.dispatch.topologyAttestationDigest, b.dispatch.topologyAttestationDigest);
+  assert.notEqual(a.dispatch.failureAssessmentDigest, b.dispatch.failureAssessmentDigest);
+  assert.notEqual(a.dispatch.challenge.challengeDigest, b.dispatch.challenge.challengeDigest);
+  const verdictA = signVerdict(a.dispatch.challenge, f.verifierKeys.privateKey);
+  assert.throws(() => C.verifiedContinuationBinding(f.passport, f.contract, b.dispatch.challenge, verdictA, f.verifierKeys.publicKey), /ATTESTATION_CHALLENGE_MISMATCH/);
+});
+
+test("signed end-to-end delivery carries the same policy topology and failure assessment attested by hardware", () => {
   const f = fixture();
   const w = worker("tx", f);
   const tx = T.executeContinuationTransaction({
@@ -169,6 +195,10 @@ test("signed end-to-end delivery carries the same execution policy attested by h
   });
   assert.equal(tx.dispatch.executionPolicyDigest, f.executionPolicy.executionPolicyDigest);
   assert.equal(tx.attestation.executionPolicyDigest, f.executionPolicy.executionPolicyDigest);
+  assert.equal(tx.attestation.topologyAttestationDigest, tx.dispatch.topologyAttestationDigest);
+  assert.equal(tx.attestation.failureAssessmentDigest, tx.dispatch.failureAssessmentDigest);
   assert.equal(tx.delivery.body.executionPolicyDigest, f.executionPolicy.executionPolicyDigest);
+  assert.equal(tx.delivery.body.topologyAttestationDigest, tx.dispatch.topologyAttestationDigest);
+  assert.equal(tx.delivery.body.failureAssessmentDigest, tx.dispatch.failureAssessmentDigest);
   assert.equal(T.verifyDelivery(tx.delivery, f.deliveryKeys.publicKey).ok, true);
 });
