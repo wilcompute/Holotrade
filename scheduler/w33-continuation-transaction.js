@@ -6,6 +6,10 @@
 //   scheduler selection -> continuation/execution-context-bound hardware
 //   challenge -> verifier verdict -> verified binding -> worker execution ->
 //   exact child continuation -> signed Holotrade delivery receipt.
+//
+// When a strict W33 admission binding is supplied, the signed delivery carries
+// its binding digest plus the joint-plan/strategy/placement identities and the
+// exact baseline-aware retained-union delta already committed by dispatch.
 
 const crypto = require("node:crypto");
 const S = require("./w33-continuation-scheduler.js");
@@ -50,6 +54,7 @@ function normalizeExecution(execution, request) {
 
 function executionContextAgreement(dispatch, binding) {
   if ((dispatch.executionPolicyDigest || null) !== (binding.executionPolicyDigest || null)) throw new Error("dispatch and hardware binding disagree on execution policy");
+  if ((dispatch.strictAdmissionBindingDigest || null) !== (binding.strictAdmissionBindingDigest || null)) throw new Error("dispatch and hardware binding disagree on strict admission identity");
   if (dispatch.topologyAttestationDigest !== binding.topologyAttestationDigest) throw new Error("dispatch and hardware binding disagree on topology attestation");
   if ((dispatch.failureAssessmentDigest || null) !== (binding.failureAssessmentDigest || null)) throw new Error("dispatch and hardware binding disagree on failure assessment");
   return true;
@@ -67,6 +72,17 @@ function deliveryBody(dispatch, binding, execution) {
     topologyAttestationDigest: dispatch.topologyAttestationDigest,
     ...(dispatch.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: dispatch.failureAssessmentDigest }),
     ...(dispatch.executionPolicyDigest == null ? {} : { executionPolicyDigest: dispatch.executionPolicyDigest }),
+    ...(dispatch.strictAdmissionBindingDigest == null ? {} : {
+      strictAdmissionBindingDigest: dispatch.strictAdmissionBindingDigest,
+      handoffDigest: dispatch.handoffDigest,
+      jointPlanDigest: dispatch.jointPlanDigest,
+      strategyDigest: dispatch.strategyDigest,
+      strictPlacementDigest: dispatch.strictPlacementDigest,
+      strictSnapshotProblemRoot: dispatch.strictSnapshotProblemRoot,
+      baselineRetainedUnionBytes: dispatch.baselineRetainedUnionBytes,
+      postAdmissionRetainedUnionBytes: dispatch.postAdmissionRetainedUnionBytes,
+      retainedUnionDeltaBytes: dispatch.retainedUnionDeltaBytes,
+    }),
     parentContinuationRoot: execution.parentContinuationRoot,
     childContinuationRoot: execution.childContinuationRoot,
     processId: execution.processId,
