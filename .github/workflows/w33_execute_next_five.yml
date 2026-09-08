@@ -1,0 +1,72 @@
+name: W33 blocker-atlas calibration cache-economics suite
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scheduler/w33-minimal-blocker-atlas.js'
+      - 'scheduler/w33-failure-distance.js'
+      - 'scheduler/w33-failure-distance-search.js'
+      - 'scheduler/w33-cache-aware-accelerator-scheduler.js'
+      - 'scheduler/w33-calibrated-accelerator-transaction.js'
+      - 'js/w33-accelerator-calibration.js'
+      - 'tests/w33-minimal-blocker-atlas.test.js'
+      - 'tests/w33-calibrated-accelerator.test.js'
+      - 'tests/w33-cache-aware-economics.test.js'
+      - '.github/workflows/w33_execute_next_five.yml'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  complete-resilience-atlas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Complete inclusion-minimal blocker atlas and distance theorem
+        run: node --test tests/w33-minimal-blocker-atlas.test.js
+      - name: Existing failure-distance scheduler regression
+        run: node --test tests/w33-failure-distance.test.js
+      - name: Existing continuation scheduler regression
+        run: node --test tests/w33-continuation-scheduler.test.js
+
+  calibrated-accelerator-and-cache-economics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Checkout W33 certificate producer
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33-crossrepo
+      - name: Install exact W33 accelerator algebra dependencies
+        run: pip install numpy sympy networkx
+      - name: Generate real W33 accelerator and process-independent artifact identity
+        run: |
+          PYTHONPATH=w33-crossrepo/analysis python w33-crossrepo/analysis/w33_attested_accelerator_macro.py >/tmp/w33-accelerator-verification.json
+          PYTHONPATH=w33-crossrepo/analysis python w33-crossrepo/analysis/w33_accelerator_control_artifact_identity.py >/tmp/w33-control-artifact-verification.json
+          python -m json.tool w33-crossrepo/data/W33_ATTESTED_ACCELERATOR_MACRO.json >/dev/null
+          python -m json.tool w33-crossrepo/data/W33_ACCELERATOR_CONTROL_ARTIFACT_IDENTITY.json >/dev/null
+      - name: Existing accelerator transaction regression
+        env:
+          W33_ACCELERATOR_CERTIFICATE: w33-crossrepo/data/W33_ATTESTED_ACCELERATOR_MACRO.json
+        run: node --test tests/w33-accelerator-crossrepo.test.js
+      - name: Signed calibration epoch and nested measured-boot interface
+        env:
+          W33_ACCELERATOR_CERTIFICATE: w33-crossrepo/data/W33_ATTESTED_ACCELERATOR_MACRO.json
+        run: node --test tests/w33-calibrated-accelerator.test.js
+      - name: Cache-aware control economics preserve semantic work
+        env:
+          W33_ACCELERATOR_CERTIFICATE: w33-crossrepo/data/W33_ATTESTED_ACCELERATOR_MACRO.json
+          W33_CONTROL_ARTIFACT_IDENTITY: w33-crossrepo/data/W33_ACCELERATOR_CONTROL_ARTIFACT_IDENTITY.json
+        run: node --test tests/w33-cache-aware-economics.test.js
