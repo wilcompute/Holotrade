@@ -8,12 +8,18 @@
 // evidence, topology, exact retained-union accounting and (when requested) W33
 // line-resilience checks all pass. The selected execution context is included
 // in the measured-boot challenge, not appended after hardware verification.
+//
+// Resilience has two deterministic layers: all-lines-hit remains a hard veto;
+// otherwise exactAdditionalFailuresToBlockAllLines is the minimum number of
+// extra W33 point failures needed to reach that veto. It is an exact
+// combinatorial distance, not a probability estimate.
 
 const crypto = require("node:crypto");
 const C = require("../js/w33-continuation-attestation.js");
 const J = require("../js/w33-joint-admission-policy.js");
 const H = require("../js/w33-strict-admission-binding.js");
 const R = require("./w33-topology-resilience.js");
+const D = require("./w33-failure-distance.js");
 
 const SCHEMA = "holotrade.w33-continuation-dispatch.v1";
 const MIGRATION_SCHEMA = "holotrade.w33-continuation-worker-migration.v1";
@@ -40,6 +46,14 @@ function normalizeRequest(request) {
   for (const point of requiredPoints) if (!Number.isInteger(point) || point < 0 || point >= 40) throw new RangeError("required W33 point outside 0..39");
   if (new Set(requiredPoints).size !== requiredPoints.length) throw new RangeError("required W33 points must be unique");
   if (!request.passport || !request.contract) throw new TypeError("passport and deployment contract required");
+
+  const requireLineResilience = request.requireLineResilience === true;
+  if (!requireLineResilience && request.minimumAdditionalFailuresToBlockAllLines != null) {
+    throw new TypeError("minimumAdditionalFailuresToBlockAllLines requires requireLineResilience=true");
+  }
+  const minimumAdditionalFailuresToBlockAllLines = requireLineResilience
+    ? natural(request.minimumAdditionalFailuresToBlockAllLines == null ? 1 : request.minimumAdditionalFailuresToBlockAllLines, "minimumAdditionalFailuresToBlockAllLines")
+    : 0;
 
   let executionPolicy = null;
   let executionPolicyDigest = null;
@@ -70,7 +84,8 @@ function normalizeRequest(request) {
     executionPolicyDigest,
     strictAdmissionBinding,
     strictAdmissionBindingDigest,
-    requireLineResilience: request.requireLineResilience === true,
+    requireLineResilience,
+    minimumAdditionalFailuresToBlockAllLines,
   });
 }
 
@@ -97,7 +112,16 @@ function resilienceAssessment(candidate, request) {
   if (!request.requireLineResilience) return null;
   const topology = candidate && candidate.topology;
   if (!topology || !Array.isArray(topology.failurePoints)) throw new TypeError("attested topology failurePoints required for W33 line resilience");
-  return R.assessFailures(topology.failurePoints);
+  const base = R.assessFailures(topology.failurePoints);
+  const distance = D.exactFailureDistance(topology.failurePoints);
+  return Object.freeze({
+    ...base,
+    additionalFailuresToBlockAllLines: distance.distance,
+    failureDistanceWitness: distance.witnessAdditionalFailures,
+    failureDistanceExact: distance.exact,
+    failureDistanceSearchLowerBound: distance.searchLowerBound ?? 0,
+    failureDistanceGreedyUpperBound: distance.greedyUpperBound ?? 0,
+  });
 }
 
 function eligibility(candidate, request) {
@@ -112,6 +136,9 @@ function eligibility(candidate, request) {
   try { resilience = resilienceAssessment(candidate, request); }
   catch (_) { return Object.freeze({ ok: false, code: "FAILURE_SET_ATTESTATION_REQUIRED" }); }
   if (resilience && resilience.allLinesHit) return Object.freeze({ ok: false, code: "W33_CORRELATED_FAILURE_BLOCKS_ALL_LINES", resilience });
+  if (resilience && resilience.additionalFailuresToBlockAllLines < request.minimumAdditionalFailuresToBlockAllLines) {
+    return Object.freeze({ ok: false, code: "W33_FAILURE_DISTANCE_FLOOR_UNMET", resilience });
+  }
   try { exactDelta(candidate, request); }
   catch (_) {
     const code = request.strictAdmissionBinding ? "EXACT_STRICT_RETAINED_DELTA_REQUIRED" : request.executionPolicyDigest ? "EXACT_POLICY_RETAINED_DELTA_REQUIRED" : "EXACT_RETAINED_DELTA_REQUIRED";
@@ -173,7 +200,12 @@ function dispatchFor(candidate, request, policy = {}) {
     workerEvidenceLevel: candidate.evidenceLevel,
     topologyAttestationDigest: candidate.topology.attestationDigest,
     requiredPoints: request.requiredPoints,
-    ...(resilience == null ? {} : { failureAssessmentDigest, intactW33LineCount: resilience.intactLineCount }),
+    ...(resilience == null ? {} : {
+      failureAssessmentDigest,
+      intactW33LineCount: resilience.intactLineCount,
+      additionalFailuresToBlockAllLines: resilience.additionalFailuresToBlockAllLines,
+      failureDistanceExact: true,
+    }),
     retainedUnionDeltaBytes: price.deltaBytes,
     price,
     runtimePublicKeyDigest: candidate.runtimePublicKeyDigest,
@@ -190,7 +222,12 @@ function rankContinuations(candidates, rawRequest, policy = {}) {
     if (!gate.ok) { rejected.push(Object.freeze({ workerId: candidate && candidate.id, code: gate.code, ...(gate.resilience ? { resilience: gate.resilience } : {}) })); continue; }
     eligible.push(dispatchFor(candidate, request, policy));
   }
-  eligible.sort((a, b) => a.price.totalUSD - b.price.totalUSD || a.retainedUnionDeltaBytes - b.retainedUnionDeltaBytes || a.workerId.localeCompare(b.workerId));
+  eligible.sort((a, b) =>
+    a.price.totalUSD - b.price.totalUSD ||
+    (b.additionalFailuresToBlockAllLines ?? 0) - (a.additionalFailuresToBlockAllLines ?? 0) ||
+    a.retainedUnionDeltaBytes - b.retainedUnionDeltaBytes ||
+    a.workerId.localeCompare(b.workerId)
+  );
   return Object.freeze({ request, eligible: Object.freeze(eligible), rejected: Object.freeze(rejected) });
 }
 
@@ -224,6 +261,8 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
     newTopologyAttestationDigest: next.topologyAttestationDigest,
     oldFailureAssessmentDigest: existingDispatch.failureAssessmentDigest || null,
     newFailureAssessmentDigest: next.failureAssessmentDigest || null,
+    oldAdditionalFailuresToBlockAllLines: existingDispatch.additionalFailuresToBlockAllLines ?? null,
+    newAdditionalFailuresToBlockAllLines: next.additionalFailuresToBlockAllLines ?? null,
     processIdentityPreserved: true,
     workerIdentityChanged: existingDispatch.workerId !== next.workerId,
     attestationMustBeRenewed: existingDispatch.attestationChallengeDigest !== next.attestationChallengeDigest,
