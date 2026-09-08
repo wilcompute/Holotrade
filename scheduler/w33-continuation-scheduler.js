@@ -5,7 +5,9 @@
 // Scheduling identity is the immutable continuation tuple, optionally refined
 // by an independently content-addressed W33 execution policy. A replay worker
 // is eligible only when evidence, topology, exact retained-union accounting and
-// (when requested) W33 line-resilience checks all pass.
+// (when requested) W33 line-resilience checks all pass. The selected topology
+// evidence and exact failure assessment are included in the measured-boot
+// challenge, not merely appended to a later delivery record.
 
 const crypto = require("node:crypto");
 const C = require("../js/w33-continuation-attestation.js");
@@ -14,7 +16,6 @@ const R = require("./w33-topology-resilience.js");
 
 const SCHEMA = "holotrade.w33-continuation-dispatch.v1";
 const MIGRATION_SCHEMA = "holotrade.w33-continuation-worker-migration.v1";
-
 const EVIDENCE = Object.freeze({ NONE: 0, SOFTWARE_VERIFIED: 1, SIGNED_RUNTIME: 2, HARDWARE_ATTESTED: 3 });
 
 function stable(value) {
@@ -24,9 +25,7 @@ function stable(value) {
 }
 function sha256(value) { return `sha256:${crypto.createHash("sha256").update(stable(value)).digest("hex")}`; }
 function isDigest(value) { return typeof value === "string" && /^sha256:[0-9a-f]{64}$/.test(value); }
-function finiteNonnegative(value, name) {
-  const n = Number(value); if (!Number.isFinite(n) || n < 0) throw new RangeError(`${name} must be finite nonnegative`); return n;
-}
+function finiteNonnegative(value, name) { const n = Number(value); if (!Number.isFinite(n) || n < 0) throw new RangeError(`${name} must be finite nonnegative`); return n; }
 function natural(value, name) { if (!Number.isSafeInteger(value) || value < 0) throw new RangeError(`${name} must be a natural number`); return value; }
 
 function normalizeRequest(request) {
@@ -46,20 +45,11 @@ function normalizeRequest(request) {
   if (request.executionPolicy != null) {
     executionPolicy = J.verifyPolicy(request.executionPolicy, request);
     executionPolicyDigest = executionPolicy.executionPolicyDigest;
-    if (request.executionPolicyDigest != null && request.executionPolicyDigest !== executionPolicyDigest) {
-      throw new Error("request executionPolicyDigest disagrees with verified W33 policy");
-    }
+    if (request.executionPolicyDigest != null && request.executionPolicyDigest !== executionPolicyDigest) throw new Error("request executionPolicyDigest disagrees with verified W33 policy");
   } else if (request.executionPolicyDigest != null) {
     throw new TypeError("executionPolicyDigest requires the full verifiable W33 executionPolicy certificate");
   }
-  return Object.freeze({
-    ...request,
-    evidenceFloor,
-    requiredPoints: Object.freeze(requiredPoints),
-    executionPolicy,
-    executionPolicyDigest,
-    requireLineResilience: request.requireLineResilience === true,
-  });
+  return Object.freeze({ ...request, evidenceFloor, requiredPoints: Object.freeze(requiredPoints), executionPolicy, executionPolicyDigest, requireLineResilience: request.requireLineResilience === true });
 }
 
 function pointSubset(required, available) { const set = new Set(available); return required.every((p) => set.has(p)); }
@@ -67,15 +57,11 @@ function pointSubset(required, available) { const set = new Set(available); retu
 function exactDelta(candidate, request) {
   if (request.executionPolicyDigest) {
     const table = candidate.retainedUnionDeltaBytesByPolicy;
-    if (!table || typeof table !== "object" || !(request.executionPolicyDigest in table)) {
-      throw new TypeError(`candidate ${candidate.id} lacks exact retained-union delta for execution policy`);
-    }
+    if (!table || typeof table !== "object" || !(request.executionPolicyDigest in table)) throw new TypeError(`candidate ${candidate.id} lacks exact retained-union delta for execution policy`);
     return finiteNonnegative(table[request.executionPolicyDigest], "policy-specific retained union delta bytes");
   }
   const table = candidate.retainedUnionDeltaBytes;
-  if (!table || typeof table !== "object" || !(request.continuationRoot in table)) {
-    throw new TypeError(`candidate ${candidate.id} lacks exact retained-union delta for continuation`);
-  }
+  if (!table || typeof table !== "object" || !(request.continuationRoot in table)) throw new TypeError(`candidate ${candidate.id} lacks exact retained-union delta for continuation`);
   return finiteNonnegative(table[request.continuationRoot], "retained union delta bytes");
 }
 
@@ -92,16 +78,12 @@ function eligibility(candidate, request) {
   const evidenceLevel = Number(candidate.evidenceLevel ?? EVIDENCE.NONE);
   if (!Number.isInteger(evidenceLevel) || evidenceLevel < request.evidenceFloor) return Object.freeze({ ok: false, code: "EVIDENCE_FLOOR_UNMET" });
   const topology = candidate.topology;
-  if (!topology || topology.attested !== true || !isDigest(topology.attestationDigest) || !Array.isArray(topology.points)) {
-    return Object.freeze({ ok: false, code: "TOPOLOGY_ATTESTATION_REQUIRED" });
-  }
+  if (!topology || topology.attested !== true || !isDigest(topology.attestationDigest) || !Array.isArray(topology.points)) return Object.freeze({ ok: false, code: "TOPOLOGY_ATTESTATION_REQUIRED" });
   if (!pointSubset(request.requiredPoints, topology.points)) return Object.freeze({ ok: false, code: "REQUIRED_W33_POINTS_UNAVAILABLE" });
   let resilience = null;
   try { resilience = resilienceAssessment(candidate, request); }
   catch (_) { return Object.freeze({ ok: false, code: "FAILURE_SET_ATTESTATION_REQUIRED" }); }
-  if (resilience && resilience.allLinesHit) {
-    return Object.freeze({ ok: false, code: "W33_CORRELATED_FAILURE_BLOCKS_ALL_LINES", resilience });
-  }
+  if (resilience && resilience.allLinesHit) return Object.freeze({ ok: false, code: "W33_CORRELATED_FAILURE_BLOCKS_ALL_LINES", resilience });
   try { exactDelta(candidate, request); }
   catch (_) { return Object.freeze({ ok: false, code: request.executionPolicyDigest ? "EXACT_POLICY_RETAINED_DELTA_REQUIRED" : "EXACT_RETAINED_DELTA_REQUIRED" }); }
   return Object.freeze({ ok: true, code: "ELIGIBLE", resilience });
@@ -124,6 +106,8 @@ function dispatchFor(candidate, request, policy = {}) {
   const gate = eligibility(candidate, request);
   if (!gate.ok) throw new Error(`candidate ${candidate && candidate.id}: ${gate.code}`);
   const price = priceCandidate(candidate, request, policy);
+  const resilience = gate.resilience;
+  const failureAssessmentDigest = resilience == null ? null : sha256(resilience);
   const challenge = C.buildContinuationChallenge({
     passport: request.passport,
     contract: request.contract,
@@ -132,26 +116,21 @@ function dispatchFor(candidate, request, policy = {}) {
     processId: request.processId,
     generation: request.generation,
     executionPolicyDigest: request.executionPolicyDigest,
+    topologyAttestationDigest: candidate.topology.attestationDigest,
+    failureAssessmentDigest,
   });
-  const resilience = gate.resilience;
   const body = {
     schema: SCHEMA,
     workerId: String(candidate.id),
     continuationRoot: request.continuationRoot,
     processId: request.processId,
     generation: request.generation,
-    ...(request.executionPolicyDigest == null ? {} : {
-      executionPolicyDigest: request.executionPolicyDigest,
-      executionPolicyProblemRoot: request.executionPolicy.problemRoot,
-    }),
+    ...(request.executionPolicyDigest == null ? {} : { executionPolicyDigest: request.executionPolicyDigest, executionPolicyProblemRoot: request.executionPolicy.problemRoot }),
     evidenceFloor: request.evidenceFloor,
     workerEvidenceLevel: candidate.evidenceLevel,
     topologyAttestationDigest: candidate.topology.attestationDigest,
     requiredPoints: request.requiredPoints,
-    ...(resilience == null ? {} : {
-      failureAssessmentDigest: sha256(resilience),
-      intactW33LineCount: resilience.intactLineCount,
-    }),
+    ...(resilience == null ? {} : { failureAssessmentDigest, intactW33LineCount: resilience.intactLineCount }),
     retainedUnionDeltaBytes: price.deltaBytes,
     price,
     runtimePublicKeyDigest: candidate.runtimePublicKeyDigest,
@@ -181,12 +160,8 @@ function chooseContinuationWorker(candidates, request, policy = {}) {
 function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {}) {
   if (!existingDispatch || existingDispatch.schema !== SCHEMA) throw new TypeError("valid continuation dispatch required");
   const request = normalizeRequest(rawRequest);
-  if (existingDispatch.continuationRoot !== request.continuationRoot || existingDispatch.processId !== request.processId || existingDispatch.generation !== request.generation) {
-    throw new Error("worker migration may not mutate process continuation identity");
-  }
-  if ((existingDispatch.executionPolicyDigest || null) !== (request.executionPolicyDigest || null)) {
-    throw new Error("worker migration may not mutate execution policy identity");
-  }
+  if (existingDispatch.continuationRoot !== request.continuationRoot || existingDispatch.processId !== request.processId || existingDispatch.generation !== request.generation) throw new Error("worker migration may not mutate process continuation identity");
+  if ((existingDispatch.executionPolicyDigest || null) !== (request.executionPolicyDigest || null)) throw new Error("worker migration may not mutate execution policy identity");
   const next = dispatchFor(targetCandidate, request, policy);
   const body = {
     schema: MIGRATION_SCHEMA,
@@ -200,6 +175,10 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
     newChallengeDigest: next.attestationChallengeDigest,
     oldRuntimePublicKeyDigest: existingDispatch.runtimePublicKeyDigest,
     newRuntimePublicKeyDigest: next.runtimePublicKeyDigest,
+    oldTopologyAttestationDigest: existingDispatch.topologyAttestationDigest,
+    newTopologyAttestationDigest: next.topologyAttestationDigest,
+    oldFailureAssessmentDigest: existingDispatch.failureAssessmentDigest || null,
+    newFailureAssessmentDigest: next.failureAssessmentDigest || null,
     processIdentityPreserved: true,
     workerIdentityChanged: existingDispatch.workerId !== next.workerId,
     attestationMustBeRenewed: existingDispatch.attestationChallengeDigest !== next.attestationChallengeDigest,
