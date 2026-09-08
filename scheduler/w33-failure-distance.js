@@ -1,30 +1,27 @@
 "use strict";
 
-// Exact distance from an observed W33 point-failure set to the all-lines-hit
-// safety boundary, evaluated from the complete inclusion-minimal blocker atlas.
-// This replaces repeated branch-and-bound set-cover solving in production while
-// preserving the same exact integer semantics.  The independent search oracle
-// remains in w33-failure-distance-search.js for regression cross-checks.
+// Production exact distance from an observed W33 point-failure set to the
+// all-lines-hit safety boundary.
+//
+// Runtime scheduling must not enumerate the global minimal-transversal atlas at
+// module import.  We therefore use the already-validated independent exact
+// branch-and-bound set-cover oracle.  The offline blocker-atlas analysis remains
+// a separate proof/classification front and must not sit on the hot path.
 
-const R = require("./w33-topology-resilience.js");
-const A = require("./w33-minimal-blocker-atlas.js");
-const SCHEMA = "holotrade.w33-failure-distance.v2";
+const Search = require("./w33-failure-distance-search.js");
+const SCHEMA = "holotrade.w33-failure-distance.v3";
 
 function exactFailureDistance(rawFailed) {
-  const base = R.assessFailures(rawFailed);
-  const row = A.distanceViaAtlas(base.failurePoints);
+  const row = Search.exactFailureDistanceSearch(rawFailed);
   return Object.freeze({
     schema: SCHEMA,
     distance: row.distance,
     witnessAdditionalFailures: row.witnessAdditionalFailures,
     exact: true,
-    intactLineCount: base.intactLineCount,
-    nearestMinimalBlockerIndex: row.nearestMinimalBlockerIndex,
-    nearestMinimalBlockerSize: row.nearestMinimalBlockerSize,
-    nearestMinimalBlockerType: row.nearestMinimalBlockerType,
-    nearestNeighborhoodCenter: row.nearestNeighborhoodCenter,
-    atlasBlockerCount: A.MINIMAL_BLOCKERS.length,
-    method: "complete-minimal-blocker-atlas",
+    intactLineCount: row.intactLineCount,
+    searchLowerBound: row.searchLowerBound ?? 0,
+    greedyUpperBound: row.greedyUpperBound ?? row.distance,
+    method: "exact-branch-and-bound-set-cover",
   });
 }
 
