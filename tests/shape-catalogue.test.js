@@ -8718,3 +8718,57 @@ test("the transpose class hosts a 115 but does not decide 114", () => {
   assert.match(r.boundary, /UNKNOWN is a statement about the\s+solver/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("ker(N^T) is spanned by the 45 octet differences", () => {
+  const r = JSON.parse(fs.readFileSync("data/kernel_spanned_by_octet_differences.json"));
+  assert.equal(r.valid, true);
+
+  // the linear algebra
+  assert.deepEqual(r.ntShape, [40, 40]);
+  assert.equal(r.rank, 25);
+  assert.equal(r.kernelDimension, 15);
+  assert.equal(r.rank + r.kernelDimension, 40);
+  assert.deepEqual(r.smithInvariantFactors, { "0": 15, "1": 25 });
+  assert.equal(r.cokernelIsTorsionFree, true);
+  assert.match(r.integralityIsNeverTheObstruction, /TORSION-FREE/);
+  assert.match(r.integralityIsNeverTheObstruction, /NONNEGATIVITY alone/);
+  assert.match(r.integralityIsNeverTheObstruction, /closed direction/);
+
+  // the pencil-sum census: injective through k=3, 45 collisions at k=4
+  const c = r.pencilSumCensus;
+  const expect = { 1: [40, 4], 2: [820, 8], 3: [11480, 12], 4: [123410, 16] };
+  for (const k of ["1", "2", "3", "4"]) {
+    assert.equal(c[k].mass, expect[k][1], "mass = 4k");
+    assert.equal(c[k].multisets, expect[k][0]);
+  }
+  for (const k of ["1", "2", "3"]) {
+    assert.equal(c[k].injective, true, `injective at k=${k}`);
+    assert.equal(c[k].collisions, 0);
+    assert.equal(c[k].distinctVectors, c[k].multisets);
+  }
+  assert.equal(c["4"].injective, false, "injectivity FAILS at k=4");
+  assert.equal(c["4"].collisions, 45);
+  assert.equal(c["4"].multisets - c["4"].distinctVectors, 45);
+  assert.equal(c["4"].distinctVectors, 123365);
+
+  // and the collisions ARE the octets
+  assert.deepEqual(r.collisionClassSizes, { "2": 45 }, "every collision is a pair");
+  assert.equal(r.octetPolarityPairs, 45);
+  assert.equal(r.collisionsAreExactlyTheOctets, true);
+  assert.match(r.theEncodingFirstFailsAtMass16, /set equality/);
+
+  // the kernel result
+  assert.equal(r.differencesLieInKernel, true);
+  assert.equal(r.differenceRank, 15);
+  assert.equal(r.differenceRank, r.kernelDimension);
+  assert.equal(r.differencesSpanTheKernel, true);
+  assert.match(r.theKernelResult, /SPANNED by\s+the octet differences/);
+
+  // scoped honestly against 114
+  assert.match(r.whatItDoesNotSayAbout114, /NOT a proof that 114 is hard/);
+  assert.match(r.whatItDoesNotSayAbout114, /DIFFERENT degeneracy/);
+  assert.match(r.whatItDoesNotSayAbout114, /not the\s+same phenomenon/);
+  assert.match(r.priorArtCited, /3f93821/);
+  assert.match(r.priorArtCited, /the_mass_eight_excess_is_two_pencils\.py/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
