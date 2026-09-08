@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-ker(N^T) is spanned by the 45 octet differences, the pencil encoding is
-injective up to mass 12 and first degenerates at mass 16, and the obstruction
-is nonnegativity rather than arithmetic.
+The 45 octet differences GENERATE the integer kernel lattice ker_Z(N^T), the
+pencil encoding is injective up to mass 12 and first degenerates at mass 16
+exactly on the octets, and the obstruction is nonnegativity rather than
+arithmetic.
 
 WHERE THIS COMES FROM.  The other track's mass-excess programme
 (the_mass_eight_excess_is_two_pencils.py, the_mass12_mass16_excess_pencil_
@@ -54,6 +55,20 @@ FOURTH, THE SPANNING STATEMENT -- AND ITS CORRECT SCOPE.  That relation says
 15 = dim ker(N^T). So
 
         ker(N^T) is SPANNED by the 45 octet differences.
+
+AND THEY GENERATE THE INTEGER LATTICE, NOT JUST THE Q-SPAN.  Spanning over Q is
+the weaker statement; the Smith form of the 45 x 40 difference matrix gives the
+stronger one. All fifteen nonzero invariant factors are 1, so the row lattice is
+SATURATED in Z^40 and therefore equals ker_Z(N^T) exactly, index 1. Put beside
+the torsion-freeness above, that makes the pencil-generation test completely
+explicit: an admissible e is k point-pencils exactly when
+
+        x0 + sum_L n_L (1_L - 1_{L^perp})  >=  0
+
+has an integer solution, where x0 is ANY integer preimage of e (one always
+exists) and n ranges over Z^45. The question "which admissible excesses are
+pencil sums" is an integer program over the octet-difference lattice, with no
+arithmetic obstruction left in it.
 
 THE SPACE ITSELF IS NOT NEW, AND IS CITED.  o5_polar_incidence_splits_the_w33_
 24_15_modules.py already identifies this 15-dimensional kernel as the SPREAD /
@@ -198,6 +213,17 @@ def main():
     drank = D.rank()
     spans = (drank == kerdim)
 
+    # Spanning over Q is weaker than generating the INTEGER kernel lattice.
+    # The Smith form of D settles it: all nonzero invariant factors 1 means the
+    # row lattice is saturated in Z^40, hence equals ker_Z(N^T) exactly.
+    SD = smith_normal_form(D)
+    dfactors = [int(SD[i, i]) for i in range(min(SD.shape))]
+    dnonzero = [x for x in dfactors if x != 0]
+    lattice_index = 1
+    for x in dnonzero:
+        lattice_index *= x
+    generates_lattice = (set(dnonzero) == {1} and len(dnonzero) == kerdim)
+
     print("ker(N^T) IS SPANNED BY THE OCTET DIFFERENCES")
     print("=" * 74)
     print("  N^T is %dx%d, rank %d, dim ker = %d"
@@ -221,13 +247,18 @@ def main():
           % (len(octets), collisions_are_octets))
     print()
     print("  the 45 differences 1_L - 1_Lperp lie in ker(N^T): %s" % in_kernel)
-    print("  their rank is %d = dim ker(N^T): they SPAN it: %s"
+    print("  their rank is %d = dim ker(N^T): they SPAN it over Q: %s"
           % (drank, spans))
+    print("  Smith form of the 45 differences: nonzero factors %s, index %d"
+          % (sorted(set(dnonzero)), lattice_index))
+    print("  => the row lattice is SATURATED: they generate ker_Z(N^T)"
+          " exactly: %s" % generates_lattice)
 
     ok = (rank == 25 and kerdim == 15 and not torsion
           and all(census[k]["injective"] for k in (1, 2, 3))
           and census[4]["collisions"] == 45
-          and collisions_are_octets and in_kernel and spans)
+          and collisions_are_octets and in_kernel and spans
+          and generates_lattice and lattice_index == 1)
     print()
     print("VALID: %s" % ok)
 
@@ -249,6 +280,21 @@ def main():
             "differencesLieInKernel": in_kernel,
             "differenceRank": drank,
             "differencesSpanTheKernel": spans,
+            "differenceSmithFactors": dict(Counter(dnonzero)),
+            "latticeIndex": lattice_index,
+            "differencesGenerateTheIntegerKernelLattice": generates_lattice,
+            "theLatticeStrengthening": (
+                "spanning over Q is weaker than generating the INTEGER kernel "
+                "lattice, and the Smith form of the 45x40 difference matrix "
+                "settles the stronger statement: all 15 nonzero invariant factors "
+                "are 1, so the row lattice is SATURATED in Z^40 and therefore "
+                "equals ker_Z(N^T) exactly, index 1. Combined with the cokernel "
+                "being torsion-free this makes the pencil-generation test fully "
+                "explicit: an admissible e is k point-pencils exactly when some "
+                "x0 + sum of n_L (1_L - 1_{L^perp}) is nonnegative, where x0 is "
+                "ANY integer preimage (one always exists) and the n_L range over "
+                "the integers. The whole question becomes an integer program over "
+                "the octet-difference lattice."),
             "theSpectralRestatement": (
                 "A has eigenvalues 12, 2, -4 and ker(N^T) is the (-4)-eigenspace, "
                 "so A e = 2 e + k 1 reads (A - 2I) e = k 1 and kills the (-4) "

@@ -8786,3 +8786,23 @@ test("the kernel spanning set is scoped against the prior identification", () =>
   assert.match(s, /reading it wrong/);
   assert.match(r.theKernelResult, /the SPACE is prior art; only this\s+spanning set is new/);
 });
+
+test("the octet differences generate the integer kernel lattice, index 1", () => {
+  const r = JSON.parse(fs.readFileSync("data/kernel_spanned_by_octet_differences.json"));
+  assert.equal(r.valid, true);
+  // saturated: all 15 nonzero invariant factors are 1
+  assert.deepEqual(r.differenceSmithFactors, { "1": 15 });
+  assert.equal(r.latticeIndex, 1);
+  assert.equal(r.differencesGenerateTheIntegerKernelLattice, true);
+  assert.equal(Object.keys(r.differenceSmithFactors).length, 1,
+               "no invariant factor exceeds 1 => saturated");
+  assert.equal(r.differenceSmithFactors["1"], r.kernelDimension);
+  // the strengthening is stated, and it is stated as stronger than Q-spanning
+  const t = r.theLatticeStrengthening;
+  assert.match(t, /spanning over Q is weaker/);
+  assert.match(t, /SATURATED/);
+  assert.match(t, /index 1/);
+  assert.match(t, /ANY integer preimage/);
+  assert.match(t, /integer program over\s+the octet-difference lattice/);
+  assert.match(t, /cokernel being torsion-free/);
+});
