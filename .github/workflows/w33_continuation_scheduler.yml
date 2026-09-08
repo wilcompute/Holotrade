@@ -6,10 +6,12 @@ on:
       - 'scheduler/w33-continuation-scheduler.js'
       - 'scheduler/w33-continuation-transaction.js'
       - 'scheduler/w33-topology-resilience.js'
+      - 'scheduler/w33-failure-distance.js'
       - 'js/w33-continuation-attestation.js'
       - 'js/w33-measured-boot-attestation.js'
       - 'js/w33-joint-admission-policy.js'
       - 'js/w33-strict-admission-binding.js'
+      - 'js/w33-accelerator-certificate.js'
       - 'tests/w33-continuation-scheduler.test.js'
       - 'tests/w33-continuation-attestation.test.js'
       - 'tests/w33-continuation-transaction.test.js'
@@ -17,13 +19,15 @@ on:
       - 'tests/w33-joint-policy-resilience.test.js'
       - 'tests/w33-joint-policy-crossrepo.test.js'
       - 'tests/w33-strict-admission-crossrepo.test.js'
+      - 'tests/w33-failure-distance.test.js'
+      - 'tests/w33-accelerator-crossrepo.test.js'
       - '.github/workflows/w33_continuation_scheduler.yml'
   pull_request:
   workflow_dispatch:
 jobs:
   scheduler:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -40,6 +44,8 @@ jobs:
         run: node --test tests/w33-continuation-transaction.test.js
       - name: Policy-specific pricing and exact W33 resilience
         run: node --test tests/w33-joint-policy-resilience.test.js
+      - name: Exact W33 failure distance and scheduler floor
+        run: node --test tests/w33-failure-distance.test.js
       - name: Checkout W33 execution producer
         uses: actions/checkout@v4
         with:
@@ -70,3 +76,14 @@ jobs:
         env:
           W33_STRICT_POLICY_EXECUTION_BUNDLE: /tmp/w33-strict-policy-execution.json
         run: node --test tests/w33-strict-admission-crossrepo.test.js
+      - name: Install exact W33 accelerator algebra dependencies
+        run: pip install numpy sympy networkx
+      - name: Generate real W33 Steinberg accelerator certificate
+        run: |
+          PYTHONPATH=w33-crossrepo/analysis python w33-crossrepo/analysis/w33_attested_accelerator_macro.py > /tmp/w33-accelerator-verification.json
+          python -m json.tool /tmp/w33-accelerator-verification.json >/dev/null
+          python -m json.tool w33-crossrepo/data/W33_ATTESTED_ACCELERATOR_MACRO.json >/dev/null
+      - name: Cross-repo accelerator hardware binding and exact interval delivery
+        env:
+          W33_ACCELERATOR_CERTIFICATE: w33-crossrepo/data/W33_ATTESTED_ACCELERATOR_MACRO.json
+        run: node --test tests/w33-accelerator-crossrepo.test.js
