@@ -3,9 +3,9 @@
 // Replayable end-to-end HoloVM continuation transaction.
 //
 // One invocation owns:
-//   scheduler selection -> continuation/policy-bound hardware challenge ->
-//   verifier verdict -> verified binding -> worker execution receipt -> exact
-//   child continuation -> signed Holotrade delivery receipt.
+//   scheduler selection -> continuation/execution-context-bound hardware
+//   challenge -> verifier verdict -> verified binding -> worker execution ->
+//   exact child continuation -> signed Holotrade delivery receipt.
 
 const crypto = require("node:crypto");
 const S = require("./w33-continuation-scheduler.js");
@@ -48,10 +48,15 @@ function normalizeExecution(execution, request) {
   return Object.freeze({ ...body, executionDigest: sha256(body) });
 }
 
+function executionContextAgreement(dispatch, binding) {
+  if ((dispatch.executionPolicyDigest || null) !== (binding.executionPolicyDigest || null)) throw new Error("dispatch and hardware binding disagree on execution policy");
+  if (dispatch.topologyAttestationDigest !== binding.topologyAttestationDigest) throw new Error("dispatch and hardware binding disagree on topology attestation");
+  if ((dispatch.failureAssessmentDigest || null) !== (binding.failureAssessmentDigest || null)) throw new Error("dispatch and hardware binding disagree on failure assessment");
+  return true;
+}
+
 function deliveryBody(dispatch, binding, execution) {
-  if ((dispatch.executionPolicyDigest || null) !== (binding.executionPolicyDigest || null)) {
-    throw new Error("dispatch and hardware binding disagree on execution policy");
-  }
+  executionContextAgreement(dispatch, binding);
   const body = {
     schema: DELIVERY_SCHEMA,
     dispatchDigest: dispatch.dispatchDigest,
@@ -60,6 +65,7 @@ function deliveryBody(dispatch, binding, execution) {
     verifierVerdictDigest: binding.verifierVerdictDigest,
     runtimePublicKeyDigest: binding.runtimePublicKeyDigest,
     topologyAttestationDigest: dispatch.topologyAttestationDigest,
+    ...(dispatch.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: dispatch.failureAssessmentDigest }),
     ...(dispatch.executionPolicyDigest == null ? {} : { executionPolicyDigest: dispatch.executionPolicyDigest }),
     parentContinuationRoot: execution.parentContinuationRoot,
     childContinuationRoot: execution.childContinuationRoot,
@@ -99,7 +105,7 @@ function executeContinuationTransaction({ candidates, request, policy = {}, obta
   const verdict = typeof obtainSignedVerifierVerdict === "function" ? obtainSignedVerifierVerdict(Object.freeze({ challenge: dispatch.challenge, dispatch, request: normalizedRequest })) : signedVerifierVerdict;
   if (!verdict) throw new TypeError("verifier callback returned no signed verdict");
   const binding = C.verifiedContinuationBinding(normalizedRequest.passport, normalizedRequest.contract, dispatch.challenge, verdict, trustedVerifierPublicKey);
-  if ((binding.executionPolicyDigest || null) !== (normalizedRequest.executionPolicyDigest || null)) throw new Error("hardware verdict lost execution policy binding");
+  executionContextAgreement(dispatch, binding);
   const rawExecution = executeWorker(Object.freeze({ dispatch, binding, request: normalizedRequest }));
   const execution = normalizeExecution(rawExecution, normalizedRequest);
   const delivery = deliveryBody(dispatch, binding, execution);
@@ -115,4 +121,4 @@ function executeContinuationTransaction({ candidates, request, policy = {}, obta
   });
 }
 
-module.exports = { EXECUTION_SCHEMA, DELIVERY_SCHEMA, SIGNED_SCHEMA, sha256, normalizeExecution, deliveryBody, signDelivery, verifyDelivery, executeContinuationTransaction };
+module.exports = { EXECUTION_SCHEMA, DELIVERY_SCHEMA, SIGNED_SCHEMA, sha256, normalizeExecution, executionContextAgreement, deliveryBody, signDelivery, verifyDelivery, executeContinuationTransaction };
