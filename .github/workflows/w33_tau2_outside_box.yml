@@ -1,0 +1,48 @@
+name: W33 tau2 outside-box probes
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/the_111_token_population_is_fourfold_minimum_blocker.py'
+      - 'analysis/the_111_leaf_linear_obstruction_ladder.py'
+      - 'analysis/the_111_frozen_tile_degree_compatibility.py'
+      - '.github/workflows/w33_tau2_outside_box.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-probes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy ortools
+      - name: Compress frozen token populations
+        run: python analysis/the_111_token_population_is_fourfold_minimum_blocker.py --write
+      - name: Test finite-field leaf images
+        run: python analysis/the_111_leaf_linear_obstruction_ladder.py --write
+      - name: Solve selector-only tile degree compatibility
+        run: python analysis/the_111_frozen_tile_degree_compatibility.py --budget 120 --workers 8 --write
+      - name: Validate
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open('data/the_111_token_population_fourfold_minimum_blocker.json'))
+          b=json.load(open('data/the_111_leaf_linear_obstruction_ladder.json'))
+          c=json.load(open('data/the_111_frozen_tile_degree_compatibility.json'))
+          assert a['status']==b['status']==c['status']=='PASS'
+          print('fourfold blockers:', a['checks'])
+          print('linear ranks:', b['incidenceRanks'])
+          print('tile-degree statuses:', {k:v['status'] for k,v in c['cases'].items()})
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-tau2-outside-box
+          path: |
+            data/the_111_token_population_fourfold_minimum_blocker.json
+            data/the_111_leaf_linear_obstruction_ladder.json
+            data/the_111_frozen_tile_degree_compatibility.json
+          if-no-files-found: error
