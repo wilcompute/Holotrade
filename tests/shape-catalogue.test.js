@@ -8772,3 +8772,17 @@ test("ker(N^T) is spanned by the 45 octet differences", () => {
   assert.match(r.priorArtCited, /the_mass_eight_excess_is_two_pencils\.py/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the kernel spanning set is scoped against the prior identification", () => {
+  const r = JSON.parse(fs.readFileSync("data/kernel_spanned_by_octet_differences.json"));
+  const s = r.theSpaceItselfIsPriorArt;
+  assert.match(s, /o5_polar_incidence_splits_the_w33_24_15_modules\.py/);
+  assert.match(s, /SPREAD \/ nonsquare\s+sector/);
+  assert.match(s, /N C0 = 0/);
+  assert.match(s, /c9e6be7 and ba74506/);
+  assert.match(s, /SECOND, differently-indexed spanning set/);
+  assert.match(s, /36\s+NONSQUARE/);
+  assert.match(s, /45 SQUARE side/);
+  assert.match(s, /reading it wrong/);
+  assert.match(r.theKernelResult, /the SPACE is prior art; only this\s+spanning set is new/);
+});
