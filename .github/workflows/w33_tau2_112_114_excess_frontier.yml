@@ -1,0 +1,87 @@
+name: W33 tau2 112-114 excess frontier
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/the_112_exact_two_pencil_leaf_csp.py'
+      - 'analysis/the_mass12_mass16_excess_pencil_induction.py'
+      - 'analysis/the_mass_eight_excess_is_two_pencils.py'
+      - 'data/mass_eight_excess_two_pencils.json'
+      - '.github/workflows/w33_tau2_112_114_excess_frontier.yml'
+  workflow_dispatch:
+
+jobs:
+  excess-classification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install exact solver
+        run: python -m pip install ortools
+      - name: Classify mass 12 and mass 16 by pencil induction
+        run: python analysis/the_mass12_mass16_excess_pencil_induction.py --budget 120 --workers 8 --write
+      - name: Validate exact classification scope
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('data/mass12_mass16_excess_pencil_induction.json'))
+          assert x['status'] in {'PASS','PARTIAL'}
+          assert x['group']['order']==25920
+          assert x['mass12']['multisetCandidates']==11480
+          assert x['mass16']['multisetCandidates']==123410
+          print('status',x['status'])
+          print('mass12 exact',x['mass12']['allAdmissibleVectorsArePencilSums'],'orbits',x['mass12']['orbitCount'])
+          print('mass16 exact',x['mass16']['allAdmissibleVectorsArePencilSums'],'orbits',x['mass16']['orbitCount'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-mass12-mass16-excess
+          path: data/mass12_mass16_excess_pencil_induction.json
+
+  exact-112:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {row: equal, col: equal}
+          - {row: equal, col: collinear}
+          - {row: equal, col: noncollinear}
+          - {row: collinear, col: equal}
+          - {row: collinear, col: collinear}
+          - {row: collinear, col: noncollinear}
+          - {row: noncollinear, col: equal}
+          - {row: noncollinear, col: collinear}
+          - {row: noncollinear, col: noncollinear}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install exact solver
+        run: python -m pip install ortools
+      - name: Solve exact 112 profile pair
+        run: python analysis/the_112_exact_two_pencil_leaf_csp.py --row-type '${{ matrix.row }}' --col-type '${{ matrix.col }}' --budget 180 --workers 8 --write
+      - name: Validate result semantics
+        run: |
+          python - <<'PY'
+          import json, os
+          r=os.environ['ROW']; c=os.environ['COL']
+          x=json.load(open(f'data/the_112_exact_two_pencil_{r}_{c}.json'))
+          assert x['status']=='PASS'
+          assert x['solverStatus'] in {'SAT','UNSAT','UNKNOWN'}
+          if x['solverStatus']=='SAT':
+              assert x['actual112Witness'] and x['independentReconstruction'] and len(x['leaves'])==112
+          print(r,c,x['solverStatus'],x['seconds'])
+          PY
+        env:
+          ROW: '${{ matrix.row }}'
+          COL: '${{ matrix.col }}'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-tau2-112-${{ matrix.row }}-${{ matrix.col }}
+          path: data/the_112_exact_two_pencil_${{ matrix.row }}_${{ matrix.col }}.json
