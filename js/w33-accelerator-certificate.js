@@ -25,6 +25,11 @@ function verifyAcceleratorCertificate(raw, expected = null) {
   if (!raw.windowWidth) throw new RangeError("windowWidth must be positive");
   if (raw.generationAfter - raw.generationBefore !== raw.windowWidth) throw new Error("accelerator generation span must equal windowWidth");
   if (raw.executableTransvections > raw.naiveTransvections) throw new Error("accelerator cannot expand executable transvection count under this certificate schema");
+  if (!Array.isArray(raw.subreceiptIds) || raw.subreceiptIds.length !== raw.windowWidth || !raw.subreceiptIds.every(isDigest)) throw new Error("subreceiptIds must expose the exact certified interval");
+  if (!Array.isArray(raw.intermediateContinuationRoots) || raw.intermediateContinuationRoots.length !== raw.windowWidth || !raw.intermediateContinuationRoots.every(isDigest)) throw new Error("intermediateContinuationRoots must expose the exact certified interval");
+  if (sha256(raw.subreceiptIds) !== raw.receiptChainDigest) throw new Error("receiptChainDigest disagrees with subreceiptIds");
+  if (sha256(raw.intermediateContinuationRoots) !== raw.continuationChainDigest) throw new Error("continuationChainDigest disagrees with intermediateContinuationRoots");
+  if (raw.intermediateContinuationRoots.at(-1) !== raw.childContinuationRoot) throw new Error("accelerator child is not final intermediate continuation");
   if (!Array.isArray(raw.executableTimeOrder) || raw.executableTimeOrder.length !== raw.executableTransvections) throw new Error("executableTimeOrder length mismatch");
   for (const op of raw.executableTimeOrder) {
     if (!Array.isArray(op) || op.length !== 2 || !Number.isInteger(op[0]) || op[0] < 0 || op[0] >= 40 || ![1, 2].includes(op[1])) throw new Error("invalid accelerator transvection opcode");
@@ -41,7 +46,13 @@ function verifyAcceleratorCertificate(raw, expected = null) {
     if (expected.generation != null && raw.generationBefore !== expected.generation) throw new Error("accelerator generation mismatch");
     if (expected.machineType != null && raw.machineType !== expected.machineType) throw new Error("accelerator machine type mismatch");
   }
-  return Object.freeze({ ...body, acceleratorCertificateDigest: raw.acceleratorCertificateDigest });
+  return Object.freeze({
+    ...body,
+    subreceiptIds: Object.freeze([...raw.subreceiptIds]),
+    intermediateContinuationRoots: Object.freeze([...raw.intermediateContinuationRoots]),
+    executableTimeOrder: Object.freeze(raw.executableTimeOrder.map((x) => Object.freeze([...x]))),
+    acceleratorCertificateDigest: raw.acceleratorCertificateDigest,
+  });
 }
 
 module.exports = { SCHEMA, stable, sha256, isDigest, verifyAcceleratorCertificate };
