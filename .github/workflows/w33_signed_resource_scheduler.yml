@@ -7,6 +7,7 @@ on:
       - 'js/w33-signed-resource-policy.js'
       - 'js/w33-continuation-attestation.js'
       - 'scheduler/w33-continuation-scheduler.js'
+      - 'scheduler/w33-continuation-transaction.js'
       - 'tests/w33-signed-resource-scheduler-crossrepo.test.js'
       - '.github/workflows/w33_signed_resource_scheduler.yml'
   workflow_dispatch:
@@ -29,7 +30,7 @@ jobs:
           python-version: '3.11'
       - name: Generate live W33 typed resource certificate
         run: PYTHONPATH=w33/analysis python w33/analysis/w33_signed_representation_economics.py
-      - name: Signed-resource scheduler cross-repo tests
+      - name: Signed-resource scheduler and delivery cross-repo tests
         env:
           W33_SIGNED_RESOURCE_CERT: ${{ github.workspace }}/w33/analysis/w33_signed_representation_economics_certificate.json
         run: node --test tests/w33-signed-resource-scheduler-crossrepo.test.js
