@@ -123,10 +123,11 @@ def main():
     rep_w33=tuple(m24.REP[hidx[frozenset(L)]] for L in wlines)
     states,mass_selected=m24.mass_orbit_actions(rep_w33,tuple(all_line[i] for i in GENERATOR_INDICES))
     assert len(states)==1080
-    obstruction_all,charts,wlines2=obs.build_action()
+    obstruction_selected,charts,wlines2=obs.build_action()
     assert tuple(map(frozenset,wlines2))==tuple(map(frozenset,wlines))
+    assert len(obstruction_selected)==len(GENERATOR_INDICES)==4
     point_selected=tuple(all_point[i] for i in GENERATOR_INDICES)
-    obstruction_selected=tuple(obstruction_all[i] for i in GENERATOR_INDICES)
+    obstruction_selected=tuple(obstruction_selected)
 
     image,conjugators=build_group_with_base_images(point_selected,mass_selected,obstruction_selected)
     Hm={g for g,(m,o) in image.items() if m==0}
