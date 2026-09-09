@@ -1,0 +1,42 @@
+name: Real/integer negativity gap frontier
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/real_integer_negativity_gap_frontier.py'
+      - '.github/workflows/real_integer_negativity_gap_frontier.yml'
+  workflow_dispatch:
+
+jobs:
+  mass28-full:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Complete mass28 census and exact real/integer comparison
+        run: PYTHONPATH=analysis python analysis/real_integer_negativity_gap_frontier.py --mass 28 --mode full --budget 1500 --cap 4000000 --depth-budget 60
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-integer-gap-mass28-full
+          path: analysis/real_integer_negativity_gap_frontier_m28_full.json
+
+  mass32-no-pencil:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Search the only mass32 depth4 birth sector and test real/integer depth
+        run: PYTHONPATH=analysis python analysis/real_integer_negativity_gap_frontier.py --mass 32 --mode no-pencil --budget 1500 --cap 4000000 --depth-budget 60
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-integer-gap-mass32-no-pencil
+          path: analysis/real_integer_negativity_gap_frontier_m32_no-pencil.json
