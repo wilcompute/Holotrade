@@ -21,8 +21,14 @@ jobs:
           python-version: '3.11'
       - name: Install exact dependencies
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
           pip install ortools sympy
+          # 4ti2 comes from Ubuntu. Disable unrelated third-party runner sources
+          # so transient Chrome index skew cannot block the exact algebra job.
+          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google.list || true
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update
           sudo apt-get install -y 4ti2
       - name: Write exact incidence matrix
