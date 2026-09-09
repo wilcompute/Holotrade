@@ -1,13 +1,9 @@
 "use strict";
 
 // Continuation-native distributed scheduler for HoloVM work.
-//
 // Scheduling identity is the immutable continuation tuple, optionally refined
-// by independently content-addressed execution policy, strict joint-admission
-// binding, finite-control accelerator certificate, and typed signed-resource
-// certificate. A replay worker is eligible only when evidence, topology, exact
-// retained-union accounting and requested W33 line-resilience checks all pass.
-// The selected execution context is included in the measured-boot challenge.
+// by content-addressed execution/admission/accelerator/resource certificates.
+// Signed-representation A/A^2 remain typed resource coordinates, not energy.
 
 const crypto = require("node:crypto");
 const C = require("../js/w33-continuation-attestation.js");
@@ -50,16 +46,14 @@ function normalizeRequest(request) {
     ? natural(request.minimumAdditionalFailuresToBlockAllLines == null ? 1 : request.minimumAdditionalFailuresToBlockAllLines, "minimumAdditionalFailuresToBlockAllLines")
     : 0;
 
-  let executionPolicy = null;
-  let executionPolicyDigest = null;
+  let executionPolicy = null, executionPolicyDigest = null;
   if (request.executionPolicy != null) {
     executionPolicy = J.verifyPolicy(request.executionPolicy, request);
     executionPolicyDigest = executionPolicy.executionPolicyDigest;
     if (request.executionPolicyDigest != null && request.executionPolicyDigest !== executionPolicyDigest) throw new Error("request executionPolicyDigest disagrees with verified W33 policy");
   } else if (request.executionPolicyDigest != null) throw new TypeError("executionPolicyDigest requires the full verifiable W33 executionPolicy certificate");
 
-  let strictAdmissionBinding = null;
-  let strictAdmissionBindingDigest = null;
+  let strictAdmissionBinding = null, strictAdmissionBindingDigest = null;
   if (request.strictAdmissionBinding != null) {
     if (!executionPolicy) throw new TypeError("strictAdmissionBinding requires the full W33 executionPolicy certificate");
     strictAdmissionBinding = H.verifyStrictBinding(request.strictAdmissionBinding, executionPolicy, request);
@@ -67,8 +61,7 @@ function normalizeRequest(request) {
   } else if (request.strictAdmissionBindingDigest != null) throw new TypeError("strictAdmissionBindingDigest requires the full verifiable strictAdmissionBinding certificate");
   if (request.strictAdmissionBindingDigest != null && request.strictAdmissionBindingDigest !== strictAdmissionBindingDigest) throw new Error("request strictAdmissionBindingDigest disagrees with verified W33 strict binding");
 
-  let acceleratorCertificate = null;
-  let acceleratorCertificateDigest = null;
+  let acceleratorCertificate = null, acceleratorCertificateDigest = null;
   if (request.acceleratorCertificate != null) {
     acceleratorCertificate = X.verifyAcceleratorCertificate(request.acceleratorCertificate, {
       continuationRoot: request.continuationRoot,
@@ -80,32 +73,22 @@ function normalizeRequest(request) {
     if (request.acceleratorCertificateDigest != null && request.acceleratorCertificateDigest !== acceleratorCertificateDigest) throw new Error("request acceleratorCertificateDigest disagrees with verified W33 accelerator certificate");
   } else if (request.acceleratorCertificateDigest != null) throw new TypeError("acceleratorCertificateDigest requires the full verifiable accelerator certificate");
 
-  let signedResource = null;
-  let signedResourceCertificateDigest = null;
+  let signedResource = null, signedResourceCertificateDigest = null, signedResourceSelectionDigest = null;
   if (request.signedResourceCertificate != null) {
     if (typeof request.representationClass !== "string") throw new TypeError("representationClass required with signedResourceCertificate");
     signedResource = P.verifySignedResourceCertificate(request.signedResourceCertificate, request.representationClass);
     signedResourceCertificateDigest = signedResource.certificateDigest;
+    signedResourceSelectionDigest = signedResource.selectionDigest;
     if (request.signedResourceCertificateDigest != null && request.signedResourceCertificateDigest !== signedResourceCertificateDigest) throw new Error("request signedResourceCertificateDigest disagrees with verified W33 resource certificate");
-  } else if (request.signedResourceCertificateDigest != null || request.representationClass != null) {
-    throw new TypeError("signedResourceCertificateDigest/representationClass require the full verifiable signedResourceCertificate");
+    if (request.signedResourceSelectionDigest != null && request.signedResourceSelectionDigest !== signedResourceSelectionDigest) throw new Error("request signedResourceSelectionDigest disagrees with verified W33 resource selection");
+  } else if (request.signedResourceCertificateDigest != null || request.signedResourceSelectionDigest != null || request.representationClass != null) {
+    throw new TypeError("signed resource digests/representationClass require the full verifiable signedResourceCertificate");
   }
 
-  return Object.freeze({
-    ...request,
-    evidenceFloor,
-    requiredPoints: Object.freeze(requiredPoints),
-    executionPolicy,
-    executionPolicyDigest,
-    strictAdmissionBinding,
-    strictAdmissionBindingDigest,
-    acceleratorCertificate,
-    acceleratorCertificateDigest,
-    signedResource,
-    signedResourceCertificateDigest,
-    requireLineResilience,
-    minimumAdditionalFailuresToBlockAllLines,
-  });
+  return Object.freeze({ ...request, evidenceFloor, requiredPoints: Object.freeze(requiredPoints), executionPolicy, executionPolicyDigest,
+    strictAdmissionBinding, strictAdmissionBindingDigest, acceleratorCertificate, acceleratorCertificateDigest,
+    signedResource, signedResourceCertificateDigest, signedResourceSelectionDigest,
+    requireLineResilience, minimumAdditionalFailuresToBlockAllLines });
 }
 
 function pointSubset(required, available) { const set = new Set(available); return required.every((p) => set.has(p)); }
@@ -131,14 +114,8 @@ function resilienceAssessment(candidate, request) {
   if (!topology || !Array.isArray(topology.failurePoints)) throw new TypeError("attested topology failurePoints required for W33 line resilience");
   const base = R.assessFailures(topology.failurePoints);
   const distance = D.exactFailureDistance(topology.failurePoints);
-  return Object.freeze({
-    ...base,
-    additionalFailuresToBlockAllLines: distance.distance,
-    failureDistanceWitness: distance.witnessAdditionalFailures,
-    failureDistanceExact: distance.exact,
-    failureDistanceSearchLowerBound: distance.searchLowerBound ?? 0,
-    failureDistanceGreedyUpperBound: distance.greedyUpperBound ?? 0,
-  });
+  return Object.freeze({ ...base, additionalFailuresToBlockAllLines: distance.distance, failureDistanceWitness: distance.witnessAdditionalFailures,
+    failureDistanceExact: distance.exact, failureDistanceSearchLowerBound: distance.searchLowerBound ?? 0, failureDistanceGreedyUpperBound: distance.greedyUpperBound ?? 0 });
 }
 
 function eligibility(candidate, request) {
@@ -155,10 +132,7 @@ function eligibility(candidate, request) {
   if (resilience && resilience.allLinesHit) return Object.freeze({ ok: false, code: "W33_CORRELATED_FAILURE_BLOCKS_ALL_LINES", resilience });
   if (resilience && resilience.additionalFailuresToBlockAllLines < request.minimumAdditionalFailuresToBlockAllLines) return Object.freeze({ ok: false, code: "W33_FAILURE_DISTANCE_FLOOR_UNMET", resilience });
   try { exactDelta(candidate, request); }
-  catch (_) {
-    const code = request.strictAdmissionBinding ? "EXACT_STRICT_RETAINED_DELTA_REQUIRED" : request.executionPolicyDigest ? "EXACT_POLICY_RETAINED_DELTA_REQUIRED" : "EXACT_RETAINED_DELTA_REQUIRED";
-    return Object.freeze({ ok: false, code });
-  }
+  catch (_) { const code = request.strictAdmissionBinding ? "EXACT_STRICT_RETAINED_DELTA_REQUIRED" : request.executionPolicyDigest ? "EXACT_POLICY_RETAINED_DELTA_REQUIRED" : "EXACT_RETAINED_DELTA_REQUIRED"; return Object.freeze({ ok: false, code }); }
   if (request.signedResource) {
     try { P.validateUnitPrices(candidate.signedResourceUnitPrices); }
     catch (_) { return Object.freeze({ ok: false, code: "COMPLETE_SIGNED_RESOURCE_UNIT_PRICES_REQUIRED" }); }
@@ -173,122 +147,59 @@ function priceCandidate(candidate, request, policy = {}) {
   const retainedByteSecondUSD = finiteNonnegative(policy.retainedByteSecondUSD ?? 0, "retainedByteSecondUSD");
   const transferByteUSD = finiteNonnegative(policy.transferByteUSD ?? 0, "transferByteUSD");
   const startupUSD = finiteNonnegative(candidate.startupUSD ?? 0, "startupUSD");
-  const computeUSD = durationSeconds * computePerSecondUSD;
-  const retainedUSD = deltaBytes * durationSeconds * retainedByteSecondUSD;
-  const transferUSD = deltaBytes * transferByteUSD;
+  const computeUSD = durationSeconds * computePerSecondUSD, retainedUSD = deltaBytes * durationSeconds * retainedByteSecondUSD, transferUSD = deltaBytes * transferByteUSD;
   const signedResourcePrice = request.signedResource ? P.priceSignedResource(request.signedResource, candidate.signedResourceUnitPrices) : null;
-  const legacyTotalUSD = computeUSD + retainedUSD + transferUSD + startupUSD;
-  const signedResourceUSD = signedResourcePrice == null ? 0 : signedResourcePrice.totalUSD;
+  const legacyTotalUSD = computeUSD + retainedUSD + transferUSD + startupUSD, signedResourceUSD = signedResourcePrice == null ? 0 : signedResourcePrice.totalUSD;
   return Object.freeze({ deltaBytes, computeUSD, retainedUSD, transferUSD, startupUSD, legacyTotalUSD, signedResourceUSD, signedResourcePrice, totalUSD: legacyTotalUSD + signedResourceUSD });
 }
 
 function dispatchFor(candidate, request, policy = {}) {
-  const gate = eligibility(candidate, request);
-  if (!gate.ok) throw new Error(`candidate ${candidate && candidate.id}: ${gate.code}`);
-  const price = priceCandidate(candidate, request, policy);
-  const resilience = gate.resilience;
-  const failureAssessmentDigest = resilience == null ? null : sha256(resilience);
-  const strictBinding = request.strictAdmissionBinding;
-  const accelerator = request.acceleratorCertificate;
-  const signedResource = request.signedResource;
-  const challenge = C.buildContinuationChallenge({
-    passport: request.passport,
-    contract: request.contract,
-    runtimePublicKeyDigest: candidate.runtimePublicKeyDigest,
-    continuationRoot: request.continuationRoot,
-    processId: request.processId,
-    generation: request.generation,
-    executionPolicyDigest: request.executionPolicyDigest,
-    strictAdmissionBindingDigest: request.strictAdmissionBindingDigest,
-    acceleratorCertificateDigest: request.acceleratorCertificateDigest,
-    signedResourceCertificateDigest: request.signedResourceCertificateDigest,
-    topologyAttestationDigest: candidate.topology.attestationDigest,
-    failureAssessmentDigest,
-  });
+  const gate = eligibility(candidate, request); if (!gate.ok) throw new Error(`candidate ${candidate && candidate.id}: ${gate.code}`);
+  const price = priceCandidate(candidate, request, policy), resilience = gate.resilience;
+  const failureAssessmentDigest = resilience == null ? null : sha256(resilience), strictBinding = request.strictAdmissionBinding, accelerator = request.acceleratorCertificate, signedResource = request.signedResource;
+  const challenge = C.buildContinuationChallenge({ passport: request.passport, contract: request.contract, runtimePublicKeyDigest: candidate.runtimePublicKeyDigest,
+    continuationRoot: request.continuationRoot, processId: request.processId, generation: request.generation, executionPolicyDigest: request.executionPolicyDigest,
+    strictAdmissionBindingDigest: request.strictAdmissionBindingDigest, acceleratorCertificateDigest: request.acceleratorCertificateDigest,
+    signedResourceCertificateDigest: request.signedResourceCertificateDigest, signedResourceSelectionDigest: request.signedResourceSelectionDigest,
+    topologyAttestationDigest: candidate.topology.attestationDigest, failureAssessmentDigest });
   const body = {
-    schema: SCHEMA,
-    workerId: String(candidate.id),
-    continuationRoot: request.continuationRoot,
-    processId: request.processId,
-    generation: request.generation,
+    schema: SCHEMA, workerId: String(candidate.id), continuationRoot: request.continuationRoot, processId: request.processId, generation: request.generation,
     ...(request.executionPolicyDigest == null ? {} : { executionPolicyDigest: request.executionPolicyDigest, executionPolicyProblemRoot: request.executionPolicy.problemRoot }),
-    ...(strictBinding == null ? {} : {
-      strictAdmissionBindingDigest: strictBinding.strictBindingDigest,
-      handoffDigest: strictBinding.handoffDigest,
-      jointPlanDigest: strictBinding.jointPlanDigest,
-      strategyDigest: strictBinding.strategyDigest,
-      strictPlacementDigest: strictBinding.placementDigest,
-      strictSnapshotProblemRoot: strictBinding.snapshotProblemRoot,
-      baselineRetainedUnionBytes: strictBinding.baselineRetainedUnionBytes,
-      postAdmissionRetainedUnionBytes: strictBinding.postAdmissionRetainedUnionBytes,
-    }),
-    ...(accelerator == null ? {} : {
-      acceleratorCertificateDigest: accelerator.acceleratorCertificateDigest,
-      acceleratorChildContinuationRoot: accelerator.childContinuationRoot,
-      acceleratorGenerationAfter: accelerator.generationAfter,
-      acceleratorReceiptChainDigest: accelerator.receiptChainDigest,
-      acceleratorContinuationChainDigest: accelerator.continuationChainDigest,
-      acceleratorSymplecticFrameDigest: accelerator.symplecticFrameDigest,
-      acceleratorSteinbergActionDigest: accelerator.steinbergActionDigest,
-      acceleratorExecutableTransvections: accelerator.executableTransvections,
-      acceleratorCalibrationEpoch: accelerator.calibrationEpoch,
-      acceleratorPhysicalCalibrationEvidenceDigest: accelerator.physicalCalibrationEvidenceDigest,
-    }),
-    ...(signedResource == null ? {} : {
-      signedResourceCertificateDigest: signedResource.certificateDigest,
-      signedResourceSelectionDigest: signedResource.selectionDigest,
-      representationClass: signedResource.representationClass,
-      representationAmplification: signedResource.representationAmplification,
+    ...(strictBinding == null ? {} : { strictAdmissionBindingDigest: strictBinding.strictBindingDigest, handoffDigest: strictBinding.handoffDigest, jointPlanDigest: strictBinding.jointPlanDigest,
+      strategyDigest: strictBinding.strategyDigest, strictPlacementDigest: strictBinding.placementDigest, strictSnapshotProblemRoot: strictBinding.snapshotProblemRoot,
+      baselineRetainedUnionBytes: strictBinding.baselineRetainedUnionBytes, postAdmissionRetainedUnionBytes: strictBinding.postAdmissionRetainedUnionBytes }),
+    ...(accelerator == null ? {} : { acceleratorCertificateDigest: accelerator.acceleratorCertificateDigest, acceleratorChildContinuationRoot: accelerator.childContinuationRoot,
+      acceleratorGenerationAfter: accelerator.generationAfter, acceleratorReceiptChainDigest: accelerator.receiptChainDigest, acceleratorContinuationChainDigest: accelerator.continuationChainDigest,
+      acceleratorSymplecticFrameDigest: accelerator.symplecticFrameDigest, acceleratorSteinbergActionDigest: accelerator.steinbergActionDigest,
+      acceleratorExecutableTransvections: accelerator.executableTransvections, acceleratorCalibrationEpoch: accelerator.calibrationEpoch,
+      acceleratorPhysicalCalibrationEvidenceDigest: accelerator.physicalCalibrationEvidenceDigest }),
+    ...(signedResource == null ? {} : { signedResourceCertificateDigest: signedResource.certificateDigest, signedResourceSelectionDigest: signedResource.selectionDigest,
+      representationClass: signedResource.representationClass, representationAmplification: signedResource.representationAmplification,
       signedSamplingSecondMomentFactor: signedResource.signedSamplingSecondMomentFactor,
-      signedResourceVector: {
-        semanticGuestSteps: signedResource.semanticGuestSteps,
-        w33RouteHops: signedResource.w33RouteHops,
-        authenticatedRetainedByteTicks: signedResource.authenticatedRetainedByteTicks,
-        authenticatedSweptPayloadBytes: signedResource.authenticatedSweptPayloadBytes,
-        deterministicReplaySteps: signedResource.deterministicReplaySteps,
-        representationExcessAminus1: signedResource.representationExcessAminus1,
-        samplingExcessA2minus1: signedResource.samplingExcessA2minus1,
-      },
-      signedResourcePriceDigest: price.signedResourcePrice.priceDigest,
-    }),
-    evidenceFloor: request.evidenceFloor,
-    workerEvidenceLevel: candidate.evidenceLevel,
-    topologyAttestationDigest: candidate.topology.attestationDigest,
-    requiredPoints: request.requiredPoints,
-    ...(resilience == null ? {} : {
-      failureAssessmentDigest,
-      intactW33LineCount: resilience.intactLineCount,
-      additionalFailuresToBlockAllLines: resilience.additionalFailuresToBlockAllLines,
-      failureDistanceExact: true,
-    }),
-    retainedUnionDeltaBytes: price.deltaBytes,
-    price,
-    runtimePublicKeyDigest: candidate.runtimePublicKeyDigest,
-    attestationChallengeDigest: challenge.challengeDigest,
-    baseMeasuredBootChallengeDigest: challenge.baseChallengeDigest,
+      signedResourceVector: { semanticGuestSteps: signedResource.semanticGuestSteps, w33RouteHops: signedResource.w33RouteHops,
+        authenticatedRetainedByteTicks: signedResource.authenticatedRetainedByteTicks, authenticatedSweptPayloadBytes: signedResource.authenticatedSweptPayloadBytes,
+        deterministicReplaySteps: signedResource.deterministicReplaySteps, representationExcessAminus1: signedResource.representationExcessAminus1,
+        samplingExcessA2minus1: signedResource.samplingExcessA2minus1 }, signedResourcePriceDigest: price.signedResourcePrice.priceDigest }),
+    evidenceFloor: request.evidenceFloor, workerEvidenceLevel: candidate.evidenceLevel, topologyAttestationDigest: candidate.topology.attestationDigest, requiredPoints: request.requiredPoints,
+    ...(resilience == null ? {} : { failureAssessmentDigest, intactW33LineCount: resilience.intactLineCount, additionalFailuresToBlockAllLines: resilience.additionalFailuresToBlockAllLines, failureDistanceExact: true }),
+    retainedUnionDeltaBytes: price.deltaBytes, price, runtimePublicKeyDigest: candidate.runtimePublicKeyDigest,
+    attestationChallengeDigest: challenge.challengeDigest, baseMeasuredBootChallengeDigest: challenge.baseChallengeDigest,
   };
   return Object.freeze({ ...body, dispatchDigest: sha256(body), challenge, resilience });
 }
 
 function rankContinuations(candidates, rawRequest, policy = {}) {
-  const request = normalizeRequest(rawRequest); const rejected = [], eligible = [];
+  const request = normalizeRequest(rawRequest), rejected = [], eligible = [];
   for (const candidate of candidates || []) {
     const gate = eligibility(candidate, request);
     if (!gate.ok) { rejected.push(Object.freeze({ workerId: candidate && candidate.id, code: gate.code, ...(gate.resilience ? { resilience: gate.resilience } : {}) })); continue; }
     eligible.push(dispatchFor(candidate, request, policy));
   }
-  eligible.sort((a, b) =>
-    a.price.totalUSD - b.price.totalUSD ||
-    (b.additionalFailuresToBlockAllLines ?? 0) - (a.additionalFailuresToBlockAllLines ?? 0) ||
-    a.retainedUnionDeltaBytes - b.retainedUnionDeltaBytes ||
-    a.workerId.localeCompare(b.workerId)
-  );
+  eligible.sort((a, b) => a.price.totalUSD - b.price.totalUSD || (b.additionalFailuresToBlockAllLines ?? 0) - (a.additionalFailuresToBlockAllLines ?? 0) || a.retainedUnionDeltaBytes - b.retainedUnionDeltaBytes || a.workerId.localeCompare(b.workerId));
   return Object.freeze({ request, eligible: Object.freeze(eligible), rejected: Object.freeze(rejected) });
 }
-
 function chooseContinuationWorker(candidates, request, policy = {}) {
-  const ranked = rankContinuations(candidates, request, policy);
-  if (!ranked.eligible.length) return Object.freeze({ ok: false, code: "NO_ELIGIBLE_CONTINUATION_WORKER", ranked });
+  const ranked = rankContinuations(candidates, request, policy); if (!ranked.eligible.length) return Object.freeze({ ok: false, code: "NO_ELIGIBLE_CONTINUATION_WORKER", ranked });
   return Object.freeze({ ok: true, code: "CONTINUATION_WORKER_SELECTED", dispatch: ranked.eligible[0], ranked });
 }
 
@@ -300,33 +211,22 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
   if ((existingDispatch.strictAdmissionBindingDigest || null) !== (request.strictAdmissionBindingDigest || null)) throw new Error("worker migration may not mutate strict W33 admission binding identity");
   if ((existingDispatch.acceleratorCertificateDigest || null) !== (request.acceleratorCertificateDigest || null)) throw new Error("worker migration may not mutate accelerator certificate identity");
   if ((existingDispatch.signedResourceCertificateDigest || null) !== (request.signedResourceCertificateDigest || null)) throw new Error("worker migration may not mutate signed-resource certificate identity");
+  if ((existingDispatch.signedResourceSelectionDigest || null) !== (request.signedResourceSelectionDigest || null)) throw new Error("worker migration may not mutate signed-resource selection identity");
   if ((existingDispatch.representationClass || null) !== (request.representationClass || null)) throw new Error("worker migration may not mutate signed representation class");
   const next = dispatchFor(targetCandidate, request, policy);
-  const body = {
-    schema: MIGRATION_SCHEMA,
-    fromWorkerId: existingDispatch.workerId,
-    toWorkerId: next.workerId,
-    continuationRoot: request.continuationRoot,
-    processId: request.processId,
-    generation: request.generation,
+  const body = { schema: MIGRATION_SCHEMA, fromWorkerId: existingDispatch.workerId, toWorkerId: next.workerId, continuationRoot: request.continuationRoot,
+    processId: request.processId, generation: request.generation,
     ...(request.executionPolicyDigest == null ? {} : { executionPolicyDigest: request.executionPolicyDigest }),
     ...(request.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: request.strictAdmissionBindingDigest, jointPlanDigest: request.strictAdmissionBinding.jointPlanDigest, strategyDigest: request.strictAdmissionBinding.strategyDigest, strictPlacementDigest: request.strictAdmissionBinding.placementDigest }),
     ...(request.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: request.acceleratorCertificateDigest }),
-    ...(request.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: request.signedResourceCertificateDigest, representationClass: request.representationClass }),
-    oldChallengeDigest: existingDispatch.attestationChallengeDigest,
-    newChallengeDigest: next.attestationChallengeDigest,
-    oldRuntimePublicKeyDigest: existingDispatch.runtimePublicKeyDigest,
-    newRuntimePublicKeyDigest: next.runtimePublicKeyDigest,
-    oldTopologyAttestationDigest: existingDispatch.topologyAttestationDigest,
-    newTopologyAttestationDigest: next.topologyAttestationDigest,
-    oldFailureAssessmentDigest: existingDispatch.failureAssessmentDigest || null,
-    newFailureAssessmentDigest: next.failureAssessmentDigest || null,
-    oldAdditionalFailuresToBlockAllLines: existingDispatch.additionalFailuresToBlockAllLines ?? null,
-    newAdditionalFailuresToBlockAllLines: next.additionalFailuresToBlockAllLines ?? null,
-    processIdentityPreserved: true,
-    workerIdentityChanged: existingDispatch.workerId !== next.workerId,
-    attestationMustBeRenewed: existingDispatch.attestationChallengeDigest !== next.attestationChallengeDigest,
-  };
+    ...(request.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: request.signedResourceCertificateDigest, signedResourceSelectionDigest: request.signedResourceSelectionDigest, representationClass: request.representationClass }),
+    oldChallengeDigest: existingDispatch.attestationChallengeDigest, newChallengeDigest: next.attestationChallengeDigest,
+    oldRuntimePublicKeyDigest: existingDispatch.runtimePublicKeyDigest, newRuntimePublicKeyDigest: next.runtimePublicKeyDigest,
+    oldTopologyAttestationDigest: existingDispatch.topologyAttestationDigest, newTopologyAttestationDigest: next.topologyAttestationDigest,
+    oldFailureAssessmentDigest: existingDispatch.failureAssessmentDigest || null, newFailureAssessmentDigest: next.failureAssessmentDigest || null,
+    oldAdditionalFailuresToBlockAllLines: existingDispatch.additionalFailuresToBlockAllLines ?? null, newAdditionalFailuresToBlockAllLines: next.additionalFailuresToBlockAllLines ?? null,
+    processIdentityPreserved: true, workerIdentityChanged: existingDispatch.workerId !== next.workerId,
+    attestationMustBeRenewed: existingDispatch.attestationChallengeDigest !== next.attestationChallengeDigest };
   return Object.freeze({ ...body, migrationDigest: sha256(body), dispatch: next });
 }
 
