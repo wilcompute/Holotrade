@@ -1,0 +1,48 @@
+name: W33 representation market identity
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-representation-market-identity.js'
+      - 'js/w33-continuation-attestation.js'
+      - 'scheduler/w33-continuation-scheduler.js'
+      - 'scheduler/w33-continuation-transaction.js'
+      - 'scheduler/w33-dynamic-resource-transaction.js'
+      - 'tests/w33-representation-market-identity-crossrepo.test.js'
+      - '.github/workflows/w33_representation_market_identity.yml'
+  workflow_dispatch:
+
+jobs:
+  lifecycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Holotrade
+        uses: actions/checkout@v4
+      - name: Checkout W33-Theory master
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate current W33 signed economics certificate
+        run: PYTHONPATH=w33/analysis python w33/analysis/w33_signed_representation_economics.py
+      - name: Representation identity lifecycle
+        env:
+          W33_SIGNED_RESOURCE_CERT: ${{ github.workspace }}/w33/analysis/w33_signed_representation_economics_certificate.json
+        run: node --test tests/w33-representation-market-identity-crossrepo.test.js
+      - name: Existing signed-resource and depth3 regressions
+        env:
+          W33_SIGNED_RESOURCE_CERT: ${{ github.workspace }}/w33/analysis/w33_signed_representation_economics_certificate.json
+        run: |
+          node --test tests/w33-depth3-dynamic-resource-crossrepo.test.js
+          node --test tests/w33-signed-resource-scheduler-crossrepo.test.js
+          node --test tests/w33-dynamic-resource-telemetry-crossrepo.test.js
+      - name: Scheduler and transaction regressions
+        run: |
+          node --test tests/w33-continuation-scheduler.test.js
+          node --test tests/w33-continuation-transaction.test.js
