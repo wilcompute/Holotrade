@@ -13,6 +13,10 @@ const CLASSES = Object.freeze({
   "positive-depth0": Object.freeze({ depth: 0, A: "1", A2: "1", excessA: 0, excessA2: 0 }),
   "exception-depth1": Object.freeze({ depth: 1, A: "3/2", A2: "9/4", excessA: 0.5, excessA2: 1.25 }),
   "exception-depth2": Object.freeze({ depth: 2, A: "2", A2: "4", excessA: 1, excessA2: 3 }),
+  // Unique mass-24 depth-three orbit: exact rational LP certificate gives
+  // gamma_R=12, k=6, hence A=2 and A^2=4.  Same normalized factors as
+  // depth two, but a distinct representation identity and selection digest.
+  "exception-depth3-mass24": Object.freeze({ depth: 3, A: "2", A2: "4", excessA: 1, excessA2: 3 }),
 });
 
 const PRICE_FIELDS = Object.freeze([
