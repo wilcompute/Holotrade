@@ -1,0 +1,38 @@
+{
+  "bornDepthAtLeast3": [
+    {
+      "depthAtMostTwo": null,
+      "exactDepth": 3,
+      "exactPreimage": [0,0,0,-1,0,0,0,0,0,1,0,0,0,-1,0,1,0,0,2,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,-1],
+      "orbitSize": 1080,
+      "representative": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,1,2,0,0,1,1,2,2,0,1,2,2,1,2,2,0,1,1,0,0],
+      "representativeDigest": "sha256:db8e5654204ace859e17291804dba3bf66c7bbd4a0a29f6bc7e6528e55c0e735",
+      "smallDepthWitness": null
+    }
+  ],
+  "budgetSeconds": 720.0,
+  "complete": true,
+  "depth3ExistenceProved": true,
+  "groupOrder": 25920,
+  "hitCap": false,
+  "noDepth3Mass24Proved": false,
+  "orbitSeedsFound": 13,
+  "proofBoundary": "The complete mass-20 census has no depth>=3. Any mass-24 class containing a pencil descends to mass 20 and +pencil cannot increase depth. Therefore depth>=3 at mass 24 can only occur in this no-contained-pencil sector. The CP-SAT enumeration is complete, so the mass-24 conclusion is exhaustive.",
+  "schema": "holotrade.mass24-no-pencil-depth3-birth-search.v1",
+  "seconds": 304.73600912094116,
+  "solutionCap": 500000,
+  "solutionsFound": 57645,
+  "solverStatus": "OPTIMAL",
+  "status": "PASS",
+  "unknownExactDepthRepresentatives": [],
+  "noPencilOrbitDepthCounts": {"2": 12, "3": 1},
+  "certificateJsonSha256": "db799f42dde2cd41b066aa87d1507f41d6b76b9721ec39a8cf1a252710265dc2",
+  "workflow": {
+    "run": 34381463322,
+    "job": 102567085256,
+    "artifact": 10116305671,
+    "artifactZipSha256": "f4c178d85543883abf02bf81689b72748faa2bbcdabf021cb7a7cfc00fe284b5",
+    "testedCommit": "00aac149e6bf073cebe81f6e57699947f3dc412c"
+  },
+  "note": "The full Actions artifact also contains all 13 no-pencil orbit representatives. This frozen repository certificate records the exhaustive theorem, the unique depth-3 orbit, and its exact integer preimage."
+}
