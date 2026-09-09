@@ -5,9 +5,10 @@
 // The challenge commits the exact immutable continuation tuple and can also
 // commit the exact W33 checkpoint/snapshot policy, the stricter baseline-aware
 // joint-admission binding, an attested finite-control accelerator certificate,
-// topology attestation, and correlated-failure assessment selected for this
-// dispatch. A hardware verdict therefore cannot be replayed across a different
-// retention/admission/accelerator/topology context on the same continuation.
+// a typed signed-resource certificate, topology attestation, and correlated-
+// failure assessment selected for this dispatch. A hardware verdict therefore
+// cannot be replayed across a different resource/retention/topology context on
+// the same continuation.
 
 const A = require("./w33-measured-boot-attestation.js");
 
@@ -29,6 +30,7 @@ function buildContinuationChallenge({
   executionPolicyDigest = null,
   strictAdmissionBindingDigest = null,
   acceleratorCertificateDigest = null,
+  signedResourceCertificateDigest = null,
   topologyAttestationDigest = null,
   failureAssessmentDigest = null,
 }) {
@@ -38,6 +40,7 @@ function buildContinuationChallenge({
   optionalDigest(executionPolicyDigest, "executionPolicyDigest");
   optionalDigest(strictAdmissionBindingDigest, "strictAdmissionBindingDigest");
   optionalDigest(acceleratorCertificateDigest, "acceleratorCertificateDigest");
+  optionalDigest(signedResourceCertificateDigest, "signedResourceCertificateDigest");
   optionalDigest(topologyAttestationDigest, "topologyAttestationDigest");
   optionalDigest(failureAssessmentDigest, "failureAssessmentDigest");
   if (strictAdmissionBindingDigest != null && executionPolicyDigest == null) throw new TypeError("strictAdmissionBindingDigest requires executionPolicyDigest");
@@ -60,6 +63,7 @@ function buildContinuationChallenge({
     ...(executionPolicyDigest == null ? {} : { executionPolicyDigest }),
     ...(strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest }),
     ...(acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest }),
+    ...(signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest }),
     ...(topologyAttestationDigest == null ? {} : { topologyAttestationDigest }),
     ...(failureAssessmentDigest == null ? {} : { failureAssessmentDigest }),
   };
@@ -76,6 +80,7 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
   optionalDigest(challenge.executionPolicyDigest, "executionPolicyDigest");
   optionalDigest(challenge.strictAdmissionBindingDigest, "strictAdmissionBindingDigest");
   optionalDigest(challenge.acceleratorCertificateDigest, "acceleratorCertificateDigest");
+  optionalDigest(challenge.signedResourceCertificateDigest, "signedResourceCertificateDigest");
   optionalDigest(challenge.topologyAttestationDigest, "topologyAttestationDigest");
   optionalDigest(challenge.failureAssessmentDigest, "failureAssessmentDigest");
   if (challenge.strictAdmissionBindingDigest != null && challenge.executionPolicyDigest == null) throw new Error("continuation challenge lost policy parent for strict admission binding");
@@ -94,6 +99,7 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
     ...(challenge.executionPolicyDigest == null ? {} : { executionPolicyDigest: challenge.executionPolicyDigest }),
     ...(challenge.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: challenge.strictAdmissionBindingDigest }),
     ...(challenge.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: challenge.acceleratorCertificateDigest }),
+    ...(challenge.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: challenge.signedResourceCertificateDigest }),
     ...(challenge.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: challenge.topologyAttestationDigest }),
     ...(challenge.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: challenge.failureAssessmentDigest }),
     provider: signedVerdict.body.provider,
@@ -115,7 +121,7 @@ function attachContinuationReceiptMetadata(metadata, passport, contract, challen
 function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
   const binding = verifiedContinuationBinding(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey);
   const kind = binding.provider === A.PROVIDER.TPM2 ? "TPM_QUOTE" : "SEV_SNP_REPORT";
-  const fullyScoped = binding.executionPolicyDigest || binding.strictAdmissionBindingDigest || binding.acceleratorCertificateDigest || binding.topologyAttestationDigest || binding.failureAssessmentDigest;
+  const fullyScoped = binding.executionPolicyDigest || binding.strictAdmissionBindingDigest || binding.acceleratorCertificateDigest || binding.signedResourceCertificateDigest || binding.topologyAttestationDigest || binding.failureAssessmentDigest;
   return Object.freeze({
     schema: HARDWARE_EVIDENCE_SCHEMA,
     hardwareAttested: true,
@@ -139,6 +145,7 @@ function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict,
       ...(binding.executionPolicyDigest == null ? {} : { executionPolicyDigest: binding.executionPolicyDigest }),
       ...(binding.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: binding.strictAdmissionBindingDigest }),
       ...(binding.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: binding.acceleratorCertificateDigest }),
+      ...(binding.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: binding.signedResourceCertificateDigest }),
       ...(binding.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: binding.topologyAttestationDigest }),
       ...(binding.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: binding.failureAssessmentDigest }),
     })]),
