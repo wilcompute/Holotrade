@@ -10,6 +10,7 @@ const C = require("../js/w33-continuation-attestation.js");
 const D = require("../js/w33-passport-deployment.js");
 const P = require("../js/w33-signed-resource-policy.js");
 const S = require("../scheduler/w33-continuation-scheduler.js");
+const T = require("../scheduler/w33-continuation-transaction.js");
 
 function d(label) { return S.sha256(label); }
 function prices(overrides={}) {
@@ -63,6 +64,28 @@ if (!certPath) {
     const binding=C.verifiedContinuationBinding(passport,contract,selected.dispatch.challenge,verdict,keys.publicKey);
     assert.equal(binding.signedResourceCertificateDigest,selected.dispatch.signedResourceCertificateDigest);
     assert.equal(binding.signedResourceSelectionDigest,selected.dispatch.signedResourceSelectionDigest);
+  });
+
+  test("signed delivery carries the exact selected resource class and price digest end to end",()=>{
+    const verifierKeys=crypto.generateKeyPairSync("ed25519");
+    const deliveryKeys=crypto.generateKeyPairSync("ed25519");
+    const tx=T.executeContinuationTransaction({
+      candidates:[representationCheap],request:request("exception-depth2"),
+      obtainSignedVerifierVerdict:({challenge})=>signedVerdict(challenge,verifierKeys.privateKey),
+      trustedVerifierPublicKey:verifierKeys.publicKey,
+      executeWorker:()=>Object.freeze({schema:T.EXECUTION_SCHEMA,parentContinuationRoot:root,childContinuationRoot:d("signed-resource-child"),
+        processId,generationBefore:7,generationAfter:8,emissionId:d("signed-resource-emission"),guestReceiptIds:[d("signed-resource-receipt")],stopReason:"fuel"}),
+      deliveryPrivateKey:deliveryKeys.privateKey,deliveryKeyId:"signed-resource-delivery",
+    });
+    assert.equal(tx.ok,true);
+    assert.equal(tx.delivery.body.signedResourceCertificateDigest,tx.dispatch.signedResourceCertificateDigest);
+    assert.equal(tx.delivery.body.signedResourceSelectionDigest,tx.dispatch.signedResourceSelectionDigest);
+    assert.equal(tx.delivery.body.representationClass,"exception-depth2");
+    assert.equal(tx.delivery.body.representationAmplification,"2");
+    assert.equal(tx.delivery.body.signedSamplingSecondMomentFactor,"4");
+    assert.equal(tx.delivery.body.signedResourcePriceDigest,tx.dispatch.price.signedResourcePrice.priceDigest);
+    assert.deepEqual(tx.delivery.body.signedResourceVector,tx.dispatch.signedResourceVector);
+    assert.equal(T.verifyDelivery(tx.delivery,deliveryKeys.publicKey).ok,true);
   });
 
   test("tampered exact factors and partial price vectors fail closed",()=>{
