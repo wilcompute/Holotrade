@@ -6,10 +6,10 @@
 // bound hardware challenge -> verifier verdict -> verified binding -> worker
 // execution -> exact child continuation -> signed Holotrade delivery receipt.
 //
-// Strict admission, topology/failure context, optional accelerator state and
-// typed signed-resource selection are first-class execution context.  Resource
-// coordinates A/A^2 are carried as estimator/representation metadata, never as
-// physical energy surrogates.
+// Strict admission, topology/failure context, optional accelerator state,
+// typed signed-resource selection, and price-independent representation market
+// identity are first-class execution context. Resource coordinates A/A^2 are
+// estimator/representation metadata, never physical energy surrogates.
 
 const crypto = require("node:crypto");
 const S = require("./w33-continuation-scheduler.js");
@@ -61,6 +61,7 @@ function executionContextAgreement(dispatch, binding) {
   if ((dispatch.acceleratorCertificateDigest || null) !== (binding.acceleratorCertificateDigest || null)) throw new Error("dispatch and hardware binding disagree on accelerator certificate");
   if ((dispatch.signedResourceCertificateDigest || null) !== (binding.signedResourceCertificateDigest || null)) throw new Error("dispatch and hardware binding disagree on signed-resource certificate");
   if ((dispatch.signedResourceSelectionDigest || null) !== (binding.signedResourceSelectionDigest || null)) throw new Error("dispatch and hardware binding disagree on signed-resource selection");
+  if ((dispatch.representationMarketIdentityDigest || null) !== (binding.representationMarketIdentityDigest || null)) throw new Error("dispatch and hardware binding disagree on representation market identity");
   if (dispatch.topologyAttestationDigest !== binding.topologyAttestationDigest) throw new Error("dispatch and hardware binding disagree on topology attestation");
   if ((dispatch.failureAssessmentDigest || null) !== (binding.failureAssessmentDigest || null)) throw new Error("dispatch and hardware binding disagree on failure assessment");
   return true;
@@ -120,6 +121,7 @@ function deliveryBody(dispatch, binding, execution) {
     ...(dispatch.signedResourceCertificateDigest == null ? {} : {
       signedResourceCertificateDigest: dispatch.signedResourceCertificateDigest,
       signedResourceSelectionDigest: dispatch.signedResourceSelectionDigest,
+      representationMarketIdentityDigest: dispatch.representationMarketIdentityDigest,
       representationClass: dispatch.representationClass,
       representationAmplification: dispatch.representationAmplification,
       signedSamplingSecondMomentFactor: dispatch.signedSamplingSecondMomentFactor,
