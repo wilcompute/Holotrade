@@ -6,11 +6,10 @@
 // bound hardware challenge -> verifier verdict -> verified binding -> worker
 // execution -> exact child continuation -> signed Holotrade delivery receipt.
 //
-// A strict W33 admission binding, exact topology/failure context and optional
-// finite-control accelerator certificate are all first-class execution context.
-// When an accelerator is requested, the worker must return the *same full
-// authenticated receipt and continuation interval* committed by that
-// certificate; digest agreement alone is not enough.
+// Strict admission, topology/failure context, optional accelerator state and
+// typed signed-resource selection are first-class execution context.  Resource
+// coordinates A/A^2 are carried as estimator/representation metadata, never as
+// physical energy surrogates.
 
 const crypto = require("node:crypto");
 const S = require("./w33-continuation-scheduler.js");
@@ -60,6 +59,8 @@ function executionContextAgreement(dispatch, binding) {
   if ((dispatch.executionPolicyDigest || null) !== (binding.executionPolicyDigest || null)) throw new Error("dispatch and hardware binding disagree on execution policy");
   if ((dispatch.strictAdmissionBindingDigest || null) !== (binding.strictAdmissionBindingDigest || null)) throw new Error("dispatch and hardware binding disagree on strict admission identity");
   if ((dispatch.acceleratorCertificateDigest || null) !== (binding.acceleratorCertificateDigest || null)) throw new Error("dispatch and hardware binding disagree on accelerator certificate");
+  if ((dispatch.signedResourceCertificateDigest || null) !== (binding.signedResourceCertificateDigest || null)) throw new Error("dispatch and hardware binding disagree on signed-resource certificate");
+  if ((dispatch.signedResourceSelectionDigest || null) !== (binding.signedResourceSelectionDigest || null)) throw new Error("dispatch and hardware binding disagree on signed-resource selection");
   if (dispatch.topologyAttestationDigest !== binding.topologyAttestationDigest) throw new Error("dispatch and hardware binding disagree on topology attestation");
   if ((dispatch.failureAssessmentDigest || null) !== (binding.failureAssessmentDigest || null)) throw new Error("dispatch and hardware binding disagree on failure assessment");
   return true;
@@ -115,6 +116,15 @@ function deliveryBody(dispatch, binding, execution) {
       acceleratorExecutableTransvections: dispatch.acceleratorExecutableTransvections,
       acceleratorCalibrationEpoch: dispatch.acceleratorCalibrationEpoch,
       acceleratorPhysicalCalibrationEvidenceDigest: dispatch.acceleratorPhysicalCalibrationEvidenceDigest,
+    }),
+    ...(dispatch.signedResourceCertificateDigest == null ? {} : {
+      signedResourceCertificateDigest: dispatch.signedResourceCertificateDigest,
+      signedResourceSelectionDigest: dispatch.signedResourceSelectionDigest,
+      representationClass: dispatch.representationClass,
+      representationAmplification: dispatch.representationAmplification,
+      signedSamplingSecondMomentFactor: dispatch.signedSamplingSecondMomentFactor,
+      signedResourceVector: dispatch.signedResourceVector,
+      signedResourcePriceDigest: dispatch.signedResourcePriceDigest,
     }),
     parentContinuationRoot: execution.parentContinuationRoot,
     childContinuationRoot: execution.childContinuationRoot,
