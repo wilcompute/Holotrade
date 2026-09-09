@@ -1,0 +1,101 @@
+{
+  "schema": "holotrade.w33-quantum-routing-benchmark.v1",
+  "evidence": "DETERMINISTIC_NETWORK_MODEL",
+  "status": "PASS",
+  "topologyControls": {
+    "note": "Both controls have exactly 40 vertices, 240 edges and degree 12. They are not claimed to be optimal alternative quantum-network designs.",
+    "degreePreservingAcceptedSwitches": 9503
+  },
+  "linkModels": [
+    {
+      "name": "nominal",
+      "pGenerate": 0.78,
+      "pSwap": 0.9,
+      "pMemory": 0.995,
+      "vLink": 0.97,
+      "vSwap": 0.985,
+      "vMemory": 0.995,
+      "minVisibility": 0.75
+    },
+    {
+      "name": "lossy",
+      "pGenerate": 0.55,
+      "pSwap": 0.82,
+      "pMemory": 0.985,
+      "vLink": 0.94,
+      "vSwap": 0.97,
+      "vMemory": 0.99,
+      "minVisibility": 0.7
+    },
+    {
+      "name": "stressed",
+      "pGenerate": 0.35,
+      "pSwap": 0.72,
+      "pMemory": 0.96,
+      "vLink": 0.9,
+      "vSwap": 0.94,
+      "vMemory": 0.98,
+      "minVisibility": 0.65
+    }
+  ],
+  "structural": {
+    "w33": {
+      "vertices": 40,
+      "edges": 240,
+      "degreeHistogram": {"12": 40},
+      "distances": {"histogram": {"1": 240, "2": 540}, "diameter": 2, "disconnectedPairs": 0},
+      "nonadjacentCommonNeighborHistogram": {"4": 540}
+    },
+    "circulant_degree12": {
+      "vertices": 40,
+      "edges": 240,
+      "degreeHistogram": {"12": 40},
+      "distances": {"histogram": {"1": 240, "2": 240, "3": 240, "4": 60}, "diameter": 4, "disconnectedPairs": 0},
+      "nonadjacentCommonNeighborHistogram": {"6": 40, "5": 40, "4": 40, "3": 40, "2": 40, "1": 40, "0": 300}
+    },
+    "degree_preserving_rewire": {
+      "vertices": 40,
+      "edges": 240,
+      "degreeHistogram": {"12": 40},
+      "distances": {"histogram": {"2": 537, "1": 240, "3": 3}, "diameter": 3, "disconnectedPairs": 0},
+      "nonadjacentCommonNeighborHistogram": {"2": 90, "5": 75, "3": 156, "4": 153, "6": 33, "1": 27, "7": 3, "0": 3}
+    }
+  },
+  "modelResults": {
+    "w33": {
+      "nominal": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 1.692307692, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 780, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.961594017, "meanParallelSuccessVisibilityYield": 2.035913412, "meanAcceptedWittingFrameOpportunity": 0.312518056},
+      "lossy": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 1.692307692, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 780, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.703764084, "meanParallelSuccessVisibilityYield": 0.886350475, "meanAcceptedWittingFrameOpportunity": 0.228723327},
+      "stressed": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 1.692307692, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 780, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.346468637, "meanParallelSuccessVisibilityYield": 0.310762656, "meanAcceptedWittingFrameOpportunity": 0.112602307}
+    },
+    "circulant_degree12": {
+      "nominal": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 2.153846154, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 780, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.896853443, "meanParallelSuccessVisibilityYield": 1.705726924, "meanAcceptedWittingFrameOpportunity": 0.291477369},
+      "lossy": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 2.153846154, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 720, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.521699083, "meanParallelSuccessVisibilityYield": 0.64307338, "meanAcceptedWittingFrameOpportunity": 0.169552202},
+      "stressed": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 2.153846154, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 480, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.22478237, "meanParallelSuccessVisibilityYield": 0.213562847, "meanAcceptedWittingFrameOpportunity": 0.07305427}
+    },
+    "degree_preserving_rewire": {
+      "nominal": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 1.696153846, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 780, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.952865915, "meanParallelSuccessVisibilityYield": 1.973806723, "meanAcceptedWittingFrameOpportunity": 0.309681422},
+      "lossy": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 1.696153846, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 780, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.674986735, "meanParallelSuccessVisibilityYield": 0.840657432, "meanAcceptedWittingFrameOpportunity": 0.219370689},
+      "stressed": {"pairs": 780, "connectedPairs": 780, "meanShortestHops": 1.696153846, "meanVertexDisjointPaths": 4.0, "fourPathPairs": 780, "qualifiedVisibilityPairs": 777, "meanProbabilityAtLeastOneQualifiedEntanglement": 0.317494727, "meanParallelSuccessVisibilityYield": 0.287515702, "meanAcceptedWittingFrameOpportunity": 0.103185786}
+    }
+  },
+  "exactW33Reading": "Every one of the 540 nonadjacent W33 pairs has exactly four length-2 relay choices (mu=4); adjacent pairs are one hop apart.",
+  "metricBoundary": {
+    "probability": "Independent-path success proxy from declared pGenerate/pSwap/pMemory parameters.",
+    "visibility": "Multiplicative scalar visibility proxy, not a complete density-matrix/noise simulation.",
+    "acceptedWittingFrameOpportunity": "Routing success proxy multiplied by the exact 13/40 Witting same-or-orthogonal admission fraction; NOT a secret-key rate."
+  },
+  "limitations": [
+    "No quantum hardware, repeater, memory, detector or fibre was measured.",
+    "Path independence is a modeling assumption and can overstate multipath benefit under correlated failures.",
+    "The scalar visibility composition is a benchmark model, not a universal quantum-channel law.",
+    "No purification scheduler, finite-key QKD analysis, side-channel model or composable secrecy proof is included.",
+    "The 540-chart Q3 web is a different routing layer and is analyzed separately rather than compared as a same-size control."
+  ],
+  "checks": {
+    "w33_40_240_12": true,
+    "w33_diameter_two": true,
+    "w33_nonadjacent_pairs_all_have_four_relays": true,
+    "controls_match_size_degree": true,
+    "rewiring_actually_changed_edges": true
+  }
+}
