@@ -1,0 +1,27 @@
+name: W33 optimal-negativity discrete derivative
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/optimal_negativity_discrete_derivative.py'
+      - 'analysis/mass28_depth4_birth_frontier.py'
+      - '.github/workflows/optimal_negativity_discrete_derivative.yml'
+  workflow_dispatch:
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools numpy scipy
+      - name: Prove and regress the discrete derivative theorem
+        run: PYTHONPATH=analysis python analysis/optimal_negativity_discrete_derivative.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: optimal-negativity-discrete-derivative
+          path: analysis/optimal_negativity_discrete_derivative_certificate.json
