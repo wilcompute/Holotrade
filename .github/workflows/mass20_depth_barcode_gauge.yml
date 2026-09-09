@@ -1,0 +1,46 @@
+name: Mass20 depth birth and octet gauge
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass20_born_depth_and_extension_barcode.py'
+      - 'analysis/octet_gauge_local_minimum_counterexample.py'
+      - 'analysis/signed_pencil_sampling_witness.py'
+      - 'analysis/the_mass12_census_is_complete_and_has_one_exception.py'
+      - 'analysis/the_kernel_is_spanned_by_octet_differences.py'
+      - '.github/workflows/mass20_depth_barcode_gauge.yml'
+  workflow_dispatch:
+
+jobs:
+  mass20-born-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install numpy scipy sympy ortools
+      - name: Search born mass20 classes and build extension barcode
+        run: python analysis/mass20_born_depth_and_extension_barcode.py --budget 180 --cap 20000 --depth-budget 45 --write
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass20-born-depth-extension-barcode
+          path: analysis/mass20_born_depth_and_extension_barcode_certificate.json
+
+  octet-gauge-local-minima:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install numpy scipy sympy ortools
+      - name: Search exact one-octet local minima and test radius two
+        run: python analysis/octet_gauge_local_minimum_counterexample.py --bound 8 --budget 45 --write
+      - uses: actions/upload-artifact@v4
+        with:
+          name: octet-gauge-local-minimum-counterexample
+          path: analysis/octet_gauge_local_minimum_counterexample_certificate.json
