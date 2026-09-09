@@ -28,12 +28,15 @@ jobs:
           node-version: '22'
       - name: Run semantic benchmark tests
         run: node --test tests/w33-quantum-routing-benchmark.test.js
-      - name: Regenerate benchmark certificate
-        run: node experiments/w33_quantum_routing_benchmark.js --write=data/w33_quantum_routing_benchmark.json > /tmp/w33-qroute.json
-      - name: Require frozen certificate equality
-        shell: bash
+      - name: Regenerate benchmark certificate independently
+        run: node experiments/w33_quantum_routing_benchmark.js --write=/tmp/w33_quantum_routing_benchmark.json > /tmp/w33-qroute.stdout.json
+      - name: Require semantic frozen-certificate equality
         run: |
-          if ! git diff --exit-code -- data/w33_quantum_routing_benchmark.json; then
-            echo 'Frozen W33 quantum-routing certificate is stale.' >&2
-            exit 1
-          fi
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const assert = require('node:assert/strict');
+          const frozen = JSON.parse(fs.readFileSync('data/w33_quantum_routing_benchmark.json', 'utf8'));
+          const fresh = JSON.parse(fs.readFileSync('/tmp/w33_quantum_routing_benchmark.json', 'utf8'));
+          assert.deepEqual(frozen, fresh);
+          console.log('Frozen W33 quantum-routing certificate matches fresh deterministic output.');
+          NODE
