@@ -1,14 +1,10 @@
 "use strict";
 
 // Continuation-bound measured-boot challenge for HoloVM process execution.
-//
-// The challenge commits the exact immutable continuation tuple and can also
-// commit the exact W33 checkpoint/snapshot policy, the stricter baseline-aware
-// joint-admission binding, an attested finite-control accelerator certificate,
-// a typed signed-resource certificate, topology attestation, and correlated-
-// failure assessment selected for this dispatch. A hardware verdict therefore
-// cannot be replayed across a different resource/retention/topology context on
-// the same continuation.
+// The challenge commits the continuation and every selected execution-context
+// identity, including both the umbrella W33 signed-resource certificate and the
+// exact representation selection inside it.  This prevents a verifier verdict
+// for depth 0 from being replayed for depth 1/2 under the same certificate.
 
 const A = require("./w33-measured-boot-attestation.js");
 
@@ -31,6 +27,7 @@ function buildContinuationChallenge({
   strictAdmissionBindingDigest = null,
   acceleratorCertificateDigest = null,
   signedResourceCertificateDigest = null,
+  signedResourceSelectionDigest = null,
   topologyAttestationDigest = null,
   failureAssessmentDigest = null,
 }) {
@@ -41,9 +38,11 @@ function buildContinuationChallenge({
   optionalDigest(strictAdmissionBindingDigest, "strictAdmissionBindingDigest");
   optionalDigest(acceleratorCertificateDigest, "acceleratorCertificateDigest");
   optionalDigest(signedResourceCertificateDigest, "signedResourceCertificateDigest");
+  optionalDigest(signedResourceSelectionDigest, "signedResourceSelectionDigest");
   optionalDigest(topologyAttestationDigest, "topologyAttestationDigest");
   optionalDigest(failureAssessmentDigest, "failureAssessmentDigest");
   if (strictAdmissionBindingDigest != null && executionPolicyDigest == null) throw new TypeError("strictAdmissionBindingDigest requires executionPolicyDigest");
+  if (signedResourceSelectionDigest != null && signedResourceCertificateDigest == null) throw new TypeError("signedResourceSelectionDigest requires signedResourceCertificateDigest");
   if (failureAssessmentDigest != null && topologyAttestationDigest == null) throw new TypeError("failureAssessmentDigest requires topologyAttestationDigest");
 
   const base = A.buildChallenge({ passport, contract, runtimePublicKeyDigest });
@@ -64,6 +63,7 @@ function buildContinuationChallenge({
     ...(strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest }),
     ...(acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest }),
     ...(signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest }),
+    ...(signedResourceSelectionDigest == null ? {} : { signedResourceSelectionDigest }),
     ...(topologyAttestationDigest == null ? {} : { topologyAttestationDigest }),
     ...(failureAssessmentDigest == null ? {} : { failureAssessmentDigest }),
   };
@@ -81,9 +81,11 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
   optionalDigest(challenge.strictAdmissionBindingDigest, "strictAdmissionBindingDigest");
   optionalDigest(challenge.acceleratorCertificateDigest, "acceleratorCertificateDigest");
   optionalDigest(challenge.signedResourceCertificateDigest, "signedResourceCertificateDigest");
+  optionalDigest(challenge.signedResourceSelectionDigest, "signedResourceSelectionDigest");
   optionalDigest(challenge.topologyAttestationDigest, "topologyAttestationDigest");
   optionalDigest(challenge.failureAssessmentDigest, "failureAssessmentDigest");
   if (challenge.strictAdmissionBindingDigest != null && challenge.executionPolicyDigest == null) throw new Error("continuation challenge lost policy parent for strict admission binding");
+  if (challenge.signedResourceSelectionDigest != null && challenge.signedResourceCertificateDigest == null) throw new Error("continuation challenge lost certificate parent for signed-resource selection");
   if (challenge.failureAssessmentDigest != null && challenge.topologyAttestationDigest == null) throw new Error("continuation challenge lost topology parent for failure assessment");
 
   const body = {
@@ -100,6 +102,7 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
     ...(challenge.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: challenge.strictAdmissionBindingDigest }),
     ...(challenge.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: challenge.acceleratorCertificateDigest }),
     ...(challenge.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: challenge.signedResourceCertificateDigest }),
+    ...(challenge.signedResourceSelectionDigest == null ? {} : { signedResourceSelectionDigest: challenge.signedResourceSelectionDigest }),
     ...(challenge.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: challenge.topologyAttestationDigest }),
     ...(challenge.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: challenge.failureAssessmentDigest }),
     provider: signedVerdict.body.provider,
@@ -121,7 +124,7 @@ function attachContinuationReceiptMetadata(metadata, passport, contract, challen
 function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
   const binding = verifiedContinuationBinding(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey);
   const kind = binding.provider === A.PROVIDER.TPM2 ? "TPM_QUOTE" : "SEV_SNP_REPORT";
-  const fullyScoped = binding.executionPolicyDigest || binding.strictAdmissionBindingDigest || binding.acceleratorCertificateDigest || binding.signedResourceCertificateDigest || binding.topologyAttestationDigest || binding.failureAssessmentDigest;
+  const fullyScoped = binding.executionPolicyDigest || binding.strictAdmissionBindingDigest || binding.acceleratorCertificateDigest || binding.signedResourceCertificateDigest || binding.signedResourceSelectionDigest || binding.topologyAttestationDigest || binding.failureAssessmentDigest;
   return Object.freeze({
     schema: HARDWARE_EVIDENCE_SCHEMA,
     hardwareAttested: true,
@@ -146,6 +149,7 @@ function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict,
       ...(binding.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: binding.strictAdmissionBindingDigest }),
       ...(binding.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: binding.acceleratorCertificateDigest }),
       ...(binding.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: binding.signedResourceCertificateDigest }),
+      ...(binding.signedResourceSelectionDigest == null ? {} : { signedResourceSelectionDigest: binding.signedResourceSelectionDigest }),
       ...(binding.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: binding.topologyAttestationDigest }),
       ...(binding.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: binding.failureAssessmentDigest }),
     })]),
