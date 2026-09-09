@@ -1,0 +1,43 @@
+name: Mass28 depth4 birth frontier
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass28_depth4_birth_frontier.py'
+      - 'analysis/mass24_no_pencil_depth3_birth_certificate.json'
+      - '.github/workflows/mass28_depth4_birth_frontier.yml'
+  workflow_dispatch:
+
+jobs:
+  inherited-depth3-lineage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Exact immediate descendants of unique depth3 parent
+        run: PYTHONPATH=analysis python analysis/mass28_depth4_birth_frontier.py --mode inherited --depth-budget 60
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass28-inherited-depth3-lineage
+          path: analysis/mass28_depth4_birth_frontier_inherited.json
+
+  no-pencil-depth4-birth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Exhaust no-pencil mass28 sector or report exact partial boundary
+        run: PYTHONPATH=analysis python analysis/mass28_depth4_birth_frontier.py --mode no-pencil --budget 1200 --cap 2000000 --depth-budget 45
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass28-no-pencil-depth4-birth
+          path: analysis/mass28_depth4_birth_frontier_no-pencil.json
