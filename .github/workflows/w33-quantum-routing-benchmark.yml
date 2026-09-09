@@ -1,0 +1,39 @@
+name: W33 quantum routing benchmark
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'experiments/w33_quantum_routing_benchmark.js'
+      - 'tests/w33-quantum-routing-benchmark.test.js'
+      - 'data/w33_quantum_routing_benchmark.json'
+      - '.github/workflows/w33-quantum-routing-benchmark.yml'
+  pull_request:
+    paths:
+      - 'experiments/w33_quantum_routing_benchmark.js'
+      - 'tests/w33-quantum-routing-benchmark.test.js'
+      - 'data/w33_quantum_routing_benchmark.json'
+      - '.github/workflows/w33-quantum-routing-benchmark.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run semantic benchmark tests
+        run: node --test tests/w33-quantum-routing-benchmark.test.js
+      - name: Regenerate benchmark certificate
+        run: node experiments/w33_quantum_routing_benchmark.js --write=data/w33_quantum_routing_benchmark.json > /tmp/w33-qroute.json
+      - name: Require frozen certificate equality
+        shell: bash
+        run: |
+          if ! git diff --exit-code -- data/w33_quantum_routing_benchmark.json; then
+            echo 'Frozen W33 quantum-routing certificate is stale.' >&2
+            exit 1
+          fi
