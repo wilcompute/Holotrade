@@ -1,0 +1,31 @@
+name: Octet gauge radius-two cutting plane
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/octet_gauge_radius_two_cutting_plane.py'
+      - '.github/workflows/octet_gauge_radius_two_cutting_plane.yml'
+  workflow_dispatch:
+
+jobs:
+  radius-two-cutting-plane:
+    strategy:
+      fail-fast: false
+      matrix:
+        index: [0, 1, 2, 3, 4, 5, 6]
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact SAT dependencies
+        run: python -m pip install --upgrade pip && pip install numpy scipy sympy ortools
+      - name: Separation-oracle radius-two attack
+        run: python analysis/octet_gauge_radius_two_cutting_plane.py --index ${{ matrix.index }} --bound 8 --budget 180 --batch 32 --write
+      - uses: actions/upload-artifact@v4
+        with:
+          name: octet-gauge-radius-two-cutting-plane-${{ matrix.index }}
+          path: analysis/octet_gauge_radius_two_cutting_plane_${{ matrix.index }}.json
