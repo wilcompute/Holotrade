@@ -2,6 +2,8 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 const {
   buildW33,
   circulant40,
@@ -62,4 +64,12 @@ test("Witting-frame opportunity is explicitly a 13/40 model multiplier, not a ke
   }
   assert.match(packet.metricBoundary.acceptedWittingFrameOpportunity, /NOT a secret-key rate/);
   assert.ok(packet.limitations.some((x) => /No quantum hardware/.test(x)));
+});
+
+test("frozen quantum-routing certificate is semantically identical to a fresh run", () => {
+  const frozen = JSON.parse(fs.readFileSync(
+    path.resolve(__dirname, "../data/w33_quantum_routing_benchmark.json"),
+    "utf8"
+  ));
+  assert.deepEqual(frozen, run());
 });
