@@ -1,0 +1,44 @@
+name: W33 dynamic signed-resource telemetry
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-signed-resource-telemetry.js'
+      - 'scheduler/w33-dynamic-resource-transaction.js'
+      - 'tests/w33-dynamic-resource-telemetry-crossrepo.test.js'
+      - '.github/workflows/w33_dynamic_resource_telemetry.yml'
+  workflow_dispatch:
+
+jobs:
+  dynamic-resource-telemetry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Holotrade
+        uses: actions/checkout@v4
+      - name: Checkout W33-Theory master
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate live W33 typed resource certificate
+        run: PYTHONPATH=w33/analysis python w33/analysis/w33_signed_representation_economics.py
+      - name: Dynamic signed telemetry cross-repo tests
+        env:
+          W33_SIGNED_RESOURCE_CERT: ${{ github.workspace }}/w33/analysis/w33_signed_representation_economics_certificate.json
+        run: node --test tests/w33-dynamic-resource-telemetry-crossrepo.test.js
+      - name: Existing signed-resource scheduling regressions
+        env:
+          W33_SIGNED_RESOURCE_CERT: ${{ github.workspace }}/w33/analysis/w33_signed_representation_economics_certificate.json
+        run: node --test tests/w33-signed-resource-scheduler-crossrepo.test.js
+      - name: Existing continuation scheduler regression
+        run: node --test tests/w33-continuation-scheduler.test.js
+      - name: Existing continuation attestation regression
+        run: node --test tests/w33-continuation-attestation.test.js
+      - name: Existing continuation transaction regression
+        run: node --test tests/w33-continuation-transaction.test.js
