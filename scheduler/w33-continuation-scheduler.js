@@ -4,21 +4,17 @@
 //
 // Scheduling identity is the immutable continuation tuple, optionally refined
 // by independently content-addressed execution policy, strict joint-admission
-// binding, and finite-control accelerator certificate. A replay worker is
-// eligible only when evidence, topology, exact retained-union accounting and
-// requested W33 line-resilience checks all pass. The selected execution context
-// is included in the measured-boot challenge, not appended after verification.
-//
-// Resilience has two deterministic layers: all-lines-hit remains a hard veto;
-// otherwise additionalFailuresToBlockAllLines is the exact minimum number of
-// additional W33 point failures needed to reach that veto. It is not a
-// probability estimate.
+// binding, finite-control accelerator certificate, and typed signed-resource
+// certificate. A replay worker is eligible only when evidence, topology, exact
+// retained-union accounting and requested W33 line-resilience checks all pass.
+// The selected execution context is included in the measured-boot challenge.
 
 const crypto = require("node:crypto");
 const C = require("../js/w33-continuation-attestation.js");
 const J = require("../js/w33-joint-admission-policy.js");
 const H = require("../js/w33-strict-admission-binding.js");
 const X = require("../js/w33-accelerator-certificate.js");
+const P = require("../js/w33-signed-resource-policy.js");
 const R = require("./w33-topology-resilience.js");
 const D = require("./w33-failure-distance.js");
 
@@ -49,9 +45,7 @@ function normalizeRequest(request) {
   if (!request.passport || !request.contract) throw new TypeError("passport and deployment contract required");
 
   const requireLineResilience = request.requireLineResilience === true;
-  if (!requireLineResilience && request.minimumAdditionalFailuresToBlockAllLines != null) {
-    throw new TypeError("minimumAdditionalFailuresToBlockAllLines requires requireLineResilience=true");
-  }
+  if (!requireLineResilience && request.minimumAdditionalFailuresToBlockAllLines != null) throw new TypeError("minimumAdditionalFailuresToBlockAllLines requires requireLineResilience=true");
   const minimumAdditionalFailuresToBlockAllLines = requireLineResilience
     ? natural(request.minimumAdditionalFailuresToBlockAllLines == null ? 1 : request.minimumAdditionalFailuresToBlockAllLines, "minimumAdditionalFailuresToBlockAllLines")
     : 0;
@@ -62,9 +56,7 @@ function normalizeRequest(request) {
     executionPolicy = J.verifyPolicy(request.executionPolicy, request);
     executionPolicyDigest = executionPolicy.executionPolicyDigest;
     if (request.executionPolicyDigest != null && request.executionPolicyDigest !== executionPolicyDigest) throw new Error("request executionPolicyDigest disagrees with verified W33 policy");
-  } else if (request.executionPolicyDigest != null) {
-    throw new TypeError("executionPolicyDigest requires the full verifiable W33 executionPolicy certificate");
-  }
+  } else if (request.executionPolicyDigest != null) throw new TypeError("executionPolicyDigest requires the full verifiable W33 executionPolicy certificate");
 
   let strictAdmissionBinding = null;
   let strictAdmissionBindingDigest = null;
@@ -72,9 +64,7 @@ function normalizeRequest(request) {
     if (!executionPolicy) throw new TypeError("strictAdmissionBinding requires the full W33 executionPolicy certificate");
     strictAdmissionBinding = H.verifyStrictBinding(request.strictAdmissionBinding, executionPolicy, request);
     strictAdmissionBindingDigest = strictAdmissionBinding.strictBindingDigest;
-  } else if (request.strictAdmissionBindingDigest != null) {
-    throw new TypeError("strictAdmissionBindingDigest requires the full verifiable strictAdmissionBinding certificate");
-  }
+  } else if (request.strictAdmissionBindingDigest != null) throw new TypeError("strictAdmissionBindingDigest requires the full verifiable strictAdmissionBinding certificate");
   if (request.strictAdmissionBindingDigest != null && request.strictAdmissionBindingDigest !== strictAdmissionBindingDigest) throw new Error("request strictAdmissionBindingDigest disagrees with verified W33 strict binding");
 
   let acceleratorCertificate = null;
@@ -88,8 +78,17 @@ function normalizeRequest(request) {
     });
     acceleratorCertificateDigest = acceleratorCertificate.acceleratorCertificateDigest;
     if (request.acceleratorCertificateDigest != null && request.acceleratorCertificateDigest !== acceleratorCertificateDigest) throw new Error("request acceleratorCertificateDigest disagrees with verified W33 accelerator certificate");
-  } else if (request.acceleratorCertificateDigest != null) {
-    throw new TypeError("acceleratorCertificateDigest requires the full verifiable accelerator certificate");
+  } else if (request.acceleratorCertificateDigest != null) throw new TypeError("acceleratorCertificateDigest requires the full verifiable accelerator certificate");
+
+  let signedResource = null;
+  let signedResourceCertificateDigest = null;
+  if (request.signedResourceCertificate != null) {
+    if (typeof request.representationClass !== "string") throw new TypeError("representationClass required with signedResourceCertificate");
+    signedResource = P.verifySignedResourceCertificate(request.signedResourceCertificate, request.representationClass);
+    signedResourceCertificateDigest = signedResource.certificateDigest;
+    if (request.signedResourceCertificateDigest != null && request.signedResourceCertificateDigest !== signedResourceCertificateDigest) throw new Error("request signedResourceCertificateDigest disagrees with verified W33 resource certificate");
+  } else if (request.signedResourceCertificateDigest != null || request.representationClass != null) {
+    throw new TypeError("signedResourceCertificateDigest/representationClass require the full verifiable signedResourceCertificate");
   }
 
   return Object.freeze({
@@ -102,6 +101,8 @@ function normalizeRequest(request) {
     strictAdmissionBindingDigest,
     acceleratorCertificate,
     acceleratorCertificateDigest,
+    signedResource,
+    signedResourceCertificateDigest,
     requireLineResilience,
     minimumAdditionalFailuresToBlockAllLines,
   });
@@ -158,6 +159,10 @@ function eligibility(candidate, request) {
     const code = request.strictAdmissionBinding ? "EXACT_STRICT_RETAINED_DELTA_REQUIRED" : request.executionPolicyDigest ? "EXACT_POLICY_RETAINED_DELTA_REQUIRED" : "EXACT_RETAINED_DELTA_REQUIRED";
     return Object.freeze({ ok: false, code });
   }
+  if (request.signedResource) {
+    try { P.validateUnitPrices(candidate.signedResourceUnitPrices); }
+    catch (_) { return Object.freeze({ ok: false, code: "COMPLETE_SIGNED_RESOURCE_UNIT_PRICES_REQUIRED" }); }
+  }
   return Object.freeze({ ok: true, code: "ELIGIBLE", resilience });
 }
 
@@ -171,7 +176,10 @@ function priceCandidate(candidate, request, policy = {}) {
   const computeUSD = durationSeconds * computePerSecondUSD;
   const retainedUSD = deltaBytes * durationSeconds * retainedByteSecondUSD;
   const transferUSD = deltaBytes * transferByteUSD;
-  return Object.freeze({ deltaBytes, computeUSD, retainedUSD, transferUSD, startupUSD, totalUSD: computeUSD + retainedUSD + transferUSD + startupUSD });
+  const signedResourcePrice = request.signedResource ? P.priceSignedResource(request.signedResource, candidate.signedResourceUnitPrices) : null;
+  const legacyTotalUSD = computeUSD + retainedUSD + transferUSD + startupUSD;
+  const signedResourceUSD = signedResourcePrice == null ? 0 : signedResourcePrice.totalUSD;
+  return Object.freeze({ deltaBytes, computeUSD, retainedUSD, transferUSD, startupUSD, legacyTotalUSD, signedResourceUSD, signedResourcePrice, totalUSD: legacyTotalUSD + signedResourceUSD });
 }
 
 function dispatchFor(candidate, request, policy = {}) {
@@ -182,6 +190,7 @@ function dispatchFor(candidate, request, policy = {}) {
   const failureAssessmentDigest = resilience == null ? null : sha256(resilience);
   const strictBinding = request.strictAdmissionBinding;
   const accelerator = request.acceleratorCertificate;
+  const signedResource = request.signedResource;
   const challenge = C.buildContinuationChallenge({
     passport: request.passport,
     contract: request.contract,
@@ -192,6 +201,7 @@ function dispatchFor(candidate, request, policy = {}) {
     executionPolicyDigest: request.executionPolicyDigest,
     strictAdmissionBindingDigest: request.strictAdmissionBindingDigest,
     acceleratorCertificateDigest: request.acceleratorCertificateDigest,
+    signedResourceCertificateDigest: request.signedResourceCertificateDigest,
     topologyAttestationDigest: candidate.topology.attestationDigest,
     failureAssessmentDigest,
   });
@@ -223,6 +233,23 @@ function dispatchFor(candidate, request, policy = {}) {
       acceleratorExecutableTransvections: accelerator.executableTransvections,
       acceleratorCalibrationEpoch: accelerator.calibrationEpoch,
       acceleratorPhysicalCalibrationEvidenceDigest: accelerator.physicalCalibrationEvidenceDigest,
+    }),
+    ...(signedResource == null ? {} : {
+      signedResourceCertificateDigest: signedResource.certificateDigest,
+      signedResourceSelectionDigest: signedResource.selectionDigest,
+      representationClass: signedResource.representationClass,
+      representationAmplification: signedResource.representationAmplification,
+      signedSamplingSecondMomentFactor: signedResource.signedSamplingSecondMomentFactor,
+      signedResourceVector: {
+        semanticGuestSteps: signedResource.semanticGuestSteps,
+        w33RouteHops: signedResource.w33RouteHops,
+        authenticatedRetainedByteTicks: signedResource.authenticatedRetainedByteTicks,
+        authenticatedSweptPayloadBytes: signedResource.authenticatedSweptPayloadBytes,
+        deterministicReplaySteps: signedResource.deterministicReplaySteps,
+        representationExcessAminus1: signedResource.representationExcessAminus1,
+        samplingExcessA2minus1: signedResource.samplingExcessA2minus1,
+      },
+      signedResourcePriceDigest: price.signedResourcePrice.priceDigest,
     }),
     evidenceFloor: request.evidenceFloor,
     workerEvidenceLevel: candidate.evidenceLevel,
@@ -272,6 +299,8 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
   if ((existingDispatch.executionPolicyDigest || null) !== (request.executionPolicyDigest || null)) throw new Error("worker migration may not mutate execution policy identity");
   if ((existingDispatch.strictAdmissionBindingDigest || null) !== (request.strictAdmissionBindingDigest || null)) throw new Error("worker migration may not mutate strict W33 admission binding identity");
   if ((existingDispatch.acceleratorCertificateDigest || null) !== (request.acceleratorCertificateDigest || null)) throw new Error("worker migration may not mutate accelerator certificate identity");
+  if ((existingDispatch.signedResourceCertificateDigest || null) !== (request.signedResourceCertificateDigest || null)) throw new Error("worker migration may not mutate signed-resource certificate identity");
+  if ((existingDispatch.representationClass || null) !== (request.representationClass || null)) throw new Error("worker migration may not mutate signed representation class");
   const next = dispatchFor(targetCandidate, request, policy);
   const body = {
     schema: MIGRATION_SCHEMA,
@@ -283,6 +312,7 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
     ...(request.executionPolicyDigest == null ? {} : { executionPolicyDigest: request.executionPolicyDigest }),
     ...(request.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: request.strictAdmissionBindingDigest, jointPlanDigest: request.strictAdmissionBinding.jointPlanDigest, strategyDigest: request.strictAdmissionBinding.strategyDigest, strictPlacementDigest: request.strictAdmissionBinding.placementDigest }),
     ...(request.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: request.acceleratorCertificateDigest }),
+    ...(request.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: request.signedResourceCertificateDigest, representationClass: request.representationClass }),
     oldChallengeDigest: existingDispatch.attestationChallengeDigest,
     newChallengeDigest: next.attestationChallengeDigest,
     oldRuntimePublicKeyDigest: existingDispatch.runtimePublicKeyDigest,
