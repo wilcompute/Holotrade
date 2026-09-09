@@ -11,6 +11,7 @@ const J = require("../js/w33-joint-admission-policy.js");
 const H = require("../js/w33-strict-admission-binding.js");
 const X = require("../js/w33-accelerator-certificate.js");
 const P = require("../js/w33-signed-resource-policy.js");
+const M = require("../js/w33-representation-market-identity.js");
 const R = require("./w33-topology-resilience.js");
 const D = require("./w33-failure-distance.js");
 
@@ -74,20 +75,24 @@ function normalizeRequest(request) {
   } else if (request.acceleratorCertificateDigest != null) throw new TypeError("acceleratorCertificateDigest requires the full verifiable accelerator certificate");
 
   let signedResource = null, signedResourceCertificateDigest = null, signedResourceSelectionDigest = null;
+  let representationMarketIdentity = null, representationMarketIdentityDigest = null;
   if (request.signedResourceCertificate != null) {
     if (typeof request.representationClass !== "string") throw new TypeError("representationClass required with signedResourceCertificate");
     signedResource = P.verifySignedResourceCertificate(request.signedResourceCertificate, request.representationClass);
     signedResourceCertificateDigest = signedResource.certificateDigest;
     signedResourceSelectionDigest = signedResource.selectionDigest;
+    representationMarketIdentity = M.identityFromSelection(signedResource);
+    representationMarketIdentityDigest = representationMarketIdentity.representationMarketIdentityDigest;
     if (request.signedResourceCertificateDigest != null && request.signedResourceCertificateDigest !== signedResourceCertificateDigest) throw new Error("request signedResourceCertificateDigest disagrees with verified W33 resource certificate");
     if (request.signedResourceSelectionDigest != null && request.signedResourceSelectionDigest !== signedResourceSelectionDigest) throw new Error("request signedResourceSelectionDigest disagrees with verified W33 resource selection");
-  } else if (request.signedResourceCertificateDigest != null || request.signedResourceSelectionDigest != null || request.representationClass != null) {
-    throw new TypeError("signed resource digests/representationClass require the full verifiable signedResourceCertificate");
+    if (request.representationMarketIdentityDigest != null && request.representationMarketIdentityDigest !== representationMarketIdentityDigest) throw new Error("request representationMarketIdentityDigest disagrees with verified W33 representation selection");
+  } else if (request.signedResourceCertificateDigest != null || request.signedResourceSelectionDigest != null || request.representationClass != null || request.representationMarketIdentityDigest != null) {
+    throw new TypeError("signed resource digests/representationClass/representationMarketIdentityDigest require the full verifiable signedResourceCertificate");
   }
 
   return Object.freeze({ ...request, evidenceFloor, requiredPoints: Object.freeze(requiredPoints), executionPolicy, executionPolicyDigest,
     strictAdmissionBinding, strictAdmissionBindingDigest, acceleratorCertificate, acceleratorCertificateDigest,
-    signedResource, signedResourceCertificateDigest, signedResourceSelectionDigest,
+    signedResource, signedResourceCertificateDigest, signedResourceSelectionDigest, representationMarketIdentity, representationMarketIdentityDigest,
     requireLineResilience, minimumAdditionalFailuresToBlockAllLines });
 }
 
@@ -161,6 +166,7 @@ function dispatchFor(candidate, request, policy = {}) {
     continuationRoot: request.continuationRoot, processId: request.processId, generation: request.generation, executionPolicyDigest: request.executionPolicyDigest,
     strictAdmissionBindingDigest: request.strictAdmissionBindingDigest, acceleratorCertificateDigest: request.acceleratorCertificateDigest,
     signedResourceCertificateDigest: request.signedResourceCertificateDigest, signedResourceSelectionDigest: request.signedResourceSelectionDigest,
+    representationMarketIdentityDigest: request.representationMarketIdentityDigest,
     topologyAttestationDigest: candidate.topology.attestationDigest, failureAssessmentDigest });
   const body = {
     schema: SCHEMA, workerId: String(candidate.id), continuationRoot: request.continuationRoot, processId: request.processId, generation: request.generation,
@@ -174,6 +180,7 @@ function dispatchFor(candidate, request, policy = {}) {
       acceleratorExecutableTransvections: accelerator.executableTransvections, acceleratorCalibrationEpoch: accelerator.calibrationEpoch,
       acceleratorPhysicalCalibrationEvidenceDigest: accelerator.physicalCalibrationEvidenceDigest }),
     ...(signedResource == null ? {} : { signedResourceCertificateDigest: signedResource.certificateDigest, signedResourceSelectionDigest: signedResource.selectionDigest,
+      representationMarketIdentityDigest: request.representationMarketIdentityDigest,
       representationClass: signedResource.representationClass, representationAmplification: signedResource.representationAmplification,
       signedSamplingSecondMomentFactor: signedResource.signedSamplingSecondMomentFactor,
       signedResourceVector: { semanticGuestSteps: signedResource.semanticGuestSteps, w33RouteHops: signedResource.w33RouteHops,
@@ -212,6 +219,7 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
   if ((existingDispatch.acceleratorCertificateDigest || null) !== (request.acceleratorCertificateDigest || null)) throw new Error("worker migration may not mutate accelerator certificate identity");
   if ((existingDispatch.signedResourceCertificateDigest || null) !== (request.signedResourceCertificateDigest || null)) throw new Error("worker migration may not mutate signed-resource certificate identity");
   if ((existingDispatch.signedResourceSelectionDigest || null) !== (request.signedResourceSelectionDigest || null)) throw new Error("worker migration may not mutate signed-resource selection identity");
+  if ((existingDispatch.representationMarketIdentityDigest || null) !== (request.representationMarketIdentityDigest || null)) throw new Error("worker migration may not mutate representation market identity");
   if ((existingDispatch.representationClass || null) !== (request.representationClass || null)) throw new Error("worker migration may not mutate signed representation class");
   const next = dispatchFor(targetCandidate, request, policy);
   const body = { schema: MIGRATION_SCHEMA, fromWorkerId: existingDispatch.workerId, toWorkerId: next.workerId, continuationRoot: request.continuationRoot,
@@ -219,7 +227,7 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
     ...(request.executionPolicyDigest == null ? {} : { executionPolicyDigest: request.executionPolicyDigest }),
     ...(request.strictAdmissionBindingDigest == null ? {} : { strictAdmissionBindingDigest: request.strictAdmissionBindingDigest, jointPlanDigest: request.strictAdmissionBinding.jointPlanDigest, strategyDigest: request.strictAdmissionBinding.strategyDigest, strictPlacementDigest: request.strictAdmissionBinding.placementDigest }),
     ...(request.acceleratorCertificateDigest == null ? {} : { acceleratorCertificateDigest: request.acceleratorCertificateDigest }),
-    ...(request.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: request.signedResourceCertificateDigest, signedResourceSelectionDigest: request.signedResourceSelectionDigest, representationClass: request.representationClass }),
+    ...(request.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: request.signedResourceCertificateDigest, signedResourceSelectionDigest: request.signedResourceSelectionDigest, representationMarketIdentityDigest: request.representationMarketIdentityDigest, representationClass: request.representationClass }),
     oldChallengeDigest: existingDispatch.attestationChallengeDigest, newChallengeDigest: next.attestationChallengeDigest,
     oldRuntimePublicKeyDigest: existingDispatch.runtimePublicKeyDigest, newRuntimePublicKeyDigest: next.runtimePublicKeyDigest,
     oldTopologyAttestationDigest: existingDispatch.topologyAttestationDigest, newTopologyAttestationDigest: next.topologyAttestationDigest,
