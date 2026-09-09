@@ -24,9 +24,10 @@ jobs:
           set -euo pipefail
           python -m pip install --upgrade pip
           pip install ortools sympy
-          # 4ti2 comes from Ubuntu. Disable unrelated third-party runner sources
-          # so transient Chrome index skew cannot block the exact algebra job.
-          sudo rm -f /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google.list || true
+          # 4ti2 comes only from Ubuntu.  GitHub's runner image can register
+          # Chrome under either .list or deb822 .sources files; remove every
+          # unrelated source that mentions dl.google.com before refreshing APT.
+          while IFS= read -r f; do sudo rm -f "$f"; done < <(sudo grep -RIl 'dl\.google\.com' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null || true)
           sudo apt-get clean
           sudo rm -rf /var/lib/apt/lists/*
           sudo apt-get update
