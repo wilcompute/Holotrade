@@ -1,0 +1,27 @@
+name: Mass20 exact real-l1 exceptional filtration
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass20_real_l1_exceptional_filtration.py'
+      - '.github/workflows/mass20_real_l1_exceptional_filtration.yml'
+  workflow_dispatch:
+
+jobs:
+  certify-real-l1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact LP dependencies
+        run: python -m pip install --upgrade pip && pip install numpy scipy sympy ortools
+      - name: Certify all 52 exceptional mass20 real-l1 optima
+        run: python analysis/mass20_real_l1_exceptional_filtration.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass20-real-l1-exceptional-filtration
+          path: analysis/mass20_real_l1_exceptional_filtration_certificate.json
