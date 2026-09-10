@@ -1,0 +1,41 @@
+name: Mass24 1080 irreducible decomposition
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass24_1080_irreducible_decomposition.py'
+      - '.github/workflows/mass24_1080_irreducible_decomposition.yml'
+  workflow_dispatch:
+
+jobs:
+  decompose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Holotrade
+        uses: actions/checkout@v4
+      - name: Checkout W33-Theory master
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact algebra dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install numpy sympy scipy ortools
+          sudo apt-get update
+          sudo apt-get install -y gap
+      - name: Decompose actual 1080 permutation modules
+        env:
+          W33_ANALYSIS: ${{ github.workspace }}/w33/analysis
+        run: PYTHONPATH=analysis python analysis/mass24_1080_irreducible_decomposition.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass24-1080-irreducible-decomposition
+          path: analysis/mass24_1080_irreducible_decomposition_certificate.json
