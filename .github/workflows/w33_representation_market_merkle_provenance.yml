@@ -1,0 +1,35 @@
+name: W33 representation market Merkle provenance
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-representation-market-merkle-provenance.js'
+      - 'tests/w33-representation-market-merkle-provenance-crossrepo.test.js'
+      - '.github/workflows/w33_representation_market_merkle_provenance.yml'
+  workflow_dispatch:
+
+jobs:
+  mmr-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Holotrade
+        uses: actions/checkout@v4
+      - name: Checkout W33-Theory master
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate current signed representation economics certificate
+        run: PYTHONPATH=w33/analysis python w33/analysis/w33_signed_representation_economics.py
+      - name: Verify logarithmic inclusion and consistency proofs
+        env:
+          W33_SIGNED_RESOURCE_CERT: ${{ github.workspace }}/w33/analysis/w33_signed_representation_economics_certificate.json
+        run: |
+          node --test tests/w33-representation-market-provenance-crossrepo.test.js
+          node --test tests/w33-representation-market-merkle-provenance-crossrepo.test.js
