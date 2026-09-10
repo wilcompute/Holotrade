@@ -3,19 +3,14 @@
 
 The mass-24 depth-three orbit and the obstruction carrier are reconstructed in
 the same faithful 40-point PSp(4,3) permutation group used by the green
-character-fingerprint certificate.  Their point stabilizers H_m,H_o have order
-24.  We export those *actual subgroups of the same permutation group* to GAP and
-compute
-
-    C[G/H_m] = Ind_Hm^G(1),   C[G/H_o] = Ind_Ho^G(1)
-
-against Irr(G).  This avoids any ambiguous hand matching of conjugacy classes.
-The unique degree-81 irreducible is recorded explicitly as the Steinberg
-constituent.
+character-fingerprint certificate. Their point stabilizers H_m,H_o have order
+24. We export those actual subgroups of the same permutation group to GAP and
+compute C[G/H_m] and C[G/H_o] against Irr(G). The unique degree-81 irreducible
+is recorded explicitly as the Steinberg constituent.
 """
 from __future__ import annotations
 
-import json, os, shutil, subprocess, sys, tempfile
+import json, os, shutil, subprocess, sys
 from pathlib import Path
 
 HERE=Path(__file__).resolve().parent
@@ -47,7 +42,7 @@ def build_actions():
 def run_gap(Ggens,Hm,Ho):
     gap=shutil.which("gap")
     if not gap: raise RuntimeError("GAP is required")
-    script=f'''\nG:=Group({gap_list(Ggens)});;\nHm:=Group({gap_list(Hm)});; Ho:=Group({gap_list(Ho)});;\nif Size(G)<>25920 or Size(Hm)<>24 or Size(Ho)<>24 then Error("group size drift"); fi;\nirr:=Irr(G);; cm:=InducedClassFunction(TrivialCharacter(Hm),G);; co:=InducedClassFunction(TrivialCharacter(Ho),G);;\ndm:=List(irr,x->ScalarProduct(cm,x));; do:=List(irr,x->ScalarProduct(co,x));;\nidsm:=Filtered([1..Length(irr)],i->dm[i]<>0);; idso:=Filtered([1..Length(irr)],i->do[i]<>0);;\nst:=Filtered([1..Length(irr)],i->irr[i][1]=81);; if Length(st)<>1 then Error("Steinberg degree-81 not unique"); fi;\nPrint("irr_count=",Length(irr),"\\n");\nPrint("degrees=",JoinStringsWithSeparator(List(irr,x->String(x[1])),","),"\\n");\nPrint("mass_ids=",JoinStringsWithSeparator(List(idsm,String),","),"\\n");\nPrint("mass_mults=",JoinStringsWithSeparator(List(idsm,i->String(dm[i])),","),"\\n");\nPrint("mass_degrees=",JoinStringsWithSeparator(List(idsm,i->String(irr[i][1])),","),"\\n");\nPrint("obs_ids=",JoinStringsWithSeparator(List(idso,String),","),"\\n");\nPrint("obs_mults=",JoinStringsWithSeparator(List(idso,i->String(do[i])),","),"\\n");\nPrint("obs_degrees=",JoinStringsWithSeparator(List(idso,i->String(irr[i][1])),","),"\\n");\nPrint("mass_norm=",ScalarProduct(cm,cm),"\\n"); Print("obs_norm=",ScalarProduct(co,co),"\\n"); Print("cross_hom=",ScalarProduct(cm,co),"\\n");\nPrint("steinberg_index=",st[1],"\\n"); Print("mass_steinberg_mult=",dm[st[1]],"\\n"); Print("obs_steinberg_mult=",do[st[1]],"\\n");\nQUIT;\n'''
+    script=f'''\nG:=Group({gap_list(Ggens)});;\nHm:=Group({gap_list(Hm)});; Ho:=Group({gap_list(Ho)});;\nif Size(G)<>25920 or Size(Hm)<>24 or Size(Ho)<>24 then Error("group size drift"); fi;\nirr:=Irr(G);; cm:=InducedClassFunction(TrivialCharacter(Hm),G);; co:=InducedClassFunction(TrivialCharacter(Ho),G);;\ndm:=List(irr,x->ScalarProduct(cm,x));; dobs:=List(irr,x->ScalarProduct(co,x));;\nidsm:=Filtered([1..Length(irr)],i->dm[i]<>0);; idso:=Filtered([1..Length(irr)],i->dobs[i]<>0);;\nst:=Filtered([1..Length(irr)],i->irr[i][1]=81);; if Length(st)<>1 then Error("Steinberg degree-81 not unique"); fi;\nPrint("irr_count=",Length(irr),"\\n");\nPrint("degrees=",JoinStringsWithSeparator(List(irr,x->String(x[1])),","),"\\n");\nPrint("mass_ids=",JoinStringsWithSeparator(List(idsm,String),","),"\\n");\nPrint("mass_mults=",JoinStringsWithSeparator(List(idsm,i->String(dm[i])),","),"\\n");\nPrint("mass_degrees=",JoinStringsWithSeparator(List(idsm,i->String(irr[i][1])),","),"\\n");\nPrint("obs_ids=",JoinStringsWithSeparator(List(idso,String),","),"\\n");\nPrint("obs_mults=",JoinStringsWithSeparator(List(idso,i->String(dobs[i])),","),"\\n");\nPrint("obs_degrees=",JoinStringsWithSeparator(List(idso,i->String(irr[i][1])),","),"\\n");\nPrint("mass_norm=",ScalarProduct(cm,cm),"\\n"); Print("obs_norm=",ScalarProduct(co,co),"\\n"); Print("cross_hom=",ScalarProduct(cm,co),"\\n");\nPrint("steinberg_index=",st[1],"\\n"); Print("mass_steinberg_mult=",dm[st[1]],"\\n"); Print("obs_steinberg_mult=",dobs[st[1]],"\\n");\nQUIT;\n'''
     cp=subprocess.run([gap,"-q"],input=script,text=True,capture_output=True,check=True,timeout=120)
     parsed={}
     for line in cp.stdout.splitlines():
@@ -67,18 +62,20 @@ def main():
     assert sum(d*m for _,d,m in mass)==1080 and sum(d*m for _,d,m in obstruction)==1080
     mass_map={i:m for i,d,m in mass}; obs_map={i:m for i,d,m in obstruction}
     differing=[]
+    degrees=ints(p["degrees"])
     for i in sorted(set(mass_map)|set(obs_map)):
         a=mass_map.get(i,0); b=obs_map.get(i,0)
-        if a!=b: differing.append({"irreducibleIndex":i,"degree":ints(p["degrees"])[i-1],"massMultiplicity":a,"obstructionMultiplicity":b})
+        if a!=b: differing.append({"irreducibleIndex":i,"degree":degrees[i-1],"massMultiplicity":a,"obstructionMultiplicity":b})
+    sm=int(p["mass_steinberg_mult"]); so=int(p["obs_steinberg_mult"])
     out={
-      "schema":"holotrade.mass24-1080-irreducible-decomposition.v1","status":"PASS","group":"PSp(4,3)=U4(2)","groupOrder":25920,
+      "schema":"holotrade.mass24-1080-irreducible-decomposition.v2","status":"PASS","group":"PSp(4,3)=U4(2)","groupOrder":25920,
       "massStabilizerOrder":24,"obstructionStabilizerOrder":24,"irreducibleCharacterCount":int(p["irr_count"]),
       "massConstituents":[{"index":i,"degree":d,"multiplicity":m} for i,d,m in mass],
       "obstructionConstituents":[{"index":i,"degree":d,"multiplicity":m} for i,d,m in obstruction],
       "massOrbitalRank":int(p["mass_norm"]),"obstructionOrbitalRank":int(p["obs_norm"]),"complexHomDimension":int(p["cross_hom"]),
-      "steinberg":{"irreducibleIndex":int(p["steinberg_index"]),"degree":81,"massMultiplicity":int(p["mass_steinberg_mult"]),"obstructionMultiplicity":int(p["obs_steinberg_mult"])},
+      "steinberg":{"irreducibleIndex":int(p["steinberg_index"]),"degree":81,"massMultiplicity":sm,"obstructionMultiplicity":so,"crossSteinbergHomDimension":sm*so},
       "differingConstituents":differing,"permutationModulesIsomorphic":not differing,
-      "theorem":"The two degree-1080 permutation modules are decomposed against Irr(PSp(4,3)) using their actual order-24 stabilizers in one faithful permutation group. Any row in differingConstituents is an exact representation-theoretic obstruction to module isomorphism.",
+      "theorem":"The two degree-1080 permutation modules are decomposed against Irr(PSp(4,3)) using their actual order-24 stabilizers in one faithful permutation group. The Steinberg cross-Hom dimension is the product of the exact Steinberg multiplicities.",
       "boundary":"Finite complex representation theory only. Shared constituents, including Steinberg-81, do not identify the underlying G-sets or physical systems."
     }
     path=HERE/"mass24_1080_irreducible_decomposition_certificate.json"; path.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
