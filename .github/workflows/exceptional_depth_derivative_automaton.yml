@@ -1,0 +1,27 @@
+name: Exceptional depth derivative automaton
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/exceptional_depth_derivative_automaton.py'
+      - 'analysis/mass32_depth4_birth_certificate.json'
+      - '.github/workflows/exceptional_depth_derivative_automaton.yml'
+  workflow_dispatch:
+
+jobs:
+  automaton:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy numpy
+      - name: Build exact stabilizer-quotiented derivative automaton
+        run: PYTHONPATH=analysis python analysis/exceptional_depth_derivative_automaton.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exceptional-depth-derivative-automaton
+          path: analysis/exceptional_depth_derivative_automaton_certificate.json
