@@ -1,0 +1,55 @@
+{
+  "boundary": "Exact finite W(3,3) signed-preimage optimization. Negativity and l1 values are representation/estimator quantities, not physical energy, magic-state cost, or hardware performance.",
+  "deltaRealHistogram": {"3": 4, "4": 2},
+  "depth4BirthOrbitCount": 2,
+  "depth4Births": [
+    {
+      "deltaReal": "4",
+      "fractionalCertificate": {
+        "dual": ["1","1","-4","1","1","1","-2","-1","1","-4","1","1","-4","1","4","0","-3","0","1","0","0","0","0","0","0","-3","0","1","3","0","2","0","0","0","0","5","0","0","0","0"],
+        "l1": "16",
+        "primal": ["0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","2","0","0","-2","0","0","-2","0","2","2","2","0","0","2","0","0","0","0","0","0","2","0","0","0"]
+      },
+      "gammaReal": "16",
+      "integerDepth": 4,
+      "integerL1": "16",
+      "integerPreimage": [-2,0,0,0,0,0,2,0,-2,0,0,0,2,0,2,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,2,0,0,0,2,0,0,0],
+      "orbitSize": 1080,
+      "representative": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,2,4,2,2,2,0,0,0,0,2,2,0,2,2,0,0,2,0,2,4,2],
+      "representativeDigest": "sha256:eb4657b57071307a86e71a82d9424b70940c0b920f6c7df5b53a8bb27164b278"
+    },
+    {
+      "deltaReal": "4",
+      "fractionalCertificate": {
+        "dual": ["1","1","-5","2","1","-1","1","-2","-2","-2","3","0","-1","1","0","-1","0","0","0","0","0","0","-4","1","1","1","0","0","1","-4","3","0","0","0","0","0","2","0","6","-3"],
+        "l1": "16",
+        "primal": ["0","0","0","-1","0","0","0","0","0","0","0","1","0","-1","-1","2","1","0","2","0","0","1","0","0","0","0","0","1","0","1","0","0","-1","1","0","0","0","0","1","1"]
+      },
+      "gammaReal": "16",
+      "integerDepth": 4,
+      "integerL1": "16",
+      "integerPreimage": [0,0,0,0,-1,1,0,0,0,0,1,1,1,-1,0,1,1,0,2,0,-1,1,0,0,0,0,0,0,0,1,0,0,-1,1,0,1,0,0,0,0],
+      "orbitSize": 2160,
+      "representative": [0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,2,0,2,2,0,2,0,0,0,0,1,0,0,0,1,2,3,3,3,1,2,3,2,1],
+      "representativeDigest": "sha256:56d05061da4b2003ba648e2c8418883849c9fa616baadcd01f1bbe3c84672adf"
+    }
+  ],
+  "firstDepth4MassProved": true,
+  "integerDepthHistogram": {"3": 4, "4": 2},
+  "k": 8,
+  "mass": 32,
+  "noPencilEnumerationComplete": true,
+  "noPencilOrbitCount": 6,
+  "proof": "The independently completed mass-28 frontier proves global maximum integer negativity depth 3. Any mass-32 depth-4 class containing a point pencil would descend by pencil subtraction to a mass-28 class of depth at least 4, impossible. Therefore depth 4 at mass 32 can only be born in the no-contained-pencil sector. The cited CP-SAT run exhausts that sector (93,960 vectors, six PSp(4,3) orbits) and exact optimization resolves all six; exactly two have depth 4.",
+  "rawSolutionsFound": 93960,
+  "realIntegerStatement": "On all six no-pencil mass-32 orbits, delta_R equals integer negativity depth; the two depth-4 births have gamma_R=16 and delta_R=4.",
+  "schema": "holotrade.mass32-depth4-birth-certificate.v1",
+  "source": {
+    "artifactId": 10120693831,
+    "artifactZipSha256": "0f422cdd5004cfa01f5ad3705a4ce6fc730ad1991d6a45fe000faed7751860e4",
+    "repository": "wilcompute/Holotrade",
+    "workflowJob": 102601066896,
+    "workflowRun": 34391630041
+  },
+  "status": "PASS"
+}
