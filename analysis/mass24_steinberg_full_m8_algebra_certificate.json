@@ -1,0 +1,44 @@
+{
+  "automorphismStructure": {
+    "carrierSplitOrbitDimension": 30,
+    "carrierSplitStabilizer": "(GL3(Q) x GL5(Q)) / Q^x",
+    "carrierSplitStabilizerDimension": 33,
+    "fullAutomorphismDimension": 63,
+    "fullQAlgebraAutomorphisms": "PGL8(Q) by Skolem-Noether for M8(Q)",
+    "unorderedPrimitiveFrameNormalizer": "((Q^x)^3 semidirect S3) x ((Q^x)^5 semidirect S5), modulo the common scalar"
+  },
+  "blockDimensions": {"MM":25,"MO":15,"OM":15,"OO":9},
+  "boundary": "Exact rational finite-group representation theory. Group/algebra automorphisms here are multiplicity-space basis symmetries, not physical transformations or hardware channels.",
+  "canonicalityResult": {
+    "NotPSpCanonical": ["choice of 3 primitive obstruction copies","choice of 5 primitive mass copies","choice/order/normalization of 15 aligned rectangular channels"],
+    "PSpCanonical": ["81-dimensional Steinberg irreducible type","243-dimensional obstruction Steinberg isotypic block","405-dimensional mass Steinberg isotypic block","15-dimensional Hom_G(mass,obstruction) cross space and its reverse"],
+    "reason": "On the common Steinberg sector the group acts as rho_St tensor I_8, so every multiplicity-frame change in the commutant is invisible to PSp(4,3). A nontrivial exact block-diagonal frame change was explicitly checked above."
+  },
+  "carrierSplitProjectorRanks": [3,5],
+  "combinedMultiplicity": 8,
+  "combinedSteinbergIsotypicRank": 648,
+  "explicitSplitPreservingGauge": {"determinant":"1","fullMatrixUnitLawPreserved":true,"primitiveDiagonalUnitsChanged":8},
+  "fullCommutantAlgebra": "M8(Q)",
+  "fullCommutantDimension": 64,
+  "group": "PSp(4,3)",
+  "groupOrder": 25920,
+  "massSteinbergIsotypicRank": 405,
+  "matrixUnitCount": 64,
+  "matrixUnitLabels": ["O0","O1","O2","M0","M1","M2","M3","M4"],
+  "matrixUnitProductsChecked": 4096,
+  "multiplicitySplit": [3,5],
+  "nonzeroMatrixUnitProducts": 512,
+  "obstructionSteinbergIsotypicRank": 243,
+  "schema": "holotrade.mass24-steinberg-full-m8-algebra.v1",
+  "sourceMatrixUnitCertificate": {
+    "artifactId": 10182925995,
+    "artifactZipSha256": "sha256:56adfc08a9eb635d9fc3db0dd9dc61735f9fc35554785ce2ba2372a0c33547ab",
+    "exactCertificateContainsAllOrbitalCoefficientVectors": true,
+    "exactCertificateJsonSha256": "sha256:1f152814d13568592acf24bb6627db81fdc955838b091ddf8d99beb23d57f424",
+    "workflowRunId": 34556754317
+  },
+  "status": "PASS",
+  "steinbergDegree": 81,
+  "theorem": "The obstruction and mass-24 Steinberg sectors combine as St tensor Q^8, and their certified M3, M5 and rectangular Morita blocks assemble into the full rational commutant M8(Q). The carrier split is stabilized by (GL3 x GL5)/Q^x. Therefore finite-group symmetry alone cannot eliminate the primitive-projector/channel basis choice; only the isotypic blocks and cross-Hom space are canonical without additional structure.",
+  "zeroMatrixUnitProducts": 3584
+}
