@@ -3,7 +3,8 @@
 // Continuation-bound measured-boot challenge for HoloVM process execution.
 // The challenge commits the continuation and every selected execution-context
 // identity, including the umbrella W33 signed-resource certificate, the exact
-// representation selection, and its price-independent market identity.
+// representation selection, its price-independent market identity, and the
+// authenticated representation-market history root when supplied.
 
 const A = require("./w33-measured-boot-attestation.js");
 
@@ -28,6 +29,7 @@ function buildContinuationChallenge({
   signedResourceCertificateDigest = null,
   signedResourceSelectionDigest = null,
   representationMarketIdentityDigest = null,
+  representationMarketHistoryRootDigest = null,
   topologyAttestationDigest = null,
   failureAssessmentDigest = null,
 }) {
@@ -40,11 +42,13 @@ function buildContinuationChallenge({
   optionalDigest(signedResourceCertificateDigest, "signedResourceCertificateDigest");
   optionalDigest(signedResourceSelectionDigest, "signedResourceSelectionDigest");
   optionalDigest(representationMarketIdentityDigest, "representationMarketIdentityDigest");
+  optionalDigest(representationMarketHistoryRootDigest, "representationMarketHistoryRootDigest");
   optionalDigest(topologyAttestationDigest, "topologyAttestationDigest");
   optionalDigest(failureAssessmentDigest, "failureAssessmentDigest");
   if (strictAdmissionBindingDigest != null && executionPolicyDigest == null) throw new TypeError("strictAdmissionBindingDigest requires executionPolicyDigest");
   if (signedResourceSelectionDigest != null && signedResourceCertificateDigest == null) throw new TypeError("signedResourceSelectionDigest requires signedResourceCertificateDigest");
   if (representationMarketIdentityDigest != null && signedResourceSelectionDigest == null) throw new TypeError("representationMarketIdentityDigest requires signedResourceSelectionDigest");
+  if (representationMarketHistoryRootDigest != null && representationMarketIdentityDigest == null) throw new TypeError("representationMarketHistoryRootDigest requires representationMarketIdentityDigest");
   if (failureAssessmentDigest != null && topologyAttestationDigest == null) throw new TypeError("failureAssessmentDigest requires topologyAttestationDigest");
 
   const base = A.buildChallenge({ passport, contract, runtimePublicKeyDigest });
@@ -67,6 +71,7 @@ function buildContinuationChallenge({
     ...(signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest }),
     ...(signedResourceSelectionDigest == null ? {} : { signedResourceSelectionDigest }),
     ...(representationMarketIdentityDigest == null ? {} : { representationMarketIdentityDigest }),
+    ...(representationMarketHistoryRootDigest == null ? {} : { representationMarketHistoryRootDigest }),
     ...(topologyAttestationDigest == null ? {} : { topologyAttestationDigest }),
     ...(failureAssessmentDigest == null ? {} : { failureAssessmentDigest }),
   };
@@ -86,11 +91,13 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
   optionalDigest(challenge.signedResourceCertificateDigest, "signedResourceCertificateDigest");
   optionalDigest(challenge.signedResourceSelectionDigest, "signedResourceSelectionDigest");
   optionalDigest(challenge.representationMarketIdentityDigest, "representationMarketIdentityDigest");
+  optionalDigest(challenge.representationMarketHistoryRootDigest, "representationMarketHistoryRootDigest");
   optionalDigest(challenge.topologyAttestationDigest, "topologyAttestationDigest");
   optionalDigest(challenge.failureAssessmentDigest, "failureAssessmentDigest");
   if (challenge.strictAdmissionBindingDigest != null && challenge.executionPolicyDigest == null) throw new Error("continuation challenge lost policy parent for strict admission binding");
   if (challenge.signedResourceSelectionDigest != null && challenge.signedResourceCertificateDigest == null) throw new Error("continuation challenge lost certificate parent for signed-resource selection");
   if (challenge.representationMarketIdentityDigest != null && challenge.signedResourceSelectionDigest == null) throw new Error("continuation challenge lost signed-resource parent for representation market identity");
+  if (challenge.representationMarketHistoryRootDigest != null && challenge.representationMarketIdentityDigest == null) throw new Error("continuation challenge lost representation parent for market history root");
   if (challenge.failureAssessmentDigest != null && challenge.topologyAttestationDigest == null) throw new Error("continuation challenge lost topology parent for failure assessment");
 
   const body = {
@@ -109,6 +116,7 @@ function verifiedContinuationBinding(passport, contract, challenge, signedVerdic
     ...(challenge.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: challenge.signedResourceCertificateDigest }),
     ...(challenge.signedResourceSelectionDigest == null ? {} : { signedResourceSelectionDigest: challenge.signedResourceSelectionDigest }),
     ...(challenge.representationMarketIdentityDigest == null ? {} : { representationMarketIdentityDigest: challenge.representationMarketIdentityDigest }),
+    ...(challenge.representationMarketHistoryRootDigest == null ? {} : { representationMarketHistoryRootDigest: challenge.representationMarketHistoryRootDigest }),
     ...(challenge.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: challenge.topologyAttestationDigest }),
     ...(challenge.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: challenge.failureAssessmentDigest }),
     provider: signedVerdict.body.provider,
@@ -130,7 +138,7 @@ function attachContinuationReceiptMetadata(metadata, passport, contract, challen
 function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey) {
   const binding = verifiedContinuationBinding(passport, contract, challenge, signedVerdict, trustedVerifierPublicKey);
   const kind = binding.provider === A.PROVIDER.TPM2 ? "TPM_QUOTE" : "SEV_SNP_REPORT";
-  const fullyScoped = binding.executionPolicyDigest || binding.strictAdmissionBindingDigest || binding.acceleratorCertificateDigest || binding.signedResourceCertificateDigest || binding.signedResourceSelectionDigest || binding.representationMarketIdentityDigest || binding.topologyAttestationDigest || binding.failureAssessmentDigest;
+  const fullyScoped = binding.executionPolicyDigest || binding.strictAdmissionBindingDigest || binding.acceleratorCertificateDigest || binding.signedResourceCertificateDigest || binding.signedResourceSelectionDigest || binding.representationMarketIdentityDigest || binding.representationMarketHistoryRootDigest || binding.topologyAttestationDigest || binding.failureAssessmentDigest;
   return Object.freeze({
     schema: HARDWARE_EVIDENCE_SCHEMA,
     hardwareAttested: true,
@@ -157,6 +165,7 @@ function toReceiptHardwareEvidence(passport, contract, challenge, signedVerdict,
       ...(binding.signedResourceCertificateDigest == null ? {} : { signedResourceCertificateDigest: binding.signedResourceCertificateDigest }),
       ...(binding.signedResourceSelectionDigest == null ? {} : { signedResourceSelectionDigest: binding.signedResourceSelectionDigest }),
       ...(binding.representationMarketIdentityDigest == null ? {} : { representationMarketIdentityDigest: binding.representationMarketIdentityDigest }),
+      ...(binding.representationMarketHistoryRootDigest == null ? {} : { representationMarketHistoryRootDigest: binding.representationMarketHistoryRootDigest }),
       ...(binding.topologyAttestationDigest == null ? {} : { topologyAttestationDigest: binding.topologyAttestationDigest }),
       ...(binding.failureAssessmentDigest == null ? {} : { failureAssessmentDigest: binding.failureAssessmentDigest }),
     })]),
