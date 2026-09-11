@@ -1,41 +1,29 @@
 {
-  "allLineageOrbitsSatisfyDeltaRealEqualsIntegerDepth": true,
-  "birthBoundary": "This certifies only descendants containing at least one removable point pencil. A genuinely new mass-36 exceptional birth can occur only in the no-contained-pencil sector and must be analyzed separately.",
-  "combinedDirectionDepthHistogram": {
-    "3": 32,
-    "4": 48
-  },
-  "crossParentSharedChildOrbitCount": 0,
-  "deltaRealHistogram": {
-    "3": 4,
-    "4": 8
-  },
-  "depth4ChildOrbitCount": 8,
+  "schema": "holotrade.mass36-depth4-lineage-real-integer-summary.v1",
+  "status": "PASS",
   "group": "PSp(4,3)",
   "groupOrder": 25920,
-  "parentBirthCount": 2,
-  "parentDirectionDepthHistograms": {
-    "0": {
-      "3": 12,
-      "4": 28
-    },
-    "1": {
-      "3": 20,
-      "4": 20
-    }
-  },
-  "physicalBoundary": "Negativity depth and rational l1 are signed-preimage representation invariants, not physical energy, magic-state cost, or measured hardware performance.",
-  "rawPencilDirections": 80,
-  "rows": [],
-  "schema": "holotrade.mass36-depth4-lineage-real-integer.v1",
   "sourceParentMass": 32,
-  "status": "PASS",
-  "strictSeparationOrbitCount": 0,
   "targetMass": 36,
-  "theorem": "Every immediate pencil descendant of either first mass-32 depth-four birth lies in one of the listed PSp(4,3) mass-36 orbits. The derivative-law depth is independently reproduced by exact integer optimization for every target. The rational primal/dual l1 certificate then decides delta_R exactly for the same orbit.",
+  "parentBirthCount": 2,
+  "rawPencilDirections": 80,
   "uniqueChildOrbitCount": 12,
-  "uniqueOrbitDepthHistogram": {
-    "3": 4,
-    "4": 8
-  }
+  "crossParentSharedChildOrbitCount": 0,
+  "uniqueOrbitDepthHistogram": {"3": 4, "4": 8},
+  "combinedDirectionDepthHistogram": {"3": 32, "4": 48},
+  "parentDirectionDepthHistograms": {"0": {"3": 12, "4": 28}, "1": {"3": 20, "4": 20}},
+  "deltaRealHistogram": {"3": 4, "4": 8},
+  "depth4ChildOrbitCount": 8,
+  "strictSeparationOrbitCount": 0,
+  "allLineageOrbitsSatisfyDeltaRealEqualsIntegerDepth": true,
+  "sourceArtifact": {
+    "workflowRunId": 34554559473,
+    "artifactId": 10182047707,
+    "artifactZipSha256": "sha256:8a373b7b116c43710ad273f5c42f7e094af767b81fb96546e7e83151cb0dc334",
+    "exactCertificateJsonSha256": "sha256:c04ee98507e034736ab9c988488b700828a6dcbd4277387110015262af2393c4",
+    "exactCertificateContainsAll12RepresentativesAndPrimalDualWitnesses": true
+  },
+  "theorem": "Every immediate pencil descendant of either first mass-32 depth-four birth lies in one of 12 distinct PSp(4,3) mass-36 orbits. Exact integer re-optimization reproduces the derivative-law depths, and exact rational primal/dual l1 certificates give delta_R=d on all 12 orbits.",
+  "birthBoundary": "This certifies the removable-pencil lineage only. A genuinely new mass-36 exceptional birth can occur only in the no-contained-pencil sector, which is searched separately.",
+  "physicalBoundary": "Negativity depth and rational l1 are signed-preimage representation invariants, not physical energy, magic-state cost, or measured hardware performance."
 }
