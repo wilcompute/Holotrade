@@ -31,9 +31,11 @@ if(!certPath){test("W33 economics certificate supplied by cross-repo CI",{skip:t
   const marketKeys=crypto.generateKeyPairSync("ed25519");
   const bid1=I.buildBid({workerId:"history-worker",identity,priceDigest:d("history-price-1"),totalUSD:4,pricingEpoch:1});
   const bid2=I.buildBid({workerId:"history-worker",identity,priceDigest:d("history-price-2"),totalUSD:3,pricingEpoch:2});
+  const bidFork=I.buildBid({workerId:"history-worker",identity,priceDigest:d("history-price-fork"),totalUSD:8,pricingEpoch:2});
   let h1=H.append(null,{type:"BID",artifact:bid1,identity,privateKey:marketKeys.privateKey,keyId:"market"});
   let h2=H.append(h1,{type:"BID",artifact:bid2,identity,privateKey:marketKeys.privateKey,keyId:"market"});
-  const c1=MMR.commitHistory(h1),c2=MMR.commitHistory(h2);
+  let hFork=H.append(h1,{type:"BID",artifact:bidFork,identity,privateKey:marketKeys.privateKey,keyId:"market"});
+  const c1=MMR.commitHistory(h1),c2=MMR.commitHistory(h2),cFork=MMR.commitHistory(hFork);
 
   const deploymentDigest=d("history-deployment");
   const passport=Object.freeze({schema:D.SCHEMA,passportId:d("history-passport"),deploymentDigest,machineType:"w33.circuit216.steinberg81",
@@ -72,14 +74,35 @@ if(!certPath){test("W33 economics certificate supplied by cross-repo CI",{skip:t
     assert.throws(()=>S.normalizeRequest({...baseRequest,representationMarketHistoryCommitment:wrongCommit}),/commitment disagrees/);
   });
 
-  test("old attestation verdict cannot replay after valid history extension and migration cannot mutate root",()=>{
+  test("old attestation cannot replay, while migration accepts only proved append-only history advance",()=>{
     const verifier=crypto.generateKeyPairSync("ed25519"),delivery=crypto.generateKeyPairSync("ed25519");
-    const c=candidate("w","replay");
+    const c=candidate("w","replay"),nextCandidate=candidate("w2","replay2");
     const oldDispatch=S.dispatchFor(c,S.normalizeRequest(request1));
     const oldVerdict=verdict(oldDispatch.challenge,verifier.privateKey);
     assert.throws(()=>Q.executeContinuationTransaction({candidates:[c],request:request2,signedVerifierVerdict:oldVerdict,trustedVerifierPublicKey:verifier.publicKey,
       executeWorker:()=>{throw new Error("must not execute");},deliveryPrivateKey:delivery.privateKey}),/refusing unattested HoloVM continuation/);
-    assert.throws(()=>S.migrateWorker(oldDispatch,candidate("w2","replay2"),request2),/history root/);
+    assert.throws(()=>S.migrateWorker(oldDispatch,nextCandidate,request2),/consistency proof/);
+
+    const proof12=MMR.consistencyProof(h1,h2);
+    assert.equal(MMR.verifyConsistency(c1,c2,proof12).ok,true);
+    const advancedRequest={...request2,representationMarketPreviousHistoryCommitment:c1,representationMarketHistoryConsistencyProof:proof12};
+    const migration=S.migrateWorker(oldDispatch,nextCandidate,advancedRequest);
+    assert.equal(migration.historyAdvanced,true);
+    assert.equal(migration.previousRepresentationMarketHistoryRootDigest,c1.rootDigest);
+    assert.equal(migration.representationMarketHistoryRootDigest,c2.rootDigest);
+    assert.equal(migration.previousRepresentationMarketHistoryEventCount,1);
+    assert.equal(migration.representationMarketHistoryEventCount,2);
+    assert.equal(migration.representationMarketHistoryConsistencyCode,"MMR_PREFIX_CONSISTENCY_VERIFIED");
+    assert.equal(migration.dispatch.challenge.representationMarketHistoryRootDigest,c2.rootDigest);
+    assert.notEqual(migration.oldChallengeDigest,migration.newChallengeDigest);
+    assert.equal(migration.attestationMustBeRenewed,true);
+
+    const forkProof=MMR.consistencyProof(h1,hFork);
+    const fromC2=S.dispatchFor(c,S.normalizeRequest(request2));
+    assert.throws(()=>S.migrateWorker(fromC2,nextCandidate,{...baseRequest,representationMarketHistoryCommitment:cFork,
+      representationMarketPreviousHistoryCommitment:c2,representationMarketHistoryConsistencyProof:forkProof}),/not an append-only extension|CONSISTENCY_CONTEXT_MISMATCH/);
+    assert.throws(()=>S.migrateWorker(fromC2,nextCandidate,{...request1,
+      representationMarketPreviousHistoryCommitment:c2,representationMarketHistoryConsistencyProof:proof12}),/not an append-only extension|CONSISTENCY_CONTEXT_MISMATCH/);
   });
 
   test("base signed delivery carries the exact attested market-history root",()=>{
