@@ -1,0 +1,25 @@
+name: W33 certified decoder transaction
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-octet-decoder-binding.js'
+      - 'scheduler/w33-certified-decoder-transaction.js'
+      - 'tests/w33-certified-decoder-transaction.test.js'
+      - '.github/workflows/w33_certified_decoder_transaction.yml'
+  workflow_dispatch:
+
+jobs:
+  decoder-transaction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Bind decoder policy/result through measured boot and signed delivery
+        run: node --test tests/w33-certified-decoder-transaction.test.js
+      - name: Regression continuation transaction
+        run: node --test tests/w33-continuation-transaction-crossrepo.test.js
