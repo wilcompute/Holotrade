@@ -4,8 +4,8 @@
 // transaction. Workers do not supply unauthenticated unit prices on this path:
 // their seven-coordinate price vector is taken only from verified Ed25519
 // telemetry bound to worker identity, runtime key, calibration/pricing epochs,
-// and the continuation generation. Representation market identity remains
-// price-independent across those telemetry updates.
+// and the continuation generation. Representation market identity and optional
+// market-history root remain price-independent across those telemetry updates.
 
 const crypto = require("node:crypto");
 const S = require("./w33-continuation-scheduler.js");
@@ -58,8 +58,10 @@ function executeDynamicResourceTransaction({ candidates, request, policy = {}, t
   if (!telemetry) return Object.freeze({ ...tx, dynamicResource:null });
   if (tx.dispatch.signedResourceSelectionDigest !== verified.request.signedResourceSelectionDigest) throw new Error("dynamic pricing mutated signed-resource selection identity");
   if (tx.dispatch.representationMarketIdentityDigest !== verified.request.representationMarketIdentityDigest) throw new Error("dynamic pricing mutated representation market identity");
+  if ((tx.dispatch.representationMarketHistoryRootDigest||null) !== (verified.request.representationMarketHistoryRootDigest||null)) throw new Error("dynamic pricing mutated representation market history root");
   if (tx.delivery.body.signedResourcePriceDigest !== tx.dispatch.signedResourcePriceDigest) throw new Error("delivery lost selected resource price identity");
   if (tx.delivery.body.representationMarketIdentityDigest !== tx.dispatch.representationMarketIdentityDigest) throw new Error("delivery lost representation market identity");
+  if ((tx.delivery.body.representationMarketHistoryRootDigest||null) !== (tx.dispatch.representationMarketHistoryRootDigest||null)) throw new Error("delivery lost representation market history root");
   const body=Object.freeze({
     schema:SCHEMA,
     baseTransactionDigest:tx.transactionDigest,
@@ -71,6 +73,8 @@ function executeDynamicResourceTransaction({ candidates, request, policy = {}, t
     generation:tx.dispatch.generation,
     signedResourceSelectionDigest:tx.dispatch.signedResourceSelectionDigest,
     representationMarketIdentityDigest:tx.dispatch.representationMarketIdentityDigest,
+    ...(tx.dispatch.representationMarketHistoryRootDigest == null ? {} : { representationMarketHistoryRootDigest:tx.dispatch.representationMarketHistoryRootDigest,
+      representationMarketHistoryEventCount:tx.dispatch.representationMarketHistoryEventCount,representationMarketHistoryDigest:tx.dispatch.representationMarketHistoryDigest }),
     representationClass:tx.dispatch.representationClass,
     signedResourcePriceDigest:tx.dispatch.signedResourcePriceDigest,
     pricingTelemetryDigest:telemetry.telemetryDigest,
@@ -97,8 +101,11 @@ function verifyDynamicResourceDelivery(result, deliveryPublicKey) {
   if (signed.body.baseDeliveryDigest!==result.delivery.body.deliveryDigest || signed.body.baseSignedReceiptDigest!==result.delivery.signedReceiptDigest) return Object.freeze({ok:false,code:"DYNAMIC_BASE_DELIVERY_DRIFT"});
   if (signed.body.continuationRoot!==result.delivery.body.parentContinuationRoot || signed.body.processId!==result.delivery.body.processId || signed.body.generation!==result.delivery.body.generationBefore) return Object.freeze({ok:false,code:"DYNAMIC_CONTINUATION_DRIFT"});
   if (signed.body.signedResourceSelectionDigest!==result.dispatch.signedResourceSelectionDigest || signed.body.signedResourcePriceDigest!==result.dispatch.signedResourcePriceDigest ||
-      signed.body.representationMarketIdentityDigest!==result.dispatch.representationMarketIdentityDigest || result.delivery.body.representationMarketIdentityDigest!==result.dispatch.representationMarketIdentityDigest) return Object.freeze({ok:false,code:"DYNAMIC_RESOURCE_IDENTITY_DRIFT"});
-  return Object.freeze({ok:true,code:"DYNAMIC_RESOURCE_DELIVERY_VERIFIED",dynamicDeliveryDigest:signed.body.dynamicDeliveryDigest,signedDynamicDeliveryDigest:signed.signedDynamicDeliveryDigest,representationMarketIdentityDigest:signed.body.representationMarketIdentityDigest});
+      signed.body.representationMarketIdentityDigest!==result.dispatch.representationMarketIdentityDigest || result.delivery.body.representationMarketIdentityDigest!==result.dispatch.representationMarketIdentityDigest ||
+      (signed.body.representationMarketHistoryRootDigest||null)!==(result.dispatch.representationMarketHistoryRootDigest||null) ||
+      (result.delivery.body.representationMarketHistoryRootDigest||null)!==(result.dispatch.representationMarketHistoryRootDigest||null)) return Object.freeze({ok:false,code:"DYNAMIC_RESOURCE_IDENTITY_DRIFT"});
+  return Object.freeze({ok:true,code:"DYNAMIC_RESOURCE_DELIVERY_VERIFIED",dynamicDeliveryDigest:signed.body.dynamicDeliveryDigest,signedDynamicDeliveryDigest:signed.signedDynamicDeliveryDigest,
+    representationMarketIdentityDigest:signed.body.representationMarketIdentityDigest,representationMarketHistoryRootDigest:signed.body.representationMarketHistoryRootDigest||null});
 }
 
 module.exports={SCHEMA,SIGNED_SCHEMA,sha256,verifiedTelemetryCandidates,executeDynamicResourceTransaction,verifyDynamicResourceDelivery};
