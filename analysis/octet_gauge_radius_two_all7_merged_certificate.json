@@ -1,0 +1,171 @@
+{
+  "allJobsCompletedSuccessfully": true,
+  "boundedNoTrapProvedOnAny": false,
+  "counterexampleFound": false,
+  "distinctRadiusTwoDisplacements": 4140,
+  "exceptionalCosetCount": 7,
+  "finalStatusHistogram": {
+    "UNKNOWN": 7
+  },
+  "reading": "At the final candidate of every run, the best checked radius-two endpoint had negativity equal to the independently certified global optimum (1 for inherited cosets, 2 for the born-at-16 coset), while the current candidate remained strictly above optimum. The exact separation oracle therefore continued to find improving radius-two moves throughout the allotted search.",
+  "rows": [
+    {
+      "artifactJsonSha256": "sha256:8caab9fbcb23dbd4a7838e3589f68b7bbffcf9e37fc6bae5ce2851939f632be6",
+      "boundedNoTrapProved": false,
+      "certifiedGlobalDepth": 1,
+      "coordinateBound": 10,
+      "counterexample": false,
+      "cutsAdded": 188,
+      "distinctRadiusTwoDisplacements": 4140,
+      "finalStatus": "UNKNOWN",
+      "index": 0,
+      "iterations": 31,
+      "kind": "inherited",
+      "lastIteration": {
+        "bestRadiusTwo": 1,
+        "cutsBefore": 174,
+        "negativeMass": 4,
+        "newViolations": 14,
+        "solverStatus": "OPTIMAL"
+      },
+      "orbitSize": 720,
+      "seconds": 98.25246405601501
+    },
+    {
+      "artifactJsonSha256": "sha256:1c21bb42300137ed62809f741726abeb0986ebb7ed3b5ea52d6bac7e6aa9f633",
+      "boundedNoTrapProved": false,
+      "certifiedGlobalDepth": 2,
+      "coordinateBound": 10,
+      "counterexample": false,
+      "cutsAdded": 237,
+      "distinctRadiusTwoDisplacements": 4140,
+      "finalStatus": "UNKNOWN",
+      "index": 1,
+      "iterations": 27,
+      "kind": "born-at-16",
+      "lastIteration": {
+        "bestRadiusTwo": 2,
+        "cutsBefore": 222,
+        "negativeMass": 4,
+        "newViolations": 15,
+        "solverStatus": "FEASIBLE"
+      },
+      "orbitSize": 1080,
+      "seconds": 140.18604969978333
+    },
+    {
+      "artifactJsonSha256": "sha256:4e1279bc114bcd0b91a09bd850b75ba36b96c5da562cd3649bc95b2a61c7a640",
+      "boundedNoTrapProved": false,
+      "certifiedGlobalDepth": 1,
+      "coordinateBound": 10,
+      "counterexample": false,
+      "cutsAdded": 292,
+      "distinctRadiusTwoDisplacements": 4140,
+      "finalStatus": "UNKNOWN",
+      "index": 2,
+      "iterations": 39,
+      "kind": "inherited",
+      "lastIteration": {
+        "bestRadiusTwo": 1,
+        "cutsBefore": 258,
+        "negativeMass": 5,
+        "newViolations": 34,
+        "solverStatus": "FEASIBLE"
+      },
+      "orbitSize": 1440,
+      "seconds": 183.85906291007996
+    },
+    {
+      "artifactJsonSha256": "sha256:2ceaeddccfbb80a56c94e9f5a0f5b94b513590058580417363c8f2ce270607b8",
+      "boundedNoTrapProved": false,
+      "certifiedGlobalDepth": 1,
+      "coordinateBound": 10,
+      "counterexample": false,
+      "cutsAdded": 182,
+      "distinctRadiusTwoDisplacements": 4140,
+      "finalStatus": "UNKNOWN",
+      "index": 3,
+      "iterations": 33,
+      "kind": "inherited",
+      "lastIteration": {
+        "bestRadiusTwo": 1,
+        "cutsBefore": 173,
+        "negativeMass": 4,
+        "newViolations": 9,
+        "solverStatus": "OPTIMAL"
+      },
+      "orbitSize": 8640,
+      "seconds": 130.34212350845337
+    },
+    {
+      "artifactJsonSha256": "sha256:f5ec30015111edf9e81f1573a99b02c95462693cf0dd01da74dfe31987fa0cc0",
+      "boundedNoTrapProved": false,
+      "certifiedGlobalDepth": 1,
+      "coordinateBound": 10,
+      "counterexample": false,
+      "cutsAdded": 245,
+      "distinctRadiusTwoDisplacements": 4140,
+      "finalStatus": "UNKNOWN",
+      "index": 4,
+      "iterations": 36,
+      "kind": "inherited",
+      "lastIteration": {
+        "bestRadiusTwo": 1,
+        "cutsBefore": 230,
+        "negativeMass": 4,
+        "newViolations": 15,
+        "solverStatus": "OPTIMAL"
+      },
+      "orbitSize": 8640,
+      "seconds": 156.209792137146
+    },
+    {
+      "artifactJsonSha256": "sha256:3776a65bbf47f4370e0222e5a04142fd3951eb9fca1bb5fb2f02daae4154c35e",
+      "boundedNoTrapProved": false,
+      "certifiedGlobalDepth": 1,
+      "coordinateBound": 10,
+      "counterexample": false,
+      "cutsAdded": 180,
+      "distinctRadiusTwoDisplacements": 4140,
+      "finalStatus": "UNKNOWN",
+      "index": 5,
+      "iterations": 34,
+      "kind": "inherited",
+      "lastIteration": {
+        "bestRadiusTwo": 1,
+        "cutsBefore": 169,
+        "negativeMass": 4,
+        "newViolations": 11,
+        "solverStatus": "OPTIMAL"
+      },
+      "orbitSize": 12960,
+      "seconds": 158.62105655670166
+    },
+    {
+      "artifactJsonSha256": "sha256:4fc240e6812594ca6c96a040b52b8fc322ead030b285b7ae7679ca713656aa25",
+      "boundedNoTrapProved": false,
+      "certifiedGlobalDepth": 1,
+      "coordinateBound": 10,
+      "counterexample": false,
+      "cutsAdded": 275,
+      "distinctRadiusTwoDisplacements": 4140,
+      "finalStatus": "UNKNOWN",
+      "index": 6,
+      "iterations": 40,
+      "kind": "inherited",
+      "lastIteration": {
+        "bestRadiusTwo": 1,
+        "cutsBefore": 264,
+        "negativeMass": 4,
+        "newViolations": 11,
+        "solverStatus": "FEASIBLE"
+      },
+      "orbitSize": 12960,
+      "seconds": 193.08157515525818
+    }
+  ],
+  "schema": "holotrade.octet-gauge-radius-two-all-seven-merged.v1",
+  "sourceWorkflowRun": 34557596215,
+  "status": "PASS",
+  "theoremBoundary": "All seven exact cutting-plane jobs completed and every returned candidate was separated by an explicitly improving radius-two displacement. However, every run ended UNKNOWN before proving infeasibility or producing a trap. Therefore this is a certified inconclusive search result, not a global convergence theorem and not a counterexample."
+}
