@@ -1,0 +1,76 @@
+{
+  "schema": "holotrade.five-frontier-master-certificate.20260911.v1",
+  "status": "PASS",
+  "scope": "Synthesis of the five exact research fronts requested on 2026-09-11. All constituent theorem/certificate files are committed on master; boundaries are preserved explicitly.",
+  "frontiers": {
+    "radiusTwoDirectDecoder": {
+      "certificate": "analysis/octet_gauge_radius_two_all7_merged_certificate.json",
+      "sourceWorkflowRun": 34557596215,
+      "exceptionalCosetCount": 7,
+      "distinctRadiusTwoDisplacements": 4140,
+      "counterexampleFound": false,
+      "boundedNoTrapProvedOnAny": false,
+      "finalStatusHistogram": {"UNKNOWN": 7},
+      "conclusion": "No radius-two trap was found on the seven certified mass-16 exceptional cosets. Every final candidate still had an explicit improving radius-two move reaching the independently certified optimum, but the searches ended UNKNOWN and do not prove global convergence."
+    },
+    "graverUniversality": {
+      "certificate": "analysis/octet_single_circuit_obstruction_certificate.json",
+      "crosscheck": "analysis/octet_decoder_graver_direct_crosscheck.json",
+      "sourceWorkflowRun": 34559758841,
+      "primitiveCircuitSupportSize": 18,
+      "primitiveCircuitL1": 20,
+      "primitiveCircuitLinf": 2,
+      "insideRadiusTwo": false,
+      "isGraverElement": true,
+      "conclusion": "Radius-two octet moves are not a universal Graver augmentation test set. This invalidates the universal Graver proof strategy but is not itself a radius-two decoder trap."
+    },
+    "mass36NoPencil": {
+      "certificate": "analysis/mass36_no_pencil_exhaustive_summary.json",
+      "sourceWorkflowRun": 34554629229,
+      "rawSolutionsFound": 586080,
+      "orbitCount": 55,
+      "integerDepthHistogram": {"3": 52, "4": 3},
+      "deltaRealHistogram": {"3": 52, "4": 3},
+      "maximumResolvedIntegerDepth": 4,
+      "depthAtLeastFiveOrbitCount": 0,
+      "strictSeparationOrbitCount": 0,
+      "enumerationComplete": true,
+      "conclusion": "The complete mass-36 no-contained-pencil sector has no depth-5 birth and no real/integer negativity separation; delta_R=d on all 55 PSp(4,3) orbits."
+    },
+    "mass36ExtremalHunts": {
+      "certificate": "analysis/mass36_hunt_exhaustive_crosscheck.json",
+      "sourceHuntWorkflowRun": 34557674848,
+      "sourceExhaustiveWorkflowRun": 34554629229,
+      "totalOptimizationTrials": 288,
+      "mergedDistinctOrbitCount": 3,
+      "huntDepth4CoverageFraction": "2/3",
+      "allHuntOrbitsInExhaustiveCensus": true,
+      "conclusion": "The randomized exact hunts were consistent with the exhaustive census and sampled two of the three depth-4 no-pencil orbits; they were useful probes but not a completeness substitute."
+    },
+    "steinbergFullCommutant": {
+      "certificate": "analysis/mass24_steinberg_full_m8_algebra_certificate.json",
+      "sourceWorkflowRun": 34559400727,
+      "steinbergDegree": 81,
+      "multiplicitySplit": [3, 5],
+      "combinedMultiplicity": 8,
+      "combinedSteinbergIsotypicRank": 648,
+      "fullCommutantAlgebra": "M8(Q)",
+      "fullCommutantDimension": 64,
+      "matrixUnitCount": 64,
+      "matrixUnitProductsChecked": 4096,
+      "fullQAlgebraAutomorphisms": "PGL8(Q)",
+      "carrierSplitStabilizer": "(GL3(Q) x GL5(Q)) / Q^x",
+      "conclusion": "The obstruction and mass-24 Steinberg isotypic sectors assemble as St tensor Q^8 with full rational commutant M8(Q). Finite PSp(4,3) symmetry fixes the isotypic blocks and cross-Hom dimensions but does not canonically choose primitive-copy frames or rectangular channels."
+    }
+  },
+  "jointReading": "The five fronts separate three logically distinct phenomena: decoder-instance behavior, universal augmentation certificates, and representation-theoretic commutant structure. The exact outside-radius-two Graver circuit does not contradict the direct seven-coset searches; it shows only that radius two cannot be certified universally by Graver containment. Independently, the mass-36 census proves the depth hierarchy has not reached 5 and delta_R=d still holds through that complete birth sector.",
+  "boundary": "Exact finite combinatorics, integer/rational optimization, cryptographic provenance, and rational finite-group representation theory only. None of these results is a claim about physical energy, experimental quantum advantage, fault tolerance, or hardware dynamics.",
+  "sourceCommits": {
+    "radiusTwoMerged": "40b8bbd1ca58077113e1a3d6a565b850faabcf2d",
+    "graverCircuitFrozen": "b846be9282e65e6a445c291ac5047663714170e2",
+    "graverDirectCrosscheck": "02bf068b7ce2e0902e9fbe74185e7a8309a2ce9b",
+    "mass36ExhaustiveFrozen": "affc8453d0c68ee6657d8298fc2eb09e3cfc1ad1",
+    "mass36HuntCrosscheck": "449b7d29ae682f4a0a239627a8cf292e4a514eb1",
+    "steinbergM8Frozen": "fe02b05d62ca72ed7772cb722ee36289bcd0b0d5"
+  }
+}
