@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install exact finite-group dependencies
+        run: python -m pip install --upgrade pip && pip install numpy
       - name: Regenerate current W33 Pass5705 group fingerprint
         run: PYTHONPATH=w33/analysis python w33/analysis/w33_pass5705_deck96_192_group_fingerprint.py
       - name: Compare exact order-192 group structures
