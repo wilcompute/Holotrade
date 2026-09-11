@@ -14,7 +14,8 @@ needed at runtime.
 The decoder is conservative: if neither finite library offers a strict descent,
 it returns STALLED rather than claiming global optimality. The regression suite
 audits deterministic perturbed starts in all seven certified mass-16 exceptional
-cosets against their independently certified exact optima.
+cosets and, crucially, the frozen mass-28 radius-two traps that require the
+outside-radius-two circuit fallback.
 """
 from __future__ import annotations
 
@@ -30,6 +31,7 @@ import octet_gauge_radius_two_cutting_plane as r2
 
 HERE=Path(__file__).resolve().parent
 CIRCUIT_CERT=HERE/'octet_single_circuit_obstruction_certificate.json'
+TRAP_CERT=HERE/'octet_circuit_decoder_trap_certificate.json'
 
 
 def addv(a,b): return tuple(x+y for x,y in zip(a,b))
@@ -102,8 +104,7 @@ def main():
             for j in range(count): w=addv(w,moves[(pi*17+t*11+j*23)%len(moves)])
             if w in seen: continue
             seen.add(w)
-            if negmass(w)>parent['depth']:
-                starts.append(w)
+            if negmass(w)>parent['depth']: starts.append(w)
             if len(starts)>=5: break
         assert starts, pi
         runs=[]
@@ -115,18 +116,32 @@ def main():
             fallback_used+=out['circuitSteps']
         rows.append({'index':pi,'kind':parent['kind'],'orbitSize':parent['orbitSize'],'certifiedGlobalDepth':parent['depth'],'startCount':len(starts),'runs':runs})
 
+    # Operational fallback regression from the independently frozen trap search.
+    trap_cert=json.loads(TRAP_CERT.read_text()); assert trap_cert['status']=='PASS' and len(trap_cert['traps'])==2
+    trap_rows=[]
+    for tr in trap_cert['traps']:
+        w=tuple(tr['witness']); e=tuple(tr['lineImage']); assert negmass(w)==2
+        exact=m20.exact_depth(e,lines,budget=60); assert exact is not None
+        optimum=exact[0]; assert optimum<=1
+        br,mr=best_strict(w,radius2); assert mr is None and br==2
+        bc,mc=best_strict(w,circuits); assert mc is not None and bc<2
+        run=decode(w,optimum,radius2,circuits,max_steps=negmass(w)+1)
+        assert run['status']=='OPTIMUM' and run['circuitSteps']>=1
+        fallback_used+=run['circuitSteps']; total_starts+=1; total_opt+=1
+        trap_rows.append({'orientation':tr['orientation'],'certifiedGlobalDepth':optimum,'bestRadiusTwo':br,'bestCircuit':bc,'run':run})
+
     out={
-      'schema':'holotrade.octet-hybrid-certified-decoder.v1','status':'PASS','group':'PSp(4,3)','groupOrder':25920,
+      'schema':'holotrade.octet-hybrid-certified-decoder.v2','status':'PASS','group':'PSp(4,3)','groupOrder':25920,
       'radiusTwoMoveCount':len(radius2),'radiusTwoLibraryDigest':digest_moves(radius2),
       'circuitOrbitSize':len(co),'signedCircuitMoveCount':len(circuits),'outsideRadiusTwoCircuitMoveCount':len(outside),'circuitLibraryDigest':digest_moves(circuits),
       'allMovesKernelVerified':True,'benchmarkCosetCount':len(rows),'benchmarkStartCount':total_starts,'benchmarkReachedCertifiedOptimum':total_opt,'benchmarkStalled':total_stall,'fallbackCircuitStepsUsed':fallback_used,
-      'rows':rows,
+      'mass16RegressionRows':rows,'mass28CircuitTrapRegression':trap_rows,'fallbackPathExercised':fallback_used>0,
       'terminationTheorem':'Each accepted decoder step strictly decreases the nonnegative integer negativity objective. Therefore every run terminates after at most its initial negativity many accepted steps, without requiring the full Graver basis at runtime.',
-      'optimalityBoundary':'OPTIMUM is asserted only when the run reaches the independently certified exact depth for the regression coset. STALLED is explicit and is not promoted to global optimality.',
-      'theorem':'The runtime move set is finite, content-addressed and independently kernel-verified: radius-two octet descent is attempted first, followed by the finite signed PSp orbit of the certified outside-radius-two primitive circuit. Strict objective descent proves termination; exact-depth certificates independently audit optimality on the regression fibers.',
+      'optimalityBoundary':'OPTIMUM is asserted only when the run reaches an independently certified exact depth. STALLED is explicit and is not promoted to global optimality.',
+      'theorem':'The runtime move set is finite, content-addressed and independently kernel-verified: radius-two octet descent is attempted first, followed by the finite signed PSp orbit of the certified outside-radius-two primitive circuit. Strict objective descent proves termination. The frozen mass-28 traps explicitly exercise the fallback: radius two has no improving move while the circuit library lowers negativity and reaches the independently certified optimum.',
       'boundary':'This is an integer-lattice decoding algorithm and certificate format. It is not a physical dynamics, quantum speedup, or hardware-efficiency claim.'
     }
     p=HERE/'octet_hybrid_certified_decoder_certificate.json'; p.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
-    print(json.dumps({k:out[k] for k in ['status','radiusTwoMoveCount','circuitOrbitSize','signedCircuitMoveCount','outsideRadiusTwoCircuitMoveCount','benchmarkStartCount','benchmarkReachedCertifiedOptimum','benchmarkStalled','fallbackCircuitStepsUsed']},indent=2,sort_keys=True)); print(f'written: {p}')
+    print(json.dumps({k:out[k] for k in ['status','radiusTwoMoveCount','circuitOrbitSize','signedCircuitMoveCount','outsideRadiusTwoCircuitMoveCount','benchmarkStartCount','benchmarkReachedCertifiedOptimum','benchmarkStalled','fallbackCircuitStepsUsed','fallbackPathExercised']},indent=2,sort_keys=True)); print(f'written: {p}')
 
 if __name__=='__main__':main()
