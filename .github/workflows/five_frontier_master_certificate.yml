@@ -1,0 +1,31 @@
+name: Five-frontier master certificate
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/five_frontier_master_certificate_20260911.json'
+      - 'analysis/check_five_frontier_master_certificate.py'
+      - 'analysis/octet_gauge_radius_two_all7_merged_certificate.json'
+      - 'analysis/octet_single_circuit_obstruction_certificate.json'
+      - 'analysis/octet_decoder_graver_direct_crosscheck.json'
+      - 'analysis/mass36_no_pencil_exhaustive_summary.json'
+      - 'analysis/mass36_hunt_exhaustive_crosscheck.json'
+      - 'analysis/mass24_steinberg_full_m8_algebra_certificate.json'
+      - '.github/workflows/five_frontier_master_certificate.yml'
+  workflow_dispatch:
+
+jobs:
+  verify-five-frontier-synthesis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify all frozen source certificates and synthesis invariants
+        run: python analysis/check_five_frontier_master_certificate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: five-frontier-master-certificate
+          path: analysis/five_frontier_master_certificate_20260911.json
