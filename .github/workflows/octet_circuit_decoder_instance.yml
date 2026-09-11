@@ -1,0 +1,32 @@
+name: Octet circuit decoder instance
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/octet_circuit_decoder_instance.py'
+      - 'analysis/octet_single_circuit_obstruction_certificate.json'
+      - 'analysis/octet_gauge_radius_two_cutting_plane.py'
+      - '.github/workflows/octet_circuit_decoder_instance.yml'
+  workflow_dispatch:
+
+jobs:
+  circuit-instance:
+    strategy:
+      fail-fast: false
+      matrix:
+        orientation: [-1, 1]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Search exact radius-two trap escaped by circuit
+        run: PYTHONPATH=analysis python analysis/octet_circuit_decoder_instance.py --orientation ${{ matrix.orientation }} --bound 10 --kmax 14 --budget 900 --batch 48
+      - uses: actions/upload-artifact@v4
+        with:
+          name: octet-circuit-decoder-instance-${{ matrix.orientation }}
+          path: analysis/octet_circuit_decoder_instance_*.json
