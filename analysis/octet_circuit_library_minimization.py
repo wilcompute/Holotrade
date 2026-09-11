@@ -31,6 +31,8 @@ TRAP_CERT=HERE/'octet_circuit_decoder_trap_certificate.json'
 
 def addv(a,b): return tuple(x+y for x,y in zip(a,b))
 def negmass(x): return sum(-v for v in x if v<0)
+def vector_digest(v):
+    return 'sha256:'+hashlib.sha256(json.dumps(list(v),separators=(',',':')).encode()).hexdigest()
 def act(v,g):
     out=[0]*40
     for i,x in enumerate(v): out[g[i]]=x
@@ -89,7 +91,7 @@ def main():
     assert not any(cov[1]<len(chosen) for cov in covers)
     out={
       'schema':'holotrade.octet-circuit-library-minimization.v1','status':'PASS','group':'PSp(4,3)','groupOrder':25920,
-      'baseCircuitDigest':bc['circuit']['digest'],'baseCircuitSupportSize':bc['circuit']['supportSize'],
+      'baseCircuitDigest':vector_digest(c),'baseCircuitSupportSize':bc['circuit']['supportSize'],
       'trapCertificate':TRAP_CERT.name,
       'trapCertificateSourceWorkflowRun':tc['sourceWorkflowRun'],
       'plusOrbitSize':len(op),'minusOrbitSize':len(om),'orientationOrbitRelation':relation,
@@ -103,6 +105,6 @@ def main():
       'boundary':'This does not claim completeness of primitive circuits or universal optimality of the minimized library on every affine fiber. It is an exact minimization relative to the certified circuit orbit(s) and frozen traps.'
     }
     p=HERE/'octet_circuit_library_minimization_certificate.json'; p.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
-    print(json.dumps({k:out[k] for k in ['status','plusOrbitSize','minusOrbitSize','orientationOrbitRelation','minimalSelectedOrientationOrbits','minimalPSpInvariantCircuitMoveCount','minimalLibraryDigest']},indent=2,sort_keys=True)); print(f'written: {p}')
+    print(json.dumps({k:out[k] for k in ['status','baseCircuitDigest','plusOrbitSize','minusOrbitSize','orientationOrbitRelation','minimalSelectedOrientationOrbits','minimalPSpInvariantCircuitMoveCount','minimalLibraryDigest']},indent=2,sort_keys=True)); print(f'written: {p}')
 
 if __name__=='__main__':main()
