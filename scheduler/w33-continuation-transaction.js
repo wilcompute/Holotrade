@@ -7,9 +7,10 @@
 // execution -> exact child continuation -> signed Holotrade delivery receipt.
 //
 // Strict admission, topology/failure context, optional accelerator state,
-// typed signed-resource selection, and price-independent representation market
-// identity are first-class execution context. Resource coordinates A/A^2 are
-// estimator/representation metadata, never physical energy surrogates.
+// typed signed-resource selection, price-independent representation market
+// identity, and optional representation-history MMR root are first-class
+// execution context. Resource coordinates A/A^2 are estimator/representation
+// metadata, never physical energy surrogates.
 
 const crypto = require("node:crypto");
 const S = require("./w33-continuation-scheduler.js");
@@ -62,6 +63,7 @@ function executionContextAgreement(dispatch, binding) {
   if ((dispatch.signedResourceCertificateDigest || null) !== (binding.signedResourceCertificateDigest || null)) throw new Error("dispatch and hardware binding disagree on signed-resource certificate");
   if ((dispatch.signedResourceSelectionDigest || null) !== (binding.signedResourceSelectionDigest || null)) throw new Error("dispatch and hardware binding disagree on signed-resource selection");
   if ((dispatch.representationMarketIdentityDigest || null) !== (binding.representationMarketIdentityDigest || null)) throw new Error("dispatch and hardware binding disagree on representation market identity");
+  if ((dispatch.representationMarketHistoryRootDigest || null) !== (binding.representationMarketHistoryRootDigest || null)) throw new Error("dispatch and hardware binding disagree on representation market history root");
   if (dispatch.topologyAttestationDigest !== binding.topologyAttestationDigest) throw new Error("dispatch and hardware binding disagree on topology attestation");
   if ((dispatch.failureAssessmentDigest || null) !== (binding.failureAssessmentDigest || null)) throw new Error("dispatch and hardware binding disagree on failure assessment");
   return true;
@@ -122,6 +124,11 @@ function deliveryBody(dispatch, binding, execution) {
       signedResourceCertificateDigest: dispatch.signedResourceCertificateDigest,
       signedResourceSelectionDigest: dispatch.signedResourceSelectionDigest,
       representationMarketIdentityDigest: dispatch.representationMarketIdentityDigest,
+      ...(dispatch.representationMarketHistoryRootDigest == null ? {} : {
+        representationMarketHistoryRootDigest: dispatch.representationMarketHistoryRootDigest,
+        representationMarketHistoryEventCount: dispatch.representationMarketHistoryEventCount,
+        representationMarketHistoryDigest: dispatch.representationMarketHistoryDigest,
+      }),
       representationClass: dispatch.representationClass,
       representationAmplification: dispatch.representationAmplification,
       signedSamplingSecondMomentFactor: dispatch.signedSamplingSecondMomentFactor,
