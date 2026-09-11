@@ -1,0 +1,28 @@
+{
+  "allHuntOrbitsInExhaustiveCensus": true,
+  "depth5WitnessFound": false,
+  "exhaustiveDepth4OrbitCount": 3,
+  "exhaustiveOrbitCount": 55,
+  "huntDepth4CoverageCount": 2,
+  "huntDepth4CoverageFraction": "2/3",
+  "huntDepth4OrbitsFound": [
+    "sha256:2f565cb857cb8fd87167b57738f1d7123ac9e2c310f38b1bd33935e5c8eb02ff",
+    "sha256:4c8f026bf2b47d2fcd4c162e8dcb67e5df53cad33deef105f0be750b3d35ca8c"
+  ],
+  "mergedDistinctOrbitCount": 3,
+  "mergedOrbits": [
+    {"deltaReal":"3","integerDepth":3,"memberOfExhaustive55":true,"orbitSize":1440,"representativeDigest":"sha256:01aa2541277ddad739becc0de68b8201a4461034b08bf9aa9703c41076268121","seedHitCount":4,"seenInSeeds":[20260911,20260912,20260913,20260914],"strictSeparation":false},
+    {"deltaReal":"4","integerDepth":4,"memberOfExhaustive55":true,"orbitSize":4320,"representativeDigest":"sha256:2f565cb857cb8fd87167b57738f1d7123ac9e2c310f38b1bd33935e5c8eb02ff","seedHitCount":2,"seenInSeeds":[20260913,20260914],"strictSeparation":false},
+    {"deltaReal":"4","integerDepth":4,"memberOfExhaustive55":true,"orbitSize":25920,"representativeDigest":"sha256:4c8f026bf2b47d2fcd4c162e8dcb67e5df53cad33deef105f0be750b3d35ca8c","seedHitCount":4,"seenInSeeds":[20260911,20260912,20260913,20260914],"strictSeparation":false}
+  ],
+  "missedDepth4Orbits": ["sha256:6134c05c40f74f2e96631e860ad2e27ed92fa46d9eba0cc3e7b4ff2f8f6d561c"],
+  "reading": "The four randomized-objective exact hunts were internally consistent with the later complete census. They repeatedly selected one 25920-orbit depth-4 class, sometimes one 4320-orbit depth-4 class, and one 1440-orbit depth-3 class. They found two of the three exhaustive depth-4 orbits; the second 4320-orbit depth-4 class was not sampled. Thus the hunt was a useful extremal probe but not a complete proxy for the no-pencil orbit frontier.",
+  "schema": "holotrade.mass36-hunt-exhaustive-crosscheck.v1",
+  "seeds": [20260911,20260912,20260913,20260914],
+  "sourceExhaustiveWorkflowRun": 34554629229,
+  "sourceHuntWorkflowRun": 34557674848,
+  "status": "PASS",
+  "strictSeparationFound": false,
+  "theoremBoundary": "Cross-check and sampling-coverage statement only. Completeness comes from the exhaustive census, not from the randomized-objective hunts.",
+  "totalOptimizationTrials": 288
+}
