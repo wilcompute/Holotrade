@@ -1,0 +1,30 @@
+name: Mass36 no-pencil exact candidate hunt
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass36_no_pencil_candidate_hunt.py'
+      - '.github/workflows/mass36_no_pencil_candidate_hunt.yml'
+  workflow_dispatch:
+
+jobs:
+  hunt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [20260911, 20260912, 20260913, 20260914]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Sample exact no-pencil extremal orbits
+        run: PYTHONPATH=analysis python analysis/mass36_no_pencil_candidate_hunt.py --seed ${{ matrix.seed }} --trials 72 --solve-budget 6 --depth-budget 35
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass36-no-pencil-candidate-hunt-${{ matrix.seed }}
+          path: analysis/mass36_no_pencil_candidate_hunt_seed${{ matrix.seed }}.json
