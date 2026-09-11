@@ -15,11 +15,19 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout W33-Theory master
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - run: python -m pip install --upgrade pip && pip install ortools scipy sympy numpy
       - name: Build exact stabilizer-quotiented derivative automaton
+        env:
+          W33_ANALYSIS: ${{ github.workspace }}/w33/analysis
         run: PYTHONPATH=analysis python analysis/exceptional_depth_derivative_automaton.py
       - uses: actions/upload-artifact@v4
         with:
