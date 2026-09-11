@@ -1,0 +1,47 @@
+name: Mass40 no-pencil depth5 and real-integer frontier
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/real_integer_negativity_gap_frontier.py'
+      - 'analysis/mass40_no_pencil_candidate_hunt.py'
+      - '.github/workflows/mass40_no_pencil_depth5_frontier.yml'
+  workflow_dispatch:
+
+jobs:
+  candidate-hunt:
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [20260911, 20260912, 20260913, 20260914]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Exact mass40 extremal hunt
+        run: PYTHONPATH=analysis python analysis/mass40_no_pencil_candidate_hunt.py --seed ${{ matrix.seed }} --trials 96 --solve-budget 8 --depth-budget 50
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass40-no-pencil-candidate-${{ matrix.seed }}
+          path: analysis/mass40_no_pencil_candidate_hunt_seed${{ matrix.seed }}.json
+
+  exhaustive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Exhaust exact mass40 no-pencil birth sector
+        run: PYTHONPATH=analysis python analysis/real_integer_negativity_gap_frontier.py --mass 40 --mode no-pencil --budget 6000 --cap 12000000 --depth-budget 100
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-integer-gap-mass40-no-pencil
+          path: analysis/real_integer_negativity_gap_frontier_m40_no-pencil.json
