@@ -22,7 +22,6 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
@@ -55,9 +54,13 @@ def reduced_presentation(A):
     piv=list(A.T.rref()[1]); assert len(piv)==25
     R=Matrix([list(A[i,:]) for i in piv])
     assert R.shape==(25,40) and R.rank()==25
-    # Same rational row space => same equations over Z because both are
-    # homogeneous: x is killed by R iff killed by A.
-    assert A.rowspace()==R.rowspace()
+    # R consists of rows of A and has the full rank of A. Therefore its row
+    # space equals Row(A). Do not compare SymPy's chosen rowspace basis lists:
+    # equal spaces can be returned with different basis vectors/orderings.
+    assert Matrix.vstack(A,R).rank()==25
+    assert len(R.nullspace())==15 and len(A.nullspace())==15
+    # Homogeneous equality of rational row spaces implies equality of the
+    # integer kernels: for x in Z^40, Rx=0 iff Ax=0.
     return piv,R
 
 
