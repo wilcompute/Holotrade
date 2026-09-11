@@ -1,0 +1,38 @@
+{
+  "schema": "holotrade.mass24-steinberg-matrix-units-summary.v1",
+  "status": "PASS",
+  "group": "PSp(4,3)",
+  "groupOrder": 25920,
+  "degree": 1080,
+  "steinbergDegree": 81,
+  "obstructionOrbitalRank": 59,
+  "massOrbitalRank": 89,
+  "crossOrbitalRank": 61,
+  "obstructionMultiplicity": 3,
+  "massMultiplicity": 5,
+  "rectangularDimension": 15,
+  "gramDeterminant": "57600",
+  "massPrimitiveRanks": [81,81,81,81,81],
+  "massSteinbergIsotypicRank": 405,
+  "obstructionPrimitiveRanks": [81,81,81],
+  "massMatrixUnitCount": 25,
+  "obstructionMatrixUnitCount": 9,
+  "rectangularChannelCount": 15,
+  "exactChecks": {
+    "massProducts": 625,
+    "obstructionProducts": 81,
+    "diagonalRectangularProducts": 15,
+    "massLaw": "Q_ij Q_kl = delta_jk Q_il",
+    "obstructionLaw": "O_ab O_cd = delta_bc O_ad",
+    "rectangularLaw": "E_ai F_jb = delta_ij O_ab and F_ia E_bj = delta_ab Q_ij"
+  },
+  "sourceArtifact": {
+    "workflowRunId": 34556754317,
+    "artifactId": 10182925995,
+    "artifactZipSha256": "sha256:56adfc08a9eb635d9fc3db0dd9dc61735f9fc35554785ce2ba2372a0c33547ab",
+    "exactCertificateJsonSha256": "sha256:1f152814d13568592acf24bb6627db81fdc955838b091ddf8d99beb23d57f424",
+    "exactCertificateContainsAllOrbitalCoefficientVectors": true
+  },
+  "theorem": "The Steinberg isotypic endomorphism algebras of the obstruction and mass-24 carriers contain explicit rational matrix-unit systems M3(Q) and M5(Q). The 15 exact aligned cross intertwiners form the corresponding 3x5 rectangular Morita bimodule.",
+  "boundary": "Exact rational finite-group representation theory only. Matrix units and intertwiner channels do not assert physical channels, quantum gates, energies, or hardware implementation."
+}
