@@ -1,0 +1,36 @@
+name: Mass24 Steinberg Gram192 W33 comparison
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass24_steinberg_gram192_w33_comparison.py'
+      - 'analysis/mass24_steinberg_integral_gram_gauge_certificate.json'
+      - '.github/workflows/mass24_steinberg_gram192_w33_comparison.yml'
+  workflow_dispatch:
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout W33-Theory master
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Regenerate current W33 Pass5705 group fingerprint
+        run: PYTHONPATH=w33/analysis python w33/analysis/w33_pass5705_deck96_192_group_fingerprint.py
+      - name: Compare exact order-192 group structures
+        env:
+          W33_ROOT: ${{ github.workspace }}/w33
+        run: PYTHONPATH=analysis python analysis/mass24_steinberg_gram192_w33_comparison.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass24-steinberg-gram192-w33-comparison
+          path: analysis/mass24_steinberg_gram192_w33_comparison_certificate.json
