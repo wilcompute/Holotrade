@@ -1,0 +1,36 @@
+name: Mass24 Steinberg matrix units
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass24_steinberg_matrix_units.py'
+      - 'analysis/mass24_steinberg_cross_intertwiners.py'
+      - '.github/workflows/mass24_steinberg_matrix_units.yml'
+  workflow_dispatch:
+
+jobs:
+  matrix-units:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Holotrade
+        uses: actions/checkout@v4
+      - name: Checkout W33-Theory master
+        uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install numpy sympy scipy ortools
+      - name: Construct exact M3 M5 Steinberg matrix units and rectangular bridge
+        env:
+          W33_ANALYSIS: ${{ github.workspace }}/w33/analysis
+        run: PYTHONPATH=analysis python analysis/mass24_steinberg_matrix_units.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass24-steinberg-matrix-units
+          path: analysis/mass24_steinberg_matrix_units_certificate.json
