@@ -1,0 +1,27 @@
+name: Mass24 Steinberg integral Gram gauge
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass24_steinberg_integral_gram_gauge.py'
+      - 'analysis/mass24_steinberg_matrix_units_certificate.json'
+      - '.github/workflows/mass24_steinberg_integral_gram_gauge.yml'
+  workflow_dispatch:
+
+jobs:
+  gram-gauge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install sympy
+      - name: Enumerate exact integral isometry group
+        run: PYTHONPATH=analysis python analysis/mass24_steinberg_integral_gram_gauge.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass24-steinberg-integral-gram-gauge
+          path: analysis/mass24_steinberg_integral_gram_gauge_certificate.json
