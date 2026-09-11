@@ -225,6 +225,27 @@ function chooseContinuationWorker(candidates, request, policy = {}) {
   return Object.freeze({ ok: true, code: "CONTINUATION_WORKER_SELECTED", dispatch: ranked.eligible[0], ranked });
 }
 
+function historyMigrationAdvance(existingDispatch, request, rawRequest) {
+  const oldRoot = existingDispatch.representationMarketHistoryRootDigest || null;
+  const newRoot = request.representationMarketHistoryRootDigest || null;
+  if (oldRoot === newRoot) return Object.freeze({ advanced: false, oldRoot, newRoot, oldEventCount: existingDispatch.representationMarketHistoryEventCount ?? null, newEventCount: request.representationMarketHistoryEventCount ?? null });
+  if (oldRoot == null || newRoot == null) throw new Error("worker migration may not add, remove, or replace representation market history without an append-only proof");
+  const oldCommitment = rawRequest.representationMarketPreviousHistoryCommitment;
+  const proof = rawRequest.representationMarketHistoryConsistencyProof;
+  if (!oldCommitment || !proof) throw new Error("representation market history root advance requires previous commitment and MMR consistency proof");
+  const old = T.verifyCommitment(oldCommitment);
+  if (!old.ok) throw new Error(`invalid previous representation market history commitment: ${old.code}`);
+  if (old.rootDigest !== oldRoot || old.eventCount !== existingDispatch.representationMarketHistoryEventCount || old.historyDigest !== existingDispatch.representationMarketHistoryDigest) throw new Error("previous market history commitment disagrees with existing dispatch");
+  if (old.representationMarketIdentityDigest !== existingDispatch.representationMarketIdentityDigest || old.signedResourceSelectionDigest !== existingDispatch.signedResourceSelectionDigest || old.representationClass !== existingDispatch.representationClass) throw new Error("previous market history commitment attempts representation substitution");
+  const newCommitment = request.representationMarketHistoryCommitment;
+  if (!newCommitment) throw new Error("new representation market history commitment required for history advance");
+  const consistency = T.verifyConsistency(oldCommitment, newCommitment, proof);
+  if (!consistency.ok) throw new Error(`representation market history is not an append-only extension: ${consistency.code}`);
+  if (consistency.newEventCount <= consistency.oldEventCount) throw new Error("representation market history advance must strictly increase event count");
+  return Object.freeze({ advanced: true, oldRoot, newRoot, oldEventCount: consistency.oldEventCount, newEventCount: consistency.newEventCount,
+    consistencyCode: consistency.code, consistencyProofDigest: sha256(proof) });
+}
+
 function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {}) {
   if (!existingDispatch || existingDispatch.schema !== SCHEMA) throw new TypeError("valid continuation dispatch required");
   const request = normalizeRequest(rawRequest);
@@ -235,8 +256,8 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
   if ((existingDispatch.signedResourceCertificateDigest || null) !== (request.signedResourceCertificateDigest || null)) throw new Error("worker migration may not mutate signed-resource certificate identity");
   if ((existingDispatch.signedResourceSelectionDigest || null) !== (request.signedResourceSelectionDigest || null)) throw new Error("worker migration may not mutate signed-resource selection identity");
   if ((existingDispatch.representationMarketIdentityDigest || null) !== (request.representationMarketIdentityDigest || null)) throw new Error("worker migration may not mutate representation market identity");
-  if ((existingDispatch.representationMarketHistoryRootDigest || null) !== (request.representationMarketHistoryRootDigest || null)) throw new Error("worker migration may not mutate representation market history root");
   if ((existingDispatch.representationClass || null) !== (request.representationClass || null)) throw new Error("worker migration may not mutate signed representation class");
+  const historyAdvance = historyMigrationAdvance(existingDispatch, request, rawRequest);
   const next = dispatchFor(targetCandidate, request, policy);
   const body = { schema: MIGRATION_SCHEMA, fromWorkerId: existingDispatch.workerId, toWorkerId: next.workerId, continuationRoot: request.continuationRoot,
     processId: request.processId, generation: request.generation,
@@ -248,6 +269,9 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
       ...(request.representationMarketHistoryRootDigest == null ? {} : { representationMarketHistoryRootDigest: request.representationMarketHistoryRootDigest,
         representationMarketHistoryEventCount: request.representationMarketHistoryEventCount, representationMarketHistoryDigest: request.representationMarketHistoryDigest }),
       representationClass: request.representationClass }),
+    historyAdvanced: historyAdvance.advanced,
+    ...(historyAdvance.advanced ? { previousRepresentationMarketHistoryRootDigest: historyAdvance.oldRoot, previousRepresentationMarketHistoryEventCount: historyAdvance.oldEventCount,
+      representationMarketHistoryConsistencyProofDigest: historyAdvance.consistencyProofDigest, representationMarketHistoryConsistencyCode: historyAdvance.consistencyCode } : {}),
     oldChallengeDigest: existingDispatch.attestationChallengeDigest, newChallengeDigest: next.attestationChallengeDigest,
     oldRuntimePublicKeyDigest: existingDispatch.runtimePublicKeyDigest, newRuntimePublicKeyDigest: next.runtimePublicKeyDigest,
     oldTopologyAttestationDigest: existingDispatch.topologyAttestationDigest, newTopologyAttestationDigest: next.topologyAttestationDigest,
@@ -258,4 +282,4 @@ function migrateWorker(existingDispatch, targetCandidate, rawRequest, policy = {
   return Object.freeze({ ...body, migrationDigest: sha256(body), dispatch: next });
 }
 
-module.exports = { SCHEMA, MIGRATION_SCHEMA, EVIDENCE, sha256, normalizeRequest, exactDelta, resilienceAssessment, eligibility, priceCandidate, dispatchFor, rankContinuations, chooseContinuationWorker, migrateWorker };
+module.exports = { SCHEMA, MIGRATION_SCHEMA, EVIDENCE, sha256, normalizeRequest, exactDelta, resilienceAssessment, eligibility, priceCandidate, dispatchFor, rankContinuations, chooseContinuationWorker, historyMigrationAdvance, migrateWorker };
