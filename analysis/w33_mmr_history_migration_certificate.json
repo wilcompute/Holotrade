@@ -1,0 +1,33 @@
+{
+  "schema": "holotrade.w33-mmr-history-migration-certificate.v1",
+  "status": "PASS",
+  "representationClass": "exception-depth3-mass24",
+  "representationMarketIdentityDigest": "sha256:b9e787da5dddf540bfaa291703468a32561d2ed87490b8d346f689c262483b44",
+  "signedResourceSelectionDigest": "sha256:777f07137e0d233fa6b315923c47f5bf4b6aa7702571cea30b656c017eec7162",
+  "oldHistoryRootDigest": "sha256:a2a8028f9beeaeb4c719a3c751ea60cd5069dc569a7400570d7a8a35a2ae15ee",
+  "newHistoryRootDigest": "sha256:ab8ddb97e7fc258122215198dd4b841048542cc592fac9ac285bf21bf7d81454",
+  "oldEventCount": 1,
+  "newEventCount": 2,
+  "oldHistoryDigest": "sha256:064364d1ccf006c911aa246f2f63d93484ad669be9211ec93614f76ea1d476c0",
+  "newHistoryDigest": "sha256:d10900c046d0c13bfbb84076bc1d30dca96c9c6249f6d291ee8b0780338aef53",
+  "consistencyCode": "MMR_PREFIX_CONSISTENCY_VERIFIED",
+  "consistencyProofDigest": "sha256:1f467d6c78ac9464fcb22bf00cf25c99a65e4608c5fac0debeb36c9e67e90ea6",
+  "oldAttestationChallengeDigest": "sha256:374f6fe581249ba7c32808b68f577218b84c864e94025181ab8e4dc9bc48cc13",
+  "newAttestationChallengeDigest": "sha256:98f5a05c3df6a2c5b6f0d8b629f19fdc250403f33b6b043e6d737e0b9de4f761",
+  "challengeChanged": true,
+  "attestationMustBeRenewed": true,
+  "migrationDigest": "sha256:01cfcaae45e13dac0e9fe3fee5e6a11661c02009078fb08e824e40cce19d5fdf",
+  "historyAdvanced": true,
+  "adversarialChecks": {
+    "tamperedConsistencyProofRejected": true,
+    "rootJumpWithoutProofRejected": true
+  },
+  "sourceArtifact": {
+    "workflowRunId": 34557028981,
+    "artifactId": 10182929866,
+    "artifactZipSha256": "sha256:d1b307d195d4ef42b24d2084767a9a3038fd62fba4744c50cb1ac7bb74a79945",
+    "certificateJsonSha256": "sha256:871fb165fd1bc153323a6ce41fece99dd6b593785b82d772f5b51c64af06fe58"
+  },
+  "theorem": "A continuation worker migration may advance the bound representation-market history only when the previously attested commitment is an exact MMR prefix of the new commitment. The accepted advance strictly increases event count, changes the measured-boot continuation challenge, and therefore requires fresh attestation.",
+  "boundary": "This certificate authenticates append-only software provenance and execution-context binding. It does not claim physical immutability, consensus finality, or economic correctness of the underlying bids."
+}
