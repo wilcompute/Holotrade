@@ -64,13 +64,28 @@ def optimal_negative_support(parent, depth, lines):
     return frozenset(support),witnesses
 
 
+def generic_mass_orbit_actions(rep_w33,line_gens):
+    """Orbit/action helper with no hard-coded 1080-cardinality assumption."""
+    states=[rep_w33]; index={rep_w33:0}; q=deque([rep_w33])
+    while q:
+        x=q.popleft()
+        for g in line_gens:
+            y=m24.act_vector(x,g)
+            if y not in index:
+                index[y]=len(states); states.append(y); q.append(y)
+    perms=[]
+    for g in line_gens:
+        perms.append(tuple(index[m24.act_vector(x,g)] for x in states))
+    return tuple(states),tuple(perms)
+
+
 def parent_stabilizer_point_orbits(parent_h, h_lines):
     pts,wlines,all_point,all_line=fp.same_generators()
     hidx={frozenset(L):i for i,L in enumerate(h_lines)}
     assert set(hidx)=={frozenset(L) for L in wlines}
     parent_w=tuple(parent_h[hidx[frozenset(L)]] for L in wlines)
     line_selected=tuple(all_line[i] for i in fp.GENERATOR_INDICES)
-    states,mass_selected=m24.mass_orbit_actions(parent_w,line_selected)
+    states,mass_selected=generic_mass_orbit_actions(parent_w,line_selected)
     point_selected=tuple(all_point[i] for i in fp.GENERATOR_INDICES)
     image,_=fp.build_group_with_base_images(point_selected,mass_selected,mass_selected)
     H={g for g,(bm,_dummy) in image.items() if bm==0}
@@ -122,17 +137,21 @@ def main():
     assert first["pointOrbitCount"]==5
     assert sum(t["depthDerivative"]==-1 for t in first["transitions"])==2
     assert sum(t["depthDerivative"]==0 for t in first["transitions"])==3
+    # Regression against the frozen birth certificate: no parent orbit may be
+    # accidentally forced through the historical 1080-state helper.
+    assert states[1]["orbitSize"]==1080
+    assert states[2]["orbitSize"]==2160
     out={
       "schema":"holotrade.exceptional-depth-derivative-automaton.v1","status":"PASS","group":"PSp(4,3)","groupOrder":25920,
       "transitionLaw":"For a parent of exact depth d, +P_p has depth d-1 exactly on optimal-negative support and depth d otherwise.",
       "alphabet":"Parent-stabilizer point orbits. Every point in one symbol has the same derivative and the same PSp child orbit.",
       "states":states,
       "mass24Regression":{"symbolCount":5,"dropSymbols":2,"flatSymbols":3},
-      "mass32Extension":{"parentCount":2,"targetMass":36,"completeImmediateTransitions":True},
+      "mass32Extension":{"parentCount":2,"parentOrbitSizes":[1080,2160],"targetMass":36,"completeImmediateTransitions":True},
       "theorem":"The universal discrete derivative law turns every certified exceptional orbit into a finite deterministic depth-transition state once its optimal-negative support is known. Quotienting points by the exact parent stabilizer compresses forty pencil additions to a finite alphabet without losing depth or target-orbit information. The certificate instantiates this for the mass-24 depth-3 birth and both first mass-32 depth-4 births, thereby predicting all their immediate mass-36 child depths without child depth optimization.",
       "boundary":"This is an exact finite W33 orbit/optimization automaton for pencil extension. It is not a physical time evolution or dynamical-system claim."
     }
     path=HERE/"exceptional_depth_derivative_automaton_certificate.json"; path.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
-    print(json.dumps({"status":"PASS","states":[{"name":s["name"],"depth":s["depth"],"pointOrbitCount":s["pointOrbitCount"],"support":s["optimalNegativeSupportSize"],"targetDepthHistogram":{str(d):sum(t["pointOrbitSize"] for t in s["transitions"] if t["targetDepth"]==d) for d in sorted({t["targetDepth"] for t in s["transitions"]})}} for s in states]},indent=2,sort_keys=True)); print(f"written: {path}")
+    print(json.dumps({"status":"PASS","states":[{"name":s["name"],"depth":s["depth"],"orbitSize":s["orbitSize"],"pointOrbitCount":s["pointOrbitCount"],"support":s["optimalNegativeSupportSize"],"targetDepthHistogram":{str(d):sum(t["pointOrbitSize"] for t in s["transitions"] if t["targetDepth"]==d) for d in sorted({t["targetDepth"] for t in s["transitions"]})}} for s in states]},indent=2,sort_keys=True)); print(f"written: {path}")
 
 if __name__=="__main__": main()
