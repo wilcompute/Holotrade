@@ -83,6 +83,19 @@ function commitHistory(history){
     peaks,rootDigest});
 }
 
+function verifyCommitment(commitment){
+  try{
+    if(!commitment||commitment.schema!==COMMIT_SCHEMA)return Object.freeze({ok:false,code:"MMR_COMMITMENT_SCHEMA_INVALID"});
+    if(!isDigest(commitment.historyDigest)||!isDigest(commitment.rootDigest)||!isDigest(commitment.representationMarketIdentityDigest)||!isDigest(commitment.signedResourceSelectionDigest))return Object.freeze({ok:false,code:"MMR_COMMITMENT_DIGEST_INVALID"});
+    if(typeof commitment.representationClass!=="string"||!commitment.representationClass.length)return Object.freeze({ok:false,code:"MMR_COMMITMENT_CLASS_INVALID"});
+    if(!Number.isSafeInteger(commitment.eventCount)||commitment.eventCount<1)return Object.freeze({ok:false,code:"MMR_COMMITMENT_EVENT_COUNT_INVALID"});
+    const root=rootFromPeaks(commitment.eventCount,commitment.peaks);
+    if(root!==commitment.rootDigest)return Object.freeze({ok:false,code:"MMR_COMMITMENT_ROOT_INVALID"});
+    return Object.freeze({ok:true,code:"MMR_COMMITMENT_VERIFIED",rootDigest:root,eventCount:commitment.eventCount,historyDigest:commitment.historyDigest,
+      representationMarketIdentityDigest:commitment.representationMarketIdentityDigest,signedResourceSelectionDigest:commitment.signedResourceSelectionDigest,representationClass:commitment.representationClass});
+  }catch(e){return Object.freeze({ok:false,code:"MMR_COMMITMENT_INVALID",reason:String(e.message)});}
+}
+
 function pathWithinPerfectTree(ds,start,size,index){
   if(size===1)return [];
   const half=size/2,h=heightForSize(size);
@@ -159,4 +172,4 @@ function verifyConsistency(oldCommitment,newCommitment,proof){
   }catch(e){return Object.freeze({ok:false,code:"MMR_CONSISTENCY_INVALID",reason:String(e.message)});}
 }
 
-module.exports={COMMIT_SCHEMA,INCLUSION_SCHEMA,CONSISTENCY_SCHEMA,stable,sha256,leafHash,nodeHash,peakIntervals,buildPeaks,rootFromPeaks,commitHistory,inclusionProof,verifyInclusion,consistencyProof,verifyConsistency};
+module.exports={COMMIT_SCHEMA,INCLUSION_SCHEMA,CONSISTENCY_SCHEMA,stable,sha256,leafHash,nodeHash,peakIntervals,buildPeaks,rootFromPeaks,commitHistory,verifyCommitment,inclusionProof,verifyInclusion,consistencyProof,verifyConsistency};
