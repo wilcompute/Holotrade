@@ -1,0 +1,36 @@
+{
+  "schema": "holotrade.octet-circuit-decoder-trap-summary.v1",
+  "status": "PASS",
+  "sourceWorkflowRun": 34562960929,
+  "sourceHeadSha": "19e3a3c4c03c2150790a9211d103abc12176a40e",
+  "distinctRadiusTwoDisplacements": 4140,
+  "mass": 28,
+  "traps": [
+    {
+      "orientation": -1,
+      "artifactId": 10184994588,
+      "artifactZipSha256": "sha256:36bda0cd36376c6e73973808148dcae8de589a9dc30e0d7cef25a1b52008b325",
+      "negativeMass": 2,
+      "circuitEndpointNegativeMass": 1,
+      "witness": [0,0,0,0,2,0,0,0,0,-1,0,-1,0,0,1,1,1,1,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "lineImage": [2,2,0,0,2,2,0,0,2,2,0,0,0,1,0,0,1,1,1,1,1,0,1,1,1,1,0,1,0,0,0,1,0,1,0,0,0,1,1,1]
+    },
+    {
+      "orientation": 1,
+      "artifactId": 10185016852,
+      "artifactZipSha256": "sha256:2482aa74d9d1ac8d17c84060efb5ddb9675fa96bbc0dc51d1079ac41169ed6c7",
+      "negativeMass": 2,
+      "circuitEndpointNegativeMass": 1,
+      "witness": [0,0,0,0,0,1,1,1,1,1,0,1,1,2,0,0,-1,0,0,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "lineImage": [2,2,0,0,1,0,0,0,2,2,0,0,2,2,0,0,0,1,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,0,1,1,0,1,0,1]
+    }
+  ],
+  "exactVerification": {
+    "sameLineImageUnderCircuit": true,
+    "lineImagesNonnegative": true,
+    "all4140RadiusTwoEndpointsNonImproving": true,
+    "circuitStrictlyImproves": true
+  },
+  "theorem": "The certified primitive W33 circuit outside the radius-two octet ball is operationally relevant: in both orientations there exists a nonnegative mass-28 signed-pencil fiber with a preimage of negativity 2 that is a true local minimum under all 4,140 one/two-octet displacements, while the circuit preserves the line image and lowers negativity to 1. Radius-two octet descent therefore fails as a universal decoder.",
+  "boundary": "This is an exact integer-lattice decoder counterexample. It is not a physical dynamics, quantum advantage, or hardware-performance claim."
+}
