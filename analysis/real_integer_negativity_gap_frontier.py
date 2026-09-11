@@ -8,7 +8,7 @@ For an admissible excess vector e of mass 4k,
     delta_R(e) = (gamma_R(e)-k)/2.
 
 Always delta_R <= delta_Z. The lower-mass certificates repeatedly found
-equality. This program searches masses 28, 32, and 36 with exact orbit
+equality. This program searches masses 28, 32, 36, and 40 with exact orbit
 reduction, integer CP-SAT depth certificates, and the repository's rational
 primal/dual l1 certificate.
 
@@ -17,8 +17,10 @@ Two modes are useful:
 * no-pencil: enumerate only vectors containing no point pencil. At mass 32 this
   is the only sector where depth four can be born because the global mass-28
   maximum depth is certified as three. At mass 36 it is likewise the only
-  sector in which a depth-five class could be born: any class containing a
-  pencil descends to mass 32, whose certified maximum depth is four.
+  sector in which a depth-five class could be born because mass 32 has global
+  maximum depth four. The exhaustive mass-36 certificate again has global
+  maximum depth four, so at mass 40 every first depth-five birth must also lie
+  in the no-contained-pencil sector.
 
 Enumeration completeness is recorded separately from any found separation. A
 found delta_R < delta_Z is unconditional for that orbit even if the surrounding
@@ -78,7 +80,7 @@ def rational_row(rep, mass, lines, depth_budget):
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--mass",type=int,required=True); ap.add_argument("--mode",choices=["full","no-pencil"],default="full")
     ap.add_argument("--budget",type=float,default=1200); ap.add_argument("--cap",type=int,default=3000000); ap.add_argument("--depth-budget",type=float,default=60); a=ap.parse_args()
-    assert a.mass in (28,32,36) and a.mass%4==0
+    assert a.mass in (28,32,36,40) and a.mass%4==0
     lines,thru,pencils,adj,gens,order=m20.geometry_data(); assert order==25920
     raw,status,complete,hit,elapsed=enumerate_vectors(a.mass,lines,thru,adj,no_pencil=a.mode=="no-pencil",budget=a.budget,cap=a.cap)
     rem=set(raw); rows=[]
@@ -93,16 +95,23 @@ def main():
     delta_hist=Counter(r["deltaReal"] for r in rows if r.get("deltaReal") is not None)
     max_depth=max(depth_hist,default=None)
     depth5=[r for r in rows if r.get("integerDepth") is not None and r["integerDepth"]>=5]
+    lower_context=(
+      "The completed mass-28 frontier has global maximum integer depth 3. The completed mass-32 frontier has global maximum integer depth 4 with exactly two first depth-4 births. The exhaustive mass-36 no-pencil sector has maximum depth 4, and pencil-containing mass-36 classes descend from mass 32, so the global mass-36 maximum is 4."
+    )
+    birth_logic=(
+      "Any mass-40 class containing a point pencil descends to a mass-36 class and therefore cannot have depth above 4. Hence every first depth-5 mass-40 birth must occur in the no-contained-pencil sector."
+      if a.mass==40 else
+      "Any mass-36 class containing a point pencil descends to a mass-32 class and therefore cannot have depth above 4. Hence a first depth-5 mass-36 birth, if it exists, must occur in the no-contained-pencil sector."
+    )
     out={
-      "schema":"holotrade.real-integer-negativity-gap-frontier.v1","status":"PASS","groupOrder":order,"mass":a.mass,"k":a.mass//4,"mode":a.mode,
+      "schema":"holotrade.real-integer-negativity-gap-frontier.v2","status":"PASS","groupOrder":order,"mass":a.mass,"k":a.mass//4,"mode":a.mode,
       "solverStatus":status,"enumerationComplete":complete,"hitCap":hit,"rawSolutionsFound":len(raw),"orbitCount":len(rows),"seconds":elapsed,
       "integerDepthHistogram":{str(k):v for k,v in sorted(depth_hist.items())},"maximumResolvedIntegerDepth":max_depth,
       "deltaRealHistogram":dict(sorted(delta_hist.items(),key=lambda kv:F(kv[0]))),
       "unresolvedOrbitCount":len(unresolved),"strictSeparationOrbitCount":len(gaps),"strictSeparations":gaps,
       "depthAtLeastFiveOrbitCount":len(depth5),"depthAtLeastFiveRows":depth5,
       "allResolvedRows":rows,"noSeparationInEnumeratedSectorProved":absence,
-      "lowerMassContext":"The completed mass-28 frontier has global maximum integer depth 3. The completed mass-32 no-pencil birth sector has maximum integer depth 4, with exactly two first depth-4 birth orbits.",
-      "birthLogic36":"Any mass-36 class containing a point pencil descends to a mass-32 class and therefore cannot have depth above 4. Hence a first depth-5 mass-36 birth, if it exists, must occur in the no-contained-pencil sector.",
+      "lowerMassContext":lower_context,"birthLogic":birth_logic,
       "theorem":("At least one exact orbit satisfies delta_R < delta_Z; each listed gap carries both an integer optimum and rational primal/dual l1 certificate." if gaps else ("The complete requested sector has delta_R=delta_Z on every orbit." if absence else "No gap was found in the enumerated portion, but incompleteness or unresolved integer optimization prevents an absence theorem.")),
       "boundary":"A separation is an exact property of signed preimage optimization. It is not physical energy, magic-state cost, or hardware performance. 'First' by mass is asserted only after all lower relevant masses/sectors are independently certified gap-free.",
     }
