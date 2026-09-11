@@ -7,18 +7,20 @@ For an admissible excess vector e of mass 4k,
     gamma_R(e) = minimum real l1 norm of a preimage,
     delta_R(e) = (gamma_R(e)-k)/2.
 
-Always delta_R <= delta_Z.  The lower-mass certificates repeatedly found
-equality.  This program searches mass 28 and 32 with exact orbit reduction,
-integer CP-SAT depth certificates, and the repository's rational primal/dual
-l1 certificate.
+Always delta_R <= delta_Z. The lower-mass certificates repeatedly found
+equality. This program searches masses 28, 32, and 36 with exact orbit
+reduction, integer CP-SAT depth certificates, and the repository's rational
+primal/dual l1 certificate.
 
 Two modes are useful:
 * full: enumerate every admissible vector of the requested mass;
-* no-pencil: enumerate only vectors containing no point pencil.  At mass 32
-  this is the only sector where depth four can be born because the global
-  mass-28 maximum depth is now certified as three.
+* no-pencil: enumerate only vectors containing no point pencil. At mass 32 this
+  is the only sector where depth four can be born because the global mass-28
+  maximum depth is certified as three. At mass 36 it is likewise the only
+  sector in which a depth-five class could be born: any class containing a
+  pencil descends to mass 32, whose certified maximum depth is four.
 
-Enumeration completeness is recorded separately from any found separation.  A
+Enumeration completeness is recorded separately from any found separation. A
 found delta_R < delta_Z is unconditional for that orbit even if the surrounding
 census is partial; absence is promoted only when enumeration and all per-orbit
 optimizations are complete.
@@ -76,7 +78,7 @@ def rational_row(rep, mass, lines, depth_budget):
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--mass",type=int,required=True); ap.add_argument("--mode",choices=["full","no-pencil"],default="full")
     ap.add_argument("--budget",type=float,default=1200); ap.add_argument("--cap",type=int,default=3000000); ap.add_argument("--depth-budget",type=float,default=60); a=ap.parse_args()
-    assert a.mass in (28,32) and a.mass%4==0
+    assert a.mass in (28,32,36) and a.mass%4==0
     lines,thru,pencils,adj,gens,order=m20.geometry_data(); assert order==25920
     raw,status,complete,hit,elapsed=enumerate_vectors(a.mass,lines,thru,adj,no_pencil=a.mode=="no-pencil",budget=a.budget,cap=a.cap)
     rem=set(raw); rows=[]
@@ -86,21 +88,25 @@ def main():
     rows.sort(key=lambda r:(999 if r.get("integerDepth") is None else r["integerDepth"],F(r.get("deltaReal","999")),r["orbitSize"],r["representativeDigest"]))
     unresolved=[r for r in rows if not r["optimizationComplete"]]
     gaps=[r for r in rows if r.get("strictSeparation")]
-    equal=[r for r in rows if r.get("equality")]
     absence=complete and not unresolved and not gaps
     depth_hist=Counter(r["integerDepth"] for r in rows if r.get("integerDepth") is not None)
     delta_hist=Counter(r["deltaReal"] for r in rows if r.get("deltaReal") is not None)
+    max_depth=max(depth_hist,default=None)
+    depth5=[r for r in rows if r.get("integerDepth") is not None and r["integerDepth"]>=5]
     out={
       "schema":"holotrade.real-integer-negativity-gap-frontier.v1","status":"PASS","groupOrder":order,"mass":a.mass,"k":a.mass//4,"mode":a.mode,
       "solverStatus":status,"enumerationComplete":complete,"hitCap":hit,"rawSolutionsFound":len(raw),"orbitCount":len(rows),"seconds":elapsed,
-      "integerDepthHistogram":{str(k):v for k,v in sorted(depth_hist.items())},"deltaRealHistogram":dict(sorted(delta_hist.items(),key=lambda kv:F(kv[0]))),
+      "integerDepthHistogram":{str(k):v for k,v in sorted(depth_hist.items())},"maximumResolvedIntegerDepth":max_depth,
+      "deltaRealHistogram":dict(sorted(delta_hist.items(),key=lambda kv:F(kv[0]))),
       "unresolvedOrbitCount":len(unresolved),"strictSeparationOrbitCount":len(gaps),"strictSeparations":gaps,
+      "depthAtLeastFiveOrbitCount":len(depth5),"depthAtLeastFiveRows":depth5,
       "allResolvedRows":rows,"noSeparationInEnumeratedSectorProved":absence,
-      "mass28Context":"Independent completed birth-frontier certificate proves the global mass-28 maximum integer depth is three; its no-pencil sector has four depth-three orbits and 43,200 solutions.",
+      "lowerMassContext":"The completed mass-28 frontier has global maximum integer depth 3. The completed mass-32 no-pencil birth sector has maximum integer depth 4, with exactly two first depth-4 birth orbits.",
+      "birthLogic36":"Any mass-36 class containing a point pencil descends to a mass-32 class and therefore cannot have depth above 4. Hence a first depth-5 mass-36 birth, if it exists, must occur in the no-contained-pencil sector.",
       "theorem":("At least one exact orbit satisfies delta_R < delta_Z; each listed gap carries both an integer optimum and rational primal/dual l1 certificate." if gaps else ("The complete requested sector has delta_R=delta_Z on every orbit." if absence else "No gap was found in the enumerated portion, but incompleteness or unresolved integer optimization prevents an absence theorem.")),
       "boundary":"A separation is an exact property of signed preimage optimization. It is not physical energy, magic-state cost, or hardware performance. 'First' by mass is asserted only after all lower relevant masses/sectors are independently certified gap-free.",
     }
     path=HERE/f"real_integer_negativity_gap_frontier_m{a.mass}_{a.mode}.json"; path.write_text(json.dumps(out,indent=2,sort_keys=True)+"\n")
-    print(json.dumps({k:out[k] for k in ["status","mass","mode","solverStatus","enumerationComplete","rawSolutionsFound","orbitCount","integerDepthHistogram","deltaRealHistogram","unresolvedOrbitCount","strictSeparationOrbitCount","noSeparationInEnumeratedSectorProved"]},indent=2,sort_keys=True)); print(f"written: {path}")
+    print(json.dumps({k:out[k] for k in ["status","mass","mode","solverStatus","enumerationComplete","rawSolutionsFound","orbitCount","integerDepthHistogram","maximumResolvedIntegerDepth","deltaRealHistogram","unresolvedOrbitCount","strictSeparationOrbitCount","depthAtLeastFiveOrbitCount","noSeparationInEnumeratedSectorProved"]},indent=2,sort_keys=True)); print(f"written: {path}")
 
 if __name__=="__main__": main()
