@@ -2,10 +2,13 @@
 """Minimize the certified outside-radius-two circuit fallback under PSp(4,3).
 
 The exact primitive circuit c and its negative each escape a certified mass-28
-radius-two trap.  A runtime library should not carry redundant group images.
+radius-two trap. A runtime library should not carry redundant group images.
 This script computes the exact PSp(4,3) point-action orbit of c and -c, determines
 whether they are one orbit or two, and solves the tiny set-cover problem over
 those PSp-invariant orientation orbits for the two frozen trap witnesses.
+
+The trap inputs come from the repository-frozen summary certificate rather than
+artifact-only per-orientation files, so the result is reproducible from master.
 
 The resulting minimality statement is scoped to PSp-invariant libraries built
 from the certified circuit orientation orbits and to the frozen exact traps.
@@ -16,7 +19,6 @@ from __future__ import annotations
 
 from collections import deque
 import hashlib,json
-from itertools import combinations
 from pathlib import Path
 
 import mass20_born_depth_and_extension_barcode as m20
@@ -24,7 +26,7 @@ import mass24_birth_mass20_census_real_l1 as m24c
 
 HERE=Path(__file__).resolve().parent
 BASE_CERT=HERE/'octet_single_circuit_obstruction_certificate.json'
-TRAPS=[HERE/'octet_circuit_decoder_instance_plus.json',HERE/'octet_circuit_decoder_instance_minus.json']
+TRAP_CERT=HERE/'octet_circuit_decoder_trap_certificate.json'
 
 
 def addv(a,b): return tuple(x+y for x,y in zip(a,b))
@@ -64,12 +66,18 @@ def main():
     assert relation in ('same-orbit','disjoint-orbits')
     orientation_orbits=[op] if op==om else [op,om]
     names=['plus'] if op==om else ['plus','minus']
+
+    tc=json.loads(TRAP_CERT.read_text())
+    assert tc['status']=='PASS' and len(tc['traps'])==2
+    ev=tc['exactVerification']
+    assert ev['sameLineImageUnderCircuit'] and ev['lineImagesNonnegative']
+    assert ev['all4140RadiusTwoEndpointsNonImproving'] and ev['circuitStrictlyImproves']
     traps=[]
-    for p in TRAPS:
-        d=json.loads(p.read_text()); assert d['decoderTrapFound'] and d['unconditionalWitnessVerification']['all4140RadiusTwoEndpointsNonImproving']
-        w=tuple(d['witness'])
+    for d in tc['traps']:
+        w=tuple(d['witness']); assert negmass(w)==d['negativeMass']==2
         infos={name:escape_info(w,O) for name,O in zip(names,orientation_orbits)}
-        traps.append({'source':p.name,'orientation':d['orientation'],'witness':list(w),'orbitEscapes':infos})
+        traps.append({'source':TRAP_CERT.name,'orientation':d['orientation'],'witness':list(w),'orbitEscapes':infos})
+
     covers=[]
     for mask in range(1,1<<len(orientation_orbits)):
         chosen=[i for i in range(len(orientation_orbits)) if mask>>i&1]
@@ -78,17 +86,18 @@ def main():
         if ok: covers.append((len(union),len(chosen),chosen,union))
     assert covers
     covers.sort(key=lambda z:(z[1],z[0],z[2])); _,_,chosen,lib=covers[0]
-    # Minimality among PSp-invariant unions of the certified ±c orientation orbits.
     assert not any(cov[1]<len(chosen) for cov in covers)
     out={
       'schema':'holotrade.octet-circuit-library-minimization.v1','status':'PASS','group':'PSp(4,3)','groupOrder':25920,
       'baseCircuitDigest':bc['circuit']['digest'],'baseCircuitSupportSize':bc['circuit']['supportSize'],
+      'trapCertificate':TRAP_CERT.name,
+      'trapCertificateSourceWorkflowRun':tc['sourceWorkflowRun'],
       'plusOrbitSize':len(op),'minusOrbitSize':len(om),'orientationOrbitRelation':relation,
       'orientationOrbitDigests':{name:digest_moves(O) for name,O in zip(names,orientation_orbits)},
       'trapCount':len(traps),'traps':traps,
       'minimalSelectedOrientationOrbits':[names[i] for i in chosen],
       'minimalPSpInvariantCircuitMoveCount':len(lib),'minimalLibraryDigest':digest_moves(lib),
-      'minimalLibraryEscapes':[{ 'source':t['source'], **escape_info(tuple(t['witness']),lib)} for t in traps],
+      'minimalLibraryEscapes':[{ 'orientation':t['orientation'], **escape_info(tuple(t['witness']),lib)} for t in traps],
       'minimalityScope':'Exact among PSp(4,3)-invariant unions of the certified primitive circuit orientation orbits {Orb(c), Orb(-c)} for simultaneously escaping the two frozen exact mass-28 radius-two traps.',
       'theorem':'The certified circuit fallback can be quotiented and minimized at the PSp(4,3)-orbit level. The certificate determines whether sign reversal is already a group image and returns the smallest orientation-orbit union that escapes both exact radius-two traps.',
       'boundary':'This does not claim completeness of primitive circuits or universal optimality of the minimized library on every affine fiber. It is an exact minimization relative to the certified circuit orbit(s) and frozen traps.'
