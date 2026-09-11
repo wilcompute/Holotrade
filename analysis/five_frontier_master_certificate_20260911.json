@@ -72,5 +72,12 @@
     "mass36ExhaustiveFrozen": "affc8453d0c68ee6657d8298fc2eb09e3cfc1ad1",
     "mass36HuntCrosscheck": "449b7d29ae682f4a0a239627a8cf292e4a514eb1",
     "steinbergM8Frozen": "fe02b05d62ca72ed7772cb722ee36289bcd0b0d5"
+  },
+  "validation": {
+    "workflowRun": 34561390470,
+    "workflowHeadSha": "23f26144d7da515d348a10ff472b0b10a611c538",
+    "artifactId": 10184419921,
+    "artifactZipSha256": "sha256:18edd0eacfe67b6cb199c9b6114796cf1a6934698d3416cb2aa646f0a778419f",
+    "result": "SUCCESS"
   }
 }
