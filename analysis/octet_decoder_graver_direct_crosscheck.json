@@ -1,0 +1,25 @@
+{
+  "schema": "holotrade.octet-decoder-graver-direct-crosscheck.v1",
+  "status": "PASS",
+  "graverObstruction": {
+    "certificate": "analysis/octet_single_circuit_obstruction_certificate.json",
+    "isGraverElement": true,
+    "insideRadiusTwo": false,
+    "supportSize": 18,
+    "l1": 20,
+    "linf": 2,
+    "intrinsicCoordinates": [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    "octetWordLengthThree": false
+  },
+  "directDecoderSearch": {
+    "certificate": "analysis/octet_gauge_radius_two_all7_merged_certificate.json",
+    "exceptionalCosetCount": 7,
+    "distinctRadiusTwoDisplacements": 4140,
+    "counterexampleFound": false,
+    "boundedNoTrapProvedOnAny": false,
+    "finalStatusHistogram": {"UNKNOWN": 7},
+    "finalCandidatesStillHadImprovingRadiusTwoMoveToCertifiedOptimum": true
+  },
+  "conclusion": "Universal Graver certification and direct instance behavior separate cleanly. Radius-two octet moves are not a universal Graver augmentation test set because an exact primitive circuit lies outside the radius-two ball. Nevertheless, the seven exceptional-coset searches produced no radius-two trap and continued to find improving radius-two moves. Therefore the Graver obstruction invalidates a universal proof strategy, not the tested decoder instances themselves.",
+  "boundary": "Exact finite combinatorics and integer linear algebra only. UNKNOWN direct-search statuses are not promoted to convergence theorems."
+}
