@@ -18,6 +18,11 @@ const T = require("./w33-continuation-transaction.js");
 const CHALLENGE_SCHEMA = "holotrade.w33-octet-decoder-attestation-challenge.v1";
 const BINDING_SCHEMA = "holotrade.w33-octet-decoder-attestation-binding.v1";
 const TRANSACTION_SCHEMA = "holotrade.w33-certified-decoder-transaction.v1";
+const PARENT_CONTEXT_FIELDS = Object.freeze([
+  "executionPolicyDigest","strictAdmissionBindingDigest","acceleratorCertificateDigest",
+  "signedResourceCertificateDigest","signedResourceSelectionDigest","representationMarketIdentityDigest",
+  "representationMarketHistoryRootDigest","topologyAttestationDigest","failureAssessmentDigest",
+]);
 
 function buildDecoderChallenge(dispatch, decoderPolicy) {
   if (!dispatch || !dispatch.challenge || !dispatch.challenge.challengeDigest) throw new TypeError("continuation dispatch challenge required");
@@ -47,6 +52,8 @@ function verifiedDecoderBinding(dispatch, challenge, signedVerdict, trustedVerif
   for (const k of ["passportId","deploymentDigest","runtimePublicKeyDigest","continuationRoot","processId","generation"]) {
     if (challenge[k]!==parent[k]) throw new Error(`decoder challenge ${k} drift`);
   }
+  const inherited={};
+  for (const k of PARENT_CONTEXT_FIELDS) if (parent[k]!=null) inherited[k]=parent[k];
   const body={
     schema:BINDING_SCHEMA,
     parentChallengeDigest:challenge.parentChallengeDigest,
@@ -58,6 +65,7 @@ function verifiedDecoderBinding(dispatch, challenge, signedVerdict, trustedVerif
     continuationRoot:challenge.continuationRoot,
     processId:challenge.processId,
     generation:challenge.generation,
+    ...inherited,
     decoderPolicyDigest:challenge.decoderPolicyDigest,
     provider:signedVerdict.body.provider,
     launchMeasurement:signedVerdict.body.launchMeasurement,
