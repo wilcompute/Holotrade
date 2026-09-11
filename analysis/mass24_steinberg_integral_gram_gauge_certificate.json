@@ -1,0 +1,24 @@
+{
+  "schema": "holotrade.mass24-steinberg-integral-gram-gauge.v1",
+  "status": "PASS",
+  "sourceGramDeterminant": 57600,
+  "massGramMatrix": [[8,4,0,4,-4],[4,16,-9,-1,6],[0,-9,19,3,-13],[4,-1,3,11,-5],[-4,6,-13,-5,16]],
+  "leadingPrincipalMinors": [8,112,1480,12240,57600],
+  "massMinimumNorm": 8,
+  "massMinimumShell": [[-1,0,0,0,0],[1,0,0,0,0]],
+  "massIntegralIsometryGroup": "C2^3",
+  "massIntegralIsometryGroupOrder": 8,
+  "massIntegralIsometryElementOrders": [1,2,2,2,2,2,2,2],
+  "obstructionStandardTraceLatticeAutOrder": 48,
+  "combinedIntegralSplitLatticeAutOrder": 384,
+  "combinedProjectiveAutOrderModuloGlobalSign": 192,
+  "splitRecoveredFromNormShell": true,
+  "canonicalMassLineFromShortestShell": "The unique mass-lattice shortest line is span(e0), represented by the shell +/-e0.",
+  "source": {
+    "workflowRunId": 34563141971,
+    "artifactId": 10185034632,
+    "artifactZipSha256": "sha256:a0a1e816e49531ec8ce0f71916eeee0e649586444c75e7ac0c2d509ffdc72df8"
+  },
+  "theorem": "After adjoining the certified integral bridge Gram lattice, the continuous mass-side GL5(Q) frame gauge reduces to Aut(Z^5,G)=C2^3 of order 8. For the block lattice I3 direct-sum G, the norm-one shell intrinsically recovers the obstruction rank-3 block; the split-preserving integral isometry group has order 384 and its quotient by central global sign has order 192.",
+  "boundary": "The integral Gram lattice is extra certified structure carried by the chosen bridge/primitive-copy lattice. The order-384/192 result is not implied by PSp(4,3) alone and is not a physical rotation group or hardware-symmetry claim without an independent identification."
+}
