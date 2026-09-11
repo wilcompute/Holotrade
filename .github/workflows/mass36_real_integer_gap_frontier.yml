@@ -1,0 +1,26 @@
+name: Mass36 no-pencil real integer frontier
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/real_integer_negativity_gap_frontier.py'
+      - '.github/workflows/mass36_real_integer_gap_frontier.yml'
+  workflow_dispatch:
+
+jobs:
+  mass36-no-pencil:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Exhaust mass36 no-pencil birth sector and test real integer equality
+        run: PYTHONPATH=analysis python analysis/real_integer_negativity_gap_frontier.py --mass 36 --mode no-pencil --budget 5400 --cap 8000000 --depth-budget 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-integer-gap-mass36-no-pencil
+          path: analysis/real_integer_negativity_gap_frontier_m36_no-pencil.json
