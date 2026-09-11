@@ -1,0 +1,27 @@
+name: Mass24 Steinberg full M8 algebra
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass24_steinberg_full_m8_algebra.py'
+      - 'analysis/mass24_steinberg_matrix_units_certificate.json'
+      - '.github/workflows/mass24_steinberg_full_m8_algebra.yml'
+  workflow_dispatch:
+
+jobs:
+  full-m8:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install sympy
+      - name: Assemble and verify exact M8 composition algebra
+        run: PYTHONPATH=analysis python analysis/mass24_steinberg_full_m8_algebra.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass24-steinberg-full-m8-algebra
+          path: analysis/mass24_steinberg_full_m8_algebra_certificate.json
