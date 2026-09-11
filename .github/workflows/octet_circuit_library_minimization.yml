@@ -6,8 +6,7 @@ on:
     paths:
       - 'analysis/octet_circuit_library_minimization.py'
       - 'analysis/octet_single_circuit_obstruction_certificate.json'
-      - 'analysis/octet_circuit_decoder_instance_plus.json'
-      - 'analysis/octet_circuit_decoder_instance_minus.json'
+      - 'analysis/octet_circuit_decoder_trap_certificate.json'
       - '.github/workflows/octet_circuit_library_minimization.yml'
   workflow_dispatch:
 
