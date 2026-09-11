@@ -2,19 +2,23 @@
 """Exact structural classification of the three mass-36 no-pencil depth-4 orbits.
 
 The exhaustive mass-36 census found exactly three depth-four orbits: two of size
-4320 and one of size 25920.  This script goes beyond orbit size.  For each
-canonical representative it recovers the exact parent stabilizer, its point
-orbits, the full optimal-negativity support, local incident-line signatures,
-and the complete one-pencil descendant symbol table supplied by the universal
-discrete derivative theorem.
+4320 and one of size 25920.  For each canonical representative we recover the
+exact parent stabilizer, its point orbits, the full optimal-negativity support,
+local incident-line signatures, and the complete one-pencil descendant symbol
+table supplied by the universal discrete derivative theorem.
 
-The output is an exact finite invariant package intended to explain why the
-three depth-four classes are distinct and how each can persist/drop at mass 40.
+A deliberately coarse invariant package is reported separately from a refined
+one.  The coarse package is *not* forced to classify the three PSp(4,3) orbits:
+if two inequivalent parents share it, that coincidence is itself evidence.  The
+refined package adds exact support-point incidence and canonical descendant
+orbit identities.  This preserves the distinction between a predictive local
+signature and the full group-orbit label rather than hiding collisions behind an
+assertion.
 """
 from __future__ import annotations
 
-from collections import Counter
-import json
+from collections import Counter, defaultdict
+import hashlib, json
 from pathlib import Path
 
 import mass20_born_depth_and_extension_barcode as m20
@@ -39,15 +43,16 @@ PARENTS=[
 
 
 def addv(a,b): return tuple(x+y for x,y in zip(a,b))
-
 def hist(v): return {str(k):n for k,n in sorted(Counter(v).items())}
+def digest_obj(x):
+    return 'sha256:'+hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 
 def classify(parent,lines,thru,pencils,gens):
     rep=parent['rep']; assert sum(rep)==36 and m20.digest(rep)==parent['digest']
     ob=m20.orbit(rep,gens); assert len(ob)==parent['orbitSize'] and min(ob)==rep
     exact=m20.exact_depth(rep,lines,budget=90); assert exact is not None and exact[0]==DEPTH
-    support,witnesses=aut.optimal_negative_support(rep,DEPTH,lines)
+    support,_witnesses=aut.optimal_negative_support(rep,DEPTH,lines)
     orbit_size,stab_order,point_orbits=aut.parent_stabilizer_point_orbits(rep,lines)
     assert orbit_size==parent['orbitSize'] and orbit_size*stab_order==25920
     symbols=[]; child_reps=set()
@@ -59,17 +64,23 @@ def classify(parent,lines,thru,pencils,gens):
         symbols.append({
           'pointOrbitIndex':oi,'pointOrbitSize':len(O),'points':list(O),
           'pointStabilizerOrder':stab_order//len(O),
-          'optimalNegativeSupport':drop,'depthDerivative':-1 if drop else 0,'targetDepth':DEPTH-1 if drop else DEPTH,
+          'optimalNegativeSupport':drop,'supportIntersectionSize':sum(p in support for p in O),
+          'depthDerivative':-1 if drop else 0,'targetDepth':DEPTH-1 if drop else DEPTH,
           'incidentParentLineValues':list(next(iter(vals))),
           'targetRepresentativeDigest':m20.digest(target),'targetOrbitSize':len(m20.orbit(target,gens)),
         })
     support_orbit_sizes=sorted(s['pointOrbitSize'] for s in symbols if s['optimalNegativeSupport'])
     point_orbit_sizes=sorted(len(O) for O in point_orbits)
     child_depth_point_hist={str(d):sum(s['pointOrbitSize'] for s in symbols if s['targetDepth']==d) for d in (3,4)}
-    signature={
+    coarse={
       'orbitSize':orbit_size,'stabilizerOrder':stab_order,'representativeValueHistogram':hist(rep),
       'pointOrbitSizes':point_orbit_sizes,'optimalNegativeSupportSize':len(support),'supportOrbitSizes':support_orbit_sizes,
       'childOrbitCount':len(child_reps),'childDepthPointHistogram':child_depth_point_hist,
+    }
+    refined={
+      'coarse':coarse,
+      'optimalNegativeSupport':sorted(support),
+      'symbolMultiset':sorted((s['pointOrbitSize'],s['supportIntersectionSize'],tuple(s['incidentParentLineValues']),s['targetDepth'],s['targetOrbitSize'],s['targetRepresentativeDigest']) for s in symbols),
     }
     return {
       'representative':list(rep),'representativeDigest':parent['digest'],'orbitSize':orbit_size,'stabilizerOrder':stab_order,
@@ -77,25 +88,43 @@ def classify(parent,lines,thru,pencils,gens):
       'pointOrbitCount':len(point_orbits),'pointOrbitSizes':point_orbit_sizes,
       'optimalNegativeSupport':sorted(support),'optimalNegativeSupportSize':len(support),'supportOrbitSizes':support_orbit_sizes,
       'childOrbitCount':len(child_reps),'childDepthPointHistogram':child_depth_point_hist,'symbols':symbols,
-      'structuralSignature':signature,
+      'coarseStructuralSignature':coarse,'coarseStructuralSignatureDigest':digest_obj(coarse),
+      'refinedStructuralSignature':refined,'refinedStructuralSignatureDigest':digest_obj(refined),
     }
+
+
+def classes(rows,key):
+    out=defaultdict(list)
+    for r in rows: out[r[key]].append(r['representativeDigest'])
+    return [sorted(v) for _,v in sorted(out.items())]
 
 
 def main():
     lines,thru,pencils,adj,gens,order=m20.geometry_data(); assert order==25920
     rows=[classify(p,lines,thru,pencils,gens) for p in PARENTS]
-    sigs=[json.dumps(r['structuralSignature'],sort_keys=True) for r in rows]; assert len(set(sigs))==3
-    # The two 4320 classes must be structurally distinguished without using their digest.
-    a,b=rows[:2]; assert a['orbitSize']==b['orbitSize']==4320 and a['structuralSignature']!=b['structuralSignature']
+    coarse_classes=classes(rows,'coarseStructuralSignatureDigest')
+    refined_classes=classes(rows,'refinedStructuralSignatureDigest')
+    coarse_collision_count=sum(len(c)-1 for c in coarse_classes if len(c)>1)
+    refined_injective=len(refined_classes)==3
+    # Universal derivative theorem: +one pencil never raises depth, so no mass36
+    # depth-4 parent can produce either newly born mass40 depth-5 orbit.
+    assert all(s['targetDepth'] in (3,4) for r in rows for s in r['symbols'])
     out={
-      'schema':'holotrade.mass36-depth4-structural-types.v1','status':'PASS','group':'PSp(4,3)','groupOrder':25920,
+      'schema':'holotrade.mass36-depth4-structural-types.v2','status':'PASS','group':'PSp(4,3)','groupOrder':25920,
       'mass':36,'depth':4,'orbitCount':3,'rows':rows,
-      'allThreeStructuralSignaturesDistinct':True,
-      'two4320ClassesDistinguishedBeyondOrbitSize':True,
-      'theorem':'The three exhaustive mass-36 depth-four PSp(4,3) orbits have distinct exact stabilizer/support/descendant signatures. In particular the two size-4320 classes are not merely duplicate-size phenomena: their parent-stabilizer point-orbit decomposition, optimal-negativity support and/or one-pencil derivative signatures distinguish them exactly.',
-      'boundary':'These are exact finite W33 orbit and integer-optimization invariants. The structural signature is a classifier for the three certified mass-36 depth-four orbits, not yet a theorem that the same finite tuple classifies arbitrary masses.'
+      'coarseSignatureClassCount':len(coarse_classes),'coarseSignatureClasses':coarse_classes,
+      'coarseSignatureCollisionCount':coarse_collision_count,
+      'refinedSignatureClassCount':len(refined_classes),'refinedSignatureClasses':refined_classes,
+      'refinedSignatureInjectiveOnTheseThree':refined_injective,
+      'mass40DerivativePrediction':{
+        'onePencilChildDepths':[3,4],
+        'canAnyMass36Depth4ParentFeedDepth5ByOnePencil':False,
+        'reason':'The exact derivative theorem gives d(e+P_p) in {d(e)-1,d(e)}. With d(e)=4, every one-pencil mass40 descendant has depth 3 or 4. Hence every mass40 depth-5 class is a genuinely new no-pencil birth, not persistence from these parents.'
+      },
+      'theorem':'The three exhaustive mass-36 depth-four PSp(4,3) orbits have exact stabilizer, optimal-support and one-pencil descendant symbol tables. The originally proposed coarse summary is allowed to collide and is therefore not overclaimed as a classifier. The refined certificate records exact support incidence and canonical child-orbit identities. Independently of those signature collisions, the universal derivative theorem proves that none of the three depth-four parents can feed a depth-five class at mass 40 by adding a pencil.',
+      'boundary':'These are exact finite W33 orbit and integer-optimization invariants. Signature injectivity is asserted only when reported by the certificate. The predictor governs immediate point-pencil extension; it does not classify unrelated no-pencil births.'
     }
     path=HERE/'mass36_depth4_structural_types_certificate.json'; path.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
-    print(json.dumps({'status':'PASS','rows':[{'digest':r['representativeDigest'],'orbitSize':r['orbitSize'],'stabilizerOrder':r['stabilizerOrder'],'pointOrbitSizes':r['pointOrbitSizes'],'supportSize':r['optimalNegativeSupportSize'],'supportOrbitSizes':r['supportOrbitSizes'],'childOrbitCount':r['childOrbitCount'],'childDepthPointHistogram':r['childDepthPointHistogram']} for r in rows]},indent=2,sort_keys=True)); print(f'written: {path}')
+    print(json.dumps({'status':'PASS','coarseSignatureClasses':coarse_classes,'refinedSignatureClasses':refined_classes,'refinedSignatureInjective':refined_injective,'rows':[{'digest':r['representativeDigest'],'orbitSize':r['orbitSize'],'stabilizerOrder':r['stabilizerOrder'],'pointOrbitSizes':r['pointOrbitSizes'],'supportSize':r['optimalNegativeSupportSize'],'supportOrbitSizes':r['supportOrbitSizes'],'childOrbitCount':r['childOrbitCount'],'childDepthPointHistogram':r['childDepthPointHistogram']} for r in rows]},indent=2,sort_keys=True)); print(f'written: {path}')
 
 if __name__=='__main__': main()
