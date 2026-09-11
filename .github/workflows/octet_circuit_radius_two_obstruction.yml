@@ -1,0 +1,55 @@
+name: Octet circuit radius-two obstruction
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/octet_circuit_radius_two_obstruction.py'
+      - 'analysis/octet_graver_intrinsic15.py'
+      - '.github/workflows/octet_circuit_radius_two_obstruction.yml'
+  workflow_dispatch:
+
+jobs:
+  circuits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install ortools sympy
+          while IFS= read -r f; do sudo rm -f "$f"; done < <(sudo grep -RIl 'dl\.google\.com' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null || true)
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo apt-get update
+          sudo apt-get install -y 4ti2
+      - name: Build exact reduced presentation
+        run: PYTHONPATH=analysis python analysis/octet_graver_intrinsic15.py --write-matrix
+      - name: Compute exact circuits
+        id: circuits
+        run: |
+          set -euo pipefail
+          BIN="$(command -v 4ti2-circuits || command -v circuits || true)"
+          if [ -z "$BIN" ]; then echo '4ti2 circuits executable not found'; dpkg -L 4ti2; exit 1; fi
+          VERSION="$($BIN --version 2>&1 | head -n 1 || true)"
+          if [ -z "$VERSION" ]; then VERSION="$(dpkg-query -W -f='${Version}' 4ti2)"; fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          cd analysis
+          "$BIN" octet_graver_intrinsic15
+          test -s octet_graver_intrinsic15.cir
+      - name: Prove primitive outside-radius-two circuit
+        env:
+          FOURTI2_VERSION: ${{ steps.circuits.outputs.version }}
+        run: PYTHONPATH=analysis python analysis/octet_circuit_radius_two_obstruction.py --cir analysis/octet_graver_intrinsic15.cir --version "$FOURTI2_VERSION"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: octet-circuit-radius-two-obstruction
+          path: |
+            analysis/octet_graver_intrinsic15.mat
+            analysis/octet_graver_intrinsic15.cir
+            analysis/octet_circuit_radius_two_obstruction_certificate.json
