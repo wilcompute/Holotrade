@@ -10,6 +10,7 @@ on:
       - 'scheduler/w33-continuation-transaction.js'
       - 'scheduler/w33-dynamic-resource-transaction.js'
       - 'tests/w33-representation-market-history-attestation-crossrepo.test.js'
+      - 'analysis/w33_mmr_history_migration_certificate.js'
       - '.github/workflows/w33_representation_history_attestation.yml'
   workflow_dispatch:
 
@@ -40,3 +41,11 @@ jobs:
           node --test tests/w33-representation-market-identity-crossrepo.test.js
           node --test tests/w33-continuation-attestation.test.js
           node --test tests/w33-continuation-transaction.test.js
+      - name: Materialize one concrete append-only migration certificate
+        env:
+          W33_SIGNED_RESOURCE_CERT: ${{ github.workspace }}/w33/analysis/w33_signed_representation_economics_certificate.json
+        run: node analysis/w33_mmr_history_migration_certificate.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-mmr-history-migration-certificate
+          path: analysis/w33_mmr_history_migration_certificate.json
