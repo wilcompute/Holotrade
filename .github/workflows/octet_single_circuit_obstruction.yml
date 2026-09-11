@@ -1,0 +1,27 @@
+name: Octet single circuit obstruction
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/octet_single_circuit_obstruction.py'
+      - 'analysis/octet_graver_intrinsic15.py'
+      - '.github/workflows/octet_single_circuit_obstruction.yml'
+  workflow_dispatch:
+
+jobs:
+  single-circuit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install sympy ortools
+      - name: Find and prove one outside-radius-two circuit
+        run: PYTHONPATH=analysis python analysis/octet_single_circuit_obstruction.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: octet-single-circuit-obstruction
+          path: analysis/octet_single_circuit_obstruction_certificate.json
