@@ -1,0 +1,64 @@
+{
+  "alphabet": "Parent-stabilizer point orbits. Every point in one symbol has the same derivative and the same PSp child orbit.",
+  "boundary": "This is an exact finite W33 orbit/optimization automaton for pencil extension. It is not a physical time evolution or dynamical-system claim.",
+  "group": "PSp(4,3)",
+  "groupOrder": 25920,
+  "mass24Regression": {
+    "dropSymbols": 2,
+    "flatSymbols": 3,
+    "symbolCount": 5
+  },
+  "mass32Extension": {
+    "completeImmediateTransitions": true,
+    "parentCount": 2,
+    "parentOrbitSizes": [1080,2160],
+    "targetMass": 36
+  },
+  "schema": "holotrade.exceptional-depth-derivative-automaton.v1",
+  "states": [
+    {
+      "depth": 3,
+      "mass": 24,
+      "name": "mass24-depth3",
+      "optimalNegativeSupportSize": 20,
+      "orbitSize": 1080,
+      "pointOrbitCount": 5,
+      "representativeDigest": "sha256:db8e5654204ace859e17291804dba3bf66c7bbd4a0a29f6bc7e6528e55c0e735",
+      "stabilizerOrder": 24,
+      "transitionCount": 5,
+      "transitions": [
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":0,"pointOrbitSize":4,"points":[9,16,30,32],"symbol":"HpointOrbit:0","targetDepth":3,"targetMass":28,"targetOrbitSize":4320,"targetRepresentativeDigest":"sha256:e5fdff686dd3f7e8286ff9d2849b4ef1eab456aa7f2806ee144da08cc8b4df35"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":1,"pointOrbitSize":4,"points":[11,19,26,33],"symbol":"HpointOrbit:1","targetDepth":3,"targetMass":28,"targetOrbitSize":4320,"targetRepresentativeDigest":"sha256:23c415c790741afca32d8926d36efddbfaaaea2571b9b576e437fe5aeb90c1f1"},
+        {"depthDerivative":-1,"optimalNegativeSupport":true,"pointOrbitIndex":2,"pointOrbitSize":8,"points":[0,1,2,3,4,13,22,31],"symbol":"HpointOrbit:2","targetDepth":2,"targetMass":28,"targetOrbitSize":8640,"targetRepresentativeDigest":"sha256:dd577369a6a6d5d9cfe09971f75289e5d09153157c0b2ae3fa04fe3b9f9a2c23"},
+        {"depthDerivative":-1,"optimalNegativeSupport":true,"pointOrbitIndex":3,"pointOrbitSize":12,"points":[5,7,12,14,17,20,24,25,29,37,38,39],"symbol":"HpointOrbit:3","targetDepth":2,"targetMass":28,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:75217ee2c61138665ffc72613da020c491292347d16b24b9f51e162de54fc96d"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":4,"pointOrbitSize":12,"points":[6,8,10,15,18,21,23,27,28,34,35,36],"symbol":"HpointOrbit:4","targetDepth":3,"targetMass":28,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:c9045feb022552e2645d0f75320c7eac09d8fb9abd99a8476b4eee5cc1493558"}
+      ]
+    },
+    {
+      "depth":4,"mass":32,"name":"mass32-depth4-birth-0","optimalNegativeSupportSize":12,"orbitSize":1080,"pointOrbitCount":5,"representativeDigest":"sha256:eb4657b57071307a86e71a82d9424b70940c0b920f6c7df5b53a8bb27164b278","stabilizerOrder":24,"transitionCount":5,
+      "transitions":[
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":0,"pointOrbitSize":4,"points":[6,17,25,36],"symbol":"HpointOrbit:0","targetDepth":4,"targetMass":36,"targetOrbitSize":4320,"targetRepresentativeDigest":"sha256:2129e593d30c0a775d5b23d26f9a64c375452bf517150affde4997b79a0f8df1"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":1,"pointOrbitSize":4,"points":[12,16,24,38],"symbol":"HpointOrbit:1","targetDepth":4,"targetMass":36,"targetOrbitSize":4320,"targetRepresentativeDigest":"sha256:0aeafbffced6cc66557b4ec9ba9271b7ba68127ec05771b28641eba5628f7780"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":2,"pointOrbitSize":8,"points":[3,11,20,27,31,33,35,37],"symbol":"HpointOrbit:2","targetDepth":4,"targetMass":36,"targetOrbitSize":8640,"targetRepresentativeDigest":"sha256:47c6ed8c5270a70f7640022c724cb68e12f7c38371a6e900adf01cd935f5bfc7"},
+        {"depthDerivative":-1,"optimalNegativeSupport":true,"pointOrbitIndex":3,"pointOrbitSize":12,"points":[0,1,2,4,5,8,13,19,21,22,23,28],"symbol":"HpointOrbit:3","targetDepth":3,"targetMass":36,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:20aa8f12d90c85b55a666e4c5b7b7735e7bf810a3e1110e0a60c8dde195f7c8b"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":4,"pointOrbitSize":12,"points":[7,9,10,14,15,18,26,29,30,32,34,39],"symbol":"HpointOrbit:4","targetDepth":4,"targetMass":36,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:0841f465ba3309ec4e32d8588085b4ee1c1be3cdcba225804f25900a8baff79f"}
+      ]
+    },
+    {
+      "depth":4,"mass":32,"name":"mass32-depth4-birth-1","optimalNegativeSupportSize":20,"orbitSize":2160,"pointOrbitCount":7,"representativeDigest":"sha256:56d05061da4b2003ba648e2c8418883849c9fa616baadcd01f1bbe3c84672adf","stabilizerOrder":12,"transitionCount":7,
+      "transitions":[
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":0,"pointOrbitSize":2,"points":[10,15],"symbol":"HpointOrbit:0","targetDepth":4,"targetMass":36,"targetOrbitSize":4320,"targetRepresentativeDigest":"sha256:5e58325b092662e2461dbd7b1ccfa061689e0f36301ac5bec8990b384925fcfe"},
+        {"depthDerivative":-1,"optimalNegativeSupport":true,"pointOrbitIndex":1,"pointOrbitSize":2,"points":[30,36],"symbol":"HpointOrbit:1","targetDepth":3,"targetMass":36,"targetOrbitSize":4320,"targetRepresentativeDigest":"sha256:d2d78bca3d44fd32aca09588143d7d679f186384ada7a6f2912d4e66e39e04fc"},
+        {"depthDerivative":-1,"optimalNegativeSupport":true,"pointOrbitIndex":2,"pointOrbitSize":6,"points":[0,1,4,7,13,14],"symbol":"HpointOrbit:2","targetDepth":3,"targetMass":36,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:de852c77333f9ac9b15a10cbb6229b4431c1ac7a1eb79f183a33a54d39b56db5"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":3,"pointOrbitSize":6,"points":[5,6,16,19,26,38],"symbol":"HpointOrbit:3","targetDepth":4,"targetMass":36,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:6bf8532f42c59d1a65cd7e4463548884b0c086a669893b1c270e10dd20645bb9"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":4,"pointOrbitSize":6,"points":[11,21,27,28,33,35],"symbol":"HpointOrbit:4","targetDepth":4,"targetMass":36,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:62c1738661a16e63b11d4229e4beaafe4b080da86d8ef861aedb9ed569fd26b0"},
+        {"depthDerivative":0,"optimalNegativeSupport":false,"pointOrbitIndex":5,"pointOrbitSize":6,"points":[12,18,24,29,34,39],"symbol":"HpointOrbit:5","targetDepth":4,"targetMass":36,"targetOrbitSize":12960,"targetRepresentativeDigest":"sha256:1c3d2242d5118aaae5b3075f24075b25dc83ded3eaf081fbeeb3ff9791c7e3af"},
+        {"depthDerivative":-1,"optimalNegativeSupport":true,"pointOrbitIndex":6,"pointOrbitSize":12,"points":[2,3,8,9,17,20,22,23,25,31,32,37],"symbol":"HpointOrbit:6","targetDepth":3,"targetMass":36,"targetOrbitSize":25920,"targetRepresentativeDigest":"sha256:de2647fa32bd83f2f9ae6553aa8c21e9a1acdfa8de2fe0d88a7741d093fbf196"}
+      ]
+    }
+  ],
+  "status":"PASS",
+  "theorem":"The universal discrete derivative law turns every certified exceptional orbit into a finite deterministic depth-transition state once its optimal-negative support is known. Quotienting points by the exact parent stabilizer compresses forty pencil additions to a finite alphabet without losing depth or target-orbit information. The certificate instantiates this for the mass-24 depth-3 birth and both first mass-32 depth-4 births, thereby predicting all their immediate mass-36 child depths without child depth optimization.",
+  "transitionLaw":"For a parent of exact depth d, +P_p has depth d-1 exactly on optimal-negative support and depth d otherwise.",
+  "source":{"workflowRun":34553814947,"workflowJob":103122079380,"artifactId":10181791121,"artifactZipSha256":"cc5f89ba15da0f148a4c78c1365018883022f4aeb75a1c200dd04b76e02eda40"}
+}
