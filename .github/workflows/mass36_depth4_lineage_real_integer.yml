@@ -1,0 +1,28 @@
+name: Mass36 depth4 lineage real integer audit
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/mass36_depth4_lineage_real_integer.py'
+      - 'analysis/mass32_depth4_birth_certificate.json'
+      - 'analysis/exceptional_depth_derivative_automaton_certificate.json'
+      - '.github/workflows/mass36_depth4_lineage_real_integer.yml'
+  workflow_dispatch:
+
+jobs:
+  lineage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy
+      - name: Re-solve all mass36 depth-four lineage targets exactly
+        run: PYTHONPATH=analysis python analysis/mass36_depth4_lineage_real_integer.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mass36-depth4-lineage-real-integer
+          path: analysis/mass36_depth4_lineage_real_integer_certificate.json
