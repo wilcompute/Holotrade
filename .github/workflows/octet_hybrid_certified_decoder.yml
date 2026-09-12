@@ -6,6 +6,8 @@ on:
     paths:
       - 'analysis/octet_hybrid_certified_decoder.py'
       - 'analysis/octet_single_circuit_obstruction_certificate.json'
+      - 'analysis/octet_circuit_decoder_trap_certificate.json'
+      - 'analysis/octet_circuit_library_minimization_certificate.json'
       - 'analysis/octet_gauge_radius_two_cutting_plane.py'
       - '.github/workflows/octet_hybrid_certified_decoder.yml'
   workflow_dispatch:
