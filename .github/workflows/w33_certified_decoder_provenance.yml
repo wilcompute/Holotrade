@@ -1,0 +1,41 @@
+name: W33 certified decoder provenance
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_certified_decoder_provenance_certificate.js'
+      - 'analysis/octet_hybrid_certified_decoder.py'
+      - 'analysis/octet_circuit_library_minimization_certificate.json'
+      - 'analysis/octet_circuit_decoder_trap_certificate.json'
+      - 'scheduler/w33-certified-decoder-transaction.js'
+      - 'js/w33-octet-decoder-binding.js'
+      - 'tests/w33-certified-decoder-transaction.test.js'
+      - '.github/workflows/w33_certified_decoder_provenance.yml'
+  workflow_dispatch:
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip && pip install ortools scipy sympy numpy
+      - name: Rebuild minimal hybrid decoder certificate
+        run: PYTHONPATH=analysis python analysis/octet_hybrid_certified_decoder.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regression decoder transaction security
+        run: node --test tests/w33-certified-decoder-transaction.test.js
+      - name: Emit deterministic digest-chain provenance certificate
+        run: node analysis/w33_certified_decoder_provenance_certificate.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w33-certified-decoder-provenance
+          path: |
+            analysis/octet_hybrid_certified_decoder_certificate.json
+            analysis/w33_certified_decoder_provenance_certificate.json
