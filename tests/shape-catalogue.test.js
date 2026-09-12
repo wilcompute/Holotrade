@@ -9059,3 +9059,34 @@ test("the new mass-16 orbit is indecomposable, with a working control", () => {
   assert.match(r.whatItIsNot, /\[111, 115\]/);
   assert.match(r.boundary, /num_workers = 1/);
 });
+
+test("the cheap filters do not prune the 1225-case 114 programme", () => {
+  const r = JSON.parse(fs.readFileSync("data/cheap_filters_do_not_prune.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.pencilOrbits, 28);
+  assert.equal(r.exceptionalOrbits, 7);
+  assert.equal(r.totalOrbits, 35);
+  assert.equal(r.caseCount, 1225);
+  assert.equal(r.totalOrbits * r.totalOrbits, r.caseCount);
+
+  // filter one killed nothing, and every orbit got a definite status
+  assert.equal(r.orbitsKilledBySizeVector, 0);
+  assert.equal(r.rows.length, 35);
+  for (const row of r.rows) {
+    assert.ok(["pencil", "exceptional"].includes(row.kind));
+    assert.ok(["OPTIMAL", "FEASIBLE", "INFEASIBLE"].includes(row.sizeVectorStatus),
+              "every orbit resolved to a definite status");
+    assert.notEqual(row.sizeVectorStatus, "INFEASIBLE");
+  }
+  assert.equal(r.rows.filter((x) => x.kind === "exceptional").length, 7);
+
+  assert.match(r.filterOneSizeVector, /kills NONE/);
+  assert.match(r.filterOneSizeVector, /200,000 integer solutions/);
+  // filter two is argued, not measured -- and cannot work even in principle
+  assert.match(r.filterTwoMarginalsCannotWork, /always feasible/);
+  assert.match(r.filterTwoMarginalsCannotWork, /cannot succeed/);
+  assert.match(r.filterTwoMarginalsCannotWork, /Argued, not measured/);
+  assert.match(r.whatWouldActuallyPrune, /E = U N\^T = N V/);
+  assert.match(r.soTheProgrammeIsNotCheap, /a104478/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});

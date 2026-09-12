@@ -1,0 +1,191 @@
+{
+  "schema": "holotrade.cheap-filters-do-not-prune.v1",
+  "valid": true,
+  "pencilOrbits": 28,
+  "exceptionalOrbits": 7,
+  "totalOrbits": 35,
+  "caseCount": 1225,
+  "rows": [
+    {
+      "kind": "pencil",
+      "orbit": 25920,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 12960,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 540,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 6480,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 4320,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 12960,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 8640,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 8640,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 2880,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 4320,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 4320,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 1620,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 1080,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 2880,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 2160,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 1440,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 1080,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 2160,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 4320,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 480,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 8640,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 3240,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 1440,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 480,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 240,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 45,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 40,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "pencil",
+      "orbit": 40,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "exceptional",
+      "orbit": 8640,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "exceptional",
+      "orbit": 12960,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "exceptional",
+      "orbit": 1080,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "exceptional",
+      "orbit": 12960,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "exceptional",
+      "orbit": 8640,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "exceptional",
+      "orbit": 1440,
+      "sizeVectorStatus": "OPTIMAL"
+    },
+    {
+      "kind": "exceptional",
+      "orbit": 720,
+      "sizeVectorStatus": "OPTIMAL"
+    }
+  ],
+  "orbitsKilledBySizeVector": 0,
+  "filterOneSizeVector": "a 114-leaf blocker has row sizes f(p) = |C_p| >= 0 with (N^T f)_L = 11 + e_L for every line, and summing forces sum(f) = 114, so a profile admitting no such nonnegative integer f is excluded from every blocker. Run on a representative of each of the 35 orbits it kills NONE -- every orbit, exceptional ones included, has a valid size vector. The filter is worthless, which is the same phenomenon already recorded at 110 where the size layer alone admits more than 200,000 integer solutions. Sizes do not constrain this problem at either end.",
+  "filterTwoMarginalsCannotWork": "with T[L][M] = |X n (L x M)| and E = T - J >= 0, counting a leaf once per line through its second coordinate gives sum_M T[L][M] = 4 load(L), so E has row marginals 4 + 4 e_row(L) and column marginals 4 + 4 e_col(M), both totalling 224. But a nonnegative INTEGER matrix with prescribed nonnegative marginals exists whenever the totals agree -- the transportation problem is always feasible -- so the marginal condition holds for every pair of orbits and can never prune. It is not that it happens to fail; it cannot succeed. Argued, not measured: the theorem is classical and no computation adds to it.",
+  "whatWouldActuallyPrune": "the condition the other track already uses: E is not merely nonnegative with the right marginals but lies in the incidence image on both sides, E = U N^T = N V. That is a rank condition rather than a counting one, and it belongs to their factorization machinery rather than being a filter this file adds.",
+  "soTheProgrammeIsNotCheap": "the 1225 cases have to be attacked with the real leaf CSP or with the factorization condition, not with counting. On present evidence a single leaf CSP at this size is also not cheap: the exact 111 model returned UNKNOWN at 5400 s a case (a104478), and 111 is a smaller problem than 114.",
+  "boundary": "filter one is measured exhaustively over all 35 orbit representatives, each solved to a definite CP-SAT status, with zero undecided. Filter two is ARGUED and not measured, since the transportation feasibility theorem is classical. Neither result says anything about tau_2, which stays open in [111, 115]; they say the two obvious shortcuts to a 114 decision do not exist."
+}
