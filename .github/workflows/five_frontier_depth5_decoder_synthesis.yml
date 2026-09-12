@@ -1,0 +1,33 @@
+name: Five frontier depth5 decoder synthesis
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/five_frontier_depth5_decoder_synthesis.json'
+      - 'analysis/validate_five_frontier_depth5_decoder_synthesis.py'
+      - 'analysis/octet_circuit_library_minimization_certificate.json'
+      - 'analysis/octet_hybrid_certified_decoder_minimal_summary.json'
+      - 'analysis/mass40_no_pencil_exhaustive_summary.json'
+      - 'analysis/mass40_depth5_structural_types_certificate.json'
+      - 'analysis/mass24_steinberg_gram192_explicit_w33_embedding_certificate.json'
+      - 'analysis/mass36_to_mass40_inheritance_separator_summary.json'
+      - 'analysis/w33_certified_decoder_provenance_certificate.json'
+      - '.github/workflows/five_frontier_depth5_decoder_synthesis.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Cross-check frozen five-frontier certificates
+        run: python analysis/validate_five_frontier_depth5_decoder_synthesis.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: five-frontier-depth5-decoder-synthesis
+          path: analysis/five_frontier_depth5_decoder_synthesis.json
