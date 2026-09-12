@@ -29,10 +29,27 @@ and q^2+q-1 is 11, 29, 55. So 972e5cd is right and aa42b38 is wrong.
 
 q = 7 IS RECORDED BUT DOES NOT COUNT.  The solver reached 55 = q^2+q-1, which
 is only the octet construction turning up again as an upper bound, and bounded
-below at 50 without closing in 900 seconds. So tau_1(W(3,7)) is genuinely
-undecided in [50,55]: CONSISTENT with q^2+q-1 and not evidence for it. The
-shape of that interval is worth noticing -- it is exactly the claim aa42b38
-wrongly asserted at q = 5, where the answer had already been proved.
+below at 50 without closing in 900 seconds. So tau_1(W(3,7)) is undecided:
+CONSISTENT with q^2+q-1 and not evidence for it. The shape of that interval is
+worth noticing -- it is exactly the claim aa42b38 wrongly asserted at q = 5,
+where the answer had already been proved.
+
+AND THE SOLVER'S LOWER BOUND IS BEATEN BY A CITATION WE ALREADY HOLD.
+w33_blocker_centre_structure.py cites Eisfeld, Storme, Szonyi and Sziklai,
+"Covers and blocking sets of classical generalised quadrangles", Discrete
+Mathematics 238 (2001) 35-51, for the fact that a cover of Q(4,q) with q odd
+needs MORE than q^2 + 1 + (q-1)/3 lines; dualising, that is exactly tau_1 of
+W(3,q). The corpus applies it only at q = 3, where it gives > 10.67 and hence
+the sharp value 11. Applied at q = 7 it gives > 52, i.e. tau_1 >= 53 -- three
+better than the 50 the solver proved. So the honest interval is
+
+        tau_1(W(3,7)) in [53, 55]
+
+and closing it needs only 53 and 54 ruled out. A direct attempt at 53, with the
+point set reduced by fixing one point of the blocking set (valid, since the
+group is transitive on points), returned UNKNOWN after 2700 seconds. The
+narrowing is arithmetic on a citation this repository already owns; it is not a
+new bound, and the interval is not closed.
 
 CORRECTION ONE: MINIMALITY IS NOT A q = 3 COINCIDENCE.  The octet blockers have
 size q^2+q-1, which equals tau_1 at q = 3 AND at q = 5. They are minimum
@@ -276,6 +293,20 @@ def main():
                 "blockers at every odd q, and at q = 3 and q = 5 those are "
                 "minimum blockers. The induced group result (aa8691a) is "
                 "unaffected. tau_2 is untouched and stays open in [111, 115]."),
+            "publishedBoundBeatsTheSolverAtQ7": (
+                "w33_blocker_centre_structure.py already cites Eisfeld, Storme, "
+                "Szonyi and Sziklai, 'Covers and blocking sets of classical "
+                "generalised quadrangles', Discrete Mathematics 238 (2001) 35-51, "
+                "for the fact that a cover of Q(4,q) with q odd needs MORE than "
+                "q^2+1+(q-1)/3 lines; dualising, that is tau_1(W(3,q)). The corpus "
+                "applies it only at q = 3, where it gives > 10.67 and hence the "
+                "sharp 11. Applied at q = 7 it gives > 52, so tau_1 >= 53 -- three "
+                "better than the 50 the solver proved. The honest interval is "
+                "therefore [53,55], and closing it needs only 53 and 54 ruled out. "
+                "A direct attempt at 53, with one point of the blocking set fixed "
+                "(valid since the group is transitive on points), returned UNKNOWN "
+                "after 2700 seconds. This is arithmetic on a citation we already "
+                "hold, not a new bound, and the interval is NOT closed."),
             "qSevenIsUndecidedAndDoesNotSupportTheConjecture": (
                 "at q = 7 the solver reached 55 = q^2+q-1, which is only the "
                 "octet construction being rediscovered as an upper bound, but "

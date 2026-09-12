@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 The transpose is a symmetry the corpus named and never searched. Searching it
-is the FOURTH null on 114 -- and it does establish two things about 115.
+is one more null on 114 -- the NINTH recorded attack, not the fourth -- and it
+does establish two things about 115.
 
 WHY THIS SYMMETRY.  tensor_symmetric_blocker.py records the stabiliser of the
 depth-2 problem as Aut(W33) wr C2, of order 51840^2 * 2, and then searches only
@@ -23,9 +24,26 @@ Every class is run at 115 FIRST, because 115 is achievable and a class that
 cannot reach it cannot contain the optimum either, so its verdict at 114 is
 void.
 
-THE RESULT AT 114 IS NULL, and that is the fourth lever to come back null after
-the clock, the group and the encoding. In both classes whose control resolves
-SAT, 114 returns UNKNOWN at 600 s.
+THE RESULT AT 114 IS NULL. In both classes whose control resolves SAT, 114
+returns UNKNOWN at 600 s.
+
+A CORRECTION TO THIS FILE'S OWN ACCOUNTING.  It was first written calling this
+"the fourth lever", after the clock (36d3b4b), the group (cf9ecf7) and the
+encoding (e3ffec2). That undercounts badly. The canonical log of attacks on 114
+is tensor_114_search_log_with_control.py, which records EIGHT independent
+attempts and their calibrations: warm-started CP-SAT; a strengthened model whose
+valid cuts raise the bound to exactly 110 and stop; the complete cyclic-class
+sweep; the witness's own subgroups; simulated annealing; row-weighting local
+search (which failed its own calibration and is recorded so it is not rebuilt);
+a non-cyclic COMMUTING-pair symmetry sweep over nine classes, best 116; and LNS
+with exact sub-solves -- 3,430 rounds, zero improvements. So the transpose is at
+best the NINTH attack, not the fourth, and that file is where anyone should look
+before trying a tenth.
+
+WHAT IS STILL GENUINELY NEW HERE is only the symmetry class. That sweep covered
+cyclic and non-cyclic DIAGONAL subgroups; the wreathing C2 -- the transpose --
+is named in tensor_symmetric_blocker.py as part of the stabiliser and is swept
+by none of the eight. That is the gap this file fills, and it is a narrow one.
 
 WHAT IT DOES ESTABLISH, and neither fact was in the corpus:
 
@@ -35,7 +53,7 @@ WHAT IT DOES ESTABLISH, and neither fact was in the corpus:
      including the wreathing C2 -- it is not an artifact of breaking that
      symmetry.
 
-  2. FIVE CLASSES CANNOT HOST A 115 AT ALL, proved INFEASIBLE rather than timed
+  2. SIX CLASSES CANNOT HOST A 115 AT ALL, proved INFEASIBLE rather than timed
      out. Since tau_2 <= 115, those symmetry classes provably exclude every
      optimal blocker. That is a structural statement about which symmetries a
      near-optimal blocker can carry, and it is why their 114 verdicts are
@@ -258,9 +276,27 @@ def main():
                 "never used it; this file uses it."),
             "theNullAt114": (
                 "in both classes whose control resolves SAT, 114 returns UNKNOWN "
-                "at 600 s. That is the FOURTH lever to come back null on 114, "
-                "after the clock (36d3b4b), the group (cf9ecf7) and the encoding "
-                "(e3ffec2)."),
+                "at 600 s."),
+            "correctionToThisFilesOwnAccounting": (
+                "this file was first written calling the transpose 'the fourth "
+                "lever', after the clock (36d3b4b), the group (cf9ecf7) and the "
+                "encoding (e3ffec2). That undercounts badly. The canonical log is "
+                "tensor_114_search_log_with_control.py, which records EIGHT "
+                "independent attacks with their calibrations -- warm-started "
+                "CP-SAT; a strengthened model whose valid cuts raise the bound to "
+                "exactly 110 and stop; the complete cyclic-class sweep; the "
+                "witness's own subgroups; simulated annealing; row-weighting local "
+                "search, which failed its own calibration; a non-cyclic "
+                "commuting-pair sweep over nine classes, best 116; and LNS with "
+                "exact sub-solves, 3,430 rounds and zero improvements. The "
+                "transpose is at best the NINTH attack, and that file is where "
+                "anyone should look before trying a tenth."),
+            "whatIsStillGenuinelyNewHere": (
+                "only the symmetry class. The eight-attack log swept cyclic and "
+                "non-cyclic DIAGONAL subgroups; the wreathing C2 -- the transpose "
+                "-- is named in tensor_symmetric_blocker.py as part of the "
+                "stabiliser Aut(W33) wr C2 and is swept by none of the eight. "
+                "That is the gap this file fills, and it is a narrow one."),
             "whatItEstablishes": (
                 "first, a TRANSPOSE-SYMMETRIC BLOCKER OF SIZE 115 EXISTS -- two "
                 "classes return OPTIMAL at 115. The corpus's 115 was found inside "

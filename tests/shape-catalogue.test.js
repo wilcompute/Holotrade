@@ -8662,6 +8662,25 @@ test("tau_1(W(3,5)) = 29 was already decided: minimality is not the q=3 fence", 
   assert.match(r.correctionTwoUniqueness, /UNIQUENESS/);
   assert.match(r.correctionThreeThisSession, /e3ffec2\.\.cddbb6e/);
   assert.match(r.correctionThreeThisSession, /Right fence, wrong reason/);
+  // the published ESSS bound beats the solver's lower bound at q=7
+  const e = r.publishedBoundBeatsTheSolverAtQ7;
+  assert.match(e, /Eisfeld, Storme, Szonyi and Sziklai/);
+  assert.match(e, /Discrete Mathematics 238 \(2001\) 35-51/);
+  assert.match(e, /q\^2\+1\+\(q-1\)\/3/);
+  assert.match(e, /tau_1 >= 53/);
+  assert.match(e, /\[53,55\]/);
+  assert.match(e, /not a new bound/);
+  assert.match(e, /interval is NOT closed/);
+  // q=3: the same bound is SHARP there (>10.67 gives 11)
+  assert.match(e, /> 10\.67/);
+  // and the solver's own q=7 lower bound really is worse than 53
+  const q7 = r.tau1.find((t) => t.q === 7);
+  if (q7) {
+    assert.equal(q7.status, "FEASIBLE");
+    assert.ok(q7.interval[0] < 53, "the solver proved less than the citation");
+    assert.equal(q7.interval[1], 55);
+  }
+
   assert.match(r.whatDoesNotChange, /closed form/);
   assert.match(r.whatDoesNotChange, /\[111, 115\]/);
   assert.match(r.boundary, /EXISTENTIAL/);
