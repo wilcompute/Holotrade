@@ -1,0 +1,60 @@
+{
+  "schema": "holotrade.five-frontier-depth5-decoder-synthesis.v1",
+  "status": "PASS",
+  "frontiers": {
+    "minimalHybridDecoder": {
+      "radiusTwoMoveCount": 4140,
+      "minimalCircuitMoveCount": 1080,
+      "circuitLibraryDigest": "sha256:15ad7a15e375d7c343226e606427981e118faa0f40e6f5a2aa965909b68e4d8c",
+      "orientationOrbitClosedUnderSign": true,
+      "benchmarkReachedCertifiedOptimum": 37,
+      "benchmarkStalled": 0,
+      "fallbackCircuitStepsUsed": 2
+    },
+    "mass40Depth5Births": {
+      "birthOrbitCount": 2,
+      "orbitSizes": [216, 4320],
+      "stabilizerOrders": [120, 6],
+      "optimalNegativeSupportSizes": [20, 20],
+      "mass44DerivativePointHistograms": [
+        {"4": 20, "5": 20},
+        {"4": 20, "5": 20}
+      ],
+      "deltaRealEqualsIntegerDepth": true
+    },
+    "explicitGramEmbedding": {
+      "w33Controller": "C2 x S4",
+      "w33ControllerOrder": 48,
+      "s4Sylow3ActionOrder": 24,
+      "centralC2MapsToMinusI3": true,
+      "embeddedGramProjectiveSubgroupOrder": 48,
+      "gramProjectiveAmbientOrder": 192
+    },
+    "mass36To40Separator": {
+      "mass36Depth4ParentOrbitCount": 3,
+      "mass40NoPencilDepth4BirthOrbitCount": 28,
+      "mass40NoPencilDepth5BirthOrbitCount": 2,
+      "inheritedVsBirthIntersectionSize": 0,
+      "crossParentMergerCount": 1
+    },
+    "decoderAttestation": {
+      "decoderVersion": "octet-hybrid-v3-minimal-1080",
+      "circuitMoveCount": 1080,
+      "radiusTwoMoveCount": 4140,
+      "localMinimumSubstitutionRejected": true,
+      "libraryMutationChangesMeasuredBootChallenge": true,
+      "signedDeliveryVerifies": true
+    }
+  },
+  "sourceFiles": [
+    "analysis/octet_circuit_library_minimization_certificate.json",
+    "analysis/octet_hybrid_certified_decoder_minimal_summary.json",
+    "analysis/mass40_no_pencil_exhaustive_summary.json",
+    "analysis/mass40_depth5_structural_types_certificate.json",
+    "analysis/mass24_steinberg_gram192_explicit_w33_embedding_certificate.json",
+    "analysis/mass36_to_mass40_inheritance_separator_summary.json",
+    "analysis/w33_certified_decoder_provenance_certificate.json"
+  ],
+  "theorem": "The five requested fronts close consistently: the certified hybrid decoder uses one sign-closed 1080-move PSp circuit orbit after 4140 radius-two moves; mass 40 has exactly two first depth-five births with stabilizers 120 and 6 and a 20/20 down-flat derivative split; the W33 C2 x S4 cube/frame controller embeds explicitly as an order-48 integral subgroup of Gram-192; removable-pencil ancestry separates inherited mass-40 depth-four orbits from all 28 no-pencil depth-four births; and the exact decoder-library identity is committed through measured boot, verified execution, and signed delivery with the known local-minimum substitution rejected.",
+  "boundary": "Exact finite combinatorics, integer/rational optimization, finite-group/integral-lattice structure, and software/cryptographic attestation only. No physical-energy, spacetime-symmetry, fault-tolerance, or quantum-advantage claim follows without independent evidence."
+}
