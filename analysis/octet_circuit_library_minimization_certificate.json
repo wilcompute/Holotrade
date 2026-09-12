@@ -1,0 +1,46 @@
+{
+  "baseCircuitDigest": "sha256:bfe8ae89a38211124f462478390a7ca32c77b4b4642e0e1ddecfba93f125528c",
+  "baseCircuitSupportSize": 18,
+  "boundary": "This does not claim completeness of primitive circuits or universal optimality of the minimized library on every affine fiber. It is an exact minimization relative to the certified circuit orbit(s) and frozen traps.",
+  "group": "PSp(4,3)",
+  "groupOrder": 25920,
+  "minimalLibraryDigest": "sha256:15ad7a15e375d7c343226e606427981e118faa0f40e6f5a2aa965909b68e4d8c",
+  "minimalLibraryEscapes": [
+    {
+      "bestEndpointNegativeMass": 1,
+      "oneBestMove": [0,0,0,0,-2,1,1,1,1,1,1,1,1,2,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "orientation": -1,
+      "startNegativeMass": 2,
+      "strictEscapeExists": true,
+      "strictImprovingMoveCount": 1
+    },
+    {
+      "bestEndpointNegativeMass": 1,
+      "oneBestMove": [0,0,0,0,2,-1,-1,-1,-1,-1,-1,-1,-1,-2,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "orientation": 1,
+      "startNegativeMass": 2,
+      "strictEscapeExists": true,
+      "strictImprovingMoveCount": 1
+    }
+  ],
+  "minimalPSpInvariantCircuitMoveCount": 1080,
+  "minimalSelectedOrientationOrbits": ["plus"],
+  "minimalityScope": "Exact among PSp(4,3)-invariant unions of the certified primitive circuit orientation orbits {Orb(c), Orb(-c)} for simultaneously escaping the two frozen exact mass-28 radius-two traps.",
+  "minusOrbitSize": 1080,
+  "orientationOrbitDigests": {"plus": "sha256:15ad7a15e375d7c343226e606427981e118faa0f40e6f5a2aa965909b68e4d8c"},
+  "orientationOrbitRelation": "same-orbit",
+  "plusOrbitSize": 1080,
+  "schema": "holotrade.octet-circuit-library-minimization.v1",
+  "status": "PASS",
+  "theorem": "The certified circuit fallback can be quotiented and minimized at the PSp(4,3)-orbit level. Sign reversal is already a group image, so one 1080-move PSp orbit is the smallest certified orientation-orbit union that escapes both exact radius-two traps.",
+  "trapCertificate": "octet_circuit_decoder_trap_certificate.json",
+  "trapCertificateSourceWorkflowRun": 34562960929,
+  "trapCount": 2,
+  "source": {
+    "workflowRunId": 34648396554,
+    "workflowJobId": 103424575702,
+    "artifactId": 10282372862,
+    "artifactZipSha256": "sha256:cab2963732aaa38cf475ba0aefdce1866766bb8a7bcdbd9e9a5d4153ed5c5769",
+    "headSha": "cc686542eba4e062fb91cc9d7a36cc6ef1c723f0"
+  }
+}
