@@ -1,0 +1,24 @@
+{
+  "schema": "holotrade.octet-hybrid-certified-decoder-minimal-summary.v1",
+  "status": "PASS",
+  "source": {
+    "workflowRunId": 34663557227,
+    "artifactId": 10288172665,
+    "artifactZipSha256": "sha256:ec5484b44690440a4217597965a600a1c29cfc66ed569bbdeca5ac9dcd7cf826",
+    "headSha": "4ff528c44208000568462b8d2b0e96cbdf467690"
+  },
+  "radiusTwoMoveCount": 4140,
+  "radiusTwoLibraryDigest": "sha256:5419424abebc6bbfc2ddb5d76d00756b7beacfe7512591ff3f512681d7ed3bd9",
+  "minimalPSpInvariantCircuitMoveCount": 1080,
+  "circuitLibraryDigest": "sha256:15ad7a15e375d7c343226e606427981e118faa0f40e6f5a2aa965909b68e4d8c",
+  "orientationOrbitClosedUnderSign": true,
+  "benchmarkCosetCount": 7,
+  "benchmarkStartCount": 37,
+  "benchmarkReachedCertifiedOptimum": 37,
+  "benchmarkStalled": 0,
+  "fallbackCircuitStepsUsed": 2,
+  "fallbackPathExercised": true,
+  "theorem": "The production hybrid decoder uses exactly one 1080-element PSp(4,3) circuit orbit with Orb(c)=Orb(-c), after the 4140 radius-two octet moves. All 37 certified benchmark starts reach independently certified optimum, and both frozen mass-28 radius-two traps exercise the circuit fallback.",
+  "optimalityBoundary": "OPTIMUM is asserted only at independently certified exact depth; STALLED is explicit and is not promoted to optimality.",
+  "boundary": "Exact integer-lattice decoder software only; no physical-dynamics, energy, fault-tolerance, or quantum-speedup claim."
+}
