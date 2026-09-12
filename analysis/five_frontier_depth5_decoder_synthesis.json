@@ -1,6 +1,13 @@
 {
   "schema": "holotrade.five-frontier-depth5-decoder-synthesis.v1",
   "status": "PASS",
+  "validationRun": {
+    "workflowRunId": 34667699479,
+    "headSha": "4d1a1da59b4e6aaafbb45d6f9648ef02c49f97d7",
+    "artifactId": 10289124804,
+    "artifactZipSha256": "sha256:0fe5e19bdf7f133005ba4a2e1f2463c24ed656dc2516cbb934bfe01aa7675e41",
+    "conclusion": "success"
+  },
   "frontiers": {
     "minimalHybridDecoder": {
       "radiusTwoMoveCount": 4140,
