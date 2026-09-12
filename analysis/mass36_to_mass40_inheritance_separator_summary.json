@@ -1,0 +1,28 @@
+{
+  "schema": "holotrade.mass36-to-mass40-inheritance-separator-summary.v1",
+  "status": "PASS",
+  "source": {
+    "workflowRunId": 34664056924,
+    "artifactId": 10287874127,
+    "artifactZipSha256": "sha256:c595687018bf215cf3ff8c96f5027f56aaa6b4da19de98cebd7f79726491df1d",
+    "headSha": "3ff63f71f89cbf55c2c637b75b5689d6ebfaaa93"
+  },
+  "group": "PSp(4,3)",
+  "groupOrder": 25920,
+  "mass36Depth4ParentOrbitCount": 3,
+  "mass40NoPencilDepth4BirthOrbitCount": 28,
+  "mass40NoPencilDepth5BirthOrbitCount": 2,
+  "depth4InheritedVsBirthIntersection": [],
+  "crossParentMergerCount": 1,
+  "crossParentMerger": {
+    "targetDigest": "sha256:72d80a58857093a8cf59027f69f879ec1b61d65b04da6eba99c0826399d87400",
+    "targetOrbitSize": 4320,
+    "targetDepth": 4,
+    "parentDigests": [
+      "sha256:2f565cb857cb8fd87167b57738f1d7123ac9e2c310f38b1bd33935e5c8eb02ff",
+      "sha256:6134c05c40f74f2e96631e860ad2e27ed92fa46d9eba0cc3e7b4ff2f8f6d561c"
+    ]
+  },
+  "theorem": "At mass 40 and depth 4, removable-pencil containment is an exact inheritance-vs-birth separator: every inherited depth-four orbit is a one-pencil child of one of the three exhaustive mass-36 depth-four parents, while all 28 exhaustive no-pencil depth-four birth orbits are disjoint from those child digests. The full artifact records every inherited digest and the unique cross-parent merger.",
+  "boundary": "Exact finite W33 orbit/combinatorial statement about point-pencil ancestry; not physical causality or dynamical history."
+}
