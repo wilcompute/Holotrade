@@ -9234,3 +9234,32 @@ test("the ququint certificates have a second kind", () => {
   assert.match(r.citedNotRecomputed, /the_q5_tight_case_dies_without_the_centre_property/);
   assert.match(r.boundary, /d >= 7 is not claimed/);
 });
+
+test("tau_1(W(3,7)) is at least 54", () => {
+  const r = JSON.parse(fs.readFileSync("data/tau1_w37_at_least_54.json"));
+  assert.equal(r.valid, true);
+  assert.deepEqual(r.interval, [54, 55]);
+  assert.deepEqual(r.previousInterval, [53, 55]);
+  assert.equal(r.points, 400);
+  assert.equal(r.lines, 400);
+  assert.equal(r.pencilIsOneTight, true);
+  for (const x of [1, 2, 3]) {
+    assert.equal(r.pencilLemma[`x${x}_noPencil`], "INFEASIBLE");
+    assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.pencilLemma[`x${x}_control`]),
+              "a lemma instance without a feasible control proves nothing");
+  }
+  assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.controlOctetAt55), "the octet at 55 must be found");
+  for (const v of Object.values(r.patterns)) assert.equal(v, "INFEASIBLE");
+  const col = r.tripleClasses.collinearPair, non = r.tripleClasses.noncollinearPair;
+  assert.deepEqual(col.map((c) => c.classSize).sort((a, b) => a - b), [6, 49, 49, 294]);
+  assert.deepEqual(non.map((c) => c.classSize).sort((a, b) => a - b), [3, 3, 8, 48, 48, 144, 144]);
+  // every r other than p, q lands in exactly one class
+  assert.equal(col.reduce((s, c) => s + c.classSize, 0), 398);
+  assert.equal(non.reduce((s, c) => s + c.classSize, 0), 398);
+  for (const c of [...col, ...non]) assert.equal(c.status, "INFEASIBLE");
+  assert.equal(r.patternCount, 14);
+  assert.match(r.upwardClosed, /upward|adding any point/);
+  assert.match(r.whereThisStood, /92124f1/);
+  assert.match(r.theConjecture, /972e5cd/);
+  assert.match(r.boundary, /54 is not decided/);
+});

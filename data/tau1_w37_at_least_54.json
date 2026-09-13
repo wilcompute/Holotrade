@@ -1,0 +1,107 @@
+{
+  "schema": "holotrade.tau1-w37-at-least-54.v1",
+  "valid": true,
+  "q": 7,
+  "points": 400,
+  "lines": 400,
+  "interval": [
+    54,
+    55
+  ],
+  "previousInterval": [
+    53,
+    55
+  ],
+  "pencilIsOneTight": true,
+  "pencilLemma": {
+    "x1_noPencil": "INFEASIBLE",
+    "x1_control": "OPTIMAL",
+    "x2_noPencil": "INFEASIBLE",
+    "x2_control": "OPTIMAL",
+    "x3_noPencil": "INFEASIBLE",
+    "x3_control": "OPTIMAL"
+  },
+  "pencilLemmaSeconds": {
+    "x1_noPencil": 0.3,
+    "x1_control": 0.2,
+    "x2_noPencil": 2.4,
+    "x2_control": 0.5,
+    "x3_noPencil": 267.7,
+    "x3_control": 0.6
+  },
+  "controlOctetAt55": "OPTIMAL",
+  "patterns": {
+    "3p": "INFEASIBLE",
+    "2p+q collinear": "INFEASIBLE",
+    "2p+q noncollinear": "INFEASIBLE"
+  },
+  "tripleClasses": {
+    "collinearPair": [
+      {
+        "representative": 2,
+        "classSize": 6,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 8,
+        "classSize": 49,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 57,
+        "classSize": 49,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 106,
+        "classSize": 294,
+        "status": "INFEASIBLE"
+      }
+    ],
+    "noncollinearPair": [
+      {
+        "representative": 9,
+        "classSize": 3,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 11,
+        "classSize": 3,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 1,
+        "classSize": 8,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 2,
+        "classSize": 48,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 15,
+        "classSize": 48,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 16,
+        "classSize": 144,
+        "status": "INFEASIBLE"
+      },
+      {
+        "representative": 18,
+        "classSize": 144,
+        "status": "INFEASIBLE"
+      }
+    ]
+  },
+  "patternCount": 14,
+  "whereThisStood": "the_minimality_fence_was_wrong.py (92124f1) narrowed tau_1(W(3,7)) to [53, 55] using the Eisfeld-Storme-Szonyi-Sziklai cover bound and the octet construction, and a direct CP-SAT attempt at 53 returned UNKNOWN after 2700 seconds.",
+  "theCountingIdentity": "for |B| = q^2+1+delta the excess e satisfies A_L e = (q-1)e + delta.1, a weighted delta-tight set of lines; summing gives sum e = (q+1)delta and lines disjoint from L carry q(delta - e(L)), so e <= delta.",
+  "thePencilLemma": "for x = 1, 2, 3 every 0 <= e <= x with A_L e = 6e + x.1 contains a full pencil (three INFEASIBLE verdicts with feasible controls); removing pencils gives e = N^T y, y >= 0, sum y = 3.",
+  "thePatterns": "3p, 2p+q (two pair orbits) and p+q+r, with r split into Sp(4,7)-orbit classes by Witt's theorem (Gram matrix and linear relation up to rescaling): 4 classes for a collinear pair and 7 for a non-collinear pair. Each pattern fixes every line count; all 14 are INFEASIBLE.",
+  "upwardClosed": "adding any point to a blocker gives a blocker, so no blocker of size <= 53 exists and tau_1(W(3,7)) >= 54 independently of the published bound; the octet construction gives <= 55.",
+  "theConjecture": "gq_diagonal_theorem.py (972e5cd) conjectured tau_1(W(3,q)) = q^2+q-1 for odd q, i.e. 55 here. This is consistent with it and reduces the question to whether a 54-point blocker exists; it is not further evidence for the conjecture.",
+  "boundary": "the identity and induction are argued; the lemma instances, pattern verdicts and control are exact solver results; the orbit classification rests on Witt's theorem and is checked by class sizes. 54 is not decided."
+}
