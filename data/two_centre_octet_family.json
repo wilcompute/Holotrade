@@ -1,0 +1,43 @@
+{
+  "schema": "holotrade.two-centre-octet-family.v1",
+  "valid": true,
+  "checks": [
+    {
+      "q": 3,
+      "points": 40,
+      "failures": 0,
+      "distinctThroughU": 45,
+      "octetKindThroughU": 45,
+      "twoCentreThroughU": 0,
+      "octetTotal": 360,
+      "twoCentreTotal": 0
+    },
+    {
+      "q": 5,
+      "points": 156,
+      "failures": 0,
+      "distinctThroughU": 775,
+      "octetKindThroughU": 175,
+      "twoCentreThroughU": 600,
+      "octetTotal": 3900,
+      "twoCentreTotal": 46800
+    },
+    {
+      "q": 7,
+      "points": 400,
+      "failures": 0,
+      "distinctThroughU": 6713,
+      "octetKindThroughU": 441,
+      "twoCentreThroughU": 6272,
+      "octetTotal": 19600,
+      "twoCentreTotal": 1254400
+    }
+  ],
+  "construction": "for collinear u != v on L0, the q hyperbolic lines h_i through u in v^perp, and 1 <= |S| <= q-1: B = (L0 - {u,v}) u U_{i in S}(h_i - {u}) u U_{i not in S}(h_i^perp - {v}).",
+  "theorem": "for every q, B is a blocking set of size q^2+q-1 with excess (q-1-|S|) pencil(u) + (|S|-1) pencil(v); the key case is a line M missing L0, whose points in v^perp and u^perp lie on h_i and h_i^perp for the SAME i because h_i^perp = u^perp n m_v^perp.",
+  "counts": "octet kind (q+1)(q^2+1)q^2; two-centre (q+1)^2(q^2+1)q(2^q-2q-2)/2; 360, 50700, 1274000",
+  "parity": "for odd q the weights sum to q-2, odd, so they are never equal",
+  "conditionalTheorem": "if tau_1(W(3,q)) = q^2+q-1 and every minimum blocker is in the family, q odd, then tau_2(W(3,q)^2) > (q^2+1)(q^2+q-1): thresholding the tile excess at (q-1)/2 recovers the heavier centres, gives centre reciprocity, and forces an ovoid or a duality.",
+  "hypothesisStatus": "proved at q = 3 (360 octet blockers) and q = 5 (b9f5d5b); q = 7 has tau_1 = 55 (9d5751e) and the completeness check is running; open for q >= 9. The construction gives tau_1 <= q^2+q-1 for all q.",
+  "boundary": "construction and parity proved for all q and verified at q = 3, 5, 7 with 0 failures; conditional theorem proved from repository results; hypothesis proved only at q = 3 and 5."
+}

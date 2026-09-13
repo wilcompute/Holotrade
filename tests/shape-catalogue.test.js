@@ -9367,3 +9367,23 @@ test("the nucleus bound for symplectic blockers", () => {
   assert.match(r.conditionalImprovement, /Not proved/);
   assert.match(r.limits, /cannot reach/);
 });
+
+test("the two-centre octet family is q-general", () => {
+  const r = JSON.parse(fs.readFileSync("data/two_centre_octet_family.json"));
+  assert.equal(r.valid, true);
+  assert.deepEqual(r.checks.map((c) => c.q), [3, 5, 7]);
+  for (const c of r.checks) {
+    const q = c.q;
+    assert.equal(c.failures, 0, "every construction is a blocker with the stated excess");
+    assert.equal(c.octetKindThroughU, q * q * (q + 2));
+    assert.equal(c.twoCentreThroughU, q * (q + 1) * (2 ** q - 2 * q - 2));
+    assert.equal(c.octetTotal, (q + 1) * (q * q + 1) * q * q);
+  }
+  assert.equal(r.checks[0].octetTotal + r.checks[0].twoCentreTotal, 360);
+  assert.equal(r.checks[1].octetTotal + r.checks[1].twoCentreTotal, 50700, "matches the proved q = 5 census");
+  assert.equal(r.checks[2].octetTotal + r.checks[2].twoCentreTotal, 1274000);
+  assert.match(r.theorem, /for every q/);
+  assert.match(r.parity, /never equal/);
+  assert.match(r.conditionalTheorem, /ovoid or a duality/);
+  assert.match(r.hypothesisStatus, /open for q >= 9/);
+});
