@@ -157,3 +157,43 @@ test('history tampering and resource-policy downgrade are rejected',()=>{
   assert.throws(()=>executeExact(f),/bounded witness chain/);
   for(const maxSteps of [0,257,1.5])assert.throws(()=>B.verifyDecoderPolicy({...f.decoderPolicy,maxSteps,decoderPolicyDigest:undefined}));
 });
+
+const DS=require('../js/w33-dual-stream.js');
+function streamFixture(){
+  const f=chainCase(3),w=f.receipt.dualWitness;
+  const header={start:w.start,lineImage:w.lineImage,lines:w.lines};
+  const stream=DS.createDualStream(f.decoderPolicy,header);
+  let root=stream.checkpoint().body.prefixDigest;
+  const records=w.moves.map((move,index)=>{
+    const step=f.receipt.steps[index],r={index,previousDigest:root,move,step};
+    root=d({previousDigest:root,index,move,step});return r;
+  });
+  return {f,w,stream,records};
+}
+test('incremental checkpoints resume into a verified signed transaction',()=>{
+  const {f,w,stream,records}=streamFixture();
+  const prefix=stream.append(records.slice(0,1));assert.equal(prefix.optimalityVerified,false);
+  const cp=JSON.parse(JSON.stringify(stream.checkpoint()));
+  const resumed=DS.resumeDualStream(f.decoderPolicy,cp,cp.checkpointDigest);
+  resumed.append(records.slice(1));const result=resumed.finish(w.dual);
+  assert.equal(result.verified.dualVerified,true);
+  f.receipt=result.receipt;assert.equal(executeExact(f).delivery.body.decoderDualVerified,true);
+  assert.throws(()=>resumed.append(records),/finalized/);
+  assert.throws(()=>resumed.finish(w.dual),/finalized/);
+});
+test('chunk failure is atomic and checkpoint replay detects tampering',()=>{
+  const {f,w,stream,records}=streamFixture(),before=stream.checkpoint();
+  const bad=structuredClone(records);bad[1].move[0]++;
+  assert.throws(()=>stream.append(bad));assert.deepEqual(stream.checkpoint(),before);
+  assert.throws(()=>stream.append(records.slice(1)),/order or prefix/);
+  stream.append(records.slice(0,2));const cp=stream.checkpoint(),forged=structuredClone(cp);
+  forged.body.records[0].step.after--;
+  assert.throws(()=>DS.resumeDualStream(f.decoderPolicy,forged,cp.checkpointDigest),/identity/);
+  forged.checkpointDigest=d(forged.body);
+  assert.throws(()=>DS.resumeDualStream(f.decoderPolicy,forged,forged.checkpointDigest),/descent/);
+  assert.throws(()=>DS.resumeDualStream(f.decoderPolicy,cp),/identity/);
+  const resumed=DS.resumeDualStream(f.decoderPolicy,cp,cp.checkpointDigest);
+  resumed.append(records.slice(2));
+  assert.throws(()=>resumed.finish(Array(40).fill('0')),/duality gap/);
+  assert.equal(resumed.finish(w.dual).verified.dualVerified,true);
+});

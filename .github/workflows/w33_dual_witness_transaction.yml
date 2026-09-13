@@ -4,6 +4,7 @@ on:
     branches: [master]
     paths:
       - 'js/w33-dual-witness.js'
+      - 'js/w33-dual-stream.js'
       - 'js/w33-octet-decoder-binding.js'
       - 'scheduler/w33-certified-decoder-transaction.js'
       - 'tests/w33-certified-decoder-transaction.test.js'

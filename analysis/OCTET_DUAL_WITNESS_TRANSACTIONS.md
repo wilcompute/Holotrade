@@ -79,3 +79,30 @@ integer fibre and terminate at the original dual-certified optimum. The
 three-step example has negative masses 22 -> 12 -> 2 -> 1. No new move library
 is asserted. Eight history mutations, a rehashed restrictive policy, and invalid
 limits are rejected. Signed verifier verdicts remain simulated test inputs.
+
+## Incremental admission and resumable checkpoints
+
+`js/w33-dual-stream.js` exposes `createDualStream(policy, header)` and
+`resumeDualStream(policy, checkpoint, expectedCheckpointDigest)`. The header
+contains the pinned geometry, initial vector and line image. `append(chunk)`
+checks every ordered record's index, previous digest, approved move identity,
+zero incidence image and actual strict descent before atomically accepting the
+chunk. An invalid chunk leaves the stream unchanged. Prefix receipts explicitly
+say `optimalityVerified: false`.
+
+`checkpoint()` exports JSON-serializable header and accepted records, plus a
+content digest. The caller must pin the expected digest in trusted continuation
+state; a self-supplied hash is not authentication. Resume checks that identity,
+the policy, and replays the entire bounded history. It uses O(history length)
+time and storage, not a constant-size succinct proof, and provides no independent
+filesystem durability or rollback prevention without the caller's trusted state.
+
+`finish(dual)` invokes the existing exact receipt verifier and returns a receipt
+accepted by the signed transaction path. An invalid final dual does not consume
+the stream; successful finalization prohibits further appends. Reusing a saved
+checkpoint in a fresh stream is subject to the existing transaction continuation
+policy, not a new exactly-once guarantee.
+
+Ten tests pass, including JSON serialization and resume into signed delivery,
+atomic chunk rejection, missing trusted digest, tampering and rehashed tampering,
+wrong record order, invalid final dual recovery and finalized-stream guards.
