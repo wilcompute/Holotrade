@@ -9109,3 +9109,40 @@ test("the cheap filters do not prune the 1225-case 114 programme", () => {
   assert.match(r.soTheProgrammeIsNotCheap, /a104478/);
   assert.match(r.boundary, /\[111, 115\]/);
 });
+
+test("the optimal stabilizer certificates are tensor factorisations", () => {
+  const r = JSON.parse(fs.readFileSync("data/optimal_stabilizer_certificates.json"));
+  assert.equal(r.valid, true);
+  const q2 = r.qubits, q3 = r.qutrits;
+  // states come from the Clifford orbit and match the known counts
+  assert.equal(q2.stabilizerStates, 60);
+  assert.equal(q3.stabilizerStates, 360);
+  assert.equal(q2.stabilizerStates, q2.expectedStates);
+  assert.equal(q3.stabilizerStates, q3.expectedStates);
+  assert.deepEqual(q3.eigenclassesPerState, [4]);
+  assert.equal(q3.contexts, 40);
+  // optimum and full enumeration, both proved
+  assert.equal(q2.fewestCertifying, 5);
+  assert.equal(q3.fewestCertifying, 11);
+  assert.equal(q2.optimalSets, 6);
+  assert.equal(q3.optimalSets, 360);
+  for (const q of [q2, q3]) {
+    assert.equal(q.fewestStatus, "OPTIMAL");
+    assert.equal(q.enumerationStatus, "OPTIMAL");
+    assert.equal(q.constructedCertifyAll, true);
+    assert.equal(q.constructedEqualsOptimal, true, "construction must be ALL optima, not some");
+    assert.equal(q.constructedSets, q.optimalSets);
+  }
+  // octets are genuine tensor factorisations, counted by the algebra test
+  assert.equal(q2.factorisations, 10);
+  assert.equal(q3.factorisations, 45);
+  assert.equal(q2.optimalSetsPairwiseAnticommute, true);
+  assert.equal(q3.statesCertifiedByLocals + q3.statesNeedingCorrelations, 360);
+  assert.equal(q3.statesCertifiedByLocals, 108);
+  assert.deepEqual(q3.factorisationsPerClass, [9]);
+  assert.match(r.priorArt, /3f93821/);
+  assert.match(r.theOctetIsATensorFactorisation, /commutant/);
+  assert.match(r.qubitsAreDiracSets, /Cl_5/);
+  assert.match(r.boundary, /num_workers = 1/);
+  assert.match(r.boundary, /Nothing is claimed for d >= 5/);
+});

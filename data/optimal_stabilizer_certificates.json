@@ -1,0 +1,60 @@
+{
+  "schema": "holotrade.optimal-stabilizer-certificates.v1",
+  "valid": true,
+  "qubits": {
+    "d": 2,
+    "stabilizerStates": 60,
+    "expectedStates": 60,
+    "pauliClasses": 15,
+    "contexts": 15,
+    "eigenclassesPerState": [
+      3
+    ],
+    "fewestCertifying": 5,
+    "fewestStatus": "OPTIMAL",
+    "optimalSets": 6,
+    "enumerationStatus": "OPTIMAL",
+    "factorisations": 10,
+    "constructedSets": 6,
+    "constructedSizes": [
+      5
+    ],
+    "constructedCertifyAll": true,
+    "constructedEqualsOptimal": true,
+    "optimalSetsPairwiseAnticommute": true
+  },
+  "qutrits": {
+    "d": 3,
+    "stabilizerStates": 360,
+    "expectedStates": 360,
+    "pauliClasses": 40,
+    "contexts": 40,
+    "eigenclassesPerState": [
+      4
+    ],
+    "fewestCertifying": 11,
+    "fewestStatus": "OPTIMAL",
+    "optimalSets": 360,
+    "enumerationStatus": "OPTIMAL",
+    "factorisations": 45,
+    "constructedSets": 360,
+    "constructedSizes": [
+      11
+    ],
+    "constructedCertifyAll": true,
+    "constructedEqualsOptimal": true,
+    "statesCertifiedByLocals": 108,
+    "statesNeedingCorrelations": 252,
+    "factorisationsPerClass": [
+      9
+    ]
+  },
+  "priorArt": "w33_blocking_is_pauli_context_covering.py (blocking set = observables meeting every context, tau_1 = 11); context_cover_equals_mub_count_iff_q_even.py (cover = MUB count iff q even); the_blockers_in_closed_form.py and 3f93821 (the 360 minimum blockers are B(c,L)). Cited, not re-derived.",
+  "theQuestion": "a set S of Pauli observables is a CERTIFICATE if every stabilizer state is an eigenstate of some P in S, so measuring S always yields a deterministic outcome on any stabilizer state. How small can S be and what do the optimal S look like?",
+  "computedFromStateVectors": "stabilizer states are generated as the Clifford orbit of |00> under H(x)I, I(x)H, S(x)I, I(x)S and CSUM and deduplicated up to phase; eigenstate means |<psi|P|psi>| = 1 numerically. The symplectic geometry is never used to produce them.",
+  "theOctetIsATensorFactorisation": "a hyperbolic line L is d+1 pairwise non-commuting Pauli classes generating a full matrix algebra M_d; L^perp generates the commutant, another M_d, and together they span M_{d^2}. That is a tensor factorisation C^{d^2} = C^d (x) C^d compatible with the Pauli group, and the octet L u L^perp is its set of LOCAL classes. Counted by the algebra test: 10 for two qubits, 45 for two qutrits.",
+  "theStructureTheorem": "choose a factorisation, a factor and a local class c on it; take the other d local classes on that factor and the d^2-1 correlated classes c^j (x) P with P != I on the other factor. For d = 2 and d = 3 these are EXACTLY the optimal certificates: 6 = 6 and 360 = 360 as sets of sets.",
+  "qubitsAreDiracSets": "every optimal two-qubit certificate is 5 pairwise ANTICOMMUTING Paulis, a set of Dirac gamma matrices generating Cl_5 on C^4; the factorisation construction and the Clifford-algebra picture give the same six sets.",
+  "qutritsAreLocalPlusConditioned": "no such anticommuting family exists for two qutrits (no ovoid); the optimum is local-plus-conditioned: one certificate catches 108 of the 360 states with its 3 local observables and needs its 8 correlations for the other 252. Every Pauli class is local in exactly 9 factorisations -- the 9 minimum blockers per point that carry the tetracode.",
+  "boundary": "exhaustive at d = 2 and d = 3, all optimal sets enumerated with num_workers = 1. The d = 3 classification is combinatorially already ours; what is added is the identification of octets with tensor factorisations, the certificate reading on states, and verification with matrices. Nothing is claimed for d >= 5, where the octet construction is minimum but not the only optimum. No bound on tau_2 moves."
+}
