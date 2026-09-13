@@ -118,3 +118,42 @@ test('proof requirement and permitted circuit set are committed before execution
   const equivalent=exactCase();equivalent.receipt.dualWitness.dual=equivalent.receipt.dualWitness.dual.map(v=>String(2*Number(v))+'/2');
   assert.equal(executeExact(equivalent).decoderReceipt.dualVerified,true);
 });
+
+function chainCase(count=3){
+  const f=exactCase(),w=f.receipt.dualWitness,move=[...w.move];
+  w.start=w.end.map((x,i)=>x-count*move[i]);w.move=move.map(x=>count*x);w.moveDigest=d(w.move);
+  w.moves=Array.from({length:count},()=>[...move]);
+  const neg=v=>v.reduce((s,x)=>s+Math.max(0,-x),0);
+  let cursor=[...w.start];
+  f.receipt.steps=w.moves.map(m=>{const before=neg(cursor);cursor=cursor.map((x,i)=>x+m[i]);return {kind:'circuit',before,after:neg(cursor),moveDigest:d(m)};});
+  f.receipt.initialNegativeMass=neg(w.start);
+  f.decoderPolicy=B.verifyDecoderPolicy({...f.decoderPolicy,decoderPolicyDigest:undefined,proofMode:'dual-chain-v1',maxSteps:8,inputPreimageDigest:d(w.start)});
+  f.receipt.decoderPolicyDigest=f.decoderPolicy.decoderPolicyDigest;
+  return f;
+}
+test('multi-step actual circuit histories reach a signed exact optimum',()=>{
+  for(const count of [1,2,3,8]){
+    const f=chainCase(count),tx=executeExact(f);
+    assert.equal(tx.delivery.body.decoderDualVerified,true);
+    assert.equal(tx.delivery.body.decoderDualWitnessDigest,d(f.receipt.dualWitness));
+    assert.equal(tx.decoderReceipt.steps.length,count);
+  }
+});
+test('history tampering and resource-policy downgrade are rejected',()=>{
+  const attacks=[
+    f=>f.receipt.dualWitness.moves.pop(),
+    f=>f.receipt.dualWitness.moves.push([...f.receipt.dualWitness.moves[0]]),
+    f=>{f.receipt.dualWitness.moves[0][0]++;},
+    f=>{f.receipt.dualWitness.move[0]++;f.receipt.dualWitness.moveDigest=d(f.receipt.dualWitness.move);},
+    f=>{f.receipt.steps[0].after--;f.receipt.steps[1].before--;},
+    f=>{f.decoderPolicy={...f.decoderPolicy,maxSteps:2};},
+    f=>{f.receipt.dualWitness.dual[0]='1/0';},
+    f=>{f.receipt.dualWitness.moves[0][0]=Number.MAX_SAFE_INTEGER+1;},
+  ];
+  for(const attack of attacks){const f=chainCase();attack(f);assert.throws(()=>executeExact(f));}
+  const f=chainCase();
+  f.decoderPolicy=B.verifyDecoderPolicy({...f.decoderPolicy,maxSteps:2,decoderPolicyDigest:undefined});
+  f.receipt.decoderPolicyDigest=f.decoderPolicy.decoderPolicyDigest;
+  assert.throws(()=>executeExact(f),/bounded witness chain/);
+  for(const maxSteps of [0,257,1.5])assert.throws(()=>B.verifyDecoderPolicy({...f.decoderPolicy,maxSteps,decoderPolicyDigest:undefined}));
+});

@@ -55,3 +55,27 @@ The exporter derives the fixture from canonical geometry and the original
 that prior solver-free mathematical certificate into the transaction path. It
 adds no new trap, Graver completeness theorem, arbitrary multi-step history
 verification, physical evidence or quantum speedup claim.
+
+## Bounded multi-step histories
+
+`dual-chain-v1` adds a policy-bound `maxSteps` integer in 1..256. A witness
+retains `start`, `end`, aggregate `move` and its digest, geometry, line image
+and final rational dual; it adds `moves`, an ordered list of actual circuit
+vectors. Each move must match its receipt step and the preapproved move hashes.
+The verifier derives intermediate vectors with BigInt, checks zero incidence
+image for each move, matches actual negative masses to every strict-descent
+summary, and checks the endpoint. A final zero duality gap still proves the
+same global optimum; no intermediate optimality claim is required.
+
+This binds the ordered history through the witness digest already included in
+the signed delivery. Changing `maxSteps` changes the policy and measured-boot
+challenge. The proof length limit is enforced even if the caller supplies a
+new correctly hashed policy. Legacy and `dual-one-step-v1` contracts remain
+covered by their original tests.
+
+Eight transaction tests pass. New end-to-end cases repeat the existing approved
+circuit for histories of lengths 1,2,3,8; they start farther along the same
+integer fibre and terminate at the original dual-certified optimum. The
+three-step example has negative masses 22 -> 12 -> 2 -> 1. No new move library
+is asserted. Eight history mutations, a rehashed restrictive policy, and invalid
+limits are rejected. Signed verifier verdicts remain simulated test inputs.

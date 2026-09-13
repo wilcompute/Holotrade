@@ -1,5 +1,5 @@
 "use strict";
-// Exact one-step integer decoder witness. BigInt rationals; no solver or floats.
+// Exact integer decoder witnesses with bounded transition histories. BigInt rationals; no solver or floats.
 const abs=x=>x<0n?-x:x;
 function gcd(a,b){a=abs(a);b=abs(b);while(b){[a,b]=[b,a%b];}return a;}
 function rat(n,d=1n){if(d===0n)throw new Error('zero rational denominator');if(d<0n){n=-n;d=-d;}const g=gcd(n,d);return [n/g,d/g];}
@@ -32,7 +32,19 @@ function verifyDualWitness(w,policy,receipt,hash){
   if(initial!==BigInt(receipt.initialNegativeMass)||final!==BigInt(receipt.finalNegativeMass)||final!==BigInt(policy.certifiedExactDepth)||final>=initial)throw new Error('actual negativity mismatch');
   const moveDigest=hash(w.move);
   if(w.moveDigest!==moveDigest)throw new Error('witness move digest mismatch');
-  if(receipt.steps.length!==1||receipt.steps[0].kind!=='circuit'||receipt.steps[0].moveDigest!==moveDigest||!policy.permittedMoveDigests.includes(moveDigest))throw new Error('unapproved one-step circuit');
+  if(policy.proofMode==='dual-chain-v1') {
+    if(!Array.isArray(w.moves)||w.moves.length<1||w.moves.length>policy.maxSteps||w.moves.length!==receipt.steps.length)throw new Error('bounded witness chain required');
+    let cursor=start;
+    for(let i=0;i<w.moves.length;i++) {
+      const m=vector(w.moves[i]),step=receipt.steps[i],md=hash(w.moves[i]);
+      if(step.kind!=='circuit'||step.moveDigest!==md||!policy.permittedMoveDigests.includes(md))throw new Error('unapproved chain circuit');
+      if(lines.some(L=>L.reduce((s,p)=>s+m[p],0n)!==0n))throw new Error('chain move leaves fiber');
+      const next=cursor.map((x,j)=>x+m[j]);
+      if(neg(cursor)!==BigInt(step.before)||neg(next)!==BigInt(step.after))throw new Error('actual chain negativity mismatch');
+      cursor=next;
+    }
+    if(!cursor.every((x,i)=>x===end[i]))throw new Error('chain endpoint mismatch');
+  } else if(receipt.steps.length!==1||receipt.steps[0].kind!=='circuit'||receipt.steps[0].moveDigest!==moveDigest||!policy.permittedMoveDigests.includes(moveDigest))throw new Error('unapproved one-step circuit');
   // Four-regular incidence fixes sum(x); equality in the feasible l1 dual
   // therefore certifies minimal negative mass in this entire integer fibre.
   return Object.freeze({dualVerified:true,dualWitnessDigest:hash(w)});

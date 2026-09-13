@@ -40,9 +40,13 @@ function verifyDecoderPolicy(policy) {
     certifiedExactDepth: natural(policy.certifiedExactDepth,"certifiedExactDepth"),
   };
   if (policy.proofMode != null) {
-    if (policy.proofMode !== "dual-one-step-v1") throw new TypeError("unknown decoder proof mode");
+    if (!["dual-one-step-v1","dual-chain-v1"].includes(policy.proofMode)) throw new TypeError("unknown decoder proof mode");
     if (!Array.isArray(policy.permittedMoveDigests) || !policy.permittedMoveDigests.length || policy.permittedMoveDigests.length > 1080) throw new TypeError("bounded permitted move list required");
     body.proofMode = policy.proofMode;
+    if(policy.proofMode === "dual-chain-v1") {
+      body.maxSteps=natural(policy.maxSteps,"maxSteps");
+      if(body.maxSteps<1||body.maxSteps>256)throw new RangeError("maxSteps must be in 1..256");
+    }
     body.geometryDigest = digest(policy.geometryDigest,"geometryDigest");
     body.permittedMoveDigests = Object.freeze([...new Set(policy.permittedMoveDigests.map(x=>digest(x,"permitted move")))].sort());
   }
@@ -63,6 +67,7 @@ function verifyDecoderReceipt(receipt, verifiedPolicy) {
   if (finalNegativeMass > initialNegativeMass) throw new Error("decoder receipt increases negativity");
   digest(receipt.finalPreimageDigest,"finalPreimageDigest");
   if (!Array.isArray(receipt.steps)) throw new TypeError("decoder receipt steps must be an array");
+  if (policy.proofMode === "dual-chain-v1" && (receipt.steps.length < 1 || receipt.steps.length > policy.maxSteps)) throw new Error("bounded witness chain required");
   let cursor = initialNegativeMass;
   const steps = receipt.steps.map((step,i) => {
     if (!step || typeof step !== "object") throw new TypeError(`decoder step ${i} invalid`);
@@ -84,7 +89,7 @@ function verifyDecoderReceipt(receipt, verifiedPolicy) {
     finalPreimageDigest:receipt.finalPreimageDigest,
     steps,
   };
-  if (policy.proofMode === "dual-one-step-v1") {
+  if (policy.proofMode != null) {
     Object.assign(body, verifyDualWitness(receipt.dualWitness, policy, body, sha256));
   }
   const decoderResultDigest=sha256(body);
