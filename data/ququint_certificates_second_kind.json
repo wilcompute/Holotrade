@@ -1,0 +1,22 @@
+{
+  "schema": "holotrade.ququint-certificates-second-kind.v1",
+  "valid": true,
+  "stabilizerStates": 3900,
+  "pauliClasses": 156,
+  "contexts": 156,
+  "commutationEqualsForm": true,
+  "factorisationsOrdered": 650,
+  "factorisationsUnordered": 325,
+  "factorsSpanFullAlgebra": true,
+  "kindOneCount": 3900,
+  "kindTwoCount": 46800,
+  "total": 50700,
+  "familiesDisjoint": true,
+  "allCertifyAllStates": true,
+  "allMinimal": true,
+  "certificateSize": 29,
+  "theSecondKind": "take two COMMUTING independent Pauli observables a and b; exactly five tensor factorisations put a on one factor and b on the other; choose two of them. The certificate is the 4 products a^i b^j, the other 5 local classes on a's factor in each of the chosen two, and the other 5 local classes on b's factor in each of the other three: 4 + 10 + 15 = 29. 156 * 30 ordered pairs times C(5,2) = 10 splits gives 46,800.",
+  "whatItMeans": "for qubits and qutrits an optimal certificate needs one bipartition; for ququints 46,800 of the 50,700 optimal certificates need five bipartitions tied together by one commuting pair.",
+  "citedNotRecomputed": "minimum size 29 = tau_1(W(3,5)) from the_minimality_fence_was_wrong.py; completeness (no third kind) from the_q5_tight_case_dies_without_the_centre_property.py.",
+  "boundary": "construction, certification of all 3,900 states and minimality are exhaustive; optimality and completeness are cited. d >= 7 is not claimed."
+}

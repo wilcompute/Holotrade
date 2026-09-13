@@ -9166,3 +9166,71 @@ test("the cost anomalies are local charge conjugations", () => {
   assert.match(r.andItIsAllNinety, /C \(x\) C/);
   assert.match(r.boundary, /cited\s+from 6bb8975/);
 });
+
+test("the q = 5 tight case dies without the centre property", () => {
+  const r = JSON.parse(fs.readFileSync("data/q5_tight_case_dies.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.tau1, 29);
+  assert.equal(r.tightSize, 26 * 29);
+  assert.equal(r.lowerBound, r.tightSize + 1);
+  assert.equal(r.upperBound, 29 * 29);
+  // the census
+  assert.equal(r.octetBlockers, 156 * 25);
+  assert.equal(r.twoCentreBlockers, 156 * 30 * 10);
+  assert.equal(r.minimumBlockers, r.octetBlockers + r.twoCentreBlockers);
+  assert.equal(r.minimumBlockers, 50700);
+  // pencil lemma: every no-pencil instance dies, every control lives
+  assert.equal(r.pencilIsOneTight, true);
+  for (const x of [1, 2, 3]) {
+    assert.equal(r.pencilLemma[`x${x}_noPencil`], "INFEASIBLE");
+    assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.pencilLemma[`x${x}_control`]),
+              "control must be feasible or the lemma proves nothing");
+  }
+  // patterns: exactly octet and collinear two-centre survive
+  assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.patterns["3p"]));
+  assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.patterns["2p+q collinear"]));
+  assert.equal(r.patterns["2p+q noncollinear"], "INFEASIBLE");
+  assert.deepEqual(r.tripleCases, { INFEASIBLE: 308 });
+  // census uniqueness with recovering controls
+  const c = r.census;
+  assert.equal(c.twoCentreConstructions, 10);
+  assert.equal(c.octetConstructions, 25);
+  assert.equal(c.twoCentreConstructionsValid, true);
+  assert.equal(c.octetConstructionsValid, true);
+  assert.equal(c.controlTwoRecoversLast, true);
+  assert.equal(c.controlOctetRecoversLast, true);
+  assert.equal(c.twoCentreOthers, "INFEASIBLE");
+  assert.equal(c.octetOthers, "INFEASIBLE");
+  assert.match(r.theArgument, /binary expansion is unique/i);
+  assert.match(r.theArgument, /mixing lemma/);
+  assert.match(r.whereTheMachineryStopped, /centre property fails there/);
+  assert.match(r.consistentEvidenceNotProof, /UNKNOWN at 7200 s/);
+  assert.match(r.boundary, /Nothing is claimed for q >= 7/);
+  assert.match(r.boundary, /\[111, 115\]/);
+});
+
+test("the ququint certificates have a second kind", () => {
+  const r = JSON.parse(fs.readFileSync("data/ququint_certificates_second_kind.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.stabilizerStates, 25 * 6 * 26);
+  assert.equal(r.pauliClasses, 156);
+  assert.equal(r.contexts, 156);
+  assert.equal(r.commutationEqualsForm, true);
+  assert.equal(r.factorisationsOrdered, 650);
+  assert.equal(r.factorisationsUnordered, 325);
+  assert.equal(r.factorsSpanFullAlgebra, true);
+  assert.equal(r.kindOneCount, 3900);
+  assert.equal(r.kindTwoCount, 46800);
+  assert.equal(r.total, 50700);
+  assert.equal(r.familiesDisjoint, true);
+  assert.equal(r.allCertifyAllStates, true);
+  assert.equal(r.allMinimal, true);
+  assert.equal(r.certificateSize, 29);
+  // matches the geometric census exactly
+  const g = JSON.parse(fs.readFileSync("data/q5_tight_case_dies.json"));
+  assert.equal(r.kindOneCount, g.octetBlockers);
+  assert.equal(r.kindTwoCount, g.twoCentreBlockers);
+  assert.match(r.theSecondKind, /COMMUTING/);
+  assert.match(r.citedNotRecomputed, /the_q5_tight_case_dies_without_the_centre_property/);
+  assert.match(r.boundary, /d >= 7 is not claimed/);
+});

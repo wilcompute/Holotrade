@@ -1,0 +1,62 @@
+{
+  "schema": "holotrade.q5-tight-case-dies.v2",
+  "valid": true,
+  "q": 5,
+  "points": 156,
+  "lines": 156,
+  "tau1": 29,
+  "tightSize": 754,
+  "lowerBound": 755,
+  "upperBound": 841,
+  "minimumBlockers": 50700,
+  "octetBlockers": 3900,
+  "twoCentreBlockers": 46800,
+  "pencilIsOneTight": true,
+  "pencilLemma": {
+    "x1_noPencil": "INFEASIBLE",
+    "x1_control": "OPTIMAL",
+    "x2_noPencil": "INFEASIBLE",
+    "x2_control": "OPTIMAL",
+    "x3_noPencil": "INFEASIBLE",
+    "x3_control": "OPTIMAL"
+  },
+  "pencilLemmaSeconds": {
+    "x1_noPencil": 0.0,
+    "x1_control": 0.0,
+    "x2_noPencil": 0.2,
+    "x2_control": 0.0,
+    "x3_noPencil": 1.4,
+    "x3_control": 0.0
+  },
+  "patterns": {
+    "3p": "OPTIMAL",
+    "2p+q collinear": "OPTIMAL",
+    "2p+q noncollinear": "INFEASIBLE"
+  },
+  "tripleCases": {
+    "INFEASIBLE": 308
+  },
+  "census": {
+    "twoCentreConstructions": 10,
+    "twoCentreConstructionsValid": true,
+    "octetConstructions": 25,
+    "octetConstructionsValid": true,
+    "controlTwoRecoversLast": true,
+    "twoCentreOthers": "INFEASIBLE",
+    "controlOctetRecoversLast": true,
+    "octetOthers": "INFEASIBLE"
+  },
+  "shapes": {
+    "octet": "e = 3 pencil(c); B = (Adj(c) - L^perp) u (L - {c}); 3,900",
+    "twoCentre": "e = 2 pencil(a) + pencil(b), a != b collinear on M0; B = (M0 - {a,b}) u (l u l' - {a}) u (m1 u m2 u m3 - {b}); 46,800"
+  },
+  "whereTheMachineryStopped": "gq_diagonal_theorem.py proves the tight case impossible for a GQ(s,s) with no ovoid, the centre property and no self-duality, and records that it does NOT cover q = 5 because the centre property fails there. The q = 5 tight size 754 was therefore open.",
+  "theCountingIdentities": "a point off a line M lies on exactly one line meeting M and five disjoint from it, so with c = |B n M| the excess on lines meeting M is 4c - 1 = 4 e(M) + 3 and on lines disjoint from M is 20 - 5c. Hence c <= 4, e <= 3, and A_L e = 4e + 3.1: e is a weighted 3-tight set of lines.",
+  "thePencilLemma": "for x = 1, 2, 3 every integer 0 <= e <= 3 with A_L e = 4e + x.1 contains a full pencil (three INFEASIBLE verdicts, each with a feasible control). Removing a pencil lowers x by one, so by induction e = N^T y with y >= 0 integer and sum y = 3.",
+  "thePatterns": "by transitivity on points and on collinear and non-collinear pairs, y is 3p, 2p+q or p+q+r over 3 + 308 cases, each deciding a blocker with every line count fixed: feasible exactly for 3p and 2p+q with q collinear.",
+  "theDigitLemma": "every minimum blocker of W(3,5) has e = N^T (2 delta_A + delta_B) with A, B collinear or equal: BIT 1 of the excess is the pencil of A and BIT 0 is the pencil of B.",
+  "theArgument": "at |X| = 754 every shadow is a minimum blocker and E[L][M] = 2[A_L in M] + [B_L in M] = 2[A'_M in L] + [B'_M in L]. Binary expansion is unique, so A_L in M <=> A'_M in L: exactly the centre reciprocity. Steps 4-6 of gq_tight_case_theorem.py and the mixing lemma of gq_diagonal_theorem.py use nothing else, and give either an ovoid of W(3,5) or a duality of W(3,5). W(3,q) has an ovoid iff q is even and is self-dual iff q is even (Payne and Thas, Finite Generalized Quadrangles; both classical). So no tight set exists and tau_2(W(3,5)^2) >= 755.",
+  "whatChanged": "the centre property was never the load-bearing input; a threshold reading of the excess is. At q = 3 they coincide. At q = 5 the single pencil is gone but the top bit still marks one.",
+  "consistentEvidenceNotProof": "a symmetry sweep of the tight model under 21 structured subgroups of SL(2,25).<sigma> found no tight set (18 INFEASIBLE, 3 UNKNOWN); q = 2 recovered a tight set and q = 3 found none. A monolithic any-other-profile blocker query returned UNKNOWN at 7200 s.",
+  "boundary": "the counting identities and the induction are argued; the lemma instances, the patterns and the census are exact solver verdicts with controls; the step to the ovoid/duality dichotomy uses results already proved here; the non-existence of ovoids and dualities of W(3,5) is classical. Nothing is claimed for q >= 7. tau_2(W(3,3)^2) stays open in [111, 115]."
+}
