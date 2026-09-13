@@ -10,6 +10,7 @@
 // decoded result merely because the local move set stalls there.
 
 const crypto = require("node:crypto");
+const { verifyDualWitness } = require("./w33-dual-witness.js");
 
 const POLICY_SCHEMA = "holotrade.w33-octet-decoder-policy.v1";
 const RECEIPT_SCHEMA = "holotrade.w33-octet-decoder-receipt.v1";
@@ -38,6 +39,13 @@ function verifyDecoderPolicy(policy) {
     fiberDigest: digest(policy.fiberDigest,"fiberDigest"),
     certifiedExactDepth: natural(policy.certifiedExactDepth,"certifiedExactDepth"),
   };
+  if (policy.proofMode != null) {
+    if (policy.proofMode !== "dual-one-step-v1") throw new TypeError("unknown decoder proof mode");
+    if (!Array.isArray(policy.permittedMoveDigests) || !policy.permittedMoveDigests.length || policy.permittedMoveDigests.length > 1080) throw new TypeError("bounded permitted move list required");
+    body.proofMode = policy.proofMode;
+    body.geometryDigest = digest(policy.geometryDigest,"geometryDigest");
+    body.permittedMoveDigests = Object.freeze([...new Set(policy.permittedMoveDigests.map(x=>digest(x,"permitted move")))].sort());
+  }
   if (!body.decoderVersion) throw new TypeError("decoderVersion required");
   const decoderPolicyDigest = sha256(body);
   if (policy.decoderPolicyDigest != null && policy.decoderPolicyDigest !== decoderPolicyDigest) throw new Error("decoderPolicyDigest mismatch");
@@ -45,7 +53,7 @@ function verifyDecoderPolicy(policy) {
 }
 
 function verifyDecoderReceipt(receipt, verifiedPolicy) {
-  const policy = verifiedPolicy && verifiedPolicy.decoderPolicyDigest ? verifiedPolicy : verifyDecoderPolicy(verifiedPolicy);
+  const policy = verifyDecoderPolicy(verifiedPolicy);
   if (!receipt || receipt.schema !== RECEIPT_SCHEMA) throw new TypeError("octet decoder receipt required");
   if (receipt.decoderPolicyDigest !== policy.decoderPolicyDigest) throw new Error("decoder receipt policy identity drift");
   const initialNegativeMass = natural(receipt.initialNegativeMass,"initialNegativeMass");
@@ -76,6 +84,9 @@ function verifyDecoderReceipt(receipt, verifiedPolicy) {
     finalPreimageDigest:receipt.finalPreimageDigest,
     steps,
   };
+  if (policy.proofMode === "dual-one-step-v1") {
+    Object.assign(body, verifyDualWitness(receipt.dualWitness, policy, body, sha256));
+  }
   const decoderResultDigest=sha256(body);
   if (receipt.decoderResultDigest != null && receipt.decoderResultDigest !== decoderResultDigest) throw new Error("decoderResultDigest mismatch");
   return Object.freeze({ ...body, decoderResultDigest });

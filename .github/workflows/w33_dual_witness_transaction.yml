@@ -1,0 +1,28 @@
+name: Exact dual witness transaction
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'js/w33-dual-witness.js'
+      - 'js/w33-octet-decoder-binding.js'
+      - 'scheduler/w33-certified-decoder-transaction.js'
+      - 'tests/w33-certified-decoder-transaction.test.js'
+      - 'analysis/octet_dual_transaction_fixture.json'
+      - 'analysis/octet_dual_gap_receipts.json'
+      - 'analysis/export_octet_dual_transaction_fixture.py'
+      - 'analysis/signed_pencil_sampling_witness.py'
+      - '.github/workflows/w33_dual_witness_transaction.yml'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -S analysis/export_octet_dual_transaction_fixture.py --check
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/w33-certified-decoder-transaction.test.js

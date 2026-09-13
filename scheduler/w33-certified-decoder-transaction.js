@@ -111,6 +111,7 @@ function executeCertifiedDecoderTransaction({
     decoderResultDigest:decoderReceipt.decoderResultDigest,
     decoderFinalNegativeMass:decoderReceipt.finalNegativeMass,
     decoderStatus:decoderReceipt.status,
+    ...(decoderReceipt.dualVerified ? {decoderDualVerified:true,decoderDualWitnessDigest:decoderReceipt.dualWitnessDigest} : {}),
   };
   const delivery=Object.freeze({...augmented,deliveryDigest:T.sha256(augmented)});
   const signedDelivery=T.signDelivery(delivery,deliveryPrivateKey,deliveryKeyId);
