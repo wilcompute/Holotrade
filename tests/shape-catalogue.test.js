@@ -9316,3 +9316,31 @@ test("frame chirality is reversed only by antiunitaries", () => {
   assert.match(r.whatItMeans, /does not select one/);
   assert.match(r.boundary, /not an operator equality/);
 });
+
+test("tau_1(W(3,7)) = 55", () => {
+  const r = JSON.parse(fs.readFileSync("data/tau1_w37_is_55.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.tau1, 55);
+  assert.equal(r.tau1, 7 * 7 + 7 - 1, "q^2 + q - 1 at q = 7");
+  assert.deepEqual(r.previousInterval, [54, 55]);
+  for (const x of [1, 2, 3]) {
+    assert.equal(r.lemmaXle3[`x${x}_noPencil`], "INFEASIBLE");
+    assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.lemmaXle3[`x${x}_control`]));
+  }
+  for (const w of ["3", "2", "1"]) {
+    assert.equal(r.lemmaX4[w].noPencil, "INFEASIBLE", `x = 4 lemma at max weight ${w}`);
+    assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.lemmaX4[w].control), "control must be feasible");
+  }
+  assert.ok(["OPTIMAL", "FEASIBLE"].includes(r.caseAControl), "octet control at 55 must be found");
+  assert.deepEqual(r.caseAPatterns, { INFEASIBLE: 330 });
+  for (const v of Object.values(r.smallPatterns)) assert.ok(["EXCLUDED", "INFEASIBLE"].includes(v));
+  assert.equal(Object.values(r.twoPQRClasses).reduce((a, b) => a + b, 0), 11);
+  for (const k of Object.keys(r.twoPQRClasses)) assert.ok(["EXCLUDED", "INFEASIBLE"].includes(k));
+  assert.equal(r.quadOrbitRepresentatives, 39);
+  assert.equal(r.quadRandomMissing, 0, "orbit keys must cover random 4-sets");
+  for (const k of Object.keys(r.quadStatus)) assert.ok(["EXCLUDED", "INFEASIBLE"].includes(k));
+  assert.equal(Object.values(r.quadStatus).reduce((a, b) => a + b, 0), 39);
+  assert.equal(r.octetPairs, 49 * 50 / 2);
+  assert.match(r.theorem, /972e5cd/);
+  assert.match(r.boundary, /Nothing is\s+claimed for q >= 9/);
+});

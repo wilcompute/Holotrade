@@ -1,0 +1,72 @@
+{
+  "schema": "holotrade.tau1-w37-is-55.v1",
+  "valid": true,
+  "q": 7,
+  "tau1": 55,
+  "previousInterval": [
+    54,
+    55
+  ],
+  "lemmaXle3": {
+    "x1_noPencil": "INFEASIBLE",
+    "x1_control": "OPTIMAL",
+    "x2_noPencil": "INFEASIBLE",
+    "x2_control": "OPTIMAL",
+    "x3_noPencil": "INFEASIBLE",
+    "x3_control": "OPTIMAL"
+  },
+  "lemmaX4": {
+    "3": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    },
+    "2": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    },
+    "1": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    }
+  },
+  "lemmaX4Seconds": {
+    "3": {
+      "noPencil": 1.6,
+      "control": 0.4
+    },
+    "2": {
+      "noPencil": 842.1,
+      "control": 0.2
+    },
+    "1": {
+      "noPencil": 980.1,
+      "control": 0.2
+    }
+  },
+  "caseAControl": "OPTIMAL",
+  "caseAPatterns": {
+    "INFEASIBLE": 330
+  },
+  "smallPatterns": {
+    "4p": "EXCLUDED",
+    "3p+q collinear": "EXCLUDED",
+    "3p+q noncollinear": "INFEASIBLE",
+    "2p+2q collinear": "EXCLUDED",
+    "2p+2q noncollinear": "INFEASIBLE"
+  },
+  "twoPQRClasses": {
+    "EXCLUDED": 1,
+    "INFEASIBLE": 10
+  },
+  "quadOrbitRepresentatives": 39,
+  "quadRandomMissing": 0,
+  "quadStatus": {
+    "EXCLUDED": 2,
+    "INFEASIBLE": 37
+  },
+  "octetPairs": 1225,
+  "caseA": "a line meeting B in 5 points forces zero excess off it and e = N^T y with y on that line, sum 4; PGL(2,7) is 3-transitive on the line so the three non-B points are fixed; all 330 patterns INFEASIBLE, octet control at 55 feasible.",
+  "caseB": "with every count <= 4 the x = 4 pencil lemma (max weight 3, 2, 1, each INFEASIBLE with a feasible control) and the x <= 3 lemma give e = N^T y, sum y = 4, no line of weight 4. Patterns 4p, 3p+q, 2p+2q, 2p+q+r (Witt classes) and p+q+r+s (unordered orbit representatives, completeness checked on random 4-sets) are all excluded or INFEASIBLE.",
+  "theorem": "no blocking set of W(3,7) has 54 points; blocking is upward closed; the octet construction has 55; so tau_1(W(3,7)) = 55 = q^2+q-1, the conjecture of 972e5cd at its third odd prime.",
+  "boundary": "identities, the Case-A reduction and the induction are argued; lemma instances, pattern verdicts and controls are exact CP-SAT results; orbit classifications rest on Witt's theorem and PGL(2,7) 3-transitivity with sizes and random completeness checked. Nothing is claimed for q >= 9."
+}
