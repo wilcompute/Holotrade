@@ -9293,3 +9293,26 @@ test("the 27 factorisation frames carry the SO(10) weights", () => {
   assert.match(r.priorArt, /Pass 84/);
   assert.match(r.whatThisIsNot, /No SO\(10\) gauge field/);
 });
+
+test("frame chirality is reversed only by antiunitaries", () => {
+  const r = JSON.parse(fs.readFileSync("data/frame_chirality_antiunitary.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.frames, 27);
+  assert.equal(r.fullOrder, 2 * r.pspOrder);
+  // orientation parity is the index-2 character, on every frame
+  assert.deepEqual(r.parityPerFrame.psp, { 0: 960 });
+  assert.deepEqual(r.parityPerFrame.outer, { 1: 960 });
+  assert.equal(r.parityAllFramesAsStated, true);
+  // 32 orientations = 16 + 16 under unitary Cliffords, one orbit under the full group
+  assert.deepEqual(r.orientationOrbitsPsp, [16, 16]);
+  assert.deepEqual(r.orientationOrbitsFull, [32]);
+  assert.equal(r.orientationOrbitsAllFramesAsStated, true);
+  // unitary gates keep the commutation form, complex conjugation reverses it
+  for (const g of ["H(x)I", "S(x)I", "CSUM"]) assert.deepEqual(r.gateMultipliers[g], ["1"]);
+  assert.deepEqual(r.gateMultipliers.complexConjugation, ["2"], "multiplier -1 = 2 mod 3");
+  assert.equal(r.complexConjugationIsThatMap, true);
+  assert.match(r.priorArt, /Pass 346/);
+  assert.match(r.priorArt, /BT1041/);
+  assert.match(r.whatItMeans, /does not select one/);
+  assert.match(r.boundary, /not an operator equality/);
+});

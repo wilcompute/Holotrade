@@ -1,0 +1,46 @@
+{
+  "schema": "holotrade.frame-chirality-antiunitary.v1",
+  "valid": true,
+  "frames": 27,
+  "pspOrder": 25920,
+  "fullOrder": 51840,
+  "parityPerFrame": {
+    "psp": {
+      "0": 960
+    },
+    "outer": {
+      "1": 960
+    }
+  },
+  "parityAllFramesAsStated": true,
+  "orientationOrbitsPsp": [
+    16,
+    16
+  ],
+  "orientationOrbitsFull": [
+    32
+  ],
+  "orientationOrbitsAllFramesAsStated": true,
+  "gateMultipliers": {
+    "H(x)I": [
+      "1"
+    ],
+    "S(x)I": [
+      "1"
+    ],
+    "CSUM": [
+      "1"
+    ],
+    "complexConjugation": [
+      "2"
+    ]
+  },
+  "complexConjugationLabelMap": "(a1,a2,b1,b2) -> (a1,a2,-b1,-b2)",
+  "complexConjugationIsThatMap": true,
+  "priorArt": "5419c27 (frames and W(D5)); W33-Theory Pass 346 THE_SELECTION_LAYER.md (chirality torsor, exchange by an element outside the index-2 subgroup); BT1041/BT1045 (J antiunitary with J gamma = - gamma J on K = C^3_weak (x) C^3_colour).",
+  "orientationParity": "orienting each octet of a frame by one of its two hyperbolic lines, the parity of the number of orientations reversed by a frame-preserving collineation is a homomorphism to Z_2. On all 27 frames it is 0 on the 960 PSp(4,3) elements and 1 on the 960 multiplier -1 elements: it is the index-2 character of W(E6).",
+  "theSixteenAndTheSixteen": "the 32 orientations of a frame form two orbits of 16 under the PSp(4,3)-stabiliser -- even and odd numbers of reversals, the weight sets of S+ and S- of D5 -- and one orbit of 32 under the full stabiliser.",
+  "whichOperationsAreOdd": "checked with 9x9 matrices over all ordered Pauli pairs: H, S and CSUM preserve the commutation form (multiplier 1); complex conjugation reverses it (multiplier -1) and acts on labels as (a1,a2,b1,b2) -> (a1,a2,-b1,-b2), outside PSp(4,3). Unitary Cliffords preserving a frame keep its chirality; antiunitary ones reverse it.",
+  "whatItMeans": "the torsor Pass 346 proved unselectable is, on the two-qutrit carrier, the orientation parity of a factorisation frame, and the operations exchanging the halves are the time-reversal-type ones -- the same sign pattern as J gamma = - gamma J in BT1041, arising from the geometry of K itself. It names what a selection would fix; it does not select one.",
+  "boundary": "exact computation with the collineation groups on all 27 frames and with 9x9 matrices for the gate cosets; group- and weight-level only. No Dirac operator, gauge field or fermion assignment is constructed, and the link to BT1041's J is a shared sign pattern, not an operator equality."
+}
