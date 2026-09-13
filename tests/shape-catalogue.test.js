@@ -9146,3 +9146,23 @@ test("the optimal stabilizer certificates are tensor factorisations", () => {
   assert.match(r.boundary, /num_workers = 1/);
   assert.match(r.boundary, /Nothing is claimed for d >= 5/);
 });
+
+test("the cost anomalies are local charge conjugations", () => {
+  const r = JSON.parse(fs.readFileSync("data/cost_anomalies_local_charge_conjugation.json"));
+  assert.equal(r.valid, true);
+  // computed by conjugating Pauli matrices: C (x) I is diag(-1,-1,1,1) over F_3
+  assert.deepEqual(r.CtensorIInduces, [2, 2, 1, 1]);
+  assert.deepEqual(r.ItensorCInduces, [1, 1, 2, 2]);
+  assert.deepEqual(r.CtensorCInduces, [2, 2, 2, 2], "C (x) C is the centre -I");
+  // and its class is the whole anomaly set of the tritangent file
+  assert.equal(r.conjugacyClassSize, 90);
+  assert.equal(r.centraliserOrder, 576);
+  assert.equal(r.conjugacyClassSize * r.centraliserOrder, 51840);
+  assert.equal(r.allInvolutions, true);
+  assert.equal(r.minusEigenspacesHyperbolic, true);
+  assert.equal(r.distinctMinusEigenspaces, 90);
+  assert.match(r.priorArt, /6bb8975/);
+  assert.match(r.priorArt, /feb5154/);
+  assert.match(r.andItIsAllNinety, /C \(x\) C/);
+  assert.match(r.boundary, /cited\s+from 6bb8975/);
+});

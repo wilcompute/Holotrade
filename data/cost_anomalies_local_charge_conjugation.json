@@ -1,0 +1,31 @@
+{
+  "schema": "holotrade.cost-anomalies-local-charge-conjugation.v1",
+  "valid": true,
+  "CtensorIInduces": [
+    2,
+    2,
+    1,
+    1
+  ],
+  "ItensorCInduces": [
+    1,
+    1,
+    2,
+    2
+  ],
+  "CtensorCInduces": [
+    2,
+    2,
+    2,
+    2
+  ],
+  "conjugacyClassSize": 90,
+  "centraliserOrder": 576,
+  "allInvolutions": true,
+  "minusEigenspacesHyperbolic": true,
+  "distinctMinusEigenspaces": 90,
+  "priorArt": "the_cost_anomalies_are_the_tritangent_structure.py (90 hyperbolic-line reflections + -I, lengths from 6bb8975; 45 tritangent planes = 45 octets) and the_optimal_stabilizer_certificates_are_tensor_factorisations.py (feb5154: octet = tensor factorisation).",
+  "thePhysicalName": "with C|j> = |-j>, C X C^dag = X^-1 and C Z C^dag = Z^-1, so C (x) I acts on Pauli labels as diag(-1,-1,1,1), computed by conjugating all 80 Pauli matrices: the reflection in the first factor's hyperbolic line. I (x) C gives diag(1,1,-1,-1) and C (x) C gives -I.",
+  "andItIsAllNinety": "the conjugacy class of diag(-1,-1,1,1) in Sp(4,3) has 90 = 51840/576 elements, all involutions with a hyperbolic (-1)-eigenspace, 90 distinct eigenspaces: exactly the anomaly set. So the 90 cost anomalies are C on one factor of one of the 45 factorisations, and the centre -I is C (x) C.",
+  "boundary": "exact finite computation in Sp(4,3) and with 9x9 matrices; the transvection lengths are cited from 6bb8975 and not repeated; nothing is claimed about physical charge conjugation beyond the qutrit Clifford operator named here."
+}
