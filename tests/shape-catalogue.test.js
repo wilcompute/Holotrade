@@ -9344,3 +9344,26 @@ test("tau_1(W(3,7)) = 55", () => {
   assert.match(r.theorem, /972e5cd/);
   assert.match(r.boundary, /Nothing is\s+claimed for q >= 9/);
 });
+
+test("the nucleus bound for symplectic blockers", () => {
+  const r = JSON.parse(fs.readFileSync("data/nucleus_bound_symplectic_blockers.json"));
+  assert.equal(r.valid, true);
+  // exhaustive planar minima: (q-1)/2 at q = 3, 5, 7
+  assert.equal(r.S_min["3"].sets, 81);
+  assert.equal(r.S_min["5"].sets, 15625);
+  assert.equal(r.S_min["7"].sets, 5764801);
+  for (const q of [3, 5, 7]) assert.equal(r.S_min[String(q)].S_min, (q - 1) / 2);
+  // the reduction checked on real W(3,5) minimum blockers of both kinds
+  assert.equal(r.w35Checks.length, 2);
+  for (const c of r.w35Checks) {
+    assert.equal(c.size, 29);
+    assert.equal(c.octetIdentityAll325, true);
+    assert.equal(c.tPlusBAtLeast2, true);
+    assert.equal(c.sumIdentity, true);
+    assert.equal(c.deltaAtLeastS, true);
+    assert.ok(c.admissiblePointsTested > 0);
+  }
+  assert.match(r.provedBound, /q\^2 \+ 1 \+ min\(S_min\(q\), q-2\)/);
+  assert.match(r.conditionalImprovement, /Not proved/);
+  assert.match(r.limits, /cannot reach/);
+});

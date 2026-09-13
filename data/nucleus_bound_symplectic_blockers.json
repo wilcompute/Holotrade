@@ -1,0 +1,60 @@
+{
+  "schema": "holotrade.nucleus-bound-symplectic-blockers.v1",
+  "valid": true,
+  "S_min": {
+    "3": {
+      "sets": 81,
+      "S_min": 1,
+      "extremalHeavyLines": {
+        "3": 1
+      }
+    },
+    "5": {
+      "sets": 15625,
+      "S_min": 2,
+      "extremalHeavyLines": {
+        "3": 2
+      }
+    },
+    "7": {
+      "sets": 5764801,
+      "S_min": 3,
+      "extremalHeavyLines": {
+        "3": 3
+      },
+      "recordedRun": true
+    }
+  },
+  "w35Checks": [
+    {
+      "size": 29,
+      "delta": 3,
+      "octetIdentityAll325": true,
+      "admissiblePointsTested": 40,
+      "tPlusBAtLeast2": true,
+      "sumIdentity": true,
+      "deltaAtLeastS": true,
+      "S_values": {
+        "3": 40
+      }
+    },
+    {
+      "size": 29,
+      "delta": 3,
+      "octetIdentityAll325": true,
+      "admissiblePointsTested": 40,
+      "tPlusBAtLeast2": true,
+      "sumIdentity": true,
+      "deltaAtLeastS": true,
+      "S_values": {
+        "3": 40
+      }
+    }
+  ],
+  "theIdentity": "for any blocker B of W(3,q) with |B| = q^2+1+delta and any octet O = H u H^perp, summing |B n L| over the (q+1)^2 grid lines gives |B n O| = 2 + (e(grid O) - delta)/q.",
+  "theReduction": "if delta <= q-3 some x lies outside B on no excess line; K = B n x^perp is a (q+1)-set of the plane x^perp with nucleus x; for each of the q^2 lines ell of x^perp not through x, t + b >= 2 with t = |K n ell|, b = |B n ell^perp|, and the (t + b - 2) sum to delta. Hence delta >= S(K) >= S_min(q).",
+  "provedBound": "tau_1(W(3,q)) >= q^2 + 1 + min(S_min(q), q-2) for every odd q",
+  "conditionalImprovement": "if S_min(q) >= (q-1)/2 for all odd q (true at 3, 5, 7) then tau_1(W(3,q)) >= q^2 + (q+1)/2, improving Eisfeld-Storme-Szonyi-Sziklai's q^2+1+(q-1)/3. Not proved: a Qvist parity count gives only about q/4; a Redei-type direction argument is the missing ingredient.",
+  "limits": "S_min(q) < q-2 for q >= 5, so the reduction alone cannot reach tau_1 = q^2+q-1; the exact values at q = 5, 7 used the global excess structure.",
+  "boundary": "identity and reduction are proofs; S_min exhaustive at q = 3, 5 in this run and at q = 7 in a recorded run of the same code (--q7 repeats it); every reduction step checked on W(3,5) minimum blockers of both kinds."
+}
