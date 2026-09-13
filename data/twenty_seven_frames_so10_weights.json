@@ -1,0 +1,42 @@
+{
+  "schema": "holotrade.27-frames-so10-weights.v1",
+  "valid": true,
+  "frames": 27,
+  "framesPerOctet": 3,
+  "nearFrames": 10,
+  "farFrames": 16,
+  "pspOrder": 25920,
+  "fullOrder": 51840,
+  "psp": {
+    "stabiliser": 960,
+    "inducedOnFactorisations": 60,
+    "kernel": 16,
+    "swapVectorsDistinct": 16,
+    "swapVectorsAllEven": true,
+    "orbitOnSixteen": 16,
+    "pairSwapIffFactorExchange": true
+  },
+  "full": {
+    "stabiliser": 1920,
+    "inducedOnFactorisations": 120,
+    "kernel": 16,
+    "swapVectorsDistinct": 16,
+    "swapVectorsAllEven": true,
+    "orbitOnSixteen": 16,
+    "pairSwapIffFactorExchange": true
+  },
+  "swapInPsp": true,
+  "swapPreservedFrames": 3,
+  "swapFixedExchanged": [
+    5,
+    4
+  ],
+  "priorArt": "feb5154 (octet = tensor factorisation); gq24_lives_inside_w33_as_its_octet_factors.py (27 K(4,4)-factors = GQ(2,4)); 79e8074 (cost anomalies = local charge conjugations); W33-Theory Pass 84, 2026-07-15_pass84_e6_w33_explicit_iso.md, which records 27 = 1 + 10 + 16 under W(D5) and leaves its W33 realisation open.",
+  "thePhysicalNameOfALine": "a line of the cubic surface is a complete factorisation frame: five tensor factorisations of C^9 whose local Pauli sets partition all 40 Pauli classes, so every non-identity Pauli observable is local in exactly one of them.",
+  "theStabiliser": "a frame's stabiliser has order 960 in PSp(4,3) and 1920 = |W(D5)| in Aut W(3,3), acting on its five factorisations as A5 and S5, with a kernel of order 16.",
+  "theSignChanges": "each kernel element keeps or exchanges the two qutrits of each factorisation; the resulting map to F_2^5 is injective with image the 16 even-weight vectors, the even sign changes of D5.",
+  "oneTenSixteen": "27 = 1 + 10 + 16 is the frame, the frames sharing one of its factorisations, and those sharing none. The 16 are one regular orbit of the sign group; the 10 are five pairs, and a kernel element swaps the pair through factorisation i exactly when it exchanges that factorisation's qutrits.",
+  "theParityRule": "no collineation of W(3,3) preserves a frame factorisation by factorisation while exchanging the qutrits of an odd number of them. The computational SWAP preserves 3 frames and in each exchanges the factors of four of the five factorisations.",
+  "whatThisIsNot": "a Weyl-group and weight-level identification only. No SO(10) gauge field, fermion quantum number or mass is derived and no Standard Model assignment is inferred, following the caution already recorded in PASS7376_7384_deep_followup.md.",
+  "boundary": "exact group computation on 40 points; the octet = factorisation dictionary is cited from feb5154, where it is checked with matrices; the 27 frames and GQ(2,4) are cited and recomputed as inputs; the D5 branching of the 27 of E6 is classical."
+}

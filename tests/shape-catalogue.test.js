@@ -9263,3 +9263,33 @@ test("tau_1(W(3,7)) is at least 54", () => {
   assert.match(r.theConjecture, /972e5cd/);
   assert.match(r.boundary, /54 is not decided/);
 });
+
+test("the 27 factorisation frames carry the SO(10) weights", () => {
+  const r = JSON.parse(fs.readFileSync("data/twenty_seven_frames_so10_weights.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.frames, 27);
+  assert.equal(r.framesPerOctet, 3);
+  assert.equal(1 + r.nearFrames + r.farFrames, 27, "27 = 1 + 10 + 16");
+  assert.equal(r.nearFrames, 10);
+  assert.equal(r.farFrames, 16);
+  assert.equal(r.pspOrder, 25920);
+  assert.equal(r.fullOrder, 51840);
+  for (const [g, stab, induced] of [[r.psp, 960, 60], [r.full, 1920, 120]]) {
+    assert.equal(g.stabiliser, stab);
+    assert.equal(g.inducedOnFactorisations, induced, "A5 then S5 on the five factorisations");
+    assert.equal(g.kernel, 16);
+    assert.equal(g.stabiliser, g.inducedOnFactorisations * g.kernel);
+    assert.equal(g.swapVectorsDistinct, 16, "the swap map is injective");
+    assert.equal(g.swapVectorsAllEven, true, "only even sign changes");
+    assert.equal(g.orbitOnSixteen, 16, "the 16 are one regular orbit");
+    assert.equal(g.pairSwapIffFactorExchange, true);
+  }
+  assert.equal(r.full.stabiliser * 27, 51840, "|W(D5)| x 27 = |W(E6)|");
+  assert.equal(r.swapInPsp, true);
+  assert.equal(r.swapPreservedFrames, 3);
+  assert.deepEqual(r.swapFixedExchanged, [5, 4]);
+  assert.match(r.priorArt, /feb5154/);
+  assert.match(r.priorArt, /gq24_lives_inside_w33/);
+  assert.match(r.priorArt, /Pass 84/);
+  assert.match(r.whatThisIsNot, /No SO\(10\) gauge field/);
+});
