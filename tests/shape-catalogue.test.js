@@ -9409,3 +9409,19 @@ test("the two 27s differ by a character twist", () => {
   assert.match(r.reading, /structural parallel only/);
   assert.match(r.boundary, /no physical\s+identification/);
 });
+
+test("the corpus has three chiralities", () => {
+  const r = JSON.parse(fs.readFileSync("data/corpus_three_chiralities.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.frameParityAndFactorisationSignAreMu, true);
+  assert.equal(r.gaugeLineSignIsMu, true, "BT877 reproduced");
+  assert.equal(r.signOnPointsIsMu, false, "the obvious guess is false and recorded");
+  assert.equal(r.localChargeConjugationInner, true);
+  assert.equal(r.localChargeConjugationClassSize, 45);
+  assert.equal(r.fixedSetsAreTheOctets, true, "BT869's involutions fix exactly the 45 octets");
+  assert.deepEqual(r.involutionClassesByFixedPoints, { 0: 270, 8: 45 });
+  assert.match(r.abs, /BT746/);
+  assert.match(r.rel, /antiunitary/);
+  assert.match(r.inn, /not an exchange/);
+  assert.match(r.consequence, /no W\(E6\)-equivariant map/);
+});

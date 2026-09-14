@@ -1,0 +1,20 @@
+{
+  "schema": "holotrade.corpus-three-chiralities.v1",
+  "valid": true,
+  "signOnPointsIsMu": false,
+  "signOnPointsNote": "the sign of the action on the 40 points is not the multiplier character",
+  "frameParityAndFactorisationSignAreMu": true,
+  "gaugeLineSignIsMu": true,
+  "localChargeConjugationInner": true,
+  "localChargeConjugationClassSize": 45,
+  "fixedSetsAreTheOctets": true,
+  "involutionClassesByFixedPoints": {
+    "0": 270,
+    "8": 45
+  },
+  "abs": "BT746/BT772 point-versus-line presentation type: invariant under all of W(E6) (two orbits of 25,920, data/bt746_weyl_e6_torsor_fusion.json); selectable; not the sign character.",
+  "rel": "Pass 346 half-spin chirality = the multiplier character mu = frame orientation parity = sign on factorisations = sign on gauge lines (BT877), but not the sign on the 40 points; mu = 1 exactly on antiunitary Clifford operations (e92a047).",
+  "inn": "BT869's 45-class involutions are local charge conjugations C (x) I of the 45 tensor factorisations (79e8074), fixed set = the octet; inner (mu = 0), so they preserve every orientation class: a 45 + 36 grading, not an exchange.",
+  "consequence": "since W(E6) fixes (ABS) and exchanges (REL), no W(E6)-equivariant map sends absolute types to half-spins; selecting handedness requires breaking every antiunitary symmetry.",
+  "boundary": "exact finite computation for mu and the involution class; equivariance argument for (ABS); no particle assignment."
+}
