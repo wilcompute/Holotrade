@@ -1,0 +1,156 @@
+{
+  "schema": "holotrade.binary-line-code-distance.v1",
+  "valid": true,
+  "theorem1": "binary line code of any finite GQ of order (s,t), s odd, s <= t+1, has minimum weight s+1",
+  "theorem2": "s odd, t >= s: a weight-(s+1) word with lambda=1 is a line; with lambda=0 it is a partial ovoid with no centred triad, impossible in W(3,q); so for W(3,q), q odd, the words of weight q+1 are exactly the (q+1)(q^2+1) isotropic lines",
+  "corollary": "Pass 229's CSS family [[(q+1)(q^2+1), q^2+1, q+1]] has distance exactly q+1 (certified S = C^perp at q = 3,5,7; beyond, by the rank law P322 and k = q^2+1)",
+  "closes": "W33-Theory claims ledger row 'CSS distance d=q+1, q>=5' (open, P326)",
+  "priorArt": {
+    "PetitVanDeVoorde2025": "arXiv:2511.07697 Theorem 7 needs 1-s != 0 in F; binary with s odd is excluded",
+    "corpus": [
+      "Pass 229 (family, q=3 exact)",
+      "Pass 326 (audit: d <= q+1 only for q >= 5)",
+      "P322 (rank law)"
+    ]
+  },
+  "cases": {
+    "W(3,3)": {
+      "points": 40,
+      "lines": 40,
+      "s": 3,
+      "t": 3,
+      "orders": true,
+      "gqAxiom": true,
+      "parityOnLines": true,
+      "srgLambda": [
+        2
+      ],
+      "srgMu": [
+        4
+      ],
+      "everyTriadHasACentre": true,
+      "css": {
+        "dimC": 25,
+        "dimCperp": 15,
+        "rankLawDimC": 25,
+        "CperpInC": true,
+        "CperpDoublyEven": true,
+        "k": 10,
+        "lineIsLogical": true
+      },
+      "wordsOfWeightAtMostQPlus1": 40,
+      "theyAreExactlyTheLines": true,
+      "valid": true
+    },
+    "Q(4,3)": {
+      "points": 40,
+      "lines": 40,
+      "s": 3,
+      "t": 3,
+      "orders": true,
+      "gqAxiom": true,
+      "parityOnLines": true,
+      "srgLambda": [
+        2
+      ],
+      "srgMu": [
+        4
+      ],
+      "everyTriadHasACentre": false,
+      "wordsOfWeightAtMostQPlus1": 40,
+      "theyAreExactlyTheLines": true,
+      "valid": true
+    },
+    "W(3,5)": {
+      "points": 156,
+      "lines": 156,
+      "s": 5,
+      "t": 5,
+      "orders": true,
+      "gqAxiom": true,
+      "parityOnLines": true,
+      "srgLambda": [
+        4
+      ],
+      "srgMu": [
+        6
+      ],
+      "everyTriadHasACentre": true,
+      "css": {
+        "dimC": 91,
+        "dimCperp": 65,
+        "rankLawDimC": 91,
+        "CperpInC": true,
+        "CperpDoublyEven": true,
+        "k": 26,
+        "lineIsLogical": true
+      },
+      "wordsOfWeightAtMostQPlus1": 156,
+      "theyAreExactlyTheLines": true,
+      "valid": true
+    },
+    "Q(4,5)": {
+      "points": 156,
+      "lines": 156,
+      "s": 5,
+      "t": 5,
+      "orders": true,
+      "gqAxiom": true,
+      "parityOnLines": true,
+      "srgLambda": [
+        4
+      ],
+      "srgMu": [
+        6
+      ],
+      "everyTriadHasACentre": false,
+      "wordsOfWeightAtMostQPlus1": 156,
+      "theyAreExactlyTheLines": true,
+      "valid": true
+    },
+    "W(3,7)": {
+      "points": 400,
+      "lines": 400,
+      "s": 7,
+      "t": 7,
+      "orders": true,
+      "gqAxiom": true,
+      "parityOnLines": true,
+      "srgLambda": [
+        6
+      ],
+      "srgMu": [
+        8
+      ],
+      "everyTriadHasACentre": true,
+      "css": {
+        "dimC": 225,
+        "dimCperp": 175,
+        "rankLawDimC": 225,
+        "CperpInC": true,
+        "CperpDoublyEven": true,
+        "k": 50,
+        "lineIsLogical": true
+      },
+      "valid": true
+    },
+    "Q(4,7)": {
+      "points": 400,
+      "lines": 400,
+      "s": 7,
+      "t": 7,
+      "orders": true,
+      "gqAxiom": true,
+      "parityOnLines": true,
+      "srgLambda": [
+        6
+      ],
+      "srgMu": [
+        8
+      ],
+      "everyTriadHasACentre": false,
+      "valid": true
+    }
+  },
+  "boundary": "Theorem 1 and 2 are proofs; the script checks their hypotheses exactly at q = 3,5,7 and confirms the conclusions exhaustively at q = 3,5 for W(3,q) and Q(4,q). For Q(4,q) only Theorem 1 is proved in general; its line characterisation is checked, not proved."
+}

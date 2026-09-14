@@ -9445,3 +9445,30 @@ test("audit: the orphaned delta_CP section is inconsistent", () => {
   assert.match(r.conflict, /15\/17/);
   assert.match(r.secondary, /27 lines/);
 });
+
+test("the binary line code of W(3,q), q odd, has distance q+1 and its minimum words are the lines", () => {
+  const r = JSON.parse(fs.readFileSync("data/binary_line_code_distance.json"));
+  assert.equal(r.valid, true);
+  assert.match(r.priorArt.PetitVanDeVoorde2025, /1-s != 0/, "the binary odd-order case is the one Theorem 7 excludes");
+  assert.ok(r.priorArt.corpus.some((c) => /Pass 326/.test(c)), "cites the audit that left q >= 5 open");
+  for (const q of [3, 5, 7]) {
+    for (const g of [`W(3,${q})`, `Q(4,${q})`]) {
+      const c = r.cases[g];
+      assert.equal(c.valid, true, g);
+      assert.equal(c.points, (q + 1) * (q * q + 1));
+      assert.equal(c.gqAxiom, true);
+      assert.equal(c.parityOnLines, true, "A L = 1 on every line");
+      assert.deepEqual([c.srgLambda, c.srgMu], [[q - 1], [q + 1]]);
+      if (q <= 5) {
+        assert.equal(c.wordsOfWeightAtMostQPlus1, c.points, "exhaustive: as many light words as lines");
+        assert.equal(c.theyAreExactlyTheLines, true);
+      }
+    }
+    const w = r.cases[`W(3,${q})`];
+    assert.equal(w.everyTriadHasACentre, true, "the step that kills lambda = 0 in W(3,q)");
+    assert.equal(r.cases[`Q(4,${q})`].everyTriadHasACentre, false, "and it does not transfer to Q(4,q)");
+    assert.equal(w.css.dimC, ((q * q + 1) * (q + 2)) / 2, "rank law");
+    assert.equal(w.css.k, q * q + 1);
+    assert.equal(w.css.CperpInC && w.css.CperpDoublyEven && w.css.lineIsLogical, true);
+  }
+});
