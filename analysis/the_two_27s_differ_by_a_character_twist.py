@@ -59,6 +59,23 @@ THE READING.
     attached generations to the 2-dimensional representations instead, and
     no generation assignment is made here.
 
+ONLY AT q = 3.  GAP (w3q_point_stabiliser_complement_classes.g, using
+InvariantBilinearForm and PCore/ComplementClassesRepresentatives on the point
+stabiliser of PSp(4,q) acting on points) gives the number of conjugacy classes
+of complements to the unipotent radical O_q:
+
+        q    |Stab(p0)|   |O_q|   complement classes   |S/[S,S]|
+        3         648       27            3                3
+        5      30,000      125            1                2
+        7     345,744      343            1                3
+
+So the three inequivalent Clifford torsors -- and with them the distinction
+between the bulk 27 and the cubic-surface 27 -- exist at q = 3 and at neither
+q = 5 nor q = 7 (q = 7 has a Z3 abelianisation too, so the phenomenon is not
+the character alone: it is a nonzero complement cohomology present at q = 3
+and absent at q = 5, 7; larger q are not computed here). It agrees with the
+exhaustive Python count above at q = 3.
+
 SCOPE.  Exact finite computation (exhaustive complement enumeration, exact
 automorphism check on all of G0). No natural W(3,3) object was found realising
 the third class among lines, hyperbolic lines, octets, spreads and frame pairs;
@@ -248,6 +265,9 @@ def main():
             "twistCyclesClasses": len(set(cyc)) == 3,
             "twistTakesBulkToFramesAt": 2,
             "fullStabiliserFixesEveryClass": full_fixes,
+            "complementClassesByQ": {"3": 3, "5": 1, "7": 1},
+            "abelianisationOrderByQ": {"3": 3, "5": 2, "7": 3},
+            "complementClassesSource": "GAP w3q_point_stabiliser_complement_classes.g (recorded run)",
             "priorArt": (
                 "W33-Theory THE_27_FOLD_WAY.md and Passes 370-372, 386; Holotrade "
                 "gq24_lives_inside_w33_as_its_octet_factors.py and 5419c27 (frames)."),

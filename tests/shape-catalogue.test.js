@@ -9407,6 +9407,10 @@ test("the two 27s differ by a character twist", () => {
   assert.equal(r.characterTwistIsAutomorphism, true);
   assert.equal(r.twistCyclesClasses, true);
   assert.equal(r.fullStabiliserFixesEveryClass, true, "no element of W(E6) realises the twist");
+  // only at q = 3 (GAP): three complement classes at q = 3, one at q = 5 and q = 7
+  assert.deepEqual(r.complementClassesByQ, { 3: 3, 5: 1, 7: 1 });
+  assert.equal(r.complementClassesByQ["3"], r.complementClassSizes.length, "GAP agrees with the exhaustive count");
+  assert.deepEqual(r.abelianisationOrderByQ, { 3: 3, 5: 2, 7: 3 });
   assert.match(r.priorArt, /Passes 370-372, 386/);
   assert.match(r.reading, /structural parallel only/);
   assert.match(r.boundary, /no physical\s+identification/);
