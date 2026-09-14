@@ -9495,3 +9495,18 @@ test("the Coxeter-Todd rung: K12 mod 2 is a proper shadow and each reflection li
   assert.match(r.corrects, /Pass 369/);
   assert.ok(r.closes.some((c) => /P368\/369/.test(c)));
 });
+
+test("the W(3,7) pencil lemma at x = 5: no weighted 5-tight line set without a full pencil", () => {
+  const r = JSON.parse(fs.readFileSync("data/w37_pencil_lemma_x5.json"));
+  assert.equal(r.valid, true);
+  assert.deepEqual([r.q, r.x], [7, 5]);
+  assert.deepEqual(Object.keys(r.instances), ["w4", "w3", "w2", "w1_M5", "w1_M4", "w1_M3"]);
+  for (const [k, v] of Object.entries(r.instances)) {
+    assert.equal(v.noPencil, "INFEASIBLE", k);
+    assert.ok(["OPTIMAL", "FEASIBLE"].includes(v.control), `control ${k} must be feasible`);
+  }
+  assert.match(r.loadCut, /f_p <= 5/);
+  assert.match(r.weightOneSplit, /3-transitive/);
+  assert.ok(19 > 8 * 2, "a positive line's load 19 forces a point of load >= 3, so M in {3,4,5} is exhaustive");
+  assert.equal(14 * 3 + 5 > 8 * 5, true, "the load cut alone kills weights 3 and 4");
+});

@@ -1,0 +1,62 @@
+{
+  "schema": "holotrade.w37-pencil-lemma-x5.v1",
+  "valid": true,
+  "q": 7,
+  "x": 5,
+  "instances": {
+    "w4": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    },
+    "w3": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    },
+    "w2": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    },
+    "w1_M5": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    },
+    "w1_M4": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    },
+    "w1_M3": {
+      "noPencil": "INFEASIBLE",
+      "control": "OPTIMAL"
+    }
+  },
+  "seconds": {
+    "w4": {
+      "noPencil": 0.1,
+      "control": 0.2
+    },
+    "w3": {
+      "noPencil": 0.4,
+      "control": 0.2
+    },
+    "w2": {
+      "noPencil": 993.3,
+      "control": 0.2
+    },
+    "w1_M5": {
+      "noPencil": 52.2,
+      "control": 0.2
+    },
+    "w1_M4": {
+      "noPencil": 370.4,
+      "control": 0.2
+    },
+    "w1_M3": {
+      "noPencil": 21.4,
+      "control": 0.4
+    }
+  },
+  "weightOneSplit": "all e <= 1: the maximum point load M is >= 3 (a positive line carries load 19 on 8 points) and <= 5 (load cut); a point of load M and three of its positive lines are moved to point 0 and its first three lines by PGSp(4,7), whose point stabiliser induces PGL(2,7), 3-transitive, on the pencil",
+  "statement": "every integer e on the lines of W(3,7) with 0 <= e <= 4 and A_L e = 6e + 5.1 contains a full pencil; with the x <= 4 lemmas (5b6a9b1, 9d5751e) the excess of a 55-point blocker with all counts <= 5 is N^T y with y >= 0 integer and sum 5.",
+  "loadCut": "no full pencil => every point is on a zero line Z, whose points carry total load 5, so f_p <= 5; with sum_{p in L} f_p = 14 e_L + 5 this forces e <= 2",
+  "boundary": "exact CP-SAT verdicts with feasible controls; induction and reduction argued in the cited files."
+}
