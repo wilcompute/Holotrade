@@ -14,6 +14,11 @@ PRIOR ART, CITED.
     "K(4,4)-factors", two collinear when they share an octet, form GQ(2,4) --
     the 27 lines and 45 tritangent planes of the cubic surface.
   * the_cost_anomalies_are_local_charge_conjugations.py (79e8074).
+  * W33-Theory analysis/w33_20260901_gq24_k44_e8_atlas.py: the same 27
+    K(4,4)-factors are its 27 ten-D4 partitions of the E8 root shell, in one
+    27 x 45 incidence with the cubic lines and tritangent planes (no physical
+    interpretation inferred there). Cited after the fact: this file's W(D5)
+    stabiliser, sign-change and factor-exchange results are not in the atlas.
   * W33-Theory, analysis/2026-07-15_pass84_e6_w33_explicit_iso.md, records the
     classical branching 27 = 1 + 10 + 16 under W(D5) = 2^4.S5, the stabiliser of
     a line, and leaves the W33 realisation OPEN ("27 = 40 - 13 ???", "10 = ...

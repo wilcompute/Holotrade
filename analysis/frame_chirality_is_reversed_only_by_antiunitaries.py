@@ -20,6 +20,11 @@ PRIOR ART, CITED.
     K = C^3_weak (x) C^3_colour with an antiunitary real structure J satisfying
     J gamma = - gamma J (the KO-dimension-6 sign), with gamma imposed on an extra
     C^2_chiral factor.
+  * W33-Theory data/w33_BREAKTHROUGH_172_outer_involution_temporal_qutrit.json:
+    reads the outer involution "like a finite time-reversal operator" on a
+    45-point quotient, explicitly as an architectural reading not yet
+    constructed intrinsically. Cited after the fact: the antiunitary
+    identification here is the intrinsic, matrix-level version.
 
 WHAT IS ADDED. An intrinsic Z_2 on K's own Pauli geometry, with a named
 physical operation that flips it.
