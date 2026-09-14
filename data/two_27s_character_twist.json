@@ -1,0 +1,26 @@
+{
+  "schema": "holotrade.two-27s-character-twist.v1",
+  "valid": true,
+  "stabiliserOrder": 648,
+  "fullStabiliserOrder": 1296,
+  "elationOrder": 27,
+  "transitiveOnBulkAndFrames": true,
+  "elationsRegularOnBoth": true,
+  "complements": 27,
+  "complementClassSizes": [
+    9,
+    9,
+    9
+  ],
+  "bulkAndFrameClassesDiffer": true,
+  "centreOrder": 3,
+  "commutatorSubgroupOrder": 216,
+  "characterTwistIsAutomorphism": true,
+  "twistCyclesClasses": true,
+  "twistTakesBulkToFramesAt": 2,
+  "fullStabiliserFixesEveryClass": true,
+  "priorArt": "W33-Theory THE_27_FOLD_WAY.md and Passes 370-372, 386; Holotrade gq24_lives_inside_w33_as_its_octet_factors.py and 5419c27 (frames).",
+  "theorem": "in Stab(p0) = 3^{1+2}:SL(2,3) the 27 SL(2,3) complements of the elation (qutrit Pauli) group fall into three conjugacy classes of 9; the bulk-point stabilisers and the frame (cubic-surface line) stabilisers lie in different classes; the automorphisms g -> g z^{s chi(g)}, chi the abelianisation character onto Z3 and z the central phase, cycle the three classes; the W(E6)-stabiliser of p0 fixes every class.",
+  "reading": "Pass 371's permutation isomorphism of the two 27s exists only through such a character twist and is not induced by W(E6); Pass 372's non-geometricity is a property of the bulk points, since the E6 27 is geometric as frames; Pass 386's phase gap is exactly the twist by the central qutrit phase. The three torsors are indexed by the one-dimensional characters of SL(2,3) = 2T, which McKay places at the three extremal nodes of affine E6 -- a structural parallel only; no generation assignment.",
+  "boundary": "exact finite computation with exhaustive complement enumeration; no natural W(3,3) object realising the third class was found among lines, hyperbolic lines, octets, spreads and frame pairs; no physical identification is made."
+}

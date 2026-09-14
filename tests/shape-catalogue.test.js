@@ -9387,3 +9387,25 @@ test("the two-centre octet family is q-general", () => {
   assert.match(r.conditionalTheorem, /ovoid or a duality/);
   assert.match(r.hypothesisStatus, /open for q >= 9/);
 });
+
+test("the two 27s differ by a character twist", () => {
+  const r = JSON.parse(fs.readFileSync("data/two_27s_character_twist.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.stabiliserOrder, 648);
+  assert.equal(r.fullStabiliserOrder, 1296);
+  assert.equal(r.elationOrder, 27);
+  assert.equal(r.transitiveOnBulkAndFrames, true);
+  assert.equal(r.elationsRegularOnBoth, true, "both 27s are Pauli torsors");
+  assert.equal(r.complements, 27);
+  assert.deepEqual(r.complementClassSizes, [9, 9, 9]);
+  assert.equal(r.bulkAndFrameClassesDiffer, true, "not isomorphic as Clifford-sets inside W(E6)");
+  assert.equal(r.centreOrder, 3);
+  assert.equal(r.commutatorSubgroupOrder, 216);
+  assert.equal(r.stabiliserOrder / r.commutatorSubgroupOrder, 3, "abelianisation Z3");
+  assert.equal(r.characterTwistIsAutomorphism, true);
+  assert.equal(r.twistCyclesClasses, true);
+  assert.equal(r.fullStabiliserFixesEveryClass, true, "no element of W(E6) realises the twist");
+  assert.match(r.priorArt, /Passes 370-372, 386/);
+  assert.match(r.reading, /structural parallel only/);
+  assert.match(r.boundary, /no physical\s+identification/);
+});
