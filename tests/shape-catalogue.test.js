@@ -9431,3 +9431,17 @@ test("the corpus has three chiralities", () => {
   assert.match(r.inn, /not an exchange/);
   assert.match(r.consequence, /no W\(E6\)-equivariant map/);
 });
+
+test("audit: the orphaned delta_CP section is inconsistent", () => {
+  const r = JSON.parse(fs.readFileSync("data/audit_delta_cp_section.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.orphaned, true, "no manuscript inputs the section");
+  assert.equal(r.ckmProduct, "9/260000");
+  assert.ok(Math.abs(r.jarlskogAtSinOne - 9 / 260000) < 1e-12);
+  assert.equal(r.jarlskogAtFifteenSeventeenths, "27/884000");
+  assert.ok(Math.abs(27 / 884000 - r.printedValue) < 5e-9, "the printed value needs sin delta = 15/17");
+  assert.ok(Math.abs(r.jarlskogAtSinOne - r.printedValue) > 3e-6, "and is not the pi/2 value");
+  assert.equal(r.defects.length, 3);
+  assert.match(r.conflict, /15\/17/);
+  assert.match(r.secondary, /27 lines/);
+});

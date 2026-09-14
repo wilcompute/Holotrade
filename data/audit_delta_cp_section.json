@@ -1,0 +1,18 @@
+{
+  "schema": "holotrade.audit-delta-cp-section.v1",
+  "valid": true,
+  "target": "W33-Theory PAPER_SECTION5_DELTA_CP.tex (Pass 136)",
+  "orphaned": true,
+  "ckmProduct": "9/260000",
+  "jarlskogAtSinOne": 3.461538461538462e-05,
+  "jarlskogAtFifteenSeventeenths": "27/884000",
+  "printedValue": 3.054e-05,
+  "defects": [
+    "holonomy -1 is e^{i pi}, not e^{i pi/2}; a Z2 holonomy yields only 0 or pi, and pi conserves CP",
+    "the check uses the substrate's CKM (quark) moduli and the quark PDG J for a claimed PMNS phase",
+    "at sin delta = 1 the product is 9/260000 = 3.4615e-5, not the printed 3.054e-5, which equals 27/884000 and needs sin delta = 15/17"
+  ],
+  "conflict": "main paper and BT919 give sin delta_CKM = 15/17; the orphaned section asserts pi/2",
+  "secondary": "scripts/w33_cubic_invariant.py docstring equates 36 internal triangles with '36 lines on the cubic surface'; a cubic surface has 27 lines, 36 counts double-sixes",
+  "boundary": "exact arithmetic on quoted numbers; no physical CP phase is asserted"
+}
