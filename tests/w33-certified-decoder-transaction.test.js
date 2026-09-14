@@ -197,3 +197,43 @@ test('chunk failure is atomic and checkpoint replay detects tampering',()=>{
   assert.throws(()=>resumed.finish(Array(40).fill('0')),/duality gap/);
   assert.equal(resumed.finish(w.dual).verified.dualVerified,true);
 });
+
+test('durable streams survive restart, reject stale writes and data-only rollback',()=>{
+  const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+  const {createDurableDualStore}=require('../js/w33-durable-dual-stream.js');
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'w33-durable-'));
+  try{
+    const options={dataPath:path.join(dir,'data.db'),anchorPath:path.join(dir,'trusted.db')};
+    const {f,w,stream,records}=streamFixture();let store=createDurableDualStore(options);
+    stream.append(records.slice(0,1));const cp1=stream.checkpoint();
+    assert.equal(store.save('stream',f.decoderPolicy,cp1,0).revision,1);
+    fs.copyFileSync(options.dataPath,path.join(dir,'old.db'));
+    store=createDurableDualStore(options);const restored=store.load('stream',f.decoderPolicy);
+    restored.stream.append(records.slice(1,2));const cp2=restored.stream.checkpoint();
+    assert.equal(store.save('stream',f.decoderPolicy,cp2,1).revision,2);
+    assert.throws(()=>store.save('stream',f.decoderPolicy,cp2,1),/stale/);
+    assert.throws(()=>store.save('stream',f.decoderPolicy,cp1,2),/extend/);
+    const final=store.load('stream',f.decoderPolicy).stream;final.append(records.slice(2));
+    f.receipt=final.finish(w.dual).receipt;assert.equal(executeExact(f).delivery.body.decoderDualVerified,true);
+    fs.copyFileSync(path.join(dir,'old.db'),options.dataPath);
+    assert.throws(()=>store.load('stream',f.decoderPolicy),/rollback or anchor mismatch/);
+  }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+
+test('SQLite process crashes recover atomically and altered wire fails closed',()=>{
+  const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+  const {spawnSync}=require('node:child_process');
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'w33-crash-'));
+  try{
+    const data=path.join(dir,'data.db'),anchor=path.join(dir,'trusted.db');
+    const call=req=>spawnSync('python3',[path.join(__dirname,'../scripts/w33_checkpoint_store.py'),data,anchor],{input:JSON.stringify({id:'x',...req}),encoding:'utf8'});
+    assert.equal(call({op:'save',expectedRevision:0,wire:'{"step":1}'}).status,0);
+    assert.equal(call({op:'save',expectedRevision:1,wire:'{"step":2}',_testCrash:'before_commit'}).status,71);
+    assert.equal(JSON.parse(call({op:'load'}).stdout).revision,1);
+    assert.equal(call({op:'save',expectedRevision:1,wire:'{"step":2}',_testCrash:'after_commit'}).status,72);
+    assert.equal(JSON.parse(call({op:'load'}).stdout).revision,2);
+    assert.notEqual(call({op:'save',expectedRevision:1,wire:'{}'}).status,0);
+    const tamper=spawnSync('python3',['-c',"import sqlite3,sys; c=sqlite3.connect(sys.argv[1]); c.execute(\"UPDATE checkpoints SET wire='{}'\"); c.commit()",data]);
+    assert.equal(tamper.status,0);assert.match(call({op:'load'}).stderr,/corrupt checkpoint wire/);
+  }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

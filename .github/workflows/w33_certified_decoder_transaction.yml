@@ -5,6 +5,10 @@ on:
     branches: [master]
     paths:
       - 'js/w33-octet-decoder-binding.js'
+      - 'js/w33-dual-stream.js'
+      - 'js/w33-durable-dual-stream.js'
+      - 'scripts/w33_checkpoint_store.py'
+      - 'analysis/octet_dual_transaction_fixture.json'
       - 'scheduler/w33-certified-decoder-transaction.js'
       - 'tests/w33-certified-decoder-transaction.test.js'
       - '.github/workflows/w33_certified_decoder_transaction.yml'
@@ -16,6 +20,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
