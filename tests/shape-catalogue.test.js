@@ -9510,3 +9510,22 @@ test("the W(3,7) pencil lemma at x = 5: no weighted 5-tight line set without a f
   assert.ok(19 > 8 * 2, "a positive line's load 19 forces a point of load >= 3, so M in {3,4,5} is exhaustive");
   assert.equal(14 * 3 + 5 > 8 * 5, true, "the load cut alone kills weights 3 and 4");
 });
+
+test("the minimum blockers of W(3,7) are the two-centre family, so tau_2(W(3,7)^2) >= 2751", () => {
+  const r = JSON.parse(fs.readFileSync("data/w37_minimum_blockers_two_centre.json"));
+  assert.equal(r.valid, true);
+  assert.equal(r.inputsValid && r.extensionDataConsistent, true);
+  assert.equal(Object.values(r.caseA).reduce((a, b) => a + b, 0), 792);
+  assert.equal(r.caseAFeasiblePatterns.length, 6);
+  assert.ok(r.caseAFeasiblePatterns.every((w) => w.slice(0, 6).every((x) => x === 0)), "weight sits on the two points off B");
+  for (const c of [r.caseBSmall, r.caseBTwoOneOneOne, r.caseBFivePoints]) {
+    assert.ok(Object.keys(c).every((k) => k === "EXCLUDED" || k === "INFEASIBLE"));
+  }
+  assert.equal(Object.values(r.caseBTwoOneOneOne).reduce((a, b) => a + b, 0), 156);
+  assert.equal(Object.values(r.caseBFivePoints).reduce((a, b) => a + b, 0), 3467);
+  assert.deepEqual([r.census["5u"].members, r.census["4u+v"].members, r.census["3u+2v"].members], [49, 21, 35]);
+  assert.ok(Object.values(r.census).every((c) => c.othersExist === "INFEASIBLE" && c.controlRecoversLast));
+  assert.equal(r.octetKind + r.twoCentreKind, r.minimumBlockers);
+  assert.equal(r.minimumBlockers, 400 * 49 + (400 * 56 * 112) / 2);
+  assert.deepEqual([r.tau2LowerBound, r.tau2UpperBound], [50 * 55 + 1, 55 * 55]);
+});

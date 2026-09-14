@@ -1,0 +1,108 @@
+{
+  "schema": "holotrade.w37-minimum-blockers-two-centre.v1",
+  "valid": true,
+  "inputsValid": true,
+  "extensionDataConsistent": true,
+  "caseA": {
+    "OPTIMAL": 6,
+    "INFEASIBLE": 786
+  },
+  "caseAFeasiblePatterns": [
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      4
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      3
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      2
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0
+    ]
+  ],
+  "caseBSmall": {
+    "EXCLUDED": 5,
+    "INFEASIBLE": 22
+  },
+  "caseBTwoOneOneOne": {
+    "EXCLUDED": 8,
+    "INFEASIBLE": 148
+  },
+  "caseBFivePoints": {
+    "EXCLUDED": 2,
+    "INFEASIBLE": 3465
+  },
+  "census": {
+    "5u": {
+      "members": 49,
+      "othersExist": "INFEASIBLE",
+      "controlRecoversLast": true
+    },
+    "4u+v": {
+      "members": 21,
+      "othersExist": "INFEASIBLE",
+      "controlRecoversLast": true
+    },
+    "3u+2v": {
+      "members": 35,
+      "othersExist": "INFEASIBLE",
+      "controlRecoversLast": true
+    }
+  },
+  "minimumBlockers": 1274000,
+  "octetKind": 19600,
+  "twoCentreKind": 1254400,
+  "tau2LowerBound": 2751,
+  "tau2UpperBound": 3025,
+  "theorem": "every 55-point blocker of W(3,7) is a two-centre octet blocker B(u,v,S); there are 1,274,000; the heavier centre has weight >= 3 and the lighter <= 2, so the tight case 2750 forces centre reciprocity and hence an ovoid or duality of W(3,7). tau_2(W(3,7)^2) >= 2751.",
+  "boundary": "exact solver verdicts with controls; GAP orbit data re-checked for consistency; reductions argued in the cited files (5b6a9b1, 9d5751e, 7efd439, the x = 5 lemma certificate)."
+}
