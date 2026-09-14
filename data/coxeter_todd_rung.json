@@ -1,0 +1,81 @@
+{
+  "schema": "holotrade.coxeter-todd-rung.v1",
+  "valid": true,
+  "checks": {
+    "hexacode": true,
+    "gramDet729Even": true,
+    "theta": true,
+    "reflectionLines126": true,
+    "reflectionsPreserveK12": true,
+    "minimalInnerProducts": true,
+    "modTheta126Nonsingular": true,
+    "orthogonalModThetaIffExactly": true,
+    "srg126_45_12_18": true,
+    "group126": true,
+    "pointStabiliser25920_1_45_80": true,
+    "local45IsGQ42": true,
+    "frames567": true,
+    "eightyIsAntipodalCover": true,
+    "quotientIsQ43": true,
+    "mod2Split": true,
+    "mod2PerClass": true,
+    "singular2080": true,
+    "mod2Orbits": true,
+    "mod2Image19595520": true,
+    "properInO12plus": true
+  },
+  "theta": {
+    "4": 756,
+    "6": 4032,
+    "8": 20412
+  },
+  "modTheta": {
+    "points": 126,
+    "srg": [
+      126,
+      45,
+      12,
+      18
+    ],
+    "groupOrder": 6531840,
+    "derivedOrder": 3265920,
+    "rank": 3,
+    "pointStabiliser": {
+      "order": 25920,
+      "orbits": [
+        1,
+        45,
+        80
+      ],
+      "isomorphicTo": "PSp(4,3) (GAP)"
+    }
+  },
+  "mod2": {
+    "classesByMinNorm": {
+      "4": 378,
+      "6": 2016,
+      "8": 1701
+    },
+    "singular": 2080,
+    "nonsingular": 2016,
+    "imageOrder": 19595520,
+    "orbits": [
+      378,
+      1701,
+      2016
+    ],
+    "O12plusOrder": 100055114296433049600,
+    "index": 5106019860480
+  },
+  "local": {
+    "orthogonal45": "GQ(4,2) = SRG(45,12,3,3), 27 lines = the 27 orthogonal 6-frames through the line",
+    "frames": 567,
+    "nonOrthogonal80": "antipodal double cover; fibres = 40 lines of W(3,3); quotient complement = Q(4,3)"
+  },
+  "closes": [
+    "W33-Theory ledger row 'm=6 Coxeter-Todd rung of the QR tower' (open, P368/369)",
+    "Pass 7289 prediction SRG(126,45,12,18) (recorded untested)"
+  ],
+  "corrects": "Pass 7289 lists K12 as unbuilt; Pass 369 built it (hexacode construction, used here)",
+  "boundary": "classical graph, group and congruence-class facts (U4(3) rank 3, G34; Conway-Sloane 1983 enumerates K12's congruence classes, not text-read here) are not claimed new; the corpus-facing content is the answer to the open row, the prediction test, and the subconstituent identification. No physics."
+}

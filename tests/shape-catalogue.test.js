@@ -9472,3 +9472,26 @@ test("the binary line code of W(3,q), q odd, has distance q+1 and its minimum wo
     assert.equal(w.css.CperpInC && w.css.CperpDoublyEven && w.css.lineIsLogical, true);
   }
 });
+
+test("the Coxeter-Todd rung: K12 mod 2 is a proper shadow and each reflection line carries the cubic surface and W(3,3)", () => {
+  const r = JSON.parse(fs.readFileSync("data/coxeter_todd_rung.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.deepEqual([r.theta["4"], r.theta["6"], r.theta["8"]], [756, 4032, 20412]);
+  assert.deepEqual(r.modTheta.srg, [126, 45, 12, 18], "Pass 7289's untested prediction");
+  assert.equal(r.modTheta.groupOrder, 6531840);
+  assert.equal(r.modTheta.rank, 3);
+  assert.equal(r.modTheta.pointStabiliser.order, 25920, "|PSp(4,3)|, the W(3,3) group");
+  assert.deepEqual(r.modTheta.pointStabiliser.orbits, [1, 45, 80]);
+  const m = r.mod2;
+  assert.equal(1 + m.classesByMinNorm["4"] + m.classesByMinNorm["8"], 2080, "Pass 369's PLUS count");
+  assert.equal(m.classesByMinNorm["4"] + m.classesByMinNorm["6"] + m.classesByMinNorm["8"], 4095);
+  assert.deepEqual(m.orbits, [378, 1701, 2016], "the singular vectors split: not O+(12,2)");
+  assert.equal(m.imageOrder, 19595520);
+  assert.ok(m.index > 1e12);
+  assert.equal(r.local.frames, 567);
+  assert.equal(r.local.frames * 3, m.classesByMinNorm["8"]);
+  assert.match(r.local.nonOrthogonal80, /Q\(4,3\)/);
+  assert.match(r.corrects, /Pass 369/);
+  assert.ok(r.closes.some((c) => /P368\/369/.test(c)));
+});
