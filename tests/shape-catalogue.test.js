@@ -9291,6 +9291,7 @@ test("the 27 factorisation frames carry the SO(10) weights", () => {
   assert.match(r.priorArt, /feb5154/);
   assert.match(r.priorArt, /gq24_lives_inside_w33/);
   assert.match(r.priorArt, /Pass 84/);
+  assert.match(r.priorArt, /Pass 4814/, "the group core is W33-Theory's and must be credited");
   assert.match(r.whatThisIsNot, /No SO\(10\) gauge field/);
 });
 
@@ -9313,6 +9314,7 @@ test("frame chirality is reversed only by antiunitaries", () => {
   assert.equal(r.complexConjugationIsThatMap, true);
   assert.match(r.priorArt, /Pass 346/);
   assert.match(r.priorArt, /BT1041/);
+  assert.match(r.priorArt, /Passes 4811\/4814/, "the two-sheet cover is W33-Theory's and must be credited");
   assert.match(r.whatItMeans, /does not select one/);
   assert.match(r.boundary, /not an operator equality/);
 });

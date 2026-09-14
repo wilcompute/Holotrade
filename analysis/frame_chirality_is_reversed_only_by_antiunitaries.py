@@ -26,8 +26,19 @@ PRIOR ART, CITED.
     constructed intrinsically. Cited after the fact: the antiunitary
     identification here is the intrinsic, matrix-level version.
 
-WHAT IS ADDED. An intrinsic Z_2 on K's own Pauli geometry, with a named
-physical operation that flips it.
+  * CORRECTION (rediscovery caught by a repo-wide sweep): W33-Theory Passes
+    4811 and 4814 (analysis/w33_pass4811_global_golay_extension_chirality.py,
+    w33_pass4814_bonkers_oriented_27_cover.py, 2026-08-10) already proved that
+    the oriented 27-cover W(E6)/(2^4:A5) is one W(E6)-orbit of 54 which splits
+    into TWO PSp(4,3)-sheets of 27 exchanged by the outer coset, with the
+    orientation character equal to the sign map S5 -> C2 -- in the language of
+    the two ternary-Golay extension directions per fibre. The two-sheet
+    structure below is THEIRS; the oriented frames modulo even reversals are the
+    same 54-set.
+
+WHAT IS ADDED. The physical names: the sheets are qutrit-order orientations of
+tensor factorisations, and the coset that exchanges them is exactly the
+ANTIUNITARY Clifford operations, checked on 9x9 matrices.
 
   ORIENTATION PARITY.  Orient each octet of a frame by choosing one of its two
   hyperbolic lines H_i (one tensor factor). A collineation g preserving the
@@ -258,6 +269,7 @@ def main():
             "complexConjugationLabelMap": "(a1,a2,b1,b2) -> (a1,a2,-b1,-b2)",
             "complexConjugationIsThatMap": conj_is_diag,
             "priorArt": (
+                "W33-Theory Passes 4811/4814 own the two PSp-sheet oriented 27-cover exchanged by the outer coset; "
                 "5419c27 (frames and W(D5)); W33-Theory Pass 346 THE_SELECTION_LAYER.md (chirality torsor, "
                 "exchange by an element outside the index-2 subgroup); BT1041/BT1045 (J antiunitary with "
                 "J gamma = - gamma J on K = C^3_weak (x) C^3_colour)."),

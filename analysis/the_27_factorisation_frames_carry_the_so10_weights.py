@@ -19,6 +19,15 @@ PRIOR ART, CITED.
     27 x 45 incidence with the cubic lines and tritangent planes (no physical
     interpretation inferred there). Cited after the fact: this file's W(D5)
     stabiliser, sign-change and factor-exchange results are not in the atlas.
+  * CORRECTION (rediscovery caught by a repo-wide sweep): W33-Theory Pass 4814
+    (analysis/w33_pass4814_bonkers_oriented_27_cover.py, 0b4a9c8d8, 2026-08-10)
+    already proved, on the 27 GQ(4,2)/E6 fibres, that the full stabiliser is
+    2^4:S5 of order 1920 with S5 on the five fibre points and elementary abelian
+    kernel C2^4; BREAKTHROUGH 170 (bea68ea44) has the PSp line stabiliser 960.
+    Those group facts are THEIRS. What this file adds is the reading on two
+    qutrits: the fibre points are tensor factorisations, the kernel is exactly
+    the even set of qutrit EXCHANGES, the 16/10 split by shared factorisations,
+    and the SWAP example.
   * W33-Theory, analysis/2026-07-15_pass84_e6_w33_explicit_iso.md, records the
     classical branching 27 = 1 + 10 + 16 under W(D5) = 2^4.S5, the stabiliser of
     a line, and leaves the W33 realisation OPEN ("27 = 40 - 13 ???", "10 = ...
@@ -260,7 +269,8 @@ def main():
             "swapInPsp": swap_in_psp, "swapPreservedFrames": len(swap_frames),
             "swapFixedExchanged": sorted(set(swap_frames))[0],
             "priorArt": (
-                "feb5154 (octet = tensor factorisation); gq24_lives_inside_w33_as_its_octet_factors.py (27 "
+                "W33-Theory Pass 4814 (0b4a9c8d8) owns the 2^4:S5 fibre stabiliser with C2^4 kernel and BT170 the PSp "
+                "line stabiliser 960; feb5154 (octet = tensor factorisation); gq24_lives_inside_w33_as_its_octet_factors.py (27 "
                 "K(4,4)-factors = GQ(2,4)); 79e8074 (cost anomalies = local charge conjugations); W33-Theory "
                 "Pass 84, 2026-07-15_pass84_e6_w33_explicit_iso.md, which records 27 = 1 + 10 + 16 under W(D5) "
                 "and leaves its W33 realisation open."),

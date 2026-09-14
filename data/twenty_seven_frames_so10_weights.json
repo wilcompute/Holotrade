@@ -31,7 +31,7 @@
     5,
     4
   ],
-  "priorArt": "feb5154 (octet = tensor factorisation); gq24_lives_inside_w33_as_its_octet_factors.py (27 K(4,4)-factors = GQ(2,4)); 79e8074 (cost anomalies = local charge conjugations); W33-Theory Pass 84, 2026-07-15_pass84_e6_w33_explicit_iso.md, which records 27 = 1 + 10 + 16 under W(D5) and leaves its W33 realisation open.",
+  "priorArt": "W33-Theory Pass 4814 (0b4a9c8d8) owns the 2^4:S5 fibre stabiliser with C2^4 kernel and BT170 the PSp line stabiliser 960; feb5154 (octet = tensor factorisation); gq24_lives_inside_w33_as_its_octet_factors.py (27 K(4,4)-factors = GQ(2,4)); 79e8074 (cost anomalies = local charge conjugations); W33-Theory Pass 84, 2026-07-15_pass84_e6_w33_explicit_iso.md, which records 27 = 1 + 10 + 16 under W(D5) and leaves its W33 realisation open.",
   "thePhysicalNameOfALine": "a line of the cubic surface is a complete factorisation frame: five tensor factorisations of C^9 whose local Pauli sets partition all 40 Pauli classes, so every non-identity Pauli observable is local in exactly one of them.",
   "theStabiliser": "a frame's stabiliser has order 960 in PSp(4,3) and 1920 = |W(D5)| in Aut W(3,3), acting on its five factorisations as A5 and S5, with a kernel of order 16.",
   "theSignChanges": "each kernel element keeps or exchanges the two qutrits of each factorisation; the resulting map to F_2^5 is injective with image the 16 even-weight vectors, the even sign changes of D5.",

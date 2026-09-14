@@ -14,6 +14,9 @@ THE THREE, AS THE CORPUS STATES THEM.
          element T of W(E6) outside U4(2), with det T = -1: chirality is
          relative and unselectable. BT877: the odd permutations of the four
          gauge lines through p0 are exactly the anti-symplectic coset.
+         Passes 4811/4814: the Golay-extension "chirality" is the oriented
+         27-cover, two PSp-sheets exchanged by the outer coset, orientation
+         character = sign map S5 -> C2 -- the same character as (REL).
   (INN)  BT869 -- "the chirality Z2 of the matter register is the central
          involution that swaps a polar pair": the 45-class of involutions of
          PSp(4,3), 8 fixed points, Steinberg eigenspaces 45 + 36.
