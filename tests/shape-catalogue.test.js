@@ -9529,3 +9529,23 @@ test("the minimum blockers of W(3,7) are the two-centre family, so tau_2(W(3,7)^
   assert.equal(r.minimumBlockers, 400 * 49 + (400 * 56 * 112) / 2);
   assert.deepEqual([r.tau2LowerBound, r.tau2UpperBound], [50 * 55 + 1, 55 * 55]);
 });
+
+test("the Leech rungs are the Suzuki chain, and the d = 9 rung does not exist", () => {
+  const r = JSON.parse(fs.readFileSync("data/leech_suzuki_chain_rungs.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  // no Phi_9^4: every order-9 class of Co0 has trace(g^3) = -3, not -12
+  for (const c of ["9a", "9b", "9c"]) assert.equal(r.co0Traces[c][1], -3, c);
+  assert.deepEqual([r.co0Traces["3a"][0], r.co0Traces["5a"][0], r.co0Traces["7a"][0], r.co0Traces["13a"][0]], [-12, -6, -4, -2]);
+  const d7 = r.rungs["7"];
+  assert.deepEqual(d7.projectiveSplit, [[77, 120], [84, 280]]);
+  assert.deepEqual([d7.tightInside, d7.tightOutside], [[21], [15]], "15-tight in W(3,7)");
+  assert.deepEqual(d7.lineIntersections, [[0, 70], [1, 120], [4, 210]]);
+  assert.deepEqual(r.rungs["5"].projectiveSplit, [[10, 1890], [15, 2016]]);
+  assert.equal(1890, 15 * 126, "15-ovoid of W(5,5)");
+  assert.deepEqual(r.rungs["3"].projectiveSplit, [[3, 32760]]);
+  assert.equal(32760, 90 * 364, "90-tight set of W(11,3)");
+  assert.equal(r.a7SetStabiliser.order, 2520);
+  assert.match(r.refutes, /Pass 7294/);
+  assert.match(r.feng_xiang.ref, /2310\.09460/);
+});

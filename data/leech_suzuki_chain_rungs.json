@@ -1,0 +1,299 @@
+{
+  "schema": "holotrade.leech-suzuki-chain-rungs.v1",
+  "valid": true,
+  "checks": {
+    "noPhi9FourthPower": true,
+    "class9bIsPhi9cubed": true,
+    "fixedPointFreeClassesExist": true,
+    "golay": true,
+    "leechMinimal196560": true,
+    "generatorsPreserveMinimalVectors": true,
+    "allFormsSymplectic": true,
+    "d7_W37_120_280": true,
+    "d7_15tight_0_1_4": true,
+    "d5_W55_1890_2016": true,
+    "d5_15_and_16_ovoids": true,
+    "d3_32760_classes_of_three": true,
+    "d3_90tight": true,
+    "d13_PG1_13_6_8": true,
+    "controlE8d3_W33_uniform3": true,
+    "controlE8d5_PG15_uniform10": true
+  },
+  "co0Traces": {
+    "3a": [
+      -12,
+      24
+    ],
+    "3b": [
+      6,
+      24
+    ],
+    "3c": [
+      -3,
+      24
+    ],
+    "3d": [
+      0,
+      24
+    ],
+    "5a": [
+      -6,
+      24
+    ],
+    "5b": [
+      4,
+      24
+    ],
+    "5c": [
+      -1,
+      24
+    ],
+    "7a": [
+      -4,
+      24
+    ],
+    "7b": [
+      3,
+      24
+    ],
+    "9a": [
+      -3,
+      -3,
+      24
+    ],
+    "9b": [
+      0,
+      -3,
+      24
+    ],
+    "9c": [
+      3,
+      -3,
+      24
+    ],
+    "13a": [
+      -2,
+      24
+    ]
+  },
+  "order9CharpolyMultiplicities(Phi9,Phi3,Phi1)": {
+    "9a": [
+      [
+        3,
+        3,
+        0
+      ]
+    ],
+    "9b": [
+      [
+        3,
+        2,
+        2
+      ]
+    ],
+    "9c": [
+      [
+        3,
+        1,
+        4
+      ]
+    ]
+  },
+  "rungs": {
+    "7": {
+      "m": 4,
+      "formAlternatingWellDefinedNondegenerate": true,
+      "zeroClass": 0,
+      "classesHit": 2400,
+      "classes": 2400,
+      "countHistogram": [
+        [
+          77,
+          720
+        ],
+        [
+          84,
+          1680
+        ]
+      ],
+      "constantOnProjectivePoints": true,
+      "projectiveSplit": [
+        [
+          77,
+          120
+        ],
+        [
+          84,
+          280
+        ]
+      ],
+      "lightPoints": 120,
+      "tightInside": [
+        21
+      ],
+      "tightOutside": [
+        15
+      ],
+      "lineIntersections": [
+        [
+          0,
+          70
+        ],
+        [
+          1,
+          120
+        ],
+        [
+          4,
+          210
+        ]
+      ],
+      "lines": 400
+    },
+    "5": {
+      "m": 6,
+      "formAlternatingWellDefinedNondegenerate": true,
+      "zeroClass": 0,
+      "classesHit": 15624,
+      "classes": 15624,
+      "countHistogram": [
+        [
+          10,
+          7560
+        ],
+        [
+          15,
+          8064
+        ]
+      ],
+      "constantOnProjectivePoints": true,
+      "projectiveSplit": [
+        [
+          10,
+          1890
+        ],
+        [
+          15,
+          2016
+        ]
+      ],
+      "lightPoints": 1890,
+      "perpCountsInLight": [
+        365
+      ],
+      "perpCountsInLightFromOutside": [
+        390
+      ],
+      "perpCountsInHeavy": [
+        391
+      ],
+      "perpCountsInHeavyFromLight": [
+        416
+      ]
+    },
+    "3": {
+      "m": 12,
+      "formAlternatingWellDefinedNondegenerate": true,
+      "zeroClass": 0,
+      "classesHit": 65520,
+      "classes": 531440,
+      "countHistogram": [
+        [
+          3,
+          65520
+        ]
+      ],
+      "constantOnProjectivePoints": true,
+      "projectiveSplit": [
+        [
+          3,
+          32760
+        ]
+      ],
+      "perpCountsInside": [
+        11133
+      ],
+      "perpCountsOutsideSample": [
+        10890
+      ]
+    },
+    "13": {
+      "m": 2,
+      "formAlternatingWellDefinedNondegenerate": true,
+      "zeroClass": 936,
+      "classesHit": 168,
+      "classes": 168,
+      "countHistogram": [
+        [
+          1157,
+          72
+        ],
+        [
+          1170,
+          96
+        ]
+      ],
+      "constantOnProjectivePoints": true,
+      "projectiveSplit": [
+        [
+          1157,
+          6
+        ],
+        [
+          1170,
+          8
+        ]
+      ]
+    }
+  },
+  "e8Controls": {
+    "3": {
+      "form": true,
+      "hist": [
+        [
+          3,
+          80
+        ]
+      ],
+      "zero": 0,
+      "srg": [
+        [
+          12
+        ],
+        [
+          2
+        ],
+        [
+          4
+        ]
+      ]
+    },
+    "5": {
+      "form": true,
+      "hist": [
+        [
+          10,
+          24
+        ]
+      ],
+      "zero": 0
+    }
+  },
+  "a7SetStabiliser": {
+    "order": 2520,
+    "isomorphicTo": "A7",
+    "orbits": [
+      120,
+      280
+    ],
+    "source": "GAP 4.16 (recorded)"
+  },
+  "feng_xiang": {
+    "W(11,3)": "2.Suz, 90 and 640-tight",
+    "W(5,5)": "2.J2, 15 and 16-ovoids",
+    "W(3,7)": "2.A7, 15 and 35-tight",
+    "ref": "arXiv:2310.09460 Tables 1.6, 1.9"
+  },
+  "refutes": "W33-Theory Pass 7294: 'LEECH at d=9 gives 40 points -- the same target as E8 at d=3'",
+  "boundary": "lattice, group and intriguing-set facts are classical or Feng-Xiang's; the parity lemma is standard; new relative to the corpus: the d=9 refutation, the corrected rung map, and the certificate that Leech minimal vectors realise the Suzuki-chain splits. No physics."
+}
