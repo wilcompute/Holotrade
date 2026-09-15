@@ -9566,3 +9566,14 @@ test("the extremal lattices carry a W(3,q) tower: E8, Leech, and an explicitly b
   const s = JSON.parse(fs.readFileSync("data/p48n_extremality_screen.json"));
   assert.equal(Object.keys(s.candidates).length, 32);
 });
+
+test("the Gaussian (d = 4) rungs of K12 and Leech exist and are uniform; K12's needs the antilinear half", () => {
+  const r = JSON.parse(fs.readFileSync("data/gaussian_rungs_k12_leech.json"));
+  assert.equal(r.valid, true);
+  assert.deepEqual(r.leech.histogram, [[48, 4095]], "Pass 7293's 48 per class over all of PG(11,2)");
+  assert.equal(r.leech.alternating, true);
+  assert.deepEqual(r.k12.histogram, [[12, 63]], "Pass 7293's 12 per class over PG(5,2)");
+  assert.equal(r.k12.linearG34SampleHits, 0, "no g^2 = -1 inside the complex reflection group");
+  assert.equal(r.k12.antilinear, true);
+  assert.match(r.closes, /7293/);
+});

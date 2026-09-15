@@ -1,0 +1,43 @@
+{
+  "schema": "holotrade.gaussian-rungs-k12-leech.v1",
+  "valid": true,
+  "checks": {
+    "leech_uniform_48_over_PG11_2": true,
+    "k12_uniform_12_over_PG5_2": true,
+    "k12_gaussian_structure_is_antilinear": true
+  },
+  "leech": {
+    "gSquaredMinusOne": true,
+    "trace": 0,
+    "alternating": true,
+    "zeroClass": 0,
+    "classesHit": 4095,
+    "histogram": [
+      [
+        48,
+        4095
+      ]
+    ]
+  },
+  "k12": {
+    "antilinear": true,
+    "linearG34SampleHits": 0,
+    "stepsToFind": 6155,
+    "trace": 0,
+    "alternating": true,
+    "zeroClass": 0,
+    "classesHit": 63,
+    "histogram": [
+      [
+        12,
+        63
+      ]
+    ]
+  },
+  "gap": {
+    "G34 = 6_1.U4(3).2_2": "no order-4 class with g^2 = -1",
+    "6_1.U4(3).2_1": "classes 4d, 4e: g^2 = -1, trace 0 on the rational 12-dim character, proportion 1/2880 each"
+  },
+  "closes": "W33-Theory Pass 7293 table rows K12 d=4 and Leech d=4 (untested)",
+  "boundary": "finite exact checks; classical lattices and groups; no physics"
+}
