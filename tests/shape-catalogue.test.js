@@ -9613,3 +9613,18 @@ test("the W(3,3) twist is the SU(9) heterotic embedding: anomaly class 1, unique
   assert.deepEqual(counts, [["twisted (9,1)", 27], ["untwisted (1,14)", 3], ["untwisted (1,64)", 3], ["untwisted (84,1)", 3]]);
   assert.equal(Math.abs(Number(r.greenSchwarz)), 9);
 });
+
+test("the W(3,3) vacuum has three-family Wilson-line models, and the three is the untwisted planes of T^6, not W(3,3)", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_vacuum_wilson_line_families.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  for (const [k, f] of Object.entries(r.families)) {
+    assert.equal(f.anomalous, 0, k);
+    assert.ok(f.fixedPointIndexValues.every((v) => v === 0), k + ": fixed points carry no net quark doublets");
+    for (const n of Object.keys(f.nets)) assert.equal(Math.abs(Number(n)) % 3, 0, k);
+  }
+  assert.ok((r.families.w33_2lines.nets["3"] ?? 0) + (r.families.w33_2lines.nets["-3"] ?? 0) > 0, "net three families occur");
+  assert.ok((r.families.standard_2lines.nets["3"] ?? 0) > 0, "and equally for the standard embedding");
+  assert.match(r.status, /not proved/);
+  assert.match(r.claim, /OPEN/);
+});
