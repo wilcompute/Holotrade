@@ -1,0 +1,87 @@
+{
+ "claim": "The W(3,3) twist of E8 (68df33f) is the order-3 shift of class A8, Z3 anomaly a=1; on T^6/Z3 its unique modular-invariant partner is D7+U1, giving SU(9)xSO(14)xU(1) with 3(84)+27(9bar)+3(64)+3(14), SU(9)^3-free and Green-Schwarz universal.",
+ "classes": {
+  "A8": {
+   "anomaly": 1,
+   "dim": 80,
+   "twistedWeight": "4/9",
+   "groundStates": 9
+  },
+  "E6+A2": {
+   "anomaly": 0,
+   "dim": 86,
+   "twistedWeight": "1/3",
+   "groundStates": 3
+  },
+  "D7+U1": {
+   "anomaly": 2,
+   "dim": 92,
+   "twistedWeight": "2/9",
+   "groundStates": 1
+  },
+  "E7+U1": {
+   "anomaly": 1,
+   "dim": 134,
+   "twistedWeight": "1/9",
+   "groundStates": 1
+  },
+  "E8": {
+   "anomaly": 0,
+   "dim": 248,
+   "twistedWeight": "0",
+   "groundStates": 1
+  }
+ },
+ "levelMatchedPairs": [
+  [
+   "A8",
+   "D7+U1"
+  ],
+  [
+   "D7+U1",
+   "E7+U1"
+  ],
+  [
+   "E6+A2",
+   "E6+A2"
+  ],
+  [
+   "E6+A2",
+   "E8"
+  ],
+  [
+   "E8",
+   "E8"
+  ]
+ ],
+ "spectrum": {
+  "untwisted (84,1) Q=0": 3,
+  "untwisted (1,14) Q=1": 3,
+  "untwisted (1,64) Q=-1/2": 3,
+  "twisted (9,1) Q=-2/3": 27
+ },
+ "greenSchwarz": "-9",
+ "chiralityConvention": 1,
+ "checks": {
+  "e8_theta_to_norm8": true,
+  "five_kac_classes": true,
+  "anomaly_classes": true,
+  "w33_twist_is_A8_class": true,
+  "five_level_matched_pairs": true,
+  "A8_unique_partner_D7U1": true,
+  "e8k_diagonal_A8_consistent_iff_3_divides_k": true,
+  "t6z3_fixed_points_27": true,
+  "control_36_generations_and_su3_free_fixes_convention": true,
+  "gauge_su9_so14_u1": true,
+  "spectrum_3x84_27x9_3x64_3x14": true,
+  "su9_cubic_anomaly_vanishes": true,
+  "green_schwarz_universal": true,
+  "teeth_opposite_convention_anomalous": true,
+  "teeth_mismatched_pair_anomalous": true
+ },
+ "valid": true,
+ "sources": [
+  "Holotrade 68df33f the_twisted_sectors_carry_the_rung_geometries.py",
+  "Dixon-Harvey-Vafa-Witten orbifold rules; Ibanez-Mas-Nilles-Quevedo Z3 gauge embeddings; Kobayashi-Nakano anomalous U(1) universality"
+ ]
+}

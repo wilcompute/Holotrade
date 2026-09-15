@@ -9597,3 +9597,19 @@ test("the twisted sectors carry the rung geometries; W(3,3) is the Z3-twisted Pa
     assert.equal(v.mass % v.register, 0, k);
   }
 });
+
+test("the W(3,3) twist is the SU(9) heterotic embedding: anomaly class 1, unique T^6/Z3 partner SO(14)xU(1), anomaly-free spectrum", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_twist_su9_heterotic_embedding.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(r.classes).map(([k, v]) => [k, [v.anomaly, v.dim]])),
+    { E8: [0, 248], "E7+U1": [1, 134], "D7+U1": [2, 92], "E6+A2": [0, 86], A8: [1, 80] },
+  );
+  assert.deepEqual([r.classes.A8.twistedWeight, r.classes.A8.groundStates], ["4/9", 9], "the two-qutrit twist of 68df33f");
+  assert.equal(r.levelMatchedPairs.length, 5);
+  assert.deepEqual(r.levelMatchedPairs.filter((p) => p.includes("A8")), [["A8", "D7+U1"]], "unique partner");
+  const counts = Object.entries(r.spectrum).map(([k, v]) => [k.replace(/ Q=.*/, ""), v]).sort();
+  assert.deepEqual(counts, [["twisted (9,1)", 27], ["untwisted (1,14)", 3], ["untwisted (1,64)", 3], ["untwisted (84,1)", 3]]);
+  assert.equal(Math.abs(Number(r.greenSchwarz)), 9);
+});
