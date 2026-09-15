@@ -9549,3 +9549,20 @@ test("the Leech rungs are the Suzuki chain, and the d = 9 rung does not exist", 
   assert.match(r.refutes, /Pass 7294/);
   assert.match(r.feng_xiang.ref, /2310\.09460/);
 });
+
+test("the extremal lattices carry a W(3,q) tower: E8, Leech, and an explicitly built P48n", () => {
+  const r = JSON.parse(fs.readFileSync("data/extremal_lattice_w3q_tower.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  const t = r.p48nRungs["13"];
+  assert.deepEqual([t.preservesForm, t.orderP, t.phiZero, t.formSkew, t.piLInKernel], [true, true, true, true, true]);
+  assert.equal(t.rankModP, 4, "nondegenerate alternating form on L/piL = F_13^4");
+  assert.equal(t.geometry, "W(3,13)");
+  assert.equal(r.p48nRungs["5"].geometry, "W(11,5)");
+  assert.deepEqual(r.construction.extremalCandidates, [25, 27], "exactly Nebe's two extremal principal ideal lattices");
+  assert.equal(r.construction.totallyPositiveUnitClasses, 32);
+  for (const row of r.tower) assert.equal(row.dim, 4 * (row.q - 1));
+  assert.equal(r.tower[3].lattice, null, "the dimension-72 rung is open");
+  const s = JSON.parse(fs.readFileSync("data/p48n_extremality_screen.json"));
+  assert.equal(Object.keys(s.candidates).length, 32);
+});

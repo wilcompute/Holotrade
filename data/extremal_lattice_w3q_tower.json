@@ -1,0 +1,85 @@
+{
+  "schema": "holotrade.extremal-lattice-w3q-tower.v1",
+  "valid": true,
+  "checks": {
+    "symmetric": true,
+    "even": true,
+    "unimodular": true,
+    "positiveDefinite": true,
+    "extremalScreenMatchesNebe": true,
+    "sigma13_fixed_point_free_type_13_4_0_0": true,
+    "W3_13": true,
+    "sigma5_type_5_12_0_0": true,
+    "W11_5": true,
+    "arithmetic": true,
+    "lowerRungsCertified": true
+  },
+  "p48nRungs": {
+    "13": {
+      "shift": 5,
+      "preservesForm": true,
+      "orderP": true,
+      "phiZero": true,
+      "formSkew": true,
+      "rankModP": 4,
+      "piLInKernel": true,
+      "geometry": "W(3,13)"
+    },
+    "5": {
+      "shift": 13,
+      "preservesForm": true,
+      "orderP": true,
+      "phiZero": true,
+      "formSkew": true,
+      "rankModP": 12,
+      "piLInKernel": true,
+      "geometry": "W(11,5)"
+    }
+  },
+  "tower": [
+    {
+      "dim": 8,
+      "lattice": "E8",
+      "q": 3,
+      "geometry": "W(3,3)",
+      "source": "e680b23"
+    },
+    {
+      "dim": 24,
+      "lattice": "Leech",
+      "q": 7,
+      "geometry": "W(3,7)",
+      "source": "e680b23"
+    },
+    {
+      "dim": 48,
+      "lattice": "P48n",
+      "q": 13,
+      "geometry": "W(3,13)",
+      "source": "this file"
+    },
+    {
+      "dim": 72,
+      "lattice": null,
+      "q": 19,
+      "geometry": "W(3,19)",
+      "source": "open (Nebe Thm 3.4 allows 19-(4,0)-0)"
+    }
+  ],
+  "construction": {
+    "field": "Q(zeta_65)",
+    "alpha": "unit * (1-zeta_5)^-3 (1-zeta_13)^-11, totally positive",
+    "totallyPositiveUnitClasses": 32,
+    "extremalCandidates": [
+      25,
+      27
+    ],
+    "identification": "Nebe arXiv:1212.0865 Thm 5.3: order-65 automorphism + extremal => P48n",
+    "scripts": "analysis/p48n/"
+  },
+  "open": [
+    "distribution of the 52,416,000 minimal vectors of P48n over W(3,13)",
+    "existence of an extremal 72-dimensional lattice with a 19-(4,0)-0 automorphism (W(3,19) rung)"
+  ],
+  "boundary": "lattices and automorphism facts classical (Nebe, Conway-Sloane); new: the tower statement and the explicit certified P48n rung; no physics"
+}
