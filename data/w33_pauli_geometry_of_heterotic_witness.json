@@ -1,0 +1,33 @@
+{
+  "schema": "holotrade.w33_pauli_geometry_of_heterotic_witness.v1",
+  "status": "PASS",
+  "headline": "The frozen verified net-three heterotic Wilson-line witness is not contained in one W33 isotropic line/Pauli Cartan: its three first-E8 Pauli labels have rank 3 and one noncommuting pair. Instead it is a two-Cartan hinge sharing one W33 projective point.",
+  "parent_certificate": "data/w33_vacuum_wilson_line_families.json",
+  "first_E8_wilson_components": [[-2,-2,2,2,0,-2,2,0],[0,-2,0,2,0,2,-4,2],[1,1,3,3,1,3,-1,1]],
+  "simple_root_coefficients": [[0,0,1,2,1,0,0,1],[2,2,3,5,4,2,1,-1],[1,4,4,7,5,3,2,0]],
+  "pauli_labels_x1z1x2z2": [[1,1,0,2],[0,0,1,2],[2,0,2,1]],
+  "symplectic_gram_mod3": [[0,2,0],[1,0,0],[0,0,0]],
+  "label_rank_F3": 3,
+  "symplectic_gram_rank_F3": 2,
+  "orthogonal_pairs_zero_based": [[0,2],[1,2]],
+  "nonorthogonal_pairs_zero_based": [[0,1]],
+  "two_cartans": {
+    "shared_label_index": 2,
+    "line_1_projective_points": [[0,1,2,0],[1,0,1,2],[1,1,0,2],[1,2,2,2]],
+    "line_2_projective_points": [[0,0,1,2],[1,0,0,0],[1,0,1,2],[1,0,2,1]],
+    "intersection": [[1,0,1,2]]
+  },
+  "consequence": "A single W33 line/Pauli Cartan condition is not necessary for the already-certified net-three quark-doublet chirality witness. Therefore any future W33 selection effect for hypercharge or exotic removal must be more subtle than requiring all Wilson lines to lie in one Cartan.",
+  "open_boundary": "The parent certificate does not assign U(1)_Y, determine k_Y, or prove removal of vector-like exotics. This certificate does not invent those missing constraints; it only gives the exact Pauli/W33 geometry of the frozen witness.",
+  "checks": {
+    "parent_witness_is_verified": true,
+    "parent_witness_has_net_three_pair": true,
+    "all_three_first_E8_wilson_components_have_nonzero_pauli_labels": true,
+    "three_labels_have_rank_3": true,
+    "symplectic_gram_has_rank_2": true,
+    "exactly_one_nonorthogonal_pair": true,
+    "exactly_two_orthogonal_pairs": true,
+    "not_contained_in_one_W33_line_or_pauli_cartan": true,
+    "configuration_is_two_cartans_sharing_one_projective_point": true
+  }
+}
