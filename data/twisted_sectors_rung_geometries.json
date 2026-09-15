@@ -1,0 +1,188 @@
+{
+  "schema": "holotrade.twisted-sectors-rung-geometries.v1",
+  "valid": true,
+  "checks": {
+    "omegaIsTheRungForm": true,
+    "e8_p3_two_qutrits": true,
+    "leech_rho_is_p_plus_1_over_p": true,
+    "leech_registers": true,
+    "e8k_z3_consistent_iff_3_divides_k": true,
+    "e8_p2_p5_consistent_every_k": true,
+    "monster_register_masses": true,
+    "monster_registers_match_leech": true,
+    "e8_twist_fixed_algebra_is_sl9": true,
+    "e8cubed_orbifold_is_A8_cubed_c24": true
+  },
+  "rows": [
+    {
+      "lattice": "E8",
+      "p": 3,
+      "m": 4,
+      "rho": "4/9",
+      "groundStates": 9,
+      "omegaProportionalToB": true,
+      "scalar": 2,
+      "consistentOrbifold": false
+    },
+    {
+      "lattice": "E8",
+      "p": 5,
+      "m": 2,
+      "rho": "2/5",
+      "groundStates": 5,
+      "omegaProportionalToB": true,
+      "scalar": 2,
+      "consistentOrbifold": true
+    },
+    {
+      "lattice": "E8",
+      "p": 2,
+      "m": 8,
+      "rho": "1/2",
+      "groundStates": 16,
+      "omegaProportionalToB": true,
+      "scalar": 1,
+      "consistentOrbifold": true
+    },
+    {
+      "lattice": "Leech",
+      "p": 3,
+      "m": 12,
+      "rho": "4/3",
+      "groundStates": 729,
+      "omegaProportionalToB": true,
+      "scalar": 2,
+      "consistentOrbifold": true
+    },
+    {
+      "lattice": "Leech",
+      "p": 5,
+      "m": 6,
+      "rho": "6/5",
+      "groundStates": 125,
+      "omegaProportionalToB": true,
+      "scalar": 2,
+      "consistentOrbifold": true
+    },
+    {
+      "lattice": "Leech",
+      "p": 7,
+      "m": 4,
+      "rho": "8/7",
+      "groundStates": 49,
+      "omegaProportionalToB": true,
+      "scalar": 2,
+      "consistentOrbifold": true
+    },
+    {
+      "lattice": "Leech",
+      "p": 13,
+      "m": 2,
+      "rho": "14/13",
+      "groundStates": 13,
+      "omegaProportionalToB": true,
+      "scalar": 2,
+      "consistentOrbifold": true
+    },
+    {
+      "lattice": "Leech",
+      "p": 2,
+      "m": 24,
+      "rho": "3/2",
+      "groundStates": 4096,
+      "omegaProportionalToB": true,
+      "scalar": 1,
+      "consistentOrbifold": true
+    }
+  ],
+  "monster": {
+    "2B": {
+      "normaliser": "2^1+24.Co1",
+      "register": 4096,
+      "sectors": [
+        [
+          1,
+          24
+        ]
+      ],
+      "mass": 98304,
+      "chi": 275
+    },
+    "3B": {
+      "normaliser": "3^(1+12).2Suz.2",
+      "register": 729,
+      "sectors": [
+        [
+          1,
+          156
+        ],
+        [
+          1,
+          24
+        ]
+      ],
+      "mass": 131220,
+      "chi": 53
+    },
+    "5B": {
+      "normaliser": "5^(1+6):2.J2.4",
+      "register": 125,
+      "sectors": [
+        [
+          1,
+          24
+        ],
+        [
+          1,
+          84
+        ],
+        [
+          1,
+          144
+        ],
+        [
+          1,
+          504
+        ],
+        [
+          1,
+          504
+        ]
+      ],
+      "mass": 157500,
+      "chi": 8
+    },
+    "7B": {
+      "normaliser": "7^(1+4):(3x2.S7)",
+      "register": 49,
+      "mass": 168756,
+      "chi": 1
+    },
+    "13B": {
+      "normaliser": "13^(1+2):(3x4S4)",
+      "register": 13,
+      "mass": 181740,
+      "chi": -2
+    }
+  },
+  "e8TriplingTable": {
+    "1": false,
+    "2": false,
+    "3": true,
+    "4": false,
+    "5": false,
+    "6": true,
+    "7": false,
+    "8": false,
+    "9": true
+  },
+  "kacOrder3FixedDims": [
+    80,
+    86,
+    92,
+    134,
+    248
+  ],
+  "e8CubedOrbifold": "Z3 twist diagonal on E8^3 has rho = 4/3 (consistent); twisted weights exceed 1, so V_1 = (V_1)^g = sl9^3 (fixed algebra of dim 80 = A8 by Kac; regular subalgebra, level 1); c = 3*8 = 24, so by Schellekens/Dong-Mason the orbifold is the Niemeier A8^3 lattice theory",
+  "boundary": "twisted modules, weights, orbifold criterion and Monster centralisers are classical; new: the exact identification with the certified rung forms, the E8^3 anomaly statement attached to W(3,3), the register-sector table; the TOE reading is a reading, not a claim"
+}

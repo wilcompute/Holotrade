@@ -9577,3 +9577,23 @@ test("the Gaussian (d = 4) rungs of K12 and Leech exist and are uniform; K12's n
   assert.equal(r.k12.antilinear, true);
   assert.match(r.closes, /7293/);
 });
+
+test("the twisted sectors carry the rung geometries; W(3,3) is the Z3-twisted Pauli geometry of E8, consistent only for E8^3", () => {
+  const r = JSON.parse(fs.readFileSync("data/twisted_sectors_rung_geometries.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  const row = (lat, p) => r.rows.find((x) => x.lattice === lat && x.p === p);
+  assert.deepEqual([row("E8", 3).rho, row("E8", 3).groundStates], ["4/9", 9], "two qutrits");
+  for (const [p, n] of [[2, 4096], [3, 729], [5, 125], [7, 49], [13, 13]]) {
+    assert.equal(row("Leech", p).groundStates, n);
+    assert.equal(row("Leech", p).omegaProportionalToB, true);
+  }
+  assert.deepEqual(Object.entries(r.e8TriplingTable).filter(([, v]) => v).map(([k]) => Number(k)), [3, 6, 9]);
+  assert.deepEqual(r.kacOrder3FixedDims, [80, 86, 92, 134, 248]);
+  assert.match(r.e8CubedOrbifold, /A8\^3/);
+  for (const [k, v] of Object.entries(r.monster)) {
+    const p = Number(k.slice(0, -1));
+    assert.equal(v.mass, ((p - 1) * (196883 - v.chi)) / p, k);
+    assert.equal(v.mass % v.register, 0, k);
+  }
+});
