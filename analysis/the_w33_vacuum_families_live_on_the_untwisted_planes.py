@@ -68,7 +68,11 @@ spec.loader.exec_module(het)
 NAMES = {(2, 1): "A1", (6, 2): "A2", (12, 3): "A3", (20, 4): "A4", (30, 5): "A5", (42, 6): "A6", (56, 7): "A7",
          (72, 8): "A8", (24, 4): "D4", (40, 5): "D5", (60, 6): "D6", (84, 7): "D7", (112, 8): "D8",
          (72, 6): "E6", (126, 7): "E7", (240, 8): "E8"}
-GEN = np.arange(1, 17) * 1.0 + np.pi / 10
+# A generic vector must not be orthogonal to any root, or the positive system, and with it
+# every Dynkin label, is ill defined. Integer-plus-constant vectors FAIL: 16 of the 480 roots
+# are orthogonal to arange(1,17) + pi/10. Square roots of distinct primes are linearly
+# independent over Q, so no integer combination of them vanishes. Asserted in main().
+GEN = np.sqrt(np.array([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53], dtype=float))
 
 
 def cname(C):
@@ -141,9 +145,14 @@ class Builder:
 
 
 def simple_roots(C):
+    assert np.min(np.abs(C @ GEN)) > 1e-9, "generic vector is orthogonal to a root"
     pos = [r for r in C if r @ GEN > 0]
     ps = {tuple(r) for r in pos}
-    return [r for r in pos if not any(tuple(r - s) in ps for s in pos if not np.array_equal(s, r))]
+    sr = [r for r in pos if not any(tuple(r - s) in ps for s in pos if not np.array_equal(s, r))]
+    assert len(sr) == int(np.linalg.matrix_rank(C.astype(float))), "simple system has the wrong size"
+    for x, y in itertools.combinations(sr, 2):             # simple roots pair at -1, never +1
+        assert int(x @ y) // S <= 0, "not a simple system"
+    return sr
 
 
 def quark_index(c3, c2, states):
@@ -235,6 +244,7 @@ def main():
     ap.add_argument("--target", type=int, default=1500)
     args = ap.parse_args()
     B = Builder()
+    assert np.min(np.abs(B.R16 @ GEN)) > 1e-9              # no root is orthogonal to the generic vector
     V_w33 = np.concatenate([B.shift(72, 1), B.shift(84, 2)])
     V_std = np.concatenate([B.shift(78, 0), np.zeros(8, dtype=np.int64)])
     checks, families, witness = {}, {}, None
