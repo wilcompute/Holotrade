@@ -1,0 +1,11 @@
+{
+  "schema":"holotrade.w33_exotic_benchmark_mass_matrix.v1","status":"PASS",
+  "headline":"The instanton-supported K9,12 exotic coupling support contains an explicit rank-nine numerical specialization. Choosing C_rc=(r+1)^c gives a Vandermonde first-nine-column minor with exact determinant 5056584744960000; multiplying the eight sextic and four nonic columns by their positive T_i=1 instanton factors preserves rank nine. Thus the rank<9 locus is a proper algebraic subset of the allowed coupling/VEV space.",
+  "benchmark_assumptions":{"Kahler_moduli":[1,1,1],"canonical_field_metrics":"set to 1 for benchmark only","dimensionless_OPE_VEV_coefficient_specialization":"C_rc=(r+1)^c","physical_state_phases":"set positive for benchmark only"},
+  "sector_scales":{"sextic_columns":8,"sextic_factor":1.3110494848380547,"nonic_columns":4,"nonic_factor":3.1019763867453394},
+  "rank":9,"first_9_column_coefficient_minor_det":5056584744960000,
+  "singular_values":[101759469799.55733,417954326.5617765,4152709.792006462,68401.66326418395,1178.63080324809,59.20049643179662,6.084178197923129,1.4924682776944553,0.2905527592667015],
+  "algebraic_consequence":"Because one allowed specialization has rank nine, at least one 9x9 minor polynomial is nonzero; generic allowed coefficients therefore have rank nine away from a proper algebraic hypersurface.",
+  "physical_boundary":"The repo does not yet provide a D/F-flat singlet VEV assignment, canonically normalized Kahler metrics, complete quantum/OPE normalizations, or physical-state phases for these operators. This matrix is an existence/benchmark witness in allowed coupling space, not a predicted mass spectrum or proof that the string vacuum selects this specialization.",
+  "checks":{"parent_structural_rank9":true,"positive_instanton_scales":true,"Vandermonde_det_nonzero":true,"benchmark_rank9":true}
+}
