@@ -1,0 +1,29 @@
+{
+  "schema":"holotrade.w33_su5_singlet_flat_directions.v1",
+  "status":"PASS",
+  "headline":"The frozen SU(5) witness has 16 primitive full-lattice-neutral quartic singlet monomials U*T0*T1*T2. None is F-lifted by any gauge+R-allowed superpotential monomial through order 11; the first gauge+R-admissible self-lift is the degree-12 cube with three untwisted copies assigned one per plane.",
+  "singlet_types":{"untwisted":24,"twisted_by_n1":[4,9,9],"total":46},
+  "neutral_monomials":{"degree3":36,"degree3_type_census":{"UUU":20,"TTT":16},"primitive_degree4":16,"degree4_type":"U*T0*T1*T2"},
+  "quartic_supports":[
+    [["U",0],["T0",0],["T1",8],["T2",20]],
+    [["U",0],["T0",1],["T1",11],["T2",14]],
+    [["U",0],["T0",2],["T1",8],["T2",17]],
+    [["U",0],["T0",3],["T1",5],["T2",14]],
+    [["U",1],["T0",0],["T1",9],["T2",21]],
+    [["U",1],["T0",1],["T1",12],["T2",15]],
+    [["U",1],["T0",2],["T1",9],["T2",18]],
+    [["U",1],["T0",3],["T1",6],["T2",15]],
+    [["U",2],["T0",0],["T1",8],["T2",21]],
+    [["U",2],["T0",1],["T1",11],["T2",15]],
+    [["U",2],["T0",2],["T1",8],["T2",18]],
+    [["U",2],["T0",3],["T1",5],["T2",15]],
+    [["U",3],["T0",0],["T1",9],["T2",20]],
+    [["U",3],["T0",1],["T1",12],["T2",14]],
+    [["U",3],["T0",2],["T1",9],["T2",17]],
+    [["U",3],["T0",3],["T1",6],["T2",14]]
+  ],
+  "flat_direction_protection":{"through_order":11,"degree5_7":"no gauge-neutral dangerous monomial","degree8":"only self-square exists; R forbidden","degree9_11":"no gauge-neutral dangerous monomial","degree12":"self-cube is first gauge+R-admissible dangerous monomial"},
+  "D_flat_boundary":"Exact 16D lattice-momentum neutrality gives holomorphic gauge-neutral monomials and the standard zero-FI D-flat candidates. The anomalous-U(1) Fayet-Iliopoulos term is not fixed here and can shift the physical D-flat locus.",
+  "F_flat_boundary":"Protection through order 11 uses exact lattice gauge neutrality plus the picture-independent Z3 R rule. Degree-12 space-group, Rule-4/Rule-5 and actual CFT coefficient/VEV data remain to be checked.",
+  "checks":{"24_U":true,"22_T":true,"36_neutral_cubics":true,"16_quartic_directions":true,"no_cubic_pair_completion":true,"protected_through_11":true,"first_gauge_R_self_lift_12":true}
+}
