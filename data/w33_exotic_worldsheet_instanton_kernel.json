@@ -1,0 +1,25 @@
+{
+  "schema": "holotrade.w33_exotic_worldsheet_instanton_kernel.v1",
+  "status": "PASS",
+  "headline": "The Rule-4/Rule-5-safe sextic and nonic exotic-mass entries have strictly positive classical Z3 worldsheet-instanton theta sums for every positive real factorized A2^3 Kahler modulus. Hence the combined K9,12 support is not destroyed by classical-instanton cancellation; its structural rank 9 is instanton-supported.",
+  "plane_kernels": {
+    "same": "K_S(T)=sum exp[-2 pi T (m^2-mn+n^2)]",
+    "distinct": "K_D(T)=sum exp[-2 pi T Q(m+1/3,n+2/3)]",
+    "positivity": "Each is a sum of strictly positive real terms for T>0."
+  },
+  "aggregate_factors": {
+    "sextic_plane_b": "2 K_S(T0) K_D(Tb) [K_S(Tc)+2 K_D(Tc)], {b,c}={1,2}",
+    "nonic_plane0": "K_S(T0)[K_S(T1)+2K_D(T1)][K_S(T2)+2K_D(T2)]"
+  },
+  "benchmark_T_1": {
+    "K_S": 1.0112046955376903,
+    "K_D": 0.3701266069929033,
+    "K_D_over_K_S": 0.3660254037844385,
+    "sextic_each_plane": 1.3110494848380547,
+    "nonic": 3.1019763867453394
+  },
+  "parent_counts": {"sextic_candidates":864,"nonic_candidates":12960,"combined_structural_rank":9},
+  "literature": ["Choi-Kobayashi, arXiv:0711.4894","Kobayashi-Parameswaran-Ramos-Sanchez-Zavala, arXiv:1107.2137"],
+  "boundary": "This evaluates the classical instanton lattice sums and proves positivity of the surviving geometric kernels. It does not fix Kahler metrics, singlet VEVs, complete quantum/OPE normalization, or phases from physical linear combinations. Therefore it upgrades the result to instanton-supported structural/generic rank 9, not an explicit numerical low-energy mass matrix.",
+  "checks": {"parent_counts":true,"kernel_convergence":true,"same_positive":true,"distinct_positive":true,"sextic_positive":true,"nonic_positive":true}
+}
