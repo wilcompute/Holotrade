@@ -9695,3 +9695,18 @@ test("the splitting rule at every Wilson-line order: Q is always isolated, only 
   }
   assert.deepEqual(t["3"], [], "order three isolates every species");
 });
+
+test("the twisted sectors carry no ten: a 2/15 budget against a 2/9 coset floor completes the Standard Model no-go", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_twisted_sectors_carry_no_ten.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  const m = r.measurements;
+  assert.equal(m.trivialSecondE8, 0, "every local shift is a nontrivial second-E8 coset");
+  assert.ok(Math.min(...Object.keys(m.minSecondE8CosetNorm).map(Number)) > 4 / 3 - 6 / 5, "floor beats the budget");
+  assert.equal(m.tenWeightsTwisted, 0, "no twisted ten-weights");
+  assert.ok(m.tenWeightsUntwisted > 0, "teeth: untwisted tens are found");
+  for (const s of ["Q", "Qbar", "uc", "ucbar", "ec", "ecbar"]) assert.ok(!m.speciesTwisted[s], "no twisted " + s);
+  assert.ok((m.speciesTwisted.dc ?? 0) + (m.speciesTwisted.L ?? 0) > 0, "twisted five-plet species do appear");
+  assert.deepEqual(Object.keys(m.lightestTwistedDoublet), ["2.0"], "lightest twisted (3,2) sits at |P|^2 = 2");
+  assert.match(r.openCase, /codimension-six|codimension-6/);
+});

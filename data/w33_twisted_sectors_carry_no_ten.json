@@ -1,0 +1,61 @@
+{
+ "claim": "Twisted massless states of the W(3,3)-twist vacuum carry no weight of the SU(5) ten: a ten-weight has norm 6/5, massless twisted states have |P|^2 = 4/3, and the leftover 2/15 is below the 2/9 floor of any nontrivial E8 coset, which is what the second-E8 part of every local shift is. Hence Q, u^c and e^c are untwisted-only, which with a6e1c69 (at most one species per untwisted ten) and n10 = 3 completes the Standard Model no-go of bf7ce0a.",
+ "budget": {
+  "tenWeightNorm": "6/5",
+  "masslessTwisted": "4/3",
+  "leftover": "2/15",
+  "cosetFloor": "2/9"
+ },
+ "measurements": {
+  "models": 250,
+  "fixedPoints": 2250,
+  "minSecondE8CosetNorm": {
+   "0.2222": 71,
+   "0.4444": 810,
+   "0.6667": 870,
+   "0.8889": 499
+  },
+  "trivialSecondE8": 0,
+  "tenWeightsUntwisted": 847,
+  "tenWeightsTwisted": 0,
+  "speciesUntwisted": {
+   "Lbar": 1896,
+   "ucbar": 729,
+   "dcbar": 2889,
+   "Qbar": 1566,
+   "ecbar": 246
+  },
+  "speciesTwisted": {
+   "L": 500,
+   "dc": 948,
+   "dcbar": 267
+  },
+  "lightestTwistedDoublet": {
+   "2.0": 667
+  },
+  "wilsonClasses": {
+   "(0, 0)": 65,
+   "(1, 2)": 89,
+   "(2, 1)": 346
+  }
+ },
+ "openCase": "a trivial second-E8 local shift needs class(V_2) in the span of the Wilson-line classes inside E8/3E8 = F_3^8, a codimension-six coincidence absent from this sample and not analysed here",
+ "checks": {
+  "second_e8_coset_never_trivial": true,
+  "coset_floor_above_budget": true,
+  "no_twisted_ten_weights": true,
+  "teeth_untwisted_has_ten_weights": true,
+  "no_twisted_ten_species": true,
+  "twisted_does_supply_fiveplet_species": true,
+  "lightest_twisted_doublet_is_two": true
+ },
+ "valid": true,
+ "status": "budget and floor are arithmetic; the hypothesis is verified on every sampled fixed point",
+ "sources": [
+  "Holotrade ade6ba9",
+  "Holotrade 35eb923",
+  "Holotrade bf7ce0a",
+  "Holotrade ed1eaca",
+  "Holotrade a6e1c69"
+ ]
+}
