@@ -1,0 +1,88 @@
+{
+ "claim": "Coset norms carry the anomaly class, |lambda+V|^2 = (2/9)class mod 2/3, so the only coset with a norm below 2/9 is the trivial one. A twisted massless ten-weight needs a leftover of 2/15 < 2/9 in the second E8, hence a trivial second-E8 local shift: that is the unique escape route from the no-go of 47e85ab. Constructing those configurations directly, they carry thousands of massless twisted states and include SU(3)xSU(2) breakings, and none of them carries a ten-weight.",
+ "normRule": {
+  "E7+U1": {
+   "class": 1,
+   "norms": [
+    "2/9",
+    "8/9",
+    "14/9",
+    "20/9",
+    "26/9"
+   ]
+  },
+  "A8": {
+   "class": 1,
+   "norms": [
+    "8/9",
+    "14/9",
+    "20/9",
+    "26/9",
+    "32/9"
+   ]
+  },
+  "E6+A2": {
+   "class": 0,
+   "norms": [
+    "2/3",
+    "4/3",
+    "2",
+    "8/3",
+    "10/3"
+   ]
+  },
+  "D7+U1": {
+   "class": 2,
+   "norms": [
+    "4/9",
+    "10/9",
+    "16/9",
+    "22/9",
+    "28/9"
+   ]
+  },
+  "trivial": {
+   "class": 0,
+   "norms": [
+    "0",
+    "2",
+    "4"
+   ]
+  }
+ },
+ "exceptional": {
+  "configs": 800,
+  "masslessStates": 21492,
+  "pointsWithMassless": 796,
+  "tenWeights": 0,
+  "smBreakings": 52
+ },
+ "firstCosetMinimum": {
+  "2/3": 796,
+  "0": 4
+ },
+ "breakingPatterns": {
+  "('A3',)": 106,
+  "('A2',)": 267,
+  "('A1', 'A1')": 371,
+  "('A1', 'A2')": 52,
+  "('A4',)": 4
+ },
+ "checks": {
+  "norm_rule_holds_on_all_classes": true,
+  "only_trivial_coset_dips_below_two_ninths": true,
+  "budget_forces_trivial_second_e8": true,
+  "exceptional_case_is_constructible": true,
+  "exceptional_sample_has_massless_states": true,
+  "exceptional_sample_includes_sm_breaking": true,
+  "no_ten_weights_in_the_exceptional_case": true,
+  "trivial_first_coset_has_no_massless": true
+ },
+ "valid": true,
+ "status": "norm rule and reduction are proofs; the emptiness of the exceptional branch is a constructed search",
+ "sources": [
+  "Holotrade 47e85ab",
+  "Holotrade a6e1c69",
+  "Holotrade a779053"
+ ]
+}

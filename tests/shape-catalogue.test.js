@@ -9726,3 +9726,18 @@ test("the Standard Model no-go is closed: the exhaustive census and the two theo
   assert.equal(r.theorems.splitting, "Holotrade a6e1c69");
   assert.equal(r.theorems.noTenTwisted, "Holotrade 47e85ab");
 });
+
+test("the one escape route from the no-go is forced by the coset norm rule, and it is empty", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_exceptional_case_is_empty.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.equal(Object.keys(r.normRule).length, 5, "all five order-three classes");
+  assert.deepEqual(r.normRule["trivial"].norms.slice(0, 3), ["0", "2", "4"], "the trivial coset misses 4/3");
+  assert.equal(r.normRule["D7+U1"].class, 2);
+  assert.equal(r.normRule["A8"].class, 1);
+  assert.ok(r.exceptional.configs >= 800, "exceptional configurations are constructed, not awaited");
+  assert.ok(r.exceptional.masslessStates > 1000, "and they do carry massless twisted states");
+  assert.ok(r.exceptional.smBreakings > 0, "including SU(3)xSU(2) breakings");
+  assert.equal(r.exceptional.tenWeights, 0, "still no twisted ten");
+  assert.match(r.status, /constructed search/);
+});
