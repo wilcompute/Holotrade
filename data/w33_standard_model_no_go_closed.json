@@ -1,0 +1,72 @@
+{
+ "claim": "The other track's exhaustive census over E8/3E8 (127980 net-|3| classes, no Standard Model vector) and this track's two theorems (splitting: at most one of Q, u^c, e^c per ten; no ten in the twisted sectors) agree term by term. u^c = e^c = 0 in every class, the universal twisted contribution is (0,0,-3,-3,0), d^c = L throughout, and the untwisted remainder is Q = 3 with empty u^c and e^c slots.",
+ "census": {
+  "(3,0,3,3,0)": 56160,
+  "(3,0,0,0,0)": 56160,
+  "(3,0,-3,-3,0)": 15660
+ },
+ "universalTwisted": {
+  "Q": 0,
+  "uc": 0,
+  "dc": -3,
+  "L": -3,
+  "ec": 0
+ },
+ "untwistedRemainder": {
+  "(3,0,3,3,0)": {
+   "Q": 3,
+   "uc": 0,
+   "dc": 6,
+   "L": 6,
+   "ec": 0
+  },
+  "(3,0,0,0,0)": {
+   "Q": 3,
+   "uc": 0,
+   "dc": 3,
+   "L": 3,
+   "ec": 0
+  },
+  "(3,0,-3,-3,0)": {
+   "Q": 3,
+   "uc": 0,
+   "dc": 0,
+   "L": 0,
+   "ec": 0
+  }
+ },
+ "enumeration": {
+  "source": "w33_su5_sm_chiral_exhaustive.json / w33_su5_breaking_exhaustive.json (other track)",
+  "classes": 127980,
+  "compatibleSecondWilsonClasses": 383940
+ },
+ "theorems": {
+  "splitting": "Holotrade a6e1c69",
+  "noTenTwisted": "Holotrade 47e85ab"
+ },
+ "checks": {
+  "census_total_matches": true,
+  "splitting_uc_ec_zero_everywhere": true,
+  "fivebar_pairs_dc_with_L": true,
+  "quark_doublets_multiple_of_three": true,
+  "no_standard_model_vector": true,
+  "twisted_carries_no_ten_species": true,
+  "twisted_carries_only_fiveplet_species": true,
+  "twisted_certificate_agrees": true,
+  "untwisted_remainder_has_no_uc_or_ec": true,
+  "untwisted_remainder_Q_is_three": true,
+  "kY_agrees_with_our_controls": true,
+  "splitting_certificate_valid": true,
+  "order_rule_still_general": true
+ },
+ "valid": true,
+ "status": "reconciliation: enumeration (other track) and proof (this track) describe the same wall",
+ "sources": [
+  "Holotrade ade6ba9",
+  "Holotrade 35eb923",
+  "Holotrade bf7ce0a",
+  "Holotrade a6e1c69",
+  "Holotrade 47e85ab",
+  "other track: w33_su5_breaking_exhaustive, w33_su5_sm_chiral_exhaustive"
+ ]
+}

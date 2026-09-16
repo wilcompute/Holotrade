@@ -9710,3 +9710,19 @@ test("the twisted sectors carry no ten: a 2/15 budget against a 2/9 coset floor 
   assert.deepEqual(Object.keys(m.lightestTwistedDoublet), ["2.0"], "lightest twisted (3,2) sits at |P|^2 = 2");
   assert.match(r.openCase, /codimension-six|codimension-6/);
 });
+
+test("the Standard Model no-go is closed: the exhaustive census and the two theorems agree term by term", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_standard_model_no_go_closed.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.equal(Object.values(r.census).reduce((a, b) => a + b, 0), 127980, "the exhausted class count");
+  assert.deepEqual(r.universalTwisted, { Q: 0, uc: 0, dc: -3, L: -3, ec: 0 }, "twisted sectors carry no ten");
+  for (const u of Object.values(r.untwistedRemainder)) {
+    assert.equal(u.Q, 3, "three untwisted quark doublets");
+    assert.equal(u.uc, 0, "the tens are exhausted by Q");
+    assert.equal(u.ec, 0);
+    assert.equal(u.dc, u.L, "the anti-five pairs d^c with L");
+  }
+  assert.equal(r.theorems.splitting, "Holotrade a6e1c69");
+  assert.equal(r.theorems.noTenTwisted, "Holotrade 47e85ab");
+});
