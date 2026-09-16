@@ -1,0 +1,41 @@
+{
+  "schema": "holotrade.w33_e8cubed_leech_overlap56.v1",
+  "status": "PASS",
+  "headline": "An explicit symplectic identification of the Leech 3a quotient with the standard six-qutrit F3^12 phase space maps the E8^3 three-W33 root shadow onto 56 points of the 32760-point Leech 90-tight set, split 16+20+20 across the three W33 blocks.",
+  "map_leech_coordinates_to_standard_F3_12": [
+    [0,0,0,2,1,0,1,1,0,2,2,2],
+    [0,1,1,1,0,0,0,2,0,2,1,0],
+    [1,2,0,2,2,2,2,1,1,2,1,0],
+    [1,1,1,2,0,0,1,1,1,2,2,0],
+    [2,0,1,2,0,0,1,1,1,1,0,0],
+    [1,0,0,0,0,0,0,2,1,1,0,0],
+    [1,1,0,2,0,2,0,2,1,1,0,0],
+    [1,1,0,1,1,0,1,1,0,1,2,0],
+    [0,2,1,0,2,0,2,0,2,0,1,1],
+    [0,1,0,1,0,2,2,1,1,1,2,0],
+    [1,1,0,2,1,2,0,1,0,1,2,0],
+    [2,1,1,1,2,2,2,0,0,1,0,0]
+  ],
+  "symplectic_identity": "F J_standard F^T = G_Leech mod 3",
+  "overlap": {
+    "root_shadow_points": 120,
+    "Leech_tight_points": 32760,
+    "overlap": 56,
+    "block_counts": [16,20,20],
+    "Leech_support_census_under_this_decomposition": {"1":56,"2":1472,"3":31232},
+    "random_120_set_expected_overlap": "1080/73 ~= 14.7945"
+  },
+  "exact_incidence_identities": {
+    "for_any_three_W33_block_decomposition": "if x1 is the Leech-tight-set support-1 count, then support-2 = 7*x1 + 1080 and support-3 = 31680 - 8*x1",
+    "for_any_nondegenerate_4_space_U": "if t=|T intersect PG(U)|, then |T intersect PG(U^perp)|=9*t+360"
+  },
+  "search_boundary": "56 is a certified constructive lower bound from deterministic symplectic-transvection search. No global-maximality claim is made by this certificate.",
+  "checks": {
+    "Leech_minimal_vectors_196560": true,
+    "Leech_projective_tight_set_32760": true,
+    "map_is_symplectic": true,
+    "root_shadow_120": true,
+    "overlap_56": true,
+    "support_identity_at_56": true
+  }
+}
