@@ -1,0 +1,10 @@
+{
+  "schema": "w33.two_cartan_hinge_orbits.v1",
+  "status": "PASS",
+  "headline": "All W33 two-Cartan hinges form one PSp(4,3) orbit, and all hinges decorated by one nonshared point on each Cartan form one orbit of size 2160. The frozen net-three heterotic witness lies in this unique decorated-hinge orbit.",
+  "geometry": {"projective_points":40,"W33_lines_as_pauli_cartans":40,"lines_through_point":4,"undecorated_hinges":240,"decorated_hinges":2160},
+  "group": {"generated_by_projective_symplectic_transvections":true,"projective_group_order":25920,"identification":"PSp(4,3)","undecorated_orbit_size":240,"undecorated_stabilizer_order":108,"decorated_orbit_size":2160,"decorated_stabilizer_order":12},
+  "witness": {"pauli_labels_x1z1x2z2":[[1,1,0,2],[0,0,1,2],[2,0,2,1]],"projective_labels":[[1,1,0,2],[0,0,1,2],[1,0,1,2]],"shared_projective_point":[1,0,1,2],"outer_pair_symplectic_product_mod3":2,"cartan_indices":[32,13],"decorated_hinge_in_unique_orbit":true},
+  "consequence": "At the level of W33/PSp(4,3) incidence alone, the two-Cartan hinge of the net-three witness is not exceptional: every decorated hinge is symmetry-equivalent. Any selector for hypercharge or exotic removal must use additional data (orientation/phases, second-E8 data, lattice norms, or spectrum data), not the bare projective hinge orbit.",
+  "checks": {"40_points":true,"40_cartans":true,"240_undecorated_hinges":true,"2160_decorated_hinges":true,"projective_symplectic_group_order_25920":true,"undecorated_single_orbit":true,"decorated_single_orbit":true,"witness_in_decorated_orbit":true}
+}
