@@ -1,0 +1,39 @@
+{
+  "schema": "holotrade.w33_exotic_quartic_selection.v1",
+  "status": "PASS",
+  "headline": "No cubic 5_T 5bar_U singlet mass is point-group allowed. The first possible operators are quartic 5_T 5bar_U S_T S_T. For each of the four untwisted 5bar momentum types there is exactly one full-rank-16 gauge-charge-cancelling pair of twisted singlet charge types (one at n1=1 and one at n1=2), and the Z3 space-group rule gives 9 location completions for every exotic fixed point. The resulting necessary-rule 9x12 matrix has 972 candidate monomials but only four distinct columns before right-moving R-charge data are restored.",
+  "spectrum": {
+    "twisted_5_copies": 9,
+    "untwisted_5bar_copies": 12,
+    "untwisted_5bar_momentum_types": 4,
+    "twisted_singlet_charge_types_by_n1": {"0":4,"1":9,"2":9}
+  },
+  "point_group": {
+    "cubic_allowed": false,
+    "reason": "The exotic is T1 and the anti-5 is untwisted. With one massless chiral singlet, the twist sum is 1 (untwisted singlet) or 2 (T1 singlet), never 0 mod 3.",
+    "minimal_mass_operator": "5_T * 5bar_U * S_T * S_T",
+    "twisted_field_count": 3
+  },
+  "gauge_and_space_group": {
+    "charge_type_solutions_per_bar_type": 1,
+    "space_group_location_pairs_per_matrix_entry": 9,
+    "matrix_shape": [9,12],
+    "candidate_quartic_monomials": 972,
+    "left_moving_space_group_generic_rank": 4,
+    "pair_data": [
+      {"bar_type":0,"spectator_sum":[-4,4,-2,-2,4,0,0,0,-4,0,0,0,0,0,0,0],"minimal_twisted_singlet_pair":[[1,0],[2,6]],"five_singlet_charge_type_solutions":18},
+      {"bar_type":1,"spectator_sum":[5,1,1,1,1,3,3,-3,-4,0,0,0,0,0,0,0],"minimal_twisted_singlet_pair":[[1,6],[2,3]],"five_singlet_charge_type_solutions":18},
+      {"bar_type":2,"spectator_sum":[2,4,4,-2,4,0,0,0,-4,0,0,0,0,0,0,0],"minimal_twisted_singlet_pair":[[1,0],[2,3]],"five_singlet_charge_type_solutions":18},
+      {"bar_type":3,"spectator_sum":[-1,1,-5,1,1,3,3,-3,-4,0,0,0,0,0,0,0],"minimal_twisted_singlet_pair":[[1,6],[2,6]],"five_singlet_charge_type_solutions":18}
+    ]
+  },
+  "open_boundary": "The present spectrum builder does not retain the right-moving H-momentum and oscillator quantum numbers needed for R-charge conservation. Published heterotic-orbifold CFT rules require gauge invariance, space-group invariance and R-charge conservation, with additional torus-lattice/worldsheet-instanton rules in general. Thus these 972 entries are necessary-rule candidates, not certified nonzero amplitudes. The missing R-charge data are also precisely what can distinguish the three untwisted plane copies; without them the 12 columns collapse to four left-moving types and the rank is at most 4.",
+  "literature": ["Kobayashi-Parameswaran-Ramos-Sanchez-Zavala, arXiv:1107.2137", "Cabo Bizet et al., arXiv:1301.2322"],
+  "checks": {
+    "four_5bar_momentum_types": true,
+    "unique_quartic_charge_pair_each": true,
+    "cubic_point_group_forbidden": true,
+    "quartic_space_group_solutions": true,
+    "necessary_matrix_rank_bound_4": true
+  }
+}
