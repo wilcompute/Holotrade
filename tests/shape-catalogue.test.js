@@ -9647,3 +9647,24 @@ test("the W(3,3)-twist vacuum contains three-family GUTs: SU(5) with 3 complete 
   }
   assert.match(r.claim, /OPEN|open/);
 });
+
+test("the W(3,3) vacuum never completes a Standard Model family: the anti-five survives, the ten loses u^c and e^c", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_vacuum_no_standard_model_family.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  for (const tag of ["control_SU(5)", "control_SO(10)"]) {
+    const c = r.controls[tag];
+    const vals = ["Q", "uc", "dc", "L", "ec"].map((k) => c.counts[k]);
+    assert.ok(vals.every((v) => v === vals[0] && Math.abs(v) === 3), tag + ": three complete families");
+    assert.ok(Math.abs(c.kY - 5 / 3) < 1e-9, tag + ": k_Y = 5/3");
+    assert.equal(c.exotics, 0);
+  }
+  assert.notDeepEqual(r.controls.flippedControl, [3, 3, 3, 3, 3], "flipped hypercharge must break the control");
+  for (const [k, s] of Object.entries(r.scans)) {
+    assert.equal(s.completeFamilies, 0, k);
+    assert.equal(s.lawHolds, true, k);
+    assert.equal(s.qMultipleOfThree, true, k);
+    assert.ok(s.bestSpeciesMatched <= 3, k);
+  }
+  assert.match(r.status, /not a theorem/);
+});

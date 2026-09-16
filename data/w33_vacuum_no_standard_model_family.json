@@ -1,0 +1,159 @@
+{
+ "claim": "In the W(3,3)-twist vacuum (fbd2c5f, 35eb923), Wilson-line breakings of the three-family SU(5) and SO(10) models never complete a Standard Model family. With canonical hypercharge (k_Y = 5/3, checked) the exact law on every sampled breaking with chiral quark doublets is: Q != 0 implies u^c = e^c = 0 and d^c = L, so the anti-five survives whole and the ten loses its up-type and charged-lepton singlets. Controls: the unbroken three-family SU(5) and SO(10) models do decompose into (3,3,3,3,3), and flipping the hypercharge orientation breaks that control.",
+ "controls": {
+  "control_SU(5)": {
+   "counts": {
+    "Q": 3,
+    "uc": 3,
+    "dc": 3,
+    "L": 3,
+    "ec": 3
+   },
+   "kY": 1.666666667,
+   "exotics": 0
+  },
+  "flippedControl": [
+   0,
+   0,
+   0,
+   -3,
+   -3
+  ],
+  "control_SO(10)": {
+   "counts": {
+    "Q": 3,
+    "uc": 3,
+    "dc": 3,
+    "L": 3,
+    "ec": 3
+   },
+   "kY": 1.666666667,
+   "exotics": 0
+  }
+ },
+ "scans": {
+  "SU(5)_2lines": {
+   "models": 2500,
+   "withChiralQ": 449,
+   "exoticFree": 0,
+   "bestSpeciesMatched": 3,
+   "bestCounts": [
+    -3,
+    0,
+    -3,
+    -3,
+    0
+   ],
+   "completeFamilies": 0,
+   "lawHolds": true,
+   "qMultipleOfThree": true,
+   "topCounts": {
+    "(0, 0, -3, 3, -3)": 228,
+    "(0, 0, 0, -3, -3)": 228,
+    "(0, -3, 3, -3, 0)": 193,
+    "(0, 0, 0, 0, 0)": 188,
+    "(0, -3, -3, 0, 0)": 153,
+    "(-3, 0, 0, 0, 0)": 151,
+    "(0, 0, 3, -3, 3)": 142,
+    "(-3, 0, -3, -3, 0)": 122
+   }
+  },
+  "SU(5)_3lines": {
+   "models": 2500,
+   "withChiralQ": 150,
+   "exoticFree": 0,
+   "bestSpeciesMatched": 3,
+   "bestCounts": [
+    3,
+    0,
+    3,
+    3,
+    0
+   ],
+   "completeFamilies": 0,
+   "lawHolds": true,
+   "qMultipleOfThree": true,
+   "topCounts": {
+    "(0, 0, 1, -2, 0)": 218,
+    "(0, 0, -2, 1, 0)": 188,
+    "(0, 0, 0, 0, 0)": 181,
+    "(0, 0, -1, 2, 0)": 177,
+    "(0, 0, 1, 1, 0)": 176,
+    "(0, 0, -1, -1, 0)": 147,
+    "(0, 0, 2, -1, 0)": 145,
+    "(0, 0, -1, 1, 0)": 82
+   }
+  },
+  "SO(10)_2lines": {
+   "models": 2500,
+   "withChiralQ": 818,
+   "exoticFree": 0,
+   "bestSpeciesMatched": 2,
+   "bestCounts": [
+    0,
+    3,
+    3,
+    0,
+    0
+   ],
+   "completeFamilies": 0,
+   "lawHolds": true,
+   "qMultipleOfThree": true,
+   "topCounts": {
+    "(0, 0, 0, 3, 3)": 538,
+    "(0, 3, 3, 0, 0)": 528,
+    "(3, 0, 0, 0, 0)": 507,
+    "(0, 0, 0, -3, -3)": 313,
+    "(-3, 0, 0, 0, 0)": 311,
+    "(0, -3, -3, 0, 0)": 303
+   }
+  },
+  "SO(10)_3lines": {
+   "models": 2500,
+   "withChiralQ": 238,
+   "exoticFree": 0,
+   "bestSpeciesMatched": 2,
+   "bestCounts": [
+    0,
+    -3,
+    -3,
+    0,
+    0
+   ],
+   "completeFamilies": 0,
+   "lawHolds": true,
+   "qMultipleOfThree": true,
+   "topCounts": {
+    "(0, 0, 0, 0, 0)": 1019,
+    "(0, 0, -1, 2, 0)": 164,
+    "(0, 0, 1, 1, 3)": 146,
+    "(0, 3, 1, 1, 0)": 137,
+    "(0, 0, -1, -1, 0)": 132,
+    "(0, 0, 2, -1, 0)": 127,
+    "(3, 0, 1, 1, 0)": 116,
+    "(0, 0, 1, 1, 0)": 103
+   }
+  }
+ },
+ "checks": {
+  "control_SU(5)_three_complete_families": true,
+  "control_SU(5)_kY_five_thirds": true,
+  "teeth_flipped_hypercharge_breaks_control": true,
+  "control_SO(10_three_complete_families": true,
+  "control_SO(10_kY_five_thirds": true,
+  "no_complete_standard_model_family": true,
+  "law_uc_ec_vectorlike_when_Q_chiral": true,
+  "quark_doublets_multiple_of_three": true,
+  "best_is_three_of_five_species": true,
+  "never_exotic_free": true,
+  "enough_breakings_with_chiral_Q": true
+ },
+ "valid": true,
+ "status": "negative over deterministic samples with an exact conditional law; not a theorem",
+ "sources": [
+  "Holotrade fbd2c5f",
+  "Holotrade ade6ba9",
+  "Holotrade 35eb923",
+  "classical Z3 model building: IKNQ 1987; FIQS 1990; Casas-Munoz"
+ ]
+}
