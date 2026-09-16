@@ -1,0 +1,49 @@
+{
+  "schema": "holotrade.w33_enriched_pauli_wilson_fingerprints.v1",
+  "status": "PASS",
+  "headline": "Restoring oriented Pauli labels splits the 2160 projective decorated hinges into two 8640-element Sp(4,3) orbits when the two outer Wilson/tori are ordered, distinguished by signed symplectic product 1 versus 2. The split is exchanged by swapping the outer tori. Restoring heterotic lattice data also distinguishes the frozen SU(5) and SO(10) witnesses even though bare W33 points are transitive.",
+  "oriented_hinges": {
+    "projective_decorated_hinges": 2160,
+    "oriented_lifts": 17280,
+    "ordered_outer_orbits": {"symplectic_product_1":8640,"symplectic_product_2":8640},
+    "frozen_net_three_outer_product": 2,
+    "unlabeled_outer_pair": "one orbit after allowing the outer-line swap"
+  },
+  "gut_witnesses": {
+    "SU5": {
+      "pauli_oriented": [0,2,0,0],
+      "pauli_projective": [0,1,0,0],
+      "first_E8_mod3_class": [2,1,1,0,0,2,0,0],
+      "second_E8_mod3_class": [0,2,2,0,1,2,1,0],
+      "short_norm_split": [16,32],
+      "shift_dot_residues_mod12": [0,0]
+    },
+    "SO10": {
+      "pauli_oriented": [0,2,2,1],
+      "pauli_projective": [0,1,1,2],
+      "first_E8_mod3_class": [1,1,1,2,1,1,2,0],
+      "second_E8_mod3_class": [1,1,1,0,1,2,1,2],
+      "short_norm_split": [24,24],
+      "shift_dot_residues_mod12": [4,8]
+    },
+    "fingerprints_different": true,
+    "one_line_modular_class_universe": 4787343,
+    "coarse_fingerprint_classes": 623,
+    "SU5_fingerprint_population": 12096,
+    "SO10_fingerprint_population": 13608
+  },
+  "net_three_hinge_line_fingerprints": [
+    {"pauli_oriented":[1,1,0,2],"short_norm_split":[24,24],"shift_dot_residues_mod12":[4,8]},
+    {"pauli_oriented":[0,0,1,2],"short_norm_split":[32,16],"shift_dot_residues_mod12":[0,0]},
+    {"pauli_oriented":[2,0,2,1],"short_norm_split":[32,16],"shift_dot_residues_mod12":[4,8]}
+  ],
+  "phase_boundary": "The zeta_12 exponents in the explicit E8-to-Pauli lift are basis/cocycle-gauge data. That certificate explicitly permits cocycle gauges and homogeneous rescalings, so raw exponents are not canonical orbit invariants without transporting the full lifted Clifford action.",
+  "correlation_boundary": "The two frozen GUT witnesses occupy different enriched lattice fingerprints, but two examples do not establish a statistical selector; their coarse fingerprints each contain thousands of modular-compatible Wilson classes.",
+  "checks": {
+    "oriented_count": true,
+    "two_equal_ordered_orbits": true,
+    "gut_fingerprints_differ": true,
+    "SU5_population": true,
+    "SO10_population": true
+  }
+}
