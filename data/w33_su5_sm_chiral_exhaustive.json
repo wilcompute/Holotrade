@@ -1,0 +1,28 @@
+{
+  "schema": "holotrade.w33_su5_sm_chiral_exhaustive.v1",
+  "status": "PASS",
+  "headline": "All 127980 net-|3| A4->A2+A1 Wilson classes have been exhausted. After the conventional colour orientation every model has Q=3 and u^c=e^c=0. Exactly 56160 have (Q,uc,dc,L,ec)=(3,0,3,3,0), 56160 have (3,0,0,0,0), and 15660 have (3,0,-3,-3,0). Hence no class in the complete Builder E8/3E8 universe has the Standard Model chiral vector (3,3,3,3,3).",
+  "parent": "data/w33_su5_breaking_exhaustive.json",
+  "models_with_abs_Q_3": 127980,
+  "chiral_census": {
+    "(3,0,3,3,0)": 56160,
+    "(3,0,0,0,0)": 56160,
+    "(3,0,-3,-3,0)": 15660
+  },
+  "universal_twisted_contribution": {
+    "(Q,uc,dc,L,ec)": [0,0,-3,-3,0],
+    "models": 127980
+  },
+  "standard_model_target": [3,3,3,3,3],
+  "standard_model_models": 0,
+  "best_species_present": 3,
+  "vectorlike_minimisation_boundary": "The subset with exact SM chiral content is empty, so there is no vectorlike-matter minimisation problem inside that target set.",
+  "scope": "Exhaustive over the same 6561x6561 physical Wilson-class representation and modular-compatibility conditions certified by w33_su5_breaking_exhaustive; no random sampling enters.",
+  "checks": {
+    "127980_models": true,
+    "three_patterns_only": true,
+    "uc_always_zero": true,
+    "ec_always_zero": true,
+    "no_SM_chiral_model": true
+  }
+}
