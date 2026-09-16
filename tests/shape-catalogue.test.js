@@ -9628,3 +9628,22 @@ test("the W(3,3) vacuum has three-family Wilson-line models, and the three is th
   assert.match(r.status, /not proved/);
   assert.match(r.claim, /OPEN/);
 });
+
+test("the W(3,3)-twist vacuum contains three-family GUTs: SU(5) with 3 complete 10+5bar, and SO(10) with 3 sixteens", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_vacuum_three_family_gut.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.equal(Math.abs(r.control.n27), 36, "standard embedding control: 36 generations");
+  const keys = Object.values(r.tally).flatMap((f) => Object.keys(f.indices).map((k) => JSON.parse(k.replace(/'/g, '"').replace(/^\(/, "[").replace(/\)$/, "]"))));
+  const su5 = keys.filter((k) => k[0] === "SU(5)");
+  assert.ok(su5.length > 0);
+  for (const k of su5) assert.equal(k[1], k[2], "tens and anti-fives match (SU(5)^3 anomaly)");
+  assert.ok(su5.some((k) => Math.abs(k[1]) === 3), "three complete SU(5) families occur");
+  assert.ok(keys.some((k) => k[0] === "SO(10)" && Math.abs(k[1]) === 3), "three SO(10) sixteens occur");
+  for (const k of keys) for (const x of k.slice(1)) assert.equal(Math.abs(Number(x)) % 3, 0);
+  for (const w of Object.values(r.examples)) {
+    assert.equal(w.reverified, true);
+    assert.equal(w.decomposition.exact, true);
+  }
+  assert.match(r.claim, /OPEN|open/);
+});
