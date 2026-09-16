@@ -1,0 +1,43 @@
+{
+ "claim": "An order-three Wilson line breaking SU(5) to the Standard Model keeps at most one of Q, u^c, e^c from each 10 and at most one of d^c, L from each 5bar, because 5c/6 = +-1/3 mod 1 makes all three pairwise hypercharge gaps non-integral. With n10 = 3 and quark doublets confined to the three untwisted planes, three quark doublets exhaust the tens, so the untwisted sector can hold no u^c or e^c: this is the mechanism behind the measured law of bf7ce0a.",
+ "lemma": "P.a = k + cY on an SU(5) irrep; breaking forces 5c/6 = +-1/3 (mod 1); the gaps 5c/6, -5c/6 and -5c/3 are then all non-integral, so at most one species per multiplet survives.",
+ "orderThreeIsEssential": "at order two the gap 2t vanishes for t = 1/2, so u^c and e^c would survive together",
+ "measurements": {
+  "multipletSizes": [
+   1,
+   5,
+   10
+  ],
+  "cValues": {
+   "0.333333": 725,
+   "0.666667": 710
+  },
+  "multipletsTested": 4680,
+  "multipletsWithSeveralHypercharges": 0,
+  "fivebarTested": 3764,
+  "fivebarWithBoth": 0,
+  "corollaryCases": 109,
+  "corollaryFailures": 0,
+  "teeth": {
+   "unbrokenLines": 25,
+   "multiplets": 26,
+   "withSeveralHypercharges": 26
+  }
+ },
+ "checks": {
+  "c_is_plus_minus_one_third": true,
+  "one_species_per_multiplet": true,
+  "fivebar_never_keeps_both": true,
+  "corollary_no_uc_or_ec_beside_three_Q": true,
+  "teeth_unbroken_keeps_several_species": true
+ },
+ "valid": true,
+ "status": "lemma proved arithmetically; items verified on this vacuum",
+ "sources": [
+  "Holotrade fbd2c5f",
+  "Holotrade ade6ba9",
+  "Holotrade 35eb923",
+  "Holotrade bf7ce0a",
+  "classical orbifold-GUT doublet-triplet splitting"
+ ]
+}

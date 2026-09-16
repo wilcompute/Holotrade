@@ -9668,3 +9668,19 @@ test("the W(3,3) vacuum never completes a Standard Model family: the anti-five s
   }
   assert.match(r.status, /not a theorem/);
 });
+
+test("an order-three Wilson line keeps at most one Standard Model species out of each GUT multiplet", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_wilson_line_splits_gut_multiplets.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  const m = r.measurements;
+  assert.deepEqual(Object.keys(m.cValues).map(Number).sort(), [0.333333, 0.666667], "5c/6 = +-1/3 mod 1");
+  assert.ok(m.multipletsTested > 2000);
+  assert.equal(m.multipletsWithSeveralHypercharges, 0, "at most one species per multiplet");
+  assert.equal(m.fivebarWithBoth, 0, "no 5bar keeps both d^c and L");
+  assert.ok(m.corollaryCases > 0);
+  assert.equal(m.corollaryFailures, 0, "three untwisted Q exhaust the tens");
+  assert.equal(m.teeth.withSeveralHypercharges, m.teeth.multiplets, "unbroken SU(5) keeps whole multiplets");
+  assert.ok(m.teeth.multiplets > 0);
+  assert.match(r.orderThreeIsEssential, /order two/);
+});
