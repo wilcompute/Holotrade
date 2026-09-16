@@ -1,0 +1,37 @@
+{
+  "schema": "holotrade.w33_exotic_sextic_nonic_completion.v1",
+  "status": "PASS",
+  "headline": "Quartic exotic masses vanish, but higher-order standard string selection rules admit complete matrix support. Each of the four 5bar momentum types has exactly two sextic gauge-charge solutions and forty plane-1 nonic solutions. Rule 4 removes plane-1 sextics and one-third of the location completions for plane-2/3 sextics, leaving 864 sextic candidates on eight columns. Nonic order restores the four plane-1 columns with 12960 candidates. The combined 9x12 support has structural rank 9.",
+  "sextic": {
+    "operator": "5_T 5bar_U S_T S_T S_U S_U",
+    "charge_solutions_per_bar_type": 2,
+    "surviving_5bar_plane_copies": [2,3],
+    "rule4_safe_space_group_completions_per_charge_solution": 6,
+    "candidate_monomials": 864,
+    "covered_matrix_columns": 8
+  },
+  "nonic": {
+    "operator": "5_T 5bar_U1 S_T S_T (S_U1)^5",
+    "charge_solutions_per_bar_type": 40,
+    "rule4_safe_space_group_completions_per_charge_solution": 9,
+    "candidate_monomials": 12960,
+    "covered_matrix_columns": 4
+  },
+  "combined_support": {
+    "matrix_shape": [9,12],
+    "covered_columns": 12,
+    "structural_rank": 9,
+    "meaning": "There exists a perfect matching in the binary allowed-coupling support; generic rank 9 follows only if sufficiently independent allowed CFT coefficients are nonzero."
+  },
+  "rule5": "The three T1 ground states have sum k_i=1 in every Z3 plane, so holomorphic classical instanton solutions exist. With N_L=Nbar_L=0 the Rule-5 inequality is automatic. Rule 5 therefore does not remove these ground-state channels.",
+  "literature": ["Kobayashi-Parameswaran-Ramos-Sanchez-Zavala, arXiv:1107.2137v3, sections 3.4.1-3.4.2"],
+  "boundary": "This certifies gauge momentum, point/space group, R-charge, Rule 4, and the Rule-5 existence condition. It does not evaluate the worldsheet instanton sums or prove that each surviving holomorphic CFT amplitude is nonzero. Rank 9 is a structural/generic-support statement, not a computed numerical mass matrix.",
+  "checks": {
+    "two_sextic_charge_solutions_each": true,
+    "forty_nonic_solutions_each": true,
+    "no_twisted_left_oscillators": true,
+    "sextic_864": true,
+    "nonic_12960": true,
+    "structural_rank_9": true
+  }
+}
