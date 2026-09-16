@@ -22,6 +22,31 @@
    "unbrokenLines": 25,
    "multiplets": 26,
    "withSeveralHypercharges": 26
+  },
+  "byWilsonLineOrder": {
+   "2": [
+    "u^c+e^c"
+   ],
+   "3": [],
+   "4": [
+    "u^c+e^c"
+   ],
+   "5": [],
+   "6": [
+    "u^c+e^c"
+   ],
+   "7": [],
+   "8": [
+    "u^c+e^c"
+   ],
+   "9": [],
+   "10": [
+    "u^c+e^c"
+   ],
+   "11": [],
+   "12": [
+    "u^c+e^c"
+   ]
   }
  },
  "checks": {
@@ -29,7 +54,10 @@
   "one_species_per_multiplet": true,
   "fivebar_never_keeps_both": true,
   "corollary_no_uc_or_ec_beside_three_Q": true,
-  "teeth_unbroken_keeps_several_species": true
+  "teeth_unbroken_keeps_several_species": true,
+  "Q_isolated_at_every_order": true,
+  "pairs_need_even_order": true,
+  "order_three_isolates_everything": true
  },
  "valid": true,
  "status": "lemma proved arithmetically; items verified on this vacuum",

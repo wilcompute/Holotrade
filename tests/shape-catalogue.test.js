@@ -9684,3 +9684,14 @@ test("an order-three Wilson line keeps at most one Standard Model species out of
   assert.ok(m.teeth.multiplets > 0);
   assert.match(r.orderThreeIsEssential, /order two/);
 });
+
+test("the splitting rule at every Wilson-line order: Q is always isolated, only even order pairs u^c with e^c", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_wilson_line_splits_gut_multiplets.json"));
+  const t = r.measurements.byWilsonLineOrder;
+  for (const [N, pairs] of Object.entries(t)) {
+    assert.ok(!pairs.some((p) => p.startsWith("Q+")), "quark doublets are never paired, order " + N);
+    assert.ok(!pairs.includes("d^c+L"), "the anti-five always splits, order " + N);
+    assert.deepEqual(pairs, Number(N) % 2 === 0 ? ["u^c+e^c"] : [], "order " + N);
+  }
+  assert.deepEqual(t["3"], [], "order three isolates every species");
+});

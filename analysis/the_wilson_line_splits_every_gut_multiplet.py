@@ -88,6 +88,31 @@ gut, fam, het = nog.gut, nog.fam, nog.het
 SPECIES = {Fr(1, 6): "Q", Fr(-2, 3): "uc", Fr(1, 3): "dc", Fr(-1, 2): "L", Fr(1): "ec"}
 
 
+def general_order_table(max_n=12):
+    """which Standard Model species can survive together, for a Wilson line of any order N.
+
+    On one SU(5) irrep P.a = k + cY. Writing t = 5c/6, breaking SU(5) needs t not in Z, and
+    N a in the lattice puts t in (1/N)Z, so t = j/N with j not divisible by N. Two species
+    survive together exactly when their hypercharge gap times c is an integer:
+        Q  and u^c :  t          Q and e^c : -t          u^c and e^c : -2t
+        d^c and L  :  t
+    So Q is isolated for EVERY order, the anti-five always splits, and u^c with e^c requires
+    2t in Z, i.e. N even with t = 1/2.
+    """
+    rows = {}
+    for N in range(2, max_n + 1):
+        pairs = set()
+        for j in range(1, N):
+            t = Fr(j, N)
+            if t.denominator == 1:                         # t integral: SU(5) would not be broken
+                continue
+            for label, gap in (("Q+u^c", t), ("Q+e^c", -t), ("u^c+e^c", -2 * t), ("d^c+L", t)):
+                if gap.denominator == 1:                   # the two species share P.a mod 1
+                    pairs.add(label)
+        rows[N] = sorted(pairs)
+    return rows
+
+
 def multiplets(states, roots):
     key = {tuple(s): i for i, s in enumerate(states)}
     seen, out = set(), []
@@ -213,11 +238,21 @@ def main():
     print("  teeth: unbroken-SU(5) lines %d, multiplets with >=2 survivors %d, with several hypercharges %d" % (
         trials, whole, multi))
     checks["teeth_unbroken_keeps_several_species"] = whole > 0 and multi == whole
+
+    # the same arithmetic at every Wilson-line order
+    table = general_order_table()
+    print("  species pairs that can survive one multiplet, by Wilson-line order:")
+    for N, pairs in sorted(table.items()):
+        print("      N = %2d : %s" % (N, ", ".join(pairs) if pairs else "none - every species is isolated"))
+    checks["Q_isolated_at_every_order"] = all("Q+u^c" not in v for v in table.values())
+    checks["pairs_need_even_order"] = all((v == ["u^c+e^c"]) == (N % 2 == 0) for N, v in table.items())
+    checks["order_three_isolates_everything"] = table[3] == []
     out = {"multipletSizes": sorted({len(M) for M in Ms}), "cValues": {str(k): v for k, v in sorted(cvals.items())},
            "multipletsTested": tested, "multipletsWithSeveralHypercharges": multi_y,
            "fivebarTested": fivebar_tested, "fivebarWithBoth": fivebar_both,
            "corollaryCases": corollary, "corollaryFailures": corollary_fail,
-           "teeth": {"unbrokenLines": trials, "multiplets": whole, "withSeveralHypercharges": multi}}
+           "teeth": {"unbrokenLines": trials, "multiplets": whole, "withSeveralHypercharges": multi},
+           "byWilsonLineOrder": {str(k): v for k, v in sorted(table.items())}}
     for k, v in checks.items():
         print("  %-42s %s" % (k, v))
     valid = all(checks.values())
