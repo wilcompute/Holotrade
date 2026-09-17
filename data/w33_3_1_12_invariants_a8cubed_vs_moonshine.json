@@ -1,0 +1,65 @@
+{
+ "claim": "The 3^(1+12)-invariants of the Niemeier A8^3 theory (Pauli group) and of Moonshine (O_3 of the 3B normaliser) have identical graded dimensions 1, 0, 144 at weights 0, 1, 2 and differ from weight 3 (1256 vs 1016). So the two theories do not share the fixed-point subalgebra of these groups, refuting the direct route to Moonshine from 4104251. Integrality alone forces the Monster fusion of O_3(N(3B)): 3A over the 65520 orbit, 3B over the 465920 orbit.",
+ "invariantDims": {
+  "A8cubed": [
+   1,
+   0,
+   144,
+   1256,
+   14148,
+   137304,
+   1184744,
+   9565128,
+   71731161
+  ],
+  "moonshine": [
+   1,
+   0,
+   144,
+   1016,
+   8388,
+   59544,
+   422504,
+   3547368,
+   31295961
+  ]
+ },
+ "firstDifferenceWeight": 3,
+ "monsterFusion": {
+  "orbit_65520": "3A",
+  "orbit_465920": "3B",
+  "centre": "3B",
+  "unique_integral_assignment": true
+ },
+ "weight2": {
+  "centreFixed": 65664,
+  "trivialPlusCharacters": "144 + 65520",
+  "faithful": 131220,
+  "faithfulRegisters": "180 x 729"
+ },
+ "suzOrbitsOnF3_12": [
+  65520,
+  465920
+ ],
+ "checks": {
+  "A8_element_counts_sum_to_3_13": true,
+  "A8_invariants_integral": true,
+  "suz_orbits_partition": true,
+  "monster_fusion_forced_3A_3B": true,
+  "agree_through_weight_two": true,
+  "first_difference_at_weight_three": true,
+  "weight2_centre_fixed_65664_both": true,
+  "weight2_faithful_is_180_registers": true,
+  "weight2_split_144_plus_65520": true
+ },
+ "valid": true,
+ "status": "exact computation; refutes the shared-fixed-subalgebra route only",
+ "sources": [
+  "Holotrade 4104251",
+  "Holotrade 903e1b7",
+  "Holotrade 68df33f",
+  "TOE 196cc86dc",
+  "TOE data/atlas/2SuzG1-f3r12B0.m1/.m2 (ATLAS)",
+  "Conway-Norton McKay-Thompson series"
+ ]
+}

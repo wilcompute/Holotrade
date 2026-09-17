@@ -9801,3 +9801,16 @@ test("the A8^3 Pauli group moves between the W(3,3) carriers; exactly its lattic
   assert.equal(r.chenevierLannesA8cubedP3["E8^3"], 1, "the E8^3 neighbour is unique");
   assert.ok(r.chenevierLannesA8cubedP3["E6^4"] > 0, "E6^4 is a neighbour the Pauli group misses");
 });
+
+test("the 3^(1+12)-invariants of A8^3 and Moonshine agree through weight two and part at weight three", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_3_1_12_invariants_a8cubed_vs_moonshine.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.deepEqual(r.invariantDims.A8cubed.slice(0, 4), [1, 0, 144, 1256]);
+  assert.deepEqual(r.invariantDims.moonshine.slice(0, 4), [1, 0, 144, 1016]);
+  assert.equal(r.firstDifferenceWeight, 3);
+  assert.equal(r.monsterFusion.orbit_65520, "3A");
+  assert.equal(r.monsterFusion.orbit_465920, "3B");
+  assert.equal(r.weight2.faithful, 131220);
+  assert.match(r.status, /refutes the shared-fixed-subalgebra route only/);
+});
