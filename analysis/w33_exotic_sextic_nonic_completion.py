@@ -2,27 +2,38 @@
 """First higher-order channels capable of lifting the frozen SU(5) exotics.
 
 Continues w33_exotic_quartic_selection.py and w33_exotic_rcharge_closure.py.
-The quartic channels all fail R-charge.  Here the exact massless spectrum is
+The quartic channels all fail R-charge. Here the exact massless spectrum is
 reconstructed and full rank-16 gauge momentum is solved at the next orders.
 
 For the frozen witness all relevant twisted states are oscillatorless T1 ground
-states.  Three T1 insertions carry q=(1,1,1).  A sextic mass operator can add
+states. Three T1 insertions carry q=(1,1,1). A sextic mass operator can add
 three untwisted fields in one plane (the 5bar plus two singlets), giving total
 q=(4,1,1) up to permutation and three picture-changing right oscillators in
-that plane.  The Z3 R rule is satisfied.  Rule 4 is stronger when all three
+that plane. The Z3 R rule is satisfied. Rule 4 is stronger when all three
 T1 fields coincide in a Z3/SU3 plane: the torus has Z6 symmetry and requires
 the corresponding picture-changing number to vanish mod 6.
 
 Consequently sextics survive only for 5bar copies in planes 2/3 and only for
-6 of the 9 space-group completions per entry.  The missing plane-1 columns are
+6 of the 9 space-group completions per entry. The missing plane-1 columns are
 first recoverable at nonic order with six untwisted fields in plane 1, for
 which the picture-changing number is 6 and Rule 4 is satisfied.
 
 Rule 5: the three T1 fields have sum k_i=1 in every Z3 plane, so nontrivial
 holomorphic classical instantons exist; for oscillatorless left-moving ground
-states the Rule-5 inequality N_L>=Nbar_L is therefore automatic.  This is only
+states the Rule-5 inequality N_L>=Nbar_L is therefore automatic. This is only
 a selection-rule certificate: it does not evaluate the instanton sums or prove
 that every allowed coefficient is nonzero.
+
+2026-09-17 reproducibility/rank correction. The original nonic loop appended
+the whole list ``ti`` instead of iterating its tuples, so running this source
+raised TypeError even though the committed historical JSON contained the right
+2/40 solution counts. The loop below is repaired. More importantly, the 9x12
+binary support has matching/structural rank 9, but that is NOT a theorem that
+the physical exotic mass matrix generically has rank 9: the nine rows are
+fixed-point translates whose coefficients share twisted-singlet VEV profiles.
+See ``the_exotic_mass_rank_is_set_by_where_the_singlets_condense.py``. Symmetric
+VEVs give rank 1 and localized VEVs give strong rank bounds; rank 9 is a
+vacuum-profile condition, not a consequence of support alone.
 """
 from __future__ import annotations
 import importlib.util,itertools,json
@@ -111,7 +122,8 @@ def main(write=True):
   nsol=[]
   for st,ti in t2.items():
    need=keyv(-D-np.array(st,dtype=np.int64))
-   for ui in u5.get(need,[]):nsol.append((ti,ui))
+   for ui in u5.get(need,[]):
+    for tt in ti:nsol.append((tt,ui))
   nuniq=sorted({(tuple(sorted(t)),tuple(sorted(u))) for t,u in nsol})
   assert len(nuniq)==40
   assert all(all(TS[x][0]==0 for x in t) for t,u in nuniq)
@@ -130,26 +142,30 @@ def main(write=True):
  nonic_cols=4;nonic_per_entry=40*9;nonic_total=9*nonic_cols*nonic_per_entry
  assert nonic_total==12960
 
- # Every one of the 9 exotic rows couples to all 8 plane-2/3 columns at sextic
- # and all 4 plane-1 columns at nonic. The combined binary support is K_{9,12},
- # hence has structural/generic rank 9 over characteristic zero.
- support=np.ones((9,12),dtype=int);assert np.linalg.matrix_rank(support.astype(float))==1
- # Structural rank is maximum bipartite matching size, trivially 9 for K9,12.
+ # Every one of the 9 exotic rows has allowed support on all 8 plane-2/3 columns
+ # at sextic order and all 4 plane-1 columns at nonic order. The resulting binary
+ # support is K_{9,12}, whose maximum matching size is 9. This is ONLY support
+ # structural rank; shared fixed-point/VEV profiles can force a much lower
+ # numerical mass rank, including rank 1 in translation-symmetric vacua.
  structural_rank=9
  out={
   'schema':'holotrade.w33_exotic_sextic_nonic_completion.v1','status':'PASS',
-  'headline':'Quartic exotic masses vanish, but higher-order standard string selection rules admit a complete support. Each of the four 5bar momentum types has exactly two sextic gauge-charge solutions and forty plane-1 nonic solutions. Rule 4 removes plane-1 sextics and one-third of the location completions for plane-2/3 sextics, leaving 864 sextic candidates on eight columns. Nonic order restores the four plane-1 columns with 12960 candidates. The combined 9x12 support has structural rank 9.',
+  'headline':'Quartic exotic masses vanish, while higher-order selection rules admit complete binary support: two sextic gauge-charge solutions and forty plane-1 nonic solutions per 5bar momentum type, with 864 sextic and 12960 nonic candidates. The 9x12 support graph has matching/structural rank 9, but the physical mass rank is vacuum-dependent and is not certified by support alone.',
   'massless_spectrum':{'untwisted_5bar_momentum_types':4,'untwisted_singlet_momentum_types':len(US),'twisted_singlet_types':len(TS),'twisted_states_all_NL0':True},
   'sextic':{'operator':'5_T 5bar_U S_T S_T S_U S_U','charge_solutions_per_bar_type':2,'surviving_5bar_plane_copies':[2,3],
              'rule4_safe_space_group_completions_per_charge_solution':6,'candidate_monomials':864,'covered_matrix_columns':8,'details':sextic},
   'nonic':{'operator':'5_T 5bar_U1 S_T S_T (S_U1)^5','charge_solutions_per_bar_type':40,
             'rule4_safe_space_group_completions_per_charge_solution':9,'candidate_monomials':12960,'covered_matrix_columns':4,'details':nonic},
   'combined_support':{'matrix_shape':[9,12],'covered_columns':12,'structural_rank':structural_rank,
-                      'meaning':'There exists a perfect matching in the binary allowed-coupling support; generic rank 9 follows only if sufficiently independent allowed CFT coefficients are nonzero.'},
+                      'meaning':'The binary allowed-coupling graph K9,12 has maximum matching size 9. This is a support theorem only; it does not imply generic physical mass rank 9 once common fixed-point/VEV profiles are imposed.'},
+  'physical_rank_firewall':{'audit':'analysis/the_exotic_mass_rank_is_set_by_where_the_singlets_condense.py',
+                            'translation_invariant_VEV_rank':1,
+                            'single_fixed_point_per_twisted_type_rank_bound':'<=4',
+                            'rank9_requirement':'twisted singlets must be spread over several fixed points with unequal VEVs; D/F-flat realization remains open'},
   'rule5':'The three T1 ground states have sum k_i=1 in every Z3 plane, so holomorphic classical instanton solutions exist. With N_L=Nbar_L=0 the Rule-5 inequality is automatic. Rule 5 therefore does not remove these ground-state channels.',
   'literature':['Kobayashi-Parameswaran-Ramos-Sanchez-Zavala, arXiv:1107.2137v3, sections 3.4.1-3.4.2'],
-  'boundary':'This certifies gauge momentum, point/space group, R-charge, Rule 4, and the Rule-5 existence condition. It does not evaluate the worldsheet instanton sums or prove that each surviving holomorphic CFT amplitude is nonzero. Rank 9 is a structural/generic-support statement, not a computed numerical mass matrix.',
-  'checks':{'two_sextic_charge_solutions_each':True,'forty_nonic_solutions_each':True,'no_twisted_left_oscillators':True,'sextic_864':True,'nonic_12960':True,'structural_rank_9':True}}
+  'boundary':'This certifies gauge momentum, point/space group, R-charge, Rule 4, the Rule-5 existence condition, and binary support/matching rank. It does not evaluate worldsheet instanton sums, prove nonzero amplitudes, specify a D/F-flat fixed-point VEV profile, or prove a rank-9 numerical exotic mass matrix.',
+  'checks':{'source_reproducible_after_nonic_fix':True,'two_sextic_charge_solutions_each':True,'forty_nonic_solutions_each':True,'no_twisted_left_oscillators':True,'sextic_864':True,'nonic_12960':True,'support_matching_rank_9':True}}
  if write:OUT.write_text(json.dumps(out,indent=2)+'\n')
  print(json.dumps(out,indent=2));return out
 if __name__=='__main__':main(True)
