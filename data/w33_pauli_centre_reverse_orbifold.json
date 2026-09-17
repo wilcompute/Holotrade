@@ -1,0 +1,77 @@
+{
+ "claim": "The centre of the Pauli 3^(1+12) acting on the Niemeier A8^3 lattice VOA is the dual Z_3 of the E8^3 -> A8^3 orbifold of 68df33f: the shift orbifold of N(A8^3) by u = (6,0,0) has 27 glue words, is even unimodular, and has 216 + 6*84 = 720 roots, each A8 completing to E8, so it is E8^3. Hence E8^3 -> A8^3 is the exact lattice analogue of Leech -> Moonshine, with the same extraspecial 3^(1+12) core.",
+ "glue": {
+  "A8cubed_words": 27,
+  "invariant_words": 9,
+  "orbifold_words": 27,
+  "orbifold_single_entry_words": [
+   [
+    0,
+    0,
+    3
+   ],
+   [
+    0,
+    0,
+    6
+   ],
+   [
+    0,
+    3,
+    0
+   ],
+   [
+    0,
+    6,
+    0
+   ],
+   [
+    3,
+    0,
+    0
+   ],
+   [
+    6,
+    0,
+    0
+   ]
+  ]
+ },
+ "roots": {
+  "A8cubed": 216,
+  "orbifold": 720
+ },
+ "centreShift": [
+  6,
+  0,
+  0
+ ],
+ "centreRealisations": 27,
+ "parallel": {
+  "Leech_to_Moonshine": "3^(1+12).2Suz.2, centre 3B, reverse orbifold returns V_Leech",
+  "E8cubed_to_A8cubed": "3^(1+12) Pauli, centre = glue grading omega^(c_1), reverse orbifold returns V_E8^3"
+ },
+ "literature": {
+  "Sagaki-Shimakura arXiv:1402.0143": "A8^3 excluded from Miyamoto Z3 orbifold (fixed rank 8 not in 6Z)",
+  "Hoehn-Scheithauer (rank-14 GKM)": "their Z2-twist refers to root lattice A_3^8, not A_8^3",
+  "Chen-Lam-Shimakura arXiv:1606.05961": "Leech Z3 orbifold is Moonshine; 3^(1+12).2Suz.2 3-locals"
+ },
+ "checks": {
+  "A8_cubed_glue_is_niemeier": true,
+  "u_has_order_3_and_integral_q": true,
+  "invariant_part_has_index_3": true,
+  "orbifold_lattice_is_even_unimodular": true,
+  "orbifold_lattice_has_720_roots": true,
+  "each_A8_completes_to_E8": true,
+  "every_valid_representative_gives_E8_cubed": true,
+  "teeth_order_nine_shift_is_not_the_centre": true
+ },
+ "valid": true,
+ "status": "exact glue-code computation with standard orbifold duality; no claim about the full non-cyclic orbifold",
+ "sources": [
+  "Holotrade 68df33f",
+  "Holotrade 4104251",
+  "TOE 6a881ef5c",
+  "TOE 865e04b18"
+ ]
+}

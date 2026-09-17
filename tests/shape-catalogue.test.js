@@ -9771,3 +9771,16 @@ test("the three Pauli groups of A8^3 are one extraspecial 3^(1+12), the only kin
   assert.equal(r.mckay.mckayClassAtThatNode, "3C");
   assert.match(r.status, /not a construction/);
 });
+
+test("the centre of the A8^3 Pauli 3^(1+12) is the reverse orbifold back to E8^3", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_pauli_centre_reverse_orbifold.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.equal(r.roots.A8cubed, 216);
+  assert.equal(r.roots.orbifold, 720, "216 + 6 x 84: each A8 completes to E8");
+  assert.equal(r.glue.invariant_words, 9);
+  assert.equal(r.glue.orbifold_words, 27);
+  assert.equal(r.glue.orbifold_single_entry_words.length, 6);
+  assert.match(r.literature["Sagaki-Shimakura arXiv:1402.0143"], /excluded/);
+  assert.match(r.literature["Hoehn-Scheithauer (rank-14 GKM)"], /A_3\^8/);
+});
