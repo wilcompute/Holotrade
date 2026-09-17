@@ -1,0 +1,145 @@
+{
+ "claim": "The exotic mass matrix of the frozen SU(5) witness factorises through the nine degenerate fixed points: M(f,c) = sum_s A_s(f) B_s(c), with one twisted singlet pair per anti-five type. Every ingredient is translation-invariant on Z_3^2, so translation-invariant VEVs give rank 1 and single-fixed-point VEVs give rank <= 4; the diagonal placement used for the degree-12 cube also gives rank 1. Rank 9 requires each twisted singlet to be spread over several fixed points with unequal VEVs - a condition on the vacuum, not a generic property of the couplings.",
+ "credited": {
+  "countsReproduce": true,
+  "sexticChannelsUseVacuumSinglets": true,
+  "untwistedPairsAreTheFIBilinears": true
+ },
+ "reproducibilityBug": {
+  "committedScriptCrashes": true,
+  "error": "list indices must be integers or slices, not tuple",
+  "jsonMissingKeysTheCodeWrites": [
+   "massless_spectrum",
+   "details"
+  ],
+  "line": "for ui in u5.get(need,[]):nsol.append((ti,ui))",
+  "fix": "for ui in u5.get(need,[]):\n    for tt in ti: nsol.append((tt,ui))"
+ },
+ "twistedPairPerAntifiveType": {
+  "0": [
+   1,
+   2
+  ],
+  "1": [
+   0,
+   3
+  ],
+  "2": [
+   0,
+   1
+  ],
+  "3": [
+   2,
+   3
+  ]
+ },
+ "rankByNamedProfile": {
+  "translation_invariant": [
+   1
+  ],
+  "single_point_origin": [
+   1
+  ],
+  "diagonal_line_of_the_degree12_cube": [
+   1
+  ],
+  "generic_all_points": [
+   9
+  ]
+ },
+ "rankBySupportSize": {
+  "1": {
+   "maxRank": 4,
+   "fractionRank9": 0.0,
+   "histogram": {
+    "1": 2,
+    "2": 46,
+    "3": 31,
+    "4": 121
+   }
+  },
+  "2": {
+   "maxRank": 9,
+   "fractionRank9": 0.215,
+   "histogram": {
+    "5": 5,
+    "6": 24,
+    "7": 54,
+    "8": 74,
+    "9": 43
+   }
+  },
+  "3": {
+   "maxRank": 9,
+   "fractionRank9": 0.94,
+   "histogram": {
+    "6": 1,
+    "7": 1,
+    "8": 10,
+    "9": 188
+   }
+  },
+  "4": {
+   "maxRank": 9,
+   "fractionRank9": 1.0,
+   "histogram": {
+    "9": 200
+   }
+  },
+  "5": {
+   "maxRank": 9,
+   "fractionRank9": 1.0,
+   "histogram": {
+    "9": 200
+   }
+  },
+  "6": {
+   "maxRank": 9,
+   "fractionRank9": 1.0,
+   "histogram": {
+    "9": 200
+   }
+  },
+  "7": {
+   "maxRank": 9,
+   "fractionRank9": 1.0,
+   "histogram": {
+    "9": 200
+   }
+  },
+  "8": {
+   "maxRank": 9,
+   "fractionRank9": 1.0,
+   "histogram": {
+    "9": 200
+   }
+  },
+  "9": {
+   "maxRank": 9,
+   "fractionRank9": 1.0,
+   "histogram": {
+    "9": 200
+   }
+  }
+ },
+ "checks": {
+  "their_counts_reproduce_with_fix": true,
+  "sextic_channels_use_vacuum_singlets": true,
+  "one_twisted_pair_per_antifive_type": true,
+  "A_translation_invariant_rank_one": true,
+  "symmetric_placements_rank_one": true,
+  "generic_profile_reaches_rank_nine": true,
+  "B_single_point_rank_at_most_four": true,
+  "rank_nine_needs_spread": true
+ },
+ "valid": true,
+ "status": "bounds A and B are proofs; the support-size table measures what generic realisations can reach",
+ "sources": [
+  "Holotrade 6871d80",
+  "Holotrade ae76a54",
+  "Holotrade 4fdf7b0",
+  "Holotrade 6ee5e7b",
+  "Holotrade add6a87",
+  "Kobayashi-Parameswaran-Ramos-Sanchez-Zavala arXiv:1107.2137 (Rules 4/5)"
+ ]
+}

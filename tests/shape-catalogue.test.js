@@ -9741,3 +9741,18 @@ test("the one escape route from the no-go is forced by the coset norm rule, and 
   assert.equal(r.exceptional.tenWeights, 0, "still no twisted ten");
   assert.match(r.status, /constructed search/);
 });
+
+test("the exotic mass rank is set by where the singlets condense: symmetric vacua give rank one", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_exotic_mass_rank_by_condensate.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.equal(r.credited.countsReproduce, true, "the other track's counts reproduce once the nonic loop is fixed");
+  assert.equal(r.credited.sexticChannelsUseVacuumSinglets, true);
+  assert.equal(r.reproducibilityBug.committedScriptCrashes, true);
+  assert.deepEqual(r.rankByNamedProfile.translation_invariant, [1], "bound A");
+  assert.deepEqual(r.rankByNamedProfile.diagonal_line_of_the_degree12_cube, [1]);
+  assert.deepEqual(r.rankByNamedProfile.generic_all_points, [9]);
+  assert.ok(r.rankBySupportSize["1"].maxRank <= 4, "bound B: one fixed point per type caps the rank at four");
+  assert.equal(r.rankBySupportSize["1"].fractionRank9, 0);
+  assert.equal(r.rankBySupportSize["4"].fractionRank9, 1);
+});
