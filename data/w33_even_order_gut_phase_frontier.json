@@ -1,0 +1,25 @@
+{
+  "schema": "w33.even_order_gut_phase_frontier.v1",
+  "status": "PASS_WITH_BUILDER_BOUNDARY",
+  "universal_gap_pattern": {
+    "standard_SU5_10": ["t", "t", "2t"],
+    "flipped_SO10_16_to_SU5": ["t", "t", "2t"]
+  },
+  "theorem": {
+    "full_three_species_parent_irrep": "iff t=0 mod 1 (GUT unbroken)",
+    "broken_GUT_two_species_pair": "iff t=1/2 mod 1",
+    "odd_order": "never gives a two-species pair",
+    "Z6": "only k=3, the order-two subgroup element"
+  },
+  "Z3_check": {"t=1/3": [1,1,1], "t=2/3": [1,1,1]},
+  "Z2_check": {"t=1/2": [2,1]},
+  "existing_builder_boundary": {
+    "geometry": "T^6/Z3 with fixed points F3^3",
+    "wilson_line_conditions": "3 a_i^2 in 2Z; 3 V.a_i and 3 a_i.a_j integral",
+    "can_compute_Z6II_spectrum": false,
+    "reason": "Z6-II needs a different geometric twist, fixed-set structure, local vacuum energies and modular-invariance conditions; reusing the Z3 fixed-point/spectrum routine would be invalid."
+  },
+  "physics_consequence": "An even-order extension is necessary but cannot by itself preserve a complete SU5/SO10 family inside one parent irrep. A viable SM construction must combine sectors or use a more general hypercharge embedding.",
+  "next_builder_requirement": "Implement an independent Z6-II or Z3xZ2 heterotic lattice/orbifold builder before claiming modular invariance, three-family spectra, hypercharge, exotic decoupling or flatness.",
+  "boundary": "Exact charge/character arithmetic plus an explicit software-capability audit; not a Z6-II vacuum construction."
+}
