@@ -9814,3 +9814,15 @@ test("the 3^(1+12)-invariants of A8^3 and Moonshine agree through weight two and
   assert.equal(r.weight2.faithful, 131220);
   assert.match(r.status, /refutes the shared-fixed-subalgebra route only/);
 });
+
+test("flipped SU(5) is closed too at order three: both SU(5) hypercharge embeddings need an even-order element", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_flipped_su5_closed_order3.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.equal(r.a.flippable, 0, "no three-family SU(5) model admits a flipped U(1)_X");
+  assert.deepEqual(Object.keys(r.a.ratios), ["-1/2"], "family 5bar/10 charge ratio is -1/2, flipped needs -3");
+  assert.equal(r.b.violations, 0, "no sixteen keeps two of {10, 5bar, 1} under an order-3 line");
+  assert.ok(r.b.breakings > 100);
+  assert.equal(r.b.teethWhole[0], r.b.teethWhole[1]);
+  assert.match(r.principle, /only order two/);
+});

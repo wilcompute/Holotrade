@@ -1,0 +1,37 @@
+{
+ "claim": "Flipped SU(5) x U(1)_X is closed at order three in the W(3,3) vacuum. Directly, the family ten and anti-five carry proportional U(1) charges with ratio -1/2 in every three-family SU(5) model, so no U(1)_X has the flipped ratio -3. Via SO(10) breaking, the X-gaps 4, 4, 8 inside a sixteen are all non-integral multiples of 4c = +-1/3, so an order-three line keeps at most one of {10, 5bar, 1} per sixteen. With the Georgi-Glashow no-go, both SU(5) hypercharge embeddings are excluded at order three; a Standard Model on the W(3,3) twist needs an even-order element.",
+ "a": {
+  "models": 40,
+  "flippable": 0,
+  "ratios": {
+   "-1/2": 40
+  }
+ },
+ "b": {
+  "breakings": 684,
+  "sixteens": 684,
+  "violations": 0,
+  "teethWhole": [
+   14,
+   14
+  ],
+  "lemma": "P.a = k + cX; broken roots Delta X = +-4 => 4c = +-1/3 mod 1; gaps 4c, 4c, 8c all non-integral"
+ },
+ "principle": "odd order isolates every species inside a GUT multiplet; only order two (t = 1/2) can pair",
+ "checks": {
+  "a_no_flipped_U1X": true,
+  "a_ratio_minus_half_universal": true,
+  "b_lemma_arithmetic": true,
+  "b_no_sixteen_keeps_two_types": true,
+  "b_teeth_unbroken_whole": true
+ },
+ "valid": true,
+ "status": "(a) exact on sampled parents; (b) lemma plus verification",
+ "sources": [
+  "Holotrade a6e1c69",
+  "Holotrade 47e85ab",
+  "Holotrade fa65bd4",
+  "Holotrade 35eb923",
+  "Antoniadis-Ellis-Hagelin-Nanopoulos flipped SU(5) string models (context)"
+ ]
+}
