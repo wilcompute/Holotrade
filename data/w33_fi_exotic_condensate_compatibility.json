@@ -1,0 +1,27 @@
+{
+  "schema": "holotrade.w33_fi_exotic_condensate_compatibility.v1",
+  "status": "PASS",
+  "headline": "The anomalous-FI and exotic-decoupling fronts are charge-compatible but vacuum-profile constrained. The two FI-cancelling untwisted bilinears U0U1 and U2U3 are exactly the untwisted pairs entering the sextic exotic operators. However translation-symmetric twisted-singlet VEVs give exotic-mass rank 1; rank 9 requires a sufficiently nonuniform fixed-point profile.",
+  "FI": {
+    "Tr_Q_A": -72,
+    "cancelling_untwisted_pairs": [[0,1],[2,3]],
+    "pair_Q_A": [2,2]
+  },
+  "operator_compatibility": {
+    "sextic_channels_use_FI_pairs": true,
+    "twisted_pair_per_antifive_type": {"0":[1,2],"1":[0,3],"2":[0,1],"3":[2,3]}
+  },
+  "rank_constraints": {
+    "translation_invariant": 1,
+    "degree12_diagonal_profile": 1,
+    "single_fixed_point_upper_bound": 4,
+    "support_size_2_can_reach_rank9": true,
+    "support_size_2_measured_fraction_rank9": 0.215,
+    "support_size_3_measured_fraction_rank9": 0.94,
+    "support_size_4_measured_fraction_rank9": 1.0
+  },
+  "physics_consequence": "FI cancellation and the higher-order exotic operators use compatible massless fields, so there is no charge-level obstruction to combining them. Complete exotic decoupling nevertheless requires a D/F-flat vacuum whose four twisted-singlet species are spread nonuniformly over multiple fixed points. No such vacuum is certified here.",
+  "correction_to_old_benchmark": "The earlier Vandermonde rank-nine matrix proves that full rank is algebraically possible in an unconstrained coefficient space, but it is not a physical-vacuum certificate because the nine rows are correlated by fixed-point VEV profiles.",
+  "open_problem": "Solve the F-term equations on the FI-shifted vacuum moduli including the degree-12 quartic cubes and the sextic/nonic exotic couplings; determine whether a nonuniform rank-nine fixed-point profile survives.",
+  "checks": {"TrQ_minus72":true,"FI_pairs_01_23":true,"sextic_uses_FI_pairs":true,"symmetric_rank1":true,"single_point_rank_le4":true,"rank9_reachable_from_support2":true}
+}
