@@ -1,0 +1,37 @@
+{
+  "schema": "holotrade.w33_su5_fi_degree12_flatness.v1",
+  "status": "PASS",
+  "headline": "The frozen SU(5) witness has Tr Q_A=-72 for q_A=P_9/6 and exactly two minimal FI-cancelling untwisted bilinears of total Q_A=+2. The sixteen neutral U*T0*T1*T2 rays are protected through order 11 but their degree-12 cubes pass all currently implemented string selection rules for an explicit nine-fixed-point configuration.",
+  "anomalous_U1": {
+    "trace_vector_x6": [0,0,0,0,0,0,0,0,-432,0,0,0,0,0,0,0],
+    "generator": "q_A=P_9/6 (second E8 e1 convention)",
+    "Tr_Q_A": -72,
+    "FI_sign": "negative in this generator orientation"
+  },
+  "FI_cancelling_pairs": [
+    {"U_indices": [0,1], "sum_x6": [0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0], "total_Q_A": 2, "same_full_gauge_multiplet_dimension": 4, "opposite_semisimple_weights": true},
+    {"U_indices": [2,3], "sum_x6": [0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0], "total_Q_A": 2, "same_full_gauge_multiplet_dimension": 4, "opposite_semisimple_weights": true}
+  ],
+  "neutral_quartics": {
+    "count": 16,
+    "untwisted_indices_used": [0,1,2,3],
+    "FI_pairs_dangerous_terms_through_12": {
+      "0,1": {"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0},
+      "2,3": {"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0}
+    }
+  },
+  "degree12_cube": {
+    "fields": "3 U + 3 T0 + 3 T1 + 3 T2",
+    "untwisted_assignment": "one U copy in each complex plane",
+    "twisted_locations": [[0,0,0],[0,1,1],[0,2,2],[1,0,1],[1,1,2],[1,2,0],[2,0,2],[2,1,0],[2,2,1]],
+    "space_group_sum_mod3": [0,0,0],
+    "R_total": [4,4,4],
+    "Rule4": "not activated: twisted fields are not all at the same fixed point in any plane",
+    "Rule5_holomorphic_test": -5.0,
+    "Rule5_antiholomorphic_test": -2.0,
+    "both_instanton_types_exist": true,
+    "selection_rule_allowed": true
+  },
+  "consequence": "The anomalous FI term is cancellable by explicit massless fields, while the sixteen neutral quartic rays are not all-order flat: their first self-lift is genuinely allowed at degree 12. A complete shifted vacuum still requires the numerical degree-12 CFT coefficient and cross-couplings on the combined FI+neutral support.",
+  "checks": {"405_chiral_weights":true,"trace_direction":true,"TrQ_minus72":true,"two_FI_pairs":true,"quartics_use_FI_carrier":true,"FI_pairs_Fsafe_through12":true,"cube_space_group":true,"cube_R":true,"Rule4_safe_location_choice":true,"Rule5_both_instantons":true}
+}
