@@ -9756,3 +9756,18 @@ test("the exotic mass rank is set by where the singlets condense: symmetric vacu
   assert.equal(r.rankBySupportSize["1"].fractionRank9, 0);
   assert.equal(r.rankBySupportSize["4"].fractionRank9, 1);
 });
+
+test("the three Pauli groups of A8^3 are one extraspecial 3^(1+12), the only kind of symmetry that can empty V_1", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_a8cubed_pauli_extraspecial.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.equal(r.pauli.order, 243);
+  assert.equal(r.fixedPoints.fullGroupInSl9, 0, "the full Pauli group fixes nothing in sl9");
+  assert.deepEqual(r.fixedPoints.eachCyclicInSl9, [26], "every cyclic subgroup fixes 26 dimensions");
+  assert.deepEqual(r.glue.mod3, [[0, 0, 0], [1, 1, 1], [2, 2, 2]], "glue mod 3 is diagonal");
+  assert.equal(r.glue.trivialCentreElements, 9, "three centres collapse to one Z3");
+  assert.equal(r.extraspecial.commutatorFormRankF3, 12);
+  assert.deepEqual(r.mckay.a8KacClassRemovesNode, [8]);
+  assert.equal(r.mckay.mckayClassAtThatNode, "3C");
+  assert.match(r.status, /not a construction/);
+});

@@ -1,0 +1,108 @@
+{
+ "claim": "As automorphisms of the Niemeier A8^3 lattice VOA, the three two-qutrit Pauli groups generate ONE extraspecial group 3^(1+12): the glue code reduces mod 3 to the diagonal <(1,1,1)>, so the three SU(9) centres act identically on every sector and the product is central. Its commutator form is the orthogonal sum of three W(3,3) forms. The group fixes nothing in V_1 = sl9^3, whereas every cyclic subgroup fixes 26 dimensions per factor, and by Kreknin every finite-order automorphism of a semisimple V_1 has fixed points. So no cyclic orbifold of V_{A8^3} is Moonshine, and a non-cyclic 3^(1+12) - the shape of O_3 of the Monster 3B normaliser - is the only kind of symmetry that can empty V_1.",
+ "pauli": {
+  "order": 243,
+  "centre": 3,
+  "singleFactorForm": [
+   [
+    0,
+    2,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    0,
+    2
+   ],
+   [
+    0,
+    0,
+    1,
+    0
+   ]
+  ]
+ },
+ "fixedPoints": {
+  "fullGroupInSl9": 0,
+  "eachCyclicInSl9": [
+   26
+  ]
+ },
+ "glue": {
+  "sectors": 27,
+  "weights": [
+   0.0,
+   2.0,
+   3.0
+  ],
+  "mod3": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    1,
+    1
+   ],
+   [
+    2,
+    2,
+    2
+   ]
+  ],
+  "trivialCentreElements": 9
+ },
+ "extraspecial": {
+  "commutatorFormRankF3": 12,
+  "shape": "3^(1+12)",
+  "form": "Omega + Omega + Omega (three orthogonal W(3,3))"
+ },
+ "mckay": {
+  "a8KacClassRemovesNode": [
+   8
+  ],
+  "mark": [
+   3
+  ],
+  "mckayClassAtThatNode": "3C",
+  "otherTrackTwining": "865e04b18: factor 3-cycle twining = T_3C"
+ },
+ "openProblem": "Construct the 3^(1+12) orbifold of V_{A8^3}: its anomaly class, its twisted sectors and their weight-one states. If it exists, is holomorphic and has V_1 = 0, the FLM uniqueness conjecture identifies it with V^natural.",
+ "checks": {
+  "generators_in_SL9": true,
+  "pauli_group_order_3_5": true,
+  "single_factor_form_is_W33_symplectic": true,
+  "full_pauli_group_fixes_nothing_in_sl9": true,
+  "every_cyclic_subgroup_fixes_26_dims": true,
+  "glue_order_27": true,
+  "no_weight_one_glue_so_V1_is_sl9_cubed": true,
+  "glue_mod_3_is_diagonal": true,
+  "three_centres_identified_to_one_Z3": true,
+  "extraspecial_3_1_12": true,
+  "A8_class_is_the_mark3_branch_node": true,
+  "mckay_orders_equal_affine_marks": true
+ },
+ "valid": true,
+ "status": "items 1-3 proved and verified; item 4 is a structural identification, not a construction",
+ "sources": [
+  "Holotrade 68df33f",
+  "TOE 865e04b18",
+  "TOE 6a881ef5c",
+  "TOE 54482d426",
+  "TOE 196cc86dc",
+  "Kreknin 1963; Borel-Mostow 1955; Jacobson",
+  "McKay E8 observation; Glauberman-Norton; Lam-Yamada-Yamauchi 2007",
+  "Chen-Lam-Shimakura arXiv:1606.05961",
+  "Frenkel-Lepowsky-Meurman uniqueness conjecture"
+ ]
+}
