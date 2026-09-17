@@ -1,37 +1,54 @@
 {
   "schema": "holotrade.w33_exotic_sextic_nonic_completion.v1",
   "status": "PASS",
-  "headline": "Quartic exotic masses vanish, but higher-order standard string selection rules admit complete matrix support. Each of the four 5bar momentum types has exactly two sextic gauge-charge solutions and forty plane-1 nonic solutions. Rule 4 removes plane-1 sextics and one-third of the location completions for plane-2/3 sextics, leaving 864 sextic candidates on eight columns. Nonic order restores the four plane-1 columns with 12960 candidates. The combined 9x12 support has structural rank 9.",
+  "headline": "Quartic exotic masses vanish, while higher-order selection rules admit complete binary support: two sextic gauge-charge solutions and forty plane-1 nonic solutions per 5bar momentum type, with 864 sextic and 12960 nonic candidates. The 9x12 support graph has matching/structural rank 9, but the physical mass rank is vacuum-dependent and is not certified by support alone.",
+  "massless_spectrum": {
+    "untwisted_5bar_momentum_types": 4,
+    "untwisted_singlet_momentum_types": 24,
+    "twisted_singlet_types": 22,
+    "twisted_states_all_NL0": true
+  },
   "sextic": {
     "operator": "5_T 5bar_U S_T S_T S_U S_U",
     "charge_solutions_per_bar_type": 2,
     "surviving_5bar_plane_copies": [2,3],
     "rule4_safe_space_group_completions_per_charge_solution": 6,
     "candidate_monomials": 864,
-    "covered_matrix_columns": 8
+    "covered_matrix_columns": 8,
+    "details": [
+      {"bar_type":0,"charge_type_solutions":2,"solutions":[{"twisted_singlet_types":[1,2],"untwisted_singlet_types":[0,1]},{"twisted_singlet_types":[1,2],"untwisted_singlet_types":[2,3]}]},
+      {"bar_type":1,"charge_type_solutions":2,"solutions":[{"twisted_singlet_types":[0,3],"untwisted_singlet_types":[0,1]},{"twisted_singlet_types":[0,3],"untwisted_singlet_types":[2,3]}]},
+      {"bar_type":2,"charge_type_solutions":2,"solutions":[{"twisted_singlet_types":[0,1],"untwisted_singlet_types":[0,1]},{"twisted_singlet_types":[0,1],"untwisted_singlet_types":[2,3]}]},
+      {"bar_type":3,"charge_type_solutions":2,"solutions":[{"twisted_singlet_types":[2,3],"untwisted_singlet_types":[0,1]},{"twisted_singlet_types":[2,3],"untwisted_singlet_types":[2,3]}]}
+    ]
   },
   "nonic": {
     "operator": "5_T 5bar_U1 S_T S_T (S_U1)^5",
     "charge_solutions_per_bar_type": 40,
     "rule4_safe_space_group_completions_per_charge_solution": 9,
     "candidate_monomials": 12960,
-    "covered_matrix_columns": 4
+    "covered_matrix_columns": 4,
+    "details": [
+      {"bar_type":0,"charge_type_solutions":40},
+      {"bar_type":1,"charge_type_solutions":40},
+      {"bar_type":2,"charge_type_solutions":40},
+      {"bar_type":3,"charge_type_solutions":40}
+    ]
   },
   "combined_support": {
     "matrix_shape": [9,12],
     "covered_columns": 12,
     "structural_rank": 9,
-    "meaning": "There exists a perfect matching in the binary allowed-coupling support; generic rank 9 follows only if sufficiently independent allowed CFT coefficients are nonzero."
+    "meaning": "The binary allowed-coupling graph K9,12 has maximum matching size 9. This is a support theorem only; it does not imply generic physical mass rank 9 once common fixed-point/VEV profiles are imposed."
+  },
+  "physical_rank_firewall": {
+    "audit": "analysis/the_exotic_mass_rank_is_set_by_where_the_singlets_condense.py",
+    "translation_invariant_VEV_rank": 1,
+    "single_fixed_point_per_twisted_type_rank_bound": "<=4",
+    "rank9_requirement": "twisted singlets must be spread over several fixed points with unequal VEVs; D/F-flat realization remains open"
   },
   "rule5": "The three T1 ground states have sum k_i=1 in every Z3 plane, so holomorphic classical instanton solutions exist. With N_L=Nbar_L=0 the Rule-5 inequality is automatic. Rule 5 therefore does not remove these ground-state channels.",
   "literature": ["Kobayashi-Parameswaran-Ramos-Sanchez-Zavala, arXiv:1107.2137v3, sections 3.4.1-3.4.2"],
-  "boundary": "This certifies gauge momentum, point/space group, R-charge, Rule 4, and the Rule-5 existence condition. It does not evaluate the worldsheet instanton sums or prove that each surviving holomorphic CFT amplitude is nonzero. Rank 9 is a structural/generic-support statement, not a computed numerical mass matrix.",
-  "checks": {
-    "two_sextic_charge_solutions_each": true,
-    "forty_nonic_solutions_each": true,
-    "no_twisted_left_oscillators": true,
-    "sextic_864": true,
-    "nonic_12960": true,
-    "structural_rank_9": true
-  }
+  "boundary": "This certifies gauge momentum, point/space group, R-charge, Rule 4, the Rule-5 existence condition, and binary support/matching rank. It does not evaluate worldsheet instanton sums, prove nonzero amplitudes, specify a D/F-flat fixed-point VEV profile, or prove a rank-9 numerical exotic mass matrix.",
+  "checks": {"source_reproducible_after_nonic_fix":true,"two_sextic_charge_solutions_each":true,"forty_nonic_solutions_each":true,"no_twisted_left_oscillators":true,"sextic_864":true,"nonic_12960":true,"support_matching_rank_9":true}
 }
