@@ -1,0 +1,178 @@
+{
+ "claim": "The Pauli 3^(1+12) of the Niemeier A8^3 theory moves between the W(3,3) carriers of the other track's three-carrier theorem: its centre gives the UNIQUE 3-neighbour E8^3 (twining T_3B + 240) and every all-factor Pauli element gives A2^12, the ternary Golay carrier (twining T_3B - 3). One- and two-factor elements return to A8^3 with non-Monster twinings. The Monster 3B type occurs exactly when the twisted ground weight is >= 1 - here, exactly for the lattice-changing moves. The sporadic E6^4 carrier is a 3-neighbour that no Pauli element reaches.",
+ "twinings": {
+  "identity": {
+   "series": [
+    1,
+    240,
+    196884,
+    21493760,
+    864299970,
+    20245856256,
+    333202640600,
+    4252023300096,
+    44656994071935
+   ],
+   "V1_trace": 240,
+   "monster_match": [
+    "J"
+   ]
+  },
+  "z": {
+   "series": [
+    1,
+    240,
+    54,
+    -76,
+    -243,
+    1188,
+    -1384,
+    -2916,
+    11934
+   ],
+   "V1_trace": 240,
+   "monster_match": [
+    "3B"
+   ]
+  },
+  "z^2": {
+   "series": [
+    1,
+    240,
+    54,
+    -76,
+    -243,
+    1188,
+    -1384,
+    -2916,
+    11934
+   ],
+   "V1_trace": 240,
+   "monster_match": [
+    "3B"
+   ]
+  },
+  "k=1": {
+   "series": [
+    1,
+    159,
+    24111,
+    820049,
+    14919471,
+    184409028,
+    1745375519,
+    13561780914,
+    90413540010
+   ],
+   "V1_trace": 159,
+   "monster_match": []
+  },
+  "k=2": {
+   "series": [
+    1,
+    78,
+    2241,
+    26168,
+    196587,
+    1112184,
+    5227733,
+    21490920,
+    79679970
+   ],
+   "V1_trace": 78,
+   "monster_match": []
+  },
+  "k=3": {
+   "series": [
+    1,
+    -3,
+    54,
+    -76,
+    -243,
+    1188,
+    -1384,
+    -2916,
+    11934
+   ],
+   "V1_trace": -3,
+   "monster_match": [
+    "3B"
+   ]
+  }
+ },
+ "orbifolds": {
+  "k=1": {
+   "roots_invariant": 162,
+   "roots_twisted": [
+    27,
+    27
+   ],
+   "roots": 216,
+   "twisted_ground_weight": "1/3",
+   "V1_fixed": 186,
+   "lattice": "A8^3"
+  },
+  "k=2": {
+   "roots_invariant": 108,
+   "roots_twisted": [
+    54,
+    54
+   ],
+   "roots": 216,
+   "twisted_ground_weight": "2/3",
+   "V1_fixed": 132,
+   "lattice": "A8^3"
+  },
+  "k=3": {
+   "roots_invariant": 54,
+   "roots_twisted": [
+    9,
+    9
+   ],
+   "roots": 72,
+   "twisted_ground_weight": "1",
+   "V1_fixed": 78,
+   "lattice": "A2^12"
+  },
+  "z": {
+   "lattice": "E8^3",
+   "roots": 720,
+   "twisted_ground_weight": "1",
+   "source": "Holotrade b09230c"
+  }
+ },
+ "chenevierLannesA8cubedP3": {
+  "E8^3": 1,
+  "A2^12": 263424000,
+  "A8^3": 587403432,
+  "E6^4": 592704,
+  "Leech": 0
+ },
+ "otherTrackCarriers": "TOE Pass 8989-9012: E8^3 (lift), E6^4 (diagonal, sporadic), A2^12 (Golay twisted 3-cycles)",
+ "checks": {
+  "monster_series_known_values": true,
+  "identity_is_J_plus_240": true,
+  "centre_is_T3B_plus_240": true,
+  "full_pauli_is_T3B_minus_3": true,
+  "partial_pauli_not_monster": true,
+  "V1_traces_match_lie_algebra": true,
+  "full_pauli_lands_on_A2_12": true,
+  "partial_pauli_returns_A8_3": true,
+  "V1_bookkeeping_closes": true,
+  "twisted_weights": true,
+  "3B_iff_twisted_weight_at_least_1": true,
+  "chenevier_E8_3_neighbour_unique": true,
+  "chenevier_reached_classes_nonempty": true,
+  "chenevier_E6_4_neighbour_not_reached_by_pauli": true
+ },
+ "valid": true,
+ "status": "exact twining and root-count computations; modular Hauptmodul argument; external Kneser-neighbour data",
+ "sources": [
+  "Holotrade 4104251",
+  "Holotrade b09230c",
+  "TOE Pass 8989-9012 (exactly three carriers)",
+  "TOE 865e04b18 (S3 twining)",
+  "Chenevier-Lannes, Kneser neighbours of Niemeier lattices",
+  "Conway-Norton McKay-Thompson series 3A, 3B, 3C"
+ ]
+}

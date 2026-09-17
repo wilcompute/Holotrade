@@ -9784,3 +9784,20 @@ test("the centre of the A8^3 Pauli 3^(1+12) is the reverse orbifold back to E8^3
   assert.match(r.literature["Sagaki-Shimakura arXiv:1402.0143"], /excluded/);
   assert.match(r.literature["Hoehn-Scheithauer (rank-14 GKM)"], /A_3\^8/);
 });
+
+test("the A8^3 Pauli group moves between the W(3,3) carriers; exactly its lattice-changing moves are Monster 3B", () => {
+  const r = JSON.parse(fs.readFileSync("data/w33_a8cubed_pauli_moves_between_carriers.json"));
+  assert.equal(r.valid, true);
+  assert.ok(Object.values(r.checks).every((v) => v === true));
+  assert.deepEqual(r.twinings.z.monster_match, ["3B"]);
+  assert.equal(r.twinings.z.V1_trace, 240, "centre: T_3B + 240");
+  assert.deepEqual(r.twinings["k=3"].monster_match, ["3B"]);
+  assert.equal(r.twinings["k=3"].V1_trace, -3, "all-factor Pauli: T_3B - 3");
+  assert.deepEqual(r.twinings["k=1"].monster_match, []);
+  assert.deepEqual(r.twinings["k=2"].monster_match, []);
+  assert.equal(r.orbifolds["k=3"].lattice, "A2^12");
+  assert.equal(r.orbifolds["k=1"].lattice, "A8^3");
+  assert.equal(r.orbifolds.z.lattice, "E8^3");
+  assert.equal(r.chenevierLannesA8cubedP3["E8^3"], 1, "the E8^3 neighbour is unique");
+  assert.ok(r.chenevierLannesA8cubedP3["E6^4"] > 0, "E6^4 is a neighbour the Pauli group misses");
+});
