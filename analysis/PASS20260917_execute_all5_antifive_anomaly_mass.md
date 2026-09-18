@@ -1,3 +1,10 @@
+> **SUPERSEDED AS A GLOBAL-SPECTRUM FRONTIER (2026-09-18).**
+> The anomaly vector below remains correct for the *partial* spectrum consisting
+> of two local 27s plus the untwisted split ten.  The subsequent full T1
+> oscillator ledger found additional chiral/exotic states, so it is not valid
+> to infer that the complete model is missing only one anti-five.  See
+> \`PASS20260918_execute_all5_t1_rule456_spectrum_quarantine.md\`.
+>
 # 2026-09-17 — execute-all-five continuation: T2/T4 no-go, anomaly fingerprint, and local-vectorlike mass channel
 
 This packet continues the explicit modular-compatible Z6-II witness.
