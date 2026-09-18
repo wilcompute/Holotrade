@@ -1,0 +1,22 @@
+{
+  "schema": "w33.z6ii_dflat_fflat_first_obstruction.v1",
+  "status": "PASS_NAIVE_CUBIC_FORBIDDEN__ALL_ORDER_FFLAT_OPEN",
+  "D_flat_pair": {
+    "T2_minus_s": ["-1/6","1/6","1/2","-1/2","-1/2","-1/2","-1/2","-1/2"],
+    "T4_s": ["1/6","-1/6","-1/2","1/2","1/2","1/2","1/2","1/2"]
+  },
+  "dangerous_cubic_candidate": "T2(-s) * T4(s) * U3_neutral",
+  "standard_rule_checks": {
+    "full_gauge_momentum": "-s+s+0=0",
+    "point_group": "2+4+0=6=0 mod6",
+    "H_momentum": "h_T2+h_T4+h_U3=(-1,-1,-1)",
+    "gamma_localization": {
+      "T2_chiral_minus_s": -1,
+      "T4_chiral_s": 1,
+      "U3": 1,
+      "product": -1
+    }
+  },
+  "cubic_conclusion": "FORBIDDEN in the current physical gamma/localization bookkeeping because the eigenvalue product is -1 rather than +1.",
+  "why_not_full_F_flatness": "Higher-order operators can contain additional twisted singlets whose gamma/discrete charges compensate. The complete singlet superpotential and all U(1)^5/hidden-E8 charges are not yet enumerated."
+}
