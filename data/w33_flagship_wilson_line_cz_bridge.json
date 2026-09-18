@@ -1,0 +1,30 @@
+{
+  "schema":"w33.flagship_wilson_line_cz_bridge.v1",
+  "status":"PASS",
+  "headline":"The order-three Wilson line of the recorded W33-class Z6-I Standard Model grades the SU(9) A8 roots as 24+24+24 with neutral subsystem A4+A1+A1. Hence its SU(9) holonomy has projective spectrum 5+2+2 and is projectively SU(9)-conjugate to the two-qutrit CZ_3 gate. CZ gives the same sl9 adjoint grading 32+24+24 and the W33 point action 1^4 3^12 with one fixed isotropic line.",
+  "heterotic":{
+    "parent":"data/w33_twist_hosts_sm_in_even_order_orbifold.json",
+    "model":"SM_20260917_3",
+    "A8_roots":72,
+    "W3_root_grades":{"0":24,"1":24,"2":24},
+    "neutral_root_components":[{"roots":20,"rank":4},{"roots":2,"rank":1},{"roots":2,"rank":1}],
+    "neutral_semisimple_type":"A4 + A1 + A1",
+    "centralizer":"S(U(5) x U(2) x U(2))",
+    "centralizer_lie_dimension":32,
+    "flagship_SU5_inside_A4_component":true
+  },
+  "qutrit_CZ":{
+    "definition":"CZ_3 |x,y> = omega^(x*y) |x,y>",
+    "fundamental_eigenvalue_multiplicities":{"1":5,"omega":2,"omega2":2},
+    "projective_SU9_conjugacy":"The heterotic holonomy is conjugate to CZ_3 up to multiplication by an SU(9) central cube-root phase and cyclic relabeling of eigenvalues.",
+    "sl9_adjoint_grades":{"0":32,"1":24,"2":24},
+    "W33_point_cycles":{"fixed":4,"3_cycles":12},
+    "nonzero_Pauli_vector_cycles":{"fixed":8,"3_cycles":24},
+    "fixed_points_are_one_isotropic_line":true,
+    "relation_to_SUM":"CZ = F_target^{-1} SUM F_target"
+  },
+  "scope":{
+    "proved":"exact root grading, centralizer type, CZ spectral/adjoint fingerprint, projective SU(9) conjugacy, and standard CZ W33 orbit anatomy",
+    "not_proved":"that all 60 W33-class Standard Models use this CZ conjugacy class; that the flagship count of five cubic top couplings is caused by the five CZ phase-zero basis states; simultaneous canonicity of the heterotic Wilson-line basis and the repo fine-Pauli grading"
+  }
+}
