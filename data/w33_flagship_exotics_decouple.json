@@ -1,0 +1,89 @@
+{
+ "claim": "For the W(3,3) flagship Standard Model of 5b3f3ad, the x/bx, d/bd and l/bl mass matrices reach maximal structural rank at order four, so those vector-like exotics decouple and exactly three net d^c survive; the same order-four l/bl entry is the mu term, so the Higgs pair is not protected, which is the standard mu problem of these constructions. The 18x18 v/bv sector does NOT close through order four: its matching is 13, leaving five massless pairs. Step 8 is therefore not established for the flagship; orders five to eight are still to be done.",
+ "model": "SM_20260917_3, the Z6-I flagship of 5b3f3ad",
+ "ordersSearched": [
+  2,
+  3,
+  4,
+  5
+ ],
+ "sectors": {
+  "x/bx": {
+   "shape": [
+    1,
+    1
+   ],
+   "structural_rank": 1,
+   "maximal_rank": 1,
+   "is_maximal": true,
+   "lowest_order": 4
+  },
+  "d/bd": {
+   "shape": [
+    2,
+    5
+   ],
+   "structural_rank": 2,
+   "maximal_rank": 2,
+   "is_maximal": true,
+   "lowest_order": 4
+  },
+  "l/bl": {
+   "shape": [
+    4,
+    1
+   ],
+   "structural_rank": 1,
+   "maximal_rank": 1,
+   "is_maximal": true,
+   "lowest_order": 4
+  },
+  "v/bv": {
+   "shape": [
+    18,
+    18
+   ],
+   "structural_rank": 13,
+   "maximal_rank": 18,
+   "is_maximal": false,
+   "lowest_order": 3
+  }
+ },
+ "muProblem": "the l/bl entry that decouples the vector-like doublet pair is the mu term; a light Higgs pair requires a vacuum symmetry, not a spectrum property",
+ "notSettled": {
+  "v/bv": "18 x 18, matching 13 through order four, five pairs still massless; orders five to eight remain, and the published pipeline allows mass terms up to order eight",
+  "w": "hypercharge-zero doublets: the SU(2) epsilon contraction makes the mass matrix antisymmetric, so its rank is even and an odd count always leaves one massless; needs multiplicities",
+  "flatness": "structural rank assumes generic singlet VEVs; D- and F-flatness is the separate question the other track is working (w33_z6ii_dflat_fflat_first_obstruction.py)"
+ },
+ "toolingWarning": {
+  "symbol": "CMassMatrix::IsRankMaximal",
+  "issue": "body is entirely commented out in orbifolder 1.2; it returns true unconditionally, for every matrix including empty ones",
+  "consequence": "any decoupling check calling it reports success without computing anything; the ranks here are computed from coupling supports instead",
+  "second_issue": "CMassMatrix entries are empty unless singlet VEVs are set in the configuration"
+ },
+ "checks": {
+  "x_bx_rank_is_maximal": true,
+  "d_bd_rank_is_maximal": true,
+  "l_bl_rank_is_maximal": true,
+  "v_bv_is_deficient_through_order_four": true,
+  "v_bv_leaves_five_pairs": true,
+  "step_eight_not_established": true,
+  "d_sector_leaves_three_net_families": true,
+  "mu_term_generated_at_order_four": true,
+  "nothing_below_order_three_anywhere": true,
+  "charged_sectors_start_at_order_four": true,
+  "matching_handles_empty": true,
+  "matching_handles_rank_one": true,
+  "matching_is_correct_on_a_permutation": true,
+  "matching_is_correct_on_a_deficient_case": true
+ },
+ "valid": true,
+ "status": "coupling generation by the orbifolder (arXiv:1110.5229), validated in 93b34e1; rank arithmetic exact and computed here",
+ "sources": [
+  "Holotrade 5b3f3ad",
+  "Holotrade 93b34e1",
+  "orbifolder arXiv:1110.5229",
+  "Lebedev et al. arXiv:0708.2691, arXiv:0807.4384 (step 8 and the mu problem)",
+  "Kappl et al., large hierarchies from approximate R symmetries (mu suppression)"
+ ]
+}
