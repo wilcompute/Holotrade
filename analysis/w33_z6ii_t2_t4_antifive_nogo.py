@@ -4,7 +4,7 @@
 Implements the Z6-II fixed-torus projection of Chemtob--Hosteins, Appendix B:
 for g=2,4 one imposes shifted-momentum integrality against W2,W2' and
   3[q_gamma + phi - (r+gv).v + (P+gV+n3 W3).V] in Z.
-Here W2'=0.  Gamma=+1,-1 have geometric multiplicities D=2,1.
+Here W2'=0.  Gamma=+1,-1 have geometric multiplicities D=1,2.
 
 The third-family target is one net SM anti-five:
   d^c = (3bar,1)_(1/3),  L=(1,2)_(-1/2).
@@ -125,7 +125,7 @@ def main(write=True):
             if N==0:
                 pp={}
                 for chir in ('L','R'):
-                    for gamma,D in ((1,2),(-1,1)):
+                    for gamma,D in ((1,1),(-1,2)):
                         qg=[q for q in qs if project(q,chir,gamma)]
                         p=Counter(label(O) for O in orbits(qg,GR))
                         pp[f'{chir}_gamma{gamma:+d}']={'D':D,'states':len(qg),
