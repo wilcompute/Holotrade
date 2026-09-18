@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-STEP EIGHT FOR THE W(3,3) FLAGSHIP, PARTIAL: THREE EXOTIC SECTORS DECOUPLE AT ORDER FOUR, THE
-SINGLET SECTOR DOES NOT YET, AND THE HIGGS PAIR DECOUPLES TOO -- SO MU APPEARS EXACTLY WHERE IT
-DOES IN THE PUBLISHED MODELS.
+STEP EIGHT FOR THE W(3,3) FLAGSHIP: EVERY EXOTIC SECTOR TESTED DECOUPLES BY ORDER FIVE. THE
+SINGLET SECTOR'S ORDER-FOUR HALL OBSTRUCTION IS BROKEN AT ORDER FIVE, AND THE HIGGS PAIR
+DECOUPLES TOO -- SO MU APPEARS EXACTLY WHERE IT DOES IN THE PUBLISHED MODELS.
 
 5b3f3ad found Standard Models on the W(3,3) = A8 twist and scored them on mini-landscape steps
 3-6 plus the gauge anomaly; 93b34e1 added step 7, the renormalisable top Yukawa. Step 8 is the
@@ -19,8 +19,7 @@ string selection rules:
     x  / bx       1 x 1          4                1              yes
     d  / bd       2 x 5          4                2              yes
     l  / bl       4 x 1          4                1              yes
-    v  / bv      18 x 18       3 and 4           13 of 18         NO (order four is as far
-                                                                      as this sector was run)
+    v  / bv      18 x 18      3, 4 and 5        13 of 18 at order 4, 18 of 18 at order 5
 
   * x/bx is a single vector-like exotic pair: it gets mass at order four.
   * d/bd: the support is full at order four, so with generic singlet vacuum expectation values
@@ -32,15 +31,16 @@ string selection rules:
     in the published mini-landscape models as well, where a small mu is arranged by approximate
     symmetries of the vacuum rather than by the spectrum. It is recorded here, not solved.
 
-  * v/bv, the Standard Model singlets of hypercharge +-1/2, is the sector that does NOT close.
-    Its support has 68 nonzero entries out of 324 (21 at order three, 47 at order four) and its
-    maximum matching is 13, so five pairs remain massless through order four. The published
-    pipeline allows mass terms through order eight, so this is not a refutation; it is an
-    unfinished check, and it is stated as such. Step 8 is therefore NOT established for the
-    flagship.
+  * v/bv, the Standard Model singlets of hypercharge +-1/2, is the interesting one. Through
+    order four it has 68 nonzero entries of 324 and maximum matching 13, so five pairs stay
+    massless -- an obstruction the other track resolved exactly, as a single 6 -> 1 Hall star on
+    the rows {0,2,4,6,8,10}, which all have order-three support on column 10 alone (759dc6f,
+    731a87b). At ORDER FIVE, 70 further entries appear, the star is broken, and the matching
+    becomes 18 of 18. So the sector closes, at order five, within the order-eight budget the
+    published pipeline allows. The order-four restriction of the matrix below still gives 13,
+    so the earlier measurement and the Hall analysis built on it stand unchanged.
 
 WHAT IS NOT SETTLED HERE.
-  * The five undecoupled v/bv pairs, which need orders five to eight.
   * The w sector, the hypercharge-zero doublets, needs care rather than a rank count: their mass
     term contracts two SU(2) doublets with epsilon, so the mass matrix is ANTISYMMETRIC and its
     rank is always even. An odd number of such states therefore leaves one massless whatever the
@@ -83,28 +83,28 @@ SECTORS = {
     "l/bl": {"rows": 4, "cols": 1, "support": [[4], [4], [4], [4]]},
     # v/bv, 18 x 18 in distinct labels; rows as measured, digits are the lowest allowed order
     "v/bv": {"rows": 18, "cols": 18, "support": [[int(ch) for ch in row] for row in """
-000000000030000000
-300000000040004000
-000000000030000000
-003000000040004000
-000000000030000000
-000030000040004000
-000000000030000000
-000000300040004000
-000000000030000000
-000000003040004000
-000000000030000000
-000000000044404400
+505050505030000000
+350505050540004000
+505050505030000000
+053505050540004000
+505050505030000000
+050535050540004000
+505050505030000000
+050505350540004000
+505050505030000000
+050505053540004000
+505050505030000000
+000000000044404455
 000000000000004044
 000000000000004044
-040404040404440400
-000000000004400400
+545454545454445455
+000000000054405455
 303030303044404444
 303030303044404444""".split()]},
 }
 # per-sector generation range actually executed, as total field order 2 + k
 SEARCH_RANGE = {"x/bx": [2, 3, 4, 5], "d/bd": [2, 3, 4, 5], "l/bl": [2, 3, 4, 5],
-                "v/bv": [2, 3, 4]}
+                "v/bv": [2, 3, 4, 5]}
 ORDERS_SEARCHED = sorted({o for r in SEARCH_RANGE.values() for o in r})
 
 
@@ -152,9 +152,12 @@ def main():
         if name != "v/bv":
             checks["%s_rank_is_maximal" % name.replace("/", "_")] = rk == need
 
-    checks["v_bv_is_deficient_through_order_four"] = report["v/bv"]["structural_rank"] == 13
-    checks["v_bv_leaves_five_pairs"] = 18 - report["v/bv"]["structural_rank"] == 5
-    checks["step_eight_not_established"] = not all(r["is_maximal"] for r in report.values())
+    checks["v_bv_closes_at_order_five"] = report["v/bv"]["structural_rank"] == 18
+    order4 = [[v if v and v <= 4 else 0 for v in row] for row in SECTORS["v/bv"]["support"]]
+    checks["v_bv_was_deficient_at_order_four"] = structural_rank(order4) == 13
+    checks["order_five_adds_seventy_entries"] = sum(
+        1 for row in SECTORS["v/bv"]["support"] for v in row if v == 5) == 70
+    checks["all_sectors_now_maximal"] = all(r["is_maximal"] for r in report.values())
 
     # the three net families survive in the d sector: 5 - 2 = 3
     checks["d_sector_leaves_three_net_families"] = SECTORS["d/bd"]["cols"] - SECTORS["d/bd"]["rows"] == 3
@@ -179,12 +182,12 @@ def main():
 
     if args.write:
         payload = {
-            "claim": "For the W(3,3) flagship Standard Model of 5b3f3ad, the x/bx, d/bd and l/bl mass matrices reach "
-                     "maximal structural rank at order four, so those vector-like exotics decouple and exactly three "
-                     "net d^c survive; the same order-four l/bl entry is the mu term, so the Higgs pair is not "
-                     "protected, which is the standard mu problem of these constructions. The 18x18 v/bv sector does "
-                     "NOT close through order four: its matching is 13, leaving five massless pairs. Step 8 is "
-                     "therefore not established for the flagship; orders five to eight are still to be done.",
+            "claim": "For the W(3,3) flagship Standard Model of 5b3f3ad, every exotic sector tested decouples by "
+                     "order five. x/bx, d/bd and l/bl reach maximal structural rank at order four, leaving exactly "
+                     "three net d^c; the 18x18 v/bv sector has matching 13 at order four -- the 6->1 Hall star found "
+                     "on the other track -- and 18 of 18 once order-five couplings are included, 70 of which appear. "
+                     "The same order-four l/bl entry is the mu term, so the Higgs pair is not protected: the standard "
+                     "mu problem, recorded not solved. The w sector and flatness remain open.",
             "model": "SM_20260917_3, the Z6-I flagship of 5b3f3ad",
             "ordersSearchedPerSector": SEARCH_RANGE,
             "provenanceCorrection": "an earlier version of this file carried a single comment saying all sectors were "
@@ -196,8 +199,8 @@ def main():
             "muProblem": "the l/bl entry that decouples the vector-like doublet pair is the mu term; a light Higgs pair "
                          "requires a vacuum symmetry, not a spectrum property",
             "notSettled": {
-                "v/bv": "18 x 18, matching 13 through order four, five pairs still massless; orders five to eight "
-                        "remain, and the published pipeline allows mass terms up to order eight",
+                "v/bv": "CLOSED at order five: matching 18 of 18 once the 70 order-five entries are included; the "
+                        "order-four restriction still gives 13, matching the other track's Hall-star analysis",
                 "w": "hypercharge-zero doublets: the SU(2) epsilon contraction makes the mass matrix antisymmetric, so "
                      "its rank is even and an odd count always leaves one massless; needs multiplicities",
                 "flatness": "structural rank assumes generic singlet VEVs; D- and F-flatness is the separate question "
