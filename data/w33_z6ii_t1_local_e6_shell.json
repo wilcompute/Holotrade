@@ -1,0 +1,44 @@
+{
+  "schema": "w33.z6ii_t1_local_e6_shell.v1",
+  "status": "PASS_LOCAL_SHELL_NOT_4D_SPECTRUM",
+  "T1_geometry": {
+    "fixed_points": 12,
+    "labels": "n3=0,1,2; n2,n2prime=0,1",
+    "local_shift": "V+n3 W3+n2 W2+n2prime W2prime",
+    "witness_W2prime": "0",
+    "distinct_local_shifts": 6,
+    "multiplicity_each": 2
+  },
+  "mass_shell": {
+    "delta_c": "11/36",
+    "oscillator_N": 0,
+    "equation": "(P+Vg)^2=25/18",
+    "hidden_E8_momentum": "forced zero because any nonzero hidden E8 lattice vector has norm >=2 >25/18"
+  },
+  "local_census": [
+    {"n3":0,"n2":0,"n2prime_multiplicity":2,"local_root_algebra":"E6","local_root_count":72,"local_rank":6,"N0_left_massless_shell":27,"Weyl_orbit_sizes":[27]},
+    {"n3":0,"n2":1,"n2prime_multiplicity":2,"local_root_algebra":"D6+A1","local_root_count":62,"local_rank":7,"N0_left_massless_shell":2,"Weyl_orbit_sizes":[2]},
+    {"n3":1,"n2":0,"n2prime_multiplicity":2,"local_root_algebra":"A5+A2","local_root_count":36,"local_rank":7,"N0_left_massless_shell":15,"Weyl_orbit_sizes":[15]},
+    {"n3":1,"n2":1,"n2prime_multiplicity":2,"local_root_algebra":"A5+A2","local_root_count":36,"local_rank":7,"N0_left_massless_shell":15,"Weyl_orbit_sizes":[15]},
+    {"n3":2,"n2":0,"n2prime_multiplicity":2,"local_root_algebra":"A6+A1","local_root_count":44,"local_rank":7,"N0_left_massless_shell":14,"Weyl_orbit_sizes":[14]},
+    {"n3":2,"n2":1,"n2prime_multiplicity":2,"local_root_algebra":"A5+A2","local_root_count":36,"local_rank":7,"N0_left_massless_shell":15,"Weyl_orbit_sizes":[15]}
+  ],
+  "E6_fixed_points": {
+    "count": 2,
+    "local_algebra": "E6",
+    "unoscillated_shifted_momenta_each": 27,
+    "Weyl_action": "one transitive orbit under all 72 E6 root reflections",
+    "pair_inner_products": {"7/18":216,"-11/18":135},
+    "interpretation": "a complete local E6 27-weight shell candidate at each of two T1 fixed points"
+  },
+  "mini_landscape_shape": "two equivalent local-GUT fixed points are available for two localized family candidates; any third family must arise from other fixed loci/sectors or bulk/untwisted states",
+  "projection_boundary": "Centralizer/gamma projection, right-moving massless state, oscillator shells and four-dimensional chirality have not yet been imposed. Therefore two physical 27 chiral multiplets are not yet claimed.",
+  "checks": {
+    "parent_loaded": true,
+    "six_local_shifts": true,
+    "two_E6_fixed_points": true,
+    "E6_shell_27": true,
+    "E6_shell_transitive": true,
+    "two_distance_216_135": true
+  }
+}
