@@ -1,0 +1,57 @@
+{
+ "claim": "No three-qutrit Heisenberg (Pauli) group acts on the 27 of E6 as its Schroedinger module, by any operators preserving the E6 cubic up to scale -- monomial, non-monomial or projective. Conjugation by the Pauli group splits gl(27) into 729 distinct one-dimensional character spaces, so e6 would have to be spanned by 78 Pauli operators; but a bracket-closed set of Pauli labels has connected components equal to span minus radical, so a simple Pauli-spanned algebra has dimension 3^a - 3^b in {8, 24, 72, 80, 216, 240, 648, 720, 728}, and 78 is not one of them. This closes the loophole left open by TOE w33_e6_gauge_three_qutrit_pauli_firewall.",
+ "lemmas": {
+  "L1": "the 729 Pauli operators are a basis of gl(27) and carry distinct conjugation characters, so any conjugation-stable subspace is Pauli-spanned; this is what makes the result projective-proof",
+  "L2": "each connected component of a bracket-closed label set equals span minus radical"
+ },
+ "achievableConnectedSizes": [
+  8,
+  24,
+  72,
+  80,
+  216,
+  240,
+  648,
+  720,
+  728
+ ],
+ "simplePauliSpannedAlgebras": {
+  "8": "sl(3), one qutrit",
+  "80": "sl(9) = su(9) = A8, two qutrits",
+  "728": "sl(27), three qutrits"
+ },
+ "positiveHalf": "the two-qutrit case is sl(9) = su(9) = A8, exactly the W(3,3) twist of E8 (68df33f), which is also the local group the Standard Models of 5b3f3ad sit inside; qutrit registers are natively an SU(9) structure, never an E6 one",
+ "naiveTestThatFails": {
+  "dim_Sym3_invariants": 14,
+  "reading": "Pauli-invariant cubics exist in a 14-dimensional family; the question is whether E6's cubic is among them, and it is not"
+ },
+ "whatSurvives": {
+  "carrier": "the 729 = 27 x 27 vector-space intertwiner, as its own certificate states",
+  "geometric_qutrits": "the three fixed-point flavour qutrits remain physical (2365e59, hep-ph/0611020); only the gauge-side three are excluded"
+ },
+ "checks": {
+  "phase_space_has_728_nonzero_vectors": true,
+  "L1_pauli_characters_are_distinct": true,
+  "L2_components_are_span_minus_radical": true,
+  "observed_sizes_are_achievable": true,
+  "78_is_not_achievable": true,
+  "dim_e6_is_78": true,
+  "exhaustive_growth_never_reaches_78": true,
+  "grown_sizes_all_achievable": true,
+  "su9_is_pauli_spanned": true,
+  "e6_is_not_pauli_spanned": true,
+  "invariant_cubics_exist_but_are_not_E6s": true
+ },
+ "valid": true,
+ "status": "exact finite computation over F3^6 plus exact character arithmetic; L2 verified on every connected component of 400 randomised closures",
+ "boundary": "The theorem is about operators on the 27 that preserve the E6 cubic up to scale, which is the condition for preserving the 27^3 Yukawa coupling. It does not constrain operators that act on other factors of the string Hilbert space.",
+ "sources": [
+  "TOE w33_heterotic_z3_729_matter_carrier.py",
+  "TOE w33_e6_gauge_three_qutrit_pauli_firewall.py",
+  "TOE w33_pass370_the_two_27s_are_one_torsor.json",
+  "Holotrade 2365e59",
+  "Holotrade 5b3f3ad",
+  "Holotrade 68df33f",
+  "Kobayashi-Nilles-Ploeger-Raby-Ratz hep-ph/0611020"
+ ]
+}
