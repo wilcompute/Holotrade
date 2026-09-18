@@ -1,0 +1,19 @@
+{
+  "schema": "holotrade.z6ii_buchmuller2007_benchmark_regression.v1",
+  "status": "PASS_CORE_EXTERNAL_BENCHMARK",
+  "source": "Buchmueller et al., Nucl.Phys.B785 (2007) 149-209, Sec.5.2 Eq.(5.2), Eq.(5.4), Appendix A",
+  "regressions": {
+    "visible_global_roots": 8,
+    "visible_ADE": "A2+A1",
+    "hidden_global_roots": 14,
+    "hidden_ADE": "A3+A1",
+    "published_nonabelian_group": "SU(3)xSU(2)x[SU(4)xSU(2)]",
+    "origin_local_first_E8": "D5+A1+A1",
+    "T1_visible_shell_norm": "23/18",
+    "T1_visible_shell_weights": 16,
+    "T1_hidden_shell_norm": "1/9",
+    "T1_hidden_shell_weights": 1,
+    "local_SO10_16_reproduced": true
+  },
+  "benchmark_scope": "Core lattice/gauge/T1 regression is reproduced exactly. Full row-by-row reproduction of Tables D.2-D.3 is the next extension and is not claimed here."
+}
