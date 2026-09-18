@@ -1,0 +1,79 @@
+{
+ "claim": "In a heterotic Z3 orbifold the centre of the fixed-point flavour Heisenberg group 3^(1+2d) is the point-group selection rule, so a state of the theta^k twisted sector carries central character omega^k. The central-character doublet V1 + V2 of the W(3,3) Pauli group is therefore the pair of twisted sectors T1 + T2, and the outer inversion's block swap is their exchange. Two physical operators realise the inversion: the unitary S3 reflection (X -> X^-1, Z -> Z), an element of the space group that projects the spectrum, and antiunitary CP (X -> X, Z -> Z^-1), an outer automorphism of the Narain space group that projects nothing. They induce multiplier-minus-one similitudes differing by -1 in Sp(2d,3), so they are the two implementations the TOE certificate found. Because CP projects nothing it cannot supply the even-order element the order-three no-goes require.",
+ "dictionary": {
+  "X": "lattice translation permuting the three fixed points of a T^2/Z3 plane",
+  "Z": "lattice translation acting by the space-group selection-rule phases",
+  "centre": "the order-three point-group element; equals the selection rule",
+  "central character omega^k": "the theta^k twisted sector",
+  "d planes": "one shared centre, so 3^(1+2d) on 3^d fixed points; d = 2 gives the W(3,3) form"
+ },
+ "inversions": {
+  "S3_reflection": {
+   "action": "X -> X^-1, Z -> Z",
+   "multiplier": -1,
+   "unitary": true,
+   "is_a_space_group_element": true,
+   "projects_the_spectrum": true
+  },
+  "CP": {
+   "action": "X -> X, Z -> Z^-1, omega -> omega^-1",
+   "multiplier": -1,
+   "unitary": false,
+   "is_a_space_group_element": false,
+   "projects_the_spectrum": false
+  },
+  "relation": "they differ by -1 in Sp(2d,3), hence lie in the same multiplier-minus-one coset"
+ },
+ "flavourGroups": {
+  "d=1": {
+   "order": 27,
+   "centre_order": 3,
+   "all_cubes_trivial": true
+  },
+  "d=2": {
+   "order": 243,
+   "centre_order": 3,
+   "all_cubes_trivial": true
+  },
+  "d=3": {
+   "order": 2187,
+   "centre_order": 3,
+   "all_cubes_trivial": true
+  }
+ },
+ "answers": "the open 'representation/gauge-spectrum intertwiner' of TOE w33_heterotic_s3_outer_target.py",
+ "checks": {
+  "d1_extraspecial_3_1_2": true,
+  "d1_commutator_is_symplectic_form": true,
+  "d1_exponent_three": true,
+  "d2_extraspecial_3_1_4": true,
+  "d2_commutator_is_symplectic_form": true,
+  "d2_exponent_three": true,
+  "d3_extraspecial_3_1_6": true,
+  "d3_commutator_is_symplectic_form": true,
+  "d3_exponent_three": true,
+  "reflection_is_an_automorphism": true,
+  "conjugation_is_an_automorphism": true,
+  "reflection_inverts_the_centre": true,
+  "conjugation_inverts_the_centre": true,
+  "reflection_has_multiplier_minus_one": true,
+  "conjugation_has_multiplier_minus_one": true,
+  "reflection_and_conjugation_differ_by_minus_one": true,
+  "minus_one_is_symplectic": true,
+  "both_inversions_swap_the_two_sector_characters": true,
+  "w33_has_40_points": true,
+  "w33_has_40_totally_isotropic_lines": true
+ },
+ "valid": true,
+ "status": "exact finite group and character computation; the stringy identification of X, Z, the centre and CP is published and cited, not re-derived",
+ "sources": [
+  "TOE w33_suzuki_outer_heisenberg_sector_swap.py",
+  "TOE w33_z6ii_c2_extension_no_go.py",
+  "TOE w33_heterotic_s3_outer_target.py",
+  "Holotrade 68df33f",
+  "Holotrade 4104251",
+  "Kobayashi-Nilles-Ploeger-Raby-Ratz hep-ph/0611020 (Delta(54) from Z3 fixed points)",
+  "Nilles-Ramos-Sanchez-Trautner-Vaudrevange arXiv:1808.07060 (CP as an outer automorphism of the Narain space group)",
+  "Konopka, JHEP 07 (2013) 023 (non-Abelian S3 heterotic orbifold)"
+ ]
+}
