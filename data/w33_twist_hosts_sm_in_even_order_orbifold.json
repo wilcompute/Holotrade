@@ -1,0 +1,270 @@
+{
+ "claim": "The W(3,3) twist of E8 (the A8 Kac class) does host a Standard Model once the orbifold has an order-two element. 22 of the 61 Z6-II gauge shifts carry it, and random Wilson-line searches over them produce models with the Standard Model gauge group, three net families, GUT-normalised hypercharge inside SU(5) and no gauge anomaly. In the recorded model a theta^2 fixed torus of the Standard Model's own E8 carries a local SU(9) -- the W(3,3) twist -- and all four SU(5) simple roots that fix the hypercharge lie inside it. This is the constructive converse of the order-three no-goes a6e1c69/47e85ab/fa65bd4/dd68cfa, and it supplies the builder that w33_even_order_gut_phase_frontier.py named as its blocker.",
+ "shiftCensus": {
+  "Z6II": {
+   "shifts": 61,
+   "z3_class_pairs": {
+    "E7+U1|E8": 9,
+    "A8|E8": 7,
+    "E6+A2|E7+U1": 18,
+    "A8|E6+A2": 15,
+    "D7+U1|D7+U1": 12
+   },
+   "total_z3_anomaly_class": {
+    "1": 61
+   }
+  },
+  "Z6I": {
+   "shifts": 58,
+   "z3_class_pairs": {
+    "E8|E8": 2,
+    "E6+A2|E8": 9,
+    "D7+U1|E7+U1": 21,
+    "E6+A2|E6+A2": 9,
+    "A8|D7+U1": 17
+   },
+   "total_z3_anomaly_class": {
+    "0": 58
+   }
+  }
+ },
+ "w33ClassShifts": {
+  "Z6II_with_A8": 22,
+  "Z6II_total": 61,
+  "Z6I_with_the_A8_D7U1_vacuum": 17,
+  "Z6I_total": 58
+ },
+ "miniLandscapeLocalGutShiftClasses": {
+  "V_SO10_1": [
+   "D7+U1",
+   "D7+U1"
+  ],
+  "V_SO10_2": [
+   "E6+A2",
+   "E7+U1"
+  ],
+  "V_E6_1": [
+   "E7+U1",
+   "E8"
+  ],
+  "V_E6_2": [
+   "E6+A2",
+   "E7+U1"
+  ]
+ },
+ "scan": {
+  "protocol": "shift held fixed, Wilson lines random, 3000 models per shift; a model counts as SM if the gauge group contains SU(3)xSU(2), there are three net (3,2), hypercharge is non-anomalous and inside SU(5), and the spectrum is three families plus vector-like exotics",
+  "Z6II": {
+   "A8": {
+    "shifts": 22,
+    "inequivalent": 51097,
+    "sm_inequivalent": 13
+   },
+   "other": {
+    "shifts": 39,
+    "inequivalent": 87785,
+    "sm_inequivalent": 115
+   }
+  },
+  "Z6I": {
+   "A8+D7+U1": {
+    "shifts": 16,
+    "inequivalent": 4108,
+    "sm_inequivalent": 42
+   },
+   "other": {
+    "shifts": 40,
+    "inequivalent": 6150,
+    "sm_inequivalent": 37
+   }
+  }
+ },
+ "flagship": {
+  "orbifold": "Z6-I on G2 x G2 x SU(3)",
+  "V": "0,0,0,0,1/6,1/6,1/3,2/3 | 0,0,0,1/6,1/6,1/6,1/6,2/3",
+  "W3": "-7/6,-5/6,-1/6,1/6,1/2,1/2,7/6,-1/6 | -4/3,-2/3,1/3,-4/3,0,1/3,1,1/3",
+  "tY": "0,0,0,0,0,0,0,0 | 1/6,-1/6,-1/6,1/2,0,1/2,0,1/2",
+  "su5_simple_roots": [
+   "0,0,0,0,0,0,0,0 | 0,1,-1,0,0,0,0,0",
+   "0,0,0,0,0,0,0,0 | 1,0,1,0,0,0,0,0",
+   "0,0,0,0,0,0,0,0 | 0,0,0,0,1,0,-1,0",
+   "0,0,0,0,0,0,0,0 | -1/2,-1/2,-1/2,1/2,-1/2,1/2,1/2,1/2"
+  ],
+  "label": "SM_20260917_3",
+  "gauge_group": "SU(3)_C x SU(2)_L x U(1)_Y (observable), anomaly check passed",
+  "net_families": {
+   "q": 3,
+   "u_bar": 3,
+   "d_bar": 3,
+   "l": 3,
+   "e_bar": 3
+  },
+  "multiplicities": {
+   "q": [
+    3,
+    0
+   ],
+   "u": [
+    3,
+    0
+   ],
+   "d": [
+    5,
+    2
+   ],
+   "l": [
+    4,
+    1
+   ],
+   "e": [
+    3,
+    0
+   ],
+   "singlets": 132,
+   "note": "[irrep, anti-irrep]; differences are the net families"
+  },
+  "z3Parts": [
+   "D7+U1",
+   "A8"
+  ],
+  "theta2LocalGroupsOnTheSU9Side": {
+   "0": {
+    "local": "A8",
+    "su5_inside": true
+   },
+   "1": {
+    "local": "D7+U1",
+    "su5_inside": true
+   },
+   "2": {
+    "local": "E6+A2",
+    "su5_inside": true
+   }
+  },
+  "reading": "a Z2 orbifold of the SU(9) x SO(14) x U(1) W(3,3) vacuum, one order-three Wilson line, three families, anomaly-free, hypercharge inside the SU(9)"
+ },
+ "model": {
+  "V": "0,0,0,0,0,1/6,1/6,1/3 | 1/6,1/6,1/6,1/6,1/6,1/6,1/6,5/6",
+  "W3": "-2/3,0,0,0,4/3,-1,-1/3,4/3 | 1/3,1/3,1/3,1/3,1/3,1/3,4/3,2/3",
+  "W2": "2,-3/2,1/2,1,-3/2,-1/2,1/2,3/2 | -2,-3/2,0,0,0,1/2,1,1",
+  "tY": "-1/6,0,0,5/6,-1/6,-1/6,-1/6,1/6 | 0,0,0,0,0,0,0,0",
+  "su5_simple_roots": [
+   "0,1,-1,0,0,0,0,0",
+   "1/2,-1/2,1/2,1/2,1/2,1/2,1/2,-1/2",
+   "0,1,1,0,0,0,0,0",
+   "-1/2,-1/2,-1/2,1/2,-1/2,-1/2,-1/2,1/2"
+  ],
+  "label": "SM_20260917_1383",
+  "gauge_group": "SU(3)_C x SU(2)_L x U(1)_Y (observable), anomaly check passed",
+  "net_families": {
+   "q": 3,
+   "u_bar": 3,
+   "d_bar": 3,
+   "l": 3,
+   "e_bar": 3
+  },
+  "multiplicities": {
+   "q": [
+    3,
+    0
+   ],
+   "u": [
+    4,
+    1
+   ],
+   "d": [
+    12,
+    9
+   ],
+   "l": [
+    12,
+    9
+   ],
+   "e": [
+    4,
+    1
+   ],
+   "singlets": 151,
+   "note": "[irrep, anti-irrep] counts; differences are the net families"
+  }
+ },
+ "modelZ3Parts": [
+  "E6+A2",
+  "A8"
+ ],
+ "theta2LocalGroups": {
+  "E8_1": [
+   "E6+A2",
+   "E6+A2",
+   "A8"
+  ],
+  "E8_2": [
+   "A8",
+   "A8",
+   "E8"
+  ]
+ },
+ "standardModelSide": "E8_1",
+ "su5InsideLocalGroups": {
+  "0": {
+   "local": "E6+A2",
+   "su5_inside": true
+  },
+  "1": {
+   "local": "E6+A2",
+   "su5_inside": true
+  },
+  "2": {
+   "local": "A8",
+   "su5_inside": true
+  }
+ },
+ "whichC2": "the point-group element theta^3 of Z6-II plus order-two Wilson lines; NOT the Heisenberg centre inversion z -> z^-1, which TOE 319d30028 proves is a different extension (S3, not cyclic Z6)",
+ "checks": {
+  "Z6II_shift_count_matches_literature": true,
+  "Z6I_shift_count_matches_literature": true,
+  "Z6II_theta2_class_always_one": true,
+  "Z6I_theta2_class_always_zero": true,
+  "Z6II_has_22_A8_shifts": true,
+  "Z6I_has_17_w33_vacuum_shifts": true,
+  "no_minilandscape_local_gut_shift_is_A8": true,
+  "model_6V_in_lattice": true,
+  "model_W3_order_three": true,
+  "model_W2_order_two": true,
+  "model_modular_invariance_shift": true,
+  "model_W3_modular_condition": true,
+  "model_W2_modular_condition": true,
+  "model_carries_the_w33_twist": true,
+  "a_theta2_fixed_torus_carries_local_SU9": true,
+  "su5_roots_are_E8_roots": true,
+  "hypercharge_has_GUT_normalisation": true,
+  "hypercharge_orthogonal_to_SM_simple_roots": true,
+  "SM_side_has_a_local_SU9": true,
+  "SM_SU5_sits_inside_the_local_SU9": true,
+  "flagship_is_the_w33_vacuum": true,
+  "flagship_modular_invariance_shift": true,
+  "flagship_W3_order_three": true,
+  "flagship_W3_modular_condition": true,
+  "flagship_hypercharge_normalisation": true,
+  "flagship_hypercharge_orthogonal_to_SM_roots": true,
+  "flagship_hypercharge_lives_in_the_SU9_factor": true,
+  "flagship_has_a_local_SU9_fixed_point": true,
+  "flagship_SU5_inside_its_local_SU9": true
+ },
+ "valid": true,
+ "status": "lattice arithmetic exact and computed here; spectra, family counts and anomaly check from the orbifolder (arXiv:1110.5229), validated on the published BHLR benchmark hep-ph/0511035",
+ "boundary": "mini-landscape steps 3-6 plus the gauge-anomaly check. Heavy top and decoupling of the vector-like exotics are NOT checked here. The models are not claimed new to the literature's dataset (arXiv:0807.4384 sampled all 61 shifts); the invariant statement and the local SU(9) embedding are.",
+ "sources": [
+  "Holotrade a6e1c69",
+  "Holotrade 47e85ab",
+  "Holotrade fa65bd4",
+  "Holotrade dd68cfa",
+  "Holotrade w33_even_order_gut_phase_frontier.py",
+  "Holotrade 68df33f",
+  "TOE 319d30028 (Z6-II C2 is not the W33 outer inversion)",
+  "orbifolder, Nilles-Ramos-Sanchez-Vaudrevange-Wingerter arXiv:1110.5229",
+  "Buchmuller-Hamaguchi-Lebedev-Ratz hep-ph/0511035 (benchmark)",
+  "Lebedev et al. arXiv:0708.2691, arXiv:0807.4384 (mini-landscape)",
+  "Katsuki et al., Z_N orbifold shift classification"
+ ]
+}
