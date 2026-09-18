@@ -1,0 +1,25 @@
+{
+  "schema": "w33.z6ii_t1_full_oscillator_ledger.v1",
+  "status": "PASS_CORRECTS_PARTIAL_FRONTIER",
+  "projection": "Chemtob--Hosteins B.3-B.5 full T1 six-h average with fixed n3,n2; gamma=1; W2prime=0",
+  "oscillator_configuration_counts": {"0":1,"1/6":1,"1/3":2,"1/2":4,"2/3":6},
+  "aggregate_T1_left_chiral_representations": {
+    "1|(0, 0, 0)|-1/2": 6,
+    "1|(0, 0, 0)|0": 26,
+    "1|(0, 0, 0)|1": 2,
+    "1|(0, 0, 0)|1/2": 4,
+    "2|(0, 0, 1)|-1/2": 6,
+    "2|(0, 0, 1)|0": 6,
+    "2|(0, 0, 1)|1/2": 4,
+    "3|(0, 1, 0)|-2/3": 2,
+    "3|(0, 1, 0)|1/3": 6,
+    "3|(1, 0, 0)|-1/3": 4,
+    "3|(1, 0, 0)|1/6": 6,
+    "6|(1, 0, 1)|1/6": 2
+  },
+  "aggregate_weight_dimension_including_fixed_points": 136,
+  "T5_relation": "CPT conjugate of T1; not an independent extra left-chiral ledger",
+  "retained_result": "The n3=n2=0 locus still supplies exactly two complete N_L=0 E6 27s.",
+  "correction": "Other T1 fixed points and oscillator shells contribute additional chiral/exotic multiplets. The earlier shorthand that the certified spectrum was only two families plus an untwisted split ten with one missing anti-five was incomplete.",
+  "consequence": "Do not use the previous one-anti-five anomaly fingerprint as a full-model anomaly statement. A full T1+T2+T3+T4+U ledger is now mandatory before claiming three net families."
+}
