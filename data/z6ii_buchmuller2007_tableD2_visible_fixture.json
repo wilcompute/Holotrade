@@ -1,0 +1,23 @@
+{
+  "schema": "holotrade.z6ii_buchmuller2007_tableD2_visible_fixture.v1",
+  "status": "PASS_PUBLISHED_ROW_FIXTURE",
+  "source": "Buchmueller et al. hep-th/0606187v3 Table D.2, printed pp.58-60; aggregate Table 5.1",
+  "aggregate": {
+    "Q": 3,
+    "uc": 3,
+    "dc": 7,
+    "d": 4,
+    "Lbar": 5,
+    "L": 8,
+    "m": 8,
+    "ec": 3,
+    "s-": 16,
+    "s+": 16
+  },
+  "checks": {
+    "row_level_visible_labels_materialized": true,
+    "aggregate_equals_table_5_1": true,
+    "three_families_Q_uc_ec": true
+  },
+  "remaining_external_regression": "Table D.3 neutral/hidden singlet charge rows q2...q9 still need machine-readable transcription and generated-state reproduction."
+}
