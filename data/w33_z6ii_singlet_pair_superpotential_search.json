@@ -1,0 +1,21 @@
+{
+  "schema": "w33.z6ii_singlet_pair_superpotential_search.v1",
+  "status": "PASS_PAIR_SELFCOUPLING_NO_GO__DEG15_EXTERNAL_LIFT_CANDIDATE",
+  "all_order_pair_only": {
+    "gauge_invariant_form": "(a b)^n",
+    "R3": "0 for every n",
+    "required_superpotential_R3": "-1 mod2",
+    "allowed_positive_n": [],
+    "conclusion": "no pair-only superpotential self-coupling at any order"
+  },
+  "neutral_U3_search": {
+    "R_solution": "n=1 mod6 for U3(ab)^n",
+    "n1_degree3": "forbidden by the G2 gamma rule",
+    "first_not_forbidden_by_standard_rules": {
+      "pair_power_n": 7,
+      "degree": 15
+    },
+    "operator": "U3 * [T2(-s) T4(s)]^7"
+  },
+  "boundary": "No nonzero degree-15 CFT coefficient is claimed. Other external singlets can still generate lower-degree lifting operators until the complete charge ledger is enumerated."
+}
