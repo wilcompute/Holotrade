@@ -1,3 +1,11 @@
+> **SUPERSEDED IN PART (later 2026-09-18).**
+> The full T1 oscillator ledger and Rule-4/5/6 conclusions remain live.
+> The stated T2/T4 multiplicity correction and \(SU(3)^3=-2\) all-sector
+> sentinel do **not**: the published Appendix-B convention is
+> \(D_{\gamma=+1,-1}=(1,2)\), and using the Table-VII T3 vector right movers
+> restores \(A_{SU(3)^3}=0\).  Hypercharge-related sentinels still fail.
+> See \`PASS20260918_execute_all5_anomaly_fflat_c2_repair.md\`.
+>
 # 2026-09-18 — execute-all-five continuation: full T1 oscillators, Rule456, and all-sector anomaly quarantine
 
 This packet supersedes the earlier shorthand that the current Z6-II witness was
