@@ -1,0 +1,15 @@
+{
+  "schema": "w33.z6ii_t2_t4_antifive_nogo.v1",
+  "status": "PASS_TARGETED_NO_GO",
+  "literature_projection": "Z6-II T2/T4 fixed-torus GSO: gamma=+1,-1 with D=1,2; B.7/B.8 shifted-momentum and phase conditions",
+  "shell_summary": {
+    "N0_states_after_W2_by_n3": [28,16,16],
+    "N1over3_states_after_W2_by_n3": [1,5,5],
+    "N2over3_states_after_W2_by_n3": [0,0,0]
+  },
+  "n3_2_N0_dc_gamma_weighted_balance": {"left":3,"right":3},
+  "N1over3_antifive_test": "no (3bar,1)_(1/3) orbit occurs",
+  "conclusion": "T2/T4 do not supply the missing net chiral third-family anti-five. N=1/3 has no d^c at all, N=2/3 is empty, and the only N=0 d^c candidate is L/R balanced before adding the CPT-related T4 partner.",
+  "next_target": "T1 oscillator shells or another genuinely N=1 chiral sector; fixed-torus N=2 sectors are not the source of the missing net family chirality.",
+  "boundary": "Targeted d^c+L chirality no-go, not a complete published T2/T4 spectrum or coupling calculation."
+}
