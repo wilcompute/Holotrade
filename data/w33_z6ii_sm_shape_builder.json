@@ -1,0 +1,70 @@
+{
+  "schema": "w33.z6ii_sm_shape_builder.v1",
+  "status": "PASS_GAUGE_EMBEDDING_NOT_SPECTRUM",
+  "geometry": {
+    "orbifold": "T6/Z6-II",
+    "twist_v6": ["1/6", "1/3", "-1/2"],
+    "subtwists": {"Z3": "2 v6", "Z2": "3 v6"},
+    "sector_zero_point_data": [
+      {"k":1,"twist_fractions":["1/6","1/3","1/2"],"delta_c":"11/36","invariant_complex_planes":0,"fixed_locus":"fixed_points"},
+      {"k":2,"twist_fractions":["1/3","2/3","0"],"delta_c":"2/9","invariant_complex_planes":1,"fixed_locus":"fixed_tori"},
+      {"k":3,"twist_fractions":["1/2","0","1/2"],"delta_c":"1/4","invariant_complex_planes":1,"fixed_locus":"fixed_tori"},
+      {"k":4,"twist_fractions":["2/3","1/3","0"],"delta_c":"2/9","invariant_complex_planes":1,"fixed_locus":"fixed_tori"},
+      {"k":5,"twist_fractions":["5/6","2/3","1/2"],"delta_c":"11/36","invariant_complex_planes":0,"fixed_locus":"fixed_points"}
+    ]
+  },
+  "embedding": {
+    "V6": ["1/6","1/3","-1/2","0","0","0","0","0"],
+    "W2": ["-1","1/2","0","-1","-1","-1/2","-1/2","-1/2"],
+    "W3": ["-2/3","-2/3","2/3","0","2/3","-1/3","-1/3","0"],
+    "orders": {"V6":6,"W2":2,"W3":3}
+  },
+  "modular_invariance": {
+    "6(V6^2-v6^2)": "0",
+    "2(V6.W2)": "0",
+    "3(V6.W3)": "-2",
+    "2(W2^2)": "8",
+    "3(W3^2)": "6",
+    "gcd(2,3)(W2.W3)": "0"
+  },
+  "first_E8_root_chain": {
+    "V6": {"semisimple":"E6","root_count":72,"rank":6,"component_root_rank_pairs":[[72,6]],"U1_rank_first_E8":2},
+    "V6+W2": {"semisimple":"A5+A1","root_count":32,"rank":6,"component_root_rank_pairs":[[30,5],[2,1]],"U1_rank_first_E8":2},
+    "V6+W3": {"semisimple":"A4+A1","root_count":22,"rank":5,"component_root_rank_pairs":[[20,4],[2,1]],"U1_rank_first_E8":3},
+    "V6+W2+W3": {"semisimple":"A2+A1","root_count":8,"rank":3,"component_root_rank_pairs":[[6,2],[2,1]],"U1_rank_first_E8":5},
+    "2V6_Z3": {"semisimple":"E7","root_count":126,"rank":7,"component_root_rank_pairs":[[126,7]],"U1_rank_first_E8":1},
+    "2V6_Z3+W3": {"semisimple":"A5+A2","root_count":36,"rank":7,"component_root_rank_pairs":[[30,5],[6,2]],"U1_rank_first_E8":1},
+    "3V6_Z2": {"semisimple":"E7+A1","root_count":128,"rank":8,"component_root_rank_pairs":[[126,7],[2,1]],"U1_rank_first_E8":0},
+    "3V6_Z2+W2": {"semisimple":"D6+A1+A1","root_count":64,"rank":8,"component_root_rank_pairs":[[60,6],[2,1],[2,1]],"U1_rank_first_E8":0}
+  },
+  "global_gauge_root_algebra": "A2+A1+u1^5 in first E8, with second E8 untouched",
+  "SU5_to_SM": {
+    "parent": "V6+W3 gives A4+A1; the final A2+A1 is entirely inside the A4 parent",
+    "spectator_A1_survives_W2": false,
+    "hypercharge_Y": ["-1/12","-1/12","-1/12","5/12","-7/12","1/4","1/4","-5/12"],
+    "Y_squared": "5/6",
+    "kY=2Y2": "5/3",
+    "SU5_root_Y_charges": ["-5/6","0","5/6"],
+    "W2_phase_on_SU5_roots": ["0","1/2"],
+    "identity": "W2 phase = (3/5) Y phase on every SU(5) root",
+    "consequence": "canonical SU(5) breaking to SU(3)xSU(2)xU(1)_Y at the root/Cartan level"
+  },
+  "hidden_factor": "second E8 untouched by this witness",
+  "what_is_closed": [
+    "correct Z6-II twist/subtwist kinematics",
+    "exact Wilson-line orders",
+    "modular-invariant gauge embedding",
+    "local/global ADE root systems",
+    "SM nonabelian gauge shape",
+    "canonical SU5 hypercharge normalization kY=5/3"
+  ],
+  "what_is_open": [
+    "full massless spectrum and orbifold projections",
+    "three net chiral families",
+    "hypercharge anomaly after spectrum enumeration",
+    "vectorlike-exotic decoupling",
+    "D/F-flat vacuum",
+    "Yukawas and phenomenology"
+  ],
+  "boundary": "This is the first honest even-order gauge-embedding builder on this branch, not a claimed MSSM vacuum."
+}
