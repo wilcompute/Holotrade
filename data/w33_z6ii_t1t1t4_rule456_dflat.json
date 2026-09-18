@@ -1,0 +1,19 @@
+{
+  "schema": "w33.z6ii_t1t1t4_rule456_dflat.v1",
+  "status": "PASS_RULE456_AND_DFLAT__FFLAT_OPEN",
+  "coupling": "T1*T1*T4 local vectorlike 5*5bar*s",
+  "worldsheet_rules": {
+    "Rule4": "PASS: all oscillator-number differences vanish, hence every active torus-lattice congruence is 0 mod K",
+    "Rule5": "PASS: with no oscillators all holomorphic/antiholomorphic inequalities and no-instanton equalities are satisfied",
+    "Rule6": "PASS: all oscillator-number differences vanish, hence every active coset-vector congruence is 0",
+    "twist_sum_per_plane": ["1","1","1"]
+  },
+  "D_flat_pair": {
+    "T4_s": ["1/6","-1/6","-1/2","1/2","1/2","1/2","1/2","1/2"],
+    "T2_opposite": ["-1/6","1/6","1/2","-1/2","-1/2","-1/2","-1/2","-1/2"],
+    "opposite_full_rank8_charge": true,
+    "equal_magnitude_vevs_cancel_all_first_E8_Cartan_D_terms": true
+  },
+  "F_flatness": "OPEN: requires the complete singlet superpotential; an opposite-charge D-flat pair alone is not an all-order F-flat proof",
+  "mass_channel_consequence": "The extra Rule 4/5/6 worldsheet constraints do not remove the previously certified cubic exotic mass channel. Decoupling still requires a compatible supersymmetric VEV and nonzero CFT coefficient."
+}
