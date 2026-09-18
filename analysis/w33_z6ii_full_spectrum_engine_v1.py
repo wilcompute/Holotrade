@@ -14,9 +14,10 @@ sector type needed for the explicit witness:
          with geometric multiplicities D=4,2,2, and all allowed oscillator
          energies.
 
-The engine deliberately contains an anomaly sentinel.  Under the currently
-implemented chirality bookkeeping, the combined SU(3)^3 anomaly is -2 rather
-than zero.  Therefore the output is NOT admitted as a physical spectrum.
+The engine deliberately contains anomaly sentinels.  After benchmarking the
+T2/T4 multiplicities and T3 vector right-movers against Chemtob--Hosteins,
+the combined SU(3)^3 anomaly closes exactly.  Hypercharge-related anomalies
+do not yet close, so the output is still NOT admitted as a physical spectrum.
 This is exactly what the sentinel is for: some remaining convention in the
 T2/T3/T4 chirality/CPT bookkeeping or projection must be audited before any
 three-family/MSSM claim.
@@ -54,8 +55,8 @@ U=Counter({
 
 # Right movers from Chemtob--Hosteins Table VII conventions.
 r2L=(0,0,1,0); r2R=(-1,-1,1,0)
-r3L=(F(-1,2),F(-3,2),F(3,2),F(-1,2))
-r3R=(F(-1,2),F(-1,2),F(3,2),F(1,2))
+r3L=(0,-1,2,0)
+r3R=(-1,-1,1,0)
 
 def project_t2(q,phase,qgamma,chir):
     r=r2L if chir=='L' else r2R
@@ -85,7 +86,7 @@ def sector_t2():
             raw=shell(sh,target) if target>=0 else []
             for ph,name in cfgs:
                 for chir in ('L','R'):
-                    for gamma,qg,D in ((1,F(0),2),(-1,F(1,2),1)):
+                    for gamma,qg,D in ((1,F(0),1),(-1,F(1,2),2)):
                         keep=[q for P,q in raw if project_t2(q,ph,qg,chir)]
                         if not keep:continue
                         rp=Counter(label(O) for O in orbits(keep))
@@ -146,21 +147,24 @@ def main(write=True):
     for k,m in I3.items():total[k]+=m
     aa={name:anomalies(C) for name,C in [('U',U),('T1',T1),('T2_T4_index',I2),('T3_index',I3),('combined',total)]}
     assert aa['U']=={'SU3^3':'1','SU3^2Y':'-1/6','SU2^2Y':'1/4','Y^3':'5/36','gravY':'0','WittenParity':1}
-    assert aa['T2_T4_index']=={'SU3^3':'-1','SU3^2Y':'1/6','SU2^2Y':'-1/4','Y^3':'-5/36','gravY':'0','WittenParity':1}
-    anomaly_ok=(aa['combined']['SU3^3']=='0' and aa['combined']['SU3^2Y']=='0' and aa['combined']['SU2^2Y']=='0')
-    assert not anomaly_ok
-    out={'schema':'w33.z6ii_full_spectrum_engine_v1','status':'ENGINE_ALL_SECTORS__FAIL_ANOMALY_SENTINEL',
+    assert aa['T2_T4_index']=={'SU3^3':'1','SU3^2Y':'-1/6','SU2^2Y':'1/4','Y^3':'5/36','gravY':'0','WittenParity':1}
+    nonabelian_ok=(aa['combined']['SU3^3']=='0')
+    hypercharge_ok=(aa['combined']['SU3^2Y']=='0' and aa['combined']['SU2^2Y']=='0' and aa['combined']['Y^3']=='0' and aa['combined']['gravY']=='0')
+    assert nonabelian_ok and not hypercharge_ok
+    out={'schema':'w33.z6ii_full_spectrum_engine_v1','status':'PASS_SU3_CUBIC__HYPERCHARGE_SENTINEL_FAIL',
       'sector_coverage':{
         'U':'exact root projection','T1':'full B.3-B.5 plus oscillators and 12 fixed points',
-        'T5':'CPT partner typed from T1','T2_T4':'B.8 both chiralities, gamma D=(2,1), all oscillator shells',
+        'T5':'CPT partner typed from T1','T2_T4':'B.8 both chiralities, gamma D=(1,2), all oscillator shells',
         'T3':'B.8 both chiralities, gamma D=(4,2,2), all oscillator shells'},
       'T2_T4_chiral_index':{key(k):m for k,m in sorted(I2.items(),key=str)},
       'T3_chiral_index':{key(k):m for k,m in sorted(I3.items(),key=str)},
       'anomaly_sentinel':aa,
-      'anomaly_closure':False,
-      'combined_nonabelian_failure':'SU3^3='+aa['combined']['SU3^3'],
+      'nonabelian_SU3_cubic_closure':nonabelian_ok,
+      'hypercharge_anomaly_closure':hypercharge_ok,
+      'anomaly_closure':nonabelian_ok and hypercharge_ok,
+      'combined_nonabelian':'SU3^3='+aa['combined']['SU3^3'],
       'diagnosis':'The engine architecture is complete enough to expose an inconsistency in the current chirality/CPT/projection conventions. The resulting ledger is quarantined and must not be called the string spectrum until the sentinel closes.',
-      'important_correction':'The old one-anti-five anomaly fingerprint was only a partial-spectrum statement. In this full engine the T2/T4 chiral index exactly cancels the untwisted anomaly vector, while T1+T3 still fail the global sentinel.',
+      'important_correction':'Published D(gamma=+1,-1)=(1,2) and Table-VII T3 vector weights restore exact SU3^3 anomaly closure. Hypercharge-related anomalies remain nonzero, so the ledger stays quarantined.',
       'next_debug_targets':['audit T3 Table-VII left/right convention','audit T1 temporal X_h fixed-label implementation against a published benchmark model','cross-check sector-index convention against a known Z6-II model before phenomenology'],
       'raw_ledgers':{'T2_entries':led2,'T3_entries':led3}}
     if write:OUT.write_text(json.dumps(out,indent=2)+'\n')
