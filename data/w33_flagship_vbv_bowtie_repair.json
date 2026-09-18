@@ -1,0 +1,10 @@
+{
+  "schema":"w33.flagship_vbv_bowtie_repair.v1",
+  "status":"PASS",
+  "headline":"The unresolved 18x18 v/bv mass problem reduces exactly to a 6x6 higher-order cross-block. Six rows S={0,2,4,6,8,10} feed only c10, while six columns R={1,3,5,7,9,13} are fed only by r14 in the matched complement. The residual 11x11 core is perfectly matchable. If future edges are added only in SxR, full rank 18 is equivalent to matching number >=5 in that 6x6 cross-block.",
+  "stars":{"left":{"leaves_rows":[0,2,4,6,8,10],"hub_column":10},"right":{"hub_row":14,"leaves_columns":[1,3,5,7,9,13]}},
+  "core":{"shape":[11,11],"structural_rank":11},
+  "repair_theorem":{"target_cross_block":"S x R","candidate_entries":36,"necessary_and_sufficient_condition_under_cross_block_only_updates":"matching_number(SxR) >= 5","minimum_new_edges":5,"all_size5_bijection_completions_tested":4320},
+  "computational_reduction":{"old_search_entries":324,"target_entries":36,"reduction_factor":9},
+  "order_provenance_caveat":"Parent comments say searched through total order five (AB n^k, k<=3), while prose says through order four. The theorem uses the committed support only."
+}
