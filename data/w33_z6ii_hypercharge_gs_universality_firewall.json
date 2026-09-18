@@ -1,0 +1,8 @@
+{
+  "schema":"w33.z6ii_hypercharge_gs_universality_firewall.v1",
+  "status":"PASS_CURRENT_LEDGER_INCONSISTENT_WITH_UNIVERSAL_GS_RESCUE",
+  "current_sentinel":{"A_SU3sqY":"3/2","A_SU2sqY":"-3/2","k3":1,"k2":1},
+  "universality_test":"FAIL: A_SU3sqY/k3 != A_SU2sqY/k2",
+  "consequence":"The residual hypercharge anomaly of the current ledger cannot be reinterpreted as the usual single universal anomalous-U(1) Green-Schwarz direction.",
+  "boundary":"This condemns the current ledger, not yet the bare embedding; finish the external benchmark first."
+}
