@@ -1,7 +1,7 @@
 {
   "schema": "w33.z6ii_t2_t4_antifive_nogo.v1",
   "status": "PASS_TARGETED_NO_GO",
-  "literature_projection": "Z6-II T2/T4 fixed-torus GSO: gamma=+1,-1 with D=2,1; B.7/B.8 shifted-momentum and phase conditions",
+  "literature_projection": "Z6-II T2/T4 fixed-torus GSO: gamma=+1,-1 with D=1,2; B.7/B.8 shifted-momentum and phase conditions",
   "shell_summary": {
     "N0_states_after_W2_by_n3": [28,16,16],
     "N1over3_states_after_W2_by_n3": [1,5,5],
