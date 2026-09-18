@@ -1,0 +1,25 @@
+{
+  "schema": "w33.z6ii_third_family_anomaly_fingerprint.v1",
+  "status": "PASS",
+  "certified_chiral_core": "two complete localized families + one split untwisted ten Q+u^c+e^c",
+  "partial_third_ten_anomaly": {
+    "SU3^3": "1",
+    "SU3^2Y": "-1/6",
+    "SU2^2Y": "1/4",
+    "Y^3": "5/36",
+    "gravY": "0",
+    "SU2_doublet_parity": 1
+  },
+  "required_antifive_anomaly": {
+    "SU3^3": "-1",
+    "SU3^2Y": "1/6",
+    "SU2^2Y": "-1/4",
+    "Y^3": "-5/36",
+    "gravY": "0",
+    "SU2_doublet_parity": 1
+  },
+  "termwise_sum_zero": true,
+  "Witten_SU2": "the partial ten contributes three color copies of Q, odd mod 2; one L doublet flips the parity back to even. Vectorlike doublet pairs do not change parity.",
+  "fingerprint": "Any proposed third-family completion must supply net d^c+L with anomaly vector (-1,+1/6,-1/4,-5/36,0) in these conventions, up to additional vectorlike matter.",
+  "boundary": "This predicts the anomaly deficit of the certified partial spectrum. It is not a full anomaly census until all twisted sectors and U(1)^5 charges are enumerated."
+}
