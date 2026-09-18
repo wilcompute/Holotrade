@@ -1,0 +1,63 @@
+{
+ "claim": "In the recorded W(3,3) Standard Model SM_20260917_3, the theta^2 local gauge group is su(9) and the single order-three Wilson line grades its 72 roots exactly 24|24|24. Those counts alone are ambiguous - (1,4,4) fits them too - but the neutral block decomposes as A4 + A1 + A1, which forces holonomy multiplicities (5,2,2) in the defining 9, exactly the eigenvalue spectrum of the two-qutrit controlled-Z gate. All four SU(5) simple roots carrying the model's GUT-normalised hypercharge lie in the neutral block, so the Standard Model's SU(5) is that gate's trivial-phase eigenspace.",
+ "model": "SM_20260917_3",
+ "grading": {
+  "local_roots": 72,
+  "grades": [
+   24,
+   24,
+   24
+  ],
+  "neutral": 24,
+  "multiplicities_from_counts_alone": [
+   [
+    1,
+    4,
+    4
+   ],
+   [
+    2,
+    2,
+    5
+   ]
+  ],
+  "neutral_algebra_computed_here": "A4 + A1 + A1 (20 + 2 + 2)",
+  "forced_multiplicities": [
+   2,
+   2,
+   5
+  ]
+ },
+ "czSpectrum": {
+  "multiplicities": {
+   "0": 5,
+   "1": 2,
+   "2": 2
+  },
+  "reading": "CZ_3 acts as omega^{jk} on the nine states"
+ },
+ "su5": "all four simple roots lie in the trivial-phase block",
+ "precision": "what is established is cospectrality, hence conjugacy to CZ_3 in SU(9) modulo its centre; whether the conjugation respects the canonical two-qutrit tensor factorisation, i.e. whether the holonomy is literally Clifford for the Pauli grading of sl(9), is NOT settled here",
+ "closesTheLoop": "1cde1f1 showed a qutrit register cannot live in E6 but does live in sl(9) = su(9) = A8, the W(3,3) twist; the Wilson line that actually yields a Standard Model there is the entangling gate of that register",
+ "checks": {
+  "local_group_is_su9": true,
+  "grading_is_24_24_24": true,
+  "neutral_block_has_24_roots": true,
+  "counts_alone_are_ambiguous": true,
+  "neutral_block_is_A4_plus_A1_plus_A1": true,
+  "multiplicities_are_5_2_2": true,
+  "cz_has_the_same_spectrum": true,
+  "su5_is_the_trivial_phase_block": true,
+  "su5_roots_are_e8_roots": true
+ },
+ "valid": true,
+ "status": "exact root-system arithmetic on the recorded model; independent confirmation of the reading in TOE 422271f78 / 030a44590, plus the SU(5)-in-the-neutral-block fact",
+ "sources": [
+  "TOE 422271f78",
+  "TOE 030a44590",
+  "Holotrade 5b3f3ad",
+  "Holotrade 1cde1f1",
+  "Holotrade 93b34e1",
+  "Holotrade 68df33f"
+ ]
+}
