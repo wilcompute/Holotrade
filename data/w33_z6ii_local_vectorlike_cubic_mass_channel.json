@@ -1,0 +1,33 @@
+{
+  "schema": "w33.z6ii_local_vectorlike_cubic_mass_channel.v1",
+  "status": "PASS_STANDARD_SELECTION_RULES_RULE456_OPEN",
+  "channel": "T1(local E6 5) * T1(local E6 5bar_exotic) * T4 singlet",
+  "T4_singlet": {
+    "shifted_gauge_momentum": ["1/6","-1/6","-1/2","1/2","1/2","1/2","1/2","1/2"],
+    "unshifted_P": ["-1/2","-3/2","3/2","1/2","1/2","1/2","1/2","1/2"],
+    "norm": "14/9",
+    "n3": 0,
+    "SM": "(1,1)_0",
+    "W2_integral": true,
+    "left_gamma": "+1",
+    "gamma_multiplicity": 1,
+    "B8_phase_integer": "0"
+  },
+  "full_cartan_momentum_conservation": {
+    "triplet_orbit_size": 3,
+    "doublet_orbit_size": 2,
+    "identity": "q_5bar=-s-q_5 for every weight in both SU5 components",
+    "rank8_first_E8_gauge_invariance": true
+  },
+  "ordinary_selection_rules": {
+    "point_group": "1+1+4=6=0 mod6",
+    "H_momentum": "2*(-1,-2,-3)/6 + (-2,-1,0)/3 = (-1,-1,-1)",
+    "n3_space_group": "0+0+0=0 mod3",
+    "SO4_fixed_point": "for either local copy n2prime=a, a+a=0 mod2; T4 is a fixed torus",
+    "gamma_product": "1*1*1=1"
+  },
+  "two_local_copies": "The same T4 fixed-torus singlet channel applies to both n2prime=0 and n2prime=1 local-E6 27s.",
+  "consequence": "If this T4 singlet acquires a VEV and the deeper worldsheet rules/coefficient are nonzero, both localized vectorlike 5+5bar packages have a cubic mass channel.",
+  "open_rules": ["Rule 4 enhanced torus-lattice symmetry","Rule 5 worldsheet-instanton existence","Rule 6 coset-vector rule","actual CFT coefficient","flat direction containing this singlet VEV"],
+  "boundary": "Standard gauge, point-group, space-group, gamma and H-momentum rules pass exactly; exotic decoupling is not claimed until the open worldsheet rules and vacuum are checked."
+}
