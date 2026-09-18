@@ -1,0 +1,24 @@
+{
+  "schema": "w33.z6ii_singlet_selection_semigroup.v1",
+  "status": "PASS_ENGINE_AND_SEED_FIXTURE",
+  "engine": {
+    "continuous_exact_rational_charges": true,
+    "point_group_modulus": 6,
+    "R_moduli": [6,3,2],
+    "R_targets": [-1,-1,-1],
+    "enumeration_order": "increasing total operator degree"
+  },
+  "seed_results": {
+    "pair_only_all_order": "for gauge-neutral (ab)^n, R3=0 for every n, so no superpotential term",
+    "uab_degree3": "rejected by G2 gamma/localization rule",
+    "first_survivor": {
+      "degree": 15,
+      "exponents": {
+        "a_T2_minus_s": 7,
+        "b_T4_plus_s": 7,
+        "u_U3_neutral": 1
+      }
+    }
+  },
+  "groebner_boundary": "Full F-term Groebner decomposition waits for the complete singlet ledger and nonzero CFT coefficients."
+}
