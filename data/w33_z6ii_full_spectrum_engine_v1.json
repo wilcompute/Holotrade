@@ -1,21 +1,31 @@
 {
   "schema": "w33.z6ii_full_spectrum_engine_v1",
-  "status": "ENGINE_ALL_SECTORS__FAIL_ANOMALY_SENTINEL",
+  "status": "PASS_SU3_CUBIC__HYPERCHARGE_SENTINEL_FAIL",
+  "benchmark_correction": {
+    "source": "Chemtob--Hosteins Appendix B, Table VI/VII and Eq. B.8",
+    "T2_T4_gamma_multiplicities": "D(+1,-1)=(1,2)",
+    "T3_vector_right_movers": {
+      "left": "(0,-1,2,0)",
+      "right": "(-1,-1,1,0)"
+    }
+  },
   "sector_coverage": {
     "U": "exact root projection",
     "T1": "full B.3-B.5 plus oscillators and 12 fixed points",
     "T5": "CPT partner typed from T1",
-    "T2_T4": "B.8 both chiralities, gamma D=(2,1), all oscillator shells",
+    "T2_T4": "B.8 both chiralities, gamma D=(1,2), all oscillator shells",
     "T3": "B.8 both chiralities, gamma D=(4,2,2), all oscillator shells"
   },
   "anomaly_sentinel": {
     "U": {"SU3^3":"1","SU3^2Y":"-1/6","SU2^2Y":"1/4","Y^3":"5/36","gravY":"0","WittenParity":1},
     "T1": {"SU3^3":"6","SU3^2Y":"1/2","SU2^2Y":"0","Y^3":"-1/6","gravY":"2","WittenParity":0},
-    "T2_T4_index": {"SU3^3":"-1","SU3^2Y":"1/6","SU2^2Y":"-1/4","Y^3":"-5/36","gravY":"0","WittenParity":1},
+    "T2_T4_index": {"SU3^3":"1","SU3^2Y":"-1/6","SU2^2Y":"1/4","Y^3":"5/36","gravY":"0","WittenParity":1},
     "T3_index": {"SU3^3":"-8","SU3^2Y":"4/3","SU2^2Y":"-2","Y^3":"-10/9","gravY":"0","WittenParity":0},
-    "combined": {"SU3^3":"-2","SU3^2Y":"11/6","SU2^2Y":"-2","Y^3":"-23/18","gravY":"2","WittenParity":0}
+    "combined": {"SU3^3":"0","SU3^2Y":"3/2","SU2^2Y":"-3/2","Y^3":"-1","gravY":"2","WittenParity":0}
   },
+  "nonabelian_SU3_cubic_closure": true,
+  "hypercharge_anomaly_closure": false,
   "anomaly_closure": false,
-  "diagnosis": "The engine architecture is complete enough to expose an inconsistency in the current chirality/CPT/projection conventions. The resulting ledger is quarantined and must not be called the string spectrum until the sentinel closes.",
-  "important_correction": "The old one-anti-five anomaly fingerprint was only a partial-spectrum statement. In this full engine the T2/T4 chiral index exactly cancels the untwisted anomaly vector, while T1+T3 still fail the global sentinel."
+  "diagnosis": "The published Z6-II multiplicities/right-mover benchmark kills the previous SU3^3=-2 sentinel exactly. Hypercharge-related anomalies remain nonzero, so the witness is still quarantined pending a hypercharge/projection audit; no MSSM claim is made.",
+  "boundary": "Exact visible-sector arithmetic for the current conventions. Full E8xE8 U(1) anomaly universality and a published benchmark-model reproduction remain required before promotion."
 }
