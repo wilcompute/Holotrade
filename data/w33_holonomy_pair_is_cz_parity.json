@@ -1,0 +1,78 @@
+{
+ "claim": "On the local SU(9) of the W(3,3) flagship Standard Model, the two holonomies the physics supplies -- the order-three Wilson line and the order-two point-group element theta^3 -- have gradings 24|24|24 and 32|40, hence multiplicities (5,2,2) and (5,4), and their JOINT spectrum is exactly that of the commuting Clifford pair (CZ_3, parity). Nine joint spectra are compatible with those two individual spectra and only one is realised, so this is a one-in-nine match rather than a tautology; since commuting semisimple pairs with equal joint spectra are simultaneously conjugate, the pair's image in PSU(9) is simultaneously conjugate to (CZ_3, parity).",
+ "why_a_single_element_says_nothing": "any two order-three elements of SU(9) with multiplicities (5,2,2) are conjugate, so cospectrality of the Wilson line alone with CZ_3 is equivalent to knowing its spectrum and carries no further content",
+ "gradings": {
+  "wilson_line": [
+   24,
+   24,
+   24
+  ],
+  "theta3": [
+   32,
+   40
+  ]
+ },
+ "multiplicities": {
+  "wilson_line": [
+   5,
+   2,
+   2
+  ],
+  "theta3": [
+   5,
+   4
+  ]
+ },
+ "jointSpectrum": {
+  "(0,+)": 3,
+  "(0,-)": 2,
+  "(1,+)": 1,
+  "(1,-)": 1,
+  "(2,+)": 1,
+  "(2,-)": 1
+ },
+ "control": {
+  "joint_spectra_compatible_with_both": 9,
+  "matching_the_heterotic_census": 1
+ },
+ "census_over_the_sample": {
+  "z6i_w33_standard_models": 45,
+  "wilson_line_type_522": 45,
+  "theta3_spectrum": {
+   "(5,4) parity type": 25,
+   "(6,3)": 12,
+   "(7,2)": 6,
+   "(8,1)": 2
+  },
+  "comparison_defined_for": 25,
+  "joint_matches_cz_parity": 15,
+  "baseline": "1 of 9",
+  "reading": "strong enrichment, roughly 60 per cent against 11, but not universal; the flagship is one of the fifteen"
+ },
+ "stillOpen": "whether this two-qutrit structure is the one canonically attached to the lattice; the E8/A8 bridge is support-level with no Chevalley lift, and its order-three element is the regular one with 80 free root orbits, not the A8 element whose fixed algebra is sl(9)",
+ "reading": "the Standard Model's SU(5) is the entangling gate's trivial-phase block (a617bee), and the even-order element that the order-three no-goes forced acts on the same register as parity",
+ "checks": {
+  "local_group_is_su9": true,
+  "wilson_line_grades_24_24_24": true,
+  "theta3_grades_32_40": true,
+  "parity_commutes_with_cz": true,
+  "joint_census_matches": true,
+  "cz_spectrum_is_522": true,
+  "parity_spectrum_is_54": true,
+  "nine_joint_spectra_possible": true,
+  "exactly_one_matches": true,
+  "the_match_is_the_cz_parity_one": true,
+  "single_element_spectrum_is_a_complete_invariant": true
+ },
+ "valid": true,
+ "status": "exact root-system arithmetic on the recorded flagship, plus finite enumeration of the nine joint spectra; everything at the adjoint level, since E8 contains SU(9)/Z3",
+ "sources": [
+  "Holotrade a617bee",
+  "Holotrade d772153",
+  "Holotrade 5b3f3ad",
+  "Holotrade 1cde1f1",
+  "TOE 422271f78",
+  "TOE 030a44590",
+  "TOE w33_e8_a8_pauli_support_bridge"
+ ]
+}
