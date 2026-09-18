@@ -1,0 +1,8 @@
+{
+  "schema":"holotrade.z6ii_buchmuller2007_tableD3_row_fixture.v1",
+  "status":"PASS_COMPLETE_ROW_IDENTITY_FIXTURE",
+  "totals":{"s":69,"h":14,"f":4,"fbar":4,"w":5},
+  "sector_row_counts":{"0":5,"1":32,"2":25,"3":8,"4":26},
+  "checks":{"all_96_rows_unique":true,"s1_through_s69_complete":true,"h1_through_h14_complete":true,"totals_match_table5_1":true},
+  "remaining_regression":"Machine-reproduce each row charge vector q2...q9, R_i, gamma and hidden irrep."
+}
