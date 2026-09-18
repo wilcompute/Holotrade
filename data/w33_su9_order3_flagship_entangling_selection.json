@@ -1,0 +1,19 @@
+{
+  "schema":"w33.su9_order3_flagship_entangling_selection.v1",
+  "status":"PASS",
+  "headline":"Among the six unordered determinant-one order-three spectral types in SU(9), the exact flagship conditions (neutral SU5 present and 24 roots in each nonzero Z3 grade) uniquely select 5+2+2. This is qutrit CZ_3. The neighboring local Clifford S_1 x I has 6+3 spectrum, sl9 grading 44+18+18 and W33 profile 1^13 3^9; the flagship/CZ branch has 32+24+24 and 1^4 3^12, so the viable Wilson line is the entangling branch.",
+  "spectral_types":[
+    {"multiplicities":[9,0,0],"neutral_roots":72,"charged_each":0,"centralizer_dimension":80,"contains_SU5":true},
+    {"multiplicities":[7,1,1],"neutral_roots":42,"charged_each":15,"centralizer_dimension":50,"contains_SU5":true},
+    {"multiplicities":[6,3,0],"neutral_roots":36,"charged_each":18,"centralizer_dimension":44,"contains_SU5":true},
+    {"multiplicities":[5,2,2],"neutral_roots":24,"charged_each":24,"centralizer_dimension":32,"contains_SU5":true},
+    {"multiplicities":[4,4,1],"neutral_roots":24,"charged_each":24,"centralizer_dimension":32,"contains_SU5":false},
+    {"multiplicities":[3,3,3],"neutral_roots":18,"charged_each":27,"centralizer_dimension":26,"contains_SU5":false}
+  ],
+  "selection":{"conditions":["neutral centralizer contains SU5","each nonzero root grade has size 24"],"unique_type":[5,2,2],"centralizer":"S(U(5) x U(2) x U(2))"},
+  "clifford_comparison":{
+    "local_phase":{"gate":"S_1 tensor I","fundamental_spectrum":[6,3,0],"sl9_grading":[44,18,18],"W33_point_cycle_profile":{"1":13,"3":9}},
+    "entangler":{"gate":"CZ_3","fundamental_spectrum":[5,2,2],"sl9_grading":[32,24,24],"W33_point_cycle_profile":{"1":4,"3":12}}
+  },
+  "scope":"Spectral/root-centralizer classification; selection uses exact flagship root data."
+}
