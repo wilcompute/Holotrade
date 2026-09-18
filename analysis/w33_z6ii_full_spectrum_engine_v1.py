@@ -163,9 +163,9 @@ def main(write=True):
       'hypercharge_anomaly_closure':hypercharge_ok,
       'anomaly_closure':nonabelian_ok and hypercharge_ok,
       'combined_nonabelian':'SU3^3='+aa['combined']['SU3^3'],
-      'diagnosis':'The engine architecture is complete enough to expose an inconsistency in the current chirality/CPT/projection conventions. The resulting ledger is quarantined and must not be called the string spectrum until the sentinel closes.',
+      'diagnosis':'Published T2/T4 multiplicities and T3 vector right movers close SU3^3 exactly. Hypercharge-related visible anomalies remain nonzero, so the ledger is still quarantined and must not be called a viable MSSM spectrum.',
       'important_correction':'Published D(gamma=+1,-1)=(1,2) and Table-VII T3 vector weights restore exact SU3^3 anomaly closure. Hypercharge-related anomalies remain nonzero, so the ledger stays quarantined.',
-      'next_debug_targets':['audit T3 Table-VII left/right convention','audit T1 temporal X_h fixed-label implementation against a published benchmark model','cross-check sector-index convention against a known Z6-II model before phenomenology'],
+      'next_debug_targets':['reproduce a published Z6-II benchmark model state-by-state with this engine','audit the full U(1)^5 charge basis and hypercharge generator on every state','check Green-Schwarz anomaly universality and hidden-E8 contributions before deciding whether the witness itself fails'],
       'raw_ledgers':{'T2_entries':led2,'T3_entries':led3}}
     if write:OUT.write_text(json.dumps(out,indent=2)+'\n')
     print(json.dumps(out,indent=2));return out
