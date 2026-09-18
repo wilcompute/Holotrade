@@ -1,0 +1,9 @@
+{
+  "schema":"w33.flagship_mass_order_provenance_audit.v1",
+  "status":"PASS_COMMITTED_PROVENANCE_IMPLIES_ORDER5_SEARCHED",
+  "orbifolder_semantics":{"manual_meaning":"max order(X) bounds the order in singlet fields generating M_ij","mass_operator":"A B n^k","total_field_order":"2+k"},
+  "parent_metadata":{"comment":"searched through order five, i.e. A B n^k for k <= 3","ordersSearched":[2,3,4,5],"support_order_labels_present":[3,4],"order5_entries_present":false},
+  "conclusion":"If the parent comment accurately records the executed generation range, total order five was already searched and added no new support. Remaining untested total orders are 6-8.",
+  "provenance_boundary":"This audit does not rerun orbifolder; preserve raw command/config and coupling list for a fully self-contained rerun.",
+  "external_reference":"Nilles et al., The Orbifolder, Comput.Phys.Commun.183 (2012) 1363-1380, Appendix B.2.5."
+}
