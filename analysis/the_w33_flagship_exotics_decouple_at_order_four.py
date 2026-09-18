@@ -19,7 +19,8 @@ string selection rules:
     x  / bx       1 x 1          4                1              yes
     d  / bd       2 x 5          4                2              yes
     l  / bl       4 x 1          4                1              yes
-    v  / bv      18 x 18       3 and 4           13 of 18         NO (through order four)
+    v  / bv      18 x 18       3 and 4           13 of 18         NO (order four is as far
+                                                                      as this sector was run)
 
   * x/bx is a single vector-like exotic pair: it gets mass at order four.
   * d/bd: the support is full at order four, so with generic singlet vacuum expectation values
@@ -71,8 +72,11 @@ import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Support matrices measured with the orbifolder coupling engine on the flagship model
-# SM_20260917_3 of 5b3f3ad. Entry = lowest order at which that mass entry is allowed, 0 = never
-# (searched through order five, i.e. A B n^k for k <= 3).
+# SM_20260917_3 of 5b3f3ad. Entry = lowest order at which that mass entry is allowed, 0 = none
+# found within that sector's search range. THE RANGES DIFFER BY SECTOR, see SEARCH_RANGE below:
+# x/bx, d/bd and l/bl were generated with k <= 3 (total order up to 5); v/bv only with k <= 2
+# (total order up to 4), because the k = 3 run did not finish. An earlier version of this
+# comment said "searched through order five" for all sectors, which was wrong for v/bv.
 SECTORS = {
     "x/bx": {"rows": 1, "cols": 1, "support": [[4]]},
     "d/bd": {"rows": 2, "cols": 5, "support": [[4, 4, 4, 4, 4], [4, 4, 4, 4, 4]]},
@@ -98,7 +102,10 @@ SECTORS = {
 303030303044404444
 303030303044404444""".split()]},
 }
-ORDERS_SEARCHED = [2, 3, 4, 5]
+# per-sector generation range actually executed, as total field order 2 + k
+SEARCH_RANGE = {"x/bx": [2, 3, 4, 5], "d/bd": [2, 3, 4, 5], "l/bl": [2, 3, 4, 5],
+                "v/bv": [2, 3, 4]}
+ORDERS_SEARCHED = sorted({o for r in SEARCH_RANGE.values() for o in r})
 
 
 def structural_rank(support):
@@ -179,7 +186,12 @@ def main():
                      "NOT close through order four: its matching is 13, leaving five massless pairs. Step 8 is "
                      "therefore not established for the flagship; orders five to eight are still to be done.",
             "model": "SM_20260917_3, the Z6-I flagship of 5b3f3ad",
-            "ordersSearched": ORDERS_SEARCHED,
+            "ordersSearchedPerSector": SEARCH_RANGE,
+            "provenanceCorrection": "an earlier version of this file carried a single comment saying all sectors were "
+                                    "searched through order five; that was accurate for x/bx, d/bd and l/bl but NOT "
+                                    "for v/bv, whose k = 3 run did not finish. v/bv support is from orders 2-4 only, "
+                                    "so total order FIVE is still untested there, not just 6-8. This corrects the "
+                                    "conditional reading recorded in w33_flagship_mass_order_provenance_audit.json.",
             "sectors": report,
             "muProblem": "the l/bl entry that decouples the vector-like doublet pair is the mu term; a light Higgs pair "
                          "requires a vacuum symmetry, not a spectrum property",

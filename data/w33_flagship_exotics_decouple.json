@@ -1,12 +1,32 @@
 {
  "claim": "For the W(3,3) flagship Standard Model of 5b3f3ad, the x/bx, d/bd and l/bl mass matrices reach maximal structural rank at order four, so those vector-like exotics decouple and exactly three net d^c survive; the same order-four l/bl entry is the mu term, so the Higgs pair is not protected, which is the standard mu problem of these constructions. The 18x18 v/bv sector does NOT close through order four: its matching is 13, leaving five massless pairs. Step 8 is therefore not established for the flagship; orders five to eight are still to be done.",
  "model": "SM_20260917_3, the Z6-I flagship of 5b3f3ad",
- "ordersSearched": [
-  2,
-  3,
-  4,
-  5
- ],
+ "ordersSearchedPerSector": {
+  "x/bx": [
+   2,
+   3,
+   4,
+   5
+  ],
+  "d/bd": [
+   2,
+   3,
+   4,
+   5
+  ],
+  "l/bl": [
+   2,
+   3,
+   4,
+   5
+  ],
+  "v/bv": [
+   2,
+   3,
+   4
+  ]
+ },
+ "provenanceCorrection": "an earlier version of this file carried a single comment saying all sectors were searched through order five; that was accurate for x/bx, d/bd and l/bl but NOT for v/bv, whose k = 3 run did not finish. v/bv support is from orders 2-4 only, so total order FIVE is still untested there, not just 6-8. This corrects the conditional reading recorded in w33_flagship_mass_order_provenance_audit.json.",
  "sectors": {
   "x/bx": {
    "shape": [
