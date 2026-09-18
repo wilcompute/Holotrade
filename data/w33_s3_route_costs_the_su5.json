@@ -1,0 +1,51 @@
+{
+ "claim": "If an order-two element inverts the W(3,3) order-three gauge twist, as the S3 point group of w33_heterotic_s3_outer_target requires, then it cannot be a shift or a Wilson line, it must act by a lattice automorphism, and it cuts the twist's su(9) down to so(9) (dimension 80 -> 36, rank 8 -> 4). so(9) contains no su(5), because su(5) has no nontrivial nine-dimensional real representation. Hence GUT-normalised hypercharge cannot descend from the W(3,3) E8 in an S3 orbifold. The commuting C2 of the Z6 point group has no such cost, and that is the one under which Standard Models were found (5b3f3ad).",
+ "twistSubalgebra": {
+  "roots": 72,
+  "rank": 8,
+  "dimension": 80,
+  "name": "su(9)"
+ },
+ "afterInversion": {
+  "trace_on_su9": -8,
+  "dimension": 36,
+  "rank": 4,
+  "name": "so(9)",
+  "classification_input": "outer involutions of su(n), n odd, have fixed subalgebra so(n) (Cartan symmetric pair AI)"
+ },
+ "su5InSo9": {
+  "nontrivial_real_reps_up_to_dim_9": [],
+  "smallest_complex_pair_dimension": 10,
+  "embeds": false
+ },
+ "dichotomy": {
+  "inverting_C2": "S3 point group; lattice-automorphism embedding; SU(9) -> SO(9); no SU(5)",
+  "commuting_C2": "Z6 point group; shift embedding; SU(9) survives locally; Standard Models exist (Holotrade 5b3f3ad)"
+ },
+ "checks": {
+  "representative_is_a_Z3_shift": true,
+  "A8_class_has_72_roots": true,
+  "A8_has_rank_eight": true,
+  "su9_dimension_80": true,
+  "root_vectors_pair_up": true,
+  "fixed_subalgebra_dimension_36": true,
+  "so9_dimension_matches": true,
+  "no_nontrivial_real_su5_rep_up_to_dim_9": true,
+  "smallest_complex_pair_exceeds_nine": true,
+  "su5_does_not_embed_in_so9": true,
+  "an_inverting_shift_would_trivialise_the_twist": true
+ },
+ "valid": true,
+ "status": "exact root-system and representation-theory computation; the symmetric-pair classification is classical and cited",
+ "boundary": "Conditional on the inverting C2 acting on the W(3,3) E8, and on the 4D gauge group being the commutant of the embedded space group, i.e. generic moduli with no gauge enhancement. No claim about whether Konopka's S3 model admits an A8-class embedding, nor that hypercharge from the OTHER E8 is excluded.",
+ "sources": [
+  "TOE w33_heterotic_s3_outer_target.py",
+  "TOE w33_z6ii_c2_extension_no_go.py",
+  "TOE w33_suzuki_outer_heisenberg_sector_swap.py",
+  "Holotrade 5b3f3ad",
+  "Holotrade 2365e59",
+  "Holotrade 68df33f",
+  "Konopka, JHEP 07 (2013) 023",
+  "Cartan's classification of symmetric pairs (AI)"
+ ]
+}
