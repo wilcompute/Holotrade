@@ -1,0 +1,10 @@
+{
+  "schema":"w33.flagship_vbv_hall_obstruction.v1",
+  "status":"PASS",
+  "headline":"The flagship v/bv rank-13-of-18 defect through order four is caused entirely by one explicit Hall obstruction: six identical rows {0,2,4,6,8,10} couple only to column 10, so 6->1 forces five unmatched rows. Removing that star and its one neighbor leaves 12 rows with a full size-12 matching.",
+  "parent":"data/w33_flagship_exotics_decouple.json",
+  "Hall_witness":{"rows":[0,2,4,6,8,10],"neighbors":[10],"common_edge_order":3,"defect":5,"formula":"|S|-|N(S)| = 6-1 = 5"},
+  "complement":{"matching_size":12,"reading":"all deficiency is concentrated in the six-to-one star"},
+  "order5_to_8_target":"Higher-order couplings must break the Hall star by supplying at least five additional independent neighbor directions across its six rows, or an equivalent support enlargement.",
+  "q3_arithmetic":{"star_size_6":"q(q-1)","Hall_defect_5":"2q-1","CZ_zero_phase_dimension_5":"2q-1","boundary":"No basis-level identification is claimed without field-to-Pauli/SU9 labels."}
+}
