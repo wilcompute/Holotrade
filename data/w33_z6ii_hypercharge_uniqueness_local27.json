@@ -1,0 +1,11 @@
+{
+  "schema": "w33.z6ii_hypercharge_uniqueness_local27.v1",
+  "status": "PASS_UNIQUE_CANONICAL_HYPERCHARGE",
+  "local_shell_weights": 27,
+  "charge_preserving_family": "Y(t)=(t,-2t-1/4,t,5/12,-7/12,1/4,1/4,-5/12)",
+  "norm": "Y(t)^2=6t^2+t+7/8",
+  "canonical_condition": "kY=2Y^2=5/3",
+  "factorization": "Y(t)^2-5/6=(12t+1)^2/24",
+  "unique_parameter": "t=-1/12",
+  "consequence": "No first-E8 Cartan mixing can preserve the complete local-27 hypercharges and kY=5/3 while changing Y."
+}
