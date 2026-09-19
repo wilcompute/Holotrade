@@ -58,9 +58,9 @@ element is invisible here: it is -I, which acts trivially on all 40 points (e239
 entanglement stratification cannot see it at all -- it only appears on the oriented 80-state
 lift.
 
-SCOPE. The Witting/SRG/4+36 facts are BT817's, cited not re-derived; the ray-shape check below
-is a consistency check on the stratification, not a reconstruction of the Witting configuration.
-The geometry and the CZ action are computed here exactly.
+SCOPE. The Witting/SRG/4+36 facts are BT817's, cited not re-derived: nothing here reconstructs
+the Witting configuration, and no check below restates its counts. What is computed here is the
+GQ(3,3) line decomposition and the CZ action on it, exactly.
 """
 
 import argparse
