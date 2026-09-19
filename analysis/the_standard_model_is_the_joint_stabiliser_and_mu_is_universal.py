@@ -1,17 +1,30 @@
 #!/usr/bin/env python3
 """
-THE STANDARD MODEL GAUGE GROUP IS THE JOINT STABILISER OF THE TWO HOLONOMIES -- AND THE MU TERM
-IS UNIVERSAL IN THIS CLASS: EVERY MODEL MEASURED GENERATES IT AT ORDER THREE OR FOUR.
+THE OBSERVABLE STANDARD-MODEL NONABELIAN FACTOR IS CUT OUT BY THE TWO HOLONOMIES -- BUT THE FULL
+SU(9) JOINT CENTRALISER HAS FOUR EXTRA U(1) DIRECTIONS. THE MU TERM IS UNIVERSAL IN THIS CLASS.
 
 Two results, one mechanism and one negative.
 
-1. THE MECHANISM. d772153 measured that the order-three Wilson line is of CZ type (5,2,2) in
+1. THE MECHANISM, WITH A CENTRALISER SCOPE CORRECTION. d772153 measured that the order-three
+   Wilson line is of CZ type (5,2,2) in
    45 of 45 Z6-I W(3,3) Standard Models, and 1d03cbb added the order-two theta^3 with spectrum
    (5,4) where defined. Put the two together on the local su(9) and the Standard Model is not an
-   extra ingredient, it is what the pair leaves behind:
+   extra ingredient inside the observable SU(5) block:
 
        the Wilson line's trivial-phase block   = su(5)                  (the SM's SU(5))
        theta^3 splits that block as            = 3 + 2                  = SU(3) x SU(2)
+
+   CORRECTION: this does NOT mean that the full joint centraliser in su(9) is the Standard Model.
+   The already-certified joint fundamental multiplicities are (3,2,1,1,1,1), so the common
+   centraliser is S(U(3) x U(2) x U(1)^4), with Lie algebra
+
+       su(3) + su(2) + u(1)^5,
+
+   dimension 16.  The Standard Model uses one selected U(1) as hypercharge; four additional
+   abelian directions remain in the local su(9) centraliser and require the rest of the heterotic
+   construction (projection/Stueckelberg/Green--Schwarz physics) to remove or lift them.  The exact
+   statement here is therefore that the pair cuts out the SM NONABELIAN factor and the SU(5)
+   3+2 split, not that the entire su(9) fixed algebra equals the SM.
 
    Measured: in ALL 25 models where theta^3 is of parity type, the CZ-trivial block splits
    3 + 2 under theta^3. Not 15 of 25 -- that figure was the finer (CZ, parity) alignment of
@@ -40,8 +53,9 @@ Two results, one mechanism and one negative.
    directory -- and are excluded rather than counted as mu-free. The flagship was among them and
    was measured separately: mu at order four.)
 
-WHAT THE TWO SAY TOGETHER. The pair of holonomies gives the Standard Model gauge group for free
-and the mu problem for free as well, from the same structure: the Wilson line leaves an SU(5),
+WHAT THE TWO SAY TOGETHER. The pair of holonomies gives the observable SU(3) x SU(2) factor and
+its SU(5) origin directly, while the full local centraliser still contains four extra U(1)s. The
+mu problem also appears from the same structure: the Wilson line leaves an SU(5),
 theta^3 cuts it to SU(3) x SU(2), and the same order-four couplings that decouple the exotics
 also pair the Higgs doublets. Decoupling the exotics and keeping the Higgs light are the same
 computation with opposite desired answers.
@@ -64,6 +78,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JOINT = {"models_with_parity_type_theta3": 25, "split_3_plus_2": 25, "other_splits": 0}
 
 # measured background over ALL (5,2,2) Wilson-line classes on the flagship's shift
+JOINT_BLOCKS = [3, 2, 1, 1, 1, 1]
+
 BACKGROUND = {"all_522_classes": 2099,
               "joint_root_counts": {"(8,16)": 630, "(10,14)": 720, "(12,12)": 420, "(14,10)": 192,
                                     "(18,6)": 64, "(16,8)": 45, "(24,0)": 28},
@@ -105,6 +121,20 @@ def main():
     checks["three_plus_two_is_five"] = 3 + 2 == 5
     checks["su5_dimension_check"] = 5 ** 2 - 1 == 24 and (3 ** 2 - 1) + (2 ** 2 - 1) + 1 == 12
 
+    # Full common centraliser from the certified joint fundamental spectrum.
+    # For a diagonal semisimple pair with joint block sizes m_i, the centraliser
+    # in SU(n) is S(prod_i U(m_i)), dimension sum_i m_i^2 - 1.
+    full_centralizer_dim = sum(m * m for m in JOINT_BLOCKS) - 1
+    centralizer_center_rank = len(JOINT_BLOCKS) - 1
+    semisimple_dim = sum(m * m - 1 for m in JOINT_BLOCKS if m > 1)
+    checks["joint_blocks_are_3_2_1_1_1_1"] = JOINT_BLOCKS == [3, 2, 1, 1, 1, 1]
+    checks["full_joint_centralizer_dimension_is_16"] = full_centralizer_dim == 16
+    checks["joint_semisimple_factor_is_su3_su2"] = semisimple_dim == 11
+    checks["joint_center_rank_is_five"] = centralizer_center_rank == 5
+    checks["four_extra_u1_beyond_hypercharge"] = centralizer_center_rank - 1 == 4
+    print("  full SU(9) joint centraliser: S(U3 x U2 x U1^4), dim %d, centre rank %d" %
+          (full_centralizer_dim, centralizer_center_rank))
+
     # 2. mu is universal
     measured = MU["order_3"] + MU["order_4"]
     print("  mu: %d models at order 4, %d at order 3, %d absent through order 5" % (
@@ -121,14 +151,20 @@ def main():
 
     if args.write:
         payload = {
-            "claim": "The Standard Model gauge group in the W(3,3) Z6-I models is the joint stabiliser of the two "
-                     "commuting holonomies on the local su(9): the order-three Wilson line leaves its trivial-phase "
-                     "block su(5), and the order-two theta^3 splits that block as 3 + 2 = SU(3) x SU(2). All 25 models "
-                     "with parity-type theta^3 do this, against a measured background of 30.0 per cent (630 of 2099) "
-                     "among all (5,2,2)-type Wilson-line classes on that shift. Separately, the mu term is universal: "
-                     "of 77 Z6-I Standard Models measured, 48 generate mu at order four and 29 at order three, and "
-                     "none is mu-free through order five.",
+            "claim": "In the W(3,3) Z6-I models, the two commuting holonomies cut the Wilson-line SU(5) block as 3+2, "
+                     "giving the observable SU(3)xSU(2) nonabelian Standard-Model factor. The full joint centraliser "
+                     "in su(9) is larger: the joint block sizes (3,2,1,1,1,1) give S(U3xU2xU1^4), i.e. "
+                     "su(3)+su(2)+u(1)^5, so four U(1) directions beyond hypercharge still require the heterotic "
+                     "projection/mass mechanism. All 25 parity-type models show the 3+2 SU(5) split, against a 30.0% "
+                     "background (630/2099). Separately, the mu term is universal: of 77 models measured, 48 first "
+                     "generate it at order four and 29 at order three; none is mu-free through order five.",
             "mechanism": {"wilson_line_leaves": "su(5)", "theta3_splits_it": "3 + 2 = SU(3) x SU(2)",
+                          "full_joint_blocks": JOINT_BLOCKS,
+                          "full_joint_centralizer": "S(U(3) x U(2) x U(1)^4)",
+                          "full_joint_lie_algebra": "su(3) + su(2) + u(1)^5",
+                          "full_joint_dimension": full_centralizer_dim,
+                          "center_rank": centralizer_center_rank,
+                          "extra_u1_beyond_hypercharge": centralizer_center_rank - 1,
                           "models": JOINT,
                           "background": BACKGROUND,
                           "background_share": share,
@@ -137,7 +173,7 @@ def main():
                                                  "3+2 split, which is what produces the Standard Model, holds in 25"},
             "mu": {**MU, "reading": "no mu-suppressed corner exists in this class; mu must come from a vacuum "
                                     "symmetry, as in the published mini-landscape models"},
-            "together": "the same structure gives the Standard Model gauge group for free and the mu problem for free: "
+            "together": "the same structure gives the observable SU(3)xSU(2) factor inside the SU(5) block and the mu problem; "
                         "decoupling the exotics and keeping the Higgs light are the same order-four computation with "
                         "opposite desired answers",
             "checks": checks, "valid": valid,
