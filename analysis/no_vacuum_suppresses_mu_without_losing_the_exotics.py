@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-NO VACUUM SUPPRESSES MU WITHOUT LOSING THE d-TYPE EXOTICS: THE TWO REQUIREMENTS ARE SUPPORTED ON
-THE SAME NINETEEN SINGLETS, AND ALL 26273 WAYS OF KILLING MU KILL EVERY d/bd MASS TERM.
+MEASURED MU/EXOTIC VACUUM NO-GO, WITH REPRODUCIBILITY BOUNDARY: THE AGGREGATE RESULT SAYS THE
+SAME NINETEEN SINGLETS SUPPORT BOTH SECTORS AND ALL 26273 MU-KILLING VEV PATTERNS KILL d/bd.
 
 94df376 measured that mu is universal in this class -- every Z6-I Standard Model generates it at
 order three or four, none is mu-free -- and closed by noting the tension: the same order-four
@@ -21,7 +21,7 @@ Equivalently, writing H for the switched-off complement, H must HIT every mu cou
 leaving enough exotic couplings untouched. This is a finite feasibility question, and because mu
 only involves nineteen singlets it can be decided exhaustively rather than sampled.
 
-THE MEASUREMENT, on the flagship SM_20260917_3, generating through total order five:
+THE IMPORTED MEASUREMENT, on the flagship SM_20260917_3, generating through total order five:
 
     mu   (l bl n^k)    64 couplings, touching 19 singlets
     d/bd (d bd n^k)   144 couplings, touching THE SAME 19 singlets
@@ -36,7 +36,7 @@ Not reduced: zero. Every way of switching off enough singlets to suppress mu swi
 single d/bd mass term as well. x/bx is untouched by many of these choices, and the w sector
 largely survives, so this is specifically the d-type exotics that fail.
 
-WHY THE LOGIC IS ROBUST. The search ranges over ALL subsets of singlets, with no D-flatness or
+WHY THE LOGIC IS ROBUST IF THE IMPORTED SEARCH RECORD IS ACCEPTED. The reported search ranges over ALL subsets of singlets, with no D-flatness or
 F-flatness imposed. A physical vacuum is a particular such subset, so a constraint that is
 infeasible over all subsets is infeasible for every actual vacuum: adding flatness can only
 remove options, never create them. That is what makes this a no-go rather than a failed search.
@@ -97,7 +97,12 @@ def main():
     checks["no_subset_keeps_any_d_bd_mass"] = m["best_d_bd_rank_with_mu_off"] == 0
     checks["infeasible"] = m["best_d_bd_rank_with_mu_off"] < m["d_bd"]["full_rank"]
 
-    # the search space is the full power set of the mu singlets, so the bound is a no-go:
+    # Reproducibility boundary: this committed file contains only aggregate measurements,
+    # not the 64/144 raw support hyperedges.  It checks the recorded result but does not
+    # independently replay the 26273-case search.
+    checks["raw_support_hyperedges_committed_here"] = False
+
+    # the reported search space is the full power set of the mu singlets, so the bound is a no-go:
     # every physical vacuum is one of these subsets, and flatness only removes options
     checks["power_set_bound_is_sound"] = 2 ** m["mu"]["singlets"] >= m["mu_killing_subsets_examined"]
     print("  the search ranged over subsets of %d singlets (power set %d), with no flatness imposed" % (
@@ -105,7 +110,9 @@ def main():
 
     for k, v in checks.items():
         print("  %-46s %s" % (k, v))
-    valid = all(checks.values())
+    # The aggregate theorem checks remain true; the explicit false provenance flag is not
+    # part of physical validity and is exposed separately rather than hidden.
+    valid = all(v for k, v in checks.items() if k != "raw_support_hyperedges_committed_here")
     print("VALID:", valid)
 
     if args.write:
@@ -131,8 +138,10 @@ def main():
                        "suppresses the other; the published approximate-R-symmetry route cannot be realised by any "
                        "on/off pattern of these VEVs because no pattern separates them",
             "checks": checks, "valid": valid,
-            "status": "coupling lists from the orbifolder engine (validated in 93b34e1); the feasibility search is "
-                      "exhaustive over the power set of the mu singlets and is computed here",
+            "reproducibility": {"raw_support_hyperedges_committed": False,
+                                "what_this_file_replays": "consistency checks on aggregate counts only",
+                                "what_is_missing": "the 64 mu and 144 d/bd singlet-support hyperedges or a deterministic orbifolder export that regenerates them"},
+            "status": "aggregate coupling/search measurements imported from the orbifolder run; the logical no-go follows from those measurements, but this committed file does NOT independently replay the 26273-case search because the raw hyperedges are absent",
             "sources": ["Holotrade 94df376", "Holotrade 5b3f3ad", "Holotrade 93b34e1", "Holotrade a0fb73b",
                         "Kappl et al., large hierarchies from approximate R symmetries",
                         "Lebedev et al. arXiv:0807.4384"]}
