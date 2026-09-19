@@ -1,0 +1,53 @@
+{
+ "claim": "Two involutions both called parity act on the local su(9) of the W(3,3) flagship, and they are different. The physical one, the Z6-I point-group element theta^3, is inner with fixed subalgebra su(5)+su(4)+u(1) of dimension 40, matching the two-qutrit Pauli parity gate exactly. The Coxeter half-turn r^3 that swaps the sheets of the E8 80-state cover is the Weyl element -1, which is OUTER on su(9) with fixed subalgebra so(9) of dimension 36. Since 40 != 36, no identification of the lattice's oriented Pauli carrier with the physical one can send r^3 to Pauli parity.",
+ "physical_theta3": {
+  "inner": true,
+  "neutral_roots": 32,
+  "components": [
+   12,
+   20
+  ],
+  "fixed_algebra": "su(5) + su(4) + u(1)",
+  "fixed_dimension": 40
+ },
+ "pauli_parity_gate": {
+  "inner": true,
+  "spectrum": [
+   5,
+   4
+  ],
+  "centralizer_dimension": 40
+ },
+ "coxeter_half_turn": {
+  "inner_on_su9": false,
+  "reason": "it inverts the torus, hence the centre of SU(9)",
+  "fixed_algebra": "so(9)",
+  "fixed_dimension": 36
+ },
+ "consequence": "the natural route for the canonical lift -- identify the 80-state cover's sheet swap with the Pauli -I -- is closed; any canonical identification must realise -I by an INNER involution with a 40-dimensional fixed algebra",
+ "resolves": "the explicit caveat of TOE w33_cz_parity_oriented_c6, 'no claim that the separate E8 C6 fiber is this same C6 action', in the negative",
+ "independent_confirmation": "the orbifolder returns SU(5) x SU(4) on the A8 side for this shift before any Wilson line, by the spectrum engine rather than lattice arithmetic; the chain is local SU(9) -> (theta^3) -> SU(5)xSU(4)xU(1) -> (Wilson line) -> SM",
+ "why_it_hides": "both involutions are projectively trivial on the 40 W(3,3) points; they differ only on the algebra, which is exactly where the lift program works",
+ "checks": {
+  "local_su9_has_72_roots": true,
+  "su9_dimension_80": true,
+  "theta3_fixes_dimension_40": true,
+  "theta3_fixed_is_su5_plus_su4_plus_u1": true,
+  "parity_gate_centralizer_is_40": true,
+  "physical_matches_the_parity_gate": true,
+  "minus_one_negates_every_root": true,
+  "weyl_minus_one_fixes_so9_dimension_36": true,
+  "the_two_parities_differ": true,
+  "both_are_projectively_invisible": true
+ },
+ "valid": true,
+ "status": "exact root-system arithmetic plus the classical facts that an automorphism inverting the centre of SU(n) is outer, and that outer involutions of su(n) for odd n fix so(n)",
+ "sources": [
+  "TOE w33_cz_parity_oriented_c6",
+  "TOE w33_e8_c3_quotient_signed_pauli_cover",
+  "TOE w33_e8_z12_to_pauli_symplectic_sign",
+  "Holotrade 1d03cbb",
+  "Holotrade 3b06963",
+  "Holotrade 5b3f3ad"
+ ]
+}
