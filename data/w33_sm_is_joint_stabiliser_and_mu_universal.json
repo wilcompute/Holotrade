@@ -1,8 +1,21 @@
 {
- "claim": "The Standard Model gauge group in the W(3,3) Z6-I models is the joint stabiliser of the two commuting holonomies on the local su(9): the order-three Wilson line leaves its trivial-phase block su(5), and the order-two theta^3 splits that block as 3 + 2 = SU(3) x SU(2). All 25 models with parity-type theta^3 do this, against a measured background of 30.0 per cent (630 of 2099) among all (5,2,2)-type Wilson-line classes on that shift. Separately, the mu term is universal: of 77 Z6-I Standard Models measured, 48 generate mu at order four and 29 at order three, and none is mu-free through order five.",
+ "claim": "In the W(3,3) Z6-I models, the two commuting holonomies cut the Wilson-line SU(5) block as 3+2, giving the observable SU(3)xSU(2) nonabelian Standard-Model factor. The full joint centraliser in su(9) is larger: the joint block sizes (3,2,1,1,1,1) give S(U3xU2xU1^4), i.e. su(3)+su(2)+u(1)^5, so four U(1) directions beyond hypercharge still require the heterotic projection/mass mechanism. All 25 parity-type models show the 3+2 SU(5) split, against a 30.0% background (630/2099). Separately, the mu term is universal: of 77 models measured, 48 first generate it at order four and 29 at order three; none is mu-free through order five.",
  "mechanism": {
   "wilson_line_leaves": "su(5)",
   "theta3_splits_it": "3 + 2 = SU(3) x SU(2)",
+  "full_joint_blocks": [
+   3,
+   2,
+   1,
+   1,
+   1,
+   1
+  ],
+  "full_joint_centralizer": "S(U(3) x U(2) x U(1)^4)",
+  "full_joint_lie_algebra": "su(3) + su(2) + u(1)^5",
+  "full_joint_dimension": 16,
+  "center_rank": 5,
+  "extra_u1_beyond_hypercharge": 4,
   "models": {
    "models_with_parity_type_theta3": 25,
    "split_3_plus_2": 25,
@@ -23,7 +36,7 @@
   },
   "background_share": 0.3001429252024774,
   "chance_of_all_25": 8.574380890100182e-14,
-  "relation_to_1d03cbb": "the finer (CZ, parity) alignment held in 15 of 25; the coarse 3+2 split, which is what produces the Standard Model, holds in 25"
+  "relation_to_1d03cbb": "the finer (CZ, parity) alignment held in 15 of 25; the coarse 3+2 split, which produces the observable nonabelian Standard-Model factor, holds in 25"
  },
  "mu": {
   "order_4": 48,
@@ -33,7 +46,7 @@
   "flagship_measured_separately": 4,
   "reading": "no mu-suppressed corner exists in this class; mu must come from a vacuum symmetry, as in the published mini-landscape models"
  },
- "together": "the same structure gives the Standard Model gauge group for free and the mu problem for free: decoupling the exotics and keeping the Higgs light are the same order-four computation with opposite desired answers",
+ "together": "the same structure gives the observable SU(3)xSU(2) factor inside the SU(5) block and the mu problem; decoupling the exotics and keeping the Higgs light are the same order-four computation with opposite desired answers",
  "checks": {
   "all_models_split_three_plus_two": true,
   "no_model_splits_otherwise": true,
@@ -43,13 +56,18 @@
   "selection_is_not_chance": true,
   "three_plus_two_is_five": true,
   "su5_dimension_check": true,
+  "joint_blocks_are_3_2_1_1_1_1": true,
+  "full_joint_centralizer_dimension_is_16": true,
+  "joint_semisimple_factor_is_su3_su2": true,
+  "joint_center_rank_is_five": true,
+  "four_extra_u1_beyond_hypercharge": true,
   "mu_measured_on_77_models": true,
   "no_model_is_mu_free": true,
   "mu_always_at_order_three_or_four": true,
   "flagship_mu_at_order_four": true
  },
  "valid": true,
- "status": "gauge-group mechanism: exact root-system arithmetic plus full background enumeration; mu counts from the orbifolder coupling engine at label level, validated in 93b34e1",
+ "status": "gauge-group mechanism: exact root-system arithmetic plus full background enumeration, with the full SU(9) centraliser scope corrected explicitly; mu counts from the orbifolder coupling engine at label level, validated in 93b34e1",
  "sources": [
   "Holotrade d772153",
   "Holotrade 1d03cbb",
