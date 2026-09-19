@@ -1,0 +1,67 @@
+{
+ "claim": "The CZ class that the heterotic Standard Model forces (45 of 45, d772153) fixes exactly the Z-type Lagrangian of W(3,3) -- the computational readout frame -- and moves all 36 remaining directions, which are the magic rays of blueprint 67.1 and the self-entangled rays of BT817. On contexts its type is 1^7 3^11 with NO fixed context among the 27 fully entangled ones. Its eigenvalue multiplicities, measured from the heterotic root gradings, give Choi visibilities V = |Tr|/9 of 1/3 for the Wilson line and 1/9 for theta^3, against 0 for any Pauli.",
+ "selfEntanglementPicture": {
+  "identity": "C^3 (x) C^3 = End(C^3): two qutrits = one qutrit acting on itself (blueprint 60)",
+  "counting": "3^4 - 1 = 80, /2 = 40 directions = the points of W(3,3)",
+  "optical_encoding": "arrival-time bins (x) frequency bins on one photon (blueprint 65)",
+  "laboratory": "Imany et al., npj QI 5, 59 (2019): deterministic single-photon qutrit sum gate, fidelity 0.92 +- 0.01, entanglement of formation >= 1.19 +- 0.12 ebits",
+  "splits": {
+   "photon rays (BT817)": "4 product + 36 self-entangled",
+   "magic (blueprint 67.1)": "36 magic + 4 coordinate axes = one line"
+  }
+ },
+ "whatIsComputed": {
+  "cz_fixed_line": "exactly the Z-type readout frame, because CZ is diagonal so it commutes with Z1, Z2",
+  "moved": 36,
+  "context_type": {
+   "1": 7,
+   "3": 11
+  },
+  "by_stratum": {
+   "readout": "fixed",
+   "one_product_12": {
+    "fixed": 6,
+    "3cycles": 2
+   },
+   "fully_entangled_27": {
+    "fixed": 0,
+    "3cycles": 9
+   }
+  },
+  "visibilities": {
+   "wilson_line_CZ": "1/3, the same as the tritter",
+   "theta3_parity": "1/9",
+   "any_pauli": "0"
+  }
+ },
+ "reading": "the Standard Model's gate leaves the classical readout frame alone and acts on every magic direction: it preserves what can be measured and consumes what makes the machine quantum. Being diagonal in the time/frequency basis, it is a bin-dependent phase -- the same hardware class as the demonstrated sum gate, not a new nonlinearity",
+ "scope": "the identification of the photon's registers with the heterotic gauge register is a DICTIONARY: both are C^3 (x) C^3 with the same su(9) Pauli structure and the same 40 directions. What is computed is that the heterotic holonomy lands on the readout line rather than anywhere else among the 40, and that its spectrum fixes the visibilities",
+ "checks": {
+  "forty_points": true,
+  "forty_lines": true,
+  "cz_fixes_exactly_the_readout_line": true,
+  "readout_line_is_a_line": true,
+  "cz_moves_all_thirty_six": true,
+  "strata_1_12_27": true,
+  "context_type_1_7_3_11": true,
+  "no_fully_entangled_context_fixed": true,
+  "trace_of_cz_is_three": true,
+  "visibility_of_cz_is_one_third": true,
+  "visibility_of_parity_is_one_ninth": true,
+  "every_nonidentity_pauli_is_traceless": true,
+  "identity_trace_is_nine": true,
+  "protocol_convention_V_F3_is_one_third": true
+ },
+ "valid": true,
+ "sources": [
+  "TOE holonet_machine_blueprint sections 60, 65, 67.1",
+  "TOE photonic_holonet section 65",
+  "TOE analysis/BT817_self_entangled_photon_atlas.md",
+  "TOE analysis/bt820_self_entanglement_protocol.py",
+  "Imany et al., npj Quantum Information 5, 59 (2019)",
+  "Holotrade d772153",
+  "Holotrade 1d03cbb",
+  "Holotrade 9ca676a",
+  "Holotrade 5b3f3ad"
+ ]
+}
