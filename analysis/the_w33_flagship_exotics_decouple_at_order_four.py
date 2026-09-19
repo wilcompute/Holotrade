@@ -44,7 +44,13 @@ WHAT IS NOT SETTLED HERE.
   * The w sector, the hypercharge-zero doublets, needs care rather than a rank count: their mass
     term contracts two SU(2) doublets with epsilon, so the mass matrix is ANTISYMMETRIC and its
     rank is always even. An odd number of such states therefore leaves one massless whatever the
-    couplings do. Resolving it needs the multiplicities, not just the labels.
+    couplings do. Measured for the flagship: there are FOUR w states carried by THREE labels, so
+    one label has multiplicity two. Four is even, so the parity obstruction does not bite here.
+    The label-level support is populated at order four and includes a same-label entry, which for
+    epsilon-contracted doublets can only be the antisymmetric pairing of that label's two copies,
+    so a full-rank pairing is not excluded. Settling it needs a field-level, multiplicity-resolved
+    mass matrix, which the driver used here does not build; it works at label level. So the w
+    sector is NOT closed, but its one structural obstruction is ruled out.
   * Structural rank means generic singlet vacuum expectation values. Whether a D-flat and F-flat
     direction realises them is the separate flatness question the other track is working on
     (w33_z6ii_dflat_fflat_first_obstruction.py). Step 8 in the published pipeline carries the
@@ -201,8 +207,10 @@ def main():
             "notSettled": {
                 "v/bv": "CLOSED at order five: matching 18 of 18 once the 70 order-five entries are included; the "
                         "order-four restriction still gives 13, matching the other track's Hall-star analysis",
-                "w": "hypercharge-zero doublets: the SU(2) epsilon contraction makes the mass matrix antisymmetric, so "
-                     "its rank is even and an odd count always leaves one massless; needs multiplicities",
+                "w": "four states over three labels, so one label has multiplicity two. Four is EVEN, so the "
+                     "antisymmetric-rank parity obstruction does not bite; the label-level support is populated at "
+                     "order four including a same-label entry, which can only be the antisymmetric pairing of that "
+                     "label's two copies. Not closed: a field-level multiplicity-resolved matrix is still needed",
                 "flatness": "structural rank assumes generic singlet VEVs; D- and F-flatness is the separate question "
                             "the other track is working (w33_z6ii_dflat_fflat_first_obstruction.py)"},
             "toolingWarning": {
