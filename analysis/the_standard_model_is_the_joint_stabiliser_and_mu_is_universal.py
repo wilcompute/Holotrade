@@ -34,8 +34,9 @@ Two results, one mechanism and one negative.
    AND IT IS NOT CIRCULAR, because the background is measured. Among ALL order-three Wilson-line
    classes of type (5,2,2) on that shift -- 2099 of them -- only 630, or 30.0 per cent, produce
    the same joint pattern. The Standard Model condition selects it at 100 per cent against 30.
-   So "the SM gauge group is the joint stabiliser of the two commuting holonomies" is a
-   mechanism with a quantified alternative, not a restatement of the selection.
+   So the observed SU(5) -> SU(3) x SU(2) split is a mechanism with a quantified alternative,
+   not a restatement of the selection.  The full joint-centraliser statement is the larger
+   S(U(3) x U(2) x U(1)^4) group recorded above.
 
 2. THE NEGATIVE ONE: MU IS UNIVERSAL. The mu term is the mass entry of the vector-like doublet
    pair l/bl, and a light Higgs pair needs it absent or strongly suppressed. Searched across the
