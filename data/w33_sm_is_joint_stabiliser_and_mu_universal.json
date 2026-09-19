@@ -1,0 +1,62 @@
+{
+ "claim": "The Standard Model gauge group in the W(3,3) Z6-I models is the joint stabiliser of the two commuting holonomies on the local su(9): the order-three Wilson line leaves its trivial-phase block su(5), and the order-two theta^3 splits that block as 3 + 2 = SU(3) x SU(2). All 25 models with parity-type theta^3 do this, against a measured background of 30.0 per cent (630 of 2099) among all (5,2,2)-type Wilson-line classes on that shift. Separately, the mu term is universal: of 77 Z6-I Standard Models measured, 48 generate mu at order four and 29 at order three, and none is mu-free through order five.",
+ "mechanism": {
+  "wilson_line_leaves": "su(5)",
+  "theta3_splits_it": "3 + 2 = SU(3) x SU(2)",
+  "models": {
+   "models_with_parity_type_theta3": 25,
+   "split_3_plus_2": 25,
+   "other_splits": 0
+  },
+  "background": {
+   "all_522_classes": 2099,
+   "joint_root_counts": {
+    "(8,16)": 630,
+    "(10,14)": 720,
+    "(12,12)": 420,
+    "(14,10)": 192,
+    "(18,6)": 64,
+    "(16,8)": 45,
+    "(24,0)": 28
+   },
+   "sm_pattern": "(8,16)"
+  },
+  "background_share": 0.3001429252024774,
+  "chance_of_all_25": 8.574380890100182e-14,
+  "relation_to_1d03cbb": "the finer (CZ, parity) alignment held in 15 of 25; the coarse 3+2 split, which is what produces the Standard Model, holds in 25"
+ },
+ "mu": {
+  "order_4": 48,
+  "order_3": 29,
+  "absent_through_order_5": 0,
+  "excluded_failed_runs": 9,
+  "flagship_measured_separately": 4,
+  "reading": "no mu-suppressed corner exists in this class; mu must come from a vacuum symmetry, as in the published mini-landscape models"
+ },
+ "together": "the same structure gives the Standard Model gauge group for free and the mu problem for free: decoupling the exotics and keeping the Higgs light are the same order-four computation with opposite desired answers",
+ "checks": {
+  "all_models_split_three_plus_two": true,
+  "no_model_splits_otherwise": true,
+  "background_totals_match": true,
+  "background_is_thirty_percent": true,
+  "background_is_not_everything": true,
+  "selection_is_not_chance": true,
+  "three_plus_two_is_five": true,
+  "su5_dimension_check": true,
+  "mu_measured_on_77_models": true,
+  "no_model_is_mu_free": true,
+  "mu_always_at_order_three_or_four": true,
+  "flagship_mu_at_order_four": true
+ },
+ "valid": true,
+ "status": "gauge-group mechanism: exact root-system arithmetic plus full background enumeration; mu counts from the orbifolder coupling engine at label level, validated in 93b34e1",
+ "sources": [
+  "Holotrade d772153",
+  "Holotrade 1d03cbb",
+  "Holotrade 5b3f3ad",
+  "Holotrade 93b34e1",
+  "Holotrade a0fb73b",
+  "Lebedev et al. arXiv:0807.4384",
+  "Kappl et al. (mu from approximate R)"
+ ]
+}
