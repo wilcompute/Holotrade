@@ -7,6 +7,8 @@ on:
       - 'analysis/w33_flagship_global_u1_closure.py'
       - 'data/w33_flagship_global_u1_closure.json'
       - 'data/w33_twist_hosts_sm_in_even_order_orbifold.json'
+      - 'analysis/w33_flagship_hypercharge_z6_gluing.py'
+      - 'data/w33_flagship_hypercharge_z6_gluing.json'
       - '.github/workflows/w33_flagship_global_u1_closure.yml'
   workflow_dispatch:
 
@@ -21,7 +23,8 @@ jobs:
       - name: Replay exact global gauge closure
         run: |
           python analysis/w33_flagship_global_u1_closure.py
-          git diff --exit-code -- data/w33_flagship_global_u1_closure.json
+          python analysis/w33_flagship_hypercharge_z6_gluing.py
+          git diff --exit-code -- data/w33_flagship_global_u1_closure.json data/w33_flagship_hypercharge_z6_gluing.json
       - name: Structural assertions
         run: |
           python - <<'PY'
@@ -33,5 +36,10 @@ jobs:
           assert d['second_E8_SM_side']['center_rank']==5
           assert len(d['second_E8_SM_side']['extra_hypercharge_orthogonal_u1_basis'])==4
           assert d['cross_repo_lock']['global_root_filter_matches'] is True
+          z=json.load(open('data/w33_flagship_hypercharge_z6_gluing.json'))
+          assert z['status']=='PASS_E8_Z6_HYPERCHARGE_GLUE'
+          assert z['complement_lattice']['determinant']==6
+          assert z['hypercharge']['order_in_discriminant']==6
+          assert z['glue']['glue_vector_is_E8_root'] is True
           PY
       - run: git diff --check
