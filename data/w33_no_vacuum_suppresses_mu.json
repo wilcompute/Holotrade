@@ -1,0 +1,52 @@
+{
+ "claim": "For the Z6-I flagship Standard Model, no choice of singlet vacuum expectation values suppresses the mu term while keeping the d-type exotics heavy. Through total order five the 64 mu couplings and the 144 d/bd couplings are supported on the SAME nineteen singlets, and across all 26273 subsets that switch off enough singlets to kill every mu coupling, the surviving d/bd rank is 0 where full rank is 2. Since the search ranges over all subsets with no flatness imposed, and any physical vacuum is such a subset, this is a no-go rather than a failed search.",
+ "measured": {
+  "model": "SM_20260917_3, the Z6-I flagship of 5b3f3ad",
+  "max_total_order": 5,
+  "mu": {
+   "couplings": 64,
+   "singlets": 19
+  },
+  "d_bd": {
+   "couplings": 144,
+   "singlets": 19,
+   "shape": [
+    2,
+    5
+   ],
+   "full_rank": 2,
+   "rank_with_all_vevs_on": 2
+  },
+  "x_bx": {
+   "couplings": 41
+  },
+  "singlet_sets_are_equal": true,
+  "mu_killing_subsets_examined": 26273,
+  "best_d_bd_rank_with_mu_off": 0
+ },
+ "logic": "switching on VEVs for a subset T makes a coupling contribute exactly when all its singlets lie in T; mu is suppressed iff no mu coupling is contained in T; adding D- or F-flatness only removes candidate subsets, so infeasibility over all subsets implies infeasibility for every actual vacuum",
+ "notCovered": {
+  "order": "cutoff is total order five; d/bd couplings at orders six to eight could involve singlets outside the nineteen and restore the rank",
+  "coefficients": "allowed-coupling level only; a listed coupling could still carry a vanishing coefficient",
+  "sample": "run on the flagship only; 94df376 shows mu is universal across the class but this feasibility analysis is one model"
+ },
+ "reading": "mu and the d-type exotic masses are carried by the same singlets, so suppressing one suppresses the other; the published approximate-R-symmetry route cannot be realised by any on/off pattern of these VEVs because no pattern separates them",
+ "checks": {
+  "singlet_sets_are_equal": true,
+  "d_bd_has_full_rank_when_all_vevs_on": true,
+  "search_was_exhaustive_not_sampled": true,
+  "no_subset_keeps_any_d_bd_mass": true,
+  "infeasible": true,
+  "power_set_bound_is_sound": true
+ },
+ "valid": true,
+ "status": "coupling lists from the orbifolder engine (validated in 93b34e1); the feasibility search is exhaustive over the power set of the mu singlets and is computed here",
+ "sources": [
+  "Holotrade 94df376",
+  "Holotrade 5b3f3ad",
+  "Holotrade 93b34e1",
+  "Holotrade a0fb73b",
+  "Kappl et al., large hierarchies from approximate R symmetries",
+  "Lebedev et al. arXiv:0807.4384"
+ ]
+}
