@@ -72,8 +72,8 @@
  },
  "muProblem": "the l/bl entry that decouples the vector-like doublet pair is the mu term; a light Higgs pair requires a vacuum symmetry, not a spectrum property",
  "notSettled": {
-  "v/bv": "CLOSED at order five: matching 18 of 18 once the 70 order-five entries are included; the order-four restriction still gives 13, matching the other track's Hall-star analysis",
-  "w": "four states over three labels, so one label has multiplicity two. Four is EVEN, so the antisymmetric-rank parity obstruction does not bite; the label-level support is populated at order four including a same-label entry, which can only be the antisymmetric pairing of that label's two copies. Not closed: a field-level multiplicity-resolved matrix is still needed",
+  "v/bv": "CLOSED at order five at LABEL level: matching 18 of 18 once the 70 order-five entries are included; the order-four restriction still gives 13, matching the other track's Hall-star analysis. Scope: v and bv carry 35 states over 18 labels each, so this is a label-level matching; it gives state-level mass provided each matched pair contracts irreducibly over its hidden multiplet, which is the standard reading but is not separately verified here",
+  "w": "OPEN, and an earlier reading of it here was wrong. The content is w_1 = a bi-doublet (hidden SU(2) x SU(2)_L) plus w_2, w_3 = pure SU(2)_L doublets, so the four states are 2+1+1, not a label of multiplicity two. epsilon_L alone is antisymmetric, so identical pure-L doublets cannot pair, while epsilon_L (x) epsilon_hidden is symmetric, so the bi-doublet can pair with itself. The support matrix cannot decide this: orbifolder's allowed-coupling test does not check that identical-field antisymmetric contractions vanish, and indeed it reports w_2 w_2 and w_3 w_3 but not w_1 w_1",
   "flatness": "structural rank assumes generic singlet VEVs; D- and F-flatness is the separate question the other track is working (w33_z6ii_dflat_fflat_first_obstruction.py)"
  },
  "toolingWarning": {

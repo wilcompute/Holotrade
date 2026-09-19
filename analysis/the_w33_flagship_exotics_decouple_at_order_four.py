@@ -41,16 +41,26 @@ string selection rules:
     so the earlier measurement and the Hall analysis built on it stand unchanged.
 
 WHAT IS NOT SETTLED HERE.
-  * The w sector, the hypercharge-zero doublets, needs care rather than a rank count: their mass
-    term contracts two SU(2) doublets with epsilon, so the mass matrix is ANTISYMMETRIC and its
-    rank is always even. An odd number of such states therefore leaves one massless whatever the
-    couplings do. Measured for the flagship: there are FOUR w states carried by THREE labels, so
-    one label has multiplicity two. Four is even, so the parity obstruction does not bite here.
-    The label-level support is populated at order four and includes a same-label entry, which for
-    epsilon-contracted doublets can only be the antisymmetric pairing of that label's two copies,
-    so a full-rank pairing is not excluded. Settling it needs a field-level, multiplicity-resolved
-    mass matrix, which the driver used here does not build; it works at label level. So the w
-    sector is NOT closed, but its one structural obstruction is ruled out.
+  * The w sector, the hypercharge-zero doublets, is OPEN, and an earlier version of this file got
+    its reasoning wrong. That version said there were "four w states over three labels, so one
+    label has multiplicity two", and concluded that an even count rules out the antisymmetric-rank
+    parity obstruction. The field content is not that. Measured directly:
+
+        w_1  dims (1,1,2,1,2)   a BI-DOUBLET: a doublet of a hidden SU(2) and of SU(2)_L
+        w_2  dims (1,1,1,1,2)   an SU(2)_L doublet, hidden singlet
+        w_3  dims (1,1,1,1,2)   an SU(2)_L doublet, hidden singlet
+
+    so the four states are 2 + 1 + 1, not 2 copies of one label. That changes the group theory.
+    A mass term for two SU(2)_L doublets contracts with epsilon_L, which is ANTISYMMETRIC, so two
+    identical pure-L doublets cannot pair at all; but a bi-doublet contracts with
+    epsilon_L (x) epsilon_hidden, which is SYMMETRIC, so w_1 CAN pair with itself. The relevant
+    question is therefore per-pair contraction symmetry, not the parity of a state count.
+
+    The support matrix cannot decide it. The measured support has entries at w_2 w_2 and w_3 w_3
+    and none at w_1 w_1 -- the opposite of what the contraction rule allows -- because the
+    orbifolder's allowed-coupling test checks gauge invariance and the string selection rules but
+    does NOT check that an identical-field antisymmetric contraction vanishes. So a support entry
+    here is necessary, not sufficient, and the sector needs the contractions written out.
   * Structural rank means generic singlet vacuum expectation values. Whether a D-flat and F-flat
     direction realises them is the separate flatness question the other track is working on
     (w33_z6ii_dflat_fflat_first_obstruction.py). Step 8 in the published pipeline carries the
@@ -205,12 +215,18 @@ def main():
             "muProblem": "the l/bl entry that decouples the vector-like doublet pair is the mu term; a light Higgs pair "
                          "requires a vacuum symmetry, not a spectrum property",
             "notSettled": {
-                "v/bv": "CLOSED at order five: matching 18 of 18 once the 70 order-five entries are included; the "
-                        "order-four restriction still gives 13, matching the other track's Hall-star analysis",
-                "w": "four states over three labels, so one label has multiplicity two. Four is EVEN, so the "
-                     "antisymmetric-rank parity obstruction does not bite; the label-level support is populated at "
-                     "order four including a same-label entry, which can only be the antisymmetric pairing of that "
-                     "label's two copies. Not closed: a field-level multiplicity-resolved matrix is still needed",
+                "v/bv": "CLOSED at order five at LABEL level: matching 18 of 18 once the 70 order-five entries are "
+                        "included; the order-four restriction still gives 13, matching the other track's Hall-star "
+                        "analysis. Scope: v and bv carry 35 states over 18 labels each, so this is a label-level "
+                        "matching; it gives state-level mass provided each matched pair contracts irreducibly over "
+                        "its hidden multiplet, which is the standard reading but is not separately verified here",
+                "w": "OPEN, and an earlier reading of it here was wrong. The content is w_1 = a bi-doublet "
+                     "(hidden SU(2) x SU(2)_L) plus w_2, w_3 = pure SU(2)_L doublets, so the four states are 2+1+1, "
+                     "not a label of multiplicity two. epsilon_L alone is antisymmetric, so identical pure-L doublets "
+                     "cannot pair, while epsilon_L (x) epsilon_hidden is symmetric, so the bi-doublet can pair with "
+                     "itself. The support matrix cannot decide this: orbifolder's allowed-coupling test does not check "
+                     "that identical-field antisymmetric contractions vanish, and indeed it reports w_2 w_2 and "
+                     "w_3 w_3 but not w_1 w_1",
                 "flatness": "structural rank assumes generic singlet VEVs; D- and F-flatness is the separate question "
                             "the other track is working (w33_z6ii_dflat_fflat_first_obstruction.py)"},
             "toolingWarning": {
