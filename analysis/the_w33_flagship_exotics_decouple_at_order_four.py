@@ -56,11 +56,29 @@ WHAT IS NOT SETTLED HERE.
     epsilon_L (x) epsilon_hidden, which is SYMMETRIC, so w_1 CAN pair with itself. The relevant
     question is therefore per-pair contraction symmetry, not the parity of a state count.
 
-    The support matrix cannot decide it. The measured support has entries at w_2 w_2 and w_3 w_3
-    and none at w_1 w_1 -- the opposite of what the contraction rule allows -- because the
-    orbifolder's allowed-coupling test checks gauge invariance and the string selection rules but
-    does NOT check that an identical-field antisymmetric contraction vanishes. So a support entry
-    here is necessary, not sufficient, and the sector needs the contractions written out.
+    Field-by-field coupling counts settle the structure. Searched through total order five:
+
+        w_1 w_1   0 at every order        w_1 w_2  60 at order four
+        w_2 w_3  25 at order four         w_1 w_3  60 at order four
+        w_2 w_2  25 at order four  <-- spurious
+
+    The w_2 w_2 count is exactly equal to the w_2 w_3 count, which is the tell: the engine does
+    not distinguish identical fields and does not check that the epsilon_L contraction of two
+    identical pure-L doublets vanishes, so that entry is not real. The w_1 w_1 zero, by contrast,
+    is genuine -- it differs from the spurious pattern -- and says the bi-doublet has no allowed
+    self-pairing through order five.
+
+    That does NOT obstruct the sector, because w_1 need not pair with itself. Order the four
+    states as (w_1 first hidden component, w_1 second, w_2, w_3). The mass matrix is antisymmetric
+    with a_12 = 0 (no self-pairing) but a_13, a_14, a_23, a_24 all populated at order four, and
+
+        Pf = a_12 a_34 - a_13 a_24 + a_14 a_23  =  - a_13 a_24 + a_14 a_23,
+
+    which is generically nonzero: the two components of the bi-doublet pair off against w_2 and
+    w_3. So all four states acquire mass at order four, with no structural obstruction anywhere.
+    What remains unverified is only whether the actual contraction coefficients conspire to make
+    a_13 a_24 = a_14 a_23; that needs the explicit contractions and VEVs, which this tooling does
+    not provide. The sector is therefore NOT closed, but it is now known to be unobstructed.
   * Structural rank means generic singlet vacuum expectation values. Whether a D-flat and F-flat
     direction realises them is the separate flatness question the other track is working on
     (w33_z6ii_dflat_fflat_first_obstruction.py). Step 8 in the published pipeline carries the
