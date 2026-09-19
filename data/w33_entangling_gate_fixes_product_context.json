@@ -1,0 +1,63 @@
+{
+ "claim": "The photon's 1+12+27 context stratification (BT817) is exactly the GQ(3,3) decomposition relative to one line: the all-product context is a line L0, the 12 one-product contexts are the lines meeting it, the 27 fully entangled contexts are the lines disjoint from it. The CZ class that the heterotic Standard Model forces (d772153) has cycle type 1^4 3^12 on points with its four fixed points forming a line, so it fixes such a product context pointwise; on contexts its type is 1^7 3^11, distributed as the product context fixed, 6 of the 12 one-product contexts fixed, and NO fixed context among the 27 fully self-entangled ones, which it permutes in nine 3-cycles.",
+ "twoCarriers": {
+  "photon": "one photon self-entangled across path (x) polarization, C^4, 40 Witting rays, 4 product + 36 self-entangled (BT817)",
+  "gauge_register": "two qutrits, C^9, Pauli algebra su(9) = A8 = the W(3,3) twist, where the Standard Models of 5b3f3ad live",
+  "shared": "the geometry W(3,3) and its group PSp(4,3) -- NOT a state space"
+ },
+ "stratification_is_geometry": {
+  "line": 1,
+  "meeting": 12,
+  "disjoint": 27,
+  "reason": "in GQ(3,3) every point lies on 4 lines"
+ },
+ "cz_action": {
+  "points": {
+   "1": 4,
+   "3": 12
+  },
+  "fixed_points_form_a_line": true,
+  "lines": {
+   "1": 7,
+   "3": 11
+  },
+  "by_stratum": {
+   "all_product": "fixed",
+   "one_product_12": {
+    "fixed": 6,
+    "3cycles": 2
+   },
+   "fully_entangled_27": {
+    "fixed": 0,
+    "3cycles": 9
+   }
+  }
+ },
+ "caveat": "Sp(4,3) is transitive on the 40 lines with stabiliser 1296, so identifying the CZ-fixed line with the product context is a compatibility statement; the content is that both distinguished four-sets ARE lines, and that the stratum-by-stratum action is then forced",
+ "parity_note": "the parity element is -I, which acts trivially on all 40 points, so the entanglement stratification cannot see it; it only appears on the oriented 80-state lift (e2390de)",
+ "checks": {
+  "w33_has_40_points": true,
+  "w33_has_40_lines": true,
+  "gq33_each_point_on_four_lines": true,
+  "cz_point_type_is_1_4_3_12": true,
+  "cz_fixed_points_form_a_line": true,
+  "strata_are_1_12_27": true,
+  "strata_exhaust_the_lines": true,
+  "cz_line_type_is_1_7_3_11": true,
+  "cz_preserves_each_stratum": true,
+  "six_of_the_twelve_are_fixed": true,
+  "no_fully_entangled_context_is_fixed": true,
+  "seven_fixed_lines_split_1_plus_6": true,
+  "line_stabiliser_order_1296": true
+ },
+ "valid": true,
+ "status": "geometry and CZ action computed exactly here; the Witting/SRG/4+36 facts are BT817's, cited",
+ "sources": [
+  "TOE analysis/BT817_self_entangled_photon_atlas.md",
+  "Holotrade d772153",
+  "Holotrade 1cde1f1",
+  "Holotrade 5b3f3ad",
+  "Holotrade e2390de",
+  "Holotrade 68df33f"
+ ]
+}
