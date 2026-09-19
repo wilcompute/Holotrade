@@ -1,0 +1,37 @@
+name: W33 flagship global U1 closure
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_flagship_global_u1_closure.py'
+      - 'data/w33_flagship_global_u1_closure.json'
+      - 'data/w33_twist_hosts_sm_in_even_order_orbifold.json'
+      - '.github/workflows/w33_flagship_global_u1_closure.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-root-closure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Replay exact global gauge closure
+        run: |
+          python analysis/w33_flagship_global_u1_closure.py
+          git diff --exit-code -- data/w33_flagship_global_u1_closure.json
+      - name: Structural assertions
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('data/w33_flagship_global_u1_closure.json'))
+          assert d['status']=='PASS_GLOBAL_GAUGE_INTERSECTION'
+          assert d['first_E8']['algebra']=='A4 + A1 + A1 + u(1)^2'
+          assert d['second_E8_SM_side']['algebra']=='A2 + A1 + u(1)^5'
+          assert d['second_E8_SM_side']['center_rank']==5
+          assert len(d['second_E8_SM_side']['extra_hypercharge_orthogonal_u1_basis'])==4
+          assert d['cross_repo_lock']['global_root_filter_matches'] is True
+          PY
+      - run: git diff --check
