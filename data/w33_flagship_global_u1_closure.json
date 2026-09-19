@@ -1,0 +1,124 @@
+{
+  "schema": "holotrade.w33_flagship_global_u1_closure.v1",
+  "status": "PASS_GLOBAL_GAUGE_INTERSECTION",
+  "headline": "Exact E8 root filtering by the flagship V and W3 gives first-E8 A4+A1+A1+u(1)^2 (dim32) and Standard-Model-side second-E8 A2+A1+u(1)^5 (dim16). The latter exactly equals the independent W33 physical E8/A8-selector triple centralizer. Hypercharge is one of the five center directions, so four additional hypercharge-orthogonal U(1) directions survive the global shift/Wilson-line intersection.",
+  "flagship": "SM_20260917_3",
+  "root_rule": "p survives iff p.V and p.W3 are integers",
+  "first_E8": {
+    "surviving_roots": 24,
+    "root_rank": 6,
+    "component_signature": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        20,
+        4
+      ]
+    ],
+    "algebra": "A4 + A1 + A1 + u(1)^2",
+    "dimension": 32
+  },
+  "second_E8_SM_side": {
+    "surviving_roots": 8,
+    "root_rank": 3,
+    "component_signature": [
+      [
+        2,
+        1
+      ],
+      [
+        6,
+        2
+      ]
+    ],
+    "algebra": "A2 + A1 + u(1)^5",
+    "dimension": 16,
+    "center_rank": 5,
+    "hypercharge": [
+      "1/6",
+      "-1/6",
+      "-1/6",
+      "1/2",
+      "0",
+      "1/2",
+      "0",
+      "1/2"
+    ],
+    "hypercharge_norm2": "5/6",
+    "extra_hypercharge_orthogonal_u1_basis": [
+      [
+        "-1",
+        "1",
+        "1",
+        "1",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "-1",
+        "1",
+        "1",
+        "0",
+        "0",
+        "1",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0",
+        "1",
+        "0"
+      ],
+      [
+        "-1",
+        "1",
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "1"
+      ]
+    ]
+  },
+  "cross_repo_lock": {
+    "W33_parent": "data/w33_e8_a8_selector_holonomy_triple_intersection.json",
+    "W33_algebra": "A2+A1+u(1)^5",
+    "W33_dimension": 16,
+    "global_root_filter_matches": true
+  },
+  "green_schwarz_boundary": {
+    "orbifold_point_statement": "The conventional heterotic orbifold Green-Schwarz anomaly is universal and selects one anomalous U(1) direction.",
+    "consequence_if_applied_to_flagship": "A rank-one universal GS/Stueckelberg direction cannot by itself remove all four extra hypercharge-orthogonal U(1)s; at least three require singlet Higgsing or another mechanism.",
+    "blowup_escape": "After blow-up/resolution, localized/model-dependent axions can yield non-universal anomaly cancellation and multiple anomalous U(1)s.",
+    "not_computed_here": "The flagship matter-charge anomaly matrix and singlet-VEV mass matrix are not yet frozen, so this certificate does not identify which extra U(1) is anomalous or which are Higgsed."
+  },
+  "literature": [
+    "Kobayashi--Nakano, hep-th/9612066, anomalous U(1) in heterotic orbifold models",
+    "Groot Nibbelink--Nilles--Trapletti, hep-th/0703211, multiple anomalous U(1)s in heterotic blow-ups",
+    "Luedeling--Ruehle--Wieck, arXiv:1203.5789, universal orbifold versus non-universal blow-up anomalies"
+  ],
+  "checks": {
+    "E8_roots_240": true,
+    "first_root_signature_A4_A1_A1": true,
+    "second_root_signature_A2_A1": true,
+    "second_center_rank5": true,
+    "hypercharge_in_center": true,
+    "hypercharge_GUT_norm_5_over_6": true,
+    "four_exact_extra_center_vectors_orthogonal_to_Y": true,
+    "global_second_E8_dimension16": true
+  }
+}
