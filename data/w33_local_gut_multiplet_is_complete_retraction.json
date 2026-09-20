@@ -1,4 +1,5 @@
 {
+ "STATUS": "THIS RETRACTION IS WITHDRAWN. The 604/604 measurement stands; the conclusion does not -- locking needs BOTH sides to be gauge siblings and the untwisted side is plane-split. See data/w33_missing_partner_untwisted_plane_split.json.",
  "retracts": "3e7bc56 -- 'doublet-triplet splitting is solvable in 55 of 87'",
  "claim": "At every one of the 604 twisted fixed points in the 87 W(3,3) Z6-I Standard Models that hosts both a colour triplet and a lepton doublet, the two are components of ONE irrep of the local gauge group -- a complete local 5bar. One local invariant therefore supplies both the colour-triplet mass and mu, their coefficients are locked, and the correct count is 0 of 87, which is exactly what 3e7bc56's own locked-coefficient run measured.",
  "measured": {

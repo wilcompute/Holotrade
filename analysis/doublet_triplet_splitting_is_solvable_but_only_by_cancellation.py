@@ -1,6 +1,23 @@
 #!/usr/bin/env python3
 """
-*** RETRACTED. The headline claim below is FALSE. ***
+*** COUNT REINSTATED, MECHANISM SUPERSEDED. See
+    the_missing_partner_is_the_untwisted_plane_split.py. ***
+
+The headline count -- 55 of 87 -- is CORRECT. The retraction that stood here briefly
+(d1fe6ce) is itself withdrawn. But the reason given in section 3 below is still wrong, so
+read the superseding file for the mechanism, not this one.
+
+Two coefficients are locked only when BOTH sides are gauge siblings. The twisted side IS
+unified at all 604 shared fixed points, so section 3's claim that a co-localised (bd, l)
+pair has two different parents is false. What actually frees the coefficients is the
+UNTWISTED side: the untwisted fields sit in different planes (flagship bl_1 plane 3, d_1
+plane 1, d_2 plane 2), so no plane donates both a colour triplet and a weak doublet. That
+is the missing-partner mechanism, and it gives the same 55 -- confirmed by a structural
+locked-entry count and robust to the worst coefficient correlation the data allows.
+
+The superseded retraction text follows, then the original.
+
+*** (withdrawn) RETRACTED. The headline claim below is FALSE. ***
 
 See retraction_the_local_gut_multiplet_is_complete_so_the_coefficients_are_locked.py.
 At all 604 twisted fixed points in these 87 models that host both a colour triplet and a

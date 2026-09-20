@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
 """
+*** THIS RETRACTION IS ITSELF WITHDRAWN. The measurement below is correct; the conclusion
+    drawn from it is not. See the_missing_partner_is_the_untwisted_plane_split.py. ***
+
+The 604-of-604 measurement stands: the twisted 5bar IS complete at every shared fixed
+point. But completeness on the TWISTED side does not lock anything by itself. Two
+coefficients are locked only when BOTH sides are gauge siblings, and the UNTWISTED side is
+split across planes -- on the flagship bl_1 is plane 3 while d_1 and d_2 are planes 1 and
+2, so they are different CFT states and nothing relates their couplings. In 55 of the 87
+models there is no (d, bl) sibling pair at all, so no entry is locked and the count 55 of
+87 is reinstated. This file checked one side of a two-sided condition, exactly as 3e7bc56
+had done on the other side.
+
+The original retraction text follows, for the record.
+
 RETRACTION OF 3e7bc56: THE LOCAL GUT MULTIPLET IS COMPLETE AT EVERY SHARED FIXED POINT,
 SO THE COEFFICIENTS ARE LOCKED AND DOUBLET-TRIPLET SPLITTING IS NOT SOLVED.
 

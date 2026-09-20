@@ -1,0 +1,107 @@
+{
+ "supersedes": [
+  "3e7bc56 (right count, wrong mechanism)",
+  "d1fe6ce (right measurement, wrong conclusion)"
+ ],
+ "claim": "Doublet-triplet splitting is solved in 55 of the 87 W(3,3) Z6-I Standard Models by the missing-partner mechanism. Two coefficients are locked only when BOTH sides are gauge siblings -- same sector, fixed point, q_sh and oscillator, weights joined by local roots. The twisted side is unified at all 604 shared fixed points, but the untwisted side is split across planes (flagship: bl_1 plane 3, d_1 plane 1, d_2 plane 2), so no plane donates both a colour triplet and a weak doublet and nothing is locked. Over the class, 1024 of 2406 entries are locked and all of them lie in the 32 models that do have a (d, bl) sibling pair; the 55 with none are exactly the 55 that solve, by numerical vacuum search and by the structural count independently.",
+ "condition": "c(d_i.bd_j.S) locked to c(bl_a.l_b.S) iff d_i~bl_a AND bd_j~l_b as gauge siblings. Both sides. Each earlier pass checked one.",
+ "twisted_side": {
+  "shared_fixed_points": 604,
+  "in_one_local_multiplet": 604,
+  "split": 0,
+  "flagship_point": {
+   "k": 4,
+   "n": [
+    -1,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
+   "local_roots": 156,
+   "triplet_weights": 3,
+   "doublet_weights": 2,
+   "q_sh": [
+    0,
+    "-1/3",
+    "-1/3",
+    "-1/3"
+   ],
+   "osc": 0,
+   "joined_by_single_local_roots": 6
+  }
+ },
+ "untwisted_planes": {
+  "bl_1": 3,
+  "d_1": 1,
+  "d_2": 2
+ },
+ "siblings": {
+  "total_triplet_entries": 2406,
+  "locked": 1024,
+  "free": 1382,
+  "models_with_a_d_bl_sibling_pair": 32,
+  "models_with_a_bd_l_sibling_pair": 87,
+  "models_with_zero_locked_entries": 55,
+  "flagship_locked_of_total": [
+   0,
+   10
+  ]
+ },
+ "vacua": {
+  "generic": 55,
+  "worst_case_plane_and_monomial": 55,
+  "monomial_only_forbidden": 0,
+  "worst_case_set_equals_no_locked_entry_set": true,
+  "numerical_set_equals_no_locked_entry_set": true,
+  "models": 87
+ },
+ "dflatness": {
+  "models": 87,
+  "dflat": 87
+ },
+ "mechanism": "missing partner: an order-three Wilson line keeps at most one SM species per GUT multiplet, and the untwisted planes realise it -- the plane that supplies the Higgs doublet supplies no colour triplet, so mu has no triplet counterpart and vice versa. This is the_wilson_line_splits_every_gut_multiplet.py applied to the untwisted multiplets, which is where its corollary lives.",
+ "robustness": "the five bd fixed points share V_loc = 4V, so the columns are fixed-point translates exactly as the_exotic_mass_rank_is_set_by_where_the_singlets_condense.py warns. The independence comes from the ROWS. Under the strongest correlation the measured structure allows -- coefficient a function of monomial and untwisted plane -- the count is still 55, and the solver set is unchanged. Only the monomial-only model, which locks different planes together and is forbidden by the measured q_sh, gives 0.",
+ "errors": [
+  "3e7bc56: claimed the twisted 5bar is split. It is not.",
+  "d1fe6ce: claimed completeness of the twisted 5bar locks the coefficients. One side is not sufficient.",
+  "the fix was not more precision but asking for q_sh, the quantum number distinguishing two fields that share a gauge weight"
+ ],
+ "checks": {
+  "twisted_side_is_unified_everywhere": true,
+  "flagship_local_multiplet_is_a_complete_five": true,
+  "twisted_pair_shares_its_internal_state": true,
+  "joined_by_a_single_local_root": true,
+  "three_untwisted_fields": true,
+  "all_in_different_planes": true,
+  "no_plane_donates_both": true,
+  "entries_add_up": true,
+  "flagship_has_no_locked_entry": true,
+  "fifty_five_models_are_unlocked": true,
+  "the_locked_models_are_the_other_32": true,
+  "twisted_siblings_exist_in_every_model": true,
+  "one_sided_condition_would_lock_everything": true,
+  "generic_gives_55": true,
+  "worst_case_also_gives_55": true,
+  "result_is_robust_to_translate_correlation": true,
+  "only_the_forbidden_model_destroys_it": true,
+  "two_independent_routes_agree": true,
+  "dflat_in_every_model": true
+ },
+ "valid": true,
+ "status": "weights, q_sh, oscillator numbers, space-group elements and Wilson lines from the orbifolder at 17 digits, verified exact rationals with denominator dividing 6; local shifts, local roots, sibling relations, the vacuum searches and the worst-case coefficient models are computed here",
+ "scope": "allowed-coupling level, orders four and five; F-flatness unchecked; the sibling criterion says which coefficients symmetry relates, it does not evaluate the string amplitudes; the 32 failing models are unsolved, not proved impossible",
+ "sources": [
+  "Holotrade 3e7bc56",
+  "Holotrade d1fe6ce",
+  "Holotrade c0c598c",
+  "Holotrade 7a14095",
+  "Holotrade 5b3f3ad",
+  "Holotrade 93b34e1",
+  "Holotrade the_wilson_line_splits_every_gut_multiplet.py",
+  "Holotrade the_exotic_mass_rank_is_set_by_where_the_singlets_condense.py",
+  "Lebedev et al. arXiv:0807.4384",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
