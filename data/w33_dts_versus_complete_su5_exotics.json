@@ -1,0 +1,87 @@
+{
+ "claim": "In the 87 W(3,3) Z6-I Standard Models, doublet-triplet splitting and SU(5)-complete vector-like exotics are mutually exclusive: 24 models have complete exotics (n_d = n_bl, so the extra triplet and doublet pairs assemble into 5 + 5bar and leave one-loop unification untouched), 55 solve doublet-triplet splitting, and NO model does both. It is forced rather than coincidental: a model solves doublet-triplet splitting exactly when its d and bl are untwisted only (67f0e1f), and the universal untwisted table (3caf15e) puts d in planes 1 and 2 and bl in plane 3 alone, so such a model has n_d = 2 and n_bl = 1 and mismatch 1, never zero. The 24 complete models have d and bl twisted as well, which supplies the extra pairs and simultaneously makes them gauge siblings, locking the coefficients.",
+ "shapes": [
+  {
+   "shape": [
+    4,
+    1,
+    2,
+    5
+   ],
+   "mismatch": 1,
+   "complete": false,
+   "dts": true,
+   "models": 55
+  },
+  {
+   "shape": [
+    9,
+    6,
+    6,
+    9
+   ],
+   "mismatch": 0,
+   "complete": true,
+   "dts": false,
+   "models": 24
+  },
+  {
+   "shape": [
+    8,
+    5,
+    7,
+    10
+   ],
+   "mismatch": 2,
+   "complete": false,
+   "dts": false,
+   "models": 8
+  }
+ ],
+ "totals": {
+  "models": 87,
+  "complete_exotics": 24,
+  "solve_dts": 55,
+  "both": 0,
+  "neither": 8
+ },
+ "table": {
+  "untwisted_triplet_planes": [
+   1,
+   2
+  ],
+  "untwisted_doublet_planes": [
+   3
+  ],
+  "source": "3caf15e",
+  "universal_over": 87
+ },
+ "trade_off": "the asymmetry that splits the Higgs from its colour triplet is precisely the incompleteness that removes unification's protection -- one structural choice, whether d and bl appear in the twisted sector, decides both questions in opposite directions",
+ "checks": {
+  "every_shape_has_three_families": true,
+  "mismatch_is_nd_minus_nbl": true,
+  "complete_iff_mismatch_zero": true,
+  "shapes_cover_the_class": true,
+  "complete_count_matches": true,
+  "dts_count_matches": true,
+  "no_model_does_both": true,
+  "eight_do_neither": true,
+  "not_a_partition_but_disjoint": true,
+  "table_forces_two_triplets": true,
+  "table_forces_one_doublet": true,
+  "forced_mismatch_is_nonzero": true,
+  "the_dts_shape_is_the_forced_one": true,
+  "so_no_dts_model_can_be_complete": true,
+  "table_is_universal": true
+ },
+ "valid": true,
+ "status": "spectrum shapes measured by the orbifolder across all 87 models; the chirality and completeness arithmetic is computed here; the untwisted plane table is quoted from 3caf15e and the sector criterion from 67f0e1f",
+ "scope": "a one-loop complete-multiplet argument -- incompleteness removes the protection rather than automatically ruining unification, and the actual prediction needs exotic masses and two-loop running, neither computed here. SU(5) hypercharge normalisation assumed, supported by d772153's t_Y^2 = 5/6.",
+ "sources": [
+  "Holotrade 3caf15e",
+  "Holotrade 67f0e1f",
+  "Holotrade d772153",
+  "Holotrade 5b3f3ad",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}

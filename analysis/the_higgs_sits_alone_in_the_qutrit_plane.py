@@ -3,6 +3,23 @@
 THE HIGGS SITS ALONE IN THE QUTRIT PLANE, AND THAT ONE FACT GIVES BOTH THE HEAVY TOP AND
 DOUBLET-TRIPLET SPLITTING.
 
+*** PARTIAL CORRECTION. The measured table below is right and the doublet-triplet half is
+    right. The TOP-YUKAWA half rests on a selection rule I asserted without checking --
+    "an order-three coupling of three untwisted fields needs one field from EACH plane" --
+    and that is NOT the rule the orbifolder implements. Dumping the order-three q u^c H
+    couplings of the flagship gives five, of which only TWO are one-per-plane:
+
+        bu_1(3) q_1(3) bl_1(3)   all three in plane 3
+        bu_2(1) q_2(1) bl_1(3)   repeated plane
+        bu_3(2) q_2(1) bl_1(3)   one per plane
+        bu_2(1) q_3(2) bl_1(3)   one per plane
+        bu_3(2) q_3(2) bl_1(3)   repeated plane
+
+    So the cubic top is MEASURED (five order-three couplings here, 57 of 60 models in
+    93b34e1) but it is not derived from the plane table, and the claim that the two results
+    are "the same fact" is withdrawn. The doublet-triplet half does not use that rule: it
+    needs only that d and bl are different fields with different q_sh, which is measured. ***
+
 Dumping the untwisted matter of all 87 W(3,3) Z6-I Standard Models species by species and
 plane by plane gives the same table in every single model:
 

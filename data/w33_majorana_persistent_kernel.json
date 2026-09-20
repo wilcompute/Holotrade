@@ -1,0 +1,83 @@
+{
+ "claim": "On the flagship, 46 of the 65 singlets are right-handed neutrino candidates (the other 19 must condense). Building the Majorana matrix from the pure-singlet superpotential with generic coefficients, its rank is 19 at order three, rises to 27 at order four and then does NOT move through order eight -- so 27 right-handed neutrinos get Majorana masses of order <n> and 19 remain exactly massless, unlifted by any term to that order. The Dirac operator l.bl.n, which is the mu operator with one singlet playing the neutrino, first appears at order four.",
+ "model": "Z6I_27 / SM_20260917_3",
+ "counts": {
+  "all_singlets": 65,
+  "condensing": 19,
+  "rh_candidates": 46
+ },
+ "ranks": [
+  {
+   "order": 3,
+   "pairs": 102,
+   "rank": 19,
+   "massless": 27
+  },
+  {
+   "order": 4,
+   "pairs": 143,
+   "rank": 27,
+   "massless": 19
+  },
+  {
+   "order": 6,
+   "pairs": 143,
+   "rank": 27,
+   "massless": 19
+  },
+  {
+   "order": 7,
+   "pairs": 143,
+   "rank": 27,
+   "massless": 19
+  },
+  {
+   "order": 8,
+   "pairs": 143,
+   "rank": 27,
+   "massless": 19
+  }
+ ],
+ "dirac": {
+  "operator": "l . bl . n^k",
+  "lowest_order": 4,
+  "counts": {
+   "4": 32,
+   "5": 32
+  }
+ },
+ "reading": "the persistent kernel is the result -- a large set of exactly massless gauge singlets the superpotential does not lift -- and it is a phenomenological liability, not a success. It is NOT a computation of light neutrino masses: both Dirac and Majorana entries are generated at comparable order and both scale as <n>, so the see-saw suppression needs the coefficients.",
+ "coincidence_flagged": "the kernel dimension 19 equals the number of condensing singlets, also 19, on disjoint sets -- a numerical coincidence on one model, unchecked elsewhere, and not used",
+ "checks": {
+  "candidates_are_the_non_condensing": true,
+  "rank_plus_massless_is_the_candidate_count_at_3": true,
+  "rank_never_exceeds_candidates_at_3": true,
+  "rank_plus_massless_is_the_candidate_count_at_4": true,
+  "rank_never_exceeds_candidates_at_4": true,
+  "rank_plus_massless_is_the_candidate_count_at_6": true,
+  "rank_never_exceeds_candidates_at_6": true,
+  "rank_plus_massless_is_the_candidate_count_at_7": true,
+  "rank_never_exceeds_candidates_at_7": true,
+  "rank_plus_massless_is_the_candidate_count_at_8": true,
+  "rank_never_exceeds_candidates_at_8": true,
+  "rank_saturates_at_order_four": true,
+  "pairs_saturate_too": true,
+  "rank_grows_from_three_to_four": true,
+  "kernel_is_nineteen": true,
+  "kernel_is_large": true,
+  "saturated_through_order_eight": true,
+  "dirac_appears_at_order_four": true,
+  "dirac_and_majorana_are_comparable": true,
+  "dirac_counts_recorded": true,
+  "kernel_equals_condensing_count_is_flagged": true
+ },
+ "valid": true,
+ "status": "singlet couplings from the orbifolder through order eight; the Majorana matrix, its rank and the Dirac orders are computed here",
+ "scope": "one model; 'persistent' is bounded by the order-eight dump; generic coefficients give an upper bound on the rank, so the kernel is at least this large; gauge-singlet directions only",
+ "sources": [
+  "Holotrade 5b3f3ad",
+  "Holotrade babfd48",
+  "Buchmuller, Hamaguchi, Lebedev, Ratz (heterotic see-saw with many right-handed neutrinos)",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
