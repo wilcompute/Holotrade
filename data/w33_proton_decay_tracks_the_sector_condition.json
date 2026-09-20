@@ -1,0 +1,88 @@
+{
+ "claim": "Over 86 of the 87 Z6-I Standard Models, both dimension-five proton decay operators (q q q l and u^c u^c d^c e^c) are absent in ALL 86, and the three dimension-four R-parity violating operators (u^c d^c d^c, q l d^c, l l e^c) are absent in exactly 54 -- and those 54 are precisely the models that solve doublet-triplet splitting, checked model by model. The control, the top Yukawa q u^c H, is non-zero in all 86, so the zeros are real.",
+ "operators": [
+  {
+   "op": "u^c d^c d^c",
+   "labels": "bu bd bd",
+   "dim": 4,
+   "violates": "baryon",
+   "absent": 54
+  },
+  {
+   "op": "q l d^c",
+   "labels": "q l bd",
+   "dim": 4,
+   "violates": "lepton",
+   "absent": 54
+  },
+  {
+   "op": "l l e^c",
+   "labels": "l l be",
+   "dim": 4,
+   "violates": "lepton",
+   "absent": 54
+  },
+  {
+   "op": "q q q l",
+   "labels": "q q q l",
+   "dim": 5,
+   "violates": "proton",
+   "absent": 86
+  },
+  {
+   "op": "u^c u^c d^c e^c",
+   "labels": "bu bu bd be",
+   "dim": 5,
+   "violates": "proton",
+   "absent": 86
+  }
+ ],
+ "models": {
+  "scanned": 86,
+  "total": 87,
+  "not_finished": 1,
+  "singlet_insertions": 2
+ },
+ "control": {
+  "operator": "q u^c H",
+  "labels": "q bu bl",
+  "nonzero_in": 86,
+  "of": 86,
+  "flagship_couplings": 1199,
+  "flagship_order_three": 5
+ },
+ "sets": {
+  "clean_of_all_five": 54,
+  "solve_dts": 54,
+  "identical": true,
+  "rpv_models_all_locked": true
+ },
+ "why": "a model solves doublet-triplet splitting exactly when d and bl are untwisted only (67f0e1f); the dimension-four operators need a twisted d or l leg, which those models do not have. The same sector condition decides both.",
+ "third_convergence": "this is the third independent question to land on the sector condition -- doublet-triplet splitting, SU(5)-completeness of the exotics, and proton decay. They do not agree in sign: the same choice gives doublet-triplet splitting YES, R-parity violation NO, complete exotics NO.",
+ "checks": {
+  "five_operators_scanned": true,
+  "three_are_dimension_four": true,
+  "two_are_dimension_five": true,
+  "dimension_five_absent_everywhere": true,
+  "dimension_four_absent_in_54": true,
+  "all_three_dim4_agree": true,
+  "dim4_is_not_universal": true,
+  "control_is_nonzero_everywhere": true,
+  "control_makes_the_zeros_meaningful": true,
+  "control_has_a_cubic_top": true,
+  "clean_set_equals_dts_set": true,
+  "every_rpv_model_is_locked": true,
+  "the_correlation_is_exact": true,
+  "one_model_excluded_not_counted": true,
+  "scan_depth_recorded": true
+ },
+ "valid": true,
+ "status": "operators dumped by the orbifolder with up to two singlet insertions, with a non-vacuous control; the set comparison is computed here",
+ "scope": "allowed-coupling level, at most two singlet insertions -- 'absent' means absent through that order, and the dimension-five result deserves a deeper scan before being leaned on. One model did not finish and is excluded rather than counted either way.",
+ "sources": [
+  "Holotrade 67f0e1f",
+  "Holotrade 5eab5c8",
+  "Holotrade 5b3f3ad",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
