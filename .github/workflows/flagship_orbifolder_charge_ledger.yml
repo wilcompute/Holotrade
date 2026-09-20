@@ -1,0 +1,103 @@
+name: Flagship orbifolder charge-ledger replay
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'analysis/w33_flagship_orbifolder_model.py'
+      - '.github/workflows/flagship_orbifolder_charge_ledger.yml'
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install orbifolder build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential curl libgsl-dev libboost-all-dev libreadline-dev
+
+      - name: Download and build orbifolder 1.2.1
+        run: |
+          curl -L --fail --retry 3 \
+            https://orbifolder.hepforge.org/source/V1.2.1/orbifolder-1.2.1.tgz \
+            -o /tmp/orbifolder-1.2.1.tgz
+          tar xzf /tmp/orbifolder-1.2.1.tgz -C /tmp
+          SRC="$(find /tmp -maxdepth 1 -type d -name 'orbifolder-1.2.1*' | head -1)"
+          echo "SRC=$SRC" >> "$GITHUB_ENV"
+          cd "$SRC"
+          ./configure
+          make -j2
+          test -x ./src/orbifolder/orbifolder
+
+      - name: Discover Z6-I G2xG2xSU3 geometry
+        run: |
+          python - <<'PY'
+          import os,pathlib
+          root=pathlib.Path(os.environ["SRC"])
+          files=[p for p in root.rglob("*") if p.is_file() and "Geometry" in str(p)]
+          def score(p):
+              s=p.name.lower().replace("_","").replace("-","")
+              return int("z6" in s)+2*int("g2" in s)+2*int("su3" in s)+5*int("z6i" in s)
+          cand=sorted(files,key=lambda p:(-score(p),str(p)))
+          print("Top geometry candidates:")
+          for p in cand[:30]:
+              print(score(p),p.relative_to(root))
+          good=[p for p in cand if "z6" in p.name.lower() and p.name.lower().count("g2")>=2 and "su3" in p.name.lower()]
+          if not good:
+              raise SystemExit("No Z6 G2xG2xSU3 geometry candidate found")
+          rel=str(good[0].relative_to(root))
+          with open(os.environ["GITHUB_ENV"],"a") as f:
+              f.write("GEOMETRY="+rel+"\n")
+          print("Selected:",rel)
+          PY
+
+      - name: Replay all three Wilson-line pair placements
+        run: |
+          mkdir -p evidence/flagship_orbifolder
+          echo "$GEOMETRY" > evidence/flagship_orbifolder/geometry.txt
+          for pair in 01 23 45; do
+            python analysis/w33_flagship_orbifolder_model.py \
+              --output "$SRC/model_\${pair}.txt" \
+              --geometry "$GEOMETRY" \
+              --pair "$pair"
+            cat > "$SRC/commands_\${pair}.txt" <<EOF
+          load orbifolds(model_\${pair}.txt)
+          cd SM_20260917_3
+          cd gauge group
+          print gauge group
+          print U1 generators
+          cd ..
+          cd spectrum
+          print summary with labels
+          print(*) with internal information
+          exit
+          EOF
+            (
+              cd "$SRC"
+              timeout 180s bash -c \
+                "printf 'load program(commands_\${pair}.txt)\nyes\n' | ./src/orbifolder/orbifolder" \
+                > "$GITHUB_WORKSPACE/evidence/flagship_orbifolder/transcript_\${pair}.txt" 2>&1 || true
+            )
+            cp "$SRC/model_\${pair}.txt" "evidence/flagship_orbifolder/model_\${pair}.txt"
+            echo "===== PAIR $pair ====="
+            grep -E -i -A8 -B3 \
+              'gauge group|spectrum|error|invalid|132|SU\(3\)|SU\(2\)' \
+              "evidence/flagship_orbifolder/transcript_\${pair}.txt" | tail -120 || true
+          done
+
+      - name: Require at least one nonempty transcript
+        run: |
+          test -s evidence/flagship_orbifolder/transcript_01.txt
+          test -s evidence/flagship_orbifolder/transcript_23.txt
+          test -s evidence/flagship_orbifolder/transcript_45.txt
+          wc -l evidence/flagship_orbifolder/transcript_*.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flagship-orbifolder-charge-ledger
+          path: evidence/flagship_orbifolder/
+          if-no-files-found: error
