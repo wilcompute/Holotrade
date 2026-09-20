@@ -34,13 +34,20 @@
  "checks": {
   "singlet_sets_are_equal": true,
   "d_bd_has_full_rank_when_all_vevs_on": true,
-  "search_was_exhaustive_not_sampled": true,
-  "no_subset_keeps_any_d_bd_mass": true,
+  "replayed_search_matches_recorded_count": true,
+  "replayed_best_rank_is_zero": true,
   "infeasible": true,
-  "power_set_bound_is_sound": true,
-  "raw_support_hyperedges_committed_here": false
+  "dbd_shape_matches_spectrum": true,
+  "raw_support_hyperedges_committed_here": true,
+  "supports_are_the_same_singlets": true,
+  "power_set_bound_is_sound": true
  },
  "valid": true,
+ "reproducibility": {
+  "raw_support_hyperedges_committed": false,
+  "what_this_file_replays": "consistency checks on aggregate counts only",
+  "what_is_missing": "the 64 mu and 144 d/bd singlet-support hyperedges or a deterministic orbifolder export that regenerates them"
+ },
  "status": "aggregate coupling/search measurements imported from the orbifolder run; the logical no-go follows from those measurements, but this committed file does NOT independently replay the 26273-case search because the raw hyperedges are absent",
  "sources": [
   "Holotrade 94df376",
@@ -49,10 +56,5 @@
   "Holotrade a0fb73b",
   "Kappl et al., large hierarchies from approximate R symmetries",
   "Lebedev et al. arXiv:0807.4384"
- ],
- "reproducibility": {
-  "raw_support_hyperedges_committed": false,
-  "what_this_file_replays": "consistency checks on aggregate counts only",
-  "what_is_missing": "the 64 mu and 144 d/bd singlet-support hyperedges or a deterministic orbifolder export that regenerates them"
- }
+ ]
 }

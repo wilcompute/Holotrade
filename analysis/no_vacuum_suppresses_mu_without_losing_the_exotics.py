@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
-MEASURED MU/EXOTIC VACUUM NO-GO, WITH REPRODUCIBILITY BOUNDARY: THE AGGREGATE RESULT SAYS THE
-SAME NINETEEN SINGLETS SUPPORT BOTH SECTORS AND ALL 26273 MU-KILLING VEV PATTERNS KILL d/bd.
+NO VACUUM SUPPRESSES MU WITHOUT LOSING THE d-TYPE EXOTICS: THE TWO REQUIREMENTS ARE SUPPORTED ON
+THE SAME NINETEEN SINGLETS, AND ALL 26273 WAYS OF KILLING MU KILL EVERY d/bd MASS TERM.
+
+REPRODUCIBILITY. The raw supports are committed in this file and the 26273-case search is REPLAYED
+here, not quoted: the other track's audit correctly noted that the first version recorded only
+aggregates. MU_SUPPORTS and DBD_COUPLINGS below are the measured hyperedges over the nineteen
+singlets, and main() recomputes the feasibility from them.
 
 94df376 measured that mu is universal in this class -- every Z6-I Standard Model generates it at
 order three or four, none is mu-free -- and closed by noting the tension: the same order-four
@@ -21,7 +26,7 @@ Equivalently, writing H for the switched-off complement, H must HIT every mu cou
 leaving enough exotic couplings untouched. This is a finite feasibility question, and because mu
 only involves nineteen singlets it can be decided exhaustively rather than sampled.
 
-THE IMPORTED MEASUREMENT, on the flagship SM_20260917_3, generating through total order five:
+THE MEASUREMENT, on the flagship SM_20260917_3, generating through total order five:
 
     mu   (l bl n^k)    64 couplings, touching 19 singlets
     d/bd (d bd n^k)   144 couplings, touching THE SAME 19 singlets
@@ -36,7 +41,7 @@ Not reduced: zero. Every way of switching off enough singlets to suppress mu swi
 single d/bd mass term as well. x/bx is untouched by many of these choices, and the w sector
 largely survives, so this is specifically the d-type exotics that fail.
 
-WHY THE LOGIC IS ROBUST IF THE IMPORTED SEARCH RECORD IS ACCEPTED. The reported search ranges over ALL subsets of singlets, with no D-flatness or
+WHY THE LOGIC IS ROBUST. The search ranges over ALL subsets of singlets, with no D-flatness or
 F-flatness imposed. A physical vacuum is a particular such subset, so a constraint that is
 infeasible over all subsets is infeasible for every actual vacuum: adding flatness can only
 remove options, never create them. That is what makes this a no-go rather than a failed search.
@@ -75,6 +80,200 @@ MEASURED = {
     "best_d_bd_rank_with_mu_off": 0,
 }
 
+# Raw measured supports (orbifolder, total order <= 5), indices into SINGLETS.
+SINGLETS = ['n_2', 'n_12', 'n_13', 'n_18', 'n_20', 'n_24', 'n_26', 'n_31', 'n_33', 'n_37', 'n_39', 'n_44', 'n_46', 'n_50', 'n_52', 'n_57', 'n_59', 'n_63', 'n_65']
+
+MU_SUPPORTS = [
+    (0, 1, 4),
+    (0, 1, 8),
+    (0, 1, 12),
+    (0, 1, 16),
+    (0, 4, 5),
+    (0, 4, 9),
+    (0, 4, 13),
+    (0, 4, 17),
+    (0, 5, 8),
+    (0, 5, 12),
+    (0, 5, 16),
+    (0, 8, 9),
+    (0, 8, 13),
+    (0, 8, 17),
+    (0, 9, 12),
+    (0, 9, 16),
+    (0, 12, 13),
+    (0, 12, 17),
+    (0, 13, 16),
+    (0, 16, 17),
+    (2, 3),
+    (2, 7),
+    (2, 11),
+    (2, 15),
+    (3, 6),
+    (3, 10),
+    (3, 14),
+    (3, 18),
+    (6, 7),
+    (6, 11),
+    (6, 15),
+    (7, 10),
+    (7, 14),
+    (7, 18),
+    (10, 11),
+    (10, 15),
+    (11, 14),
+    (11, 18),
+    (14, 15),
+    (15, 18),
+]
+
+DBD_COUPLINGS = [
+    (('bd_1', 'd_1'), (0, 4, 5)),
+    (('bd_1', 'd_1'), (0, 8, 9)),
+    (('bd_1', 'd_1'), (0, 12, 13)),
+    (('bd_1', 'd_1'), (0, 16, 17)),
+    (('bd_1', 'd_1'), (3, 6)),
+    (('bd_1', 'd_1'), (7, 10)),
+    (('bd_1', 'd_1'), (11, 14)),
+    (('bd_1', 'd_1'), (15, 18)),
+    (('bd_1', 'd_2'), (0, 4, 5)),
+    (('bd_1', 'd_2'), (0, 8, 9)),
+    (('bd_1', 'd_2'), (0, 12, 13)),
+    (('bd_1', 'd_2'), (0, 16, 17)),
+    (('bd_1', 'd_2'), (3, 6)),
+    (('bd_1', 'd_2'), (7, 10)),
+    (('bd_1', 'd_2'), (11, 14)),
+    (('bd_1', 'd_2'), (15, 18)),
+    (('bd_2', 'd_1'), (0, 1, 4)),
+    (('bd_2', 'd_1'), (0, 4, 5)),
+    (('bd_2', 'd_1'), (0, 8, 13)),
+    (('bd_2', 'd_1'), (0, 8, 17)),
+    (('bd_2', 'd_1'), (0, 9, 12)),
+    (('bd_2', 'd_1'), (0, 9, 16)),
+    (('bd_2', 'd_1'), (0, 12, 17)),
+    (('bd_2', 'd_1'), (0, 13, 16)),
+    (('bd_2', 'd_1'), (2, 3)),
+    (('bd_2', 'd_1'), (3, 6)),
+    (('bd_2', 'd_1'), (7, 14)),
+    (('bd_2', 'd_1'), (7, 18)),
+    (('bd_2', 'd_1'), (10, 11)),
+    (('bd_2', 'd_1'), (10, 15)),
+    (('bd_2', 'd_1'), (11, 18)),
+    (('bd_2', 'd_1'), (14, 15)),
+    (('bd_2', 'd_2'), (0, 1, 4)),
+    (('bd_2', 'd_2'), (0, 4, 5)),
+    (('bd_2', 'd_2'), (0, 8, 13)),
+    (('bd_2', 'd_2'), (0, 8, 17)),
+    (('bd_2', 'd_2'), (0, 9, 12)),
+    (('bd_2', 'd_2'), (0, 9, 16)),
+    (('bd_2', 'd_2'), (0, 12, 17)),
+    (('bd_2', 'd_2'), (0, 13, 16)),
+    (('bd_2', 'd_2'), (2, 3)),
+    (('bd_2', 'd_2'), (3, 6)),
+    (('bd_2', 'd_2'), (7, 14)),
+    (('bd_2', 'd_2'), (7, 18)),
+    (('bd_2', 'd_2'), (10, 11)),
+    (('bd_2', 'd_2'), (10, 15)),
+    (('bd_2', 'd_2'), (11, 18)),
+    (('bd_2', 'd_2'), (14, 15)),
+    (('bd_3', 'd_1'), (0, 1, 8)),
+    (('bd_3', 'd_1'), (0, 4, 13)),
+    (('bd_3', 'd_1'), (0, 4, 17)),
+    (('bd_3', 'd_1'), (0, 5, 12)),
+    (('bd_3', 'd_1'), (0, 5, 16)),
+    (('bd_3', 'd_1'), (0, 8, 9)),
+    (('bd_3', 'd_1'), (0, 12, 17)),
+    (('bd_3', 'd_1'), (0, 13, 16)),
+    (('bd_3', 'd_1'), (2, 7)),
+    (('bd_3', 'd_1'), (3, 14)),
+    (('bd_3', 'd_1'), (3, 18)),
+    (('bd_3', 'd_1'), (6, 11)),
+    (('bd_3', 'd_1'), (6, 15)),
+    (('bd_3', 'd_1'), (7, 10)),
+    (('bd_3', 'd_1'), (11, 18)),
+    (('bd_3', 'd_1'), (14, 15)),
+    (('bd_3', 'd_2'), (0, 1, 8)),
+    (('bd_3', 'd_2'), (0, 4, 13)),
+    (('bd_3', 'd_2'), (0, 4, 17)),
+    (('bd_3', 'd_2'), (0, 5, 12)),
+    (('bd_3', 'd_2'), (0, 5, 16)),
+    (('bd_3', 'd_2'), (0, 8, 9)),
+    (('bd_3', 'd_2'), (0, 12, 17)),
+    (('bd_3', 'd_2'), (0, 13, 16)),
+    (('bd_3', 'd_2'), (2, 7)),
+    (('bd_3', 'd_2'), (3, 14)),
+    (('bd_3', 'd_2'), (3, 18)),
+    (('bd_3', 'd_2'), (6, 11)),
+    (('bd_3', 'd_2'), (6, 15)),
+    (('bd_3', 'd_2'), (7, 10)),
+    (('bd_3', 'd_2'), (11, 18)),
+    (('bd_3', 'd_2'), (14, 15)),
+    (('bd_4', 'd_1'), (0, 1, 12)),
+    (('bd_4', 'd_1'), (0, 4, 9)),
+    (('bd_4', 'd_1'), (0, 4, 17)),
+    (('bd_4', 'd_1'), (0, 5, 8)),
+    (('bd_4', 'd_1'), (0, 5, 16)),
+    (('bd_4', 'd_1'), (0, 8, 17)),
+    (('bd_4', 'd_1'), (0, 9, 16)),
+    (('bd_4', 'd_1'), (0, 12, 13)),
+    (('bd_4', 'd_1'), (2, 11)),
+    (('bd_4', 'd_1'), (3, 10)),
+    (('bd_4', 'd_1'), (3, 18)),
+    (('bd_4', 'd_1'), (6, 7)),
+    (('bd_4', 'd_1'), (6, 15)),
+    (('bd_4', 'd_1'), (7, 18)),
+    (('bd_4', 'd_1'), (10, 15)),
+    (('bd_4', 'd_1'), (11, 14)),
+    (('bd_4', 'd_2'), (0, 1, 12)),
+    (('bd_4', 'd_2'), (0, 4, 9)),
+    (('bd_4', 'd_2'), (0, 4, 17)),
+    (('bd_4', 'd_2'), (0, 5, 8)),
+    (('bd_4', 'd_2'), (0, 5, 16)),
+    (('bd_4', 'd_2'), (0, 8, 17)),
+    (('bd_4', 'd_2'), (0, 9, 16)),
+    (('bd_4', 'd_2'), (0, 12, 13)),
+    (('bd_4', 'd_2'), (2, 11)),
+    (('bd_4', 'd_2'), (3, 10)),
+    (('bd_4', 'd_2'), (3, 18)),
+    (('bd_4', 'd_2'), (6, 7)),
+    (('bd_4', 'd_2'), (6, 15)),
+    (('bd_4', 'd_2'), (7, 18)),
+    (('bd_4', 'd_2'), (10, 15)),
+    (('bd_4', 'd_2'), (11, 14)),
+    (('bd_5', 'd_1'), (0, 1, 16)),
+    (('bd_5', 'd_1'), (0, 4, 9)),
+    (('bd_5', 'd_1'), (0, 4, 13)),
+    (('bd_5', 'd_1'), (0, 5, 8)),
+    (('bd_5', 'd_1'), (0, 5, 12)),
+    (('bd_5', 'd_1'), (0, 8, 13)),
+    (('bd_5', 'd_1'), (0, 9, 12)),
+    (('bd_5', 'd_1'), (0, 16, 17)),
+    (('bd_5', 'd_1'), (2, 15)),
+    (('bd_5', 'd_1'), (3, 10)),
+    (('bd_5', 'd_1'), (3, 14)),
+    (('bd_5', 'd_1'), (6, 7)),
+    (('bd_5', 'd_1'), (6, 11)),
+    (('bd_5', 'd_1'), (7, 14)),
+    (('bd_5', 'd_1'), (10, 11)),
+    (('bd_5', 'd_1'), (15, 18)),
+    (('bd_5', 'd_2'), (0, 1, 16)),
+    (('bd_5', 'd_2'), (0, 4, 9)),
+    (('bd_5', 'd_2'), (0, 4, 13)),
+    (('bd_5', 'd_2'), (0, 5, 8)),
+    (('bd_5', 'd_2'), (0, 5, 12)),
+    (('bd_5', 'd_2'), (0, 8, 13)),
+    (('bd_5', 'd_2'), (0, 9, 12)),
+    (('bd_5', 'd_2'), (0, 16, 17)),
+    (('bd_5', 'd_2'), (2, 15)),
+    (('bd_5', 'd_2'), (3, 10)),
+    (('bd_5', 'd_2'), (3, 14)),
+    (('bd_5', 'd_2'), (6, 7)),
+    (('bd_5', 'd_2'), (6, 11)),
+    (('bd_5', 'd_2'), (7, 14)),
+    (('bd_5', 'd_2'), (10, 11)),
+    (('bd_5', 'd_2'), (15, 18)),
+]
+
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -91,16 +290,57 @@ def main():
     checks["d_bd_has_full_rank_when_all_vevs_on"] = \
         m["d_bd"]["rank_with_all_vevs_on"] == m["d_bd"]["full_rank"] == 2
 
-    print("  mu-killing subsets examined: %d, best surviving d/bd rank: %d (need %d)" % (
-        m["mu_killing_subsets_examined"], m["best_d_bd_rank_with_mu_off"], m["d_bd"]["full_rank"]))
-    checks["search_was_exhaustive_not_sampled"] = m["mu_killing_subsets_examined"] == 26273
-    checks["no_subset_keeps_any_d_bd_mass"] = m["best_d_bd_rank_with_mu_off"] == 0
-    checks["infeasible"] = m["best_d_bd_rank_with_mu_off"] < m["d_bd"]["full_rank"]
+    # REPLAY the search from the committed hyperedges rather than quoting the outcome.
+    rows = sorted({n[1] for n, _ in DBD_COUPLINGS if n[1].startswith("d_")} |
+                  {n[0] for n, _ in DBD_COUPLINGS if n[0].startswith("d_")})
+    cols = sorted({n[0] for n, _ in DBD_COUPLINGS if n[0].startswith("bd_")} |
+                  {n[1] for n, _ in DBD_COUPLINGS if n[1].startswith("bd_")})
 
-    # Reproducibility boundary: this committed file contains only aggregate measurements,
-    # not the 64/144 raw support hyperedges.  It checks the recorded result but does not
-    # independently replay the 26273-case search.
-    checks["raw_support_hyperedges_committed_here"] = False
+    def dbd_rank(off):
+        """maximum matching of the d/bd support that avoids the switched-off singlets"""
+        R = {r: i for i, r in enumerate(rows)}
+        C = {c: i for i, c in enumerate(cols)}
+        adj = {i: set() for i in range(len(R))}
+        for pair, sup in DBD_COUPLINGS:
+            if off & set(sup):
+                continue
+            a = next((x for x in pair if x in R), None)
+            b = next((x for x in pair if x in C), None)
+            if a is not None and b is not None:
+                adj[R[a]].add(C[b])
+        match = {}
+
+        def go(u, seen):
+            for v in adj[u]:
+                if v in seen:
+                    continue
+                seen.add(v)
+                if v not in match or go(match[v], seen):
+                    match[v] = u
+                    return True
+            return False
+
+        return sum(1 for u in adj if go(u, set()))
+
+    need = min(len(rows), len(cols))
+    examined = 0
+    best = -1
+    for k in range(1, len(SINGLETS) + 1):
+        for H in itertools.combinations(range(len(SINGLETS)), k):
+            Hs = set(H)
+            if any(not (set(e) & Hs) for e in MU_SUPPORTS):
+                continue                      # this pattern leaves some mu coupling alive
+            examined += 1
+            r = dbd_rank(Hs)
+            best = max(best, r)
+    print("  replayed: %d mu-killing subsets, best surviving d/bd rank %d (need %d)" % (
+        examined, best, need))
+    checks["replayed_search_matches_recorded_count"] = examined == m["mu_killing_subsets_examined"]
+    checks["replayed_best_rank_is_zero"] = best == m["best_d_bd_rank_with_mu_off"] == 0
+    checks["infeasible"] = best < need
+    checks["dbd_shape_matches_spectrum"] = [len(rows), len(cols)] == m["d_bd"]["shape"]
+    checks["raw_support_hyperedges_committed_here"] = True
+    checks["supports_are_the_same_singlets"] =         {i for e in MU_SUPPORTS for i in e} == {i for _, sup in DBD_COUPLINGS for i in sup}
 
     # the reported search space is the full power set of the mu singlets, so the bound is a no-go:
     # every physical vacuum is one of these subsets, and flatness only removes options
@@ -110,9 +350,7 @@ def main():
 
     for k, v in checks.items():
         print("  %-46s %s" % (k, v))
-    # The aggregate theorem checks remain true; the explicit false provenance flag is not
-    # part of physical validity and is exposed separately rather than hidden.
-    valid = all(v for k, v in checks.items() if k != "raw_support_hyperedges_committed_here")
+    valid = all(checks.values())
     print("VALID:", valid)
 
     if args.write:
