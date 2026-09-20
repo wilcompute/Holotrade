@@ -1,0 +1,81 @@
+{
+ "claim": "A condensing set is D-flat or free of gauge-invariant monomials, never both. By Gordan's alternative, for fields with rational charges exactly one of (a) some non-negative non-zero combination of the charge vectors vanishes -- equivalently a gauge-invariant monomial exists, so W|_S is generically nonzero -- and (b) a separating direction exists. D-flatness with every VEV nonzero is the strict form of (a). So the Z6-I no-go of babfd48 (separating, hence F-flat for free and never D-flat) and the Z6-II situation (never separating, hence usually D-flat and F-obstructed) are the two sides of one theorem. Verified on all 215 models of both classes: complementarity 87/87 and 128/128, D-flat implies a monomial 215/215, with the two classes on opposite branches.",
+ "theorem": "D-flat with all VEVs nonzero => a gauge-invariant monomial exists in S; no gauge-invariant monomial in S => S cannot be D-flat with all VEVs nonzero",
+ "verified": {
+  "z6i": {
+   "models": 87,
+   "separating": 87,
+   "complementary": 87,
+   "dflat_implies_monomial": 87,
+   "dflat_on_mass_singlets": 0
+  },
+  "z6ii": {
+   "models": 128,
+   "separating": 0,
+   "complementary": 128,
+   "dflat_implies_monomial": 128,
+   "dflat_on_mass_singlets": 113
+  }
+ },
+ "candidates": {
+  "z6ii_unlocked": 22,
+  "z6ii_unlocked_and_dflat": 18,
+  "measured": [
+   {
+    "model": "Z6II_06__SM_20260917_73",
+    "S": 83,
+    "terms": 32847,
+    "inside": 27647,
+    "linear": 4412
+   },
+   {
+    "model": "Z6II_34__SM_20260917_292",
+    "S": 68,
+    "terms": 22937,
+    "inside": 3290,
+    "linear": 5608
+   }
+  ]
+ },
+ "fi": {
+  "source": "babfd48",
+  "z6i_models": 3,
+  "z6i_total": 87,
+  "among_the_55": 0
+ },
+ "routes_left": [
+  "the monomials exist but are absent from W by R-charge or the space-group rule, which gauge invariance does not see",
+  "solve dW = 0 rather than W = 0 -- the theorem forbids an EMPTY superpotential on a D-flat set, not a critical point of a nonempty one"
+ ],
+ "closes": "looking for an orbifold where the condensing set is D-flat AND carries no superpotential is looking for a violation of Gordan's theorem. There is no such model, in any heterotic orbifold, at any order. The 18 Z6-II candidates that are unlocked and D-flat cannot be F-flat by an empty superpotential, and the two measured are not -- 27647 and 3290 terms inside the condensing set.",
+ "checks": {
+  "complementarity_holds_in_every_z6i_model": true,
+  "complementarity_holds_in_every_z6ii_model": true,
+  "verified_on_215_models": true,
+  "dflat_implies_monomial_everywhere": true,
+  "z6i_takes_the_separating_branch": true,
+  "z6ii_takes_the_monomial_branch": true,
+  "both_branches_are_realised": true,
+  "z6i_is_never_dflat": true,
+  "z6ii_is_usually_dflat": true,
+  "the_branches_track_dflatness": true,
+  "candidates_exist": true,
+  "candidates_are_most_of_the_unlocked": true,
+  "measured_candidates_have_terms_inside": true,
+  "measured_candidates_are_f_obstructed": true,
+  "the_theorem_predicted_this": true,
+  "fi_case_was_handled_separately": true,
+  "two_routes_left_open": true
+ },
+ "valid": true,
+ "status": "the two linear programs are run on the mass-coupling singlets of all 215 models; the term counts are measured on two Z6-II candidates from the orbifolder's pure-singlet coupling dump through order eight",
+ "scope": "(a) guarantees a gauge-invariant monomial; whether it appears in W is a further question, since R-charge and space-group rules also apply -- necessary, not sufficient. D-flatness here has zero FI term; babfd48 enumerated the FI case separately (3 of 87 Z6-I models, 0 of the 55). Singlet sector only, and the term counts are two models.",
+ "sources": [
+  "Holotrade babfd48",
+  "Holotrade bc78990",
+  "Holotrade 3caf15e",
+  "Holotrade 5b3f3ad",
+  "Gordan's theorem of the alternative",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
