@@ -3,6 +3,14 @@
 DOUBLET-TRIPLET SPLITTING IS SOLVED IN 55 OF 87 BY THE MISSING-PARTNER MECHANISM: NO
 UNTWISTED PLANE DONATES BOTH A COLOUR TRIPLET AND A WEAK DOUBLET.
 
+*** SHARPENED by the_higgs_comes_from_the_qutrit_plane.py. The count and the mechanism
+    below are right, but read that file for the discriminator. The untwisted plane split
+    is UNIVERSAL -- 87 of 87, the Wilson line always in plane 3 (the order-three qutrit
+    plane), doublets always from it, triplets never -- so it is not what separates the 55
+    from the 32. The discriminator is a SECTOR condition: in the 55, d and bl exist only
+    in the untwisted sector; in the 32 they also exist at k=4, where they co-localise on
+    four fixed points and become gauge siblings. ***
+
 This supersedes both 3e7bc56 and its retraction d1fe6ce. The count 55 of 87 is right;
 both earlier mechanisms were wrong, and each was wrong by checking one side of a
 two-sided condition.

@@ -1,0 +1,94 @@
+{
+ "claim": "The Higgs doublet comes from the qutrit plane. In all 87 W(3,3) Z6-I Standard Models the order-three Wilson line sits in plane 3 -- the SU(3) factor of G2xG2xSU(3), twist -1/3, the unique order-three plane -- and the untwisted weak doublets come only from that plane while the untwisted colour triplets come only from the two G2 planes. No untwisted triplet ever shares the Wilson-line plane. That is the missing partner, and it is universal. What separates the 55 solving models from the 32 failing ones is a SECTOR condition: in the 55, d and bl exist only in the untwisted sector; in the 32 they also exist at k=4, where they land on the same four fixed points and become gauge siblings, locking the coefficients.",
+ "universal": {
+  "models": 87,
+  "wilson_line_in_plane_3": 87,
+  "untwisted_doublets_only_in_plane_3": 87,
+  "untwisted_triplets_only_in_planes_1_2": 87,
+  "untwisted_triplet_in_the_wilson_plane": 0,
+  "twist": [
+   [
+    "1",
+    "6"
+   ],
+   [
+    "1",
+    "6"
+   ],
+   [
+    "-1",
+    "3"
+   ]
+  ],
+  "geometry": "G2 x G2 x SU(3)"
+ },
+ "sectors": {
+  "solving": {
+   "models": 55,
+   "d_sectors": [
+    0
+   ],
+   "bl_sectors": [
+    0
+   ],
+   "twisted_points_hosting_both": 0
+  },
+  "failing": {
+   "models": 32,
+   "d_sectors": [
+    0,
+    4
+   ],
+   "bl_sectors": [
+    0,
+    4
+   ],
+   "twisted_points_hosting_both": 4
+  }
+ },
+ "cz": {
+  "source": "d772153",
+  "type": [
+   5,
+   2,
+   2
+  ],
+  "models": [
+   45,
+   45
+  ],
+  "background": 0.33
+ },
+ "criterion": "doublet-triplet splitting is solved precisely when the colour triplets and weak doublets come only from the untwisted sector -- checkable from the spectrum before any coupling is computed, and it reproduces the 55",
+ "chain": "the Standard Model forces the order-three Wilson line to be of CZ type (d772153); the CZ-type line lives in the Z3 plane; that plane's untwisted matter is the Higgs doublet; so the doublet has no triplet partner. The chain runs from the gate structure to the Higgs, not the other way.",
+ "sharpens": "the_missing_partner_is_the_untwisted_plane_split.py, which left the impression that the plane split distinguishes the 55. It does not -- the plane split is universal; the sector condition is the discriminator.",
+ "checks": {
+  "wilson_line_always_in_plane_three": true,
+  "doublets_always_from_plane_three": true,
+  "triplets_never_from_plane_three": true,
+  "triplets_always_from_the_g2_planes": true,
+  "the_plane_split_is_universal_not_the_discriminator": true,
+  "plane_three_has_order_three": true,
+  "the_other_planes_have_order_six": true,
+  "plane_three_is_the_unique_z3_plane": true,
+  "twist_sums_to_zero_mod_one": true,
+  "solving_models_are_untwisted_only": true,
+  "failing_models_have_a_twisted_copy": true,
+  "the_split_is_clean": true,
+  "the_criterion_reproduces_fifty_five": true,
+  "sector_condition_is_the_discriminator": true,
+  "cz_type_has_largest_block_five": true,
+  "cz_is_unanimous_in_its_sample": true,
+  "cz_beats_its_background": true
+ },
+ "valid": true,
+ "status": "plane assignments are measured q_sh from the orbifolder at 17 digits; Wilson-line planes read off the model files; the CZ-type statement is d772153's, quoted not recomputed",
+ "scope": "the 87 Z6-I Standard Models of the 5b3f3ad scan, not a complete classification; other geometries untested",
+ "sources": [
+  "Holotrade d772153",
+  "Holotrade 5b3f3ad",
+  "Holotrade the_missing_partner_is_the_untwisted_plane_split.py",
+  "Holotrade 61d7ea3",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
