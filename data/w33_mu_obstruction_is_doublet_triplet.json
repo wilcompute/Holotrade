@@ -1,0 +1,123 @@
+{
+ "claim": "The mu no-go of 7a14095 is the doublet-triplet splitting problem. In SU(5) the 5bar holds d^c and L together, so one 5.5bar mass term gives both the colour-triplet mass d.bd and the mu term bl.l; measured on the flagship the two coupling sets have IDENTICAL singlet supports, 40 sets each with zero d/bd-only sets, order by order. The mechanism is localisation: each d-type exotic is co-localised with a lepton doublet at the same theta^4 fixed point, forming complete local 5bar multiplets, so the string selection rules cannot distinguish them. An order-four survey suggested 26 of 87 models escape this, but that is a cutoff artefact: extending three candidates to order five, the supports become exactly equal and no d/bd coupling survives switching mu off.",
+ "flagship_degeneracy": {
+  "mu_sets": 40,
+  "dbd_sets": 40,
+  "shared": 40,
+  "dbd_only": 0,
+  "by_order": {
+   "4": [
+    20,
+    20,
+    20,
+    0
+   ],
+   "5": [
+    20,
+    20,
+    20,
+    0
+   ]
+  }
+ },
+ "localisation": [
+  [
+   "bd_2",
+   "l_1",
+   "k=4",
+   "(-1,1,0,0,0,0)"
+  ],
+  [
+   "bd_3",
+   "l_2",
+   "k=4",
+   "(-1,1,-1,1,0,0)"
+  ],
+  [
+   "bd_4",
+   "l_3",
+   "k=4",
+   "(0,0,-1,1,0,0)"
+  ],
+  [
+   "bd_5",
+   "l_4",
+   "k=4",
+   "(-1,1,-2,2,0,0)"
+  ]
+ ],
+ "order5_tests": {
+  "Z6I_34/SM_20260917_30": {
+   "mu": [
+    120,
+    25
+   ],
+   "dbd": [
+    272,
+    25
+   ],
+   "dbd_only": 0,
+   "surviving": 0
+  },
+  "Z6I_36/SM_20260917_42": {
+   "mu": [
+    120,
+    25
+   ],
+   "dbd": [
+    272,
+    25
+   ],
+   "dbd_only": 0,
+   "surviving": 0
+  },
+  "Z6I_56/SM_20260917_215": {
+   "mu": [
+    410,
+    39
+   ],
+   "dbd": [
+    720,
+    39
+   ],
+   "dbd_only": 0,
+   "surviving": 0
+  }
+ },
+ "survey": {
+  "models": 87,
+  "looked_separable_at_order_4": 28,
+  "kept_full_rank_at_order_4": 26,
+  "extended_to_order_5": 3,
+  "still_separable_at_order_5": 0,
+  "errors": [
+   "order-four cutoff understates the mu support",
+   "matrix shape inferred from surviving couplings rather than the spectrum, which reported rank 7 for a 2x5 matrix"
+  ]
+ },
+ "withdrawn": "the order-four separability count (28 apparent, 26 full-rank) is withdrawn: it rests on a cutoff that understates the mu support, and on inferring matrix shapes from surviving couplings rather than from the spectrum",
+ "standing": "in every model examined at order five, mu and the d-type exotic masses are carried by exactly the same singlets; doublet-triplet splitting is not solved anywhere in the sample",
+ "scope": "three of the 26 candidates were extended to order five, so 'every model examined' means the flagship plus those three; orders six to eight are untested; allowed-coupling level only; and the localisation mechanism is established for the flagship, while one separable-looking candidate showed the same co-localisation, so localisation alone does not predict separability",
+ "checks": {
+  "flagship_supports_are_equal": true,
+  "flagship_has_no_dbd_only_sets": true,
+  "equality_holds_order_by_order": true,
+  "su5_5bar_splits_as_three_plus_two": true,
+  "su5_mass_term_has_two_pieces": true,
+  "colocalised_pairs_found": true,
+  "all_order5_tests_have_equal_supports": true,
+  "no_coupling_survives_mu_off": true,
+  "three_candidates_extended": true,
+  "none_remained_separable": true,
+  "survey_errors_recorded": true
+ },
+ "valid": true,
+ "status": "coupling lists and localisations from the orbifolder (validated in 93b34e1); the support and rank arithmetic is computed here",
+ "sources": [
+  "Holotrade 7a14095",
+  "Holotrade 94df376",
+  "Holotrade 5b3f3ad",
+  "Holotrade 93b34e1",
+  "Lebedev et al. arXiv:0807.4384 (local GUTs and split multiplets)"
+ ]
+}
