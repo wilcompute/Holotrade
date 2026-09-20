@@ -1,0 +1,85 @@
+{
+ "claim": "Doublet-triplet splitting is solvable in 55 of the 87 W(3,3) Z6-I Standard Models. The degeneracy reported in 7a14095 and explained in c0c598c is real and is a localisation effect -- the mu and colour-triplet sector classes coincide in 87 of 87, co-localised entries have identical monomial supports (8/8 and 48/48, against 0/32 and 36/2868 for non-co-localised), every triplet monomial is divisible by a mu monomial, and a tropical linear program shows no VEV hierarchy suppresses mu below the triplet mass (optimum 0, positive control +1). But the coefficients are independent, because an order-three Wilson line splits every GUT multiplet, so a co-localised (bd,l) pair has two different parents. Solving mu = 0 off the coordinate subspaces gives an explicit vacuum with every VEV nonzero and every colour triplet heavy in 55 models, all of spectrum shape (4,1,2,5); D-flat directions with the required singlets condensing exist in 87 of 87.",
+ "withdrawn": "the reading of 7a14095 as a no-go on doublet-triplet splitting. It is a no-go on solving it by switching singlets off, strengthened here to a no-go on any hierarchy, and the problem is solved by cancellation off the coordinate subspaces.",
+ "corrected": "c0c598c's 'in every model examined the supports are exactly equal' was four models; over all 87 the supports are identical in 35, with 1 to 8 triplet-only monomials in the other 52 -- never enough to carry the rank, since the tropical LP is null in all.",
+ "survey": {
+  "models": 87,
+  "sector_classes_coincide": 87,
+  "sector_patterns": {
+   "(2, 4)": 32,
+   "(4,)": 55
+  },
+  "supports_identical": 35,
+  "generic_vacuum": 55,
+  "locked_vacuum": 0,
+  "shapes": {
+   "(9, 6, 6, 9)": {
+    "models": 24,
+    "generic_vacuum": 0
+   },
+   "(4, 1, 2, 5)": {
+    "models": 55,
+    "generic_vacuum": 55
+   },
+   "(8, 5, 7, 10)": {
+    "models": 8,
+    "generic_vacuum": 0
+   }
+  }
+ },
+ "colocalisation": {
+  "flagship": {
+   "colocalised_equal": 8,
+   "colocalised": 8,
+   "other_equal": 0,
+   "other": 32
+  },
+  "Z6I_06": {
+   "colocalised_equal": 48,
+   "colocalised": 48,
+   "other_equal": 36,
+   "other": 2868
+  }
+ },
+ "dflatness": {
+  "models": 87,
+  "dflat": 87,
+  "directions_feasible_both_signs": "all but one per model",
+  "infeasible_direction": "the U(1) with identically zero charge on the singlets, i.e. hypercharge, which must stay unbroken"
+ },
+ "fragility": "under the extreme of the other track's caution -- coefficients depending only on the monomial, so all entries sharing a support are locked -- 0 of 87 survive and the flagship drops to rank 1 of 2. The result rests on coefficient independence, which the Wilson-line splitting theorem argues for but does not compute.",
+ "checks": {
+  "flagship_supports_identical": true,
+  "flagship_support_size_40": true,
+  "every_triplet_monomial_divisible": true,
+  "every_mu_monomial_divisible": true,
+  "no_hierarchy_suppresses_mu": true,
+  "positive_control_finds_a_hierarchy": true,
+  "degeneracy_is_symmetric": true,
+  "flagship_vacuum_exists": true,
+  "sector_classes_coincide_in_all": true,
+  "supports_identical_in_35_not_all": true,
+  "generic_vacuum_in_55": true,
+  "locked_coefficients_kill_every_model": true,
+  "the_55_are_exactly_one_shape": true,
+  "shapes_partition_the_class": true,
+  "colocalisation_locks_selection_rules": true,
+  "colocalisation_test_is_not_vacuous": true,
+  "dflat_in_every_model": true
+ },
+ "valid": true,
+ "status": "coupling lists and localisations from the orbifolder (validated in 93b34e1); the support, divisibility, tropical-LP, vacuum and D-flatness computations are done here, and the flagship data is embedded so the file recomputes rather than quotes",
+ "scope": "allowed-coupling level, orders four and five only; F-flatness not checked; the 24 shape-(9,6,6,9) and 8 shape-(8,5,7,10) models are unsolved, not proved impossible",
+ "sources": [
+  "Holotrade 7a14095",
+  "Holotrade c0c598c",
+  "Holotrade 645d5f6",
+  "Holotrade 5b3f3ad",
+  "Holotrade 93b34e1",
+  "Holotrade the_wilson_line_splits_every_gut_multiplet.py",
+  "Holotrade the_exotic_mass_rank_is_set_by_where_the_singlets_condense.py",
+  "Holotrade w33_mu_exotic_monomial_ideal_containment.py",
+  "Lebedev et al. arXiv:0807.4384",
+  "Kappl et al. (mu from approximate R)"
+ ]
+}
