@@ -11,6 +11,34 @@
         "n_10",
         "n_18"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "1/6",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -66,6 +94,34 @@
         "n_12",
         "n_16"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/9",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-2/9",
+          "1/9",
+          "-2/9"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -121,6 +177,34 @@
         "n_16",
         "n_18"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/12",
+          "0",
+          "0",
+          "0",
+          "-1/12",
+          "0",
+          "0",
+          "0",
+          "-1/12",
+          "0",
+          "0",
+          "0",
+          "1/12",
+          "0",
+          "0",
+          "0",
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -170,6 +254,34 @@
         "n_18",
         "n_19"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "1/6",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -222,6 +334,34 @@
         "n_10",
         "n_17"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "1/6",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -276,6 +416,34 @@
         "n_17",
         "n_19"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "1/6",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -327,6 +495,34 @@
         "n_17",
         "n_18"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "1/6",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -384,6 +580,34 @@
         "n_18",
         "n_19"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "1/6",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_3"
@@ -438,6 +662,34 @@
         "n_10",
         "n_17"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "1/3",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_6",
@@ -493,6 +745,34 @@
         "n_10",
         "n_18"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-7/6",
+          "0",
+          "0",
+          "0",
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "1/3",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_6",
@@ -552,6 +832,34 @@
         "n_17",
         "n_19"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/6",
+          "0",
+          "0",
+          "0",
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "1/3",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_6",
@@ -604,6 +912,34 @@
         "n_18",
         "n_19"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-7/6",
+          "0",
+          "0",
+          "0",
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "1/3",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_6",
@@ -660,6 +996,34 @@
         "n_17",
         "n_19"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_8",
@@ -721,6 +1085,34 @@
         "n_17",
         "n_19"
       ],
+      "full_zero_FI_Cartan_infeasibility": {
+        "dual_vector": [
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "-1/2",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "dual_target_pairing": "-1",
+        "proof": "A^T y >=0 but b^T y <0; A columns are scaled16Dweights and5field-total indicators",
+        "scope": "Canonical representative fields and their fixed positive ratios, allowing all component mixtures; not all alternative field choices or nonzero FI"
+      },
       "field_options_by_charge_type": [
         [
           "n_8",
