@@ -1,0 +1,94 @@
+{
+ "claim": "The vacuum that splits the doublet from the triplet in the 55 solving models is not supersymmetric. In all 87 models a U(1) direction gives every mass-coupling singlet a strictly positive charge, which proves at ALL orders that no gauge-invariant monomial exists among them -- so <W> = 0 and dW/dn = 0 hold automatically (confirmed on the flagship: of 147319 pure-singlet terms through order eight, none lies inside the set and none is linear in an outside field). The same positivity makes the D-term on that direction a sum of positive quantities, so no subset of those singlets is D-flat. The Fayet-Iliopoulos escape, enumerated over all seven directions and both signs, works in 3 of 87 models and in 0 of the 55 that solve doublet-triplet splitting. Enlarging the condensing set restores D-flatness but breaks F-flatness: 28 of 46 candidate extras sit in size-two out-multisets and are forbidden, and even all 18 permitted extras together are still not D-flat, while the minimal D-flat completion puts 75 superpotential terms inside the set.",
+ "separating_direction": {
+  "models": 87,
+  "with_a_separating_direction": 87,
+  "among_the_55": [
+   55,
+   55
+  ],
+  "among_the_32": [
+   32,
+   32
+  ]
+ },
+ "flagship_terms": {
+  "total_pure_singlet_terms": 147319,
+  "orders": [
+   3,
+   4,
+   6,
+   7,
+   8
+  ],
+  "inside_S": 0,
+  "linear_in_one_outside_field": 0,
+  "two_or_more_outside": 147319,
+  "mass_singlets": 19,
+  "all_singlets": 65
+ },
+ "fi_escape": {
+  "models": 87,
+  "dflat_with_only_mass_singlets": 3,
+  "among_the_55_solving": 0,
+  "among_the_32_failing": 3,
+  "directions_tried_per_model": 7,
+  "signs_tried": 2
+ },
+ "enlargement": {
+  "candidate_extras": 46,
+  "forbidden_by_size_two_out_multisets": 28,
+  "allowed": 18,
+  "all_allowed_is_dflat": false,
+  "all_allowed_is_fflat": true,
+  "minimal_dflat_completion": [
+   3,
+   9,
+   10,
+   11,
+   19
+  ],
+  "terms_inside_after_completion": 75,
+  "size_two_out_multisets": 143
+ },
+ "subset_search": {
+  "searched_down_to_size": 12,
+  "found_dflat_and_rank_carrying": 0
+ },
+ "f_flat_condition": "for every pure-singlet term t, |out(t) \\ E| >= 2 counted WITH multiplicity -- a term n_j^2 times condensing fields is harmless because dW/dn_j is proportional to n_j = 0",
+ "reading": "the single structural fact that the mass-coupling singlets all carry the same sign under one U(1) is simultaneously what forbids a superpotential among them (F-flat for free) and what forbids their D-term from cancelling. F-flatness and D-flatness are in direct conflict, and the conflict is exact.",
+ "unchanged": "the 55 of 87 result as a statement about MASS MATRICES, and the missing-partner mechanism of 3caf15e, are unaffected -- what is settled is that the VEV configuration achieving them is not a SUSY vacuum",
+ "checks": {
+  "separating_direction_in_every_model": true,
+  "separating_holds_for_the_55": true,
+  "separating_holds_for_the_32": true,
+  "positivity_forbids_an_invariant_monomial": true,
+  "no_term_inside_the_mass_singlets": true,
+  "no_term_linear_in_an_outside_field": true,
+  "every_term_has_two_or_more_outside": true,
+  "f_flatness_holds_on_the_mass_singlets": true,
+  "mass_singlets_are_a_minority_of_all": true,
+  "no_subset_is_dflat_and_rank_carrying": true,
+  "fi_escape_fails_for_every_solving_model": true,
+  "fi_escape_is_rare_overall": true,
+  "fi_enumeration_was_complete": true,
+  "the_three_that_work_already_fail_dts": true,
+  "most_extras_are_forbidden": true,
+  "counts_add_up": true,
+  "even_all_allowed_extras_are_not_dflat": true,
+  "all_allowed_extras_stay_fflat": true,
+  "the_dflat_completion_breaks_fflatness": true,
+  "completion_is_small_but_fatal": true,
+  "f_and_d_flatness_conflict": true
+ },
+ "valid": true,
+ "status": "charges and couplings from the orbifolder; the separating-direction LP and the FI enumeration run over all 87 models, the term-level counts and subset searches on the flagship",
+ "scope": "singlet superpotential dumped through order eight, which bounds the direct measurement although the separating-U(1) argument makes the 'inside S' half order-independent; only singlet-sector F-terms examined, not non-singlet directions; the subset search is complete to size twelve but the positivity argument covers all subsets",
+ "sources": [
+  "Holotrade 3caf15e",
+  "Holotrade 67f0e1f",
+  "Holotrade a6f1cae",
+  "Holotrade 5b3f3ad",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
