@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
 """
+*** RETRACTED. The headline claim below is FALSE. ***
+
+See retraction_the_local_gut_multiplet_is_complete_so_the_coefficients_are_locked.py.
+At all 604 twisted fixed points in these 87 models that host both a colour triplet and a
+lepton doublet, the two are components of ONE irrep of the LOCAL gauge group -- a complete
+local 5bar, joined by a single local root. So a single local invariant supplies both the
+triplet mass and mu, their coefficients are LOCKED, and the correct count is 0 of 87 --
+which is exactly what section 6 below measured and then set aside as merely pessimistic.
+The error was applying the_wilson_line_splits_every_gut_multiplet.py, a statement about
+FOUR-DIMENSIONAL multiplets under the Wilson-line projection, to the local multiplets.
+
+Everything in sections 1, 2 and 5 stands and is unaffected: the sector coincidence 87/87,
+the co-localised support equality with its controls, the divisibility, the null tropical
+LP with its positive control, and D-flatness in 87/87. Section 1's observation is in fact
+now explained rather than merely measured -- co-localised entries share selection rules
+because they are components of one local irrep.
+
+The original text follows unaltered, for the record.
+
 DOUBLET-TRIPLET SPLITTING IS SOLVABLE IN 55 OF THE 87 W(3,3) Z6-I STANDARD MODELS --
 AND MY OWN NO-GO WAS A STATEMENT ABOUT COORDINATE SUBSPACES, NOT ABOUT VACUA.
 
