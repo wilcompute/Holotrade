@@ -1,0 +1,64 @@
+{
+ "claim": "The full-Cartan spurion obstruction of c555ac5 and the untwisted plane split are the two halves of one statement. Their result is reproduced here: the local Weyl orbit at the flagship twisted point is a 9 of which the 4D projection keeps 5, and every element of the fundamental-antifundamental library C.I9 + M4(C) acts on that visible 5 as a scalar, so no single spurion splits the colour triplet from the weak doublet. But the two mass terms are not one operator: each is a contraction of the 9 with a different untwisted field, and no untwisted plane carries both a triplet and a doublet (flagship d_1 plane 1, d_2 plane 2, bl_1 plane 3). So the coefficients are independent and the splitting is inherited from the untwisted side rather than performed by a spurion.",
+ "their_result": {
+  "source": "local_nine_spurion_algebra.py (c555ac5)",
+  "local_roots": 156,
+  "local_weyl_orbit": 9,
+  "visible_in_4d": 5,
+  "projected_out": 4,
+  "spurion_algebra": "C I9 + M4(C)",
+  "algebra_dimension": 17,
+  "commutant": "M5(C) + C I4",
+  "commutant_dimension": 26,
+  "target": [
+   4,
+   4,
+   4,
+   0,
+   0,
+   -3,
+   -3,
+   -3,
+   -3
+  ],
+  "target_in_algebra": false
+ },
+ "untwisted_planes": {
+  "d_1": 1,
+  "d_2": 2,
+  "bl_1": 3
+ },
+ "class": {
+  "models": 87,
+  "with_a_d_bl_sibling_pair": 32,
+  "without": 55,
+  "failing": 32,
+  "succeeding": 55,
+  "set_equality": true
+ },
+ "join": "their obstruction says the twisted sector is rigid; the plane measurement says it never needed to bend. Together they localise the mechanism: doublet-triplet splitting in this class comes from the untwisted plane structure and nowhere else.",
+ "prediction": "a model whose untwisted sector puts a colour triplet and a weak doublet in one plane must fail regardless of the twisted sector. 32 of 87 do, and all 32 fail; the 55 without succeed. Set equality, model for model.",
+ "checks": {
+  "their_library_has_dimension_17": true,
+  "every_library_element_is_scalar_on_the_visible_five": true,
+  "the_splitting_target_is_not_in_the_library": true,
+  "their_obstruction_reproduces": true,
+  "triplet_contraction_is_not_scalar_on_the_five": true,
+  "doublet_contraction_is_not_scalar_on_the_five": true,
+  "independent_coefficients_give_a_split": true,
+  "the_split_is_outside_their_library": true,
+  "no_untwisted_plane_carries_both": true,
+  "three_planes_three_fields": true,
+  "the_prediction_holds_across_the_class": true
+ },
+ "valid": true,
+ "status": "their spurion algebra and its scalar action are recomputed here; the plane assignments are measured q_sh from the orbifolder; the class counts are from the_missing_partner_is_the_untwisted_plane_split.py",
+ "scope": "their audit is one flagship point and an explicitly conditional spurion library with no amplitude claim, and this inherits that scope",
+ "sources": [
+  "Holotrade c555ac5 (local_nine_spurion_algebra.py)",
+  "Holotrade the_missing_partner_is_the_untwisted_plane_split.py",
+  "Holotrade d1fe6ce",
+  "Holotrade 3e7bc56",
+  "Holotrade the_wilson_line_splits_every_gut_multiplet.py"
+ ]
+}
