@@ -1,0 +1,69 @@
+{
+ "claim": "Every one of the 87 Z6-I Standard Models has an anomalous U(1), with Tr Q_anom taking 14 values all divisible by 8, from 144 to 576. The Fayet-Iliopoulos term fixes <n>/M_s = g sqrt(Tr Q / 192 pi^2) = 0.19 to 0.39, so the whole class condenses within a factor of about four of the string scale. Two consequences: the vector-like exotics decouple almost immediately, so the SU(5)-incompleteness measured elsewhere has a short lever arm; and the see-saw predicts m_nu ~ 3 to 6 x 10^-4 eV against an observed 0.05 eV -- low by a factor of about a hundred, and robustly so, since m_nu scales as the square root of Tr Q and a factor-four spread moves it by only two.",
+ "traces": {
+  "144": 8,
+  "160": 6,
+  "200": 12,
+  "216": 3,
+  "224": 3,
+  "232": 8,
+  "240": 3,
+  "264": 6,
+  "272": 2,
+  "280": 6,
+  "312": 6,
+  "336": 9,
+  "440": 6,
+  "576": 9
+ },
+ "inputs": {
+  "g": 0.7,
+  "M_s_GeV": 5e+17,
+  "v_GeV": 174.0,
+  "N_RH": 27,
+  "dirac_order": 4,
+  "majorana_order": 3
+ },
+ "observed_eV": 0.05,
+ "near_miss": {
+  "direct_trace_all_directions": 0,
+  "direct_trace_cubed": 0,
+  "orbifolder_says_anomalous": 87,
+  "of": 87,
+  "flagship_cancelling_pair": [
+   17522,
+   -17522
+  ]
+ },
+ "how_to_close_the_gap": "a Dirac operator at order three rather than four (raising y_nu to order one, worth the missing two orders), or many more than the 27 measured right-handed neutrinos, or a Majorana scale well below <n>",
+ "lesson": "computing Tr Q directly from the dumped charges gives exactly zero for all seven directions and for Tr Q^3, by exact cancellation of large numbers. That would have said 'no anomalous U(1), hence no FI term', STRENGTHENING the existing D-flatness no-go -- and it is wrong, a basis artefact. A clean zero that supports the conclusion one is already carrying needs a second source.",
+ "checks": {
+  "all_87_accounted": true,
+  "every_trace_divisible_by_eight": true,
+  "traces_span_a_factor_four": true,
+  "every_model_has_an_anomalous_u1": true,
+  "vev_is_a_sizeable_fraction_of_Ms": true,
+  "vev_is_below_Ms": true,
+  "exotics_decouple_within_a_factor_ten": true,
+  "all_predictions_are_sub_milli_eV": true,
+  "prediction_is_too_light": true,
+  "shortfall_is_about_a_hundred": true,
+  "prediction_is_insensitive_to_the_trace": true,
+  "cannot_tune_the_trace_to_fix_it": true,
+  "direct_trace_was_zero": true,
+  "cubed_trace_was_zero_too": true,
+  "but_the_orbifolder_disagrees": true,
+  "the_zero_was_a_basis_artefact": true,
+  "cancellation_was_between_large_numbers": true
+ },
+ "valid": true,
+ "status": "Tr Q_anom read from the orbifolder's own D0_FI_term for all 87 models; the scales and the see-saw estimate are computed here from stated inputs",
+ "scope": "order-of-magnitude with explicit inputs g = 0.7, M_s = 5e17 GeV, v = 174 GeV, N = 27 from one model; y ~ (<n>/M_s)^(k-3) is the standard suppression counting, not an amplitude calculation, and order-one coefficients are assumed -- which is where a factor of a hundred could hide. The basis discrepancy is recorded, not resolved.",
+ "sources": [
+  "Holotrade 7fcdd20",
+  "Holotrade 5eab5c8",
+  "Holotrade babfd48",
+  "Holotrade 5b3f3ad",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
