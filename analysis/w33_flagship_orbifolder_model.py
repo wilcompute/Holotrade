@@ -8,7 +8,9 @@ that ambiguity explicit: --pair 01, 23, or 45.  The replay workflow runs all
 three and accepts only the candidate reproducing the frozen flagship controls.
 
 This file does not compute the spectrum; orbifolder 1.2.1 is the external
-published spectrum engine.
+published spectrum engine. The historical scan now certifies --pair 45 as the
+recorded flagship placement; the CI replay keeps the two shipped Z6-I geometry
+files as the only remaining external ambiguity.
 """
 from __future__ import annotations
 import argparse
