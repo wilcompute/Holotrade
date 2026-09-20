@@ -1,0 +1,127 @@
+{
+ "claim": "In all 87 W(3,3) Z6-I Standard Models the untwisted matter has the same species-by-plane table: q, u^c and e^c appear in all three planes, the colour triplet d only in planes 1 and 2, and the weak doublet bl only in plane 3. Plane 3 is the SU(3) factor of G2xG2xSU(3), twist -1/3 -- the unique order-three plane, the qutrit plane, and the one carrying the CZ-type order-three Wilson line. Because an order-three coupling of untwisted fields needs one field per plane, that single row gives both results at once: the Higgs has no untwisted colour-triplet partner, so mu and the triplet mass have independent coefficients (doublet-triplet splitting); and q and u^c can occupy the two planes the Higgs does not, so the top Yukawa is a cubic U1U2U3 coupling with y_top = g at the string scale (heavy top). Both hold in 87 of 87.",
+ "table": {
+  "higgs_planes": [
+   3
+  ],
+  "triplet_planes": [
+   1,
+   2
+  ],
+  "q_planes": [
+   1,
+   2,
+   3
+  ],
+  "u_planes": [
+   1,
+   2,
+   3
+  ],
+  "e_planes": [
+   1,
+   2,
+   3
+  ],
+  "models_with_this_table": 87,
+  "models": 87,
+  "exceptions": 0
+ },
+ "geometry": {
+  "name": "G2 x G2 x SU(3)",
+  "twist": [
+   [
+    1,
+    6
+   ],
+   [
+    1,
+    6
+   ],
+   [
+    -1,
+    3
+   ]
+  ]
+ },
+ "measured": {
+  "higgs_plane_has_no_triplet": [
+   87,
+   87
+  ],
+  "cubic_top_available": [
+   87,
+   87
+  ],
+  "both": [
+   87,
+   87
+  ],
+  "wilson_line_in_plane_3": [
+   87,
+   87
+  ],
+  "solving_models": 55,
+  "failing_models": 32
+ },
+ "cited": {
+  "cz_type": {
+   "source": "d772153",
+   "type": [
+    5,
+    2,
+    2
+   ],
+   "models": [
+    45,
+    45
+   ]
+  },
+  "cubic_top_measured": {
+   "source": "93b34e1",
+   "models": [
+    57,
+    60
+   ]
+  },
+  "sector_criterion": {
+   "source": "67f0e1f",
+   "solving": 55
+  }
+ },
+ "synthesis": "the heavy top and the light Higgs are not two accidents of this class -- they are the same fact about where the order-three line sits, read off two rows of one table",
+ "limits": "the table is the ENABLING condition, not the discriminator: it is identical in the 32 failing models, which fail because d and bl ALSO appear at k=4 and become gauge siblings there. And the plane rule only fails to forbid the cubic top; gauge invariance still selects, which is why 93b34e1 measured 57 of 60 rather than all.",
+ "checks": {
+  "table_is_universal": true,
+  "no_exceptions": true,
+  "higgs_in_exactly_one_plane": true,
+  "higgs_plane_carries_no_triplet": true,
+  "triplets_fill_the_other_two_planes": true,
+  "q_and_u_fill_all_three_planes": true,
+  "twist_is_a_valid_z6_action": true,
+  "plane_three_is_the_unique_order_three_plane": true,
+  "higgs_plane_is_the_order_three_plane": true,
+  "measured_higgs_plane_has_no_triplet": true,
+  "cubic_top_is_available_by_planes": true,
+  "measured_cubic_top_available": true,
+  "both_consequences_together": true,
+  "wilson_line_shares_the_higgs_plane": true,
+  "table_does_not_discriminate": true,
+  "cz_reference_is_unanimous": true,
+  "cz_block_structure_is_su5_sized": true,
+  "cubic_top_measured_is_most_but_not_all": true,
+  "sector_criterion_agrees": true
+ },
+ "valid": true,
+ "status": "planes read from q_sh dumped at 17 digits and verified exact rationals; the one-field-per-plane rule for order-three untwisted couplings is the standard orbifold selection rule, used not rederived; the CZ-type and cubic-top figures are quoted from d772153 and 93b34e1",
+ "scope": "untwisted sector only; the 87 Z6-I Standard Models of the 5b3f3ad scan. The Z6-II sample behaves differently -- two Wilson lines occupy planes 2 and 3 and the analogous table is not universal -- so this is a Z6-I statement.",
+ "sources": [
+  "Holotrade d772153",
+  "Holotrade 93b34e1",
+  "Holotrade 67f0e1f",
+  "Holotrade a6f1cae",
+  "Holotrade 5b3f3ad",
+  "Lebedev et al. arXiv:0807.4384 (gauge-top unification)",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
