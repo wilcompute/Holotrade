@@ -29,3 +29,7 @@ There is also an exact positive solution of the four projected zero-FI D equatio
 179/450, 6061/67500, 365569/40500000, **204557/81000000**.
 
 Consequently this projected Higgs sector has no remaining massless extra-Abelian direction for positive gauge couplings and a nonsingular kinetic metric. These are dimensionless Gram data, not physical boson masses. The actual singlet matrix and one positive projected-D solution close the rank target. Hidden/nonabelian D equations, remaining U1 equations, FI terms and F equations are not solved; this is not yet a physical vacuum.
+
+## Minimal projected candidates
+
+`flagship_minimal_projected_higgs_circuits.py` enumerates all 252 five-subsets of the ten nonzero charge types and finds **14 positive full-rank circuits**. Five active types are minimal: a rank-four matrix with at most four rows has no nonzero left-kernel vector. One representative is (n_3,n_6,n_9,n_10,n_18) with primitive squared-VEV ratios **(1,1,3,3,3)**. These small supports give concrete inputs for the remaining vacuum equations. The certificate lists all field alternatives within each charge type; equal projected charges do not imply equal hidden charges, localization or F terms.

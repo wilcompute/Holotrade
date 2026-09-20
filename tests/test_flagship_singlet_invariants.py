@@ -10,3 +10,7 @@ def test_actual_weights_and_all_coupling_channels_replay():
 def test_unreliable_rational_reconstruction_is_rejected():
     line='W n_1 k=4 n=0,0,0,0,0,0 q=0,0,0,0 osc=0 P='+','.join(['0.14285714285714285']+['0']*15)
     with pytest.raises(ValueError):parse_weights(line)
+
+def test_minimal_positive_charge_circuits_replay():
+    from flagship_minimal_projected_higgs_circuits import audit as circuits
+    assert circuits()==json.loads((ROOT/'analysis/flagship_minimal_projected_higgs_circuits.json').read_text())
