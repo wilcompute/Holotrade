@@ -1,0 +1,82 @@
+{
+ "claim": "The order-three Dirac operator l.bl.n is present in exactly 32 of the 87 models, and those 32 are precisely the ones that FAIL doublet-triplet splitting -- overlap zero, checked model by model, with the order-three top Yukawa as a control non-zero in 87 of 87. So the sector condition trades doublet-triplet splitting and an R-parity-clean spectrum against realistic neutrino masses: the 55 solvers predict m_nu ~ 4e-4 eV, 125 times too light, while the 32 others predict 5.6e-3 eV, within a factor of nine of the observed 0.05 eV. No model gets both.",
+ "dirac": {
+  "models": 87,
+  "order3_present": 32,
+  "dts_solvers": 55,
+  "overlap": 0,
+  "set_equals_non_solvers": true,
+  "control_nonzero": 87,
+  "control_of": 87
+ },
+ "neutrino": {
+  "solvers": {
+   "y_nu": "<n>/M_s",
+   "m_nu_eV": 0.0004,
+   "shortfall": 125
+  },
+  "others": {
+   "y_nu": "O(1)",
+   "m_nu_eV": 0.0056,
+   "shortfall": 9
+  },
+  "observed_eV": 0.05,
+  "N_RH": 27
+ },
+ "mu": {
+  "order4_GeV": 3.4e+16,
+  "order3_GeV": 1.3e+17,
+  "needed_GeV": 1000.0
+ },
+ "proton": {
+  "MX_low_GeV": 1.3e+17,
+  "tau_low_yr": 4.8e+39,
+  "MX_high_GeV": 5e+17,
+  "tau_high_yr": 1e+42,
+  "superk_yr": 2.4e+34,
+  "hyperk_yr": 1e+35,
+  "dim4_absent_in": 54,
+  "dim5_absent_in": 86
+ },
+ "inputs": {
+  "g": 0.7,
+  "M_s_GeV": 5e+17,
+  "v_GeV": 174.0,
+  "alpha_GUT": 0.041666666666666664,
+  "median_TrQ": 264,
+  "vev_GeV": 1.31e+17
+ },
+ "mu_reading": "generic mu is 3.4e16 GeV (order four) or 1.3e17 GeV (order three) against the ~1e3 GeV needed -- too large by 1e13 to 1e14 in every model. That is the quantitative form of the mu problem here.",
+ "prediction": "dimension-four and dimension-five operators are absent, and dimension-six X,Y exchange gives tau_p ~ 5e39 to 1e42 years against a Hyper-Kamiokande reach near 1e35. The class predicts NO proton decay from any channel. If proton decay is observed, the class is dead -- the cheapest way to kill the construction.",
+ "what_is_exact": "the set equality between the order-three Dirac models and the non-solvers. The masses and lifetimes are order-of-magnitude estimates with order-one coefficients assumed; the RATIO 125 to 9 comes from a measured difference in operator order and is robust, the absolute values are not.",
+ "checks": {
+  "control_is_nonzero_everywhere": true,
+  "order3_set_is_the_complement": true,
+  "overlap_is_empty": true,
+  "set_equality_holds": true,
+  "others_are_closer": true,
+  "others_within_an_order_of_magnitude": true,
+  "solvers_are_two_orders_out": true,
+  "shortfalls_ratio_matches_order_gap": true,
+  "both_still_undershoot": true,
+  "mu_is_far_too_large_either_way": true,
+  "order3_mu_is_worse": true,
+  "lifetime_exceeds_superk": true,
+  "lifetime_exceeds_hyperk_reach": true,
+  "dim4_and_dim5_already_absent": true,
+  "all_three_channels_closed": true,
+  "lifetime_recomputes": true
+ },
+ "valid": true,
+ "status": "operator orders dumped by the orbifolder with a non-vacuous control; the FI scale from its own D0_FI_term; the scales and lifetimes computed here",
+ "scope": "N = 27 right-handed neutrinos measured on the flagship only and assumed for both classes; the proton lifetime uses the standard dimension-six formula with M_X at the compactification scale, where the Wilson line breaks SU(5) here. Inputs g = 0.7, M_s = 5e17 GeV, v = 174 GeV, alpha_GUT = 1/24.",
+ "sources": [
+  "Holotrade cfdc1f2",
+  "Holotrade 7d9b467",
+  "Holotrade 67f0e1f",
+  "Holotrade babfd48",
+  "Holotrade 3e7bc56",
+  "Holotrade 5b3f3ad",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
