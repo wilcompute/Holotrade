@@ -1,0 +1,41 @@
+{
+ "claim": "The flagship SM_20260917_3's order-three Wilson line occupies the third geometric pair, b4fa45c's --pair 45 (zero-based rows 6 and 7 of the eight-row shift/Wilson block). This is read off the orbifolder input file the 5b3f3ad scan actually used, not inferred, so the replay of a5d42fd/8937573 can pin one candidate and use the other two as controls instead of exhausting three.",
+ "pair": "45",
+ "wilson_rows_zero_based": [
+  6,
+  7
+ ],
+ "geometry": "Geometry/Geometry_Z6-I_G2xG2xSU3.txt",
+ "model_file": "begin model\nLabel:SM_20260917_3\nSpaceGroup:Geometry/Geometry_Z6-I_G2xG2xSU3.txt\nLattice:E8xE8\nShifts and Wilsonlines:\n    0,     0,     0,     0,   1/6,   1/6,   1/3,   2/3,     0,     0,     0,   1/6,   1/6,   1/6,   1/6,   2/3\n    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0\n    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0\n    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0\n    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0\n    0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0\n -7/6,  -5/6,  -1/6,   1/6,   1/2,   1/2,   7/6,  -1/6,  -4/3,  -2/3,   1/3,  -4/3,     0,   1/3,     1,   1/3\n -7/6,  -5/6,  -1/6,   1/6,   1/2,   1/2,   7/6,  -1/6,  -4/3,  -2/3,   1/3,  -4/3,     0,   1/3,     1,   1/3\nend model\n",
+ "V": "0,0,0,0,1/6,1/6,1/3,2/3,0,0,0,1/6,1/6,1/6,1/6,2/3",
+ "W3": "-7/6,-5/6,-1/6,1/6,1/2,1/2,7/6,-1/6,-4/3,-2/3,1/3,-4/3,0,1/3,1,1/3",
+ "scope": "this records which input file produced the frozen spectrum, because it is that input file; it does not independently verify that the scan chose the intended slot, so the external orbifolder 1.2.1 replay is still worth running",
+ "checks": {
+  "block_has_eight_rows": true,
+  "every_row_has_sixteen_entries": true,
+  "exactly_three_nonzero_rows": true,
+  "row_zero_is_the_shift": true,
+  "two_wilson_rows": true,
+  "the_two_wilson_rows_are_equal": true,
+  "matches_exactly_one_pair_slot": true,
+  "the_slot_is_45": true,
+  "not_the_other_two_slots": true,
+  "shift_matches_the_frozen_record": true,
+  "wilson_line_matches_the_frozen_record": true,
+  "three_W3_first_half_in_E8": true,
+  "three_W3_second_half_in_E8": true,
+  "the_wilson_line_has_order_three": true,
+  "W3_itself_is_not_in_the_lattice": true,
+  "geometry_is_recorded": true
+ },
+ "valid": true,
+ "status": "the model file is quoted verbatim from the scan; the row, slot, lattice and order-three arithmetic are computed here",
+ "sources": [
+  "Holotrade b4fa45c",
+  "Holotrade a5d42fd",
+  "Holotrade 8937573",
+  "Holotrade 5b3f3ad",
+  "Holotrade d772153",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
