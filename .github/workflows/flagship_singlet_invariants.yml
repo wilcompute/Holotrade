@@ -1,0 +1,21 @@
+name: Flagship singlet invariant replay
+on:
+  push:
+    paths:
+      - 'analysis/flagship_*'
+      - 'analysis/local_nine_spurion_algebra.py'
+      - 'tests/test_flagship_singlet_invariants.py'
+      - '.github/workflows/flagship_singlet_invariants.yml'
+  workflow_dispatch:
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy scipy sympy pytest
+      - env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+        run: python -m pytest --noconftest --rootdir=. -o addopts='' tests/test_flagship_singlet_invariants.py -q
