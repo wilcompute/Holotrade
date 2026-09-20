@@ -1,0 +1,66 @@
+name: Flagship orbifolder pair45 replay
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/flagship_orbifolder_pair45_replay.yml'
+  workflow_dispatch:
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential curl libgsl-dev libboost-all-dev libreadline-dev
+      - name: Build orbifolder 1.2.1
+        run: |
+          curl -L --fail --retry 3 https://orbifolder.hepforge.org/source/V1.2.1/orbifolder-1.2.1.tgz -o /tmp/o.tgz
+          tar xzf /tmp/o.tgz -C /tmp
+          SRC="$(find /tmp -maxdepth 1 -type d -name 'orbifolder-1.2.1*' | head -1)"
+          echo "SRC=$SRC" >> "$GITHUB_ENV"
+          cd "$SRC"
+          ./configure
+          make -j2
+          test -x ./src/orbifolder/orbifolder
+      - name: Replay pair45 on both shipped Z6-I geometries
+        run: |
+          mkdir -p evidence/flagship_orbifolder
+          cd "$SRC"
+          find Geometry -maxdepth 1 -type f -name 'Geometry_Z6-I_*.txt' | sort | tee "$GITHUB_WORKSPACE/z6i.txt"
+          test "$(wc -l < "$GITHUB_WORKSPACE/z6i.txt")" -eq 2
+          cd "$GITHUB_WORKSPACE"
+          while IFS= read -r geometry; do
+            gid="$(basename "$geometry" .txt | tr -c 'A-Za-z0-9_' '_')"
+            tag="${gid}_45"
+            python analysis/w33_flagship_orbifolder_model.py --output "$SRC/model_${tag}.txt" --geometry "$geometry" --pair 45
+            cat > "$SRC/commands_${tag}.txt" <<EOF
+load orbifolds(model_${tag}.txt)
+cd SM_20260917_3
+cd gauge group
+print gauge group
+print U1 generators
+cd ..
+cd spectrum
+print summary with labels
+print(*) with internal information
+exit
+EOF
+            (
+              cd "$SRC"
+              timeout 240s bash -c "printf 'load program(commands_${tag}.txt)\\nyes\\n' | ./src/orbifolder/orbifolder" > "$GITHUB_WORKSPACE/evidence/flagship_orbifolder/transcript_${tag}.txt" 2>&1 || true
+            )
+            cp "$SRC/model_${tag}.txt" "$GITHUB_WORKSPACE/evidence/flagship_orbifolder/model_${tag}.txt"
+            cp "$SRC/commands_${tag}.txt" "$GITHUB_WORKSPACE/evidence/flagship_orbifolder/commands_${tag}.txt"
+          done < z6i.txt
+          wc -l evidence/flagship_orbifolder/transcript_*.txt
+          grep -E -i 'error|invalid|gauge group|spectrum|singlet|132|SU\(3\)|SU\(2\)' evidence/flagship_orbifolder/transcript_*.txt | tail -300 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flagship-orbifolder-pair45
+          path: evidence/flagship_orbifolder/
+          if-no-files-found: error
