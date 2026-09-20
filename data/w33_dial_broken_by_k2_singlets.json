@@ -1,0 +1,105 @@
+{
+ "claim": "The doublet-triplet / neutrino dial of 21e027f is a THEOREM in Z6-I and is BROKEN in Z6-II. In Z6-I, l lives only at k=4 and singlets only at k=0,4 (87 of 87), so an order-three l.bl.n, needing k_bl + k_n = 2 mod 6, has the unique solution k_bl = k_n = 4 -- a twisted bl, which doublet-triplet splitting forbids. The proof names its escape: k=2 singlets. Z6-II has them, and of its 128 models 12 have both the order-three operator and no locking with a non-vacuous control, 5 reach mu = 0 at full triplet rank, and 4 do so with every VEV non-degenerate. The best, Z6II_34/SM_20260917_2698, gives m_nu ~ 2.0e-2 eV against an observed 0.05 eV -- a factor of 2.5. None of the four is F-flat, exactly as Gordan's alternative (bd6c60e) requires on that branch.",
+ "z6i": {
+  "models": 87,
+  "l_sectors": [
+   4
+  ],
+  "singlet_sectors": [
+   0,
+   4
+  ],
+  "has_k2_singlets": 0,
+  "order3_models": 32,
+  "all_have_twisted_bl": true,
+  "solvers_with_twisted_bl": 0
+ },
+ "z6ii": {
+  "models": 128,
+  "singlet_sectors": [
+   0,
+   2,
+   3,
+   4,
+   5
+  ],
+  "control_nonzero": 107,
+  "order3_present": 121,
+  "unlocked": 22,
+  "both_with_control": 12,
+  "full_rank": 5,
+  "nondegenerate": 4
+ },
+ "breakers": [
+  {
+   "model": "Z6II_34__SM_20260917_1558",
+   "TrQ": 98.7,
+   "vev": 7.99e+16,
+   "mnu_eV": 0.0102,
+   "inside": 120,
+   "linear": 210,
+   "terms": 1366
+  },
+  {
+   "model": "Z6II_34__SM_20260917_2068",
+   "TrQ": 98.7,
+   "vev": 7.99e+16,
+   "mnu_eV": 0.0102,
+   "inside": 176,
+   "linear": 504,
+   "terms": 1906
+  },
+  {
+   "model": "Z6II_34__SM_20260917_2698",
+   "TrQ": 26.7,
+   "vev": 4.15e+16,
+   "mnu_eV": 0.0197,
+   "inside": 160,
+   "linear": 400,
+   "terms": 1280
+  },
+  {
+   "model": "Z6II_57__SM_20260917_173",
+   "TrQ": 98.7,
+   "vev": 7.99e+16,
+   "mnu_eV": 0.0102,
+   "inside": 176,
+   "linear": 504,
+   "terms": 1906
+  }
+ ],
+ "observed_eV": 0.05,
+ "proof": "4 + k_bl + k_n = 0 mod 6 with k_bl, k_n in {0,4} has the unique solution (4,4); adding k_n = 2 to the available set opens (k_bl, k_n) = (0,2), an untwisted bl",
+ "two_obstructions": "the dial is breakable and has been broken; the F/D-flatness conflict is Gordan's alternative and is not. They are not the same kind of obstruction.",
+ "checks": {
+  "z6i_l_is_always_twisted_at_four": true,
+  "z6i_singlets_only_at_zero_and_four": true,
+  "z6i_has_no_k2_singlets": true,
+  "only_solution_needs_a_twisted_bl": true,
+  "all_order3_models_have_a_twisted_bl": true,
+  "no_solver_has_a_twisted_bl": true,
+  "z6i_dial_is_forced": true,
+  "k2_singlets_open_an_untwisted_route": true,
+  "z6ii_has_k2_singlets": true,
+  "z6ii_control_is_nonvacuous": true,
+  "the_funnel_narrows_monotonically": true,
+  "four_models_break_the_dial": true,
+  "best_is_within_a_factor_five": true,
+  "all_four_beat_the_z6i_solvers": true,
+  "all_still_undershoot": true,
+  "none_of_the_four_is_fflat": true,
+  "every_one_has_terms_inside": true,
+  "fflat_failure_is_predicted_by_gordan": true
+ },
+ "valid": true,
+ "status": "sector content and operator presence dumped by the orbifolder with a non-vacuous control; the modular arithmetic, the funnel and the mass estimates computed here",
+ "scope": "'unlocked' is weaker evidence in Z6-II than Z6-I (bc78990: exact there, 68 vs 22 per cent here), so the four are selected on the direct numerical test instead. Neutrino masses assume y_nu ~ O(1), N = 27 measured on the Z6-I flagship, v = 174 GeV, M_s = 5e17 GeV, g = 0.7 and order-one coefficients. The F-flatness dump reaches order six here against order eight on Z6-I.",
+ "sources": [
+  "Holotrade 21e027f",
+  "Holotrade bd6c60e",
+  "Holotrade bc78990",
+  "Holotrade 67f0e1f",
+  "Holotrade 5b3f3ad",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
