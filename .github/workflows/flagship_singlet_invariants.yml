@@ -5,6 +5,9 @@ on:
       - 'analysis/flagship_*'
       - 'analysis/local_nine_spurion_algebra.py'
       - 'tests/test_flagship_singlet_invariants.py'
+      - 'tests/test_flagship_fi_holonomy.py'
+      - 'analysis/flatness_scope_counterexamples*'
+      - 'analysis/w33_flagship_orbifolder_model.py'
       - '.github/workflows/flagship_singlet_invariants.yml'
   workflow_dispatch:
 jobs:
@@ -18,4 +21,4 @@ jobs:
       - run: python -m pip install numpy scipy sympy pytest
       - env:
           PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
-        run: python -m pytest --noconftest --rootdir=. -o addopts='' tests/test_flagship_singlet_invariants.py -q
+        run: python -m pytest --noconftest --rootdir=. -o addopts='' tests/test_flagship_singlet_invariants.py tests/test_flagship_fi_holonomy.py -q
