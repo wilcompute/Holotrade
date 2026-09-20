@@ -3,6 +3,25 @@
 DOUBLET-TRIPLET SPLITTING AND SU(5)-COMPLETE EXOTICS ARE MUTUALLY EXCLUSIVE IN THIS CLASS,
 AND THE PLANE TABLE FORCES IT.
 
+*** RETRACTED IN ITS PHYSICAL READING. The arithmetic below is right -- 24 models do have
+    n_d = n_bl, the 55 doublet-triplet solvers have n_d = 2 and n_bl = 1, and the two sets
+    are disjoint. What is WRONG is calling the 24 "SU(5)-complete" and therefore
+    unification-safe. That counted only the d/dbar and l/lbar pairs and ignored every other
+    coloured or weak-charged state in the spectrum, of which there are many (the flagship
+    has 274 chiral fields, and states such as (1,1,1,-3,1) and (1,1,1,3,2) appear outside
+    the d/bd and l/bl labels).
+
+    Computing the one-loop beta functions from the FULL spectrum of all 87 models and
+    comparing with the MSSM, delta-b = b - b_MSSM should be (x,x,x) for complete matter:
+
+        exactly complete (spread 0):        0 of 87
+        doublet-triplet solvers:            median spread 14.8  (min 2.8, max 37.6)
+        non-solvers:                        median spread  9.0  (min 3.0, max 19.8)
+
+    NO model in the class is SU(5)-complete, the solvers are only about 1.6 times worse on
+    median, and the two distributions overlap heavily. So the clean disjointness claim is
+    withdrawn; see the_full_spectrum_is_never_su5_complete.py for what replaces it. ***
+
 An independent question, asked without reference to the mu problem: do the vector-like
 exotics of these models fill complete SU(5) multiplets? It matters because a complete
 5 + 5bar at any mass shifts all three gauge couplings equally at one loop, leaving gauge

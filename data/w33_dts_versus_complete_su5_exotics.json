@@ -1,4 +1,5 @@
 {
+ "RETRACTED": "The physical reading is withdrawn. The n_d = n_bl arithmetic stands, but calling those 24 models SU(5)-complete is wrong -- it counted only d/bd and l/bl pairs. Full-spectrum beta functions give 0 of 87 exactly complete, with DTS-solvers only 1.6x worse on median and heavy overlap. See data/w33_full_spectrum_never_su5_complete.json.",
  "claim": "In the 87 W(3,3) Z6-I Standard Models, doublet-triplet splitting and SU(5)-complete vector-like exotics are mutually exclusive: 24 models have complete exotics (n_d = n_bl, so the extra triplet and doublet pairs assemble into 5 + 5bar and leave one-loop unification untouched), 55 solve doublet-triplet splitting, and NO model does both. It is forced rather than coincidental: a model solves doublet-triplet splitting exactly when its d and bl are untwisted only (67f0e1f), and the universal untwisted table (3caf15e) puts d in planes 1 and 2 and bl in plane 3 alone, so such a model has n_d = 2 and n_bl = 1 and mismatch 1, never zero. The 24 complete models have d and bl twisted as well, which supplies the extra pairs and simultaneously makes them gauge siblings, locking the coefficients.",
  "shapes": [
   {

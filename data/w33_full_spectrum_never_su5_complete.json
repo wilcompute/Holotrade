@@ -1,0 +1,88 @@
+{
+ "claim": "No model in the 87 Z6-I Standard Models is SU(5)-complete once the full spectrum is counted. Measuring delta-b = b - b_MSSM from every massless chiral field, with the colour and weak slots identified per model from the quark doublet, the spread max(delta-b) - min(delta-b) is never zero: 0 of 87 are complete. The 55 doublet-triplet solvers have median spread 14.8 against 9.0 for the 32 non-solvers -- worse by about 1.6x, with heavily overlapping distributions, not a dichotomy.",
+ "mssm": {
+  "b1": "33/5",
+  "b2": "1",
+  "b3": "-3"
+ },
+ "spreads": {
+  "models": 87,
+  "exactly_complete": 0,
+  "dts": {
+   "models": 55,
+   "median": 14.8,
+   "min": 2.8,
+   "max": 37.6
+  },
+  "non": {
+   "models": 32,
+   "median": 9.0,
+   "min": 3.0,
+   "max": 19.8
+  }
+ },
+ "flagship": {
+  "chiral_fields": 274,
+  "b": [
+   "36",
+   "12",
+   "9"
+  ],
+  "delta": [
+   "147/5",
+   "11",
+   "12"
+  ],
+  "spread": 18.4
+ },
+ "other": {
+  "model": "Z6I_06 / SM_20260917_2",
+  "chiral_fields": 422,
+  "b": [
+   "198/5",
+   "36",
+   "33"
+  ],
+  "delta": [
+   "33",
+   "35",
+   "36"
+  ],
+  "spread": 3.0
+ },
+ "retracts": {
+  "file": "doublet_triplet_splitting_and_complete_su5_exotics_are_mutually_exclusive.py",
+  "claimed_complete": 24,
+  "actually_complete": 0,
+  "survives": "the n_d = n_bl arithmetic for the d/bd and l/bl sub-sector, and that the 55 solvers are forced to n_d = 2, n_bl = 1"
+ },
+ "replaces": "the disjointness claim of doublet_triplet_splitting_and_complete_su5_exotics_are_mutually_exclusive.py, which counted only the d/bd and l/bl pairs and missed every other coloured or weak-charged field",
+ "stronger_statement": "every model in this class has badly incomplete matter, so unification everywhere depends on the exotics decoupling and on threshold corrections rather than on multiplet structure -- a property of the class, not a discriminator within it",
+ "checks": {
+  "no_model_is_complete": true,
+  "counts_add_up": true,
+  "solvers_are_worse_on_median": true,
+  "but_only_mildly_worse": true,
+  "distributions_overlap": true,
+  "best_solver_beats_median_nonsolver": true,
+  "worst_nonsolver_beats_worst_solver": true,
+  "spread_matches_delta_for_flagship": true,
+  "spread_matches_delta_for_Z6I_06": true,
+  "spectra_are_large": true,
+  "the_two_models_differ_in_size": true,
+  "the_claim_was_24_complete": true,
+  "the_truth_is_zero_complete": true,
+  "retraction_is_recorded": true,
+  "mssm_reference_is_standard": true,
+  "mssm_spread_is_not_zero": true
+ },
+ "valid": true,
+ "status": "spectra dumped by the orbifolder for all 87 models; slot identification, beta functions and spreads computed here",
+ "scope": "one-loop; the spread measures incompleteness, not a prediction -- heavy degenerate exotics can still unify, and the real statement needs their masses and two-loop running. SU(5) hypercharge normalisation, supported by d772153's t_Y^2 = 5/6. No higher-rank colour representations occur.",
+ "sources": [
+  "Holotrade 5eab5c8",
+  "Holotrade d772153",
+  "Holotrade 5b3f3ad",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
