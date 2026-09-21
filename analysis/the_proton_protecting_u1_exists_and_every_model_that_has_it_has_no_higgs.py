@@ -66,8 +66,8 @@ rather than an accident of one geometry. Three of the six Z6-II target models ke
 well past where gauge invariance stops explaining it:
 
     Z6II_34/SM_20260917_1702   udd = 0 at orders 6, 7 AND 8, control 112, 384, 2732
-    Z6-I solvers               udd = 0 AND q l d^c = 0 at orders 6 and 7, in 33 of the 55
-                               scanned so far -- every one measured, no exceptions
+    Z6-I solvers               udd = 0 AND q l d^c = 0 at orders 6 and 7, in ALL 55 of
+                               the 55 -- every one measured, no exceptions
 
 None of these has a continuous protecting U(1) -- dim N = 1 throughout -- so what forbids the
 operator there is the orbifold's discrete selection rules, i.e. the published mechanism rather
@@ -128,8 +128,8 @@ DISCRETE = {"z6ii_model": "Z6II_34/SM_20260917_1702", "z6ii_dimN": 1,
             "z6ii_control": {"6": 112, "7": 384, "8": 2732},
             "z6ii_lepton_yukawa": 0,
             "z6ii_others_with_udd_zero_past_five": 3,
-            "z6i_solvers_total": 55, "z6i_solvers_scanned": 33, "z6i_udd_zero_o6_o7": 33,
-            "z6i_qld_zero_o6_o7": 33,
+            "z6i_solvers_total": 55, "z6i_solvers_scanned": 55, "z6i_udd_zero_o6_o7": 55,
+            "z6i_qld_zero_o6_o7": 55,
             "z6i_solvers_lepton_yukawa": 0}
 
 
@@ -206,8 +206,8 @@ def main():
         and checks["its_control_is_nonvacuous_and_growing"])
     checks["but_it_has_no_lepton_yukawa_either"] = d["z6ii_lepton_yukawa"] == 0
     checks["z6i_solvers_all_zero_at_six_and_seven"] = (
-        d["z6i_udd_zero_o6_o7"] == d["z6i_qld_zero_o6_o7"] == d["z6i_solvers_scanned"] == 33)
-    checks["census_is_partial_and_said_so"] = d["z6i_solvers_scanned"] < d["z6i_solvers_total"]
+        d["z6i_udd_zero_o6_o7"] == d["z6i_qld_zero_o6_o7"] == d["z6i_solvers_scanned"] == 55)
+    checks["census_is_complete"] = d["z6i_solvers_scanned"] == d["z6i_solvers_total"] == 55
     checks["z6i_solvers_have_no_lepton_yukawa"] = d["z6i_solvers_lepton_yukawa"] == 0
     checks["the_dichotomy_holds_for_the_discrete_route_too"] = (
         checks["but_it_has_no_lepton_yukawa_either"]
