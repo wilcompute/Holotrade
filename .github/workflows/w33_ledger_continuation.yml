@@ -1,0 +1,41 @@
+name: W33 Ledger continuation crossrepo
+on:
+  push:
+    paths:
+      - 'js/w33-ledger-continuation-policy.js'
+      - 'tests/w33-ledger-continuation-policy.test.js'
+      - 'data/w33_ledger_continuation_crossrepo.json'
+      - 'research/w33_ledger_continuation.md'
+      - '.github/workflows/w33_ledger_continuation.yml'
+  pull_request:
+    paths:
+      - 'js/w33-ledger-continuation-policy.js'
+      - 'tests/w33-ledger-continuation-policy.test.js'
+      - 'data/w33_ledger_continuation_crossrepo.json'
+      - 'research/w33_ledger_continuation.md'
+      - '.github/workflows/w33_ledger_continuation.yml'
+  workflow_dispatch:
+
+jobs:
+  continuation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install numerical dependency
+        run: python -m pip install numpy
+      - name: Recompute W33 Ledger continuation certificates
+        working-directory: w33
+        run: python analysis/run_w33_ledger_continuation_suite.py
+      - name: Enforce Holotrade continuation firewall
+        run: W33_LEDGER_ROOT="$GITHUB_WORKSPACE/w33" node --test tests/w33-ledger-continuation-policy.test.js
