@@ -1,0 +1,87 @@
+{
+ "claim": "Growing the seed of d7c0328 gives a 24-singlet condensing set that clears every blocker at once: zero internal superpotential terms (so <W> = 0 and dW/dn_i = 0 hold automatically), D-flat via the FI term, true colour-triplet rank 7 at generic points, and a residual system of only 10 equations in 24 unknowns -- underdetermined by fourteen. The rank still collapses. Bounding every VEV to [e^-B, e^B] and solving by bounded least squares, the best residual among full-rank points is 8.3e-1, 3.0e-1, 4.1e-2 and 7.6e-4 at B = 1, 2, 4, 8, with no solution at any box size; unbounded, the same system solves to 8.6e-14 but at rank 3 of 7 with VEVs spanning 2.4e13. Full rank and the flatness conditions are compatible only on the degenerate boundary where some VEVs go to zero.",
+ "subset": {
+  "model": "Z6II_34 / SM_20260917_1558",
+  "size": 24,
+  "internal_terms": 0,
+  "eq_outside": 7,
+  "eq_mu": 3,
+  "equations": 10,
+  "unknowns": 24,
+  "freedom": 14,
+  "dflat_via_FI": true,
+  "true_rank_generic": 7,
+  "needed": 7,
+  "grown_from": 10
+ },
+ "scan": [
+  {
+   "B": 1.0,
+   "vev_lo": 0.368,
+   "vev_hi": 2.72,
+   "best": 0.8287,
+   "good": 0
+  },
+  {
+   "B": 2.0,
+   "vev_lo": 0.135,
+   "vev_hi": 7.39,
+   "best": 0.3049,
+   "good": 0
+  },
+  {
+   "B": 4.0,
+   "vev_lo": 0.0183,
+   "vev_hi": 54.6,
+   "best": 0.04126,
+   "good": 0
+  },
+  {
+   "B": 8.0,
+   "vev_lo": 0.000335,
+   "vev_hi": 2980.0,
+   "best": 0.000756,
+   "good": 0
+  }
+ ],
+ "unbounded": {
+  "residual": 8.61e-14,
+  "rank": 3,
+  "vev_spread": 24000000000000.0,
+  "starts": 120
+ },
+ "starts_per_box": 60,
+ "why_algebraic": "the residual falls geometrically with the box and never plateaus, which is the signature of a solution on the boundary rather than a solver failure; a solver artefact would give occasional successes at small B or a residual independent of the box",
+ "failure_located": "not D-flatness, which this set has; not an empty superpotential, which it also has; not a shortage of freedom, being underdetermined by fourteen. The variety where the ten equations hold meets the full-rank locus only at infinity in the VEV coordinates.",
+ "physically": "the colour triplets can be made heavy, or the F-terms and mu can be made to vanish, but the configurations doing the second send the VEVs doing the first to zero",
+ "checks": {
+  "equation_count_adds_up": true,
+  "freedom_is_consistent": true,
+  "the_system_is_underdetermined": true,
+  "the_set_is_W_free": true,
+  "the_set_is_dflat": true,
+  "the_set_has_true_rank": true,
+  "all_prior_blockers_are_cleared": true,
+  "the_set_grew": true,
+  "no_box_yields_a_solution": true,
+  "residual_decreases_with_the_box": true,
+  "the_fall_is_geometric": true,
+  "never_plateaus": true,
+  "vev_floor_falls_with_the_box": true,
+  "boxes_widen_exponentially": true,
+  "unbounded_solves_but_degenerates": true,
+  "unbounded_spread_is_enormous": true,
+  "bounded_and_unbounded_disagree": true,
+  "the_obstruction_is_algebraic": true
+ },
+ "valid": true,
+ "status": "couplings and charges from the orbifolder; the subset growth, the true rank, the D-flatness LP and the bounded scan computed here",
+ "scope": "one model, generic coefficients, singlet superpotential to order six; four box sizes at 60 starts each (B = 16, 32 reached no full-rank point at all and are not quoted). The subset was grown greedily, so a different or larger set is not excluded -- this is demonstrated for this family of condensing sets, not proved for all. A single counterexample at small B would overturn it, which is why the scan is reported in full.",
+ "sources": [
+  "Holotrade d7c0328",
+  "Holotrade aea4650",
+  "Holotrade bd6c60e",
+  "Holotrade 25700ea",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
