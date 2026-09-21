@@ -1,0 +1,30 @@
+{
+  "schema":"holotrade.w33_physical_e8_crossrepo_closure.v1",
+  "status":"PASS_CROSSREPO_PHYSICAL_E8_CLOSURE",
+  "twin_A4":{
+    "orthogonal":true,
+    "combined_rank":8,
+    "gram_determinant":25,
+    "index_in_E8":5,
+    "quotient":"Z/5",
+    "root_split":[20,20,50,50,50,50],
+    "gluing_law":"c_gauge=3*c_center mod 5",
+    "branching":"248=(24,1)+(1,24)+(10,5)+(10bar,5bar)+(5bar,10)+(5,10bar)"
+  },
+  "physical_FI_projection":{
+    "A4_coefficients":["-5/3","-2/3","-1/3","-2"],
+    "standard_A4_diagonal":["-5/3","1","1/3","-5/3","2"],
+    "three_times_diagonal":[-5,3,1,-5,6],
+    "organizer_SU5_split":[3,2],
+    "E8_root_grades":{"0":78,"1/3":81,"2/3":81},
+    "neutral_root_system":"E6+A2",
+    "branching":"248=(78,1)+(1,8)+(27,3)+(27bar,3bar)"
+  },
+  "W33_owner_files":[
+    "analysis/w33_physical_twin_a4_e8_index5_gluing.py",
+    "data/w33_physical_twin_a4_e8_index5_gluing.json",
+    "analysis/w33_physical_fi_e6_a2_z3_grading.py",
+    "data/w33_physical_fi_e6_a2_z3_grading.json"
+  ],
+  "boundary":"Exact lattice/root consequences of the recorded physical bases. No unbroken second SU(5), no FI-generated Wilson line, and no D/F-flat vacuum are asserted."
+}
