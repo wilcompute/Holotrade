@@ -1,0 +1,93 @@
+{
+ "claim": "Every D-flat direction found in this class needs a matter-ODD singlet: across the 24 models that are D-flat at all, every LP support has exactly 5 singlets and every one contains at least one odd singlet (22 with exactly 2, one with 1, one with all 5) -- zero odd-free supports. An exact solve for a B-L shift making a whole support even succeeds for 0 of 24, and sampling 60 B-L choices per model and testing the even subset for ANY D-flat direction gives 0 of 88, against a live control of 24 D-flat with all singlets and 60 models having even singlets. Condensing the odd singlet breaks matter parity and switches on u^c d^c d^c, which is why the class behaved as b81ef8c reported.",
+ "control": {
+  "identity": "dimension-weighted left-chiral Tr Q_0 == D0_FI_term",
+  "matches": 215,
+  "models": 215,
+  "unweighted_matches": 0,
+  "lesson": "a trace must be weighted by representation dimension; a (3,2) field is six states, not one",
+  "anomalous": 211,
+  "fi_lo_z6i": 144,
+  "fi_hi_z6i": 576
+ },
+ "dflat": {
+  "z6i": {
+   "dflat": 23,
+   "models": 87,
+   "earlier_claim": 87
+  },
+  "z6ii": {
+   "dflat": 105,
+   "models": 128,
+   "earlier_claim": 123
+  },
+  "earlier_data_said": "anomalous: False on a model the orbifolder flags ANOM=1 FI=432",
+  "cross_check": "23 Z6-I + 1 Z6-II = the 24 seen on the B-L subset"
+ },
+ "support": {
+  "models": 24,
+  "support_size": 5,
+  "all_size_five": true,
+  "odd_free_supports": 0,
+  "odd_counts": {
+   "2": 22,
+   "1": 1,
+   "5": 1
+  },
+  "exact_shift_succeeds": 0,
+  "nullspace_dims": {
+   "2": 18,
+   "3": 6
+  }
+ },
+ "freedom": {
+  "models": 88,
+  "samples_per_model": 60,
+  "dflat_even": 0,
+  "some_even_singlet": 60,
+  "control_dflat_all": 24
+ },
+ "limits": {
+  "freedom_sampled_not_exhausted": true,
+  "one_lp_vertex_per_model": true,
+  "f_flatness_not_tested": true,
+  "is_a_proof": false
+ },
+ "corrects": "3e655d0's D-flatness sweep. Re-run with the anomalous direction verified per model, D-flatness holds in 23 of 87 Z6-I (reported: 87 of 87) and 105 of 128 Z6-II (reported: 123 of 128). The companion data behind the earlier sweep records 'anomalous: False' for a model the orbifolder flags ANOM=1 with FI=432, so it predates the anomalous-direction correction.",
+ "method_lesson": "the control failed 0 of 215 on the first attempt because the trace was unweighted. A trace must be weighted by representation dimension -- a (3,2) field is six states, not one. Weighted, the identity holds 215 of 215, including the four models where both sides are zero.",
+ "checks": {
+  "control_passes_everywhere": true,
+  "unweighted_matched_nothing": true,
+  "the_weighting_is_the_fix": true,
+  "most_models_are_anomalous": true,
+  "fi_is_positive": true,
+  "z6i_corrected_downwards": true,
+  "z6ii_corrected_downwards": true,
+  "counts_are_within_range": true,
+  "earlier_data_was_precorrection": true,
+  "two_runs_cross_check": true,
+  "every_support_has_five_singlets": true,
+  "no_support_is_odd_free": true,
+  "odd_counts_cover_the_models": true,
+  "most_supports_have_exactly_two_odd": true,
+  "no_exact_shift_fixes_a_support": true,
+  "nullspace_census_adds_up": true,
+  "freedom_search_finds_nothing": true,
+  "but_even_singlets_do_exist": true,
+  "the_control_is_live": true,
+  "so_the_zero_is_not_vacuous": true,
+  "limits_are_stated": true,
+  "not_claimed_as_a_proof": true
+ },
+ "valid": true,
+ "status": "linear programming in |v|^2 with exact rational charges; the anomalous direction verified per model against the orbifolder's own D0_FI_term; the B-L shift test is an exact linear solve, not a search",
+ "scope": "D-term feasibility only -- F-flatness is not tested and a vacuum needs both. NOT a proof: the B-L freedom is sampled rather than exhausted, and the LP returns one vertex per model while other faces of the D-flat cone exist. The counterexample space is narrowed to unsampled corners of a 2- or 3-dimensional freedom.",
+ "sources": [
+  "Holotrade 0fee779",
+  "Holotrade 068a678",
+  "Holotrade 3e655d0",
+  "Holotrade b81ef8c",
+  "Lebedev et al., arXiv:0708.2691",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
