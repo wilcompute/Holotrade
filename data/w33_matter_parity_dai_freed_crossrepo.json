@@ -1,0 +1,15 @@
+{
+  "schema":"holotrade.w33-matter-parity-dai-freed-crossrepo.v1",
+  "status":"PASS_CROSSREPO_MATTER_PARITY_ANOMALY_FIREWALL",
+  "w33SourceCommit":"5e0f8aa0ab0f044efe87b3cc899b640412cfa320",
+  "admit":[
+    "W33 matter parity is (-1)^Qpsi on 27=16_1+10_-2+1_4",
+    "parent U(1)psi gravitational, cubic and SO(10)^2-U(1)psi anomaly sums vanish",
+    "ordinary internal Z2 has Omega_5^Spin(BZ2)=0 and no standalone 4d Dai-Freed global anomaly"
+  ],
+  "block":[
+    "identifying matter parity Z2 with the twisted Z4_X/Z16 anomaly",
+    "claiming pure-Z2 anomaly freedom proves a matter-parity-preserving vacuum",
+    "ignoring possible mixed anomalies with genuinely independent surviving symmetries"
+  ]
+}

@@ -1,0 +1,32 @@
+name: W33 matter-parity anomaly crossrepo
+on:
+  push:
+    paths:
+      - 'data/w33_matter_parity_dai_freed_crossrepo.json'
+      - 'analysis/MATTER_PARITY_DAI_FREED_CROSSREPO_20260921.md'
+      - 'tests/test_w33_matter_parity_dai_freed_crossrepo.py'
+      - '.github/workflows/w33_matter_parity_anomaly.yml'
+  pull_request:
+    paths:
+      - 'data/w33_matter_parity_dai_freed_crossrepo.json'
+      - 'tests/test_w33_matter_parity_dai_freed_crossrepo.py'
+      - '.github/workflows/w33_matter_parity_anomaly.yml'
+  workflow_dispatch:
+jobs:
+  anomaly-firewall:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: 5e0f8aa0ab0f044efe87b3cc899b640412cfa320
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recompute W33 anomaly certificate
+        working-directory: w33
+        run: python analysis/w33_matter_parity_dai_freed_firewall.py
+      - name: Check Holotrade mirror
+        run: python -m pytest -q tests/test_w33_matter_parity_dai_freed_crossrepo.py

@@ -1,22 +1,24 @@
 {
-  "schema":"holotrade.w33_matter_even_dflat_exhaustive_gate.v1",
+  "schema":"holotrade.w33_matter_even_dflat_exhaustive_gate.v2",
   "status":"BLOCKED_EXHAUSTIVE_CLASS_PROOF_SOURCE_DATA_NOT_COMMITTED",
   "current_git_inputs":{
     "raw_model_files":0,
     "required_raw_globs":["sp1/*.sp","sp2/*.sp"],
     "parser_path":"unbroken2.py",
-    "parser_present":false,
-    "flagship_raw_weight_dump_present":true
+    "parser_present":false
   },
   "current_evidence":{
     "models_with_BL":88,
     "B_minus_L_nullspace_dims":{"2":18,"3":30,"4":34,"5":3,"6":3},
     "sampled_choices_per_model":60,
     "sampled_even_singlet_Dflat_hits":0,
+    "sampled_test_uses_correct_Z2_condition":true,
     "fixed_Dflat_support_models":24,
-    "fixed_support_exact_shift_successes":0,
+    "legacy_fixed_support_zero_charge_shift_successes":0,
+    "legacy_fixed_support_result_grade":"VALID_FULL_U1_NEUTRALITY_ONLY_WITHDRAWN_AS_Z2_EVIDENCE",
+    "fixed_support_exact_Z2_result":null,
     "is_exhaustive_proof":false
   },
-  "proof_acceptance_rule":"Enumerate every realizable B-L matter-parity class for every model using exact rational charges; certify every infeasible even-singlet D-flat cone by an exact Farkas witness, or retain any exact feasible primal ray as a counterexample.",
-  "boundary":"Exact provenance/no-overclaim gate. Current strong evidence is preserved but not promoted into a class-wide theorem."
+  "proof_acceptance_rule":"Enumerate every realizable B-L matter-parity class using exact rational charges; certify every infeasible even-singlet D-flat cone by an exact Farkas witness, or retain any exact feasible primal ray as a counterexample.",
+  "boundary":"Strong sampled evidence remains; the legacy fixed-support 0/24 is not Z2 evidence; exact class-wide proof is blocked by missing source data."
 }

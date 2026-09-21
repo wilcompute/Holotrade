@@ -1,0 +1,23 @@
+{
+  "schema":"holotrade.w33_fixed_support_z2_correction.v1",
+  "status":"CORRECTION_FIXED_SUPPORT_0_OF_24_IS_FULL_U1_NOT_Z2_EVIDENCE",
+  "legacy_result":{
+    "models":24,
+    "reported_successes":0,
+    "actual_question":"Does a B-L shift make every support singlet satisfy 3(B-L)=0 exactly?",
+    "valid_interpretation":"0/24 exact shifts preserve the full continuous B-L charge on that chosen LP support.",
+    "invalid_interpretation":"0/24 exact shifts make the support matter-even."
+  },
+  "correct_Z2_condition":"3(B-L) must be an integral even number; even nonzero values are allowed.",
+  "toy_separation":{"three_B_minus_L":2,"matter_even":true,"full_U1_neutral":false},
+  "what_still_stands":{
+    "sampled_search":"The 60-choice-per-model search used integral-even parity and found 0 sampled matter-even D-flat hits.",
+    "scope":"controlled evidence, not an exhaustive proof"
+  },
+  "checks":{
+    "legacy_source_imposes_exact_zero":true,
+    "legacy_summary_count_is_zero":true,
+    "sampled_search_uses_even_integrality":true,
+    "even_nonzero_witness_exists":true
+  }
+}
