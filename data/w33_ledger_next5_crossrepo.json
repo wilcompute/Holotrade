@@ -1,0 +1,25 @@
+{
+  "schema":"holotrade.w33-ledger-next5-crossrepo.v1",
+  "status":"PASS_CROSSREPO_LEDGER_NEXT5_FIREWALL",
+  "w33SourceCommit":"96e4e63ecb8915b68e961ea0daa2e2d0fad57153",
+  "results":{
+    "audit":"DEPTH_Q_CONJECTURE_KILLED_DEPTH3_OPEN_FAMILY",
+    "tomita":"PASS_TOMITA_TO_W33_MIRROR_AFTER_COMMUTANT_FOLD",
+    "allqH2":"THEOREM_ALL_W3Q_H2_ZERO",
+    "darkBond":"NO_INTERACTION_FREE_DYNAMIC_BOND_FOUND_AUXILIARY_ROUTE_TREE_LEVEL_ONLY",
+    "deficiency80":"DEFICIENCY80_IS_NOT_W33_BUILDING_MODULE"
+  },
+  "admit":[
+    "q>=4 three-party depth-two impossibility by dimension",
+    "explicit open faithful q=3,4,5 family with full depth-three audit closure",
+    "Tomita algebra-to-commutant exchange maps to the base W33 anti-symplectic mirror after transpose fold",
+    "H1(W(3,q);Z)=Z^(q^4) and Hk=0 for k>=2 across the prime-power family"
+  ],
+  "block":[
+    "word depth equals local dimension q",
+    "540 distinct state-dependent Tomita conjugations",
+    "80-dimensional audit deficiency equals the W33 building module",
+    "interaction-free dynamic dark bond under moving-factor/modular relabeling",
+    "tree-level auxiliary contact automatically proves radiative Higgs protection"
+  ]
+}

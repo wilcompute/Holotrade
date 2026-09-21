@@ -1,0 +1,41 @@
+name: W33 Ledger next-five crossrepo
+on:
+  push:
+    paths:
+      - 'js/w33-ledger-next5-policy.js'
+      - 'tests/w33-ledger-next5-policy.test.js'
+      - 'data/w33_ledger_next5_crossrepo.json'
+      - 'research/w33_ledger_next5.md'
+      - '.github/workflows/w33_ledger_next5.yml'
+  pull_request:
+    paths:
+      - 'js/w33-ledger-next5-policy.js'
+      - 'tests/w33-ledger-next5-policy.test.js'
+      - 'data/w33_ledger_next5_crossrepo.json'
+      - 'research/w33_ledger_next5.md'
+      - '.github/workflows/w33_ledger_next5.yml'
+  workflow_dispatch:
+
+jobs:
+  next-five:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: wilcompute/W33-Theory
+          ref: master
+          path: w33
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install finite-math dependency
+        run: python -m pip install numpy
+      - name: Recompute the five W33 Ledger follow-ups
+        working-directory: w33
+        run: python analysis/run_w33_ledger_next5_suite.py
+      - name: Enforce Holotrade next-five claim firewall
+        run: W33_LEDGER_ROOT="$GITHUB_WORKSPACE/w33" node --test tests/w33-ledger-next5-policy.test.js
