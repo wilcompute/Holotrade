@@ -79,7 +79,8 @@ def main(write=True):
     fi_z3=[(4*e)%12 for e in exponents]
     kummer_z4=[(3*e)%12 for e in exponents]
     assert Counter(parity)==Counter({6:16,0:11})
-    assert Counter(fi_z3)==Counter({4:16,4:0}) if False else Counter(fi_z3)
+    assert Counter(fi_z3)==Counter({4:27})
+    assert Counter(kummer_z4)==Counter({3:16,6:10,0:1})
     # More informative classwise checks:
     for role,q,e in zip(roles,qpsi,exponents):
         assert ((6*e)//6)%2 == q%2
