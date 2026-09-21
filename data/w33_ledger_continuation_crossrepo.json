@@ -1,17 +1,17 @@
 {
-  "schema":"holotrade.w33-ledger-continuation-crossrepo.v1",
-  "status":"PASS_CROSSREPO_LEDGER_CONTINUATION_FIREWALL",
-  "w33SourceCommit":"3e7a158d16684966871f00cfabb7b612875f3135",
-  "admit":[
+  "schema": "holotrade.w33-ledger-continuation-crossrepo.v1",
+  "status": "PASS_CROSSREPO_LEDGER_CONTINUATION_FIREWALL",
+  "w33SourceCommit": "33789603cb96152ee9734c76beca43bfb83a7014",
+  "admit": [
     "existence of depth-three audit-complete faithful families for every n>=3,q>=3",
     "nontrivial continuous modular flow cannot remain inside finite W33/Pauli automorphisms",
     "explicit all-q elementary-collapse proof of the previously owned bouquet pattern",
     "W33 winding abelianizes to the 81-dimensional H1 channel"
   ],
-  "candidate":[
+  "candidate": [
     "nondynamical auxiliary Weinberg contact avoids the ordinary heavy-pole threshold through the cited EFT order; UV completion open"
   ],
-  "block":[
+  "block": [
     "every faithful state is depth-three complete",
     "Ledger modular time is literal motion inside PSp(4,3) or PGSp(4,3)",
     "the all-q bouquet statement is new to this pass",

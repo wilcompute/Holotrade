@@ -1,6 +1,6 @@
 # Ledger continuation cross-repo admission
 
-Mathematical source: wilcompute/W33-Theory, continuation commit 3e7a158d16684966871f00cfabb7b612875f3135.
+Mathematical source: wilcompute/W33-Theory, continuation commit 33789603cb96152ee9734c76beca43bfb83a7014.
 
 Holotrade recomputes the five continuation certificates before applying this policy.
 
