@@ -1,0 +1,118 @@
+{
+ "claim": "The vanishing U(1) traces reported in cfdc1f2 were a CHIRALITY DOUBLE-COUNT, not a basis problem: the spectrum lists each state as both a left-chiral multiplet and its right-chiral conjugate. Reading CField::Multiplet, the Z6-I flagship splits 127 LeftChiral / 127 RightChiral, and the left-chiral trace is (200,0,0,0,0,0,0) -- exactly the orbifolder's own D0_FI_term of 200. On Z6-II SM_20260917_1558 it is 296/3 = 98.67, again exactly its D0_FI_term. So the anomalous direction is index ZERO and the dumped basis was right all along.",
+ "multiplets": {
+  "fields": 274,
+  "LeftChiral": 127,
+  "RightChiral": 127,
+  "Vector": 5,
+  "VectorCC": 5,
+  "LCModulus": 5,
+  "RCModulus": 5
+ },
+ "traces": {
+  "all": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "left": [
+   200,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "right": [
+   -200,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "left_cubic_first": "2500/3",
+  "orbifolder_FI_flagship": 200,
+  "z6ii_left_first": "296/3",
+  "orbifolder_FI_z6ii": 98.67
+ },
+ "voided": [
+  {
+   "result": "d7c0328 candidate",
+   "size": 10,
+   "dflat": false
+  },
+  {
+   "result": "2a4146c grown set",
+   "size": 24,
+   "dflat": false
+  },
+  {
+   "result": "earlier |T|=34",
+   "size": 34,
+   "dflat": false
+  },
+  {
+   "result": "full mass set",
+   "size": 43,
+   "dflat": false
+  }
+ ],
+ "sweep": {
+  "z6i": {
+   "models": 87,
+   "dflat": 87,
+   "unlocked": 55,
+   "unlocked_dflat": 55
+  },
+  "z6ii": {
+   "models": 128,
+   "dflat": 123,
+   "unlocked": 22,
+   "unlocked_dflat": 22
+  }
+ },
+ "credit": "the other track identified the chirality double-count; the trace values are confirmed here independently from CField::Multiplet",
+ "voids": "every D-flatness test that allowed the FI residue on ANY direction tested a condition the model does not have. On the physical condition -- D_a = 0 for a != 0 and sum q_0 |v|^2 < 0 -- none of the candidate subsets is D-flat, so d7c0328's candidate, 2a4146c's boundary analysis and 8e16b25's non-SUSY full-rank point are withdrawn. Their rank arithmetic stands; the vacua do not.",
+ "reinforces": "with all singlets allowed and only the mass-coupling ones required, the physical condition IS satisfiable -- 87 of 87 Z6-I models and 123 of 128 Z6-II, including every doublet-triplet solver. So D-flatness is available only by condensing singlets BEYOND the mass set, and those are exactly what bring monomials into the superpotential. That is babfd48's F/D conflict on the correct direction, and Gordan's alternative (bd6c60e) is untouched.",
+ "lesson": "cfdc1f2 recorded that a clean zero supporting a conclusion one already carries needs a second source -- then reached for the convenient explanation, a basis mismatch, instead of the mundane one, double counting. Ask the spectrum what KIND of multiplet each field is before summing over it.",
+ "checks": {
+  "left_and_right_counts_match": true,
+  "census_adds_up": true,
+  "all_multiplet_trace_vanishes": true,
+  "left_trace_is_nonzero_on_direction_zero": true,
+  "only_direction_zero_is_anomalous": true,
+  "left_and_right_are_negatives": true,
+  "that_explains_the_zero": true,
+  "flagship_trace_matches_FI": true,
+  "z6ii_trace_matches_FI": true,
+  "two_independent_models_agree": true,
+  "cubic_trace_also_nonzero": true,
+  "no_candidate_subset_is_dflat": true,
+  "four_results_affected": true,
+  "z6i_is_universally_dflat": true,
+  "z6ii_is_nearly_universally_dflat": true,
+  "all_solvers_are_dflat": true,
+  "dflatness_needs_extra_singlets": true,
+  "which_is_the_f_d_conflict": true,
+  "credit_recorded": true
+ },
+ "valid": true,
+ "status": "multiplet types from CField::Multiplet; traces exact rationals; the D-flatness sweep is one linear program per model over all singlets with the mass-coupling ones bounded below",
+ "scope": "establishes D-term feasibility, not the existence of a full vacuum; two models checked in detail for the traces, all 215 for the sweep",
+ "sources": [
+  "Holotrade cfdc1f2",
+  "Holotrade 8e16b25",
+  "Holotrade 2a4146c",
+  "Holotrade d7c0328",
+  "Holotrade babfd48",
+  "Holotrade bd6c60e",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
