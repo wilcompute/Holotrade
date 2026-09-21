@@ -1,0 +1,65 @@
+{
+  "schema": "holotrade.w33_e8_order6_kac_crossrepo.v1",
+  "status": "PASS_CROSSREPO_TWIN_ORDER6_E8_KAC_CLASSIFICATION",
+  "w33SourceCommit": "5ee820b817e8cb3a824a9bf621757f9e37ec203c",
+  "admit": {
+    "structural_FI_x_matter_parity_Z6": {
+      "eigendimensions": [
+        54,
+        48,
+        33,
+        32,
+        33,
+        48
+      ],
+      "kac_coordinates": [
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "power_ladder": [
+        "D5+A2+u1",
+        "E6+A2",
+        "D8"
+      ]
+    },
+    "flagship_holonomy_Z6": {
+      "eigendimensions": [
+        44,
+        40,
+        38,
+        48,
+        38,
+        40
+      ],
+      "kac_coordinates": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "power_ladder": [
+        "D4+A3+u1",
+        "D7+u1",
+        "D8"
+      ]
+    },
+    "common_cube": "Both cubes are the D8 involution class with fixed Lie dimension 120."
+  },
+  "block": [
+    "identifying the structural FI x matter-parity Z6 with the flagship holonomy Z6",
+    "using the Kac classification as evidence that a matter-parity-preserving D/F-flat heterotic vacuum exists",
+    "using the legacy fixed-support 0/24 full-U(1)-neutrality result as exact Z2 matter-parity evidence"
+  ]
+}
