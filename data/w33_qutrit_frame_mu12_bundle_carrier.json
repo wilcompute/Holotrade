@@ -1,0 +1,72 @@
+{
+  "schema": "holotrade.w33_qutrit_frame_mu12_bundle_carrier.v1",
+  "status": "PASS_OBJECTWISE_27_FRAME_FIBREWISE_MU12_CARRIER",
+  "headline": "The E6 Qpsi character now has an explicit objectwise two-qutrit carrier: on the 27 complete factorisation frames, D12 assigns zeta12^4 to the reference 1, zeta12^-2 to the ten frames sharing one factorisation, and zeta12 to the sixteen disjoint frames. Every tritangent triple has phase product one. Since each frame fibre is C^9 and the two-qutrit Clifford scalar center is mu12, the 27-frame bundle direct_sum_F C^9 carries these phases fibrewise as genuine Clifford scalars.",
+  "frame_Qpsi": {
+    "roles": {
+      "1": 1,
+      "10": 10,
+      "16": 16
+    },
+    "charges": {
+      "1": 4,
+      "10": -2,
+      "16": 1
+    },
+    "phase_exponents_mod12": {
+      "1": 4,
+      "10": 10,
+      "16": 1
+    },
+    "phase_multiplicities": {
+      "1": 16,
+      "4": 1,
+      "10": 10
+    },
+    "D12_order": 12
+  },
+  "bundle": {
+    "base_objects": 27,
+    "fibre": "two-qutrit Hilbert space C^9 for each complete factorisation frame",
+    "fibre_dimension": 9,
+    "total_direct_sum_dimension": 243,
+    "operator": "D_bundle = direct_sum_F zeta_12^{Qpsi(F)} I_9",
+    "each_block_is_Clifford_scalar": true,
+    "stabilizer_equivariance": "The W(D5) stabilizer of F0 preserves the 1+10+16 orbit partition, so D_bundle commutes with that exact frame stabilizer action."
+  },
+  "cubic_phase_conservation": {
+    "total_tritangents": 45,
+    "patterns": {
+      "(-2,1,1)": 40,
+      "(-2,-2,4)": 5
+    },
+    "all_phase_products_one": true
+  },
+  "power_shadows": {
+    "sixth_power": "matter parity (-1)^Qpsi on the 1+10+16 frame carrier",
+    "fourth_power": "physical FI / Qpsi mod3 character",
+    "third_power": "Qpsi mod4 / Kummer character"
+  },
+  "single_C9_scalar_firewall": {
+    "distinct_required_phase_exponents_mod12": [
+      1,
+      4,
+      10
+    ],
+    "single_scalar_center_has_one_eigenphase": true,
+    "can_realize_relative_27_frame_phases": false,
+    "statement": "The mu12 scalar center alone cannot realize the relative 1+10+16 phase pattern on one C^9. The exact carrier constructed here therefore includes the frame label as a base/register. A noncentral single-two-qutrit Clifford intertwiner is not ruled out by this argument and remains open."
+  },
+  "parents": [
+    "data/w33_qutrit_frame_matter_parity_cubic_bridge.json",
+    "data/twenty_seven_frames_so10_weights.json",
+    "data/w33_e8_z12_clifford_mu12_character_crossrepo.json"
+  ],
+  "checks": {
+    "frame_partition_1_10_16": true,
+    "phase_operator_exact_order12": true,
+    "all_45_cubics_phase_neutral": true,
+    "bundle_blocks_are_mu12_scalars": true,
+    "single_scalar_center_no_go": true
+  }
+}
