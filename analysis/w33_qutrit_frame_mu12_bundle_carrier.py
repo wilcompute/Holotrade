@@ -151,7 +151,6 @@ def main(write=True):
         "can_realize_relative_27_frame_phases":False,
         "statement":"The mu12 scalar center alone cannot realize the relative 1+10+16 phase pattern on one C^9. The exact carrier constructed here therefore includes the frame label as a base/register. A noncentral single-two-qutrit Clifford intertwiner is not ruled out by this argument and remains open."
       },
-      "records":records,
       "parents":[
         "data/w33_qutrit_frame_matter_parity_cubic_bridge.json",
         "data/twenty_seven_frames_so10_weights.json",
