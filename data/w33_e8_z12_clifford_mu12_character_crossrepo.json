@@ -1,0 +1,17 @@
+{
+  "schema": "holotrade.w33_e8_z12_clifford_mu12_character_crossrepo.v1",
+  "status": "PASS_CROSSREPO_E8_Z12_TO_CLIFFORD_MU12_CHARACTER",
+  "w33SourceCommit": "cc64c4c659d20f7a9444911f8d42553063b349bf",
+  "admit": [
+    "The structural E8 grading is Qpsi mod 12.",
+    "chi([q])=zeta_12^q is a faithful generator-preserving isomorphism Z12 -> mu_12.",
+    "The 248-dimensional phase multiplicities are 54,48,30,16,3,0,0,0,3,16,30,48.",
+    "All 45 certified E6 cubics have trivial total character phase.",
+    "The qutrit-Clifford scalar phase group is independently mu_12 for every n."
+  ],
+  "block": [
+    "claiming a Hilbert-space/root-space representation intertwiner has been constructed",
+    "identifying Clifford global scalar phase with relative E8 charge phase as a physical observable",
+    "using the character theorem as evidence for a matter-parity-preserving D/F-flat heterotic vacuum"
+  ]
+}
