@@ -1,0 +1,17 @@
+{
+  "schema":"w33.flagship_fi_prime_shadow_torsor.v1",
+  "status":"PASS_MODEL_SIDE_FI_PRIME_SHADOW_TORSOR",
+  "model":"SM_20260917_3",
+  "physical_FI_star":[-5,3,1,-5,6],
+  "integral":{"S5_orbit":60,"S5_stabilizer":2,"Alt5_orbit":60,"Alt5_stabilizer":1},
+  "collision_discriminant":15840,
+  "collision_primes":[2,3,5,11],
+  "prime_shadows":{
+    "2":{"orbit_size":5,"stabilizer_order":12,"integral_fiber_size":12,"multiplicity_partition":[4,1]},
+    "3":{"orbit_size":10,"stabilizer_order":6,"integral_fiber_size":6,"multiplicity_partition":[3,2]},
+    "5":{"orbit_size":30,"stabilizer_order":2,"integral_fiber_size":2,"multiplicity_partition":[2,2,1]},
+    "11":{"orbit_size":20,"stabilizer_order":3,"integral_fiber_size":3,"multiplicity_partition":[3,1,1]}
+  },
+  "mod3_reading":"3+2 charge-coordinate selector only",
+  "boundary":"No D/F-flat vacuum or non-Abelian gauge-breaking identification is claimed."
+}
