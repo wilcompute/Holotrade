@@ -1,0 +1,12 @@
+{
+  "schema":"holotrade.w33_twin_z6_single_node_crossrepo.v1",
+  "status":"PASS_CROSSREPO_TWIN_Z6_SINGLE_NODE_BRIDGE",
+  "structural_Kac":[2,0,0,0,1,0,0,0,0],
+  "holonomy_Kac":[0,0,0,0,1,0,0,1,0],
+  "difference_Kac":[4,0,0,0,0,0,0,1,0],
+  "root_relation":"H=S*R on all 240 E8 root spaces",
+  "difference_spectrum":[92,64,14,0,14,64],
+  "difference_power_ladder":["D7+u1 dim92","D7+u1 dim92","D8 dim120"],
+  "W33_owner":"data/w33_twin_z6_single_node_difference.json",
+  "boundary":"Lie-theoretic Cartan factorization only; no FI-generated holonomy or D/F-flat vacuum claim."
+}
