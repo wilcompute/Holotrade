@@ -1,0 +1,130 @@
+{
+ "claim": "u^c d^c d^c is forbidden TO ALL ORDERS -- by a U(1) that survives condensation of every Standard-Model singlet -- in 14 of 87 Z6-I models and 0 of 128 Z6-II models, and ALL 14 are doublet-triplet solvers, with 0 of the 32 non-solvers protected. Since the solvers are exactly the models whose Y=-1/2 doublets form ONE charge class and so have no matter-even Higgs, gauged proton protection implies no H_d and hence no down-quark or charged-lepton Yukawa. The extra generator is NOT B-L: it is constant on q, u^c and e^c with d^c and l sharing a value set, i.e. the SU(5) 10 + 5bar split of the local GUT.",
+ "z6i": {
+  "models": 87,
+  "dimN": {
+   "1": 52,
+   "2": 35
+  },
+  "protected": 14,
+  "solvers": 55,
+  "protected_that_are_solvers": 14,
+  "nonsolvers": 32,
+  "protected_nonsolvers": 0,
+  "singlets_lo": 34,
+  "singlets_hi": 102,
+  "triples_lo": 45,
+  "triples_hi": 165
+ },
+ "z6ii": {
+  "models": 128,
+  "dimN": {
+   "1": 78,
+   "2": 44,
+   "3": 6
+  },
+  "protected": 0,
+  "singlets_lo": 13,
+  "singlets_hi": 105,
+  "triples_lo": 40,
+  "triples_hi": 816
+ },
+ "candidates": {
+  "models": [
+   "Z6II_34/SM_20260917_2200",
+   "Z6II_52/SM_20260917_2304",
+   "Z6II_52/SM_20260917_405"
+  ],
+  "dimN": 1,
+  "triples_total": 198,
+  "triples_neutral": 198,
+  "udd_by_order": {
+   "3": 0,
+   "4": 0,
+   "5": 0,
+   "6": 6,
+   "7": 846,
+   "8": 7740
+  },
+  "control_by_order": {
+   "3": 5,
+   "6": 13,
+   "7": 109,
+   "8": 2301
+  }
+ },
+ "alpha": {
+  "q": 36,
+  "u^c": 36,
+  "e^c": 36,
+  "d^c": [
+   -108,
+   -18,
+   72
+  ],
+  "l": [
+   -108,
+   -18,
+   72
+  ],
+  "is_B_minus_L": false,
+  "is_SU5_split": true
+ },
+ "literature": {
+  "ref": "arXiv:1009.0905",
+  "mechanism": "unique Z_4^R, broken non-perturbatively to an exact Z_2 matter parity",
+  "geometry": "Z6-II heterotic mini-landscape",
+  "consistent_with_zero_z6ii": true
+ },
+ "kills": "the three Z6-II models that looked viable at order five -- two doublet classes, no u^c d^c d^c, all three Yukawas, no dimension-five proton decay, an order-three Dirac neutrino -- all have dim N = 1 with all 198 udd triples gauge-neutral, so the test predicted their zero was an artefact of the scanned order. Checked explicitly: udd = 0 through order 5, then 6 at order 6, 846 at 7 and 7740 at 8, against a control of 5, 13, 109, 2301. Excluded.",
+ "refines": "b81ef8c's 'all three absent in 54' stands as an order-five statement, now known to be stronger than claimed for 14 of those models and still order-limited for the rest. The class verdict is unchanged; one side of the two-sided exclusion is now a statement about the gauge group rather than a census of a scan.",
+ "checks": {
+  "z6i_dimN_partitions": true,
+  "z6ii_dimN_partitions": true,
+  "hypercharge_always_survives": true,
+  "z6i_has_protected_models": true,
+  "z6ii_has_none": true,
+  "protection_needs_an_extra_u1": true,
+  "every_protected_model_is_a_solver": true,
+  "no_nonsolver_is_protected": true,
+  "protected_is_a_strict_subset_of_solvers": true,
+  "solver_census_adds_up": true,
+  "protection_implies_no_higgs": true,
+  "three_candidates": true,
+  "candidates_have_no_protection": true,
+  "every_candidate_triple_is_neutral": true,
+  "candidates_were_zero_through_order_five": true,
+  "but_udd_appears_at_order_six": true,
+  "and_grows_with_order": true,
+  "control_is_nonvacuous_at_every_order": true,
+  "the_test_predicted_this": true,
+  "candidates_are_excluded": true,
+  "alpha_is_constant_on_the_ten": true,
+  "dc_and_l_share_the_value_set": true,
+  "so_it_is_the_su5_split": true,
+  "it_is_not_b_minus_l": true,
+  "z6ii_model_has_no_continuous_protection": true,
+  "yet_udd_is_zero_through_order_eight": true,
+  "its_control_is_nonvacuous_and_growing": true,
+  "so_a_discrete_symmetry_protects_it": true,
+  "but_it_has_no_lepton_yukawa_either": true,
+  "z6i_solvers_all_zero_at_six_and_seven": true,
+  "census_is_partial_and_said_so": true,
+  "z6i_solvers_have_no_lepton_yukawa": true,
+  "the_dichotomy_holds_for_the_discrete_route_too": true,
+  "literature_route_is_discrete": true,
+  "zero_in_z6ii_agrees_with_literature": true,
+  "samples_are_nontrivial": true
+ },
+ "valid": true,
+ "status": "exact rational linear algebra over the dumped U(1) charges; hypercharge solved for as a general direction, not assumed to be a basis vector; charge denominators asserted to divide 18 (measured); hypercharge verified to lie in the surviving space in all 215 models as the control",
+ "scope": "'forbidden at all orders' means no singlet monomial can neutralise the operator under the U(1)s surviving condensation of ALL singlets, which is the smallest such space and hence the conservative choice -- the conclusion survives any subset actually condensing. It is a gauge-invariance statement and does not address the orbifold's discrete selection rules, which forbid more, nor non-perturbative effects. The converse is weaker by construction, which is why the three candidates were checked explicitly to order eight.",
+ "sources": [
+  "Holotrade 7d9b467",
+  "Holotrade b81ef8c",
+  "Holotrade 2fa6596",
+  "Lee, Raby, Ratz, Vaudrevange, Westphal, Wingerter, arXiv:1009.0905 (A unique Z_4^R symmetry for the MSSM)",
+  "Lebedev et al., hep-th/0611095 (A Mini-Landscape of Exact MSSM Spectra)",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
