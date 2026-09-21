@@ -1,0 +1,352 @@
+{
+  "schema": "holotrade.heterotic_model_source_provenance_audit.v1",
+  "status": "PASS_RECOVERABLE_VECTOR_LEDGER_FROZEN_BULK_SP_CORPUS_CONFIRMED_ABSENT_FROM_INSPECTED_GIT_TREES",
+  "headline": "Holotrade preserves several complete model-defining vector sets, but the historical 215-model flatness pipeline depended on local/uncommitted sp1/, sp2/, and unbroken2.py inputs. The hidden raw-z6-ii-model-corpus branch and both inspected D-flat-era trees contain none of those paths. This certificate freezes every explicitly recovered model/vector witness used by the present exact frontier without fabricating the missing spectrum corpus.",
+  "historical_tree_audit": [
+    {
+      "label": "hidden_raw_branch",
+      "ref": "copilot/raw-z6-ii-model-corpus",
+      "commit_sha": "21f1dbf324cf03067fc8c2eba281478c05080027",
+      "tree_sha": "6f6a888af0773c8e2310d7924c44f3ea8e5ecf65",
+      "tree_entries": 1479,
+      "required_path_hits": {
+        "sp1/": 0,
+        "sp2/": 0,
+        "unbroken2.py": 0
+      }
+    },
+    {
+      "label": "dflat_history_28620b4",
+      "commit_sha": "28620b4bec5d467bc36087dccf177e99996de4b7",
+      "tree_sha": "a5a4c448d1125f0863e8bd9ef4850150861fa0f6",
+      "tree_entries": 1448,
+      "required_path_hits": {
+        "sp1/": 0,
+        "sp2/": 0,
+        "unbroken2.py": 0
+      }
+    },
+    {
+      "label": "dflat_history_3e655d0",
+      "commit_sha": "3e655d045cf0e0503014f47b1d3e7418a86c3ec6",
+      "tree_sha": "1dfa5d2daa0c81a47c8a77ec10ef95fb78efd1de",
+      "tree_entries": 1402,
+      "required_path_hits": {
+        "sp1/": 0,
+        "sp2/": 0,
+        "unbroken2.py": 0
+      }
+    }
+  ],
+  "recoverable_vector_sets": [
+    {
+      "id": "SM_20260917_3_Z6I_flagship",
+      "orbifold": "Z6-I",
+      "source": "analysis/w33_flagship_orbifolder_model.py + data/w33_twist_hosts_sm_in_even_order_orbifold.json",
+      "V": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1/6",
+        "1/6",
+        "1/3",
+        "2/3",
+        "0",
+        "0",
+        "0",
+        "1/6",
+        "1/6",
+        "1/6",
+        "1/6",
+        "2/3"
+      ],
+      "W2": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "W3": [
+        "-7/6",
+        "-5/6",
+        "-1/6",
+        "1/6",
+        "1/2",
+        "1/2",
+        "7/6",
+        "-1/6",
+        "-4/3",
+        "-2/3",
+        "1/3",
+        "-4/3",
+        "0",
+        "1/3",
+        "1",
+        "1/3"
+      ],
+      "note": "complete 16D gauge data; the committed model writer places W3 in the historical geometric pair 45"
+    },
+    {
+      "id": "SM_20260917_1383_Z6II",
+      "orbifold": "Z6-II",
+      "source": "data/w33_twist_hosts_sm_in_even_order_orbifold.json",
+      "V": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "1/6",
+        "1/6",
+        "1/3",
+        "1/6",
+        "1/6",
+        "1/6",
+        "1/6",
+        "1/6",
+        "1/6",
+        "1/6",
+        "5/6"
+      ],
+      "W2": [
+        "2",
+        "-3/2",
+        "1/2",
+        "1",
+        "-3/2",
+        "-1/2",
+        "1/2",
+        "3/2",
+        "-2",
+        "-3/2",
+        "0",
+        "0",
+        "0",
+        "1/2",
+        "1",
+        "1"
+      ],
+      "W3": [
+        "-2/3",
+        "0",
+        "0",
+        "0",
+        "4/3",
+        "-1",
+        "-1/3",
+        "4/3",
+        "1/3",
+        "1/3",
+        "1/3",
+        "1/3",
+        "1/3",
+        "1/3",
+        "4/3",
+        "2/3"
+      ],
+      "note": "complete committed 16D Standard-Model witness"
+    },
+    {
+      "id": "explicit_Z6II_first_E8_gauge_embedding",
+      "orbifold": "Z6-II",
+      "source": "data/w33_z6ii_sm_shape_builder.json",
+      "V_first_E8": [
+        "1/6",
+        "1/3",
+        "-1/2",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "W2_first_E8": [
+        "-1",
+        "1/2",
+        "0",
+        "-1",
+        "-1",
+        "-1/2",
+        "-1/2",
+        "-1/2"
+      ],
+      "W3_first_E8": [
+        "-2/3",
+        "-2/3",
+        "2/3",
+        "0",
+        "2/3",
+        "-1/3",
+        "-1/3",
+        "0"
+      ],
+      "second_E8": "untouched/zero in this witness",
+      "note": "gauge-embedding witness, not a full-spectrum MSSM vacuum"
+    },
+    {
+      "id": "BHLR_published_representatives",
+      "orbifold": "Z6-II benchmark",
+      "source": "analysis/z6ii_buchmuller2007_benchmark_regression.py",
+      "V": [
+        "1/2",
+        "1/2",
+        "1/3",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "1/3",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "W2": [
+        "1/2",
+        "0",
+        "1/2",
+        "1/2",
+        "1/2",
+        "0",
+        "0",
+        "0",
+        "-3/4",
+        "1/4",
+        "1/4",
+        "-1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "-1/4"
+      ],
+      "W3": [
+        "1/3",
+        "0",
+        "0",
+        "1/3",
+        "1/3",
+        "1/3",
+        "1/3",
+        "1/3",
+        "1",
+        "1/3",
+        "1/3",
+        "1/3",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "note": "published representatives; exact root/coset checks are representative-invariant, but these representatives fail some modular-invariance tests verbatim"
+    },
+    {
+      "id": "BHLR_orbifolder_shipped_representatives",
+      "orbifold": "Z6-II benchmark",
+      "source": "analysis/the_w33_standard_models_have_a_renormalisable_top_yukawa.py",
+      "V": [
+        "-1/2",
+        "-1/2",
+        "1/3",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "17/6",
+        "-5/2",
+        "-5/2",
+        "-5/2",
+        "-5/2",
+        "-5/2",
+        "-5/2",
+        "5/2"
+      ],
+      "W2": [
+        "-1/2",
+        "0",
+        "-1/2",
+        "1/2",
+        "1/2",
+        "0",
+        "0",
+        "0",
+        "23/4",
+        "-25/4",
+        "-21/4",
+        "-19/4",
+        "-25/4",
+        "-21/4",
+        "-17/4",
+        "17/4"
+      ],
+      "W3": [
+        "-1/6",
+        "1/2",
+        "1/2",
+        "-1/6",
+        "-1/6",
+        "-1/6",
+        "-1/6",
+        "-1/6",
+        "0",
+        "-2/3",
+        "1/3",
+        "4/3",
+        "-1",
+        "0",
+        "0",
+        "0"
+      ],
+      "note": "lattice-equivalent corrected representatives shipped with the orbifolder benchmark"
+    }
+  ],
+  "recoverable_set_count": 5,
+  "missing_bulk_inputs": {
+    "paths": [
+      "sp1/",
+      "sp2/",
+      "unbroken2.py"
+    ],
+    "verdict": "absent from all three inspected historical trees, including copilot/raw-z6-ii-model-corpus",
+    "consequence": "class-wide 215-model D/F-flatness cannot be exactly replayed from Git alone; regenerate models from defining vectors where available or recover the external raw corpus"
+  },
+  "provenance_boundary": {
+    "safe_to_replay": [
+      "Z6-I flagship gauge model",
+      "Z6-II explicit model witness",
+      "Z6-II gauge-embedding witness",
+      "BHLR benchmark representatives"
+    ],
+    "not_safe_to_claim_from_git_alone": [
+      "complete 215-model raw spectrum corpus",
+      "class-wide exact matter-even D/F-flat vacuum census"
+    ]
+  },
+  "checks": {
+    "flagship_vectors_recovered": true,
+    "z6ii_model_vectors_recovered": true,
+    "z6ii_shape_vectors_recovered": true,
+    "bhlr_published_and_shipped_representatives_recovered": true,
+    "bhlr_representatives_lattice_equivalent": true,
+    "hidden_branch_checked": true,
+    "two_dflat_history_trees_checked": true,
+    "missing_sp1_sp2_unbroken2_confirmed_for_inspected_trees": true
+  }
+}
