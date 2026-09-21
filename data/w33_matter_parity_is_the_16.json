@@ -1,0 +1,103 @@
+{
+ "claim": "Matter parity is exactly membership in the SO(10) 16. Inside a 16 every state has 3(B-L) odd (q +1, u^c -1, d^c -1, L -3, e^c +3, nu^c +3); the 10 has its Higgs doublets at 0 and colour triplets at -+2, and the 1 at 0, all even. Verified at FIELD level over the 88 models with a B-L gauge direction: 1884 matter fields all odd with zero even, 102 Higgs fields all even with zero odd. So 0fee779's exceptionless operator table is the shadow of the 27 = 1 + 10 + 16 split.",
+ "sixteen": {
+  "q": 1,
+  "u^c": -1,
+  "d^c": -1,
+  "L": -3,
+  "e^c": 3,
+  "nu^c": 3
+ },
+ "ten": {
+  "H_d": 0,
+  "H_u": 0,
+  "colour_triplet": 2,
+  "colour_antitriplet": -2
+ },
+ "singlet": {
+  "1": 0
+ },
+ "measured": {
+  "models": 88,
+  "q": {
+   "even": 0,
+   "odd": 267
+  },
+  "u^c": {
+   "even": 0,
+   "odd": 267
+  },
+  "d^c": {
+   "even": 0,
+   "odd": 579
+  },
+  "e^c": {
+   "even": 0,
+   "odd": 267
+  },
+  "leptons": {
+   "even": 0,
+   "odd": 504
+  },
+  "higgs": {
+   "even": 102,
+   "odd": 0
+  }
+ },
+ "exotic": {
+  "models": 31,
+  "frac_doublets": 86,
+  "odd_doublets": 62,
+  "example_values": [
+   "-1/3",
+   "-2/5",
+   "-1/5",
+   "-12/31"
+  ],
+  "parity_defined": false
+ },
+ "prior": {
+  "ours_already": "Holotrade 5419c27 the_27_factorisation_frames_carry_the_so10_weights.py",
+  "mentions_bl_or_higgs": 0,
+  "other_track": "W33-Theory data/w33_physical_fi_e6_a2_z3_grading.json",
+  "other_track_branching": "248=(78,1)+(1,8)+(27,3)+(27bar,3bar)",
+  "other_track_boundary": "Lie-theoretic grading, not a D/F-flat vacuum",
+  "literature": "arXiv:0708.2691 sec 1"
+ },
+ "the_join": "the 16/10 split that the other track produces algebraically (its Z3 grading of E8 with fixed E6+A2 and branching 248=(78,1)+(1,8)+(27,3)+(27bar,3bar)) and that Holotrade 5419c27 reads on two qutrits is, in these 88 models, precisely the matter/Higgs split that decides proton protection. Neither prior file says so: 5419c27 mentions B-L, matter parity and Higgs zero times, and the other track's stated boundary is 'Lie-theoretic grading, not a D/F-flat vacuum' -- this is the vacuum side it leaves open.",
+ "sharpens": "the same scan finds a third class the operator census missed: 86 doublets across 31 models with FRACTIONAL B-L (-1/3, -2/5, -1/5, -12/31), plus 62 odd ones. A fractional B-L has no matter parity at all, since (-1)^{3(B-L)} is undefined. Any vacuum claiming to preserve matter parity must keep them out of the condensate -- a constraint 0fee779's singlet-parity search does not yet include.",
+ "not_claimed": "that each field literally descends from a local 27 at a fixed point; that would need the per-field local GUT origin and is not attempted. The group theory is standard and cited, not claimed.",
+ "checks": {
+  "every_16_state_is_odd": true,
+  "sixteen_has_six_state_types": true,
+  "every_10_state_is_even": true,
+  "the_singlet_is_even": true,
+  "so_matter_parity_is_16_membership": true,
+  "higgs_sits_in_the_ten": true,
+  "no_matter_field_is_even": true,
+  "every_matter_field_counted_is_odd": true,
+  "no_higgs_field_is_odd": true,
+  "higgs_fields_are_present": true,
+  "matter_census_is_large": true,
+  "the_correspondence_is_exact": true,
+  "census_covers_the_88": true,
+  "fractional_doublets_exist": true,
+  "parity_is_undefined_on_them": true,
+  "they_are_a_new_constraint": true,
+  "the_decomposition_is_already_ours": true,
+  "and_it_did_not_say_this": true,
+  "the_27s_are_the_other_tracks": true,
+  "their_boundary_is_the_vacuum_side": true,
+  "literature_cited": true
+ },
+ "valid": true,
+ "status": "B-L solved on q, u^c, d^c, e^c; every other field's value read off; the parity census covers every field of all 88 models, not sampled",
+ "scope": "verifies the correspondence between 3(B-L) parity and the 16/10 assignment, and explains a measured result; establishes no vacuum",
+ "sources": [
+  "Holotrade 0fee779",
+  "Holotrade 5419c27",
+  "W33-Theory data/w33_physical_fi_e6_a2_z3_grading.json",
+  "Lebedev et al., arXiv:0708.2691 (The Heterotic Road to the MSSM with R parity)",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
