@@ -1,0 +1,136 @@
+{
+ "claim": "Proton protection needs only the Z2 subgroup of U(1)_{B-L}, not the whole U(1): singlets with 3(B-L) even but NONZERO may condense and matter parity survives (arXiv:0708.2691). Redone on that criterion, B-L exists as a gauge direction in 88 of 215 models -- ALL 87 Z6-I -- with l at B-L = -1 and bl at 0 (read off, not imposed), 86 having exactly one Higgs pair. The bare operators separate perfectly: u^c d^c d^c, q L d^c and L L e^c are matter-ODD in 7251, 11244 and 5814 combinations with ZERO even, while the three Yukawas and mu are matter-EVEN in 1215, 2361, 1860 and 232 with ZERO odd. That is the configuration f212625 reported as occurring in zero models; it returned zero because it required the full U(1) to survive.",
+ "literature": {
+  "ref": "arXiv:0708.2691",
+  "section": 1,
+  "condition": "a discrete Z2 subgroup of U(1)_{B-L}; singlets with 3(B-L) = 0 mod 2 may condense, and R parity breaks only if odd ones do",
+  "my_condition_was": "alpha . Q = 0 on every condensing singlet (the full U(1))",
+  "why_it_returned_zero": "even-but-nonzero singlets are allowed by the Z2 and excluded by the U(1)"
+ },
+ "bl": {
+  "models": 215,
+  "with_BL": 88,
+  "z6i": 87,
+  "z6i_total": 87,
+  "z6ii": 1,
+  "leptons_at": -1,
+  "higgses_at": 0,
+  "one_higgs_pair": 86,
+  "nullspace_dims": {
+   "2": 18,
+   "3": 30,
+   "4": 34,
+   "5": 3,
+   "6": 3
+  }
+ },
+ "operators": {
+  "udd": {
+   "even": 0,
+   "odd": 7251
+  },
+  "qLdc": {
+   "even": 0,
+   "odd": 11244
+  },
+  "LLec": {
+   "even": 0,
+   "odd": 5814
+  },
+  "upYuk": {
+   "even": 1215,
+   "odd": 0
+  },
+  "dnYuk": {
+   "even": 2361,
+   "odd": 0
+  },
+  "lpYuk": {
+   "even": 1860,
+   "odd": 0
+  },
+  "mu": {
+   "even": 232,
+   "odd": 0
+  }
+ },
+ "resolution": {
+  "model": "Z6I_06/SM_20260917_2",
+  "bare_udd_3BL": -3,
+  "bare_parity": "odd",
+  "singlets": [
+   "n_27",
+   "n_12",
+   "n_45",
+   "n_63",
+   "n_81"
+  ],
+  "singlet_3BL": 3,
+  "singlet_parity": "odd",
+  "udd_plus_singlet_3BL": 0,
+  "combined_parity": "even",
+  "measured_order4_couplings": 104
+ },
+ "open": {
+  "bl_not_unique": true,
+  "nullspace_lo": 2,
+  "nullspace_hi": 6,
+  "dflat_even_result": 0,
+  "dflat_control": 24,
+  "dflat_control_expected": 87,
+  "controls_reconcile": false,
+  "verdict": "not claimed -- the restricted zero rests on a control that does not reconcile with 3e655d0, which used a different singlet definition (88 vs 70 singlets on the same model)"
+ },
+ "corrects": {
+  "files": [
+   "f212625",
+   "7c30641",
+   "b81ef8c"
+  ],
+  "stands": "the continuous-U(1) measurement of f212625, exactly as stated",
+  "withdrawn": "the framing that the Yukawas and proton protection are incompatible in this class, and the unconditional reading of b81ef8c's class closure -- both assumed protection requires a continuous U(1)"
+ },
+ "no_contradiction": "b81ef8c's 104 allowed order-four u^c d^c d^c couplings are not the bare operator -- they carry singlets. On Z6I_06/SM_20260917_2 the bare operator has 3(B-L) = -3 (odd) and every singlet appearing in those couplings has 3(B-L) = 3 (odd), so the combination is even and allowed. The couplings are real and they generate R-parity violation exactly when those singlets acquire VEVs -- the paper's warning, met in the data.",
+ "changes": "b81ef8c's class closure and 7c30641's dichotomy were measured in a vacuum where matter-odd singlets condense. They are CONDITIONAL on that choice, not unconditional statements about the class.",
+ "still_open": "whether any of the 88 admits a vacuum condensing ONLY matter-even singlets. B-L is not unique (null space of dimension 2 to 6) and the paper searches that freedom; I used one particular solution, so no singlet parity census is reported as a result. A D-flatness sweep restricted to even singlets returned zero, but its control (24 of 88) does not reconcile with 3e655d0 (87 of 87 Z6-I) and the two use different singlet definitions, so the restricted zero is not claimed.",
+ "checks": {
+  "literature_uses_a_z2": true,
+  "my_condition_was_the_full_u1": true,
+  "that_explains_the_zero": true,
+  "bl_exists_widely": true,
+  "every_z6i_model_has_bl": true,
+  "counts_are_consistent": true,
+  "leptons_come_out_at_minus_one": true,
+  "higgses_come_out_at_zero": true,
+  "almost_all_have_one_higgs_pair": true,
+  "nullspace_census_adds_up": true,
+  "every_dangerous_operator_is_odd": true,
+  "every_wanted_operator_is_even": true,
+  "the_separation_is_perfect": true,
+  "the_census_is_large": true,
+  "bare_udd_is_odd": true,
+  "the_singlets_are_odd_too": true,
+  "together_they_are_even": true,
+  "which_is_why_the_couplings_exist": true,
+  "five_singlets_checked": true,
+  "no_contradiction_remains": true,
+  "bl_freedom_is_unsearched": true,
+  "the_control_does_not_reconcile": true,
+  "so_the_restricted_zero_is_not_claimed": true,
+  "the_open_question_is_named": true,
+  "three_files_touched": true,
+  "the_measurement_stands": true,
+  "the_framing_is_withdrawn": true
+ },
+ "valid": true,
+ "status": "exact rational linear algebra; B-L solved on q, u^c, d^c, e^c and the doublet values READ OFF; operator parities computed over every field combination, not sampled; the coupling singlets read from the orbifolder. All numbers regenerated from the cached spectra after the working directory was lost, and reproduced exactly.",
+ "scope": "establishes that the protecting symmetry is present, NOT that a vacuum preserving it exists. Reopens the question rather than answering it.",
+ "sources": [
+  "Holotrade f212625",
+  "Holotrade 7c30641",
+  "Holotrade b81ef8c",
+  "Holotrade 3e655d0",
+  "Lebedev, Nilles, Raby, Ramos-Sanchez, Ratz, Vaudrevange, Wingerter, arXiv:0708.2691 (The Heterotic Road to the MSSM with R parity)",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
