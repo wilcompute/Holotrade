@@ -1,0 +1,10 @@
+{
+  "schema":"w33.z6ii_fi_basis_provenance_firewall.v1",
+  "status":"PASS_QUARANTINE_FI_DEPENDENT_Z6II_VACUUM",
+  "model":"Z6II_34 / SM_20260917_1558",
+  "independent_result_that_survives":{"dropping_SUSY_triplet_rank":7,"needed_rank":7,"reason":"mass-matrix rank is independent of which U(1) is anomalous"},
+  "conditional_results":["the 10-singlet candidate is D-flat via an FI term","the grown 24-singlet set is D-flat via an FI term","the nonsupersymmetric rank-7 point is approximately D-flat"],
+  "decision":"Do not treat direction 8 as the physical anomalous U(1) and do not promote any FI-dependent Z6-II vacuum statement until one raw export freezes IsFirstU1Anomalous, D0_FI_term, GaugeGroup.u1directions, the labelled LP charge matrix and the chiral trace input.",
+  "committed_control":{"producer":"analysis/flagship_fi_weight_dump.cpp","audit":"analysis/flagship_full_cartan_fi_audit.py","fact":"the fresh Z6-I export explicitly uses u1directions[0] as the anomalous generator when IsFirstU1Anomalous=1","norm_squared":"50/3","FI_trace":200},
+  "possible_failure_modes_to_distinguish":["LP columns not in GaugeGroup.u1directions order","transformed/non-orthogonal LP basis","wrong state set in zero-trace diagnostic","genuine model/export convention difference"]
+}
