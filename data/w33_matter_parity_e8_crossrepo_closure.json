@@ -1,0 +1,29 @@
+{
+  "schema":"holotrade.w33_matter_parity_e8_crossrepo_closure.v1",
+  "status":"PASS_CROSSREPO_MATTER_PARITY_E8_CLOSURE",
+  "matter_parity":{
+    "E6":"27=16_1+10_-2+1_4; P_M=(-1)^Qpsi",
+    "field_level_parent":"data/w33_matter_parity_is_the_16.json",
+    "E8_root_split":[112,128],
+    "E8_adjoint_split":[120,128],
+    "fixed_type":"D8 = so(16)"
+  },
+  "E6_cubic":{
+    "patterns":[
+      {"Qpsi":[-2,1,1],"count":40},
+      {"Qpsi":[-2,-2,4],"count":5}
+    ],
+    "all_matter_parity_even":true
+  },
+  "FI_x_matter_parity_Z6":{
+    "dimensions":[54,48,33,32,33,48],
+    "fixed_algebra":"so(10)+sl(3)+u(1)",
+    "flagship_physical_holonomy_dimensions":[44,40,38,48,38,40],
+    "same_as_flagship_holonomy":false
+  },
+  "W33_owners":[
+    "data/w33_qpsi_matter_parity_e8_d8_bridge.json",
+    "data/w33_physical_fi_matter_parity_z6_quotient.json"
+  ],
+  "boundary":"Representation/Lie-algebra closure only; does not make the current sampled D-flat matter-parity obstruction an exhaustive vacuum theorem."
+}
