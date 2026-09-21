@@ -1,0 +1,78 @@
+{
+ "claim": "The charged-lepton Yukawa is NOT the R-parity violating operator. A B-L-like U(1) splits the Y=-1/2 doublets into charge classes, and the class count is the real discriminator: 55 models have ONE class and 32 have TWO, with the one-class set exactly the doublet-triplet solvers. One class means no Higgs-type doublet exists at all, hence no down-quark and no charged-lepton Yukawa. Two classes means H_d exists, and every allowed l l e^c coupling is cross-class -- 20 of 20 on Z6I_06, none within a class -- so those couplings are the Yukawa and L L e^c is absent.",
+ "classes": {
+  "one_class": 55,
+  "two_classes": 32,
+  "models": 87,
+  "one_equals_solvers": true,
+  "one_no_lepton_yukawa": true,
+  "one_no_down_yukawa": true,
+  "two_have_lepton_yukawa": true,
+  "bl_one_class": 55,
+  "bl_two_classes": 32
+ },
+ "z6i06": {
+  "l_fields": 9,
+  "class_A": [
+   1,
+   2,
+   4,
+   6,
+   8
+  ],
+  "class_B": [
+   3,
+   5,
+   7,
+   9
+  ],
+  "lle_pairs_total": 20,
+  "lle_cross_class": 20,
+  "lle_within_class": 0,
+  "qld_uses_all_nine": true,
+  "udd_order": 4
+ },
+ "corrects": {
+  "files": [
+   "82f8d66",
+   "b81ef8c"
+  ],
+  "wrong": "the charged-lepton Yukawa L H_d e^c IS the R-parity violating L L e^c, because no separate H_d can exist",
+  "right": "a B-L-like U(1) splits the Y=-1/2 doublets into classes; where two classes exist the two operators are cleanly distinguished and L L e^c is ABSENT"
+ },
+ "verdict": "unchanged but re-routed: the 55 are excluded for having no H_d at all; the 32 are excluded because q l d^c draws on BOTH classes, so genuine q L d^c lepton-number violation survives alongside u^c d^c d^c at order four. NOT via L L e^c, which is absent.",
+ "why_it_matters": "calling the two operators identical made the failure look forced by the chirality count. It is not: models with two doublet classes separate them cleanly and have a healthy lepton Yukawa. A model with two classes AND no u^c d^c d^c would be viable on this axis -- a live target rather than a closed door.",
+ "literature": "B-L distinguishing Higgs from lepton doublets is standard in the heterotic mini-landscape; this is that mechanism appearing in the scan",
+ "checks": {
+  "the_classes_partition_the_l_fields": true,
+  "classes_are_disjoint": true,
+  "every_lle_coupling_is_cross_class": true,
+  "no_within_class_coupling": true,
+  "so_lle_is_the_yukawa_not_rpv": true,
+  "qld_draws_on_both_classes": true,
+  "udd_is_present_at_order_four": true,
+  "class_counts_partition_the_class": true,
+  "one_class_set_is_the_solver_set": true,
+  "one_class_means_no_lepton_yukawa": true,
+  "one_class_means_no_down_yukawa": true,
+  "two_classes_means_lepton_yukawa": true,
+  "bl_tracks_l": true,
+  "the_class_count_is_the_discriminator": true,
+  "two_files_corrected": true,
+  "the_correction_is_recorded": true,
+  "verdict_unchanged_for_the_55": true,
+  "verdict_unchanged_for_the_32": true,
+  "but_not_via_lle": true
+ },
+ "valid": true,
+ "status": "charge classes read from the full U(1) charge vectors of the l and bl fields across all 87 models; the cross-class census and coupling content are measured on Z6I_06",
+ "scope": "allowed-coupling level; the cross-class census is complete for one model and the class counts for all 87",
+ "sources": [
+  "Holotrade 82f8d66",
+  "Holotrade b81ef8c",
+  "Holotrade 7d9b467",
+  "Lebedev et al. arXiv:0806.3905 (From strings to the MSSM)",
+  "Nilles et al. arXiv:0812.3560 (Towards Low Energy Physics from the Heterotic String)",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
