@@ -1,0 +1,126 @@
+{
+ "claim": "REDISCOVERY. The canonicity of the Eisenstein structure on E8 -- that the fixed-point-free order-3 automorphisms form a single class, so W(3,3) is forced rather than chosen -- was already ours: Pass 7401 counts 2240 cyclic Eisenstein structures (W33 leaves) with normalizer 311040, and 2240 x 311040 = |W(E8)|, which IS the single-orbit statement; Pass 1047 computes the centralizer 155520 and names it Shephard-Todd G32. This file adds only a pure-Python verification of the GAP-only centralizer, by two independent routes that agree at 4480.",
+ "prior_art": {
+  "pass7401": {
+   "file": "analysis/w33_pass7401_7408_e8_a2_global_geometry.py",
+   "A2_subsystems": 1120,
+   "A2_4_lines": 11200,
+   "lines_per_A2": 40,
+   "leaves": 2240,
+   "normalizer": 311040,
+   "valencies": [
+    1,
+    120,
+    648,
+    270,
+    81
+   ],
+   "spectrum": {
+    "120": 1,
+    "20": 84,
+    "8": 300,
+    "-4": 700,
+    "-40": 35
+   }
+  },
+  "pass1047": {
+   "file": "analysis/w33_pass1047_eisenstein_parabolic_ladder.g",
+   "centralizer": 155520,
+   "name": "Shephard-Todd G32",
+   "ladder": [
+    155520,
+    648,
+    24,
+    1
+   ]
+  },
+  "forcing": {
+   "file": "analysis/w33_eisenstein_forcing.py",
+   "argument": "crystallographic restriction (phi(p)=2 => p in {3,4,6}) AND prime"
+  },
+  "pass350": {
+   "file": "analysis/2026-07-15_pass350_eisenstein_trace_form.md",
+   "content": "Hermitian Z[omega] trace form, disc 3^n, even, type (-1)^n"
+  }
+ },
+ "verified": {
+  "WE8": 696729600,
+  "coxeter_order": 30,
+  "rho_order": 3,
+  "charpoly": [
+   1,
+   4,
+   10,
+   16,
+   19,
+   16,
+   10,
+   4,
+   1
+  ],
+  "det_I_minus_rho": 81,
+  "class_size": 4480,
+  "centralizer": 155520,
+  "A2_subsystems": 1120,
+  "orthogonality_degree": 120,
+  "A2_4_subsystems": 11200,
+  "products": 179200,
+  "distinct": 4480,
+  "per_element_subsystems": 40,
+  "root_orbits": 40,
+  "orbit_size": 6
+ },
+ "lesson": {
+  "searched_for": [
+   "unique",
+   "canonical",
+   "conjugacy",
+   "Shephard",
+   "4480"
+  ],
+  "corpus_calls_them": [
+   "W33 leaves",
+   "cyclic Eisenstein structures",
+   "A2^4 lines",
+   "trace form",
+   "parabolic ladder"
+  ],
+  "decisive_string_was": "a JSON key, not a sentence",
+  "rule": "grep the distinctive integers first, then the corpus's nouns"
+ },
+ "adds": "a GAP-free replication: conjugacy-orbit closure gives class size 4480 hence centralizer 696729600/4480 = 155520, and an independent A2^4 enumeration (1120 A2s, 11200 A2^4s, 16 signs each, 179200 products, 4480 distinct) agrees exactly. Incidental: each fixed-point-free order-3 element is the product of A2-rotations in exactly 40 distinct A2^4 subsystems.",
+ "new_mathematics": false,
+ "checks": {
+  "coxeter_has_order_30": true,
+  "rho_has_order_3": true,
+  "charpoly_is_phi3_to_the_4": true,
+  "rho_is_fixed_point_free": true,
+  "class_size_divides_the_group": true,
+  "centralizer_reproduces_pass1047": true,
+  "half_the_class_is_the_leaf_count": true,
+  "leaves_times_normalizer_is_the_group": true,
+  "A2_count_reproduces_pass7401": true,
+  "A2_4_count_reproduces_pass7401": true,
+  "products_are_16_per_subsystem": true,
+  "incidence_is_exactly_forty": true,
+  "the_two_routes_agree": true,
+  "control_gives_forty_orbits": true,
+  "orbits_have_size_six": true,
+  "control_recovers_240": true,
+  "valencies_sum_to_1120": true,
+  "multiplicities_sum_to_1120": true,
+  "ladder_starts_at_the_centralizer": true,
+  "this_is_a_rediscovery": true,
+  "the_lesson_is_recorded": true
+ },
+ "valid": true,
+ "status": "exact integer arithmetic in the simple-root basis; no GAP; no floating point in the group theory. Control: 240 roots fall into 40 orbits of size 6 under <-1, rho>, reproducing the PASS7385-7400 bridge.",
+ "scope": "verification and a rediscovery notice, not a result. The original question was answered in the corpus before it was asked here.",
+ "sources": [
+  "W33-Theory analysis/w33_pass7401_7408_e8_a2_global_geometry.py",
+  "W33-Theory analysis/w33_pass1047_eisenstein_parabolic_ladder.g",
+  "W33-Theory analysis/w33_eisenstein_forcing.py",
+  "W33-Theory analysis/2026-07-15_pass350_eisenstein_trace_form.md",
+  "W33-Theory PASS7385_7400_EISENSTEIN_E8_W33_BRIDGE.md"
+ ]
+}
