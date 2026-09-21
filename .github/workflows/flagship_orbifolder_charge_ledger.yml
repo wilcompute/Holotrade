@@ -61,17 +61,17 @@ jobs:
               --geometry "$geometry" \
               --pair 45
             cat > "$SRC/commands_${tag}.txt" <<EOF
-load orbifolds(model_${tag}.txt)
-cd SM_20260917_3
-cd gauge group
-print gauge group
-print U1 generators
-cd ..
-cd spectrum
-print summary with labels
-print(*) with internal information
-exit
-EOF
+          load orbifolds(model_${tag}.txt)
+          cd SM_20260917_3
+          cd gauge group
+          print gauge group
+          print U1 generators
+          cd ..
+          cd spectrum
+          print summary with labels
+          print(*) with internal information
+          exit
+          EOF
             (
               cd "$SRC"
               timeout 240s bash -c \
