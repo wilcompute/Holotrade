@@ -39,17 +39,17 @@ jobs:
             tag="${gid}_45"
             python analysis/w33_flagship_orbifolder_model.py --output "$SRC/model_${tag}.txt" --geometry "$geometry" --pair 45
             cat > "$SRC/commands_${tag}.txt" <<EOF
-load orbifolds(model_${tag}.txt)
-cd SM_20260917_3
-cd gauge group
-print gauge group
-print U1 generators
-cd ..
-cd spectrum
-print summary with labels
-print(*) with internal information
-exit
-EOF
+          load orbifolds(model_${tag}.txt)
+          cd SM_20260917_3
+          cd gauge group
+          print gauge group
+          print U1 generators
+          cd ..
+          cd spectrum
+          print summary with labels
+          print(*) with internal information
+          exit
+          EOF
             (
               cd "$SRC"
               timeout 240s bash -c "printf 'load program(commands_${tag}.txt)\\nyes\\n' | ./src/orbifolder/orbifolder" > "$GITHUB_WORKSPACE/evidence/flagship_orbifolder/transcript_${tag}.txt" 2>&1 || true
