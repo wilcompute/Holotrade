@@ -1,0 +1,68 @@
+{
+ "claim": "Every one of the 86 W(3,3) Z6-I Standard Models scanned is excluded. The three dimension-four operators u^c d^c d^c, q l d^c and L L e^c are LOCKED -- across 86 models they are all-present (32) or all-absent (54), with zero mixed cases -- so baryon triality, keeping the lepton Yukawa while forbidding baryon violation, does not occur. The 54 all-absent models have no down-quark and no charged-lepton masses. The 32 all-present models have all three operators at ORDER FOUR, giving lambda'lambda'' ~ eps^2 = 6.8e-2 against a bound of 1e-27 -- proton decay too fast by 7e25, where suppressing to the bound would need the operators at order ~26.",
+ "patterns": {
+  "all_absent": 54,
+  "all_present": 32,
+  "mixed": 0,
+  "models": 86,
+  "control_nonzero": 86
+ },
+ "orders": {
+  "u^c d^c d^c": {
+   "order": 4,
+   "couplings": 104
+  },
+  "q l d^c": {
+   "order": 4,
+   "couplings": 201
+  },
+  "L L e^c": {
+   "order": 4,
+   "couplings": 104
+  }
+ },
+ "rpv": {
+  "eps": 0.26,
+  "lambda_product": 0.068,
+  "bound": 1e-27,
+  "excess": 6.8e+25,
+  "order_needed": 26
+ },
+ "verdict": {
+  "absent_branch": "no down-quark or charged-lepton masses",
+  "present_branch": "proton decay 10^25 too fast",
+  "models_excluded": 86,
+  "of": 86
+ },
+ "mechanism": "the three operators differ only in which Standard-Model fields fill the same string-selection slot -- same sector, fixed point and R-charge -- so the orbifold rules cannot distinguish them. Separating them needs H_d to be distinct from the lepton doublets, which n_l - n_bl = 3 forbids throughout this class.",
+ "two_sided": "the two exclusions are one fact from opposite sides: the operator giving the electron its mass is the operator violating lepton number, and it is locked to the one violating baryon number",
+ "not_excluded": "other orbifold geometries where a separate H_d can exist -- the Z6-II sample already differs in related respects and was not scanned for this -- and non-supersymmetric constructions, where the dimension-four analysis does not apply in this form",
+ "checks": {
+  "control_is_nonvacuous": true,
+  "only_two_patterns_occur": true,
+  "patterns_cover_the_class": true,
+  "the_operators_are_locked": true,
+  "no_baryon_triality_model": true,
+  "all_three_appear_at_order_four": true,
+  "three_operators_tracked": true,
+  "couplings_are_plentiful": true,
+  "lambda_product_recomputes": true,
+  "excess_is_twenty_five_orders": true,
+  "suppression_would_need_order_twenty_plus": true,
+  "order_gap_is_enormous": true,
+  "both_branches_excluded": true,
+  "absent_branch_has_no_fermion_masses": true,
+  "present_branch_decays_the_proton": true,
+  "the_whole_class_is_closed": true
+ },
+ "valid": true,
+ "status": "operators dumped by the orbifolder with a non-vacuous control; the pattern census, orders and RPV estimate computed here",
+ "scope": "orders three to five for the class scan, six on a representative B-violating model; allowed-coupling level, so a listed coupling could carry a small coefficient -- but closing 10^25 by accidental smallness in all 32 models is not a live option. eps = 0.26 is the measured median <n>/M_s from cfdc1f2; the lambda'lambda'' bound is the standard TeV-squark one and moves by an order or two at most.",
+ "sources": [
+  "Holotrade 82f8d66",
+  "Holotrade 7d9b467",
+  "Holotrade cfdc1f2",
+  "Holotrade 67f0e1f",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
