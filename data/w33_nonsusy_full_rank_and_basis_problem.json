@@ -1,0 +1,69 @@
+{
+ "claim": "Dropping the supersymmetry requirement -- minimising sum|F|^2 with the D-terms driven to zero, rather than demanding F = 0 -- gives FULL colour-triplet rank, 7 of 7, with all VEVs within a factor of 63, where demanding a SUSY vacuum gave rank 3 of 7 at a VEV spread of 2.4e13. The rank obstruction that closed five routes was an artefact of insisting on unbroken supersymmetry. BUT the D-flatness throughout leans on the FI term, and only direction 8 of the nine dumped U(1)s can absorb the residue, while the orbifolder reports the anomalous generator is the FIRST and direction 0 is infeasible. The dumped charges give Tr Q = Tr Q^3 = 0 on every direction, so that basis is not the one in which the anomalous generator sits first, and which direction is physically anomalous is unresolved.",
+ "model": "Z6II_34 / SM_20260917_1558",
+ "susy_dropped": {
+  "subset": 24,
+  "starts": 150,
+  "max_D_over_scale": 0.019,
+  "sum_F2": 120.0,
+  "rank": 7,
+  "needed": 7,
+  "vev_lo": 0.04979,
+  "vev_hi": 3.148,
+  "spread": 63.0
+ },
+ "susy_required": {
+  "source": "2a4146c",
+  "rank": 3,
+  "needed": 7,
+  "vev_spread": 24000000000000.0
+ },
+ "basis_problem": {
+  "grown_dflat_zero_FI": false,
+  "grown_feasible_dirs": [
+   8
+  ],
+  "seed_dflat_zero_FI": false,
+  "seed_feasible_dirs": [
+   8
+  ],
+  "direction_zero_usable": false,
+  "orbifolder_says_first_is_anomalous": true,
+  "dumped_trace_Q": 0,
+  "dumped_trace_Q3": 0,
+  "n_u1": 9
+ },
+ "resolution": {
+  "where": "corbifold.cpp creates the anomalous U(1) generator; SymmetryGroup.D0_FI_term holds Tr Q_anom",
+  "action": "dump the generator itself, not the post-AnalyseModel charge basis"
+ },
+ "what_stands": "the rank result: it is computed from couplings and VEVs alone and does not depend on which U(1) is anomalous",
+ "what_is_conditional": "every 'D-flat via the FI term' statement in d7c0328 and 2a4146c, and the full-rank point here, is conditional on direction 8 being the anomalous one. If it is not, those sets are not D-flat and the results built on them do not stand.",
+ "checks": {
+  "dropping_susy_gives_full_rank": true,
+  "requiring_susy_did_not": true,
+  "the_reframing_changes_the_answer": true,
+  "vev_spread_improves_enormously": true,
+  "F_is_nonzero_as_it_should_be": true,
+  "vev_range_is_consistent": true,
+  "neither_set_is_dflat_with_zero_fi": true,
+  "only_one_direction_is_feasible": true,
+  "but_it_is_not_direction_zero": true,
+  "orbifolder_puts_the_anomalous_first": true,
+  "the_two_statements_conflict": true,
+  "dumped_traces_all_vanish": true,
+  "so_the_basis_is_not_the_anomalous_one": true,
+  "the_claim_is_conditional": true,
+  "resolution_is_identified": true,
+  "rank_is_independent_of_the_basis": true
+ },
+ "valid": true,
+ "status": "the potential minimisation, the rank and the feasibility LPs computed here; the basis conflict is between the orbifolder's own IsFirstU1Anomalous flag and the charges it dumps",
+ "scope": "one model, generic coefficients, singlet superpotential to order six, 150 starts with |Re w| <= 3. The D-flatness here is a penalty result, not exact; an exact construction by parametrising the D-flat cone failed for want of an interior point on the eight non-anomalous directions, which is the same basis issue from the other side.",
+ "sources": [
+  "Holotrade 2a4146c",
+  "Holotrade d7c0328",
+  "Holotrade cfdc1f2",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}
