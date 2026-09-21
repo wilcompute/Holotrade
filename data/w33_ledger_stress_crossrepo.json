@@ -1,0 +1,30 @@
+{
+  "schema": "holotrade.w33-ledger-stress-crossrepo.v1",
+  "status": "PASS_CROSSREPO_LEDGER_FIREWALL",
+  "w33SourceCommit": "dff9588a34027605d156b8e390ba1e1db31aedd1",
+  "suiteStatus": "PASS_WITH_TWO_LEDGER_CORRECTIONS",
+  "mathematicalHome": "wilcompute/W33-Theory",
+  "operationalHome": "wilcompute/Holotrade",
+  "results": {
+    "modularCharacter": "PASS_LITERAL_CHARACTER_WITH_THREE_QUTRITS",
+    "mirrorGroup": "PASS_GEOMETRIC_MIRROR_DOUBLE_COVER",
+    "auditCompleteness": "CORRECTION_DEPTH2_FAILS_Q3_DEPTH3_CLOSES",
+    "monopoleCohomology": "PASS_W33_H2_ZERO_GLOBAL_EXACTNESS",
+    "darkBond": "NO_GO_H4_PRODUCT_HAMILTONIAN_AS_WRITTEN"
+  },
+  "claimPolicy": {
+    "finiteStructuralBridge": true,
+    "ledgerUniversalLawAdmitted": false,
+    "tomitaEqualsGeometricMirror": false,
+    "universalNoMonopolesFromClosednessAlone": false,
+    "qutritDepth2AuditCompleteness": false,
+    "darkBondH4AsWritten": false,
+    "qutritDepth3RepairTested": true
+  },
+  "blockers": [
+    "Tomita modular conjugations have not been identified with W33 anti-symplectic mirrors.",
+    "The universal no-monopole claim needs a global H^2/bundle hypothesis; W33 itself has H^2=0.",
+    "The depth-two audit theorem is not qutrit-complete: 649/729; depth three closes 729/729 in tested witnesses.",
+    "H.4's product Hamiltonian preserves Schmidt data and cannot induce a new visible operator by tracing out R."
+  ]
+}
