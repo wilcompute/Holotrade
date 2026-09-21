@@ -1,0 +1,122 @@
+{
+ "claim": "Across all 215 models the three Yukawas and the mu term are satisfiable by a surviving U(1) in 215 of 215, and u^c d^c d^c is forbidden at all orders in 14 -- but the two are NEVER compatible: 0 of 215. The charge algebra shows this is not forced: imposing the three Yukawas and mu leaves three free parameters with udd = -3a + f and q L d^c = L L e^c = L H_u = 2f - e, both generically nonzero, and the SO(10) assignment (10 at +1, 5bar at -3, Higgs 10-plet at +/-2) forbids all three dangerous operators at charge -5 while allowing every Yukawa. So the obstruction is a property of the spectra these orbifolds produce, not of the Standard Model's charges.",
+ "algebra": {
+  "free_params": [
+   "a",
+   "e",
+   "f"
+  ],
+  "solved": {
+   "b": "-a - f",
+   "c": "-a + f",
+   "d": "-e + f",
+   "g": "-f"
+  },
+  "udd": "-3a + f",
+  "qLdc": "2f - e",
+  "LLec": "2f - e",
+  "LHu": "2f - e",
+  "no_abstract_obstruction": true
+ },
+ "so10": {
+  "q": 1,
+  "u^c": 1,
+  "e^c": 1,
+  "d^c": -3,
+  "L": -3,
+  "H_d": 2,
+  "H_u": -2,
+  "udd": -5,
+  "qLdc": -5,
+  "LLec": -5,
+  "works": true
+ },
+ "measured": {
+  "models": 215,
+  "A_up": 215,
+  "B_down": 215,
+  "C_lepton": 215,
+  "E_mu": 215,
+  "ABCE_control": 215,
+  "D_udd": 14,
+  "ABCDE": 0
+ },
+ "protected": {
+  "count": 14,
+  "doublet_charges": [
+   -2,
+   2
+  ],
+  "alpha_q": 1,
+  "alpha_uc": 1,
+  "alpha_dc": 2,
+  "H_u_needed": -2,
+  "H_u_present": true,
+  "H_d_needed": -3,
+  "H_d_present": false,
+  "mu_forces_alpha_dc": -3
+ },
+ "light": {
+  "models": 211,
+  "udd_all_bd": 14,
+  "udd_light": 14,
+  "yukawas": 200,
+  "both": 0
+ },
+ "slots": {
+  "models": 215,
+  "colour0_weak1": 51,
+  "other": 164,
+  "singlet_test_is_slot_independent": true
+ },
+ "mechanism": "in all 14 protected models the doublet charges are EXACTLY {-2,+2} with alpha(q) = alpha(u^c) = 1 and alpha(d^c) = +2, so H_u needs -2 (present) and H_d needs -3 (absent). One missing charge value, the same one, in every protected model -- and the mu condition forces that value to be alpha(d^c) = -3, precisely the SO(10) 5bar. Putting d^c at +2 instead is what both protects the proton (1+2+2 = 5) and pushes H_d out of reach.",
+ "robustness": "the bd fields include vector-like partners that decouple, and since alpha is exactly unbroken a light operator with alpha != 0 stays forbidden however they are integrated out. Recomputing on the light d^c (net excess of bd(x) over its conjugate d(-x)) leaves the counts unchanged: 14 protected, 200 of 211 with Yukawas, 0 with both.",
+ "next": "the gap is named rather than open-ended: find a spectrum whose doublets reach -3 relative to alpha(q) = 1 while alpha(d^c) = -3, i.e. a genuine SO(10) 16 with a 10-plet Higgs.",
+ "not_claimed": "that the Standard Model cannot come from a heterotic orbifold. The mini-landscape Z6-II MSSM models achieve proton stability through a discrete Z_4^R (arXiv:1009.0905) and are not tested here.",
+ "checks": {
+  "three_free_parameters": true,
+  "four_charges_are_determined": true,
+  "the_three_dangerous_ops_share_a_charge": true,
+  "neither_charge_is_identically_zero": true,
+  "so_there_is_no_abstract_obstruction": true,
+  "ten_is_uniform": true,
+  "fivebar_is_uniform": true,
+  "higgses_are_a_tenplet_pair": true,
+  "all_three_ops_forbidden_at_minus_five": true,
+  "so10_satisfies_up_yukawa": true,
+  "so10_satisfies_down_yukawa": true,
+  "so10_route_works": true,
+  "up_always_possible": true,
+  "down_always_possible": true,
+  "lepton_always_possible": true,
+  "mu_always_possible": true,
+  "the_control_is_not_vacuous": true,
+  "protection_is_rare": true,
+  "the_conjunction_is_empty": true,
+  "and_that_zero_has_a_live_control": true,
+  "protected_count_matches": true,
+  "doublets_are_exactly_plus_minus_two": true,
+  "h_u_is_available": true,
+  "h_d_is_not": true,
+  "the_missing_value_is_minus_three": true,
+  "mu_would_force_the_so10_value": true,
+  "udd_is_charged_in_the_protected_models": true,
+  "decoupling_changes_nothing": true,
+  "light_control_is_live": true,
+  "light_conjunction_still_empty": true,
+  "the_obstruction_survives_the_refinement": true,
+  "slot_ordering_is_mostly_nonstandard": true,
+  "slot_census_adds_up": true,
+  "the_singlet_test_is_slot_independent": true
+ },
+ "valid": true,
+ "status": "exact rational linear algebra; the A-E search and both controls computed here over the cached spectra of all 215 models",
+ "scope": "A-E are necessary conditions on gauge charges -- a coupling passing them may still be forbidden by the orbifold's discrete selection rules -- so this bounds viability from above and the verdict is a no-go, not a construction. Colour and weak slots are read off the quark doublet per model: only 51 of 215 put colour in slot 0 and SU(2) in slot 1, so any hardcoded-index test is wrong for 164 of them; the singlet test used here is slot-independent. Four models admit no generator with a uniform nonzero alpha(q), hence 211.",
+ "sources": [
+  "Holotrade 7c30641",
+  "Holotrade ec2f9c2",
+  "Holotrade 2fa6596",
+  "Lee, Raby, Ratz, Vaudrevange, Westphal, Wingerter, arXiv:1009.0905",
+  "orbifolder 1.2.1 arXiv:1110.5229"
+ ]
+}

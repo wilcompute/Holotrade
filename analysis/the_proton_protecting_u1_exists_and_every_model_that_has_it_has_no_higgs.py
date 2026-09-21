@@ -10,8 +10,11 @@ through a scanned order is not a symmetry, and the difference decides whether a 
 viable, so it was worth settling properly.
 
 THE ALL-ORDERS TEST. Which U(1)s survive after the Standard-Model singlets condense? Take
-the left-chiral fields trivial under SU(3) x SU(2) with zero hypercharge, form the matrix of
-their U(1) charge vectors, and take its null space N. Hypercharge lies in N in all 215 models,
+the left-chiral fields trivial under EVERY non-abelian factor (not merely under SU(3) x SU(2))
+with zero hypercharge, form the matrix of their U(1) charge vectors, and take its null space N.
+Testing every factor is what makes the criterion slot-independent, which matters: only 51 of
+the 215 models put colour in gauge slot 0 and SU(2) in slot 1, so any test that hardcodes those
+indices is wrong for the other 164. Hypercharge lies in N in all 215 models,
 which is the control. Then u^c d^c d^c is forbidden TO ALL ORDERS exactly when every
 (u^c, d^c, d^c) charge sum pairs non-trivially with N: no singlet monomial can ever neutralise
 it. Letting ALL singlets condense gives the smallest possible N, so a positive answer is
@@ -250,7 +253,7 @@ def main():
                        "the two-sided exclusion is now a statement about the gauge group rather "
                        "than a census of a scan.",
             "checks": checks, "valid": valid,
-            "status": "exact rational linear algebra over the dumped U(1) charges; hypercharge "
+            "status": "exact rational linear algebra over the dumped U(1) charges; singlets are the fields trivial under EVERY non-abelian factor, which is slot-independent; hypercharge "
                       "solved for as a general direction, not assumed to be a basis vector; charge "
                       "denominators asserted to divide 18 (measured); hypercharge verified to lie "
                       "in the surviving space in all 215 models as the control",

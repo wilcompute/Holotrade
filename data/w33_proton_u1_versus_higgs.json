@@ -117,7 +117,7 @@
   "samples_are_nontrivial": true
  },
  "valid": true,
- "status": "exact rational linear algebra over the dumped U(1) charges; hypercharge solved for as a general direction, not assumed to be a basis vector; charge denominators asserted to divide 18 (measured); hypercharge verified to lie in the surviving space in all 215 models as the control",
+ "status": "exact rational linear algebra over the dumped U(1) charges; singlets are the fields trivial under EVERY non-abelian factor, which is slot-independent; hypercharge solved for as a general direction, not assumed to be a basis vector; charge denominators asserted to divide 18 (measured); hypercharge verified to lie in the surviving space in all 215 models as the control",
  "scope": "'forbidden at all orders' means no singlet monomial can neutralise the operator under the U(1)s surviving condensation of ALL singlets, which is the smallest such space and hence the conservative choice -- the conclusion survives any subset actually condensing. It is a gauge-invariance statement and does not address the orbifold's discrete selection rules, which forbid more, nor non-perturbative effects. The converse is weaker by construction, which is why the three candidates were checked explicitly to order eight.",
  "sources": [
   "Holotrade 7d9b467",
