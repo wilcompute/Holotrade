@@ -1,0 +1,23 @@
+{
+  "schema":"holotrade.w33_qutrit_frame_matter_parity_cubic_bridge.v1",
+  "status":"PASS_OBJECTWISE_QUTRIT_MATTER_PARITY_AND_CUBIC_BRIDGE",
+  "frame_partition":{
+    "reference":1,
+    "share_one_factorisation":10,
+    "share_none":16,
+    "matter_even":11,
+    "matter_odd":16,
+    "predicate":"matter-odd iff overlap(frame,F0)=0",
+    "graph_predicate":"matter-odd iff adjacent to F0 in the Schlaefli complement"
+  },
+  "Qpsi_assignment":{"1":4,"10":-2,"16":1},
+  "tritangent_cubic_census":{
+    "total":45,
+    "by_SO10_roles":{"1+10+10":5,"10+16+16":40},
+    "by_Qpsi":{"-2,-2,4":5,"-2,1,1":40},
+    "by_matter_odd_count":{"0":5,"2":40},
+    "all_Qpsi_conserving":true,
+    "all_matter_parity_even":true
+  },
+  "boundary":"Objectwise 27-frame incidence theorem joined to the measured 16=odd matter-parity rule; no individual SM particle/frame assignment or vacuum claim."
+}
