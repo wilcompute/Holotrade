@@ -1,0 +1,244 @@
+{
+  "boundary": "The three-slice statement is representation-theoretic and requires choosing an ordered internal/external qutrit action on each C9 fibre plus a parallel striation of the nine linear H27 characters. It does not say the full Qpsi D12 preserves each chosen slice; in fact only its FI C3 powers commute with the regular H27 frame action. No heterotic vacuum or hardware pulse is inferred.",
+  "checks": {
+    "27_frame_base_recomputed": true,
+    "FI_fourth_power_is_scalar": true,
+    "Qpsi_census_1_10_16": true,
+    "each_A9_times_internal_V_is_regular_H27": true,
+    "elation_group_regular_on_frames": true,
+    "only_D12_powers_0_4_8_commute_with_frame_H27": true,
+    "three_A9_slices_partition_regular_H27": true,
+    "three_K81_slices_fill_243": true
+  },
+  "crossrepo_alignment": {
+    "Holotrade_result": "27 factorisation frames are a regular H27/elation torsor and carry the Qpsi/mu12 1+10+16 phase bundle",
+    "W33_result": "Passes 11043-11047: minimal M9 commutant dressing produces Reg(K81) and aligns the cubic 54D tangent compiler",
+    "new_join": "The 243 frame bundle is three copies of the exact minimal 81D compiler carrier after a dual-Hesse striation choice; independently, its mu12 clock leaves only the same FI C3 compatible with regular H27."
+  },
+  "frame_base": {
+    "Qpsi_census": {
+      "-2": 10,
+      "1": 16,
+      "4": 1
+    },
+    "action": "regular",
+    "elation_group_order": 27,
+    "frames": 27
+  },
+  "headline": "The 27-frame base is an exact regular H27/elation torsor, and its 27D regular module can be partitioned into three 9D minimal latent modules A9_j=(three parallel linear characters)+V+Vbar. If the two-qutrit C9 fibre is equipped as V_internal tensor Reg(C3_external), then every A9_j tensor C9 is an 81D Reg(H27 x C3) compiler carrier. Hence the existing 243D frame bundle supports three parallel K81 slices without adding Hilbert-space dimension.",
+  "mu12_compatibility": {
+    "FI_phase_on_all_27_frames": "zeta12^4 = omega",
+    "FI_power": "D12^4",
+    "commuting_D12_powers": [
+      0,
+      4,
+      8
+    ],
+    "commuting_subgroup": "<D12^4> ~= C3",
+    "consequence": "The physical FI/common-center Z3 is exactly the part of the frame Qpsi clock that commutes with the regular H27 address action. Matter parity D12^6 and the mod-four shadow D12^3 do not commute with that action.",
+    "full_power_phase_histograms": {
+      "0": {
+        "0": 27
+      },
+      "1": {
+        "1": 16,
+        "10": 10,
+        "4": 1
+      },
+      "10": {
+        "10": 16,
+        "4": 11
+      },
+      "11": {
+        "11": 16,
+        "2": 10,
+        "8": 1
+      },
+      "2": {
+        "2": 16,
+        "8": 11
+      },
+      "3": {
+        "0": 1,
+        "3": 16,
+        "6": 10
+      },
+      "4": {
+        "4": 27
+      },
+      "5": {
+        "2": 10,
+        "5": 16,
+        "8": 1
+      },
+      "6": {
+        "0": 11,
+        "6": 16
+      },
+      "7": {
+        "10": 10,
+        "4": 1,
+        "7": 16
+      },
+      "8": {
+        "8": 27
+      },
+      "9": {
+        "0": 1,
+        "6": 10,
+        "9": 16
+      }
+    }
+  },
+  "parents": [
+    "data/two_27s_character_twist.json",
+    "data/w33_qutrit_frame_mu12_bundle_carrier.json",
+    "W33-Theory@00c0d071a Passes 11043-11047"
+  ],
+  "schema": "holotrade.w33_frame_bundle_three_k81_slices.v1",
+  "status": "PASS_243_FRAME_BUNDLE_SPLITS_INTO_THREE_MINIMAL_K81_COMPILER_CARRIERS",
+  "three_slice_decomposition": {
+    "dual_affine_striation": [
+      [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ]
+      ]
+    ],
+    "slice_formula": "A9_j = sum_{chi in line_j} chi + V_omega + V_omega2",
+    "slices": [
+      {
+        "V_omega2_copies": 1,
+        "V_omega_copies": 1,
+        "after_external_C3": {
+          "dimension": 81,
+          "module": "Reg(H27) tensor Reg(C3) = Reg(K81)"
+        },
+        "after_tensor_with_internal_V": {
+          "V_omega2_copies": 3,
+          "V_omega_copies": 3,
+          "dimension": 27,
+          "module": "Reg(H27)",
+          "one_dimensional_characters": 9
+        },
+        "dimension": 9,
+        "linear_characters": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "slice": 0
+      },
+      {
+        "V_omega2_copies": 1,
+        "V_omega_copies": 1,
+        "after_external_C3": {
+          "dimension": 81,
+          "module": "Reg(H27) tensor Reg(C3) = Reg(K81)"
+        },
+        "after_tensor_with_internal_V": {
+          "V_omega2_copies": 3,
+          "V_omega_copies": 3,
+          "dimension": 27,
+          "module": "Reg(H27)",
+          "one_dimensional_characters": 9
+        },
+        "dimension": 9,
+        "linear_characters": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "slice": 1
+      },
+      {
+        "V_omega2_copies": 1,
+        "V_omega_copies": 1,
+        "after_external_C3": {
+          "dimension": 81,
+          "module": "Reg(H27) tensor Reg(C3) = Reg(K81)"
+        },
+        "after_tensor_with_internal_V": {
+          "V_omega2_copies": 3,
+          "V_omega_copies": 3,
+          "dimension": 27,
+          "module": "Reg(H27)",
+          "one_dimensional_characters": 9
+        },
+        "dimension": 9,
+        "linear_characters": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "slice": 2
+      }
+    ],
+    "total_dimension": 243
+  },
+  "w33SourceCommit": "00c0d071a6d86fb4518a1e244513a7e1fb8c158e"
+}
